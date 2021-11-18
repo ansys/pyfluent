@@ -5,8 +5,8 @@
 import grpc
 import os
 
-from ansys.api.fluent.v1 import pymenu_pb2 as PyMenuProtoModule
-from ansys.api.fluent.v1 import pymenu_pb2_grpc as PyMenuGrpcModule
+from ansys.api.fluent.v0 import pymenu_pb2 as PyMenuProtoModule
+from ansys.api.fluent.v0 import pymenu_pb2_grpc as PyMenuGrpcModule
 
 
 def parseServerInfoFile(filename: str):
