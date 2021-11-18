@@ -8,7 +8,7 @@ For a local "development" version, install with:
 
 .. code:: console
 
-  git clone https://github.com/pyansys/pyfluent.git
+  git clone https://github.com/mkundu1/pyfluent.git
   cd pyfluent
   pip install grpc\ansys-api-fluent-v0-0.0.1.tar.gz
   pip install -e .
