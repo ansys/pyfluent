@@ -13,15 +13,15 @@ For a local "development" version, install with:
   pip install grpc\ansys-api-fluent-v0-0.0.1.tar.gz
   pip install -e .
 
- We need to install the grpc package as it is not yet in PyPI.
+We need to install the grpc package as it is not yet in PyPI.
 
- Usage
- -----
- 1) Run Fluent from latest development branch with PyFluent preparation changes.
- 2) Execute in Fluent TUI: (enable-feature 'new-tui)
- 3) Start the server with server.txt as server-info filename
+Usage
+-----
+1) Run Fluent from latest development branch with PyFluent preparation changes.
+2) Execute in Fluent TUI: (enable-feature 'new-tui)
+3) Start the server with server.txt as server-info filename
 
- In Python (client-side):
+In Python (client-side):
 
 .. code:: python
 
