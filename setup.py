@@ -1,16 +1,25 @@
 """Setup file for ansys-fluent-solver"""
 import os
+from io import open as io_open
 from setuptools import setup
 
-THIS_PATH = os.path.abspath(os.path.dirname(__file__))
+# Get version from version info
+__version__ = None
+this_file = os.path.dirname(__file__)
+version_file = os.path.join(this_file, "ansys", "fluent", "solver", "_version.py")
+with io_open(version_file, mode="r") as fd:
+    # execute file from raw string
+    exec(fd.read())
 
-with open(os.path.join(THIS_PATH, "version.txt"), "r") as f:
-    version = f.readline()
+install_requires = [
+    'grpcio>=1.30.0',
+    'ansys-api-fluent-v0>=0.0.1'
+    ]
 
 setup(
     name='ansys-fluent-solver',
     packages=['ansys.fluent.solver'],
-    version=version,
+    version=__version__,
     description="Fluent's SolverAPI exposed in Python",
     long_description=open('README.rst').read(),
     long_description_content_type='text/x-rst',
