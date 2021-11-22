@@ -18,16 +18,16 @@ We need to install the grpc package as it is not yet in PyPI.
 Usage
 -----
 1) Run Fluent from the latest development branch with PyFluent preparation changes.
-2) Execute in Fluent TUI: (enable-feature 'new-tui)
+2) In the Fluent Console (TUI) execute the following Scheme code: (enable-feature 'new-tui)
 3) Start the server with server.txt as server-info filename. 
-   E.g., from the Fluent UI File Menu, select Applications > Server > Start ..., and enter server.txt as the file name.
+   E.g., from the Fluent UI File Menu, select Applications > Server > Start ... . Enter server.txt in the File name box and select OK.
 
 In Python (client-side):
 
 .. code:: python
 
   from ansys.fluent.solver import fluent_pymenu as fluent
-  fluent.start(r'c:\Users\mkundu\ANSYSDev\work\server.txt')
+  fluent.start(r'<path-to-server-file>/server.txt')
   fluent.file.read_case(case_file_name='tet.cas.gz')
   #etc.
   fluent.stop()
