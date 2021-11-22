@@ -19,7 +19,8 @@ Usage
 -----
 1) Run Fluent from the latest development branch with PyFluent preparation changes.
 2) Execute in Fluent TUI: (enable-feature 'new-tui)
-3) Start the server with server.txt as server-info filename
+3) Start the server with server.txt as server-info filename. 
+   E.g., from the Fluent UI File Menu, select Applications > Server > Start ..., and enter server.txt as the file name.
 
 In Python (client-side):
 
