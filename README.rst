@@ -20,7 +20,7 @@ Usage
 1) Run Fluent from the latest development branch with PyFluent preparation changes.
 2) In the Fluent Console (TUI) execute the following Scheme code: (enable-feature 'new-tui)
 3) Start the server with server.txt as server-info filename. 
-   E.g., from the Fluent UI File Menu, select Applications > Server > Start ... . Enter server.txt in the File name box and select OK.
+   E.g., from the Fluent UI File Menu, select Applications > Server > Start ... . Enter server.txt in the dialog and select OK.
 
 In Python (client-side):
 
