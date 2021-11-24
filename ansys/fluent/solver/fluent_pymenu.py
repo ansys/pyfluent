@@ -219,7 +219,7 @@ class PyMenu:
         request.path = convertPathToGrpcPath(childPath)
         request.attribute = DataModelProtoModule.Attribute.DATA_TYPE
         response = self.service.getAttributeValue(request)
-        return response.value == "NamedObjectContainer"
+        return convertGValueToValue(response.value) == "NamedObjectContainer"
 
     def getChildNames(self):
         request = DataModelProtoModule.GetAttributeValueRequest()
@@ -252,16 +252,13 @@ class PyMenu:
         if name in PyMenu.members:
             super().__setattr__(name, value)
         elif name in self.getChildNames():
-            raise NotImplementedError("setState is not implemented!")
-            """
             child = getattr(self, name)
             request = DataModelProtoModule.SetStateRequest()
-            request.path = self.grpcPath
+            request.path = child.grpcPath
             convertValueToGValue(value, request.state)
             ret = child.service.setState(request)
             child.journaler.journalSetState(value)
             return ret
-            """
         else:
             raise AttributeError(name + " is not available")
 
@@ -275,13 +272,10 @@ class PyMenu:
             self.journaler.journalExecute(args, kwargs)
             return convertGValueToValue(ret.result)
         elif self.isExtendedTUIMenu():
-            raise NotImplementedError("getState is not implemented!")
-            """
             request = DataModelProtoModule.GetStateRequest()
             request.path = self.grpcPath
             response = self.service.getState(request)
             return convertGValueToValue(response.state)
-            """
         else:
             request = DataModelProtoModule.ExecuteCommandRequest()
             request.path = self.grpcPath
@@ -315,16 +309,11 @@ class PyNamedObjectContainer(PyMenu):
         PyMenu.__init__(self, service, path, parent)
 
     def getChildObjectNames(self):
-        raise NotImplementedError("Container level API methods are not implemented!")
-        """
-        request = DataModelProtoModule.GetChildObjectNamesRequest()
+        request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = self.grpcPath
-        response = self.service.getChildObjectNames(request)
-        names = []
-        for item in response.names:
-            names.append(item)
-        return names
-        """
+        request.attribute = DataModelProtoModule.Attribute.OBJECT_NAMES
+        response = self.service.getAttributeValue(request)
+        return convertGValueToValue(response.value)
 
     def __getattr__(self, name):
         if name in PyMenu.members:
@@ -346,16 +335,13 @@ class PyNamedObjectContainer(PyMenu):
         return self.children[name]
 
     def __setitem__(self, name, value):
-        raise NotImplementedError("Container level API methods are not implemented!")
-        """
         child = self.__getitem__(name)
         request = DataModelProtoModule.SetStateRequest()
-        request.path = self.grpcPath
+        request.path = child.grpcPath
         convertValueToGValue(value, request.state)
         ret = child.service.setState(request)
         child.journaler.journalSetState(value)
         return ret
-        """
 
     def __delitem__(self, name):
         raise NotImplementedError("Container level API methods are not implemented!")
@@ -368,14 +354,11 @@ class PyNamedObjectContainer(PyMenu):
         """
 
     def __call__(self, *args, **kwargs):
-        raise NotImplementedError("Container level API methods are not implemented!")
-        """
         request = DataModelProtoModule.GetStateRequest()
         convertPathToGrpcPath(self.path, request.path)
         response = self.service.getState(request)
         ret = convertGValueToValue(response.state)
         return ret
-        """
 
 
 channel = None
