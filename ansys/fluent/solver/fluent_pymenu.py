@@ -292,16 +292,15 @@ class PyMenu:
         return convertGValueToValue(response.value)
 
     def rename(self, newName):
-        raise NotImplementedError("setState is not implemented!")
-        """
         oldName = self.path[-1][1]
-        request = DataModelProtoModule.RenameRequest()
-        request.name = newName
-        request.path = self.grpcPath
-        response = self.service.rename(request)
+        child = self.parent.__getitem__(oldName)
+        request = DataModelProtoModule.SetStateRequest()
+        request.path = child.grpcPath
+        convertValueToGValue(newName, request.state.struct_value.fields['name'])
+        ret = child.service.setState(request)
         self.parent.children[newName] = self.parent.children.pop(oldName)
         self.journaler.journalRename(newName)
-        """
+        return ret
 
 
 class PyNamedObjectContainer(PyMenu):
@@ -339,19 +338,20 @@ class PyNamedObjectContainer(PyMenu):
         request = DataModelProtoModule.SetStateRequest()
         request.path = child.grpcPath
         convertValueToGValue(value, request.state)
+        if request.state.HasField('null_value'): # creation with default value
+            convertValueToGValue(name, request.state.struct_value.fields['name'])
         ret = child.service.setState(request)
         child.journaler.journalSetState(value)
         return ret
 
     def __delitem__(self, name):
-        raise NotImplementedError("Container level API methods are not implemented!")
-        """
-        request = DataModelProtoModule.DeleteRequest()
-        request.path = self.grpcPath
-        self.service.delete(request)
+        child = self.__getitem__(name)
+        request = DataModelProtoModule.SetStateRequest()
+        request.path = child.grpcPath
+        ret = child.service.setState(request)
         del self.children[name]
         self.journaler.journalDelete(name)
-        """
+        return ret
 
     def __call__(self, *args, **kwargs):
         request = DataModelProtoModule.GetStateRequest()
