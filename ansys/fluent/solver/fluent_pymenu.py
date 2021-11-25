@@ -5,8 +5,8 @@
 import grpc
 import os
 
-from ansys.api.fluent.v0 import pymenu_pb2 as PyMenuProtoModule
-from ansys.api.fluent.v0 import pymenu_pb2_grpc as PyMenuGrpcModule
+from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
+from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 
 
 def parseServerInfoFile(filename: str):
@@ -15,56 +15,54 @@ def parseServerInfoFile(filename: str):
     return (lines[0].strip(), lines[1].strip())
 
 
-def convertValueToVariant(val, var):
+def convertValueToGValue(val, gVal):
     if isinstance(val, bool):
-        var.bool_state = val
-    elif isinstance(val, int):
-        var.int64_state = val
-    elif isinstance(val, float):
-        var.double_state = val
+        gVal.bool_value = val
+    elif isinstance(val, int) or isinstance(val, float):
+        gVal.number_value = val
     elif isinstance(val, str):
-        var.string_state = val
-    elif isinstance(val, list):
+        gVal.string_value = val
+    elif isinstance(val, list) or isinstance(val, tuple):
         # set the one_of to variant_vector_state
-        var.variant_vector_state.item.add()
-        var.variant_vector_state.item.pop()
+        gVal.list_value.values.add()
+        gVal.list_value.values.pop()
         for item in val:
-            itemVar = var.variant_vector_state.item.add()
-            convertValueToVariant(item, itemVar)
+            itemGVal= gVal.list_value.values.add()
+            convertValueToGValue(item, itemGVal)
     elif isinstance(val, dict):
         for k, v in val.items():
-            convertValueToVariant(v, var.variant_map_state.item[k])
+            convertValueToGValue(v, gVal.struct_value.fields[k])
 
 
-def convertVariantToValue(var):
-    if var.HasField("bool_state"):
-        return var.bool_state
-    elif var.HasField("int64_state"):
-        return var.int64_state
-    elif var.HasField("double_state"):
-        return var.double_state
-    elif var.HasField("string_state"):
-        return var.string_state
-    elif var.HasField("variant_vector_state"):
+def convertGValueToValue(gVal):
+    if gVal.HasField("bool_value"):
+        return gVal.bool_value
+    elif gVal.HasField("number_value"):
+        return gVal.number_value
+    elif gVal.HasField("string_value"):
+        return gVal.string_value
+    elif gVal.HasField("list_value"):
         val = []
-        for item in var.variant_vector_state.item:
-            val.append(convertVariantToValue(item))
+        for item in gVal.list_value.values:
+            val.append(convertGValueToValue(item))
         return val
-    elif var.HasField("variant_map_state"):
+    elif gVal.HasField("struct_value"):
         val = {}
-        for key in var.variant_map_state.item:
-            val[key] = convertVariantToValue(var.variant_map_state.item[key])
+        for k, v in gVal.struct_value.fields.items():
+            val[k] = convertGValueToValue(v)
         return val
 
 
-def convertPathToGrpcPath(path, gPath):
+def convertPathToGrpcPath(path):
+    grpcPath = ""
     for comp in path:
-        gComp = gPath.components.add()
-        gComp.type = comp[0]
-        gComp.name = comp[1]
+        grpcPath += "/" + comp[0]
+        if comp[1]:
+            grpcPath += ":" + comp[1]
+    return grpcPath
 
 
-class PyMenuService:
+class DataModelService:
     def __init__(self, stub, password: str):
         self.stub = stub
         self.__password = password
@@ -72,14 +70,8 @@ class PyMenuService:
     def __getMetaData(self):
         return [("password", self.__password)]
 
-    def getInfo(self, request):
-        return self.stub.GetInfo(request, metadata=self.__getMetaData())
-
-    def getChildNames(self, request):
-        return self.stub.GetChildNames(request, metadata=self.__getMetaData())
-
-    def getChildObjectNames(self, request):
-        return self.stub.GetChildObjectNames(request, metadata=self.__getMetaData())
+    def getAttributeValue(self, request):
+        return self.stub.GetAttributeValue(request, metadata=self.__getMetaData())
 
     def getState(self, request):
         return self.stub.GetState(request, metadata=self.__getMetaData())
@@ -87,17 +79,8 @@ class PyMenuService:
     def setState(self, request):
         return self.stub.SetState(request, metadata=self.__getMetaData())
 
-    def rename(self, request):
-        return self.stub.Rename(request, metadata=self.__getMetaData())
-
-    def delete(self, request):
-        return self.stub.Delete(request, metadata=self.__getMetaData())
-
-    def execute(self, request):
-        return self.stub.Execute(request, metadata=self.__getMetaData())
-
-    def getHelpString(self, request):
-        return self.stub.GetHelpString(request, metadata=self.__getMetaData())
+    def executeCommand(self, request):
+        return self.stub.ExecuteCommand(request, metadata=self.__getMetaData())
 
 
 journalFilename = None
@@ -206,41 +189,44 @@ class PyMenu:
     members = [
         "service",
         "path",
+        "grpcPath",
         "children",
         "parent",
         "journaler",
-        "pyMenuProtoModule",
+        "DataModelProtoModule",
     ]  # better alternative?
 
-    def __init__(self, service: PyMenuService, path, parent=None):
+    def __init__(self, service: DataModelService, path, parent=None):
         self.service = service
         self.path = path
+        self.grpcPath = convertPathToGrpcPath(path)
         self.children = {}
         self.parent = parent
         self.journaler = PyMenuJournaler(path)
 
-    def isApiMenu(self):  # can be cached
-        request = PyMenuProtoModule.GetInfoRequest()
-        convertPathToGrpcPath(self.path, request.path)
-        response = self.service.getInfo(request)
-        return response.isapimenu
+    def isExtendedTUIMenu(self):  # can be cached
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.path = self.grpcPath
+        request.attribute = DataModelProtoModule.Attribute.CUSTOM
+        request.args['is_extended_tui'] = 1
+        response = self.service.getAttributeValue(request)
+        return convertGValueToValue(response.value)
 
     def isChildContainer(self, childName):
         childPath = list(self.path)
         childPath.append((childName, ""))
-        request = PyMenuProtoModule.GetInfoRequest()
-        convertPathToGrpcPath(childPath, request.path)
-        response = self.service.getInfo(request)
-        return response.iscontainer
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.path = convertPathToGrpcPath(childPath)
+        request.attribute = DataModelProtoModule.Attribute.DATA_TYPE
+        response = self.service.getAttributeValue(request)
+        return convertGValueToValue(response.value) == "NamedObjectContainer"
 
     def getChildNames(self):
-        request = PyMenuProtoModule.GetChildNamesRequest()
-        convertPathToGrpcPath(self.path, request.path)
-        response = self.service.getChildNames(request)
-        names = []
-        for item in response.names:
-            names.append(item)
-        return names
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.path = self.grpcPath
+        request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
+        response = self.service.getAttributeValue(request)
+        return convertGValueToValue(response.value)
 
     def __dir__(self):
         return self.getChildNames()
@@ -267,9 +253,9 @@ class PyMenu:
             super().__setattr__(name, value)
         elif name in self.getChildNames():
             child = getattr(self, name)
-            request = PyMenuProtoModule.SetStateRequest()
-            convertPathToGrpcPath(child.path, request.path)
-            convertValueToVariant(value, request.state)
+            request = DataModelProtoModule.SetStateRequest()
+            request.path = child.grpcPath
+            convertValueToGValue(value, request.state)
             ret = child.service.setState(request)
             child.journaler.journalSetState(value)
             return ret
@@ -278,56 +264,55 @@ class PyMenu:
 
     def __call__(self, *args, **kwargs):
         if kwargs:
-            request = PyMenuProtoModule.ExecuteRequest()
-            convertPathToGrpcPath(self.path, request.path)
+            request = DataModelProtoModule.ExecuteCommandRequest()
+            request.path = self.grpcPath
             for k, v in kwargs.items():
-                convertValueToVariant(v, request.kwargs[k])
-            ret = self.service.execute(request)
+                convertValueToGValue(v, request.args.fields[k])
+            ret = self.service.executeCommand(request)
             self.journaler.journalExecute(args, kwargs)
-            return convertVariantToValue(ret.results)
-        elif self.isApiMenu():
-            request = PyMenuProtoModule.GetStateRequest()
-            convertPathToGrpcPath(self.path, request.path)
+            return convertGValueToValue(ret.result)
+        elif self.isExtendedTUIMenu():
+            request = DataModelProtoModule.GetStateRequest()
+            request.path = self.grpcPath
             response = self.service.getState(request)
-            return convertVariantToValue(response.state)
+            return convertGValueToValue(response.state)
         else:
-            request = PyMenuProtoModule.ExecuteRequest()
-            convertPathToGrpcPath(self.path, request.path)
-            for arg in args:
-                gArgs = request.args.add()
-                convertValueToVariant(arg, gArgs)
-            ret = self.service.execute(request)
+            request = DataModelProtoModule.ExecuteCommandRequest()
+            request.path = self.grpcPath
+            convertValueToGValue(args, request.args.fields['tui_args'])
+            ret = self.service.executeCommand(request)
             self.journaler.journalExecute(args, kwargs)
-            return convertVariantToValue(ret.results)
+            return convertGValueToValue(ret.result)
 
     def help(self):
-        request = PyMenuProtoModule.GetHelpStringRequest()
-        convertPathToGrpcPath(self.path, request.path)
-        response = self.service.getHelpString(request)
-        print(response.help)
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.path = self.grpcPath
+        request.attribute = DataModelProtoModule.Attribute.HELP_STRING
+        response = self.service.getAttributeValue(request)
+        return convertGValueToValue(response.value)
 
     def rename(self, newName):
         oldName = self.path[-1][1]
-        request = PyMenuProtoModule.RenameRequest()
-        request.name = newName
-        convertPathToGrpcPath(self.path, request.path)
-        response = self.service.rename(request)
+        child = self.parent.__getitem__(oldName)
+        request = DataModelProtoModule.SetStateRequest()
+        request.path = child.grpcPath
+        convertValueToGValue(newName, request.state.struct_value.fields['name'])
+        ret = child.service.setState(request)
         self.parent.children[newName] = self.parent.children.pop(oldName)
         self.journaler.journalRename(newName)
+        return ret
 
 
 class PyNamedObjectContainer(PyMenu):
-    def __init__(self, service: PyMenuService, path, parent):
+    def __init__(self, service: DataModelService, path, parent):
         PyMenu.__init__(self, service, path, parent)
 
     def getChildObjectNames(self):
-        request = PyMenuProtoModule.GetChildObjectNamesRequest()
-        convertPathToGrpcPath(self.path, request.path)
-        response = self.service.getChildObjectNames(request)
-        names = []
-        for item in response.names:
-            names.append(item)
-        return names
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.path = self.grpcPath
+        request.attribute = DataModelProtoModule.Attribute.OBJECT_NAMES
+        response = self.service.getAttributeValue(request)
+        return convertGValueToValue(response.value)
 
     def __getattr__(self, name):
         if name in PyMenu.members:
@@ -350,25 +335,29 @@ class PyNamedObjectContainer(PyMenu):
 
     def __setitem__(self, name, value):
         child = self.__getitem__(name)
-        request = PyMenuProtoModule.SetStateRequest()
-        convertPathToGrpcPath(child.path, request.path)
-        convertValueToVariant(value, request.state)
+        request = DataModelProtoModule.SetStateRequest()
+        request.path = child.grpcPath
+        convertValueToGValue(value, request.state)
+        if request.state.HasField('null_value'): # creation with default value
+            convertValueToGValue(name, request.state.struct_value.fields['name'])
         ret = child.service.setState(request)
         child.journaler.journalSetState(value)
         return ret
 
     def __delitem__(self, name):
-        request = PyMenuProtoModule.DeleteRequest()
-        convertPathToGrpcPath(self.path, request.path)
-        self.service.delete(request)
+        child = self.__getitem__(name)
+        request = DataModelProtoModule.SetStateRequest()
+        request.path = child.grpcPath
+        ret = child.service.setState(request)
         del self.children[name]
         self.journaler.journalDelete(name)
+        return ret
 
     def __call__(self, *args, **kwargs):
-        request = PyMenuProtoModule.GetStateRequest()
+        request = DataModelProtoModule.GetStateRequest()
         convertPathToGrpcPath(self.path, request.path)
         response = self.service.getState(request)
-        ret = convertVariantToValue(response.state)
+        ret = convertGValueToValue(response.state)
         return ret
 
 
@@ -378,9 +367,9 @@ def start(serverInfoFile):
     global channel, transcriptThread
     address, password = parseServerInfoFile(serverInfoFile)
     channel = grpc.insecure_channel(address)
-    pyMenuStub = PyMenuGrpcModule.PyMenuStub(channel)
-    pyMenuService = PyMenuService(pyMenuStub, password)
-    mainMenu = PyMenu(pyMenuService, [])
+    dataModelStub = DataModelGrpcModule.DataModelStub(channel)
+    dataModelService = DataModelService(dataModelStub, password)
+    mainMenu = PyMenu(dataModelService, [])
     for subMenu in dir(mainMenu):
         globals()[subMenu] = getattr(mainMenu, subMenu)
     PyMenuJournaler().journalGlobalFnCall("start", [serverInfoFile])
