@@ -2,8 +2,10 @@
 ### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
 ###
 
+import types
 import grpc
 import os
+import sys
 
 from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
@@ -60,6 +62,10 @@ def convertPathToGrpcPath(path):
         if comp[1]:
             grpcPath += ":" + comp[1]
     return grpcPath
+
+
+def getClsNameFromMenuName(menuName):
+    return menuName[0].upper() + menuName[1:]
 
 
 class DataModelService:
@@ -193,6 +199,7 @@ class PyMenu:
         "children",
         "parent",
         "journaler",
+        "_helpString",
         "DataModelProtoModule",
     ]  # better alternative?
 
@@ -203,6 +210,7 @@ class PyMenu:
         self.children = {}
         self.parent = parent
         self.journaler = PyMenuJournaler(path)
+        self._helpString = None # static information
 
     def isExtendedTUIMenu(self):  # can be cached
         request = DataModelProtoModule.GetAttributeValueRequest()
@@ -243,7 +251,12 @@ class PyMenu:
                         self.service, childPath, self
                     )
                 else:
-                    self.children[name] = PyMenu(self.service, childPath, self)
+                    clsName = getClsNameFromMenuName(name)
+                    cls = types.new_class(clsName, (PyMenu,))
+                    setattr(self.__class__, clsName, cls)
+                    child = cls(self.service, childPath, self)
+                    cls.__doc__ = child.help()
+                    self.children[name] = child
             return self.children[name]
         else:
             raise AttributeError(name + " is not available")
@@ -285,11 +298,13 @@ class PyMenu:
             return convertGValueToValue(ret.result)
 
     def help(self):
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = self.grpcPath
-        request.attribute = DataModelProtoModule.Attribute.HELP_STRING
-        response = self.service.getAttributeValue(request)
-        return convertGValueToValue(response.value)
+        if self._helpString is None:
+            request = DataModelProtoModule.GetAttributeValueRequest()
+            request.path = self.grpcPath
+            request.attribute = DataModelProtoModule.Attribute.HELP_STRING
+            response = self.service.getAttributeValue(request)
+            self._helpString = convertGValueToValue(response.value)
+        return self._helpString
 
     def rename(self, newName):
         oldName = self.path[-1][1]
@@ -369,7 +384,9 @@ def start(serverInfoFile):
     channel = grpc.insecure_channel(address)
     dataModelStub = DataModelGrpcModule.DataModelStub(channel)
     dataModelService = DataModelService(dataModelStub, password)
-    mainMenu = PyMenu(dataModelService, [])
+    MainMenu = types.new_class("MainMenu", (PyMenu,))
+    setattr(sys.modules[__name__], 'MainMenu',  MainMenu)
+    mainMenu = MainMenu(dataModelService, [])
     for subMenu in dir(mainMenu):
         globals()[subMenu] = getattr(mainMenu, subMenu)
     PyMenuJournaler().journalGlobalFnCall("start", [serverInfoFile])
