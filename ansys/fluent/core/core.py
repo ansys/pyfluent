@@ -2,13 +2,18 @@
 ### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
 ###
 
-import types
 import grpc
 import os
-import sys
 
-from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
+
+journalFilename = None
+moduleNameAlias = "fluent"
+dataModelService = None
+channel = None
+
+def getDataModelService():
+    return dataModelService
 
 
 def parseServerInfoFile(filename: str):
@@ -58,10 +63,17 @@ def convertGValueToValue(gVal):
 def convertPathToGrpcPath(path):
     grpcPath = ""
     for comp in path:
-        grpcPath += "/" + comp[0]
-        if comp[1]:
-            grpcPath += ":" + comp[1]
+        if isinstance(comp, tuple):
+            grpcPath += "/" + comp[0]
+            if comp[1]:
+                grpcPath += ":" + comp[1]
+        elif isinstance(comp, str):
+            grpcPath += "/" + comp
     return grpcPath
+
+
+def convertPathCommandPairToGrpcPath(path, command):
+    return '/' + '/'.join(path.split('.')) + '/' + command
 
 
 def getClsNameFromMenuName(menuName):
@@ -87,10 +99,6 @@ class DataModelService:
 
     def executeCommand(self, request):
         return self.stub.ExecuteCommand(request, metadata=self.__getMetaData())
-
-
-journalFilename = None
-moduleNameAlias = "fluent"
 
 
 def startJournal(filename: str):
@@ -191,6 +199,7 @@ class PyMenuJournaler:
             f.write(")\n")
 
 
+"""
 class PyMenu:
     members = [
         "service",
@@ -374,21 +383,16 @@ class PyNamedObjectContainer(PyMenu):
         response = self.service.getState(request)
         ret = convertGValueToValue(response.state)
         return ret
+"""
 
-
-channel = None
 
 def start(serverInfoFile):
     global channel, transcriptThread
     address, password = parseServerInfoFile(serverInfoFile)
     channel = grpc.insecure_channel(address)
     dataModelStub = DataModelGrpcModule.DataModelStub(channel)
+    global dataModelService
     dataModelService = DataModelService(dataModelStub, password)
-    MainMenu = types.new_class("MainMenu", (PyMenu,))
-    setattr(sys.modules[__name__], 'MainMenu',  MainMenu)
-    mainMenu = MainMenu(dataModelService, [])
-    for subMenu in dir(mainMenu):
-        globals()[subMenu] = getattr(mainMenu, subMenu)
     PyMenuJournaler().journalGlobalFnCall("start", [serverInfoFile])
 
 

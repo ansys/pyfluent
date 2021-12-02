@@ -1,13 +1,12 @@
 """Setup file for ansys-fluent-solver"""
 import os
-from io import open as io_open
 from setuptools import setup
 
 # Get version from version info
 __version__ = None
 this_file = os.path.dirname(__file__)
 version_file = os.path.join(this_file, "ansys", "fluent", "solver", "_version.py")
-with io_open(version_file, mode="r") as fd:
+with open(version_file, mode="r") as fd:
     # execute file from raw string
     exec(fd.read())
 
