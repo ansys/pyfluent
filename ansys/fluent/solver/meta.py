@@ -10,7 +10,7 @@ from ansys.fluent.core.core import (
 class PyMenuMeta(type):
     def _createExecuteCommand(path, command, doc):
         @classmethod
-        def wrapper(self, *args, **kwargs):
+        def wrapper(cls, *args, **kwargs):
             request = DataModelProtoModule.ExecuteCommandRequest()
             request.path = convertPathCommandPairToGrpcPath(path, command)
             if kwargs:
@@ -25,6 +25,6 @@ class PyMenuMeta(type):
         if 'doc_by_method' in attrs:
             for k, v in attrs['doc_by_method'].items():
                 attrs[k] = PyMenuMeta._createExecuteCommand(attrs['__qualname__'].split('.'), k, v)
-                attrs[k].__doc__ = v # not working
+                attrs[k].__func__.__doc__ = v # not working
         return super(PyMenuMeta, cls).__new__(
             cls, name, bases, attrs)
