@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import keyword
 from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.fluent.core.core import (
     convertPathToGrpcPath,
@@ -11,6 +12,7 @@ from ansys.fluent.core.core import (
 
 this_file = os.path.dirname(__file__)
 tui_file = os.path.join(this_file, "..", "ansys", "fluent", "solver", "tui.py")
+init_file = os.path.join(this_file, "..", "ansys", "fluent", "solver", "__init__.py")
 indent_step = 4
 
 
@@ -22,7 +24,6 @@ class TUIMenuGenerator:
     def getAllChildNames(self):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = self.grpcPath
-        print(request.path)
         request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
         request.args['include_unavailable'] = 1
         response = getDataModelService().getAttributeValue(request)
@@ -41,16 +42,22 @@ class TUIMenuGenerator:
 class TUIMenu:
     def __init__(self, path):
         self.path = path
-        self.name = path[-1] if path else ''
+        self.name = ''
+        if path:
+            self.name = path[-1]
+            if keyword.iskeyword(self.name):
+                # "import" -> "import_"
+                self.name = self.name + '_'
         self.doc = None
         self.children = {}
         self.isMethod = False
 
-
 class TUIGenerator:
-    def __init__(self, serverInfoFile, outFile=tui_file):
-        self.outFile = outFile
-        Path(outFile).unlink(missing_ok=True)
+    def __init__(self, serverInfoFile, tuiFile=tui_file, initFile=init_file):
+        self.tuiFile = tui_file
+        self.initFile = init_file
+        Path(tui_file).unlink(missing_ok=True)
+        Path(init_file).unlink(missing_ok=True)
         start(serverInfoFile)
         self.mainMenu = TUIMenu([])
 
@@ -58,39 +65,55 @@ class TUIGenerator:
         menugen = TUIMenuGenerator(menu.path)
         menu.doc = menugen.getDocString()
         childNames = menugen.getAllChildNames()
-        if childNames and len(menu.path) <= 3:
+        #if childNames and len(menu.path) <= 3:
+        if childNames:
             for childName in childNames:
                 if childName:
                     childMenu = TUIMenu(menu.path + [childName])
-                    menu.children[childName] = childMenu
+                    menu.children[childMenu.name] = childMenu
                     self.populateMenu(childMenu)
         else:
             menu.isMethod = True
 
-    def writeCodeToFile(self, code, indent=0):
-        with open(self.outFile, 'a') as f:
+    def writeCodeToTUIFile(self, code, indent=0):
+        with open(self.tuiFile, 'a') as f:
             f.write(' ' * indent_step * indent + code)
 
-    def writeMenuToFile(self, menu : TUIMenu, indent=0):
+    def writeCodeToInitFile(self, code, indent=0):
+        with open(self.initFile, 'a') as f:
+            f.write(' ' * indent_step * indent + code)
+
+    def writeMenuToTUIFile(self, menu : TUIMenu, indent=0):
         if menu.name:
-            self.writeCodeToFile('class {}(metaclass=PyMenuMeta):\n'.format(menu.name), indent)
+            self.writeCodeToTUIFile('\n')
+            self.writeCodeToTUIFile('class {}(metaclass=PyMenuMeta):\n'.format(menu.name), indent)
             indent += 1
-            self.writeCodeToFile('"""{}"""\n'.format(menu.doc), indent)
+            self.writeCodeToTUIFile('__doc__ = {}\n'.format(repr(menu.doc)), indent)
         methodNames = [k for k, v in menu.children.items() if v.isMethod]
         if methodNames:
-            self.writeCodeToFile('doc_by_method = {\n', indent)
+            self.writeCodeToTUIFile('doc_by_method = {\n', indent)
             indent += 1
             for methodName in methodNames:
-                self.writeCodeToFile("'{}' : '{}',\n".format(methodName, menu.children[methodName].doc), indent)
+                self.writeCodeToTUIFile("'{}' : {},\n".format(methodName, repr(menu.children[methodName].doc)), indent)
             indent -= 1
-            self.writeCodeToFile('}\n', indent)
+            self.writeCodeToTUIFile('}\n', indent)
         for k, v in menu.children.items():
             if not v.isMethod:
-                self.writeMenuToFile(v, indent)
+                self.writeMenuToTUIFile(v, indent)
 
     def generate(self):
         self.populateMenu(self.mainMenu)
-        self.writeCodeToFile('# This is an auto-generated file.  DO NOT EDIT!\n\n')
-        self.writeCodeToFile('from ansys.fluent.solver.meta import PyMenuMeta\n\n\n')
-        self.writeMenuToFile(self.mainMenu)
+        self.writeCodeToTUIFile('# This is an auto-generated file.  DO NOT EDIT!\n\n')
+        self.writeCodeToTUIFile('from ansys.fluent.solver.meta import PyMenuMeta\n\n\n')
+        self.writeMenuToTUIFile(self.mainMenu)
 
+        self.writeCodeToInitFile('# This is an auto-generated file.  DO NOT EDIT!\n\n')
+        self.writeCodeToInitFile('from ansys.fluent.core.core import (\n')
+        self.writeCodeToInitFile('    start,\n')
+        self.writeCodeToInitFile('    stop\n')
+        self.writeCodeToInitFile(')\n\n')
+        self.writeCodeToInitFile('from ansys.fluent.solver.tui import (\n')
+        for k, v in self.mainMenu.children.items():
+            if not v.isMethod:
+                self.writeCodeToInitFile('    {},\n'.format(k))
+        self.writeCodeToInitFile(')\n')

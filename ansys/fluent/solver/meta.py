@@ -1,3 +1,4 @@
+from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.fluent.core.core import (
     convertPathCommandPairToGrpcPath,
     convertValueToGValue,
@@ -7,7 +8,7 @@ from ansys.fluent.core.core import (
 
 
 class PyMenuMeta(type):
-    def _createExecuteCommand(path, command):
+    def _createExecuteCommand(path, command, doc):
         @classmethod
         def wrapper(self, *args, **kwargs):
             request = DataModelProtoModule.ExecuteCommandRequest()
@@ -23,7 +24,7 @@ class PyMenuMeta(type):
     def __new__(cls, name, bases, attrs):
         if 'doc_by_method' in attrs:
             for k, v in attrs['doc_by_method'].items():
-                attrs[k] = PyMenuMeta._createExecuteCommand(attrs['__qualname__'], k)
-                attrs[k].__doc__ = v
+                attrs[k] = PyMenuMeta._createExecuteCommand(attrs['__qualname__'].split('.'), k, v)
+                attrs[k].__doc__ = v # not working
         return super(PyMenuMeta, cls).__new__(
             cls, name, bases, attrs)

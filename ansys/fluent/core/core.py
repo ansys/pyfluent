@@ -4,6 +4,7 @@
 
 import grpc
 import os
+import keyword
 
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 
@@ -59,21 +60,27 @@ def convertGValueToValue(gVal):
             val[k] = convertGValueToValue(v)
         return val
 
+# import_ -> import
+def convertKeywordMenu(menu : str):
+    return menu[:-1] if menu.endswith('_') and keyword.iskeyword(menu[:-1]) else menu
 
 def convertPathToGrpcPath(path):
-    grpcPath = ""
+    grpcPath = ''
     for comp in path:
         if isinstance(comp, tuple):
-            grpcPath += "/" + comp[0]
+            grpcPath += '/' + convertKeywordMenu(comp[0])
             if comp[1]:
-                grpcPath += ":" + comp[1]
+                grpcPath += ':' + comp[1]
         elif isinstance(comp, str):
-            grpcPath += "/" + comp
+            grpcPath += '/' + convertKeywordMenu(comp)
     return grpcPath
 
 
 def convertPathCommandPairToGrpcPath(path, command):
-    return '/' + '/'.join(path.split('.')) + '/' + command
+    grpcPath = ''
+    for comp in path:
+        grpcPath += '/' + convertKeywordMenu(comp)
+    return grpcPath + '/' + command
 
 
 def getClsNameFromMenuName(menuName):
