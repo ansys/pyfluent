@@ -1,4 +1,5 @@
 from ansys.fluent.core.core import (
+    PyNamedObjectContainer,
     convert_path_to_grpc_path,
     PyMenu
 )
@@ -26,8 +27,13 @@ class PyMenuMeta(type):
     def __create_set_state(cls):
         @classmethod
         def wrapper(cls_, value):
-            return PyMenu.set_state(convert_path_to_grpc_path(cls_.path), value)
+            PyMenu.set_state(convert_path_to_grpc_path(cls_.path), value)
         return wrapper
+
+    def __setattr__(self, __name: str, __value) -> None:
+        child_path = dict(self.path)
+        child_path[__name] = None
+        PyMenu.set_state(convert_path_to_grpc_path(child_path), __value)
 
     def __new__(cls, name, bases, attrs):
         attrs['path'] = { x : None for x in attrs['__qualname__'].split('.') }
@@ -60,18 +66,21 @@ class PyNamedObjectMeta(type):
     def __getitem__(cls, name):
         return cls(name)
 
+    def __setattr__(self, __name: str, __value) -> None:
+        child_path = dict(self.path)
+        child_path[__name] = None
+        PyMenu.set_state(convert_path_to_grpc_path(child_path), __value)
+
     @classmethod
     def __create_get_state(cls):
-        @classmethod
-        def wrapper(cls_):
-            return PyMenu.get_state(convert_path_to_grpc_path(cls_.path))
+        def wrapper(self):
+            return PyMenu.get_state(convert_path_to_grpc_path(self.path))
         return wrapper
 
     @classmethod
     def __create_set_state(cls):
-        @classmethod
-        def wrapper(cls_, value):
-            return PyMenu.set_state(convert_path_to_grpc_path(cls_.path), value)
+        def wrapper(self, value):
+            return PyMenu.set_state(convert_path_to_grpc_path(self.path), value)
         return wrapper
 
     def __new__(cls, name, bases, attrs):
