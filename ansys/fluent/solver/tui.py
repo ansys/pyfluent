@@ -405,33 +405,6 @@ class mesh(metaclass=PyMenuMeta):
             'anisotropic_adaption' : 'Anisotropically refine boundary layers.',
         }
 
-        class predefined_criteria(metaclass=PyMenuMeta):
-            __doc__ = 'Enter the predefined criteria menu for adaption.'
-
-            class aerodynamics(metaclass=PyMenuMeta):
-                __doc__ = 'Enter the aerodynamics menu.'
-                doc_by_method = {
-                    'shock_indicator' : 'Enter the shock-indicator menu.',
-                }
-
-                class error_based(metaclass=PyMenuMeta):
-                    __doc__ = 'Enter the error-based menu.'
-                    doc_by_method = {
-                        'pressure_hessian_indicator' : 'Define cell registers and settings suitable for adaption using the pressure Hessian indicator.',
-                    }
-
-            class boundary_layer(metaclass=PyMenuMeta):
-                __doc__ = 'Enter the boundary-layer menu.'
-                doc_by_method = {
-                    'cell_distance' : 'Define cell registers and adaption settings suitable for anisotropic boundary layer adaption based on cell distance.',
-                }
-
-            class combustion(metaclass=PyMenuMeta):
-                __doc__ = 'Enter the combustion menu.'
-                doc_by_method = {
-                    'flame_indicator' : 'Define cell registers and adaption settings suitable for a flame adaptive refinement simulation.',
-                }
-
         class set(metaclass=PyMenuMeta):
             __doc__ = 'Enter the adaption set menu.'
             doc_by_method = {

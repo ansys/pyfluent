@@ -1,11 +1,9 @@
 import os
 from pathlib import Path
 import keyword
-from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.fluent.core.core import (
     convertPathToGrpcPath,
-    convertGValueToValue,
-    getDataModelService,
+    PyMenu,
     start
 )
 
@@ -21,22 +19,11 @@ class TUIMenuGenerator:
         self.path = path
         self.grpcPath = convertPathToGrpcPath(path)
 
-    def getAllChildNames(self):
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = self.grpcPath
-        request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
-        request.args['include_unavailable'] = 1
-        response = getDataModelService().getAttributeValue(request)
-        return convertGValueToValue(response.value)
+    def getChildNames(self):
+        return PyMenu.getChildNames(self.grpcPath, True)
 
     def getDocString(self):
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = self.grpcPath
-        request.attribute = DataModelProtoModule.Attribute.HELP_STRING
-        request.args['include_unavailable'] = 1
-        response = getDataModelService().getAttributeValue(request)
-        self._helpString = convertGValueToValue(response.value)
-        return self._helpString
+        return PyMenu.getDocString(self.grpcPath, True)
 
 
 class TUIMenu:
@@ -64,7 +51,7 @@ class TUIGenerator:
     def populateMenu(self, menu : TUIMenu):
         menugen = TUIMenuGenerator(menu.path)
         menu.doc = menugen.getDocString()
-        childNames = menugen.getAllChildNames()
+        childNames = menugen.getChildNames()
         #if childNames and len(menu.path) <= 3:
         if childNames:
             for childName in childNames:

@@ -6,6 +6,7 @@ import grpc
 import os
 import keyword
 
+from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 
 journalFilename = None
@@ -206,134 +207,81 @@ class PyMenuJournaler:
             f.write(")\n")
 
 
-"""
 class PyMenu:
-    members = [
-        "service",
-        "path",
-        "grpcPath",
-        "children",
-        "parent",
-        "journaler",
-        "_helpString",
-        "DataModelProtoModule",
-    ]  # better alternative?
-
-    def __init__(self, service: DataModelService, path, parent=None):
-        self.service = service
-        self.path = path
-        self.grpcPath = convertPathToGrpcPath(path)
-        self.children = {}
-        self.parent = parent
-        self.journaler = PyMenuJournaler(path)
-        self._helpString = None # static information
-
-    def isExtendedTUIMenu(self):  # can be cached
+    @staticmethod
+    def isExtendedTUIMenu(path):
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = self.grpcPath
+        request.path = path
         request.attribute = DataModelProtoModule.Attribute.CUSTOM
         request.args['is_extended_tui'] = 1
-        response = self.service.getAttributeValue(request)
+        response = getDataModelService().getAttributeValue(request)
         return convertGValueToValue(response.value)
 
-    def isChildContainer(self, childName):
-        childPath = list(self.path)
-        childPath.append((childName, ""))
+    @staticmethod
+    def isContainer(path):
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = convertPathToGrpcPath(childPath)
+        request.path = path
         request.attribute = DataModelProtoModule.Attribute.DATA_TYPE
-        response = self.service.getAttributeValue(request)
+        response = getDataModelService().getAttributeValue(request)
         return convertGValueToValue(response.value) == "NamedObjectContainer"
 
-    def getChildNames(self):
+    @staticmethod
+    def getChildNames(path, includeUnavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = self.grpcPath
+        request.path = path
         request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
-        response = self.service.getAttributeValue(request)
+        if includeUnavailable:
+            request.args['include_unavailable'] = 1
+        response = getDataModelService().getAttributeValue(request)
         return convertGValueToValue(response.value)
 
-    def __dir__(self):
-        return self.getChildNames()
+    @staticmethod
+    def getState(path):
+        request = DataModelProtoModule.GetStateRequest()
+        request.path = path
+        response = getDataModelService().getState(request)
+        return convertGValueToValue(response.state)
 
-    def __getattr__(self, name):
-        if name in PyMenu.members:
-            super().__getattr__(name)
-        elif name in self.getChildNames():
-            if name not in self.children:
-                childPath = list(self.path)
-                childPath.append([name, ""])
-                if self.isChildContainer(name):
-                    self.children[name] = PyNamedObjectContainer(
-                        self.service, childPath, self
-                    )
-                else:
-                    clsName = getClsNameFromMenuName(name)
-                    cls = types.new_class(clsName, (PyMenu,))
-                    setattr(self.__class__, clsName, cls)
-                    child = cls(self.service, childPath, self)
-                    cls.__doc__ = child.help()
-                    self.children[name] = child
-            return self.children[name]
-        else:
-            raise AttributeError(name + " is not available")
+    @staticmethod
+    def setState(path, value):
+        request = DataModelProtoModule.SetStateRequest()
+        request.path = path
+        convertValueToGValue(value, request.state)
+        ret = getDataModelService().setState(request)
+        return ret
 
-    def __setattr__(self, name, value):
-        if name in PyMenu.members:
-            super().__setattr__(name, value)
-        elif name in self.getChildNames():
-            child = getattr(self, name)
-            request = DataModelProtoModule.SetStateRequest()
-            request.path = child.grpcPath
-            convertValueToGValue(value, request.state)
-            ret = child.service.setState(request)
-            child.journaler.journalSetState(value)
-            return ret
-        else:
-            raise AttributeError(name + " is not available")
-
-    def __call__(self, *args, **kwargs):
+    @staticmethod
+    def execute(path, *args, **kwargs):
+        request = DataModelProtoModule.ExecuteCommandRequest()
+        request.path = path
         if kwargs:
-            request = DataModelProtoModule.ExecuteCommandRequest()
-            request.path = self.grpcPath
             for k, v in kwargs.items():
                 convertValueToGValue(v, request.args.fields[k])
-            ret = self.service.executeCommand(request)
-            self.journaler.journalExecute(args, kwargs)
-            return convertGValueToValue(ret.result)
-        elif self.isExtendedTUIMenu():
-            request = DataModelProtoModule.GetStateRequest()
-            request.path = self.grpcPath
-            response = self.service.getState(request)
-            return convertGValueToValue(response.state)
         else:
-            request = DataModelProtoModule.ExecuteCommandRequest()
-            request.path = self.grpcPath
             convertValueToGValue(args, request.args.fields['tui_args'])
-            ret = self.service.executeCommand(request)
-            self.journaler.journalExecute(args, kwargs)
-            return convertGValueToValue(ret.result)
+        ret = getDataModelService().executeCommand(request)
+        return convertGValueToValue(ret.result)
 
-    def help(self):
-        if self._helpString is None:
-            request = DataModelProtoModule.GetAttributeValueRequest()
-            request.path = self.grpcPath
-            request.attribute = DataModelProtoModule.Attribute.HELP_STRING
-            response = self.service.getAttributeValue(request)
-            self._helpString = convertGValueToValue(response.value)
-        return self._helpString
+    @staticmethod
+    def getDocString(path, includeUnavailable=False):
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.path = path
+        request.attribute = DataModelProtoModule.Attribute.HELP_STRING
+        if includeUnavailable:
+            request.args['include_unavailable'] = 1
+        response = getDataModelService().getAttributeValue(request)
+        return convertGValueToValue(response.value)
 
-    def rename(self, newName):
-        oldName = self.path[-1][1]
-        child = self.parent.__getitem__(oldName)
+    @staticmethod
+    def rename(path, newName):
         request = DataModelProtoModule.SetStateRequest()
-        request.path = child.grpcPath
+        request.path = path
         convertValueToGValue(newName, request.state.struct_value.fields['name'])
-        ret = child.service.setState(request)
-        self.parent.children[newName] = self.parent.children.pop(oldName)
-        self.journaler.journalRename(newName)
+        ret = getDataModelService().setState(request)
         return ret
 
 
+"""
 class PyNamedObjectContainer(PyMenu):
     def __init__(self, service: DataModelService, path, parent):
         PyMenu.__init__(self, service, path, parent)
