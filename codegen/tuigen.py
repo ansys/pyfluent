@@ -77,11 +77,11 @@ class TUIGenerator:
             menu.is_method = True
 
     def __write_code_to_tui_file(self, code, indent=0):
-        with open(self.tui_file, 'a') as f:
+        with open(self.tui_file, 'a', encoding='utf8') as f:
             f.write(' ' * INDENT_STEP * indent + code)
 
     def __write_code_to_init_file(self, code, indent=0):
-        with open(self.init_file, 'a') as f:
+        with open(self.init_file, 'a', encoding='utf8') as f:
             f.write(' ' * INDENT_STEP * indent + code)
 
     def __write_menu_to_tui_file(self, menu : TUIMenu, indent=0):

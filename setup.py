@@ -6,7 +6,7 @@ from setuptools import setup
 __version__ = None
 THIS_FILE = os.path.dirname(__file__)
 VERSION_FILE = os.path.join(THIS_FILE, "ansys", "fluent", "solver", "_version.py")
-with open(VERSION_FILE, mode="r") as fd:
+with open(VERSION_FILE, mode='r', encoding='utf8') as fd:
     # execute file from raw string
     exec(fd.read())
 
@@ -20,7 +20,7 @@ setup(
     packages=['ansys.fluent.solver'],
     version=__version__,
     description="Fluent's SolverAPI exposed in Python",
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst', encoding='utf8').read(),
     long_description_content_type='text/x-rst',
     url='https://github.com/mkundu1/pyfluent',
     license='MIT',

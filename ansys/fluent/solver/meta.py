@@ -9,7 +9,7 @@ class PyMenuMeta(type):
     @classmethod
     def __create_execute_command(cls, path, command):
         @classmethod
-        def wrapper(cls, *args, **kwargs):
+        def wrapper(_, *args, **kwargs):
             return PyMenu.execute(
                 convert_path_command_pair_to_grpc_path(path, command), *args, **kwargs)
         return wrapper
