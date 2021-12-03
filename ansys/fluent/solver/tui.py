@@ -405,6 +405,33 @@ class mesh(metaclass=PyMenuMeta):
             'anisotropic_adaption' : 'Anisotropically refine boundary layers.',
         }
 
+        class predefined_criteria(metaclass=PyMenuMeta):
+            __doc__ = 'Enter the predefined criteria menu for adaption.'
+
+            class aerodynamics(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the aerodynamics menu.'
+                doc_by_method = {
+                    'shock_indicator' : 'Enter the shock-indicator menu.',
+                }
+
+                class error_based(metaclass=PyMenuMeta):
+                    __doc__ = 'Enter the error-based menu.'
+                    doc_by_method = {
+                        'pressure_hessian_indicator' : 'Define cell registers and settings suitable for adaption using the pressure Hessian indicator.',
+                    }
+
+            class boundary_layer(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the boundary-layer menu.'
+                doc_by_method = {
+                    'cell_distance' : 'Define cell registers and adaption settings suitable for anisotropic boundary layer adaption based on cell distance.',
+                }
+
+            class combustion(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the combustion menu.'
+                doc_by_method = {
+                    'flame_indicator' : 'Define cell registers and adaption settings suitable for a flame adaptive refinement simulation.',
+                }
+
         class set(metaclass=PyMenuMeta):
             __doc__ = 'Enter the adaption set menu.'
             doc_by_method = {
@@ -1858,7 +1885,6 @@ class results(metaclass=PyMenuMeta):
 
             class mesh(metaclass=PyNamedObjectMeta):
                 __doc__ = ''
-                is_container = True
                 is_extended_tui = True
 
                 class name(metaclass=PyMenuMeta):
@@ -1971,7 +1997,6 @@ class results(metaclass=PyMenuMeta):
 
             class contour(metaclass=PyNamedObjectMeta):
                 __doc__ = ''
-                is_container = True
                 is_extended_tui = True
 
                 class name(metaclass=PyMenuMeta):
@@ -2112,7 +2137,6 @@ class results(metaclass=PyMenuMeta):
 
             class vector(metaclass=PyNamedObjectMeta):
                 __doc__ = ''
-                is_container = True
                 is_extended_tui = True
 
                 class name(metaclass=PyMenuMeta):
@@ -3886,7 +3910,6 @@ class setup(metaclass=PyMenuMeta):
 
         class mass_flow_inlet(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
             class flow_spec(metaclass=PyMenuMeta):
@@ -4183,12 +4206,10 @@ class setup(metaclass=PyMenuMeta):
 
         class periodic(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
         class pressure_far_field(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
             class p(metaclass=PyMenuMeta):
@@ -4373,7 +4394,6 @@ class setup(metaclass=PyMenuMeta):
 
         class pressure_inlet(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
             class frame_of_reference(metaclass=PyMenuMeta):
@@ -4598,7 +4618,6 @@ class setup(metaclass=PyMenuMeta):
 
         class pressure_outlet(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
             class prevent_reverse_flow(metaclass=PyMenuMeta):
@@ -4932,12 +4951,10 @@ class setup(metaclass=PyMenuMeta):
 
         class symmetry(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
         class velocity_inlet(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
             class vmag(metaclass=PyMenuMeta):
@@ -5258,7 +5275,6 @@ class setup(metaclass=PyMenuMeta):
 
         class wall(metaclass=PyNamedObjectMeta):
             __doc__ = ''
-            is_container = True
             is_extended_tui = True
 
     class dynamic_mesh(metaclass=PyMenuMeta):

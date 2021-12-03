@@ -95,8 +95,6 @@ class TUIGenerator:
                     f'class {menu.name}(metaclass=PyMenuMeta):\n', indent)
             indent += 1
             self.__write_code_to_tui_file(f'__doc__ = {repr(menu.doc)}\n', indent)
-            if menu.is_container:
-                self.__write_code_to_tui_file('is_container = True\n', indent)
             if menu.is_extended_tui:
                 self.__write_code_to_tui_file('is_extended_tui = True\n', indent)
         method_names = [k for k, v in menu.children.items() if v.is_method]
