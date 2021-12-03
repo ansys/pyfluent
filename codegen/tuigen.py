@@ -66,8 +66,8 @@ class TUIGenerator:
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
         child_names = menugen.get_child_names()
-        #if child_names and len(menu.path) <= 3:
-        if child_names:
+        if child_names and (not menu.path or menu.path[0] == 'results'):
+        #if child_names:
             for child_name in child_names:
                 if child_name:
                     child_menu = TUIMenu(menu.path + [child_name])
@@ -87,10 +87,17 @@ class TUIGenerator:
     def __write_menu_to_tui_file(self, menu : TUIMenu, indent=0):
         if menu.name:
             self.__write_code_to_tui_file('\n')
-            self.__write_code_to_tui_file(
-                f'class {menu.name}(metaclass=PyMenuMeta):\n', indent)
+            if menu.is_container:
+                self.__write_code_to_tui_file(f'class {menu.name}(metaclass=PyNamedObjectMeta):\n', indent)
+            else:
+                self.__write_code_to_tui_file(
+                    f'class {menu.name}(metaclass=PyMenuMeta):\n', indent)
             indent += 1
             self.__write_code_to_tui_file(f'__doc__ = {repr(menu.doc)}\n', indent)
+            if menu.is_container:
+                self.__write_code_to_tui_file('is_container = True\n', indent)
+            if menu.is_extended_tui:
+                self.__write_code_to_tui_file('is_extended_tui = True\n', indent)
         method_names = [k for k, v in menu.children.items() if v.is_method]
         if method_names:
             self.__write_code_to_tui_file('doc_by_method = {\n', indent)
@@ -119,6 +126,7 @@ class TUIGenerator:
     def generate(self):
         self.__populate_menu(self.main_menu)
         self.__write_code_to_tui_file('# This is an auto-generated file.  DO NOT EDIT!\n\n')
-        self.__write_code_to_tui_file('from ansys.fluent.solver.meta import PyMenuMeta\n\n\n')
+        self.__write_code_to_tui_file(
+            'from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta\n\n\n')
         self.__write_menu_to_tui_file(self.main_menu)
         self.__write_to_init_file()
