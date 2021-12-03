@@ -6,7 +6,8 @@ from ansys.fluent.core.core import (
 
 class PyMenuMeta(type):
 
-    def __create_execute_command(path, command):
+    @classmethod
+    def __create_execute_command(cls, path, command):
         @classmethod
         def wrapper(cls, *args, **kwargs):
             return PyMenu.execute(

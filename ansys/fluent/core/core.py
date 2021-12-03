@@ -2,9 +2,9 @@
 ### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
 ###
 
-import grpc
 import os
 import keyword
+import grpc
 
 from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
@@ -112,7 +112,7 @@ def start_journal(filename: str):
     if os.path.exists(filename):
         os.remove(filename)
     with open(JOURNAL_FILENAME, "w") as f:
-        f.write("import {} as {}\n".format(__name__, MODULE_NAME_ALIAS))
+        f.write(f'import {__name__} as {MODULE_NAME_ALIAS}\n')
 
 
 def stop_journal():
@@ -130,41 +130,39 @@ class PyMenuJournaler:
         self.pypath = ""
         if not path:
             return
-        for c in path:
+        for comp in path:
             if self.pypath:
                 self.pypath += "."
-            if c[1]:
-                self.pypath += "{}[{}]".format(c[0], repr(c[1]))
+            if comp[1]:
+                self.pypath += f'{comp[0]}[{repr(comp[1])}]'
             else:
-                self.pypath += c[0]
+                self.pypath += comp[0]
 
     def journal_set_state(self, state):
         if not JOURNAL_FILENAME:
             return
         with open(JOURNAL_FILENAME, "a") as f:
-            f.write("{}.{} = {}\n".format(MODULE_NAME_ALIAS, self.pypath, repr(state)))
+            f.write(f'{MODULE_NAME_ALIAS}.{self.pypath} = {repr(state)}\n')
 
     def journal_rename(self, new_name):
         if not JOURNAL_FILENAME:
             return
         with open(JOURNAL_FILENAME, "a") as f:
             f.write(
-                "{}.{}.rename({})\n".format(MODULE_NAME_ALIAS, self.pypath, repr(new_name))
-            )
+                f'{MODULE_NAME_ALIAS}.{self.pypath}.rename({repr(new_name)})\n')
 
     def journal_delete(self, child_name):
         if not JOURNAL_FILENAME:
             return
         with open(JOURNAL_FILENAME, "a") as f:
             f.write(
-                "del {}.{}[{}]\n".format(MODULE_NAME_ALIAS, self.pypath, repr(child_name))
-            )
+                f'del {MODULE_NAME_ALIAS}.{self.pypath}[{repr(child_name)}]\n')
 
     def journal_execute(self, args=None, kwargs=None):
         if not JOURNAL_FILENAME:
             return
         with open(JOURNAL_FILENAME, "a") as f:
-            f.write("{}.{}(".format(MODULE_NAME_ALIAS, self.pypath))
+            f.write(f'{MODULE_NAME_ALIAS}.{self.pypath}(')
             first = True
             if args is not None:
                 for arg in args:
@@ -172,21 +170,21 @@ class PyMenuJournaler:
                         f.write(", ")
                     else:
                         first = False
-                    f.write("{}".format(repr(arg)))
+                    f.write(repr(arg))
             if kwargs is not None:
                 for k, v in kwargs.items():
                     if not first:
                         f.write(", ")
                     else:
                         first = False
-                    f.write("{}={}".format(k, repr(v)))
+                    f.write(f'{k}={repr(v)}')
             f.write(")\n")
 
-    def journal_global_fn_call(self, funcName, args=None, kwargs=None):
+    def journal_global_fn_call(self, func_name, args=None, kwargs=None):
         if not JOURNAL_FILENAME:
             return
         with open(JOURNAL_FILENAME, "a") as f:
-            f.write("{}.{}(".format(MODULE_NAME_ALIAS, funcName))
+            f.write(f'{MODULE_NAME_ALIAS}.{func_name}(')
             first = True
             if args is not None:
                 for arg in args:
@@ -194,46 +192,46 @@ class PyMenuJournaler:
                         f.write(", ")
                     else:
                         first = False
-                    f.write("{}".format(repr(arg)))
+                    f.write(repr(arg))
             if kwargs is not None:
                 for k, v in kwargs.items():
                     if not first:
                         f.write(", ")
                     else:
                         first = False
-                    f.write("{}={}".format(k, repr(v)))
+                    f.write(f'{k}={repr(v)}')
             f.write(")\n")
 
 
 class PyMenu:
 
     @staticmethod
-    def is_extended_tui(path, includeUnavailable=False):
+    def is_extended_tui(path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.CUSTOM
         request.args['is_extended_tui'] = 1
-        if includeUnavailable:
+        if include_unavailable:
             request.args['include_unavailable'] = 1
         response = get_datamodel_service().get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
 
     @staticmethod
-    def is_container(path, includeUnavailable=False):
+    def is_container(path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.DATA_TYPE
-        if includeUnavailable:
+        if include_unavailable:
             request.args['include_unavailable'] = 1
         response = get_datamodel_service().get_attribute_value(request)
         return convert_gvalue_to_value(response.value) == "NamedObjectContainer"
 
     @staticmethod
-    def get_child_names(path, includeUnavailable=False):
+    def get_child_names(path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
-        if includeUnavailable:
+        if include_unavailable:
             request.args['include_unavailable'] = 1
         response = get_datamodel_service().get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
@@ -266,11 +264,11 @@ class PyMenu:
         return convert_gvalue_to_value(ret.result)
 
     @staticmethod
-    def get_doc_string(path, includeUnavailable=False):
+    def get_doc_string(path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.HELP_STRING
-        if includeUnavailable:
+        if include_unavailable:
             request.args['include_unavailable'] = 1
         response = get_datamodel_service().get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
@@ -312,14 +310,14 @@ class PyNamedObjectContainer:
         return ret
 
 
-def start(serverInfoFile):
-    global CHANNEL, transcriptThread
-    address, password = parse_server_info_file(serverInfoFile)
+def start(server_info_file):
+    global CHANNEL
+    address, password = parse_server_info_file(server_info_file)
     CHANNEL = grpc.insecure_channel(address)
-    dataModelStub = DataModelGrpcModule.DataModelStub(CHANNEL)
+    datamodel_stub = DataModelGrpcModule.DataModelStub(CHANNEL)
     global DATAMODEL_SERVICE
-    DATAMODEL_SERVICE = DatamodelService(dataModelStub, password)
-    PyMenuJournaler().journal_global_fn_call("start", [serverInfoFile])
+    DATAMODEL_SERVICE = DatamodelService(datamodel_stub, password)
+    PyMenuJournaler().journal_global_fn_call("start", [server_info_file])
 
 
 def stop():

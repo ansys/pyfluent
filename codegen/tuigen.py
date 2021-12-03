@@ -52,12 +52,12 @@ class TUIMenu:
 
 class TUIGenerator:
 
-    def __init__(self, serverInfoFile, tui_file=TUI_FILE, init_file=INIT_FILE):
-        self.tui_file = TUI_FILE
-        self.init_file = INIT_FILE
+    def __init__(self, server_info_file, tui_file=TUI_FILE, init_file=INIT_FILE):
+        self.tui_file = tui_file
+        self.init_file = init_file
         Path(TUI_FILE).unlink(missing_ok=True)
         Path(INIT_FILE).unlink(missing_ok=True)
-        start(serverInfoFile)
+        start(server_info_file)
         self.main_menu = TUIMenu([])
 
     def __populate_menu(self, menu : TUIMenu):
@@ -65,10 +65,10 @@ class TUIGenerator:
         menu.doc = menugen.get_doc_string()
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
-        childNames = menugen.get_child_names()
-        #if childNames and len(menu.path) <= 3:
-        if childNames:
-            for child_name in childNames:
+        child_names = menugen.get_child_names()
+        #if child_names and len(menu.path) <= 3:
+        if child_names:
+            for child_name in child_names:
                 if child_name:
                     child_menu = TUIMenu(menu.path + [child_name])
                     menu.children[child_menu.name] = child_menu
@@ -88,20 +88,19 @@ class TUIGenerator:
         if menu.name:
             self.__write_code_to_tui_file('\n')
             self.__write_code_to_tui_file(
-                'class {}(metaclass=PyMenuMeta):\n'.format(menu.name), indent)
+                f'class {menu.name}(metaclass=PyMenuMeta):\n', indent)
             indent += 1
-            self.__write_code_to_tui_file('__doc__ = {}\n'.format(repr(menu.doc)), indent)
+            self.__write_code_to_tui_file(f'__doc__ = {repr(menu.doc)}\n', indent)
         method_names = [k for k, v in menu.children.items() if v.is_method]
         if method_names:
             self.__write_code_to_tui_file('doc_by_method = {\n', indent)
             indent += 1
             for method_name in method_names:
                 self.__write_code_to_tui_file(
-                    "'{}' : {},\n".format(
-                        method_name, repr(menu.children[method_name].doc)), indent)
+                    f"'{method_name}' : {repr(menu.children[method_name].doc)},\n", indent)
             indent -= 1
             self.__write_code_to_tui_file('}\n', indent)
-        for k, v in menu.children.items():
+        for _, v in menu.children.items():
             if not v.is_method:
                 self.__write_menu_to_tui_file(v, indent)
 
@@ -114,7 +113,7 @@ class TUIGenerator:
         self.__write_code_to_init_file('from ansys.fluent.solver.tui import (\n')
         for k, v in self.main_menu.children.items():
             if not v.is_method:
-                self.__write_code_to_init_file('    {},\n'.format(k))
+                self.__write_code_to_init_file(f'    {k},\n')
         self.__write_code_to_init_file(')\n')
 
     def generate(self):
