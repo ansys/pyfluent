@@ -405,6 +405,33 @@ class mesh(metaclass=PyMenuMeta):
             'anisotropic_adaption' : 'Anisotropically refine boundary layers.',
         }
 
+        class predefined_criteria(metaclass=PyMenuMeta):
+            __doc__ = 'Enter the predefined criteria menu for adaption.'
+
+            class aerodynamics(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the aerodynamics menu.'
+                doc_by_method = {
+                    'shock_indicator' : 'Enter the shock-indicator menu.',
+                }
+
+                class error_based(metaclass=PyMenuMeta):
+                    __doc__ = 'Enter the error-based menu.'
+                    doc_by_method = {
+                        'pressure_hessian_indicator' : 'Define cell registers and settings suitable for adaption using the pressure Hessian indicator.',
+                    }
+
+            class boundary_layer(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the boundary-layer menu.'
+                doc_by_method = {
+                    'cell_distance' : 'Define cell registers and adaption settings suitable for anisotropic boundary layer adaption based on cell distance.',
+                }
+
+            class combustion(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the combustion menu.'
+                doc_by_method = {
+                    'flame_indicator' : 'Define cell registers and adaption settings suitable for a flame adaptive refinement simulation.',
+                }
+
         class set(metaclass=PyMenuMeta):
             __doc__ = 'Enter the adaption set menu.'
             doc_by_method = {
@@ -1860,188 +1887,324 @@ class results(metaclass=PyMenuMeta):
 
                 class mesh(metaclass=PyMenuMeta):
                     __doc__ = ''
-                    doc_by_method = {
-                        'name' : '',
-                        'shrink_factor' : '',
-                        'surfaces_list' : '',
-                        'display_state_name' : '',
-                    }
+
+                    class name(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
                     class options(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'nodes' : '',
-                            'edges' : '',
-                            'faces' : '',
-                            'partitions' : '',
-                            'overset' : '',
-                            'gap' : '',
-                        }
+
+                        class nodes(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class edges(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class faces(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class partitions(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class overset(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class gap(metaclass=PyMenuMeta):
+                            __doc__ = ''
 
                     class edge_type(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'all' : '',
-                            'outline' : '',
-                        }
+
+                        class all(metaclass=PyMenuMeta):
+                            __doc__ = ''
 
                         class feature(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'feature_angle' : '',
-                            }
+
+                            class feature_angle(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                        class outline(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                    class shrink_factor(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class surfaces_list(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
                     class coloring(metaclass=PyMenuMeta):
                         __doc__ = ''
 
                         class automatic(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'type' : '',
-                                'id' : '',
-                                'normal' : '',
-                                'partition' : '',
-                            }
+
+                            class type(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class id(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class normal(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class partition(metaclass=PyMenuMeta):
+                                __doc__ = ''
 
                         class manual(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'faces' : '',
-                                'edges' : '',
-                                'nodes' : '',
-                                'material_color' : '',
-                            }
+
+                            class faces(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class edges(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class nodes(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class material_color(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                    class display_state_name(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
             class contour_objects(metaclass=PyMenuMeta):
                 __doc__ = ''
 
                 class contour(metaclass=PyMenuMeta):
                     __doc__ = ''
-                    doc_by_method = {
-                        'name' : '',
-                        'field' : '',
-                        'filled' : '',
-                        'boundary_values' : '',
-                        'contour_lines' : '',
-                        'node_values' : '',
-                        'surfaces_list' : '',
-                        'draw_mesh' : '',
-                        'mesh_object' : '',
-                        'display_state_name' : '',
-                    }
+
+                    class name(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class field(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class filled(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class boundary_values(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class contour_lines(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class node_values(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class surfaces_list(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
                     class range_option(metaclass=PyMenuMeta):
                         __doc__ = ''
 
                         class auto_range_on(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'global_range' : '',
-                            }
+
+                            class global_range(metaclass=PyMenuMeta):
+                                __doc__ = ''
 
                         class auto_range_off(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'clip_to_range' : '',
-                                'minimum' : '',
-                                'maximum' : '',
-                            }
+
+                            class clip_to_range(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class minimum(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class maximum(metaclass=PyMenuMeta):
+                                __doc__ = ''
 
                     class coloring(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'smooth' : '',
-                            'banded' : '',
-                        }
+
+                        class smooth(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class banded(metaclass=PyMenuMeta):
+                            __doc__ = ''
 
                     class color_map(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'visible' : '',
-                            'size' : '',
-                            'color' : '',
-                            'log_scale' : '',
-                            'format' : '',
-                            'user_skip' : '',
-                            'show_all' : '',
-                            'position' : '',
-                            'font_name' : '',
-                            'font_automatic' : '',
-                            'font_size' : '',
-                            'length' : '',
-                            'width' : '',
-                        }
+
+                        class visible(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class size(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class color(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class log_scale(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class format(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class user_skip(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class show_all(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class position(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class font_name(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class font_automatic(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class font_size(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class length(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class width(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                    class draw_mesh(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class mesh_object(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class display_state_name(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
             class vector_objects(metaclass=PyMenuMeta):
                 __doc__ = ''
 
                 class vector(metaclass=PyMenuMeta):
                     __doc__ = ''
-                    doc_by_method = {
-                        'name' : '',
-                        'field' : '',
-                        'vector_field' : '',
-                        'surfaces_list' : '',
-                        'style' : '',
-                        'skip' : '',
-                        'draw_mesh' : '',
-                        'mesh_object' : '',
-                        'display_state_name' : '',
-                    }
+
+                    class name(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class field(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class vector_field(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class surfaces_list(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
                     class scale(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'auto_scale' : '',
-                            'scale_f' : '',
-                        }
+
+                        class auto_scale(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class scale_f(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                    class style(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class skip(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
                     class vector_opt(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'in_plane' : '',
-                            'fixed_length' : '',
-                            'x_comp' : '',
-                            'y_comp' : '',
-                            'z_comp' : '',
-                            'scale_head' : '',
-                            'color' : '',
-                        }
+
+                        class in_plane(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class fixed_length(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class x_comp(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class y_comp(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class z_comp(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class scale_head(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class color(metaclass=PyMenuMeta):
+                            __doc__ = ''
 
                     class range_option(metaclass=PyMenuMeta):
                         __doc__ = ''
 
                         class auto_range_on(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'global_range' : '',
-                            }
+
+                            class global_range(metaclass=PyMenuMeta):
+                                __doc__ = ''
 
                         class auto_range_off(metaclass=PyMenuMeta):
                             __doc__ = ''
-                            doc_by_method = {
-                                'clip_to_range' : '',
-                                'minimum' : '',
-                                'maximum' : '',
-                            }
+
+                            class clip_to_range(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class minimum(metaclass=PyMenuMeta):
+                                __doc__ = ''
+
+                            class maximum(metaclass=PyMenuMeta):
+                                __doc__ = ''
 
                     class color_map(metaclass=PyMenuMeta):
                         __doc__ = ''
-                        doc_by_method = {
-                            'visible' : '',
-                            'size' : '',
-                            'color' : '',
-                            'log_scale' : '',
-                            'format' : '',
-                            'user_skip' : '',
-                            'show_all' : '',
-                            'position' : '',
-                            'font_name' : '',
-                            'font_automatic' : '',
-                            'font_size' : '',
-                            'length' : '',
-                            'width' : '',
-                        }
+
+                        class visible(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class size(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class color(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class log_scale(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class format(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class user_skip(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class show_all(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class position(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class font_name(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class font_automatic(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class font_size(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class length(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                        class width(metaclass=PyMenuMeta):
+                            __doc__ = ''
+
+                    class draw_mesh(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class mesh_object(metaclass=PyMenuMeta):
+                        __doc__ = ''
+
+                    class display_state_name(metaclass=PyMenuMeta):
+                        __doc__ = ''
 
         class rendering_options(metaclass=PyMenuMeta):
             __doc__ = 'Enter the rendering options menu.'
@@ -3809,355 +3972,939 @@ class setup(metaclass=PyMenuMeta):
 
             class pressure_far_field(metaclass=PyMenuMeta):
                 __doc__ = ''
-                doc_by_method = {
-                    'p' : '',
-                    'm' : '',
-                    'coordinate_system' : '',
-                    'ni' : '',
-                    'nj' : '',
-                    'nk' : '',
-                    'ai' : '',
-                    'aj' : '',
-                    'ak' : '',
-                    'x_origin' : '',
-                    'y_origin' : '',
-                    'z_origin' : '',
-                    'ke_spec' : '',
-                    'nut' : '',
-                    'kl' : '',
-                    'intermit' : '',
-                    'k' : '',
-                    'e' : '',
-                    'o' : '',
-                    'v2' : '',
-                    'turb_intensity' : '',
-                    'turb_length_scale' : '',
-                    'turb_hydraulic_diam' : '',
-                    'turb_viscosity_ratio' : '',
-                    'turb_viscosity_ratio_profile' : '',
-                    'rst_spec' : '',
-                    'uu' : '',
-                    'vv' : '',
-                    'ww' : '',
-                    'uv' : '',
-                    'vw' : '',
-                    'uw' : '',
-                    'ksgs_spec' : '',
-                    'ksgs' : '',
-                    'sgs_turb_intensity' : '',
-                    'geom_disable' : '',
-                    'geom_dir_spec' : '',
-                    'geom_dir_x' : '',
-                    'geom_dir_y' : '',
-                    'geom_dir_z' : '',
-                    'geom_levels' : '',
-                    'geom_bgthread' : '',
-                    't' : '',
-                    'non_equil_boundary' : '',
-                    'tve' : '',
-                }
+
+                class p(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class m(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class coordinate_system(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ai(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class aj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ak(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class x_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class y_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class z_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ke_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nut(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class kl(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class intermit(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class k(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class e(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class o(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class v2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_length_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_hydraulic_diam(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class rst_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uu(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ww(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class sgs_turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_disable(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_dir_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_dir_x(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_dir_y(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_dir_z(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_levels(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class geom_bgthread(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class t(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class non_equil_boundary(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class tve(metaclass=PyMenuMeta):
+                    __doc__ = ''
 
         class velocity_inlet_objects(metaclass=PyMenuMeta):
             __doc__ = ''
 
             class velocity_inlet(metaclass=PyMenuMeta):
                 __doc__ = ''
-                doc_by_method = {
-                    'vmag' : '',
-                    'p_sup' : '',
-                    'velocity_spec' : '',
-                    'wave_velocity_spec' : '',
-                    'wave_vmag' : '',
-                    'wave_u' : '',
-                    'wave_v' : '',
-                    'wave_w' : '',
-                    'ocw_ship_vel_spec' : '',
-                    'ocw_ship_vmag' : '',
-                    'ocw_ship_ni' : '',
-                    'ocw_ship_nj' : '',
-                    'ocw_ship_nk' : '',
-                    'ocw_sp_vel_spec' : '',
-                    'ocw_sp_vmag' : '',
-                    'ocw_sp_ni' : '',
-                    'ocw_sp_nj' : '',
-                    'ocw_sp_nk' : '',
-                    'ocw_pp_vel_spec' : '',
-                    'ocw_pp_vmag' : '',
-                    'ocw_pp_vmag_ref' : '',
-                    'ocw_pp_ref_ht' : '',
-                    'ocw_pp_power_coeff' : '',
-                    'ocw_pp_ni' : '',
-                    'ocw_pp_nj' : '',
-                    'ocw_pp_nk' : '',
-                    'p' : '',
-                    'omega_swirl' : '',
-                    'turb_intensity' : '',
-                    'turb_length_scale' : '',
-                    'turb_hydraulic_diam' : '',
-                    'turb_viscosity_ratio' : '',
-                    'turb_viscosity_ratio_profile' : '',
-                    'frame_of_reference' : '',
-                    'coordinate_system' : '',
-                    'ni' : '',
-                    'nj' : '',
-                    'nk' : '',
-                    'u' : '',
-                    'v' : '',
-                    'w' : '',
-                    'ai' : '',
-                    'aj' : '',
-                    'ak' : '',
-                    'x_origin' : '',
-                    'y_origin' : '',
-                    'z_origin' : '',
-                    'vm_number_of_vortices' : '',
-                    'vm_streamwise_fluct' : '',
-                    'vm_mass_conservation' : '',
-                    'volumetric_synthetic_turbulence_generator' : '',
-                    'volumetric_synthetic_turbulence_generator_option' : '',
-                    'volumetric_synthetic_turbulence_generator_option_thickness' : '',
-                    'ke_spec' : '',
-                    'nut' : '',
-                    'kl' : '',
-                    'intermit' : '',
-                    'k' : '',
-                    'e' : '',
-                    'o' : '',
-                    'v2' : '',
-                    'rst_spec' : '',
-                    'uu' : '',
-                    'vv' : '',
-                    'ww' : '',
-                    'uv' : '',
-                    'vw' : '',
-                    'uw' : '',
-                    'ksgs_spec' : '',
-                    'ksgs' : '',
-                    'sgs_turb_intensity' : '',
-                    'les_spec_name' : '',
-                    'granular_temperature' : '',
-                    'ac_options' : '',
-                    'ac_wave' : '',
-                    'impedance_0' : '',
-                    't' : '',
-                    'non_equil_boundary' : '',
-                    'tve' : '',
-                }
+
+                class vmag(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p_sup(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class velocity_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wave_velocity_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wave_vmag(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wave_u(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wave_v(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wave_w(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_ship_vel_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_ship_vmag(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_ship_ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_ship_nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_ship_nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_sp_vel_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_sp_vmag(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_sp_ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_sp_nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_sp_nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_vel_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_vmag(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_vmag_ref(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_ref_ht(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_power_coeff(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ocw_pp_nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class omega_swirl(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_length_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_hydraulic_diam(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class frame_of_reference(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class coordinate_system(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class u(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class v(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class w(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ai(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class aj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ak(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class x_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class y_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class z_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vm_number_of_vortices(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vm_streamwise_fluct(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vm_mass_conservation(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volumetric_synthetic_turbulence_generator(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volumetric_synthetic_turbulence_generator_option(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volumetric_synthetic_turbulence_generator_option_thickness(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ke_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nut(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class kl(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class intermit(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class k(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class e(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class o(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class v2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class rst_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uu(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ww(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class sgs_turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class les_spec_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class granular_temperature(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_wave(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class impedance_0(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class t(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class non_equil_boundary(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class tve(metaclass=PyMenuMeta):
+                    __doc__ = ''
 
         class pressure_inlet_objects(metaclass=PyMenuMeta):
             __doc__ = ''
 
             class pressure_inlet(metaclass=PyMenuMeta):
                 __doc__ = ''
-                doc_by_method = {
-                    'frame_of_reference' : '',
-                    'p0' : '',
-                    'p' : '',
-                    'direction_spec' : '',
-                    'coordinate_system' : '',
-                    'ni' : '',
-                    'nj' : '',
-                    'nk' : '',
-                    'ni2' : '',
-                    'nj2' : '',
-                    'nk2' : '',
-                    'ai' : '',
-                    'aj' : '',
-                    'ak' : '',
-                    'x_origin' : '',
-                    'y_origin' : '',
-                    'z_origin' : '',
-                    'vm_number_of_vortices' : '',
-                    'vm_streamwise_fluct' : '',
-                    'vm_mass_conservation' : '',
-                    'volumetric_synthetic_turbulence_generator' : '',
-                    'volumetric_synthetic_turbulence_generator_option' : '',
-                    'volumetric_synthetic_turbulence_generator_option_thickness' : '',
-                    'prevent_reverse_flow' : '',
-                    'ke_spec' : '',
-                    'nut' : '',
-                    'kl' : '',
-                    'intermit' : '',
-                    'k' : '',
-                    'e' : '',
-                    'o' : '',
-                    'v2' : '',
-                    'turb_intensity' : '',
-                    'turb_length_scale' : '',
-                    'turb_hydraulic_diam' : '',
-                    'turb_viscosity_ratio' : '',
-                    'turb_viscosity_ratio_profile' : '',
-                    'rst_spec' : '',
-                    'uu' : '',
-                    'vv' : '',
-                    'ww' : '',
-                    'uv' : '',
-                    'vw' : '',
-                    'uw' : '',
-                    'ksgs_spec' : '',
-                    'ksgs' : '',
-                    'sgs_turb_intensity' : '',
-                    'les_spec_name' : '',
-                    'wsf' : '',
-                    'wsb' : '',
-                    'wsn' : '',
-                    'ac_options' : '',
-                    'ac_wave' : '',
-                    'impedance_0' : '',
-                    't0' : '',
-                }
+
+                class frame_of_reference(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p0(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class direction_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class coordinate_system(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ai(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class aj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ak(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class x_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class y_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class z_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vm_number_of_vortices(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vm_streamwise_fluct(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vm_mass_conservation(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volumetric_synthetic_turbulence_generator(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volumetric_synthetic_turbulence_generator_option(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volumetric_synthetic_turbulence_generator_option_thickness(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class prevent_reverse_flow(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ke_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nut(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class kl(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class intermit(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class k(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class e(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class o(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class v2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_length_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_hydraulic_diam(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class rst_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uu(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ww(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class sgs_turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class les_spec_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsf(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsb(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsn(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_wave(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class impedance_0(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class t0(metaclass=PyMenuMeta):
+                    __doc__ = ''
 
         class mass_flow_inlet_objects(metaclass=PyMenuMeta):
             __doc__ = ''
 
             class mass_flow_inlet(metaclass=PyMenuMeta):
                 __doc__ = ''
-                doc_by_method = {
-                    'flow_spec' : '',
-                    'mass_flow' : '',
-                    'ec_mass_flow' : '',
-                    'mass_flux' : '',
-                    'mass_flux_ave' : '',
-                    'tref' : '',
-                    'pref' : '',
-                    'p' : '',
-                    'direction_spec' : '',
-                    'impedance_0' : '',
-                    'frame_of_reference' : '',
-                    'coordinate_system' : '',
-                    'ni' : '',
-                    'nj' : '',
-                    'nk' : '',
-                    'ni2' : '',
-                    'nj2' : '',
-                    'nk2' : '',
-                    'ai' : '',
-                    'aj' : '',
-                    'ak' : '',
-                    'x_origin' : '',
-                    'y_origin' : '',
-                    'z_origin' : '',
-                    'ke_spec' : '',
-                    'nut' : '',
-                    'kl' : '',
-                    'intermit' : '',
-                    'k' : '',
-                    'e' : '',
-                    'o' : '',
-                    'v2' : '',
-                    'turb_intensity' : '',
-                    'turb_length_scale' : '',
-                    'turb_hydraulic_diam' : '',
-                    'turb_viscosity_ratio' : '',
-                    'turb_viscosity_ratio_profile' : '',
-                    'rst_spec' : '',
-                    'uu' : '',
-                    'vv' : '',
-                    'ww' : '',
-                    'uv' : '',
-                    'vw' : '',
-                    'uw' : '',
-                    'ksgs_spec' : '',
-                    'ksgs' : '',
-                    'sgs_turb_intensity' : '',
-                    'swirl_model' : '',
-                    'swirl_factor' : '',
-                    'x_fan_origin' : '',
-                    'y_fan_origin' : '',
-                    'z_fan_origin' : '',
-                    'wsf' : '',
-                    'wsb' : '',
-                    'wsn' : '',
-                    'slip_velocity' : '',
-                    'velocity_ratio' : '',
-                    'volume_frac' : '',
-                    'granular_temperature' : '',
-                    'ac_options' : '',
-                    'ac_wave' : '',
-                    't0' : '',
-                }
+
+                class flow_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class mass_flow(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ec_mass_flow(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class mass_flux(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class mass_flux_ave(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class tref(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class pref(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class direction_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class impedance_0(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class frame_of_reference(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class coordinate_system(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ai(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class aj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ak(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class x_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class y_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class z_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ke_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nut(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class kl(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class intermit(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class k(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class e(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class o(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class v2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_length_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_hydraulic_diam(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class rst_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uu(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ww(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class sgs_turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class swirl_model(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class swirl_factor(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class x_fan_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class y_fan_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class z_fan_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsf(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsb(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsn(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class slip_velocity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class velocity_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class volume_frac(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class granular_temperature(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_wave(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class t0(metaclass=PyMenuMeta):
+                    __doc__ = ''
 
         class wall_objects(metaclass=PyMenuMeta):
             __doc__ = ''
-            doc_by_method = {
-                'wall' : '',
-            }
+
+            class wall(metaclass=PyMenuMeta):
+                __doc__ = ''
 
         class pressure_outlet_objects(metaclass=PyMenuMeta):
             __doc__ = ''
 
             class pressure_outlet(metaclass=PyMenuMeta):
                 __doc__ = ''
-                doc_by_method = {
-                    'prevent_reverse_flow' : '',
-                    'radial' : '',
-                    'gen_nrbc_spec' : '',
-                    'avg_press_spec' : '',
-                    'avg_option' : '',
-                    'targeted_mf_boundary' : '',
-                    'targeted_mf' : '',
-                    'targeted_mf_pmax' : '',
-                    'targeted_mf_pmin' : '',
-                    'press_spec_gen' : '',
-                    'p_backflow_spec' : '',
-                    'p_backflow_spec_gen' : '',
-                    'ac_options' : '',
-                    'ac_wave' : '',
-                    'impedance_0' : '',
-                    'p' : '',
-                    'p_profile_multiplier' : '',
-                    'direction_spec' : '',
-                    'frame_of_reference' : '',
-                    'coordinate_system' : '',
-                    'ni' : '',
-                    'nj' : '',
-                    'nk' : '',
-                    'ai' : '',
-                    'aj' : '',
-                    'ak' : '',
-                    'x_origin' : '',
-                    'y_origin' : '',
-                    'z_origin' : '',
-                    'ke_spec' : '',
-                    'nut' : '',
-                    'kl' : '',
-                    'intermit' : '',
-                    'k' : '',
-                    'e' : '',
-                    'o' : '',
-                    'v2' : '',
-                    'turb_intensity' : '',
-                    'turb_length_scale' : '',
-                    'turb_hydraulic_diam' : '',
-                    'turb_viscosity_ratio' : '',
-                    'turb_viscosity_ratio_profile' : '',
-                    'rst_spec' : '',
-                    'uu' : '',
-                    'vv' : '',
-                    'ww' : '',
-                    'uv' : '',
-                    'vw' : '',
-                    'uw' : '',
-                    'ksgs_spec' : '',
-                    'ksgs' : '',
-                    'sgs_turb_intensity' : '',
-                    'wsf' : '',
-                    'wsb' : '',
-                    'wsn' : '',
-                    't0' : '',
-                }
+
+                class prevent_reverse_flow(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class radial(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class gen_nrbc_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class avg_press_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class avg_option(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class targeted_mf_boundary(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class targeted_mf(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class targeted_mf_pmax(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class targeted_mf_pmin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class press_spec_gen(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p_backflow_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p_backflow_spec_gen(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ac_wave(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class impedance_0(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class p_profile_multiplier(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class direction_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class frame_of_reference(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class coordinate_system(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ni(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nk(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ai(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class aj(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ak(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class x_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class y_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class z_origin(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ke_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class nut(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class kl(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class intermit(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class k(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class e(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class o(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class v2(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_length_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_hydraulic_diam(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class rst_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uu(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ww(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uv(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class vw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class uw(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs_spec(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class ksgs(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class sgs_turb_intensity(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsf(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsb(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class wsn(metaclass=PyMenuMeta):
+                    __doc__ = ''
+
+                class t0(metaclass=PyMenuMeta):
+                    __doc__ = ''
 
         class symmetry_objects(metaclass=PyMenuMeta):
             __doc__ = ''
-            doc_by_method = {
-                'symmetry' : '',
-            }
+
+            class symmetry(metaclass=PyMenuMeta):
+                __doc__ = ''
 
         class periodic_objects(metaclass=PyMenuMeta):
             __doc__ = ''
-            doc_by_method = {
-                'periodic' : '',
-            }
+
+            class periodic(metaclass=PyMenuMeta):
+                __doc__ = ''
 
     class dynamic_mesh(metaclass=PyMenuMeta):
         __doc__ = 'Enter the dynamic mesh menu.'

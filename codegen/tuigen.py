@@ -25,6 +25,12 @@ class TUIMenuGenerator:
     def getDocString(self):
         return PyMenu.getDocString(self.grpcPath, True)
 
+    def isExtendedTUI(self):
+        return PyMenu.isExtendedTUI(self.grpcPath, True)
+
+    def isContainer(self):
+        return PyMenu.isContainer(self.grpcPath, True)
+
 
 class TUIMenu:
     def __init__(self, path):
@@ -38,6 +44,8 @@ class TUIMenu:
         self.doc = None
         self.children = {}
         self.isMethod = False
+        self.isExtendedTUI = False
+        self.isContainer = False
 
 class TUIGenerator:
     def __init__(self, serverInfoFile, tuiFile=tui_file, initFile=init_file):
@@ -51,6 +59,8 @@ class TUIGenerator:
     def populateMenu(self, menu : TUIMenu):
         menugen = TUIMenuGenerator(menu.path)
         menu.doc = menugen.getDocString()
+        menu.isExtendedTUI = menugen.isExtendedTUI()
+        menu.isContainer = menugen.isContainer()
         childNames = menugen.getChildNames()
         #if childNames and len(menu.path) <= 3:
         if childNames:
@@ -59,7 +69,7 @@ class TUIGenerator:
                     childMenu = TUIMenu(menu.path + [childName])
                     menu.children[childMenu.name] = childMenu
                     self.populateMenu(childMenu)
-        else:
+        elif not menu.isExtendedTUI:
             menu.isMethod = True
 
     def writeCodeToTUIFile(self, code, indent=0):
@@ -88,12 +98,7 @@ class TUIGenerator:
             if not v.isMethod:
                 self.writeMenuToTUIFile(v, indent)
 
-    def generate(self):
-        self.populateMenu(self.mainMenu)
-        self.writeCodeToTUIFile('# This is an auto-generated file.  DO NOT EDIT!\n\n')
-        self.writeCodeToTUIFile('from ansys.fluent.solver.meta import PyMenuMeta\n\n\n')
-        self.writeMenuToTUIFile(self.mainMenu)
-
+    def writeToInitFile(self):
         self.writeCodeToInitFile('# This is an auto-generated file.  DO NOT EDIT!\n\n')
         self.writeCodeToInitFile('from ansys.fluent.core.core import (\n')
         self.writeCodeToInitFile('    start,\n')
@@ -104,3 +109,10 @@ class TUIGenerator:
             if not v.isMethod:
                 self.writeCodeToInitFile('    {},\n'.format(k))
         self.writeCodeToInitFile(')\n')
+
+    def generate(self):
+        self.populateMenu(self.mainMenu)
+        self.writeCodeToTUIFile('# This is an auto-generated file.  DO NOT EDIT!\n\n')
+        self.writeCodeToTUIFile('from ansys.fluent.solver.meta import PyMenuMeta\n\n\n')
+        self.writeMenuToTUIFile(self.mainMenu)
+        self.writeToInitFile()
