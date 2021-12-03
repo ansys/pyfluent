@@ -271,9 +271,6 @@ class PyMenu:
         ret = get_datamodel_service().set_state(request)
         return ret
 
-
-class PyNamedObjectContainer:
-
     @staticmethod
     def get_child_object_names(path):
         request = DataModelProtoModule.GetAttributeValueRequest()
