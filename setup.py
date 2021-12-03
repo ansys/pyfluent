@@ -4,9 +4,9 @@ from setuptools import setup
 
 # Get version from version info
 __version__ = None
-this_file = os.path.dirname(__file__)
-version_file = os.path.join(this_file, "ansys", "fluent", "solver", "_version.py")
-with open(version_file, mode="r") as fd:
+THIS_FILE = os.path.dirname(__file__)
+VERSION_FILE = os.path.join(THIS_FILE, "ansys", "fluent", "solver", "_version.py")
+with open(VERSION_FILE, mode="r") as fd:
     # execute file from raw string
     exec(fd.read())
 
