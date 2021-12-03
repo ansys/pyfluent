@@ -66,8 +66,8 @@ class TUIGenerator:
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
         child_names = menugen.get_child_names()
-        if child_names and (not menu.path or menu.path[0] == 'results'):
-        #if child_names:
+        #if child_names and (not menu.path or menu.path[0] == 'results'):
+        if child_names:
             for child_name in child_names:
                 if child_name:
                     child_menu = TUIMenu(menu.path + [child_name])
@@ -88,7 +88,8 @@ class TUIGenerator:
         if menu.name:
             self.__write_code_to_tui_file('\n')
             if menu.is_container:
-                self.__write_code_to_tui_file(f'class {menu.name}(metaclass=PyNamedObjectMeta):\n', indent)
+                self.__write_code_to_tui_file(
+                    f'class {menu.name}(metaclass=PyNamedObjectMeta):\n', indent)
             else:
                 self.__write_code_to_tui_file(
                     f'class {menu.name}(metaclass=PyMenuMeta):\n', indent)

@@ -67,13 +67,14 @@ def convert_keyword_menu(menu : str):
 
 def convert_path_to_grpc_path(path):
     grpc_path = ''
-    for comp in path:
-        if isinstance(comp, tuple):
-            grpc_path += '/' + convert_keyword_menu(comp[0])
-            if comp[1]:
-                grpc_path += ':' + comp[1]
-        elif isinstance(comp, str):
+    if isinstance(path, list):
+        for comp in path:
             grpc_path += '/' + convert_keyword_menu(comp)
+    elif isinstance(path, dict):
+        for k, v in path.items():
+            grpc_path += '/' + convert_keyword_menu(k)
+            if v:
+                grpc_path += ':' + v
     return grpc_path
 
 
