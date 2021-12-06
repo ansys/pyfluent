@@ -6,16 +6,6 @@ from ansys.fluent.core.core import (
 
 class PyMenuMeta(type):
 
-    # pyfluent.file.read_case(case_file_name='tet.cas.gz')
-    @classmethod
-    def __create_execute_command(cls, command):
-        @classmethod
-        def wrapper(cls_, *args, **kwargs):
-            command_path = dict(cls_.path)
-            command_path[command] = None
-            return PyMenu.execute(convert_path_to_grpc_path(command_path), *args, **kwargs)
-        return wrapper
-
     # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size.get_state()
     @classmethod
     def __create_get_state(cls):
@@ -34,10 +24,6 @@ class PyMenuMeta(type):
 
     def __new__(cls, name, bases, attrs):
         attrs['path'] = { x : None for x in attrs['__qualname__'].split('.') }
-        if 'doc_by_method' in attrs:
-            for k, v in attrs['doc_by_method'].items():
-                attrs[k] = cls.__create_execute_command(k)
-                attrs[k].__func__.__doc__ = v
         if 'is_extended_tui' in attrs:
             attrs['get_state'] = cls.__create_get_state()
             attrs['set_state'] = cls.__create_set_state()

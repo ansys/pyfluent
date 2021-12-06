@@ -1,8 +1,9 @@
 import os
 from pathlib import Path
-import keyword
 from ansys.fluent.core.core import (
+    convert_tui_menu_to_fname,
     convert_path_to_grpc_path,
+    extend_menu_path_to_command_path,
     PyMenu,
     start
 )
@@ -37,17 +38,16 @@ class TUIMenu:
 
     def __init__(self, path):
         self.path = path
-        self.name = ''
-        if path:
-            self.name = path[-1]
-            if keyword.iskeyword(self.name):
-                # "import" -> "import_"
-                self.name = self.name + '_'
+        self.name = convert_tui_menu_to_fname(path[-1]) if path else ''
+        self.grpc_path = convert_path_to_grpc_path(path)
         self.doc = None
         self.children = {}
-        self.is_method = False
+        self.is_command = False
         self.is_extended_tui = False
         self.is_container = False
+
+    def get_command_path(self, command):
+        return extend_menu_path_to_command_path(self.grpc_path, command)
 
 
 class TUIGenerator:
@@ -74,7 +74,7 @@ class TUIGenerator:
                     menu.children[child_menu.name] = child_menu
                     self.__populate_menu(child_menu)
         elif not menu.is_extended_tui:
-            menu.is_method = True
+            menu.is_command = True
 
     def __write_code_to_tui_file(self, code, indent=0):
         with open(self.tui_file, 'a', encoding='utf8') as f:
@@ -97,17 +97,22 @@ class TUIGenerator:
             self.__write_code_to_tui_file(f'__doc__ = {repr(menu.doc)}\n', indent)
             if menu.is_extended_tui:
                 self.__write_code_to_tui_file('is_extended_tui = True\n', indent)
-        method_names = [k for k, v in menu.children.items() if v.is_method]
-        if method_names:
-            self.__write_code_to_tui_file('doc_by_method = {\n', indent)
-            indent += 1
-            for method_name in method_names:
+        command_names = [k for k, v in menu.children.items() if v.is_command]
+        if command_names:
+            for command in command_names:
+                self.__write_code_to_tui_file(f'def {command}(*args, **kwargs):\n', indent)
+                indent += 1
+                self.__write_code_to_tui_file('"""\n', indent)
+                doc_lines = menu.children[command].doc.splitlines()
+                for line in doc_lines:
+                    self.__write_code_to_tui_file(f'{line}\n', indent)
+                self.__write_code_to_tui_file(f'"""\n', indent)
                 self.__write_code_to_tui_file(
-                    f"'{method_name}' : {repr(menu.children[method_name].doc)},\n", indent)
-            indent -= 1
-            self.__write_code_to_tui_file('}\n', indent)
+                    f"return PyMenu.execute('{menu.get_command_path(command)}', *args, **kwargs)\n",
+                    indent)
+                indent -= 1
         for _, v in menu.children.items():
-            if not v.is_method:
+            if not v.is_command:
                 self.__write_menu_to_tui_file(v, indent)
 
     def __write_to_init_file(self):
@@ -118,7 +123,7 @@ class TUIGenerator:
         self.__write_code_to_init_file(')\n\n')
         self.__write_code_to_init_file('from ansys.fluent.solver.tui import (\n')
         for k, v in self.main_menu.children.items():
-            if not v.is_method:
+            if not v.is_command:
                 self.__write_code_to_init_file(f'    {k},\n')
         self.__write_code_to_init_file(')\n')
 
@@ -126,6 +131,7 @@ class TUIGenerator:
         self.__populate_menu(self.main_menu)
         self.__write_code_to_tui_file('# This is an auto-generated file.  DO NOT EDIT!\n\n')
         self.__write_code_to_tui_file(
-            'from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta\n\n\n')
+            'from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta\n')
+        self.__write_code_to_tui_file('from ansys.fluent.core.core import PyMenu\n\n\n')
         self.__write_menu_to_tui_file(self.main_menu)
         self.__write_to_init_file()

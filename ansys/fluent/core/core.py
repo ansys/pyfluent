@@ -62,26 +62,45 @@ def convert_gvalue_to_value(gval):
         return val
 
 # import_ -> import
-def convert_keyword_menu(menu : str):
-    return menu[:-1] if menu.endswith('_') and keyword.iskeyword(menu[:-1]) else menu
+# type_flag -> type?
+def convert_fname_to_tui_menu(fname : str):
+    if fname.endswith('_') and keyword.iskeyword(fname[:-1]):
+        return fname[:-1]
+    # TODO: Following is actually done in the server-side - consolidate
+    #if fname.endswith('_flag'):
+    #    return fname.rstrip('_flag') + '?'
+    return fname
 
-def convert_path_to_grpc_path(path):
+# import -> import_
+# type? -> type_flag
+def convert_tui_menu_to_fname(menu : str):
+    if keyword.iskeyword(menu):
+        return menu + '_'
+    if menu.endswith('?'):
+        return menu[:-1] + '_flag'
+    return menu
+
+def convert_path_to_grpc_path(path, command=''):
     grpc_path = ''
     if isinstance(path, list):
         for comp in path:
-            grpc_path += '/' + convert_keyword_menu(comp)
+            grpc_path += '/' + convert_fname_to_tui_menu(comp)
     elif isinstance(path, dict):
         for k, v in path.items():
-            grpc_path += '/' + convert_keyword_menu(k)
+            grpc_path += '/' + convert_fname_to_tui_menu(k)
             if v:
                 grpc_path += ':' + v
+    if command:
+        grpc_path += '/' + command
     return grpc_path
 
+def extend_menu_path_to_command_path(path, command):
+    return path + '/' + command
 
 def convert_path_command_pair_to_grpc_path(path, command):
     grpc_path = ''
     for comp in path:
-        grpc_path += '/' + convert_keyword_menu(comp)
+        grpc_path += '/' + convert_fname_to_tui_menu(comp)
     return grpc_path + '/' + command
 
 
