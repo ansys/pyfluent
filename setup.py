@@ -1,13 +1,12 @@
 """Setup file for ansys-fluent-solver"""
 import os
-from io import open as io_open
 from setuptools import setup
 
 # Get version from version info
 __version__ = None
-this_file = os.path.dirname(__file__)
-version_file = os.path.join(this_file, "ansys", "fluent", "solver", "_version.py")
-with io_open(version_file, mode="r") as fd:
+THIS_FILE = os.path.dirname(__file__)
+VERSION_FILE = os.path.join(THIS_FILE, "ansys", "fluent", "solver", "_version.py")
+with open(VERSION_FILE, mode='r', encoding='utf8') as fd:
     # execute file from raw string
     exec(fd.read())
 
@@ -21,7 +20,7 @@ setup(
     packages=['ansys.fluent.solver'],
     version=__version__,
     description="Fluent's SolverAPI exposed in Python",
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst', encoding='utf8').read(),
     long_description_content_type='text/x-rst',
     url='https://github.com/mkundu1/pyfluent',
     license='MIT',

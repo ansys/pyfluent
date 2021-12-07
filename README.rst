@@ -26,9 +26,9 @@ In Python (client-side):
 
 .. code:: python
 
-  from ansys.fluent.solver import fluent_pymenu as fluent
-  fluent.start(r'<path-to-server-file>/server.txt')
-  fluent.file.read_case(case_file_name='tet.cas.gz')
+  import ansys.fluent.solver as pyfluent
+  pyfluent.start(r'<path-to-server-file>/server.txt')
+  pyfluent.file.read_case(case_file_name='tet.cas.gz')
   #etc.
-  fluent.stop()
+  pyfluent.stop()
 
