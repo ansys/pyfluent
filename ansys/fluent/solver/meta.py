@@ -6,26 +6,36 @@ from ansys.fluent.core.core import (
 
 class PyMenuMeta(type):
 
-    # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size.get_state()
+    @classmethod
+    def __create_init(cls):
+        def wrapper(self, path, service):
+            self.path = path
+            self.__service = service
+            for name, cls in self.__class__.__dict__.items():
+                if cls.__class__.__name__ == 'PyMenuMeta':
+                    setattr(self, name, cls(self.path + [(name, None)], service))
+                if cls.__class__.__name__ == 'PyNamedObjectMeta':
+                    setattr(self, name, cls(self.path + [(name, None)], None, service))
+        return wrapper
+
+    # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size()
     @classmethod
     def __create_get_state(cls):
-        @classmethod
-        def wrapper(cls_):
-            return PyMenu.get_state(convert_path_to_grpc_path(cls_.path))
+        def wrapper(self):
+            return PyMenu(self.__service).get_state(convert_path_to_grpc_path(self.path))
         return wrapper
 
     # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size.set_state(80.0)
     @classmethod
     def __create_set_state(cls):
-        @classmethod
-        def wrapper(cls_, value):
-            PyMenu.set_state(convert_path_to_grpc_path(cls_.path), value)
+        def wrapper(self, value):
+            PyMenu(self.__service).set_state(convert_path_to_grpc_path(self.path), value)
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs['path'] = { x : None for x in attrs['__qualname__'].split('.') }
+        attrs['__init__'] = cls.__create_init()
         if 'is_extended_tui' in attrs:
-            attrs['get_state'] = cls.__create_get_state()
+            attrs['__call__'] = cls.__create_get_state()
             attrs['set_state'] = cls.__create_set_state()
         return super(PyMenuMeta, cls).__new__(
             cls, name, bases, attrs)
@@ -34,58 +44,61 @@ class PyMenuMeta(type):
 class PyNamedObjectMeta(type):
 
     @classmethod
-    def __create_init(cls, cls_name, attrs):
-        def update_path(attr, cls_name, name):
-            if isinstance(attr, PyMenuMeta) or isinstance(attr, PyNamedObjectMeta):
-                getattr(attr, 'path')[cls_name] = name
-                for _, v in attr.__dict__.items():
-                    update_path(v, cls_name, name)
-        def wrapper(self, name):
-            getattr(self, 'path')[cls_name] = name
-            for _, v in attrs.items():
-                update_path(v, cls_name, name)
+    def __create_init(cls):
+        def wrapper(self, path, name, service):
+            self.path = path[:-1] + [(path[-1][0], name)]
+            self.__service = service
+            for name, cls in self.__class__.__dict__.items():
+                if cls.__class__.__name__ == 'PyMenuMeta':
+                    setattr(self, name, cls(self.path + [(name, None)], service))
+                if cls.__class__.__name__ == 'PyNamedObjectMeta':
+                    setattr(self, name, cls(self.path + [(name, None)], None, service))
         return wrapper
 
     # pyfluent.results.graphics.objects.contour['contour-1']
-    def __getitem__(cls, name):
-        return cls(name)
+    @classmethod
+    def __create_getitem(cls):
+        def wrapper(self, name):
+            return self.__class__(self.path, name, self.__service)
+        return wrapper
 
     # pyfluent.results.graphics.objects.contour['contour-1'] = {...}
-    def __setitem__(cls, name, value):
-        PyMenu.set_state(convert_path_to_grpc_path(cls(name).path), value)
+    @classmethod
+    def __create_setitem(cls):
+        def wrapper(self, name, value):
+            o = self.__class__(self.path, name, self.__service)
+            PyMenu(self.__service).set_state(convert_path_to_grpc_path(o.path), value)
+        return wrapper
 
     # del pyfluent.results.graphics.objects.contour['contour-1']
-    def __delitem__(cls, name):
-        PyMenu.del_item(convert_path_to_grpc_path(cls(name).path))
-
-    # pyfluent.results.graphics.objects.contour['contour-1'].field = 'velocity-magnitude'
     @classmethod
-    def __create_setattr(cls):
-        def wrapper(self, name, value):
-            child_path = dict(self.path)
-            child_path[name] = None
-            PyMenu.set_state(convert_path_to_grpc_path(child_path), value)
+    def __create_delitem(cls):
+        def wrapper(self, name):
+            o = self.__class__(self.path, name, self.__service)
+            PyMenu(self.__service).del_item(convert_path_to_grpc_path(o.path))
         return wrapper
 
     # pyfluent.results.graphics.objects.contour['contour-1']()
     @classmethod
     def __create_get_state(cls):
         def wrapper(self):
-            return PyMenu.get_state(convert_path_to_grpc_path(self.path))
+            return PyMenu(self.__service).get_state(convert_path_to_grpc_path(self.path))
         return wrapper
 
     # pyfluent.results.graphics.objects.contour['contour-1'].rename('my-contour')
     @classmethod
     def __create_rename(cls):
         def wrapper(self, new_name):
-            PyMenu.rename(convert_path_to_grpc_path(self.path), new_name)
+            PyMenu(self.__service).rename(convert_path_to_grpc_path(self.path), new_name)
         return wrapper
 
     def __new__(cls, name, bases, attrs):
         attrs['path'] = { x : None for x in attrs['__qualname__'].split('.') }
-        attrs['__init__'] = cls.__create_init(name, attrs)
+        attrs['__init__'] = cls.__create_init()
+        attrs['__getitem__'] = cls.__create_getitem()
+        attrs['__setitem__'] = cls.__create_setitem()
+        attrs['__delitem__'] = cls.__create_delitem()
         attrs['__call__'] = cls.__create_get_state()
-        attrs['__setattr__'] = cls.__create_setattr()
         attrs['rename'] = cls.__create_rename()
         return super(PyNamedObjectMeta, cls).__new__(
             cls, name, bases, attrs)
