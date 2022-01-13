@@ -19,19 +19,19 @@ class TUIMenuGenerator:
     def __init__(self, path, service):
         self.path = path
         self.grpc_path = convert_path_to_grpc_path(path)
-        self.__service = service
+        self.service = service
 
     def get_child_names(self):
-        return PyMenu(self.__service).get_child_names(self.grpc_path, True)
+        return PyMenu(self.service).get_child_names(self.grpc_path, True)
 
     def get_doc_string(self):
-        return PyMenu(self.__service).get_doc_string(self.grpc_path, True)
+        return PyMenu(self.service).get_doc_string(self.grpc_path, True)
 
     def is_extended_tui(self):
-        return PyMenu(self.__service).is_extended_tui(self.grpc_path, True)
+        return PyMenu(self.service).is_extended_tui(self.grpc_path, True)
 
     def is_container(self):
-        return PyMenu(self.__service).is_container(self.grpc_path, True)
+        return PyMenu(self.service).is_container(self.grpc_path, True)
 
 
 class TUIMenu:
@@ -58,12 +58,12 @@ class TUIGenerator:
         Path(TUI_FILE).unlink(missing_ok=True)
         Path(INIT_FILE).unlink(missing_ok=True)
         session = start(server_info_file)
-        self.__service = session.service
+        self.service = session.service
         self.main_menu = TUIMenu([])
 
 
     def __populate_menu(self, menu : TUIMenu):
-        menugen = TUIMenuGenerator(menu.path, self.__service)
+        menugen = TUIMenuGenerator(menu.path, self.service)
         menu.doc = menugen.get_doc_string()
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
@@ -110,7 +110,7 @@ class TUIGenerator:
                     self.__write_code_to_tui_file(f'{line}\n', indent)
                 self.__write_code_to_tui_file(f'"""\n', indent)
                 self.__write_code_to_tui_file(
-                    f"return PyMenu(self.__service).execute('{menu.get_command_path(command)}', *args, **kwargs)\n",
+                    f"return PyMenu(self.service).execute('{menu.get_command_path(command)}', *args, **kwargs)\n",
                     indent)
                 indent -= 1
         for _, v in menu.children.items():

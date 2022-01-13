@@ -17,7 +17,7 @@ class Session:
     class tui:
         __application_modules = []
         def __init__(self, service):
-            self.__service = service
+            self.service = service
             for mod in self.__class__.__application_modules:
                 for name, cls in mod.__dict__.items():
                     if cls.__class__.__name__ == 'PyMenuMeta':
