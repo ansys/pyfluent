@@ -10,12 +10,6 @@ MODULE_NAME_ALIAS = "pyfluent"
 JOURNAL_FILENAME = None
 
 
-def parse_server_info_file(filename: str):
-    with open(filename, "rb") as f:
-        lines = f.readlines()
-    return (lines[0].strip(), lines[1].strip())
-
-
 def convert_value_to_gvalue(val, gval):
     if isinstance(val, bool):
         gval.bool_value = val

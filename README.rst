@@ -17,18 +17,14 @@ We need to install the grpc package as it is not yet in PyPI.
 
 Usage
 -----
-1) Run Fluent from the latest develop branch.
-2) In the Fluent Console (TUI) execute the following Scheme code: (enable-feature 'new-tui)
-3) Start the server with server.txt as server-info filename. 
-   E.g., from the Fluent UI File Menu, select Applications > Server > Start ... . Enter server.txt in the dialog and select OK.
-
-In Python (client-side):
+1) Fluent should be installed from the latest daily build. PyFluent determines the Fluent launch path from AWP_ROOT222 environment variable. That environment variable can be modified to use a custom Fluent build.
+2) Within a Python 3 console, execute:
 
 .. code:: python
 
   import ansys.fluent.solver as pyfluent
-  session = pyfluent.start(r'<path-to-server-file>/server.txt')
-  session.tui.file.read_case(case_file_name='tet.cas.gz')
+  session = pyfluent.launch_fluent()
+  session.tui.file.read_case(case_file_name='elbow.cas.gz')
   session.tui.define.models.unsteady_2nd_order("yes")
   session.tui.solve.initialize.initialize_flow()
   session.tui.solve.dual_time_iterate(number_of_total_periods=2, maximum_number_of_iterations_per_time_step=3)
@@ -40,5 +36,5 @@ In Python (client-side):
   session.tui.display.objects.contour['contour-1'].color_map.size()
   session.tui.display.objects.contour['contour-1'].rename('my-contour')
   del session.tui.display.objects.contour['my-contour']
-  session.stop()
+  session.close()
 

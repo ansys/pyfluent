@@ -1,9 +1,7 @@
 # This is an auto-generated file.  DO NOT EDIT!
 
-from ansys.fluent.session import (
-    start,
-    Session
-)
+from ansys.fluent.session import Session
+from ansys.fluent.launcher.launcher import launch_fluent
 
 from ansys.fluent.solver import tui
 from ansys.fluent.solver.tui import (

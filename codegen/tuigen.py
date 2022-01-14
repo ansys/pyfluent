@@ -5,7 +5,7 @@ from ansys.fluent.core.core import (
     convert_path_to_grpc_path,
     PyMenu
 )
-from ansys.fluent.session import start
+from ansys.fluent.launcher.launcher import launch_fluent
 
 
 THIS_FILE = os.path.dirname(__file__)
@@ -52,12 +52,12 @@ class TUIMenu:
 
 class TUIGenerator:
 
-    def __init__(self, server_info_file, tui_file=TUI_FILE, init_file=INIT_FILE):
+    def __init__(self, tui_file=TUI_FILE, init_file=INIT_FILE):
         self.tui_file = tui_file
         self.init_file = init_file
         Path(TUI_FILE).unlink(missing_ok=True)
         Path(INIT_FILE).unlink(missing_ok=True)
-        session = start(server_info_file)
+        session = launch_fluent()
         self.service = session.service
         self.main_menu = TUIMenu([])
 
@@ -119,10 +119,8 @@ class TUIGenerator:
 
     def __write_to_init_file(self):
         self.__write_code_to_init_file('# This is an auto-generated file.  DO NOT EDIT!\n\n')
-        self.__write_code_to_init_file('from ansys.fluent.session import (\n')
-        self.__write_code_to_init_file('    start,\n')
-        self.__write_code_to_init_file('    Session\n')
-        self.__write_code_to_init_file(')\n\n')
+        self.__write_code_to_init_file('from ansys.fluent.session import Session\n')
+        self.__write_code_to_init_file('from ansys.fluent.launcher.launcher import launch_fluent\n\n')
         self.__write_code_to_init_file('from ansys.fluent.solver import tui\n')
         self.__write_code_to_init_file('from ansys.fluent.solver.tui import (\n')
         for k, v in self.main_menu.children.items():
