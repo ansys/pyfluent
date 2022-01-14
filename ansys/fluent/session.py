@@ -1,5 +1,4 @@
 import grpc
-from pathlib import Path
 
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 from ansys.fluent.core.core import DatamodelService
@@ -15,14 +14,18 @@ class Session:
         self.__channel = grpc.insecure_channel(address)
         datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
         self.service = DatamodelService(datamodel_stub, password)
-        Path(server_info_filepath).unlink(missing_ok=True)
         self.tui = Session.tui(self.service)
 
-    #TODO: Call close for all running sessions during exit
     def close(self):
         self.tui.exit()
         if self.__channel:
             self.__channel.close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     class tui:
         __application_modules = []

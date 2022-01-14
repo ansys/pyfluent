@@ -97,23 +97,26 @@ def launch_fluent(
                 argval = fluent_values[i]
             launch_string += v['fluent_format'].replace('{}', str(argval))
     server_info_filepath = get_server_info_filepath()
-    launch_string += f' -sifile="{server_info_filepath}"'
-    if not os.getenv('PYFLUENT_SHOW_SERVER_GUI'):
-        launch_string += ' -hidden'
-    print(f'Launching Fluent with cmd: {launch_string}')
-    sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
-    kwargs = get_subprocess_kwargs_for_detached_process()
-    subprocess.Popen(launch_string, **kwargs)
-    counter = LAUNCH_FLUENT_TIMEOUT
-    while True:
-        if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
+    try:
+        launch_string += f' -sifile="{server_info_filepath}"'
+        if not os.getenv('PYFLUENT_SHOW_SERVER_GUI'):
+            launch_string += ' -hidden'
+        print(f'Launching Fluent with cmd: {launch_string}')
+        sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
+        kwargs = get_subprocess_kwargs_for_detached_process()
+        subprocess.Popen(launch_string, **kwargs)
+        counter = LAUNCH_FLUENT_TIMEOUT
+        while True:
+            if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
+                time.sleep(1)
+                print('\nFluent process is successfully launched.')
+                break
+            if counter == 0:
+                print('\nThe launch process has been timed out.')
+                break
             time.sleep(1)
-            print('\nFluent process is successfully launched.')
-            break
-        if counter == 0:
-            print('\nThe launch process has been timed out.')
-            break
-        time.sleep(1)
-        counter -= 1
-        print(f'Waiting for Fluent to launch...{counter:2} seconds remaining', end='\r')
-    return Session(server_info_filepath)
+            counter -= 1
+            print(f'Waiting for Fluent to launch...{counter:2} seconds remaining', end='\r')
+        return Session(server_info_filepath)
+    finally:
+        Path(server_info_filepath).unlink(missing_ok=True)
