@@ -4,18 +4,10 @@
 
 import os
 import keyword
-import grpc
-
 from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 
 MODULE_NAME_ALIAS = "pyfluent"
 JOURNAL_FILENAME = None
-DATAMODEL_SERVICE = None
-CHANNEL = None
-
-def get_datamodel_service():
-    return DATAMODEL_SERVICE
 
 
 def parse_server_info_file(filename: str):
@@ -80,28 +72,16 @@ def convert_tui_menu_to_fname(menu : str):
         return menu[:-1] + '_flag'
     return menu
 
-def convert_path_to_grpc_path(path, command=''):
+def convert_path_to_grpc_path(path):
     grpc_path = ''
-    if isinstance(path, list):
-        for comp in path:
-            grpc_path += '/' + convert_fname_to_tui_menu(comp)
-    elif isinstance(path, dict):
-        for k, v in path.items():
-            grpc_path += '/' + convert_fname_to_tui_menu(k)
-            if v:
-                grpc_path += ':' + v
-    if command:
-        grpc_path += '/' + command
+    for comp in path:
+        grpc_path += '/' + convert_fname_to_tui_menu(comp[0])
+        if comp[1]:
+            grpc_path += ':' + comp[1]
     return grpc_path
 
 def extend_menu_path_to_command_path(path, command):
     return path + '/' + command
-
-def convert_path_command_pair_to_grpc_path(path, command):
-    grpc_path = ''
-    for comp in path:
-        grpc_path += '/' + convert_fname_to_tui_menu(comp)
-    return grpc_path + '/' + command
 
 
 class DatamodelService:
@@ -213,55 +193,51 @@ class PyMenuJournaler:
 
 
 class PyMenu:
+    def __init__(self, service):
+        self.service = service
 
-    @staticmethod
-    def is_extended_tui(path, include_unavailable=False):
+    def is_extended_tui(self, path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.CUSTOM
         request.args['is_extended_tui'] = 1
         if include_unavailable:
             request.args['include_unavailable'] = 1
-        response = get_datamodel_service().get_attribute_value(request)
+        response = self.service.get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
 
-    @staticmethod
-    def is_container(path, include_unavailable=False):
+    def is_container(self, path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.DATA_TYPE
         if include_unavailable:
             request.args['include_unavailable'] = 1
-        response = get_datamodel_service().get_attribute_value(request)
+        response = self.service.get_attribute_value(request)
         return convert_gvalue_to_value(response.value) == "NamedObjectContainer"
 
-    @staticmethod
-    def get_child_names(path, include_unavailable=False):
+    def get_child_names(self, path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
         if include_unavailable:
             request.args['include_unavailable'] = 1
-        response = get_datamodel_service().get_attribute_value(request)
+        response = self.service.get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
 
-    @staticmethod
-    def get_state(path):
+    def get_state(self, path):
         request = DataModelProtoModule.GetStateRequest()
         request.path = path
-        response = get_datamodel_service().get_state(request)
+        response = self.service.get_state(request)
         return convert_gvalue_to_value(response.state)
 
-    @staticmethod
-    def set_state(path, value):
+    def set_state(self, path, value):
         request = DataModelProtoModule.SetStateRequest()
         request.path = path
         convert_value_to_gvalue(value, request.state)
-        ret = get_datamodel_service().set_state(request)
+        ret = self.service.set_state(request)
         return ret
 
-    @staticmethod
-    def execute(path, *args, **kwargs):
+    def execute(self, path, *args, **kwargs):
         request = DataModelProtoModule.ExecuteCommandRequest()
         request.path = path
         if kwargs:
@@ -269,64 +245,44 @@ class PyMenu:
                 convert_value_to_gvalue(v, request.args.fields[k])
         else:
             convert_value_to_gvalue(args, request.args.fields['tui_args'])
-        ret = get_datamodel_service().execute_command(request)
+        ret = self.service.execute_command(request)
         return convert_gvalue_to_value(ret.result)
 
-    @staticmethod
-    def get_doc_string(path, include_unavailable=False):
+    def get_doc_string(self, path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.HELP_STRING
         if include_unavailable:
             request.args['include_unavailable'] = 1
-        response = get_datamodel_service().get_attribute_value(request)
+        response = self.service.get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
 
-    @staticmethod
-    def rename(path, new_name):
+    def rename(self, path, new_name):
         request = DataModelProtoModule.SetStateRequest()
         request.path = path
         convert_value_to_gvalue(new_name, request.state.struct_value.fields['name'])
-        ret = get_datamodel_service().set_state(request)
+        ret = self.service.set_state(request)
         return ret
 
-    @staticmethod
-    def get_child_object_names(path):
+    def get_child_object_names(self, path):
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = path
         request.attribute = DataModelProtoModule.Attribute.OBJECT_NAMES
-        response = get_datamodel_service().get_attribute_value(request)
+        response = self.service.get_attribute_value(request)
         return convert_gvalue_to_value(response.value)
 
-    @staticmethod
-    def set_item(path, name, value):
+    def set_item(self, path, name, value):
         request = DataModelProtoModule.SetStateRequest()
         request.path = path
         convert_value_to_gvalue(value, request.state)
         if request.state.HasField('null_value'): # creation with default value
             convert_value_to_gvalue(name, request.state.struct_value.fields['name'])
-        ret = get_datamodel_service().set_state(request)
+        ret = self.service.set_state(request)
         return ret
 
-    @staticmethod
-    def del_item(path):
+    def del_item(self, path):
         request = DataModelProtoModule.SetStateRequest()
         request.path = path
-        ret = get_datamodel_service().set_state(request)
+        ret = self.service.set_state(request)
         return ret
 
-
-def start(server_info_file):
-    global CHANNEL
-    address, password = parse_server_info_file(server_info_file)
-    CHANNEL = grpc.insecure_channel(address)
-    datamodel_stub = DataModelGrpcModule.DataModelStub(CHANNEL)
-    global DATAMODEL_SERVICE
-    DATAMODEL_SERVICE = DatamodelService(datamodel_stub, password)
-    PyMenuJournaler().journal_global_fn_call("start", [server_info_file])
-
-
-def stop():
-    if CHANNEL:
-        CHANNEL.close()
-    PyMenuJournaler().journal_global_fn_call("stop")

@@ -3,10 +3,9 @@ from pathlib import Path
 from ansys.fluent.core.core import (
     convert_tui_menu_to_fname,
     convert_path_to_grpc_path,
-    extend_menu_path_to_command_path,
-    PyMenu,
-    start
+    PyMenu
 )
+from ansys.fluent.session import start
 
 
 THIS_FILE = os.path.dirname(__file__)
@@ -17,28 +16,29 @@ INDENT_STEP = 4
 
 class TUIMenuGenerator:
 
-    def __init__(self, path):
+    def __init__(self, path, service):
         self.path = path
         self.grpc_path = convert_path_to_grpc_path(path)
+        self.service = service
 
     def get_child_names(self):
-        return PyMenu.get_child_names(self.grpc_path, True)
+        return PyMenu(self.service).get_child_names(self.grpc_path, True)
 
     def get_doc_string(self):
-        return PyMenu.get_doc_string(self.grpc_path, True)
+        return PyMenu(self.service).get_doc_string(self.grpc_path, True)
 
     def is_extended_tui(self):
-        return PyMenu.is_extended_tui(self.grpc_path, True)
+        return PyMenu(self.service).is_extended_tui(self.grpc_path, True)
 
     def is_container(self):
-        return PyMenu.is_container(self.grpc_path, True)
+        return PyMenu(self.service).is_container(self.grpc_path, True)
 
 
 class TUIMenu:
 
     def __init__(self, path):
         self.path = path
-        self.name = convert_tui_menu_to_fname(path[-1]) if path else ''
+        self.name = convert_tui_menu_to_fname(path[-1][0]) if path else ''
         self.grpc_path = convert_path_to_grpc_path(path)
         self.doc = None
         self.children = {}
@@ -47,7 +47,7 @@ class TUIMenu:
         self.is_container = False
 
     def get_command_path(self, command):
-        return extend_menu_path_to_command_path(self.grpc_path, command)
+        return convert_path_to_grpc_path(self.path + [(command, None)])
 
 
 class TUIGenerator:
@@ -57,11 +57,13 @@ class TUIGenerator:
         self.init_file = init_file
         Path(TUI_FILE).unlink(missing_ok=True)
         Path(INIT_FILE).unlink(missing_ok=True)
-        start(server_info_file)
+        session = start(server_info_file)
+        self.service = session.service
         self.main_menu = TUIMenu([])
 
+
     def __populate_menu(self, menu : TUIMenu):
-        menugen = TUIMenuGenerator(menu.path)
+        menugen = TUIMenuGenerator(menu.path, self.service)
         menu.doc = menugen.get_doc_string()
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
@@ -70,7 +72,7 @@ class TUIGenerator:
         if child_names:
             for child_name in child_names:
                 if child_name:
-                    child_menu = TUIMenu(menu.path + [child_name])
+                    child_menu = TUIMenu(menu.path + [(child_name, None)])
                     menu.children[child_menu.name] = child_menu
                     self.__populate_menu(child_menu)
         elif not menu.is_extended_tui:
@@ -100,7 +102,7 @@ class TUIGenerator:
         command_names = [k for k, v in menu.children.items() if v.is_command]
         if command_names:
             for command in command_names:
-                self.__write_code_to_tui_file(f'def {command}(*args, **kwargs):\n', indent)
+                self.__write_code_to_tui_file(f'def {command}(self, *args, **kwargs):\n', indent)
                 indent += 1
                 self.__write_code_to_tui_file('"""\n', indent)
                 doc_lines = menu.children[command].doc.splitlines()
@@ -108,7 +110,7 @@ class TUIGenerator:
                     self.__write_code_to_tui_file(f'{line}\n', indent)
                 self.__write_code_to_tui_file(f'"""\n', indent)
                 self.__write_code_to_tui_file(
-                    f"return PyMenu.execute('{menu.get_command_path(command)}', *args, **kwargs)\n",
+                    f"return PyMenu(self.service).execute('{menu.get_command_path(command)}', *args, **kwargs)\n",
                     indent)
                 indent -= 1
         for _, v in menu.children.items():
@@ -117,15 +119,17 @@ class TUIGenerator:
 
     def __write_to_init_file(self):
         self.__write_code_to_init_file('# This is an auto-generated file.  DO NOT EDIT!\n\n')
-        self.__write_code_to_init_file('from ansys.fluent.core.core import (\n')
+        self.__write_code_to_init_file('from ansys.fluent.session import (\n')
         self.__write_code_to_init_file('    start,\n')
-        self.__write_code_to_init_file('    stop\n')
+        self.__write_code_to_init_file('    Session\n')
         self.__write_code_to_init_file(')\n\n')
+        self.__write_code_to_init_file('from ansys.fluent.solver import tui\n')
         self.__write_code_to_init_file('from ansys.fluent.solver.tui import (\n')
         for k, v in self.main_menu.children.items():
             if not v.is_command:
                 self.__write_code_to_init_file(f'    {k},\n')
-        self.__write_code_to_init_file(')\n')
+        self.__write_code_to_init_file(')\n\n')
+        self.__write_code_to_init_file('Session.tui.register_module(tui)')
 
     def generate(self):
         self.__populate_menu(self.main_menu)
