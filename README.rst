@@ -17,9 +17,12 @@ We need to install the grpc package as it is not yet in PyPI.
 
 Usage
 -----
-1) Fluent should be installed from the latest daily build. PyFluent determines the Fluent launch path from AWP_ROOT222 environment variable. That environment variable can be modified to use a custom Fluent build.
+1) Run Fluent from the latest develop branch.
+2) In the Fluent Console (TUI) execute the following Scheme code: (enable-feature 'new-tui)
+3) Start the server with server.txt as server-info filename. 
+   E.g., from the Fluent UI File Menu, select Applications > Server > Start ... . Enter server.txt in the dialog and select OK.
 
-2) Execute in a Python 3 console:
+In Python (client-side):
 
 .. code:: python
 
