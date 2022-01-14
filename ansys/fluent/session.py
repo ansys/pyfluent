@@ -11,18 +11,18 @@ def parse_server_info_file(filename: str):
 
 class Session:
     def __init__(self, server_info_filepath):
-        self.server_info_filepath = server_info_filepath
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
         datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
         self.service = DatamodelService(datamodel_stub, password)
+        Path(server_info_filepath).unlink(missing_ok=True)
         self.tui = Session.tui(self.service)
 
+    #TODO: Call close for all running sessions during exit
     def close(self):
         self.tui.exit()
         if self.__channel:
             self.__channel.close()
-        Path(self.server_info_filepath).unlink(missing_ok=True)
 
     class tui:
         __application_modules = []

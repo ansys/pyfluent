@@ -49,6 +49,25 @@ def launch_fluent(
     processor_count = None,
     journal_filename = None
 ):
+    """Start Fluent locally in server mode.
+    Parameters
+    ----------
+    version : str, optional
+        Whether to use the '2d' or '3d' version of Fluent. Default is '3d'.
+
+    precision : str, optional
+        Whether to use the single-precision or double-precision version of Fluent. Default is double-precision.
+
+    processor_count : int, optional
+        Specify number of processors. Default is 1.
+
+    journal_filename : str, optional
+        Read the specified journal file.
+
+    Returns
+    -------
+    An instance of ansys.fluent.session.Session.
+    """
     exe_path = get_fluent_exe_path()
     launch_string = exe_path
     argvals = locals()
@@ -67,10 +86,10 @@ def launch_fluent(
                     old_argval = argval
                     argval = default
                     print(f'Default value {argval} is chosen for {k} as the passed value '
-                          f'{old_argval} is outside allowed_values {allowed_values}')
+                          f'{old_argval} is outside allowed_values {allowed_values}.')
                 else:
                     print(f'{k} = {argval} is discarded '
-                          f'as it is outside allowed_values {allowed_values}')
+                          f'as it is outside allowed_values {allowed_values}.')
                     continue
             fluent_values = v.get('fluent_values', None)
             if fluent_values:
@@ -89,7 +108,7 @@ def launch_fluent(
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
             time.sleep(1)
-            print('\nFluent process is successfully launched')
+            print('\nFluent process is successfully launched.')
             break
         if counter == 0:
             print('\nThe launch process has been timed out.')

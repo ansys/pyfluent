@@ -1,12 +1,12 @@
 ---
 version:
-  type: string
+  type: str
   allowed_values: [3d, 2d]
   default: 3d
   required: True
   fluent_format: " {}"
 precision:
-  type: string
+  type: str
   allowed_values: [single, double]
   default: double
   required: True
@@ -16,6 +16,6 @@ processor_count:
   type: int
   fluent_format: " -t{}"
 journal_filename:
-  type: string
+  type: str
   fluent_format: " -i {}"
 ...
