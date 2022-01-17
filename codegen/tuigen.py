@@ -7,6 +7,11 @@ from ansys.fluent.core.core import (
 )
 from ansys.fluent.launcher.launcher import launch_fluent
 
+"""Usage:
+from codegen.tuigen import TUIGenerator
+TUIGenerator().generate()
+"""
+
 
 THIS_FILE = os.path.dirname(__file__)
 TUI_FILE = os.path.join(THIS_FILE, "..", "ansys", "fluent", "solver", "tui.py")

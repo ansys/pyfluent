@@ -14,13 +14,12 @@ from ansys.fluent.session import Session
 
 THIS_DIR = os.path.dirname(__file__)
 OPTIONS_FILE = os.path.join(THIS_DIR, 'launcher_options.yaml')
-FLUENT_MAJOR_VERSION = '22'
-FLUENT_MINOR_VERSION = '2'
-LAUNCH_FLUENT_TIMEOUT = 100
+FLUENT_VERSION = '22.2'
+START_FLUENT_TIMEOUT = 100
 
 def get_fluent_exe_path():
     exe_path = Path(
-        os.getenv('AWP_ROOT' + FLUENT_MAJOR_VERSION + FLUENT_MINOR_VERSION))
+        os.getenv('AWP_ROOT' + ''.join(FLUENT_VERSION.split('.'))))
     exe_path = exe_path / 'fluent'
     if platform.system() == 'Windows':
         exe_path = exe_path / 'ntbin' / 'win64' / 'fluent.exe'
@@ -49,20 +48,23 @@ def get_subprocess_kwargs_for_detached_process():
     return kwargs
 
 def launch_fluent(
-    version = None,
-    precision = None,
-    processor_count = None,
-    journal_filename = None
+    version=None,
+    precision=None,
+    processor_count=None,
+    journal_filename=None,
+    start_timeout=None
 ):
     """Start Fluent locally in server mode.
+
     Parameters
     ----------
     version : str, optional
-        Whether to use the '2d' or '3d' version of Fluent. Default is '3d'.
+        Whether to use the ``"2d"`` or ``"3d"`` version of Fluent.
+        Default is ``"3d"``.
 
     precision : str, optional
-        Whether to use the single-precision or double-precision version
-        of Fluent. Default is double-precision.
+        Whether to use the ``"single"`` precision or ``"double"`` precision
+        version of Fluent. Default is ``"double"`` precision.
 
     processor_count : int, optional
         Specify number of processors. Default is 1.
@@ -70,9 +72,14 @@ def launch_fluent(
     journal_filename : str, optional
         Read the specified journal file.
 
+    start_timeout : float, optional
+        Maximum allowable time in seconds to connect to the Fluent server.
+        Default is 100 seconds.
+
     Returns
     -------
-    An instance of ansys.fluent.session.Session.
+    ansys.fluent.session.Session
+        Fluent session.
     """
     exe_path = get_fluent_exe_path()
     launch_string = exe_path
@@ -81,12 +88,12 @@ def launch_fluent(
     with open(OPTIONS_FILE, 'r') as f:
         all_options = yaml.load(f, Loader)
     for k, v in all_options.items():
-        argval = argvals.get(k, None)
-        default = v.get('default', None)
-        if argval is None and v.get('required', None) == True:
+        argval = argvals.get(k)
+        default = v.get('default')
+        if argval is None and v.get('required') is True:
             argval = default
         if argval is not None:
-            allowed_values = v.get('allowed_values', None)
+            allowed_values = v.get('allowed_values')
             if allowed_values and argval not in allowed_values:
                 if default is not None:
                     old_argval = argval
@@ -98,7 +105,7 @@ def launch_fluent(
                     print(f'{k} = {argval} is discarded '
                           f'as it is outside allowed_values {allowed_values}.')
                     continue
-            fluent_values = v.get('fluent_values', None)
+            fluent_values = v.get('fluent_values')
             if fluent_values:
                 i = allowed_values.index(argval)
                 argval = fluent_values[i]
@@ -112,7 +119,7 @@ def launch_fluent(
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         kwargs = get_subprocess_kwargs_for_detached_process()
         subprocess.Popen(launch_string, **kwargs)
-        counter = LAUNCH_FLUENT_TIMEOUT
+        counter = argvals.get('start_timeout') or START_FLUENT_TIMEOUT
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
                 time.sleep(1)

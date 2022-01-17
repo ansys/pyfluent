@@ -6,7 +6,7 @@ from ansys.fluent.core.core import DatamodelService
 def parse_server_info_file(filename: str):
     with open(filename, "rb") as f:
         lines = f.readlines()
-    return (lines[0].strip(), lines[1].strip())
+    return lines[0].strip(), lines[1].strip()
 
 class Session:
     def __init__(self, server_info_filepath):
