@@ -36,5 +36,5 @@ Usage
   session.tui.display.objects.contour['contour-1'].color_map.size()
   session.tui.display.objects.contour['contour-1'].rename('my-contour')
   del session.tui.display.objects.contour['my-contour']
-  session.close()
+  session.exit()
 
