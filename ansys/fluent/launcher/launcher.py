@@ -19,7 +19,8 @@ FLUENT_MINOR_VERSION = '2'
 LAUNCH_FLUENT_TIMEOUT = 100
 
 def get_fluent_exe_path():
-    exe_path = Path(os.getenv('AWP_ROOT' + FLUENT_MAJOR_VERSION + FLUENT_MINOR_VERSION))
+    exe_path = Path(
+        os.getenv('AWP_ROOT' + FLUENT_MAJOR_VERSION + FLUENT_MINOR_VERSION))
     exe_path = exe_path / 'fluent'
     if platform.system() == 'Windows':
         exe_path = exe_path / 'ntbin' / 'win64' / 'fluent.exe'
@@ -30,15 +31,19 @@ def get_fluent_exe_path():
 def get_server_info_filepath():
     server_info_dir = os.getenv('SERVER_INFO_DIR')
     dir = Path(server_info_dir) if server_info_dir else Path.cwd()
-    fd, filepath = tempfile.mkstemp(suffix='.txt', prefix='serverinfo-', dir=str(dir))
+    fd, filepath = tempfile.mkstemp(
+        suffix='.txt', prefix='serverinfo-', dir=str(dir))
     os.close(fd)
     return filepath if server_info_dir else Path(filepath).name
 
 def get_subprocess_kwargs_for_detached_process():
     kwargs = {}
-    kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    kwargs.update(
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if platform.system() == 'Windows':
-        kwargs.update(creationflags=subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS) 
+        kwargs.update(
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP |
+                          subprocess.DETACHED_PROCESS)
     else:
         kwargs.update(start_new_session=True)
     return kwargs
@@ -56,7 +61,8 @@ def launch_fluent(
         Whether to use the '2d' or '3d' version of Fluent. Default is '3d'.
 
     precision : str, optional
-        Whether to use the single-precision or double-precision version of Fluent. Default is double-precision.
+        Whether to use the single-precision or double-precision version
+        of Fluent. Default is double-precision.
 
     processor_count : int, optional
         Specify number of processors. Default is 1.
@@ -85,8 +91,9 @@ def launch_fluent(
                 if default is not None:
                     old_argval = argval
                     argval = default
-                    print(f'Default value {argval} is chosen for {k} as the passed value '
-                          f'{old_argval} is outside allowed_values {allowed_values}.')
+                    print(f'Default value {argval} is chosen for {k} '
+                          f'as the passed value {old_argval} is outside '
+                          f'allowed_values {allowed_values}.')
                 else:
                     print(f'{k} = {argval} is discarded '
                           f'as it is outside allowed_values {allowed_values}.')
@@ -116,7 +123,8 @@ def launch_fluent(
                 break
             time.sleep(1)
             counter -= 1
-            print(f'Waiting for Fluent to launch...{counter:2} seconds remaining', end='\r')
+            print(f'Waiting for Fluent to launch...'
+                  f'{counter:2} seconds remaining', end='\r')
         return Session(server_info_filepath)
     finally:
         Path(server_info_filepath).unlink(missing_ok=True)

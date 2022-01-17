@@ -29,6 +29,7 @@ class Session:
 
     class tui:
         __application_modules = []
+
         def __init__(self, service):
             self.service = service
             for mod in self.__class__.__application_modules:
