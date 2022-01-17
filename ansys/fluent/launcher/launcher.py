@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 import tempfile
@@ -11,6 +12,7 @@ except ImportError:
     from yaml import Loader
 
 from ansys.fluent.session import Session
+from ansys.fluent.core.logging  import Logger
 
 THIS_DIR = os.path.dirname(__file__)
 OPTIONS_FILE = os.path.join(THIS_DIR, 'launcher_options.yaml')
@@ -85,6 +87,7 @@ def launch_fluent(
     launch_string = exe_path
     argvals = locals()
     all_options = None
+    logger = Logger()
     with open(OPTIONS_FILE, 'r') as f:
         all_options = yaml.load(f, Loader)
     for k, v in all_options.items():
@@ -98,12 +101,14 @@ def launch_fluent(
                 if default is not None:
                     old_argval = argval
                     argval = default
-                    print(f'Default value {argval} is chosen for {k} '
-                          f'as the passed value {old_argval} is outside '
-                          f'allowed_values {allowed_values}.')
+                    logger.warning(
+                        'Default value %s is chosen for %s as the passed '
+                        'value  %s is outside allowed values %s.',
+                        argval, k, old_argval, allowed_values)
                 else:
-                    print(f'{k} = {argval} is discarded '
-                          f'as it is outside allowed_values {allowed_values}.')
+                    logger.warning(
+                        '%s = %s is discarded as it is outside '
+                        'allowed values %s.', k, argval, allowed_values)
                     continue
             fluent_values = v.get('fluent_values')
             if fluent_values:
@@ -115,7 +120,7 @@ def launch_fluent(
         launch_string += f' -sifile="{server_info_filepath}"'
         if not os.getenv('PYFLUENT_SHOW_SERVER_GUI'):
             launch_string += ' -hidden'
-        print(f'Launching Fluent with cmd: {launch_string}')
+        logger.info('Launching Fluent with cmd: %s', launch_string)
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         kwargs = get_subprocess_kwargs_for_detached_process()
         subprocess.Popen(launch_string, **kwargs)
@@ -123,15 +128,16 @@ def launch_fluent(
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
                 time.sleep(1)
-                print('\nFluent process is successfully launched.')
+                logger.info('Fluent process is successfully launched.')
                 break
             if counter == 0:
-                print('\nThe launch process has been timed out.')
+                logger.error('The launch process has been timed out.')
                 break
             time.sleep(1)
             counter -= 1
-            print(f'Waiting for Fluent to launch...'
-                  f'{counter:2} seconds remaining', end='\r')
+            logging.info(
+                'Waiting for Fluent to launch...%02d seconds remaining',
+                counter)
         return Session(server_info_filepath)
     finally:
         Path(server_info_filepath).unlink(missing_ok=True)
