@@ -10,12 +10,6 @@ MODULE_NAME_ALIAS = "pyfluent"
 JOURNAL_FILENAME = None
 
 
-def parse_server_info_file(filename: str):
-    with open(filename, "rb") as f:
-        lines = f.readlines()
-    return (lines[0].strip(), lines[1].strip())
-
-
 def convert_value_to_gvalue(val, gval):
     if isinstance(val, bool):
         gval.bool_value = val
@@ -94,7 +88,8 @@ class DatamodelService:
         return [("password", self.__password)]
 
     def get_attribute_value(self, request):
-        return self.stub.GetAttributeValue(request, metadata=self.__get_metadata())
+        return self.stub.GetAttributeValue(
+            request, metadata=self.__get_metadata())
 
     def get_state(self, request):
         return self.stub.GetState(request, metadata=self.__get_metadata())
@@ -103,7 +98,8 @@ class DatamodelService:
         return self.stub.SetState(request, metadata=self.__get_metadata())
 
     def execute_command(self, request):
-        return self.stub.ExecuteCommand(request, metadata=self.__get_metadata())
+        return self.stub.ExecuteCommand(
+            request, metadata=self.__get_metadata())
 
 
 def start_journal(filename: str):
@@ -145,13 +141,16 @@ class PyMenuJournaler:
             f.write(code)
 
     def journal_set_state(self, state):
-        self.__write_to_file(f'{MODULE_NAME_ALIAS}.{self.pypath} = {repr(state)}\n')
+        self.__write_to_file(
+            f'{MODULE_NAME_ALIAS}.{self.pypath} = {repr(state)}\n')
 
     def journal_rename(self, new_name):
-        self.__write_to_file(f'{MODULE_NAME_ALIAS}.{self.pypath}.rename({repr(new_name)})\n')
+        self.__write_to_file(
+            f'{MODULE_NAME_ALIAS}.{self.pypath}.rename({repr(new_name)})\n')
 
     def journal_delete(self, child_name):
-        self.__write_to_file(f'del {MODULE_NAME_ALIAS}.{self.pypath}[{repr(child_name)}]\n')
+        self.__write_to_file(
+            f'del {MODULE_NAME_ALIAS}.{self.pypath}[{repr(child_name)}]\n')
 
     def journal_execute(self, args=None, kwargs=None):
         self.__write_to_file(f'{MODULE_NAME_ALIAS}.{self.pypath}(')
@@ -213,7 +212,8 @@ class PyMenu:
         if include_unavailable:
             request.args['include_unavailable'] = 1
         response = self.service.get_attribute_value(request)
-        return convert_gvalue_to_value(response.value) == "NamedObjectContainer"
+        return (convert_gvalue_to_value(response.value) ==
+                "NamedObjectContainer")
 
     def get_child_names(self, path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
@@ -260,7 +260,8 @@ class PyMenu:
     def rename(self, path, new_name):
         request = DataModelProtoModule.SetStateRequest()
         request.path = path
-        convert_value_to_gvalue(new_name, request.state.struct_value.fields['name'])
+        convert_value_to_gvalue(
+            new_name, request.state.struct_value.fields['name'])
         ret = self.service.set_state(request)
         return ret
 
@@ -276,7 +277,8 @@ class PyMenu:
         request.path = path
         convert_value_to_gvalue(value, request.state)
         if request.state.HasField('null_value'): # creation with default value
-            convert_value_to_gvalue(name, request.state.struct_value.fields['name'])
+            convert_value_to_gvalue(
+                name, request.state.struct_value.fields['name'])
         ret = self.service.set_state(request)
         return ret
 
@@ -285,4 +287,3 @@ class PyMenu:
         request.path = path
         ret = self.service.set_state(request)
         return ret
-
