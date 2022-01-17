@@ -10,6 +10,23 @@ def parse_server_info_file(filename: str):
     return lines[0].strip(), lines[1].strip()
 
 class Session:
+    """
+    Encapsulates a Fluent connection.
+
+    ...
+
+    Attributes
+    ----------
+    tui : Session.tui
+        Instance of Session.Tui on which Fluent's TUI methods can be
+        executed.
+
+    Methods
+    -------
+    exit()
+        Close the Fluent connection and exit Fluent.
+
+    """
     __all_sessions = []
 
     def __init__(self, server_info_filepath):
@@ -17,10 +34,13 @@ class Session:
         self.__channel = grpc.insecure_channel(address)
         datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
         self.service = DatamodelService(datamodel_stub, password)
-        self.tui = Session.tui(self.service)
+        self.tui = Session.Tui(self.service)
         Session.__all_sessions.append(self)
 
     def exit(self):
+        """Close the Fluent connection and exit Fluent.
+
+        """
         if self.__channel:
             self.tui.exit()
             self.__channel.close()
@@ -37,7 +57,7 @@ class Session:
         for session in Session.__all_sessions:
             session.exit()
 
-    class tui:
+    class Tui:
         __application_modules = []
 
         def __init__(self, service):

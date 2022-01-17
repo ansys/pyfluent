@@ -29,4 +29,4 @@ from ansys.fluent.solver.tui import (
     turbo_workflow,
 )
 
-Session.tui.register_module(tui)
+Session.Tui.register_module(tui)

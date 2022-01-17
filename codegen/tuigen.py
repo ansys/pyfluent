@@ -143,7 +143,7 @@ class TUIGenerator:
             if not v.is_command:
                 self.__write_code_to_init_file(f'    {k},\n')
         self.__write_code_to_init_file(')\n\n')
-        self.__write_code_to_init_file('Session.tui.register_module(tui)')
+        self.__write_code_to_init_file('Session.Tui.register_module(tui)')
 
     def generate(self):
         self.__populate_menu(self.main_menu)

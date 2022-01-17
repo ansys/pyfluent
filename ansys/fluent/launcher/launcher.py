@@ -63,8 +63,8 @@ def launch_fluent(
         Default is ``"3d"``.
 
     precision : str, optional
-        Whether to use the ``"single"`` precision or ``"double"`` precision
-        version of Fluent. Default is ``"double"`` precision.
+        Whether to use the ``"single"`` precision or ``"double"``
+        precision version of Fluent. Default is ``"double"`` precision.
 
     processor_count : int, optional
         Specify number of processors. Default is 1.
@@ -73,8 +73,8 @@ def launch_fluent(
         Read the specified journal file.
 
     start_timeout : float, optional
-        Maximum allowable time in seconds to connect to the Fluent server.
-        Default is 100 seconds.
+        Maximum allowable time in seconds to connect to the Fluent
+        server. Default is 100 seconds.
 
     Returns
     -------
