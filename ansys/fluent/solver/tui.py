@@ -62,11 +62,6 @@ class adjoint(metaclass=PyMenuMeta):
         Reporting.
         """
         return PyMenu(self.service).execute('/adjoint/reporting', *args, **kwargs)
-    def postprocess_options(self, *args, **kwargs):
-        """
-        Postprocess options.
-        """
-        return PyMenu(self.service).execute('/adjoint/postprocess_options', *args, **kwargs)
     def morphing(self, *args, **kwargs):
         """
         Morphing menu.
@@ -87,11 +82,6 @@ class adjoint(metaclass=PyMenuMeta):
         Optimizer menu.
         """
         return PyMenu(self.service).execute('/adjoint/optimizer', *args, **kwargs)
-    def utilities(self, *args, **kwargs):
-        """
-        Utilities menu.
-        """
-        return PyMenu(self.service).execute('/adjoint/utilities', *args, **kwargs)
 
 class display(metaclass=PyMenuMeta):
     __doc__ = 'Enter the display menu.'
@@ -270,7 +260,6 @@ class display(metaclass=PyMenuMeta):
 
     class objects(metaclass=PyMenuMeta):
         __doc__ = 'Enter to add, edit, delete or display graphics objects'
-        is_extended_tui = True
         def create(self, *args, **kwargs):
             """
             Create new graphics object.
@@ -301,426 +290,6 @@ class display(metaclass=PyMenuMeta):
             Add graphics object to existing graphics.
             """
             return PyMenu(self.service).execute('/display/objects/add_to_graphics', *args, **kwargs)
-
-        class mesh(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class options(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class nodes(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class edges(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class faces(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class partitions(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class overset(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class gap(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class edge_type(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class all(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class feature(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class feature_angle(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                class outline(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class shrink_factor(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class surfaces_list(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class coloring(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class automatic(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class type(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class id(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class normal(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class partition(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                class manual(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class faces(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class edges(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class nodes(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class material_color(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-            class display_state_name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-        class contour(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class field(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class filled(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class boundary_values(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class contour_lines(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class node_values(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class surfaces_list(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class range_option(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class auto_range_on(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class global_range(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                class auto_range_off(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class clip_to_range(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class minimum(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class maximum(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-            class coloring(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class smooth(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class banded(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class color_map(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class visible(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class size(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class color(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class log_scale(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class format(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class user_skip(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class show_all(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class position(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class font_name(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class font_automatic(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class font_size(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class length(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class width(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class draw_mesh(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class mesh_object(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class display_state_name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-        class vector(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class field(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vector_field(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class surfaces_list(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class scale(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class auto_scale(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class scale_f(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class style(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class skip(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vector_opt(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class in_plane(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class fixed_length(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class x_comp(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class y_comp(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class z_comp(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class scale_head(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class color(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class range_option(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class auto_range_on(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class global_range(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                class auto_range_off(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                    class clip_to_range(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class minimum(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-                    class maximum(metaclass=PyMenuMeta):
-                        __doc__ = ''
-                        is_extended_tui = True
-
-            class color_map(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-                class visible(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class size(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class color(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class log_scale(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class format(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class user_skip(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class show_all(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class position(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class font_name(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class font_automatic(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class font_size(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class length(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-                class width(metaclass=PyMenuMeta):
-                    __doc__ = ''
-                    is_extended_tui = True
-
-            class draw_mesh(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class mesh_object(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class display_state_name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
 
     class flamelet_data(metaclass=PyMenuMeta):
         __doc__ = 'Display flamelet data.'
@@ -2760,7 +2329,6 @@ class define(metaclass=PyMenuMeta):
 
     class boundary_conditions(metaclass=PyMenuMeta):
         __doc__ = 'Enter the boundary conditions menu.'
-        is_extended_tui = True
         def axis(self, *args, **kwargs):
             """
             Set boundary conditions for a zone of this type.
@@ -2816,6 +2384,11 @@ class define(metaclass=PyMenuMeta):
             List zone IDs, types, kinds, and names.
             """
             return PyMenu(self.service).execute('/define/boundary_conditions/list_zones', *args, **kwargs)
+        def mass_flow_inlet(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/mass_flow_inlet', *args, **kwargs)
         def mass_flow_outlet(self, *args, **kwargs):
             """
             Set boundary conditions for a zone of this type.
@@ -2856,11 +2429,31 @@ class define(metaclass=PyMenuMeta):
             Set boundary conditions for a zone of this type.
             """
             return PyMenu(self.service).execute('/define/boundary_conditions/overset', *args, **kwargs)
+        def periodic(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/periodic', *args, **kwargs)
         def porous_jump(self, *args, **kwargs):
             """
             Set boundary conditions for a zone of this type.
             """
             return PyMenu(self.service).execute('/define/boundary_conditions/porous_jump', *args, **kwargs)
+        def pressure_far_field(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/pressure_far_field', *args, **kwargs)
+        def pressure_inlet(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/pressure_inlet', *args, **kwargs)
+        def pressure_outlet(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/pressure_outlet', *args, **kwargs)
         def radiator(self, *args, **kwargs):
             """
             Set boundary conditions for a zone of this type.
@@ -2891,6 +2484,21 @@ class define(metaclass=PyMenuMeta):
             Set boundary conditions for a zone of this type.
             """
             return PyMenu(self.service).execute('/define/boundary_conditions/solid', *args, **kwargs)
+        def symmetry(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/symmetry', *args, **kwargs)
+        def velocity_inlet(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/velocity_inlet', *args, **kwargs)
+        def wall(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/wall', *args, **kwargs)
         def zone_name(self, *args, **kwargs):
             """
             Give a zone a new name.
@@ -2916,258 +2524,6 @@ class define(metaclass=PyMenuMeta):
             Utility to compute Kudsen number based on characteristic length and boundary information.
             """
             return PyMenu(self.service).execute('/define/boundary_conditions/knudsen_number_calculator', *args, **kwargs)
-
-        class mass_flow_inlet(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class flow_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class mass_flow(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ec_mass_flow(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class mass_flux(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class mass_flux_ave(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class tref(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class pref(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class direction_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class impedance_0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class frame_of_reference(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class coordinate_system(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ai(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class aj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ak(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class x_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class y_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class z_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ke_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nut(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class kl(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class intermit(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class k(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class e(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class o(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class v2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_length_scale(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_hydraulic_diam(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class rst_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uu(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ww(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class sgs_turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class swirl_model(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class swirl_factor(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class x_fan_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class y_fan_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class z_fan_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsf(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsb(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsn(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class slip_velocity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class velocity_ratio(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volume_frac(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class granular_temperature(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_options(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_wave(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class t0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
 
         class modify_zones(metaclass=PyMenuMeta):
             __doc__ = 'Enter the modify zones menu.'
@@ -3366,974 +2722,6 @@ class define(metaclass=PyMenuMeta):
                 Change the realgas phase for a zone.
                 """
                 return PyMenu(self.service).execute('/define/boundary_conditions/modify_zones/change_zone_phase', *args, **kwargs)
-
-        class periodic(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-        class pressure_far_field(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class p(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class m(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class coordinate_system(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ai(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class aj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ak(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class x_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class y_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class z_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ke_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nut(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class kl(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class intermit(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class k(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class e(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class o(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class v2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_length_scale(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_hydraulic_diam(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class rst_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uu(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ww(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class sgs_turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_disable(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_dir_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_dir_x(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_dir_y(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_dir_z(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_levels(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class geom_bgthread(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class t(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class non_equil_boundary(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class tve(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-        class pressure_inlet(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class frame_of_reference(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class direction_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class coordinate_system(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ai(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class aj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ak(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class x_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class y_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class z_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vm_number_of_vortices(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vm_streamwise_fluct(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vm_mass_conservation(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volumetric_synthetic_turbulence_generator(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volumetric_synthetic_turbulence_generator_option(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volumetric_synthetic_turbulence_generator_option_thickness(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class prevent_reverse_flow(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ke_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nut(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class kl(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class intermit(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class k(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class e(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class o(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class v2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_length_scale(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_hydraulic_diam(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class rst_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uu(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ww(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class sgs_turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class les_spec_name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsf(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsb(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsn(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_options(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_wave(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class impedance_0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class t0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-        class pressure_outlet(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class prevent_reverse_flow(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class radial(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class gen_nrbc_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class avg_press_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class avg_option(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class targeted_mf_boundary(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class targeted_mf(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class targeted_mf_pmax(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class targeted_mf_pmin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class press_spec_gen(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p_backflow_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p_backflow_spec_gen(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_options(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_wave(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class impedance_0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p_profile_multiplier(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class direction_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class frame_of_reference(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class coordinate_system(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ai(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class aj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ak(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class x_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class y_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class z_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ke_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nut(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class kl(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class intermit(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class k(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class e(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class o(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class v2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_length_scale(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_hydraulic_diam(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class rst_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uu(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ww(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class sgs_turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsf(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsb(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wsn(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class t0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-        class symmetry(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-        class velocity_inlet(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
-
-            class vmag(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p_sup(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class velocity_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wave_velocity_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wave_vmag(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wave_u(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wave_v(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class wave_w(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_ship_vel_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_ship_vmag(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_ship_ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_ship_nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_ship_nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_sp_vel_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_sp_vmag(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_sp_ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_sp_nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_sp_nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_vel_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_vmag(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_vmag_ref(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_ref_ht(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_power_coeff(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ocw_pp_nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class p(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class omega_swirl(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_length_scale(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_hydraulic_diam(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class turb_viscosity_ratio_profile(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class frame_of_reference(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class coordinate_system(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ni(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nk(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class u(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class v(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class w(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ai(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class aj(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ak(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class x_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class y_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class z_origin(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vm_number_of_vortices(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vm_streamwise_fluct(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vm_mass_conservation(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volumetric_synthetic_turbulence_generator(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volumetric_synthetic_turbulence_generator_option(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class volumetric_synthetic_turbulence_generator_option_thickness(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ke_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class nut(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class kl(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class intermit(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class k(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class e(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class o(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class v2(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class rst_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uu(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ww(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uv(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class vw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class uw(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs_spec(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ksgs(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class sgs_turb_intensity(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class les_spec_name(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class granular_temperature(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_options(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class ac_wave(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class impedance_0(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class t(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class non_equil_boundary(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-            class tve(metaclass=PyMenuMeta):
-                __doc__ = ''
-                is_extended_tui = True
-
-        class wall(metaclass=PyNamedObjectMeta):
-            __doc__ = ''
-            is_extended_tui = True
 
         class non_reflecting_bc(metaclass=PyMenuMeta):
             __doc__ = 'Enter the non-reflecting b.c. menu.'
@@ -6728,6 +5116,11 @@ class define(metaclass=PyMenuMeta):
                         Move the particle a fraction of the distance to the subtet center when crossing a sliding interface
                         """
                         return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/sliding_interface_crossover_fraction', *args, **kwargs)
+                    def wallfilm_relocation_tolerance(self, *args, **kwargs):
+                        """
+                        Set the relocation tolerance for wallfilm particles after remeshing
+                        """
+                        return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/wallfilm_relocation_tolerance', *args, **kwargs)
                     def project_wall_film_particles_to_film(self, *args, **kwargs):
                         """
                         Project existing particles to film to track using high resolution tracking?
@@ -6743,6 +5136,21 @@ class define(metaclass=PyMenuMeta):
                         Enable automatic scaling of subtet intersection tolerance
                         """
                         return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/enable_automatic_intersection_tolerance', *args, **kwargs)
+                    def use_legacy_particle_location_method(self, *args, **kwargs):
+                        """
+                        Enable legacy method of locating particles in cells
+                        """
+                        return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/use_legacy_particle_location_method', *args, **kwargs)
+                    def load_legacy_particles(self, *args, **kwargs):
+                        """
+                        Load particles that were tracked without high-resolution tracking enabled
+                        """
+                        return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/load_legacy_particles', *args, **kwargs)
+                    def enhanced_wallfilm_location_method(self, *args, **kwargs):
+                        """
+                        Enable enhanced method of locating film particles on faces
+                        """
+                        return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/enhanced_wallfilm_location_method', *args, **kwargs)
                     def set_film_spreading_parameter(self, *args, **kwargs):
                         """
                         Set the spreading parameter for Lagrangian wallfilm particles
@@ -6811,39 +5219,6 @@ class define(metaclass=PyMenuMeta):
                             Enter user interpolation function
                             """
                             return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/user_interpolation_function', *args, **kwargs)
-
-                    class particle_relocation(metaclass=PyMenuMeta):
-                        __doc__ = 'Enter the particle relocation menu.'
-                        def wallfilm_relocation_tolerance_scale_factor(self, *args, **kwargs):
-                            """
-                            Set the relocation tolerance scaling factor for wallfilm particles after remeshing
-                            """
-                            return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/particle_relocation/wallfilm_relocation_tolerance_scale_factor', *args, **kwargs)
-                        def use_legacy_particle_location_method(self, *args, **kwargs):
-                            """
-                            Enable legacy method of locating particles in cells
-                            """
-                            return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/particle_relocation/use_legacy_particle_location_method', *args, **kwargs)
-                        def load_legacy_particles(self, *args, **kwargs):
-                            """
-                            Load particles that were tracked without high-resolution tracking enabled
-                            """
-                            return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/particle_relocation/load_legacy_particles', *args, **kwargs)
-                        def enhanced_cell_relocation_method(self, *args, **kwargs):
-                            """
-                            Enable enhanced method of locating particles in cells
-                            """
-                            return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/particle_relocation/enhanced_cell_relocation_method', *args, **kwargs)
-                        def overset_relocation_robustness_level(self, *args, **kwargs):
-                            """
-                            Set the robustness level for particle relocation in overset meshes
-                            """
-                            return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/particle_relocation/overset_relocation_robustness_level', *args, **kwargs)
-                        def enhanced_wallfilm_location_method(self, *args, **kwargs):
-                            """
-                            Enable enhanced method of locating film particles on faces
-                            """
-                            return PyMenu(self.service).execute('/define/models/dpm/numerics/high_resolution_tracking/particle_relocation/enhanced_wallfilm_location_method', *args, **kwargs)
 
             class options(metaclass=PyMenuMeta):
                 __doc__ = 'Enter the options menu to set optional DPM models.'
@@ -16086,11 +14461,6 @@ class file(metaclass=PyMenuMeta):
         Write currently defined profiles. To use *.csv format specify filename with .csv suffix
         """
         return PyMenu(self.service).execute('/file/write_currently_defined_profiles', *args, **kwargs)
-    def write_circumferential_averaged_profile(self, *args, **kwargs):
-        """
-        Write surface data as a boundary profile file. To use *.csv format specify filename with .csv suffix
-        """
-        return PyMenu(self.service).execute('/file/write_circumferential_averaged_profile', *args, **kwargs)
     def write_merge_profiles(self, *args, **kwargs):
         """
         Write multiple zones surface data as a single boundary profile file. To use *.csv format specify filename with .csv suffix
@@ -27392,8 +25762,6 @@ class solve(metaclass=PyMenuMeta):
     def iterate(self, *args, **kwargs):
         """
         Perform a specified number of iterations.
-        Arguments:
-          number_of_iterations: int
         """
         return PyMenu(self.service).execute('/solve/iterate', *args, **kwargs)
     def iterate_steady_2way_fsi(self, *args, **kwargs):
@@ -27414,13 +25782,6 @@ class solve(metaclass=PyMenuMeta):
     def dual_time_iterate(self, *args, **kwargs):
         """
         Perform unsteady iterations.
-        Arguments:
-          number_of_total_periods: int
-          number_of_time_steps: int
-          total_number_of_time_steps: int
-          total_time: float
-          incremental_time: float
-          maximum_number_of_iterations_per_time_step: int
         """
         return PyMenu(self.service).execute('/solve/dual_time_iterate', *args, **kwargs)
     def multistage_time_iterate(self, *args, **kwargs):
@@ -34193,6 +32554,11 @@ class setup(metaclass=PyMenuMeta):
                         Move the particle a fraction of the distance to the subtet center when crossing a sliding interface
                         """
                         return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/sliding_interface_crossover_fraction', *args, **kwargs)
+                    def wallfilm_relocation_tolerance(self, *args, **kwargs):
+                        """
+                        Set the relocation tolerance for wallfilm particles after remeshing
+                        """
+                        return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/wallfilm_relocation_tolerance', *args, **kwargs)
                     def project_wall_film_particles_to_film(self, *args, **kwargs):
                         """
                         Project existing particles to film to track using high resolution tracking?
@@ -34208,6 +32574,21 @@ class setup(metaclass=PyMenuMeta):
                         Enable automatic scaling of subtet intersection tolerance
                         """
                         return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/enable_automatic_intersection_tolerance', *args, **kwargs)
+                    def use_legacy_particle_location_method(self, *args, **kwargs):
+                        """
+                        Enable legacy method of locating particles in cells
+                        """
+                        return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/use_legacy_particle_location_method', *args, **kwargs)
+                    def load_legacy_particles(self, *args, **kwargs):
+                        """
+                        Load particles that were tracked without high-resolution tracking enabled
+                        """
+                        return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/load_legacy_particles', *args, **kwargs)
+                    def enhanced_wallfilm_location_method(self, *args, **kwargs):
+                        """
+                        Enable enhanced method of locating film particles on faces
+                        """
+                        return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/enhanced_wallfilm_location_method', *args, **kwargs)
                     def set_film_spreading_parameter(self, *args, **kwargs):
                         """
                         Set the spreading parameter for Lagrangian wallfilm particles
@@ -34276,39 +32657,6 @@ class setup(metaclass=PyMenuMeta):
                             Enter user interpolation function
                             """
                             return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/user_interpolation_function', *args, **kwargs)
-
-                    class particle_relocation(metaclass=PyMenuMeta):
-                        __doc__ = 'Enter the particle relocation menu.'
-                        def wallfilm_relocation_tolerance_scale_factor(self, *args, **kwargs):
-                            """
-                            Set the relocation tolerance scaling factor for wallfilm particles after remeshing
-                            """
-                            return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/particle_relocation/wallfilm_relocation_tolerance_scale_factor', *args, **kwargs)
-                        def use_legacy_particle_location_method(self, *args, **kwargs):
-                            """
-                            Enable legacy method of locating particles in cells
-                            """
-                            return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/particle_relocation/use_legacy_particle_location_method', *args, **kwargs)
-                        def load_legacy_particles(self, *args, **kwargs):
-                            """
-                            Load particles that were tracked without high-resolution tracking enabled
-                            """
-                            return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/particle_relocation/load_legacy_particles', *args, **kwargs)
-                        def enhanced_cell_relocation_method(self, *args, **kwargs):
-                            """
-                            Enable enhanced method of locating particles in cells
-                            """
-                            return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/particle_relocation/enhanced_cell_relocation_method', *args, **kwargs)
-                        def overset_relocation_robustness_level(self, *args, **kwargs):
-                            """
-                            Set the robustness level for particle relocation in overset meshes
-                            """
-                            return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/particle_relocation/overset_relocation_robustness_level', *args, **kwargs)
-                        def enhanced_wallfilm_location_method(self, *args, **kwargs):
-                            """
-                            Enable enhanced method of locating film particles on faces
-                            """
-                            return PyMenu(self.service).execute('/setup/models/dpm/numerics/high_resolution_tracking/particle_relocation/enhanced_wallfilm_location_method', *args, **kwargs)
 
             class options(metaclass=PyMenuMeta):
                 __doc__ = 'Enter the options menu to set optional DPM models.'
@@ -40692,26 +39040,6 @@ class parametric_study(metaclass=PyMenuMeta):
         Duplicate Parametric Study
         """
         return PyMenu(self.service).execute('/parametric_study/duplicate_study', *args, **kwargs)
-    def set_as_current_study(self, *args, **kwargs):
-        """
-        Set As Current Study
-        """
-        return PyMenu(self.service).execute('/parametric_study/set_as_current_study', *args, **kwargs)
-    def rename_study(self, *args, **kwargs):
-        """
-        Rename Study
-        """
-        return PyMenu(self.service).execute('/parametric_study/rename_study', *args, **kwargs)
-    def delete_study(self, *args, **kwargs):
-        """
-        Delete Study
-        """
-        return PyMenu(self.service).execute('/parametric_study/delete_study', *args, **kwargs)
-    def use_base_data(self, *args, **kwargs):
-        """
-        Use Base Data
-        """
-        return PyMenu(self.service).execute('/parametric_study/use_base_data', *args, **kwargs)
     def export_design_table(self, *args, **kwargs):
         """
         Enter the design table menu
