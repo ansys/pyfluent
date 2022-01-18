@@ -1,8 +1,13 @@
-import grpc
 import atexit
+import grpc
+import threading
 
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
+from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
 from ansys.fluent.core.core import DatamodelService
+
+from ansys.fluent.core import LOG
 
 def parse_server_info_file(filename: str):
     with open(filename, "rb") as f:
@@ -30,19 +35,52 @@ class Session:
     __all_sessions = []
 
     def __init__(self, server_info_filepath):
+        self.__is_exiting = False
+        self.lock = threading.Lock()
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
+
+        transcript_stub = TranscriptGrpcModule.TranscriptStub(
+            self.__channel)
+        request = TranscriptModule.TranscriptRequest()
+        responses = transcript_stub.BeginStreaming(
+            request, metadata=[('password', password)])
+        self.transcript_thread = threading.Thread(
+            target=Session.log_transcript, args=(self, responses))
+        self.transcript_thread.start()
+
         datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
         self.service = DatamodelService(datamodel_stub, password)
         self.tui = Session.Tui(self.service)
+
         Session.__all_sessions.append(self)
+
+    def log_transcript(self, responses):
+        transcript = ''
+        while True:
+            with self.lock:
+                if self.__is_exiting:
+                    LOG.debug(transcript)
+                    break
+            try:
+                response = next(responses)
+                transcript += response.transcript
+                if transcript[-1] == '\n':
+                    LOG.debug(transcript[0:-1])
+                    transcript = ''
+            except StopIteration:
+                break
 
     def exit(self):
         """Close the Fluent connection and exit Fluent.
 
         """
+        with self.lock:
+            self.__is_exiting = True
         if self.__channel:
             self.tui.exit()
+            if self.transcript_thread:
+                self.transcript_thread.join()
             self.__channel.close()
             self.__channel = None
 

@@ -29,4 +29,9 @@ from ansys.fluent.solver.tui import (
     turbo_workflow,
 )
 
+from ansys.fluent.core import LOG
+
 Session.Tui.register_module(tui)
+
+def setLogLevel(level):
+    LOG.setLevel(level)

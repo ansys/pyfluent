@@ -1,4 +1,3 @@
-import logging
 import os
 from pathlib import Path
 import tempfile
@@ -12,12 +11,11 @@ except ImportError:
     from yaml import Loader
 
 from ansys.fluent.session import Session
-from ansys.fluent.core.logging  import Logger
+from ansys.fluent.core  import LOG
 
 THIS_DIR = os.path.dirname(__file__)
 OPTIONS_FILE = os.path.join(THIS_DIR, 'launcher_options.yaml')
 FLUENT_VERSION = '22.2'
-START_FLUENT_TIMEOUT = 100
 
 def get_fluent_exe_path():
     exe_path = Path(
@@ -31,11 +29,11 @@ def get_fluent_exe_path():
 
 def get_server_info_filepath():
     server_info_dir = os.getenv('SERVER_INFO_DIR')
-    dir = Path(server_info_dir) if server_info_dir else Path.cwd()
+    dir = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
     fd, filepath = tempfile.mkstemp(
         suffix='.txt', prefix='serverinfo-', dir=str(dir))
     os.close(fd)
-    return filepath if server_info_dir else Path(filepath).name
+    return filepath
 
 def get_subprocess_kwargs_for_detached_process():
     kwargs = {}
@@ -54,7 +52,7 @@ def launch_fluent(
     precision=None,
     processor_count=None,
     journal_filename=None,
-    start_timeout=None
+    start_timeout=100
 ):
     """Start Fluent locally in server mode.
 
@@ -74,7 +72,7 @@ def launch_fluent(
     journal_filename : str, optional
         Read the specified journal file.
 
-    start_timeout : float, optional
+    start_timeout : int, optional
         Maximum allowable time in seconds to connect to the Fluent
         server. Default is 100 seconds.
 
@@ -87,7 +85,6 @@ def launch_fluent(
     launch_string = exe_path
     argvals = locals()
     all_options = None
-    logger = Logger()
     with open(OPTIONS_FILE, 'r') as f:
         all_options = yaml.load(f, Loader)
     for k, v in all_options.items():
@@ -101,12 +98,12 @@ def launch_fluent(
                 if default is not None:
                     old_argval = argval
                     argval = default
-                    logger.warning(
+                    LOG.warning(
                         'Default value %s is chosen for %s as the passed '
                         'value  %s is outside allowed values %s.',
                         argval, k, old_argval, allowed_values)
                 else:
-                    logger.warning(
+                    LOG.warning(
                         '%s = %s is discarded as it is outside '
                         'allowed values %s.', k, argval, allowed_values)
                     continue
@@ -120,24 +117,23 @@ def launch_fluent(
         launch_string += f' -sifile="{server_info_filepath}"'
         if not os.getenv('PYFLUENT_SHOW_SERVER_GUI'):
             launch_string += ' -hidden'
-        logger.info('Launching Fluent with cmd: %s', launch_string)
+        LOG.info('Launching Fluent with cmd: %s', launch_string)
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         kwargs = get_subprocess_kwargs_for_detached_process()
         subprocess.Popen(launch_string, **kwargs)
-        counter = argvals.get('start_timeout') or START_FLUENT_TIMEOUT
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
                 time.sleep(1)
-                logger.info('Fluent process is successfully launched.')
+                LOG.info('Fluent process is successfully launched.')
                 break
-            if counter == 0:
-                logger.error('The launch process has been timed out.')
+            if start_timeout == 0:
+                LOG.error('The launch process has been timed out.')
                 break
             time.sleep(1)
-            counter -= 1
-            logging.info(
+            start_timeout -= 1
+            LOG.info(
                 'Waiting for Fluent to launch...%02d seconds remaining',
-                counter)
+                start_timeout)
         return Session(server_info_filepath)
     finally:
         Path(server_info_filepath).unlink(missing_ok=True)
