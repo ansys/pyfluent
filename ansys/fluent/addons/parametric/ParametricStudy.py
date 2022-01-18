@@ -74,14 +74,10 @@ class FluentParameterAccessor(object):
     
     # static
     def __parameter_table_to_dict(self, table: str) -> dict:
-        print('table ', table)
         data_lines = table.splitlines()[3:]
-        print('data_lines ', data_lines)
         table_as_dict = {}
         for line in data_lines:
-            print('line ', line)
             line_as_list = line.split()
-            print('line_as_list ', line_as_list)
             table_as_dict[line_as_list[0]] = line_as_list[1]
         return table_as_dict
             
