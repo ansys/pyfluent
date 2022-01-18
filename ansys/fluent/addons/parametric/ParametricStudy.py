@@ -4,10 +4,11 @@
 
 
 class ParametricStudy(object):
-    def __init__(self, launcher, case_file_name):
+
+    def __init__(self, launcher, case_file_name, design_point_count):
         self.__launcher = launcher
         self.__case_file_name = case_file_name
-        self.__design_points = [(dict(), dict())]
+        self.__design_points = design_point_count * [(dict(), dict())]
 
     def update_all(self):
         for design_point in self.__design_points:
@@ -16,21 +17,14 @@ class ParametricStudy(object):
     def update_design_point(self, design_point):
         self.__run_design_point(design_point)
 
-    def new_design_points(self, count):
-        self.__design_points.extend(count * [(dict(), dict())])
+    def set_parameter(self, design_point_idx, name, value):
+        self.__design_points[design_point_idx][0][name] = value
         
-    def set_parameter(self, idx, name, value):
-        self.__design_points[idx][0][name] = value
+    def input_parameter(self, design_point_idx, name):
+        return self.__parameter(design_point_idx, True, name)
         
-    def input_parameter(self, idx, name):
-        if idx == 0:
-            return self.__base_dp_parameter(name)
-        return self.__design_points[idx][0][name]
-        
-    def output_parameter(self, idx, name):
-        if idx == 0:
-            return None # self.__base_dp_parameter(name)
-        return self.__design_points[idx][1][name]
+    def output_parameter(self, design_point_idx, name):
+        return self.__parameter(design_point_idx, False, name)
 
     # can be static
     def __run_design_point(self, design_point):
@@ -44,3 +38,7 @@ class ParametricStudy(object):
         session.tui.solve.iterate()
         #query parameter values here
         session.exit()
+
+    def __parameter(self, design_point_idx, is_input, name):
+        return self.__design_points[design_point_idx][0 if is_input else 1][name]
+        
