@@ -13,7 +13,8 @@ with open(VERSION_FILE, mode='r', encoding='utf8') as fd:
 
 install_requires = [
     'grpcio>=1.30.0',
-    'ansys-api-fluent-v0>=0.0.1'
+    'PyYAML>=5.3',
+    #'ansys-api-fluent-v0>=0.0.1'
     ]
 
 setup(
@@ -28,7 +29,7 @@ setup(
     author='ANSYS, Inc.',
     maintainer='Mainak Kundu',
     maintainer_email='mainak.kundu@ansys.com',
-    install_requires=['grpcio>=1.30.0'],
+    install_requires=install_requires,
     python_requires='>=3.5',
     classifiers=[
         'Development Status :: 4 - Beta',
