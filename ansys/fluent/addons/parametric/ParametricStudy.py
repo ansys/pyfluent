@@ -32,15 +32,30 @@ class DesignPoint(object):
         
     def outputs(self):
         return self.__outputs
+
+    def status(self):
+        return self.__status
         
     def set_input(self, parameter_name, value):
+        self.__status = DesignPointStatus.needs_update
         self.__inputs[parameter_name] = value
         
     def update_intputs(self, inputs):
+        self.__status = DesignPointStatus.needs_update
         self.__inputs = inputs
 
-    def update_outputs(self, outputs):
+    def on_end_updating(self, outputs):
         self.__outputs = outputs
+        self.__status = DesignPointStatus.updated
+
+    def on_start_updating(self):
+        self.__status = DesignPointStatus.updating
+
+    def block_updates(self):
+        self.__status = DesignPointStatus.do_not_update
+        
+    def allow_updates(self):
+        self.__status = DesignPointStatus.needs_update
 
 
 class DesignPointTable(list):
@@ -67,13 +82,13 @@ class FluentParameterAccessor(object):
         self.__list_parameters = fluent_session.tui.define.parameters.list_parameters
         
     def input_parameters(self) -> dict:
-        return self.__parameter_table_to_dict(self.__list_parameters.input_parameters())
+        return FluentParameterAccessor.__parameter_table_to_dict(self.__list_parameters.input_parameters())
         
     def output_parameters(self) -> dict:
-        return self.__parameter_table_to_dict(self.__list_parameters.output_parameters())
+        return FluentParameterAccessor.__parameter_table_to_dict(self.__list_parameters.output_parameters())
     
-    # static
-    def __parameter_table_to_dict(self, table: str) -> dict:
+    @staticmethod
+    def __parameter_table_to_dict(table: str) -> dict:
         data_lines = table.splitlines()[3:]
         table_as_dict = {}
         for line in data_lines:
@@ -107,13 +122,12 @@ class ParametricSession(object):
     def __del__(self):
         self.__fluent_session.exit()
 
+
 class FluentLauncher(object):
 
     def __call__(self):
         import ansys.fluent.solver as pyfluent
-        session = pyfluent.launch_fluent()
-        parametric_session = ParametricSession(fluent_session=session)
-        return parametric_session
+        return ParametricSession(fluent_session=pyfluent.launch_fluent())
 
 
 class ParametricStudy(object):
@@ -130,11 +144,11 @@ class ParametricStudy(object):
             self.update_design_point(design_point)
 
     def update_design_point(self, design_point):
+        design_point.on_start_updating()
         for parameter_name, value in design_point.inputs().items():
             self.__session.set_input_parameter(parameter_name, value)
         self.__session.update()
-        outputs = self.__session.output_parameters()
-        design_point.update_outputs(outputs.copy())
+        design_point.on_end_updating(outputs=self.__session.output_parameters().copy())
 
     def add_design_point(self, design_point_name: str) -> DesignPoint:
         return self.__design_point_table.add_design_point(design_point_name)
