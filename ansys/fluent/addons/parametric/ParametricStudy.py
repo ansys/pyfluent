@@ -139,8 +139,5 @@ class ParametricStudy(object):
     def add_design_point(self, design_point_name: str) -> DesignPoint:
         return self.__design_point_table.add_design_point(design_point_name)
 
-    def set_input_parameter(self, design_point_idx_or_name, parameter_name, value):
-        self.design_point(design_point_idx_or_name).set_input(parameter_name, value)
-
     def design_point(self, idx_or_name) -> DesignPoint:
         return self.__design_point_table.find_design_point(idx_or_name)
