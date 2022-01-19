@@ -1,6 +1,6 @@
 ###
 ### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
-###   
+###
 """
 Classes for running a parametric study in Fluent.
 
@@ -15,26 +15,28 @@ dp1.set_input('parameter_1', 0.235)
 dp1.set_input('velocity_inlet_5_y_velocity', 0.772)
 # the solver has not been run yet so no ouputs are computed
 # the design point is out of date
-assert(dp1.status == DesignPointStatus.out_of_date)
+assert(dp1.status == DesignPointStatus.OUT_OF_DATE)
 # get the base design point
 base = study.design_point('Base DP')
 # check that block updates works
 dp1.block_updates()
 base.block_updates()
-assert(dp1.status == DesignPointStatus.blocked)
+assert(dp1.status == DesignPointStatus.BLOCKED)
 study.update_all()
 assert(dp1.outputs == base.outputs)
 # update the design points
 dp1.allow_updates()
 base.allow_updates()
-assert(dp1.status == DesignPointStatus.out_of_date)
+assert(dp1.status == DesignPointStatus.OUT_OF_DATE)
 study.update_all()
 # check that dp1 is up to date and that its outputs differ from the base design point
-assert(dp1.status == DesignPointStatus.updated)
+assert(dp1.status == DesignPointStatus.UPDATED)
 assert(dp1.outputs != base.outputs)
 """
 
 from enum import Enum
+import ansys.fluent.solver as pyfluent
+
 
 class DesignPointStatus(Enum):
     """
@@ -42,17 +44,17 @@ class DesignPointStatus(Enum):
 
     Attributes
     ----------
-    out_of_date : int
-    updating : int
-    updated : int
-    failed : int
-    blocked : int
+    OUT_OF_DATE : int
+    UPDATING : int
+    UPDATED : int
+    FAILED : int
+    BLOCKED : int
     """
-    out_of_date = 1
-    updating = 2
-    updated = 3
-    failed = 4
-    blocked = 5
+    OUT_OF_DATE = 1
+    UPDATING = 2
+    UPDATED = 3
+    FAILED = 4
+    BLOCKED = 5
 
 
 class DesignPoint:
@@ -75,7 +77,7 @@ class DesignPoint:
     set_input(parameter_name: str, value)
         Set one parameter in the design point to the value provided.
     on_end_updating(outputs: dict)
-        Inform the design point that it is in an updated state and provides
+        Inform the design point that it is in an UPDATED state and provides
         the associated output parameters.
     block_updates()
         Move the design point into a do not update state.
@@ -88,49 +90,49 @@ class DesignPoint:
             self.__inputs = base_design_point.inputs.copy()
             self.__outputs = base_design_point.outputs.copy()
         else:
-            self.__inputs = dict()
-            self.__outputs = dict()
+            self.__inputs = {}
+            self.__outputs = {}
         # TODO add listener for __status:
-        self.__status = DesignPointStatus.out_of_date
+        self.__status = DesignPointStatus.OUT_OF_DATE
 
     @property
     def inputs(self) -> dict:
         return self.__inputs
-    
+
     @inputs.setter
     def inputs(self, inputs: dict):
-        self.__status = DesignPointStatus.out_of_date
+        self.__status = DesignPointStatus.OUT_OF_DATE
         self.__inputs = inputs
 
     @property
     def outputs(self) -> dict:
         return self.__outputs
-    
+
     @outputs.setter
     def outputs(self, inputs: dict):
-        self.__status = DesignPointStatus.out_of_date
+        self.__status = DesignPointStatus.OUT_OF_DATE
         self.__inputs = inputs
-        
+
     @property
     def status(self) -> DesignPointStatus:
         return self.__status
-        
+
     def set_input(self, parameter_name: str, value):
-        self.__status = DesignPointStatus.out_of_date
+        self.__status = DesignPointStatus.OUT_OF_DATE
         self.__inputs[parameter_name] = value
-        
+
     def on_start_updating(self):
-        self.__status = DesignPointStatus.updating
+        self.__status = DesignPointStatus.UPDATING
 
     def on_end_updating(self, outputs: dict):
         self.__outputs = outputs
-        self.__status = DesignPointStatus.updated
+        self.__status = DesignPointStatus.UPDATED
 
     def block_updates(self):
-        self.__status = DesignPointStatus.blocked
-        
+        self.__status = DesignPointStatus.BLOCKED
+
     def allow_updates(self):
-        self.__status = DesignPointStatus.out_of_date
+        self.__status = DesignPointStatus.OUT_OF_DATE
 
 
 class DesignPointTable(list):
@@ -157,7 +159,7 @@ class DesignPointTable(list):
     def add_design_point(self, design_point_name: str) -> DesignPoint:
         self.append(DesignPoint(design_point_name, self[0]))
         return self[-1]
-        
+
     def find_design_point(self, idx_or_name) -> DesignPoint:
         if isinstance(idx_or_name, int):
             return self[idx_or_name]
@@ -169,7 +171,7 @@ class DesignPointTable(list):
 
 class FluentParameterAccessor:
     """
-    Extracts parameter name to value dicts from table strs currenty returned by the API 
+    Extracts parameter name to value dicts from table strs currenty returned by the API
 
     Methods
     -------
@@ -181,13 +183,15 @@ class FluentParameterAccessor:
 
     def __init__(self, fluent_session):
         self.__list_parameters = fluent_session.tui.define.parameters.list_parameters
-        
+
     def input_parameters(self) -> dict:
-        return FluentParameterAccessor.__parameter_table_to_dict(self.__list_parameters.input_parameters())
-        
+        return FluentParameterAccessor.__parameter_table_to_dict(
+            self.__list_parameters.input_parameters())
+
     def output_parameters(self) -> dict:
-        return FluentParameterAccessor.__parameter_table_to_dict(self.__list_parameters.output_parameters())
-    
+        return FluentParameterAccessor.__parameter_table_to_dict(
+            self.__list_parameters.output_parameters())
+
     @staticmethod
     def __parameter_table_to_dict(table: str) -> dict:
         data_lines = table.splitlines()[3:]
@@ -196,7 +200,7 @@ class FluentParameterAccessor:
             line_as_list = line.split()
             table_as_dict[line_as_list[0]] = line_as_list[1]
         return table_as_dict
-            
+
 
 class ParametricSession:
     """
@@ -221,12 +225,13 @@ class ParametricSession:
 
     def input_parameters(self) -> dict:
         return self.__parameter_accessor.input_parameters()
-        
+
     def output_parameters(self) -> dict:
         return self.__parameter_accessor.output_parameters()
 
     def set_input_parameter(self, parameter_name: str, value):
-        self.__fluent_session.tui.define.parameters.input_parameters.edit(parameter_name, parameter_name, value)
+        self.__fluent_session.tui.define.parameters.input_parameters.edit(
+            parameter_name, parameter_name, value)
 
     def initialize_with_case(self, case_file_name: str):
         self.__fluent_session.tui.file.read_case(case_file_name=case_file_name)
@@ -234,7 +239,7 @@ class ParametricSession:
     def update(self):
         self.__fluent_session.tui.solve.initialize.initialize_flow()
         self.__fluent_session.tui.solve.iterate()
-        
+
     def __del__(self):
         self.__fluent_session.exit()
 
@@ -249,7 +254,6 @@ class FluentLauncher:
         Launch a session
     """
     def __call__(self):
-        import ansys.fluent.solver as pyfluent
         return ParametricSession(fluent_session=pyfluent.launch_fluent())
 
 
@@ -263,7 +267,7 @@ class ParametricStudy:
     -------
     update_all()
         Bring all design point outputs up to date by running the solver on each design point.
-        Ignores blocked design points (not yet implemented).
+        Ignores BLOCKED design points (not yet implemented).
     update_design_point()
         Bring the outputs of the specified design point up to date by running the solver.
     add_design_point(design_point_name: str) -> DesignPoint
@@ -276,7 +280,11 @@ class ParametricStudy:
         RuntimeError
             If the design point is not found.
     """
-    def __init__(self, case_file_name: str, base_design_point_name: str = "Base DP", launcher = FluentLauncher()):
+    def __init__(
+        self,
+        case_file_name: str,
+        base_design_point_name: str = "Base DP",
+        launcher = FluentLauncher()):
         self.__session = launcher()
         self.__session.initialize_with_case(case_file_name)
         base_design_point = DesignPoint(base_design_point_name)
@@ -285,7 +293,7 @@ class ParametricStudy:
 
     def update_all(self):
         for design_point in self.__design_point_table:
-            if design_point.status != DesignPointStatus.blocked:
+            if design_point.status != DesignPointStatus.BLOCKED:
                 self.update_design_point(design_point)
 
     def update_design_point(self, design_point: DesignPoint):
