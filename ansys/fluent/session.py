@@ -5,6 +5,8 @@ import threading
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
+from ansys.api.fluent.v0 import health_pb2 as HealthModule
+from ansys.api.fluent.v0 import health_pb2_grpc as HealthGrpcModule
 from ansys.fluent.core.core import DatamodelService, PyMenu
 
 from ansys.fluent.core import LOG
@@ -22,12 +24,15 @@ class Session:
 
     Attributes
     ----------
-    tui : Session.tui
+    tui : Session.Tui
         Instance of Session.Tui on which Fluent's TUI methods can be
         executed.
 
     Methods
     -------
+    health_check()
+        Check health of Fluent connection
+
     exit()
         Close the Fluent connection and exit Fluent.
 
@@ -53,6 +58,11 @@ class Session:
         self.service = DatamodelService(datamodel_stub, password)
         self.tui = Session.Tui(self.service)
 
+        health_stub = HealthGrpcModule.HealthStub(self.__channel)
+        health_check_request = HealthModule.HealthCheckRequest()
+        self.__health_checker = lambda : health_stub.Check(
+            health_check_request, metadata=[('password', password)])
+
         Session.__all_sessions.append(self)
 
     def log_transcript(self, responses):
@@ -70,6 +80,17 @@ class Session:
                     transcript = ''
             except StopIteration:
                 break
+
+    def health_check(self):
+        """Check health of Fluent connection
+
+        """
+        response_cls = HealthModule.HealthCheckResponse
+        if self.__channel:
+            response = self.__health_checker()
+            return response_cls.ServingStatus.Name(response.status)
+        else:
+            return response_cls.ServingStatus.Name(response_cls.NOT_SERVING)
 
     def exit(self):
         """Close the Fluent connection and exit Fluent.
