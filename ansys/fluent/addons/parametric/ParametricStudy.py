@@ -63,6 +63,7 @@ class DesignPoint:
     ----------
     name : str
         Name of the design point as a str
+
     Methods
     -------
     outputs() -> dict
@@ -93,7 +94,6 @@ class DesignPoint:
             self.__outputs = dict()
         # TODO add listener for __status:
         self.__status = DesignPointStatus.out_of_date
-
 
     def inputs(self) -> dict:
         return self.__inputs
