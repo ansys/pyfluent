@@ -1,6 +1,38 @@
 ###
 ### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
 ###   
+"""
+Classes for running a parametric study in Fluent.
+
+Example
+-------
+from ansys.fluent.addons.parametric.ParametricStudy import ParametricStudy, DesignPointStatus
+# instantiate the study, specifying the case
+study = ParametricStudy(case_file_name=my_case_file_name)
+# add one new design point and set an input parameter
+dp1 = study.add_design_point('DP1')
+dp1.set_input('parameter_1', 0.235)
+dp1.set_input('velocity_inlet_5_y_velocity', 0.772)
+# the solver has not been run yet so no ouputs are computed
+# the design point is out of date
+assert(dp1.status() == DesignPointStatus.out_of_date)
+# get the base design point
+base = study.design_point('Base DP')
+# check that block updates works
+dp1.block_updates()
+base.block_updates()
+assert(dp1.status() == DesignPointStatus.blocked)
+study.update_all()
+assert(dp1.outputs() == base.outputs())
+# update the design points
+dp1.allow_updates()
+base.allow_updates()
+assert(dp1.status() == DesignPointStatus.out_of_date)
+study.update_all()
+# check that dp1 is up to date and that its outputs differ from the base design point
+assert(dp1.status() == DesignPointStatus.updated)
+assert(dp1.outputs() != base.outputs())
+"""
 
 from enum import Enum
 
@@ -10,17 +42,17 @@ class DesignPointStatus(Enum):
 
     Attributes
     ----------
-    needs_update : int
+    out_of_date : int
     updating : int
     updated : int
     failed : int
-    do_not_update : int
+    blocked : int
     """
-    needs_update = 1
+    out_of_date = 1
     updating = 2
     updated = 3
     failed = 4
-    do_not_update = 5
+    blocked = 5
 
 
 class DesignPoint(object):
@@ -58,7 +90,7 @@ class DesignPoint(object):
             self.__inputs = dict()
             self.__outputs = dict()
         # TODO add listener for __status:
-        self.__status = DesignPointStatus.needs_update
+        self.__status = DesignPointStatus.out_of_date
 
     def name(self) -> str:
         return self.__name
@@ -73,11 +105,11 @@ class DesignPoint(object):
         return self.__status
         
     def set_input(self, parameter_name: str, value):
-        self.__status = DesignPointStatus.needs_update
+        self.__status = DesignPointStatus.out_of_date
         self.__inputs[parameter_name] = value
         
     def update_intputs(self, inputs: dict):
-        self.__status = DesignPointStatus.needs_update
+        self.__status = DesignPointStatus.out_of_date
         self.__inputs = inputs
 
     def on_end_updating(self, outputs):
@@ -88,10 +120,10 @@ class DesignPoint(object):
         self.__status = DesignPointStatus.updating
 
     def block_updates(self):
-        self.__status = DesignPointStatus.do_not_update
+        self.__status = DesignPointStatus.blocked
         
     def allow_updates(self):
-        self.__status = DesignPointStatus.needs_update
+        self.__status = DesignPointStatus.out_of_date
 
 
 class DesignPointTable(list):
@@ -245,7 +277,8 @@ class ParametricStudy(object):
 
     def update_all(self):
         for design_point in self.__design_point_table:
-            self.update_design_point(design_point)
+            if design_point.status() != DesignPointStatus.blocked:
+                self.update_design_point(design_point)
 
     def update_design_point(self, design_point: DesignPoint):
         design_point.on_start_updating()
