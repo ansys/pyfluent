@@ -1,20 +1,16 @@
+import json
 import os
 from pathlib import Path
-import tempfile
 import platform
 import subprocess
 import time
-import yaml
-try:
-    from yaml import CLoader as Loader
-except ImportError:
-    from yaml import Loader
+import tempfile
 
 from ansys.fluent.session import Session
 from ansys.fluent.core  import LOG
 
 THIS_DIR = os.path.dirname(__file__)
-OPTIONS_FILE = os.path.join(THIS_DIR, 'launcher_options.yaml')
+OPTIONS_FILE = os.path.join(THIS_DIR, 'fluent_launcher_options.json')
 FLUENT_VERSION = '22.2'
 
 def get_fluent_exe_path():
@@ -85,8 +81,8 @@ def launch_fluent(
     launch_string = exe_path
     argvals = locals()
     all_options = None
-    with open(OPTIONS_FILE, 'r') as f:
-        all_options = yaml.load(f, Loader)
+    with open(OPTIONS_FILE, 'r') as fp:
+        all_options = json.load(fp)
     for k, v in all_options.items():
         argval = argvals.get(k)
         default = v.get('default')

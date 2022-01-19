@@ -1,0 +1,34 @@
+{
+    "version": {
+        "type": "str",
+        "allowed_values": [
+            "3d",
+            "2d"
+        ],
+        "default": "3d",
+        "required": true,
+        "fluent_format": " {}"
+    },
+    "precision": {
+        "type": "str",
+        "allowed_values": [
+            "single",
+            "double"
+        ],
+        "default": "double",
+        "required": true,
+        "fluent_values": [
+            "",
+            "dp"
+        ],
+        "fluent_format": "{}"
+    },
+    "processor_count": {
+        "type": "int",
+        "fluent_format": " -t{}"
+    },
+    "journal_filename": {
+        "type": "str",
+        "fluent_format": " -i {}"
+    }
+}
