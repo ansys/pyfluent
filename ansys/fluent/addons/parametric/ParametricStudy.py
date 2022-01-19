@@ -74,7 +74,7 @@ class DesignPoint:
         Get the current status of the design point.
     set_input(parameter_name: str, value)
         Set one parameter in the design point to the value provided.
-    update_intputs(inputs: dict)
+    update_inputs(inputs: dict)
         Overwrite the input parameters with the provided inputs.
     on_end_updating(outputs: dict)
         Inform the design point that it is in an updated state and provides
@@ -108,7 +108,7 @@ class DesignPoint:
         self.__status = DesignPointStatus.out_of_date
         self.__inputs[parameter_name] = value
         
-    def update_intputs(self, inputs: dict):
+    def update_inputs(self, inputs: dict):
         self.__status = DesignPointStatus.out_of_date
         self.__inputs = inputs
 
@@ -273,7 +273,7 @@ class ParametricStudy:
         self.__session = launcher()
         self.__session.initialize_with_case(case_file_name)
         base_design_point = DesignPoint(base_design_point_name)
-        base_design_point.update_intputs(self.__session.input_parameters().copy())
+        base_design_point.update_inputs(self.__session.input_parameters().copy())
         self.__design_point_table = DesignPointTable(base_design_point)
 
     def update_all(self):
