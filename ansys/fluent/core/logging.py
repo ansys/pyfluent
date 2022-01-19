@@ -1,14 +1,14 @@
 import logging
 
 class Logger:
-    def __init__(self, level=logging.DEBUG):
+    def __init__(self, level=logging.ERROR):
         self.logger = logging.getLogger()
         handler = logging.StreamHandler()
         formatter = logging.Formatter(
             '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(level)
 
         # Writing logging methods.
         self.debug = self.logger.debug
@@ -17,3 +17,6 @@ class Logger:
         self.error = self.logger.error
         self.critical = self.logger.critical
         self.log = self.logger.log
+
+    def setLevel(self, level):
+        self.logger.setLevel(level)

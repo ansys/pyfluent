@@ -36,8 +36,16 @@ class PyMenuMeta(type):
                 convert_path_to_grpc_path(self.path), value)
         return wrapper
 
+    @classmethod
+    def __create_dir(cls):
+        def wrapper(self):
+            return PyMenu(self.service).get_child_names(
+                convert_path_to_grpc_path(self.path))
+        return wrapper
+
     def __new__(cls, name, bases, attrs):
         attrs['__init__'] = cls.__create_init()
+        attrs['__dir__'] = cls.__create_dir()
         if 'is_extended_tui' in attrs:
             attrs['__call__'] = cls.__create_get_state()
             attrs['set_state'] = cls.__create_set_state()

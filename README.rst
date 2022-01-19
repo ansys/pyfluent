@@ -23,7 +23,10 @@ Usage
 .. code:: python
 
   import ansys.fluent.solver as pyfluent
+  import logging
+  pyfluent.setLogLevel(logging.DEBUG) # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
+  session.health_check()
   session.tui.file.read_case(case_file_name='elbow.cas.gz')
   session.tui.define.models.unsteady_2nd_order("yes")
   session.tui.solve.initialize.initialize_flow()

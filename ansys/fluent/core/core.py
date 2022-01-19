@@ -192,6 +192,10 @@ class PyMenuJournaler:
 
 
 class PyMenu:
+    class ExecuteCommandResult:
+        def __init__(self, result):
+            self.result = result
+
     def __init__(self, service):
         self.service = service
 
@@ -246,7 +250,7 @@ class PyMenu:
         else:
             convert_value_to_gvalue(args, request.args.fields['tui_args'])
         ret = self.service.execute_command(request)
-        return convert_gvalue_to_value(ret.result)
+        return PyMenu.ExecuteCommandResult(convert_gvalue_to_value(ret.result))
 
     def get_doc_string(self, path, include_unavailable=False):
         request = DataModelProtoModule.GetAttributeValueRequest()
