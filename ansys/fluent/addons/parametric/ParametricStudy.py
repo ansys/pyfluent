@@ -59,10 +59,12 @@ class DesignPoint:
     """
     Design point in a parametric study.
 
+    Attributes
+    ----------
+    name : str
+        Name of the design point as a str
     Methods
     -------
-    name()
-        Get name of the design point as a str.
     outputs() -> dict
         Get dict of output parameters (name of parameter to value).
     inputs() -> dict
@@ -71,7 +73,7 @@ class DesignPoint:
         Get the current status of the design point.
     set_input(parameter_name: str, value)
         Set one parameter in the design point to the value provided.
-    update_intputs(inputs :dict)
+    update_intputs(inputs: dict)
         Overwrite the input parameters with the provided inputs.
     on_end_updating(outputs: dict)
         Inform the design point that it is in an updated state and provides
@@ -82,7 +84,7 @@ class DesignPoint:
         Move the design point into a needs update state.
     """
     def __init__(self, design_point_name: str, base_design_point=None):
-        self.__name = design_point_name
+        self.name = design_point_name
         if base_design_point:
             self.__inputs = base_design_point.inputs().copy()
             self.__outputs = base_design_point.outputs().copy()
@@ -92,8 +94,6 @@ class DesignPoint:
         # TODO add listener for __status:
         self.__status = DesignPointStatus.out_of_date
 
-    def name(self) -> str:
-        return self.__name
 
     def inputs(self) -> dict:
         return self.__inputs
@@ -112,7 +112,7 @@ class DesignPoint:
         self.__status = DesignPointStatus.out_of_date
         self.__inputs = inputs
 
-    def on_end_updating(self, outputs):
+    def on_end_updating(self, outputs: dict):
         self.__outputs = outputs
         self.__status = DesignPointStatus.updated
 
@@ -155,7 +155,7 @@ class DesignPointTable(list):
         if isinstance(idx_or_name, int):
             return self[idx_or_name]
         for design_point in self:
-            if idx_or_name == design_point.name():
+            if idx_or_name == design_point.name:
                 return design_point
         raise RuntimeError("Design point not found: " + repr(idx_or_name))
 
