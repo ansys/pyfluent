@@ -5,6 +5,17 @@
 from enum import Enum
 
 class DesignPointStatus(Enum):
+    """
+    Status of a design point in a parametric study.
+
+    Attributes
+    ----------
+    needs_update : int
+    updating : int
+    updated : int
+    failed : int
+    do_not_update : int
+    """
     needs_update = 1
     updating = 2
     updated = 3
@@ -13,34 +24,59 @@ class DesignPointStatus(Enum):
 
 
 class DesignPoint(object):
+    """
+    Design point in a parametric study.
 
-    def __init__(self, name: str, base_design_point=None):
-        self.__name = name
+    Methods
+    -------
+    name()
+        Get name of the design point as a str.
+    outputs() -> dict
+        Get dict of output parameters (name of parameter to value).
+    inputs() -> dict
+        Get dict of input parameters (name of parameter to value).
+    status() -> DesignPointStatus
+        Get the current status of the design point.
+    set_input(parameter_name: str, value)
+        Set one parameter in the design point to the value provided.
+    update_intputs(inputs :dict)
+        Overwrite the input parameters with the provided inputs.
+    on_end_updating(outputs: dict)
+        Inform the design point that it is in an updated state and provides
+        the associated output parameters.
+    block_updates()
+        Move the design point into a do not update state.
+    block_updates()
+        Move the design point into a needs update state.
+    """
+    def __init__(self, design_point_name: str, base_design_point=None):
+        self.__name = design_point_name
         if base_design_point:
             self.__inputs = base_design_point.inputs().copy()
             self.__outputs = base_design_point.outputs().copy()
         else:
             self.__inputs = dict()
             self.__outputs = dict()
+        # TODO add listener for __status:
         self.__status = DesignPointStatus.needs_update
 
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
-    def inputs(self):
+    def inputs(self) -> dict:
         return self.__inputs
         
-    def outputs(self):
+    def outputs(self) -> dict:
         return self.__outputs
 
-    def status(self):
+    def status(self) -> DesignPointStatus:
         return self.__status
         
-    def set_input(self, parameter_name, value):
+    def set_input(self, parameter_name: str, value):
         self.__status = DesignPointStatus.needs_update
         self.__inputs[parameter_name] = value
         
-    def update_intputs(self, inputs):
+    def update_intputs(self, inputs: dict):
         self.__status = DesignPointStatus.needs_update
         self.__inputs = inputs
 
@@ -59,6 +95,21 @@ class DesignPoint(object):
 
 
 class DesignPointTable(list):
+    """
+    Design point study in a parametric study
+
+    Methods
+    -------
+    add_design_point(design_point_name: str) -> DesignPoint
+        Add a new design point to the table with the provided name.
+    find_design_point(idx_or_name)
+        Get a design point, either by name (str) or an index
+        indicating the position in the table (by order of insertion).
+        Raises
+        ------
+        RuntimeError
+            If the design point is not found.
+    """
 
     def __init__(self, base_design_point: DesignPoint):
         self.append(base_design_point)
@@ -77,6 +128,16 @@ class DesignPointTable(list):
 
 
 class FluentParameterAccessor(object):
+    """
+    Extracts parameter name to value dicts from table strs currenty returned by the API 
+
+    Methods
+    -------
+    input_parameters() -> dict
+        Get the current input parameter dict.
+    output_parameters() -> dict
+        Get the current input parameter dict.
+    """
 
     def __init__(self, fluent_session):
         self.__list_parameters = fluent_session.tui.define.parameters.list_parameters
@@ -98,15 +159,30 @@ class FluentParameterAccessor(object):
             
 
 class ParametricSession(object):
+    """
+    Full set of interactions with Fluent inthe context of a parametric study
 
+    Methods
+    -------
+    input_parameters() -> dict
+        Get the current input parameter dict.
+    output_parameters() -> dict
+        Get the current input parameter dict.
+    set_input_parameter(parameter_name: str)
+        Set a single input parameter value in the Fluent session.
+    initialize_with_case(case_file_name: str)
+        Read the specified case into Fluent.
+    update()
+        Run the solver until convergence.
+    """
     def __init__(self, fluent_session):
         self.__fluent_session = fluent_session
         self.__parameter_accessor = FluentParameterAccessor(fluent_session)
 
-    def input_parameters(self):
+    def input_parameters(self) -> dict:
         return self.__parameter_accessor.input_parameters()
         
-    def output_parameters(self):
+    def output_parameters(self) -> dict:
         return self.__parameter_accessor.output_parameters()
 
     def set_input_parameter(self, parameter_name: str, value):
@@ -124,14 +200,42 @@ class ParametricSession(object):
 
 
 class FluentLauncher(object):
+    """
+    Launches fluent sessions.
 
+    Methods
+    -------
+    __call__()
+        Launch a session
+    """
     def __call__(self):
         import ansys.fluent.solver as pyfluent
         return ParametricSession(fluent_session=pyfluent.launch_fluent())
 
 
 class ParametricStudy(object):
+    """
+    Parametric study that manages design points to parametrize a Fluent solver
+    set-up. Provides ability to run Fluent for a series of design points, and
+    access the inputs and outputs.
 
+    Methods
+    -------
+    update_all()
+        Bring all design point outputs up to date by running the solver on each design point.
+        Ignores blocked design points (not yet implemented).
+    update_design_point()
+        Bring the outputs of the specified design point up to date by running the solver.
+    add_design_point(design_point_name: str) -> DesignPoint
+        Add a design point
+    design_point(idx_or_name)
+        Get a design point, either by name (str) or an index
+        indicating the position in the table (by order of insertion).
+        Raises
+        ------
+        RuntimeError
+            If the design point is not found.
+    """
     def __init__(self, case_file_name: str, base_design_point_name: str = "Base DP", launcher = FluentLauncher()):
         self.__session = launcher()
         self.__session.initialize_with_case(case_file_name)
@@ -143,7 +247,7 @@ class ParametricStudy(object):
         for design_point in self.__design_point_table:
             self.update_design_point(design_point)
 
-    def update_design_point(self, design_point):
+    def update_design_point(self, design_point: DesignPoint):
         design_point.on_start_updating()
         for parameter_name, value in design_point.inputs().items():
             self.__session.set_input_parameter(parameter_name, value)
