@@ -55,7 +55,7 @@ class DesignPointStatus(Enum):
     blocked = 5
 
 
-class DesignPoint(object):
+class DesignPoint:
     """
     Design point in a parametric study.
 
@@ -144,6 +144,7 @@ class DesignPointTable(list):
     """
 
     def __init__(self, base_design_point: DesignPoint):
+        super().__init__()
         self.append(base_design_point)
 
     def add_design_point(self, design_point_name: str) -> DesignPoint:
@@ -159,7 +160,7 @@ class DesignPointTable(list):
         raise RuntimeError("Design point not found: " + repr(idx_or_name))
 
 
-class FluentParameterAccessor(object):
+class FluentParameterAccessor:
     """
     Extracts parameter name to value dicts from table strs currenty returned by the API 
 
@@ -190,7 +191,7 @@ class FluentParameterAccessor(object):
         return table_as_dict
             
 
-class ParametricSession(object):
+class ParametricSession:
     """
     Full set of interactions with Fluent inthe context of a parametric study
 
@@ -231,7 +232,7 @@ class ParametricSession(object):
         self.__fluent_session.exit()
 
 
-class FluentLauncher(object):
+class FluentLauncher:
     """
     Launches fluent sessions.
 
@@ -245,7 +246,7 @@ class FluentLauncher(object):
         return ParametricSession(fluent_session=pyfluent.launch_fluent())
 
 
-class ParametricStudy(object):
+class ParametricStudy:
     """
     Parametric study that manages design points to parametrize a Fluent solver
     set-up. Provides ability to run Fluent for a series of design points, and
