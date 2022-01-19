@@ -5,7 +5,7 @@ import threading
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
-from ansys.fluent.core.core import DatamodelService
+from ansys.fluent.core.core import DatamodelService, PyMenu
 
 from ansys.fluent.core import LOG
 
@@ -113,5 +113,8 @@ class Session:
             for name, obj in mod.__dict__.items():
                 if callable(obj):
                     setattr(cls, name, obj)
+
+        def __dir__(self):
+            return PyMenu(self.service).get_child_names('')
 
 atexit.register(Session.exit_all)
