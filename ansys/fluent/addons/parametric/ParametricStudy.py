@@ -15,23 +15,23 @@ dp1.set_input('parameter_1', 0.235)
 dp1.set_input('velocity_inlet_5_y_velocity', 0.772)
 # the solver has not been run yet so no ouputs are computed
 # the design point is out of date
-assert(dp1.status() == DesignPointStatus.out_of_date)
+assert(dp1.status == DesignPointStatus.out_of_date)
 # get the base design point
 base = study.design_point('Base DP')
 # check that block updates works
 dp1.block_updates()
 base.block_updates()
-assert(dp1.status() == DesignPointStatus.blocked)
+assert(dp1.status == DesignPointStatus.blocked)
 study.update_all()
-assert(dp1.outputs() == base.outputs())
+assert(dp1.outputs == base.outputs)
 # update the design points
 dp1.allow_updates()
 base.allow_updates()
-assert(dp1.status() == DesignPointStatus.out_of_date)
+assert(dp1.status == DesignPointStatus.out_of_date)
 study.update_all()
 # check that dp1 is up to date and that its outputs differ from the base design point
-assert(dp1.status() == DesignPointStatus.updated)
-assert(dp1.outputs() != base.outputs())
+assert(dp1.status == DesignPointStatus.updated)
+assert(dp1.outputs != base.outputs)
 """
 
 from enum import Enum
@@ -63,19 +63,17 @@ class DesignPoint:
     ----------
     name : str
         Name of the design point as a str
+    outputs : dict
+        Dict of output parameters (name of parameter to value).
+    inputs : dict
+        Dict of input parameters (name of parameter to value).
+    status : DesignPointStatus
+        Current status of the design point.
 
     Methods
     -------
-    outputs() -> dict
-        Get dict of output parameters (name of parameter to value).
-    inputs() -> dict
-        Get dict of input parameters (name of parameter to value).
-    status() -> DesignPointStatus
-        Get the current status of the design point.
     set_input(parameter_name: str, value)
         Set one parameter in the design point to the value provided.
-    update_inputs(inputs: dict)
-        Overwrite the input parameters with the provided inputs.
     on_end_updating(outputs: dict)
         Inform the design point that it is in an updated state and provides
         the associated output parameters.
@@ -87,20 +85,33 @@ class DesignPoint:
     def __init__(self, design_point_name: str, base_design_point=None):
         self.name = design_point_name
         if base_design_point:
-            self.__inputs = base_design_point.inputs().copy()
-            self.__outputs = base_design_point.outputs().copy()
+            self.__inputs = base_design_point.inputs.copy()
+            self.__outputs = base_design_point.outputs.copy()
         else:
             self.__inputs = dict()
             self.__outputs = dict()
         # TODO add listener for __status:
         self.__status = DesignPointStatus.out_of_date
 
+    @property
     def inputs(self) -> dict:
         return self.__inputs
-        
+    
+    @inputs.setter
+    def inputs(self, inputs: dict):
+        self.__status = DesignPointStatus.out_of_date
+        self.__inputs = inputs
+
+    @property
     def outputs(self) -> dict:
         return self.__outputs
-
+    
+    @outputs.setter
+    def outputs(self, inputs: dict):
+        self.__status = DesignPointStatus.out_of_date
+        self.__inputs = inputs
+        
+    @property
     def status(self) -> DesignPointStatus:
         return self.__status
         
@@ -108,16 +119,12 @@ class DesignPoint:
         self.__status = DesignPointStatus.out_of_date
         self.__inputs[parameter_name] = value
         
-    def update_inputs(self, inputs: dict):
-        self.__status = DesignPointStatus.out_of_date
-        self.__inputs = inputs
+    def on_start_updating(self):
+        self.__status = DesignPointStatus.updating
 
     def on_end_updating(self, outputs: dict):
         self.__outputs = outputs
         self.__status = DesignPointStatus.updated
-
-    def on_start_updating(self):
-        self.__status = DesignPointStatus.updating
 
     def block_updates(self):
         self.__status = DesignPointStatus.blocked
@@ -273,17 +280,17 @@ class ParametricStudy:
         self.__session = launcher()
         self.__session.initialize_with_case(case_file_name)
         base_design_point = DesignPoint(base_design_point_name)
-        base_design_point.update_inputs(self.__session.input_parameters().copy())
+        base_design_point.inputs = self.__session.input_parameters().copy()
         self.__design_point_table = DesignPointTable(base_design_point)
 
     def update_all(self):
         for design_point in self.__design_point_table:
-            if design_point.status() != DesignPointStatus.blocked:
+            if design_point.status != DesignPointStatus.blocked:
                 self.update_design_point(design_point)
 
     def update_design_point(self, design_point: DesignPoint):
         design_point.on_start_updating()
-        for parameter_name, value in design_point.inputs().items():
+        for parameter_name, value in design_point.inputs.items():
             self.__session.set_input_parameter(parameter_name, value)
         self.__session.update()
         design_point.on_end_updating(outputs=self.__session.output_parameters().copy())
