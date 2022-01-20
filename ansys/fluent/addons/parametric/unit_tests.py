@@ -18,7 +18,7 @@ def make_simple_base_design_point():
 
 class XTimes:
     def __init__(self, multiplier):
-        self.__multiplier = multiplier
+        self.multiplier = multiplier
         self.input_parameters = {'x': 0}
         self.output_parameters = {'y': 0}
     
@@ -27,13 +27,10 @@ class XTimes:
     
     def set_input_parameter(self, parameter_name: str, value):
         self.input_parameters[parameter_name] = value
-
-    def initialize_with_case(self, case_file_name):
-        pass
-    
+        
     def update(self):
         self.output_parameters['y'] = \
-            self.__multiplier * self.input_parameters['x']
+            self.multiplier * self.input_parameters['x']
 
 
 def test_create_base_design_point():
@@ -81,18 +78,48 @@ def test_add_and_find_points_in_table():
     assert(table.find_design_point(3).name == "c")
 
 def test_run_parametric_study():
+    multiplier = 3
     study = ParametricStudy(
-        case_file_name='',
         base_design_point_name='xxx',
-        launcher=XTimes(4))
-    study.add_design_point("d1").set_input("x", 3)
-    study.add_design_point("d2").set_input("x", 8)
-    study.add_design_point("d3").set_input("x", -5)
+        launcher=XTimes(multiplier))
+    inputs = [0, 3, 8, -5]
+    for i in range(1, len(inputs)):
+        study.add_design_point("d"+repr(i)).set_input("x", inputs[i])
+    for i in range(len(inputs)):
+        assert(study.design_point(i).status == DesignPointStatus.OUT_OF_DATE)
     study.update_all()
-    assert(study.design_point(0).outputs['y'] == 4 * 0)
-    assert(study.design_point(1).outputs['y'] == 4 * 3)
-    assert(study.design_point(2).outputs['y'] == 4 * 8)
-    assert(study.design_point(3).outputs['y'] == 4 * -5)
+    for i in range(len(inputs)):
+        assert(study.design_point(i).status == DesignPointStatus.UPDATED)
+        assert(study.design_point(i).outputs['y'] == multiplier * inputs[i])
+    
+        
+def test_run_parametric_study_and_block():
+    multiplier = 3
+    study = ParametricStudy(
+        base_design_point_name='xxx',
+        launcher=XTimes(multiplier))
+    inputs = [0, 3, 8, -5]
+    for i in range(1, len(inputs)):
+        study.add_design_point("d"+repr(i)).set_input("x", inputs[i])
+    for i in range(len(inputs)):
+        if i%2:
+            study.design_point(i).block_updates()
+    for i in range(len(inputs)):
+        status = DesignPointStatus.BLOCKED if i%2 else DesignPointStatus.OUT_OF_DATE
+        assert(study.design_point(i).status == status)
+    study.update_all()
+    for i in range(len(inputs)):
+        status = DesignPointStatus.BLOCKED if i%2 else DesignPointStatus.UPDATED
+        assert(study.design_point(i).status == status)
+        assert(study.design_point(i).outputs['y'] == (0 if i%2 else multiplier) * inputs[i])
+    for i in range(len(inputs)):
+        if i%2:
+            study.update_design_point(study.design_point(i))
+    for i in range(len(inputs)):
+        assert(study.design_point(i).status == DesignPointStatus.UPDATED)
+        assert(study.design_point(i).outputs['y'] == multiplier * inputs[i])
+
+
 
 def test_all():
     test_create_base_design_point()
@@ -100,6 +127,7 @@ def test_all():
     test_start_and_end_design_point_update()
     test_add_and_find_points_in_table()
     test_run_parametric_study()
+    test_run_parametric_study_and_block()
 
     
 

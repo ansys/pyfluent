@@ -205,12 +205,12 @@ class FluentParameterAccessor:
     @property
     def input_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.input_parameters)
+            self.__list_parameters.input_parameters())
     
     @property
     def output_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.output_parameters)
+            self.__list_parameters.output_parameters())
 
     @staticmethod
     def __parameter_table_to_dict(table: str) -> dict:
@@ -323,13 +323,15 @@ class ParametricStudy:
     """
     def __init__(
         self,
-        case_file_name: str,
-        base_design_point_name: str = "Base DP",
+        case_file_name: str = '',
+        base_design_point_name: str = 'Base DP',
         launcher = FluentLauncher()):
         self.__session = launcher()
-        self.__session.initialize_with_case(case_file_name)
+        if case_file_name:
+            self.__session.initialize_with_case(case_file_name)
         base_design_point = DesignPoint(base_design_point_name)
         base_design_point.inputs = self.__session.input_parameters.copy()
+        base_design_point.outputs = self.__session.output_parameters.copy()
         self.__design_point_table = DesignPointTable(base_design_point)
 
     def update_all(self):
