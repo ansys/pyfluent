@@ -190,37 +190,42 @@ class FluentParameterAccessor:
     Extracts parameter name to value dicts from table strs 
     currenty returned by the API
 
-    Methods
-    -------
-    input_parameters() -> dict
-        Get the current input parameter dict.
-    output_parameters() -> dict
-        Get the current input parameter dict.
+    Attributes
+    ----------
+    input_parameters : dict
+        The current input parameter dict.
+    output_parameters : dict
+        The current input parameter dict.
     """
 
     def __init__(self, fluent_session):
         self.__list_parameters = \
             fluent_session.tui.define.parameters.list_parameters
-
+        
+    @property
     def input_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.input_parameters())
-
+            self.__list_parameters.input_parameters)
+    
+    @property
     def output_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.output_parameters())
+            self.__list_parameters.output_parameters)
 
     @staticmethod
     def __parameter_table_to_dict(table: str) -> dict:
-        # this code has become more complex now. Originally str 
-        # returned here - now ExecuteCommandResult
+        # this code has become more complex now. Originally table was 
+        # str here - now ExecuteCommandResult is returned by the calls 
+        # to (in|out)put_parameters()
         table_str = table
         if not isinstance(table, str):
             try:
                 print("transforming table type...")
                 table_str = table.result
             except AttributeError:
-                raise RuntimeError("Unexpected design point table type in parse: " + repr(type(table)))
+                raise RuntimeError(
+                    "Unexpected design point table type in parse: " + 
+                    repr(type(table)))
         data_lines = table_str.splitlines()[3:]
         table_as_dict = {}
         for line in data_lines:
@@ -233,12 +238,16 @@ class ParametricSession:
     """
     Full set of interactions with Fluent inthe context of a parametric study
 
+    
+    Attributes
+    ----------
+    input_parameters : dict
+        The current input parameter dict.
+    output_parameters : dict
+        The current input parameter dict.
+        
     Methods
     -------
-    input_parameters() -> dict
-        Get the current input parameter dict.
-    output_parameters() -> dict
-        Get the current input parameter dict.
     set_input_parameter(parameter_name: str)
         Set a single input parameter value in the Fluent session.
     initialize_with_case(case_file_name: str)
@@ -249,12 +258,14 @@ class ParametricSession:
     def __init__(self, fluent_session):
         self.__fluent_session = fluent_session
         self.__parameter_accessor = FluentParameterAccessor(fluent_session)
-
+        
+    @property
     def input_parameters(self) -> dict:
-        return self.__parameter_accessor.input_parameters()
-
+        return self.__parameter_accessor.input_parameters
+    
+    @property
     def output_parameters(self) -> dict:
-        return self.__parameter_accessor.output_parameters()
+        return self.__parameter_accessor.output_parameters
 
     def set_input_parameter(self, parameter_name: str, value):
         self.__fluent_session.tui.define.parameters.input_parameters.edit(
@@ -318,7 +329,7 @@ class ParametricStudy:
         self.__session = launcher()
         self.__session.initialize_with_case(case_file_name)
         base_design_point = DesignPoint(base_design_point_name)
-        base_design_point.inputs = self.__session.input_parameters().copy()
+        base_design_point.inputs = self.__session.input_parameters.copy()
         self.__design_point_table = DesignPointTable(base_design_point)
 
     def update_all(self):
@@ -332,7 +343,7 @@ class ParametricStudy:
             self.__session.set_input_parameter(parameter_name, value)
         self.__session.update()
         design_point.on_end_updating(
-            outputs=self.__session.output_parameters().copy())
+            outputs=self.__session.output_parameters.copy())
 
     def add_design_point(self, design_point_name: str) -> DesignPoint:
         return self.__design_point_table.add_design_point(
