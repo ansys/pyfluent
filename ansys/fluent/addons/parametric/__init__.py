@@ -212,13 +212,16 @@ class FluentParameterAccessor:
 
     @staticmethod
     def __parameter_table_to_dict(table: str) -> dict:
+        # this code has become more complex now. Originally str 
+        # returned here - now ExecuteCommandResult
+        table_str = table
         if not isinstance(table, str):
             try:
                 print("transforming table type...")
-                table = table.__dict__['result']
-            except Exception:
+                table_str = table.result
+            except AttributeError:
                 raise RuntimeError("Unexpected design point table type in parse: " + repr(type(table)))
-        data_lines = table.splitlines()[3:]
+        data_lines = table_str.splitlines()[3:]
         table_as_dict = {}
         for line in data_lines:
             line_as_list = line.split()
