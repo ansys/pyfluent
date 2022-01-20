@@ -2,6 +2,8 @@
 ### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
 ###
 
+# Manual unit testing for now
+
 from . import ( 
     DesignPointStatus, 
     DesignPoint,
@@ -14,7 +16,7 @@ def make_simple_base_design_point():
     dp.outputs = {"y":0}
     return dp
 
-class NTimes:
+class XTimes:
     def __init__(self, multiplier):
         self.__multiplier = multiplier
         self.input_parameters = {'x': 0}
@@ -82,7 +84,7 @@ def test_run_parametric_study():
     study = ParametricStudy(
         case_file_name='',
         base_design_point_name='xxx',
-        launcher=NTimes(4))
+        launcher=XTimes(4))
     study.add_design_point("d1").set_input("x", 3)
     study.add_design_point("d2").set_input("x", 8)
     study.add_design_point("d3").set_input("x", -5)
