@@ -46,6 +46,11 @@ Check that dp1 is up to date and that the outputs differ
 
 >>> assert(dp1.status == DesignPointStatus.UPDATED)
 >>> assert(dp1.outputs != base.outputs)
+
+It's important to clean up any studies to help ensure that
+all Fluent sessions are cleaned up
+
+>>> del session
 """
 
 from enum import Enum
