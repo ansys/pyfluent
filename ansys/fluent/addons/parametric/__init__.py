@@ -318,8 +318,7 @@ class ParametricStudy:
     -------
     update_all()
         Bring all design point outputs up to date by running the
-        solver on each design point. Ignores BLOCKED design points
-        (not yet implemented).
+        solver on each design point. Ignores BLOCKED design points.
     update_design_point()
         Bring the outputs of the specified design point up to date
         by running the solver.
