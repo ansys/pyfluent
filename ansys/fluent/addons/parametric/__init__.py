@@ -233,7 +233,6 @@ class FluentParameterAccessor:
         table_str = table
         if not isinstance(table, str):
             try:
-                print("transforming table type...")
                 table_str = table.result
             except AttributeError as attr_err:
                 raise RuntimeError(
