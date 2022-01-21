@@ -14,8 +14,8 @@ from . import (
 
 def make_simple_base_design_point():
     dp = DesignPoint("base")
-    dp.inputs = {"x":2}
-    dp.outputs = {"y":0}
+    dp.inputs = {"x" : 2}
+    dp.outputs = {"y" : 0}
     return dp
 
 class XTimes:
@@ -24,8 +24,8 @@ class XTimes:
     """
     def __init__(self, multiplier):
         self.multiplier = multiplier
-        self.input_parameters = {"x": 0}
-        self.output_parameters = {"y": 0}
+        self.input_parameters = {"x" : 0}
+        self.output_parameters = {"y" : 0}
 
     def __call__(self):
         return self
@@ -41,8 +41,8 @@ class XTimes:
 def test_create_base_design_point():
     dp = make_simple_base_design_point()
     assert dp.name == "base"
-    assert dp.inputs == {"x":2}
-    assert dp.outputs == {"y":0}
+    assert dp.inputs == {"x" : 2}
+    assert dp.outputs == {"y" : 0}
     assert dp.status == DesignPointStatus.OUT_OF_DATE
 
 def test_create_user_defined_design_point():
@@ -50,8 +50,8 @@ def test_create_user_defined_design_point():
         "DP1",
         base_design_point=make_simple_base_design_point())
     assert dp.name == "DP1"
-    assert dp.inputs == {"x":2}
-    assert dp.outputs == {"y":0}
+    assert dp.inputs == {"x" : 2}
+    assert dp.outputs == {"y" : 0}
     assert dp.status == DesignPointStatus.OUT_OF_DATE
 
 def test_start_and_end_design_point_update():
@@ -62,13 +62,13 @@ def test_start_and_end_design_point_update():
     base_dp.on_start_updating()
     assert base_dp.status == DesignPointStatus.UPDATING
     assert dp1.status == DesignPointStatus.OUT_OF_DATE
-    base_dp.on_end_updating({"y":1})
+    base_dp.on_end_updating({"y" : 1})
     assert base_dp.status == DesignPointStatus.UPDATED
     assert dp1.status == DesignPointStatus.OUT_OF_DATE
     dp1.on_start_updating()
     assert base_dp.status == DesignPointStatus.UPDATED
     assert dp1.status == DesignPointStatus.UPDATING
-    dp1.on_end_updating({"y":42})
+    dp1.on_end_updating({"y" : 42})
     assert base_dp.status == DesignPointStatus.UPDATED
     assert dp1.status == DesignPointStatus.UPDATED
 
