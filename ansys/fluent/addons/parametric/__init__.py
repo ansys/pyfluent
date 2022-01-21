@@ -50,7 +50,7 @@ Check that dp1 is up to date and that the outputs differ
 It's important to clean up any studies to help ensure that
 all Fluent sessions are cleaned up
 
->>> del session
+>>> del study
 """
 
 from enum import Enum
