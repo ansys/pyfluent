@@ -14,9 +14,9 @@ Instantiate the study, specifying the case
 
 Add one new design point and set an input parameter
 
->>> dp1 = study.add_design_point('DP1')
->>> dp1.set_input('parameter_1', 0.235)
->>> dp1.set_input('velocity_inlet_5_y_velocity', 0.772)
+>>> dp1 = study.add_design_point("DP1")
+>>> dp1.set_input("parameter_1", 0.235)
+>>> dp1.set_input("velocity_inlet_5_y_velocity", 0.772)
 
 The solver has not been run yet so no ouputs are computed
 The design point is out of date
@@ -25,7 +25,7 @@ The design point is out of date
 
 Get the base design point
 
->>> base = study.design_point('Base DP')
+>>> base = study.design_point("Base DP")
 
 Check that block updates works
 
@@ -78,12 +78,12 @@ class DesignPoint:
     Attributes
     ----------
     name : str
-        Name of the design point as a str
+        Name of the design point as a str.
     outputs : dict
-        Dict of output parameters 
+        Dict of output parameters
         (name of parameter to value).
     inputs : dict
-        Dict of input parameters 
+        Dict of input parameters
         (name of parameter to value).
     status : DesignPointStatus
         Current status of the design point.
@@ -93,8 +93,8 @@ class DesignPoint:
     set_input(parameter_name: str, value)
         Set one parameter in the design point to the value provided.
     on_end_updating(outputs: dict)
-        Inform the design point that it is in an UPDATED state and provides
-        the associated output parameters.
+        Inform the design point that it is in an UPDATED state and
+        provides the associated output parameters.
     block_updates()
         Move the design point into a do not update state.
     block_updates()
@@ -166,6 +166,13 @@ class DesignPointTable(list):
         ------
         RuntimeError
             If the design point is not found.
+    remove_design_point(idx_or_name)
+        Remove a design point, either by name (str) or an index
+        indicating the position in the table (by order of insertion).
+        Raises
+        ------
+        RuntimeError
+            If the design point is not found.
     """
 
     def __init__(self, base_design_point: DesignPoint):
@@ -182,12 +189,18 @@ class DesignPointTable(list):
         for design_point in self:
             if idx_or_name == design_point.name:
                 return design_point
-        raise RuntimeError("Design point not found: " + repr(idx_or_name))
+        raise RuntimeError(f"Design point not found: {idx_or_name}")
+
+    def remove_design_point(self, idx_or_name):
+        design_point = self.find_design_point(idx_or_name)
+        if design_point is self[0]:
+            raise RuntimeError("Cannot remove base design point")
+        self.remove(self.find_design_point(idx_or_name))
 
 
 class FluentParameterAccessor:
     """
-    Extracts parameter name to value dicts from table strs 
+    Extracts parameter name to value dicts from table strs
     currenty returned by the API
 
     Attributes
@@ -201,12 +214,12 @@ class FluentParameterAccessor:
     def __init__(self, fluent_session):
         self.__list_parameters = \
             fluent_session.tui.define.parameters.list_parameters
-        
+
     @property
     def input_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
             self.__list_parameters.input_parameters())
-    
+
     @property
     def output_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
@@ -214,18 +227,18 @@ class FluentParameterAccessor:
 
     @staticmethod
     def __parameter_table_to_dict(table: str) -> dict:
-        # this code has become more complex now. Originally table was 
-        # str here - now ExecuteCommandResult is returned by the calls 
+        # this code has become more complex now. Originally table was
+        # str here - now ExecuteCommandResult is returned by the calls
         # to (in|out)put_parameters()
         table_str = table
         if not isinstance(table, str):
             try:
                 print("transforming table type...")
                 table_str = table.result
-            except AttributeError:
+            except AttributeError as attr_err:
                 raise RuntimeError(
-                    "Unexpected design point table type in parse: " + 
-                    repr(type(table)))
+                "Unexpected design point table "
+                f"type in parse: {type(table)}") from attr_err
         data_lines = table_str.splitlines()[3:]
         table_as_dict = {}
         for line in data_lines:
@@ -238,14 +251,13 @@ class ParametricSession:
     """
     Full set of interactions with Fluent inthe context of a parametric study
 
-    
     Attributes
     ----------
     input_parameters : dict
         The current input parameter dict.
     output_parameters : dict
         The current input parameter dict.
-        
+
     Methods
     -------
     set_input_parameter(parameter_name: str)
@@ -258,11 +270,11 @@ class ParametricSession:
     def __init__(self, fluent_session):
         self.__fluent_session = fluent_session
         self.__parameter_accessor = FluentParameterAccessor(fluent_session)
-        
+
     @property
     def input_parameters(self) -> dict:
         return self.__parameter_accessor.input_parameters
-    
+
     @property
     def output_parameters(self) -> dict:
         return self.__parameter_accessor.output_parameters
@@ -298,18 +310,18 @@ class FluentLauncher:
 
 class ParametricStudy:
     """
-    Parametric study that manages design points to parametrize a 
-    Fluent solver set-up. Provides ability to run Fluent for a series 
+    Parametric study that manages design points to parametrize a
+    Fluent solver set-up. Provides ability to run Fluent for a series
     of design points, and access the inputs and outputs.
 
     Methods
     -------
     update_all()
-        Bring all design point outputs up to date by running the 
-        solver on each design point. Ignores BLOCKED design points 
+        Bring all design point outputs up to date by running the
+        solver on each design point. Ignores BLOCKED design points
         (not yet implemented).
     update_design_point()
-        Bring the outputs of the specified design point up to date 
+        Bring the outputs of the specified design point up to date
         by running the solver.
     add_design_point(design_point_name: str) -> DesignPoint
         Add a design point
@@ -323,8 +335,8 @@ class ParametricStudy:
     """
     def __init__(
         self,
-        case_file_name: str = '',
-        base_design_point_name: str = 'Base DP',
+        case_file_name: str = "",
+        base_design_point_name: str = "Base DP",
         launcher = FluentLauncher()):
         self.__session = launcher()
         if case_file_name:
