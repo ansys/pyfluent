@@ -158,5 +158,3 @@ def test_all():
     test_add_remove_find_points_in_table()
     test_run_parametric_study()
     test_run_parametric_study_and_block()
-
-
