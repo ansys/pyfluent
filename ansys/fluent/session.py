@@ -3,6 +3,8 @@ import grpc
 import threading
 
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
+from ansys.fluent.core.core import FieldDataService
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
 from ansys.api.fluent.v0 import health_pb2 as HealthModule
@@ -15,6 +17,7 @@ def parse_server_info_file(filename: str):
     with open(filename, "rb") as f:
         lines = f.readlines()
     return lines[0].strip(), lines[1].strip()
+
 
 class Session:
     """
@@ -38,7 +41,7 @@ class Session:
 
     """
     __all_sessions = []
-
+    __on_exit_cbs = []
     def __init__(self, server_info_filepath):
         self.__is_exiting = False
         self.lock = threading.Lock()
@@ -55,8 +58,10 @@ class Session:
         self.transcript_thread.start()
 
         datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
-        self.service = DatamodelService(datamodel_stub, password)
-        self.tui = Session.Tui(self.service)
+        fielddata_stub = FieldGrpcModule.FieldDataStub(self.__channel)
+        self.datamodel_service = DatamodelService(datamodel_stub, password)
+        self.field_service = FieldDataService(fielddata_stub, password)
+        self.tui = Session.Tui(self.datamodel_service)
 
         health_stub = HealthGrpcModule.HealthStub(self.__channel)
         health_check_request = HealthModule.HealthCheckRequest()
@@ -91,7 +96,7 @@ class Session:
             return response_cls.ServingStatus.Name(response.status)
         else:
             return response_cls.ServingStatus.Name(response_cls.NOT_SERVING)
-
+        
     def exit(self):
         """Close the Fluent connection and exit Fluent.
 
@@ -105,16 +110,23 @@ class Session:
             self.__channel.close()
             self.__channel = None
 
+
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.exit()
 
+    @classmethod
+    def register_on_exit(cls, callback):
+        cls.__on_exit_cbs.append(callback)
+                
     @staticmethod
     def exit_all():
         for session in Session.__all_sessions:
             session.exit()
+        for cb in Session.__on_exit_cbs:
+            cb()
 
     class Tui:
         __application_modules = []
