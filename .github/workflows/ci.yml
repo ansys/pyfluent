@@ -75,8 +75,8 @@ jobs:
         run: |
           make test-import
 
-  unittest:
-    name: Unit Testing
+  build_test:
+    name: Build and Unit Testing
     needs: testimport
     runs-on: ubuntu-latest
 
@@ -104,9 +104,24 @@ jobs:
         run: |
           make unittest
 
-  Release:
+      - name: Check package
+        run: |
+          pip install twine
+          twine check dist/*
+
+      - name: Upload wheel and binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: PyFluent-packages
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+          retention-days: 7
+
+  release:
+    name: Release
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    needs: unittest
+    needs: build_test
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -123,5 +138,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/*.whl
-            dist/*.tar.gz
+            ./**/*.whl
+            ./**/*.tar.gz
