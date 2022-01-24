@@ -1,9 +1,5 @@
-###
-### Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
-###
-
 """
-Unit tests for parameteric study code - no framework use just for now
+Unit tests for parameteric study code - no framework used for now
 """
 
 from . import (
