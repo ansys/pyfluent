@@ -2,7 +2,7 @@
 Unit tests for parameteric study code - no framework used for now
 """
 
-from . import (
+from ansys.fluent.addons.parametric import (
     DesignPointStatus,
     DesignPoint,
     DesignPointTable,
@@ -146,11 +146,3 @@ def test_run_parametric_study_and_block():
             DesignPointStatus.UPDATED
         assert study.design_point(i).outputs["y"] == \
             multiplier * inputs[i]
-
-def test_all():
-    test_create_base_design_point()
-    test_create_user_defined_design_point()
-    test_start_and_end_design_point_update()
-    test_add_remove_find_points_in_table()
-    test_run_parametric_study()
-    test_run_parametric_study_and_block()

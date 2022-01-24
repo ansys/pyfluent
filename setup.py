@@ -1,6 +1,6 @@
 """Setup file for ansys-fluent-solver"""
 import os
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 
 # Get version from version info
 __version__ = None
@@ -16,9 +16,14 @@ install_requires = [
     #'ansys-api-fluent-v0>=0.0.1'
     ]
 
+packages = []
+for package in find_namespace_packages(include="ansys*"):
+    if package.startswith("ansys.fluent"):
+        packages.append(package)
+
 setup(
     name='ansys-fluent-solver',
-    packages=['ansys.fluent.solver'],
+    packages=packages,
     version=__version__,
     description="Fluent's SolverAPI exposed in Python",
     long_description=open('README.rst', encoding='utf8').read(),
