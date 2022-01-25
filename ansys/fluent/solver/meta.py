@@ -1,7 +1,10 @@
 from ansys.fluent.core.core import PyMenu, convert_path_to_grpc_path
-from pprint import pformat        
+from pprint import pformat
+
+
 class Attribute:
     VALID_NAMES = ["range", "allowed_values"]
+
     def __init__(self, function):
         self.function = function
 
@@ -19,7 +22,6 @@ class Attribute:
 
     def __get__(self, obj, type=None) -> object:
         return self.function(obj)
-
 
 
 class PyMenuMeta(type):
@@ -80,14 +82,15 @@ class PyMenuMeta(type):
         return super(PyMenuMeta, cls).__new__(cls, name, bases, attrs)
 
 
-
 class PyLocaPropertyMeta(type):
     @classmethod
     def __create_validate(cls):
         def wrapper(self, value):
             old_value = self()
             if old_value and type(old_value) != type(value):
-                raise TypeError(f'Value {value} should be of type {type(old_value)}')
+                raise TypeError(
+                    f"Value {value} should be of type {type(old_value)}"
+                )
             attrs = hasattr(self, "attributes") and getattr(
                 self, "attributes"
             )
@@ -97,20 +100,20 @@ class PyLocaPropertyMeta(type):
                         value < self.range[0] or value > self.range[1]
                     ):
                         raise ValueError(
-                            f'Value {value} is not within {self.range}.'
-                        )                    
+                            f"Value {value} is not within {self.range}."
+                        )
                     if attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
                                 v in self.allowed_values for v in value
                             ):
                                 raise ValueError(
-                                    f'Values {value} are not within {self.allowed_values}.'
-                                )                            
+                                    f"Values {value} are not within {self.allowed_values}."
+                                )
                         elif not value in self.allowed_values:
                             raise ValueError(
-                                f'Value {value} is not within {self.allowed_values}.'
-                            )                         
+                                f"Value {value} is not within {self.allowed_values}."
+                            )
 
             return value
 
@@ -262,7 +265,7 @@ class PyLocaPropertyMeta(type):
             "_register_on_change_cb"
         ] = cls.__create_register_on_change()
         attrs["set_state"] = cls.__create_set_state()
-        attrs["parent"] = None        
+        attrs["parent"] = None
         return super(PyLocaPropertyMeta, cls).__new__(
             cls, name, bases, attrs
         )
@@ -308,7 +311,7 @@ class PyLocalNamedObjectMeta(type):
             return o
 
         return wrapper
-        
+
     # c1 = ansys.fluent.postprocessing.pyvista.Graphics(session1).contour['contour-1']
     # c2 = ansys.fluent.postprocessing.pyvista.Graphics(session1).contour['contour-2']
     # c1.update(c2())
@@ -387,7 +390,7 @@ class PyLocalNamedObjectMeta(type):
     def __create_repr(cls):
         def wrapper(self):
             if self._path[-1][-1]:
-                return pformat(self(True), depth=1, indent=2)               
+                return pformat(self(True), depth=1, indent=2)
             else:
                 return object.__repr__(self)
 
@@ -404,7 +407,7 @@ class PyLocalNamedObjectMeta(type):
         attrs["__call__"] = cls.__create_get_state()
         attrs["__setattr__"] = cls.__create_setattr()
         attrs["__repr__"] = cls.__create_repr()
-        attrs["_collection"] = {}        
+        attrs["_collection"] = {}
         attrs["update"] = cls.__create_updateitem()
         attrs["parent"] = None
         return super(PyLocalNamedObjectMeta, cls).__new__(
