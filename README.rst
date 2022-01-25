@@ -31,6 +31,12 @@ Usage
   session.tui.define.models.unsteady_2nd_order("yes")
   session.tui.solve.initialize.initialize_flow()
   session.tui.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
+  
+Post Processing
+---------------
+
+In Fluent(server)  
+-----------------
   session.tui.display.objects.contour['contour-1'] = {'boundary_values': True, 'color_map': {'color': 'field-velocity', 'font_automatic': True, 'font_name': 'Helvetica', 'font_size': 0.032, 'format': '%0.2e', 'length': 0.54, 'log_scale': False, 'position': 1, 'show_all': True, 'size': 100, 'user_skip': 9, 'visible': True, 'width': 6.0}, 'coloring': {'smooth': False}, 'contour_lines': False, 'display_state_name': 'None', 'draw_mesh': False, 'field': 'pressure', 'filled': True, 'mesh_object': '', 'node_values': True, 'range_option': {'auto_range_on': {'global_range': True}}, 'surfaces_list': [2, 5]}
   session.tui.display.objects.contour['contour-1']()
   session.tui.display.objects.contour['contour-1'].field.set_state('velocity-magnitude')
@@ -39,5 +45,41 @@ Usage
   session.tui.display.objects.contour['contour-1'].color_map.size()
   session.tui.display.objects.contour['contour-1'].rename('my-contour')
   del session.tui.display.objects.contour['my-contour']
+  
+PyVista (client)  
+-----------------  
+  #import module
+  import ansys.fluent.postprocessing.pyvista as pv
+
+  #get the graphics objects for the session
+  
+  graphics_session1 = pv.Graphics(session)
+  mesh1 = graphics_session1.mesh["mesh-1"]
+  contour1 = graphics_session1.contour["contour-1"]
+  contour2 = graphics_session1.contour["contour-2"]
+  surface1 = graphics_session1.surface["surface-1"]
+
+  #set graphics objects properties
+  
+  #mesh
+  mesh1.draw_mesh = True
+  mesh1.surfaces_list = ['symmetry']
+
+  #contour
+  contour1.field = "velocity-magnitude"
+  contour1.surfaces_list = ['symmetry']
+
+  contour2.field = "temperature"
+  contour2.surfaces_list = ['symmetry', 'wall']
+
+  #iso surface
+  surface1.surface_type.iso_surface.field= "velocity-magnitude"
+  surface1.surface_type.iso_surface.rendering= "contour"
+
+  #display
+  contour1.display()
+  mesh1.display()
+  surface1.display()
+  
   session.exit()
 

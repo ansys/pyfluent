@@ -16,7 +16,7 @@ def convert_value_to_gvalue(val, gval):
     elif isinstance(val, str):
         gval.string_value = val
     elif isinstance(val, list) or isinstance(val, tuple):
-        # set the one_of to variant_vector_state        
+        # set the one_of to variant_vector_state
         gval.list_value.values.add()
         gval.list_value.values.pop()
         for item in val:
@@ -105,9 +105,9 @@ class DatamodelService:
         )
 
     def execute_query(self, request):
-        return self.stub.ExecuteQuery(request, metadata=self.__get_metadata())    
+        return self.stub.ExecuteQuery(request, metadata=self.__get_metadata())
 
-                
+
 class FieldDataService:
     def __init__(self, stub, password: str):
         self.stub = stub
@@ -133,8 +133,8 @@ class FieldDataService:
     def get_surfaces_info(self, request):
         return self.stub.GetSurfacesInfo(
             request, metadata=self.__get_metadata()
-        )        
- 
+        )
+
 def start_journal(filename: str):
     global JOURNAL_FILENAME
     JOURNAL_FILENAME = filename
@@ -332,9 +332,6 @@ class FieldData:
         response_iterator = self.service.get_scalar_field(request)
         return self._extract_scalar_field_data(response_iterator)
 
-
-
-            
 
 class PyMenu:
     class ExecuteCommandResult:

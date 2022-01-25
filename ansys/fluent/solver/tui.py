@@ -3,6 +3,7 @@
 from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta
 from ansys.fluent.core.core import PyMenu
 
+
 def close_fluent(self, *args, **kwargs):
     """
     Exit program.
@@ -23,8 +24,7 @@ def print_license_usage(self, *args, **kwargs):
     Print license usage information
     """
     return PyMenu(self.service).execute('/print_license_usage', *args, **kwargs)
-    
-    
+
 class adjoint(metaclass=PyMenuMeta):
     __doc__ = 'Adjoint.'
     def observable(self, *args, **kwargs):
@@ -413,7 +413,7 @@ class display(metaclass=PyMenuMeta):
             class display_state_name(metaclass=PyMenuMeta):
                 __doc__ = ''
                 is_extended_tui = True
-        
+
         class contour(metaclass=PyNamedObjectMeta):
             __doc__ = ''
             is_extended_tui = True

@@ -44,6 +44,7 @@ class Session:
 
     __all_sessions = []
     __on_exit_cbs = []
+
     def __init__(self, server_info_filepath):
         self.__is_exiting = False
         self.lock = threading.Lock()
@@ -98,7 +99,7 @@ class Session:
             return response_cls.ServingStatus.Name(response.status)
         else:
             return response_cls.ServingStatus.Name(response_cls.NOT_SERVING)
-        
+
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
         with self.lock:
@@ -110,7 +111,6 @@ class Session:
             self.__channel.close()
             self.__channel = None
 
-
     def __enter__(self):
         return self
 
@@ -120,7 +120,7 @@ class Session:
     @classmethod
     def register_on_exit(cls, callback):
         cls.__on_exit_cbs.append(callback)
-                
+
     @staticmethod
     def exit_all():
         for session in Session.__all_sessions:

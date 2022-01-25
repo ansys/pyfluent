@@ -267,16 +267,14 @@ class _Plotter(metaclass=Singleton):
         from ansys.fluent.postprocessing.pyvista.graphics import (
             Graphics,
         )
-        
+
         surfaces_list = list(
             FieldData(obj.session.field_service)
             .get_surfaces_info()
             .keys()
-        )        
+        )
         if not "dummy" in surfaces_list:
-            raise RuntimeError (
-                f'Iso surface creation failed.'
-            )            
+            raise RuntimeError(f"Iso surface creation failed.")
         graphics_session = Graphics(obj.session)
         if obj.surface_type.iso_surface.rendering() == "mesh":
             mesh = graphics_session.mesh["dummy"]
@@ -333,7 +331,7 @@ class _Plotter(metaclass=Singleton):
                 return
             if self.__plotted_graphics_properties == obj():
                 return
-                
+
             self.__plotted_graphics_properties = copy.deepcopy(obj())
             plotter = self.__background_plotter
             plotter.clear()
@@ -347,8 +345,6 @@ class _Plotter(metaclass=Singleton):
                     self._display_iso_surface(obj)
             elif obj.__class__.__name__ == "contour":
                 self._display_contour(obj)
-
-            
 
             plotter.camera = camera.copy()
 

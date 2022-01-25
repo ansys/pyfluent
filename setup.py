@@ -15,6 +15,7 @@ with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
 
 install_requires = [
     "grpcio>=1.30.0",
+    "pyvista>=0.33.2"
     #'ansys-api-fluent-v0>=0.0.1'
 ]
 
