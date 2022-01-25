@@ -1,54 +1,60 @@
 import json
 import os
-from pathlib import Path
 import platform
 import subprocess
-import time
 import tempfile
+import time
+from pathlib import Path
 
+from ansys.fluent.core import LOG
 from ansys.fluent.session import Session
-from ansys.fluent.core  import LOG
 
 THIS_DIR = os.path.dirname(__file__)
-OPTIONS_FILE = os.path.join(THIS_DIR, 'fluent_launcher_options.json')
-FLUENT_VERSION = '22.2'
+OPTIONS_FILE = os.path.join(THIS_DIR, "fluent_launcher_options.json")
+FLUENT_VERSION = "22.2"
+
 
 def get_fluent_exe_path():
-    exe_path = Path(
-        os.getenv('AWP_ROOT' + ''.join(FLUENT_VERSION.split('.'))))
-    exe_path = exe_path / 'fluent'
-    if platform.system() == 'Windows':
-        exe_path = exe_path / 'ntbin' / 'win64' / 'fluent.exe'
+    exe_path = Path(os.getenv("AWP_ROOT" + "".join(FLUENT_VERSION.split("."))))
+    exe_path = exe_path / "fluent"
+    if platform.system() == "Windows":
+        exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
     else:
-        exe_path = exe_path / 'bin' / 'fluent'
+        exe_path = exe_path / "bin" / "fluent"
     return str(exe_path)
 
+
 def get_server_info_filepath():
-    server_info_dir = os.getenv('SERVER_INFO_DIR')
-    dir = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
+    server_info_dir = os.getenv("SERVER_INFO_DIR")
+    dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
     fd, filepath = tempfile.mkstemp(
-        suffix='.txt', prefix='serverinfo-', dir=str(dir))
+        suffix=".txt", prefix="serverinfo-", dir=str(dir_)
+    )
     os.close(fd)
     return filepath
+
 
 def get_subprocess_kwargs_for_detached_process():
     kwargs = {}
     kwargs.update(
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if platform.system() == 'Windows':
+        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    if platform.system() == "Windows":
         kwargs.update(
-            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP |
-                          subprocess.DETACHED_PROCESS)
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.DETACHED_PROCESS
+        )
     else:
         kwargs.update(start_new_session=True)
     return kwargs
+
 
 def launch_fluent(
     version=None,
     precision=None,
     processor_count=None,
     journal_filename=None,
-    start_timeout=100
+    start_timeout=100,
 ):
     """Start Fluent locally in server mode.
 
@@ -81,55 +87,66 @@ def launch_fluent(
     launch_string = exe_path
     argvals = locals()
     all_options = None
-    with open(OPTIONS_FILE, 'r') as fp:
+    with open(OPTIONS_FILE, encoding="utf-8") as fp:
         all_options = json.load(fp)
     for k, v in all_options.items():
         argval = argvals.get(k)
-        default = v.get('default')
-        if argval is None and v.get('required') is True:
+        default = v.get("default")
+        if argval is None and v.get("required") is True:
             argval = default
         if argval is not None:
-            allowed_values = v.get('allowed_values')
+            allowed_values = v.get("allowed_values")
             if allowed_values and argval not in allowed_values:
                 if default is not None:
                     old_argval = argval
                     argval = default
                     LOG.warning(
-                        'Default value %s is chosen for %s as the passed '
-                        'value  %s is outside allowed values %s.',
-                        argval, k, old_argval, allowed_values)
+                        "Default value %s is chosen for %s as the passed "
+                        "value  %s is outside allowed values %s.",
+                        argval,
+                        k,
+                        old_argval,
+                        allowed_values,
+                    )
                 else:
                     LOG.warning(
-                        '%s = %s is discarded as it is outside '
-                        'allowed values %s.', k, argval, allowed_values)
+                        "%s = %s is discarded as it is outside "
+                        "allowed values %s.",
+                        k,
+                        argval,
+                        allowed_values,
+                    )
                     continue
-            fluent_values = v.get('fluent_values')
+            fluent_values = v.get("fluent_values")
             if fluent_values:
                 i = allowed_values.index(argval)
                 argval = fluent_values[i]
-            launch_string += v['fluent_format'].replace('{}', str(argval))
+            launch_string += v["fluent_format"].replace("{}", str(argval))
     server_info_filepath = get_server_info_filepath()
     try:
         launch_string += f' -sifile="{server_info_filepath}"'
-        if not os.getenv('PYFLUENT_SHOW_SERVER_GUI'):
-            launch_string += ' -hidden'
-        LOG.info('Launching Fluent with cmd: %s', launch_string)
+        if not os.getenv("PYFLUENT_SHOW_SERVER_GUI"):
+            launch_string += " -hidden"
+        LOG.info("Launching Fluent with cmd: %s", launch_string)
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
         kwargs = get_subprocess_kwargs_for_detached_process()
         subprocess.Popen(launch_string, **kwargs)
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
                 time.sleep(1)
-                LOG.info('Fluent process is successfully launched.')
+                LOG.info("Fluent process is successfully launched.")
                 break
             if start_timeout == 0:
-                LOG.error('The launch process has been timed out.')
+                LOG.error("The launch process has been timed out.")
                 break
             time.sleep(1)
             start_timeout -= 1
             LOG.info(
-                'Waiting for Fluent to launch...%02d seconds remaining',
-                start_timeout)
+                "Waiting for Fluent to launch...%02d seconds remaining",
+                start_timeout,
+            )
         return Session(server_info_filepath)
     finally:
-        Path(server_info_filepath).unlink(missing_ok=True)
+        server_info_file = Path(server_info_filepath)
+        if server_info_file.exists():
+            server_info_file.unlink()
