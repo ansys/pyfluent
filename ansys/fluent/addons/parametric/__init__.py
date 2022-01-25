@@ -51,6 +51,7 @@ all Fluent sessions are cleaned up
 """
 
 from enum import Enum
+
 import ansys.fluent.solver as pyfluent
 
 
@@ -66,6 +67,7 @@ class DesignPointStatus(Enum):
     FAILED : int
     BLOCKED : int
     """
+
     OUT_OF_DATE = 1
     UPDATING = 2
     UPDATED = 3
@@ -102,6 +104,7 @@ class DesignPoint:
     block_updates()
         Move the design point into a needs update state.
     """
+
     def __init__(self, design_point_name: str, base_design_point=None):
         self.name = design_point_name
         if base_design_point:
@@ -214,18 +217,21 @@ class FluentParameterAccessor:
     """
 
     def __init__(self, fluent_session):
-        self.__list_parameters = \
+        self.__list_parameters = (
             fluent_session.tui.define.parameters.list_parameters
+        )
 
     @property
     def input_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.input_parameters())
+            self.__list_parameters.input_parameters()
+        )
 
     @property
     def output_parameters(self) -> dict:
         return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.output_parameters())
+            self.__list_parameters.output_parameters()
+        )
 
     @staticmethod
     def __parameter_table_to_dict(table: str) -> dict:
@@ -238,8 +244,9 @@ class FluentParameterAccessor:
                 table_str = table.result
             except AttributeError as attr_err:
                 raise RuntimeError(
-                "Unexpected design point table "
-                f"type in parse: {type(table)}") from attr_err
+                    "Unexpected design point table "
+                    f"type in parse: {type(table)}"
+                ) from attr_err
         data_lines = table_str.splitlines()[3:]
         table_as_dict = {}
         for line in data_lines:
@@ -268,6 +275,7 @@ class ParametricSession:
     update()
         Run the solver until convergence.
     """
+
     def __init__(self, fluent_session):
         self.__fluent_session = fluent_session
         self.__parameter_accessor = FluentParameterAccessor(fluent_session)
@@ -282,11 +290,11 @@ class ParametricSession:
 
     def set_input_parameter(self, parameter_name: str, value):
         self.__fluent_session.tui.define.parameters.input_parameters.edit(
-            parameter_name, parameter_name, value)
+            parameter_name, parameter_name, value
+        )
 
     def initialize_with_case(self, case_file_name: str):
-        self.__fluent_session.tui.file.read_case(
-            case_file_name=case_file_name)
+        self.__fluent_session.tui.file.read_case(case_file_name=case_file_name)
 
     def update(self):
         self.__fluent_session.tui.solve.initialize.initialize_flow()
@@ -305,6 +313,7 @@ class FluentLauncher:
     __call__()
         Launch a session
     """
+
     def __call__(self):
         return ParametricSession(fluent_session=pyfluent.launch_fluent())
 
@@ -333,11 +342,13 @@ class ParametricStudy:
         RuntimeError
             If the design point is not found.
     """
+
     def __init__(
         self,
         case_file_name: str = "",
         base_design_point_name: str = "Base DP",
-        launcher = FluentLauncher()):
+        launcher=FluentLauncher(),
+    ):
         self.__session = launcher()
         if case_file_name:
             self.__session.initialize_with_case(case_file_name)
@@ -357,11 +368,11 @@ class ParametricStudy:
             self.__session.set_input_parameter(parameter_name, value)
         self.__session.update()
         design_point.on_end_updating(
-            outputs=self.__session.output_parameters.copy())
+            outputs=self.__session.output_parameters.copy()
+        )
 
     def add_design_point(self, design_point_name: str) -> DesignPoint:
-        return self.__design_point_table.add_design_point(
-            design_point_name)
+        return self.__design_point_table.add_design_point(design_point_name)
 
     def design_point(self, idx_or_name) -> DesignPoint:
         return self.__design_point_table.find_design_point(idx_or_name)

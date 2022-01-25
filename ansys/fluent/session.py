@@ -1,20 +1,22 @@
 import atexit
-import grpc
 import threading
 
 from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
-from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
-from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
 from ansys.api.fluent.v0 import health_pb2 as HealthModule
 from ansys.api.fluent.v0 import health_pb2_grpc as HealthGrpcModule
+from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
+from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
+
+import grpc
+from ansys.fluent.core import LOG
 from ansys.fluent.core.core import DatamodelService, PyMenu
 
-from ansys.fluent.core import LOG
 
 def parse_server_info_file(filename: str):
     with open(filename, "rb") as f:
         lines = f.readlines()
     return lines[0].strip(), lines[1].strip()
+
 
 class Session:
     """
@@ -37,6 +39,7 @@ class Session:
         Close the Fluent connection and exit Fluent.
 
     """
+
     __all_sessions = []
 
     def __init__(self, server_info_filepath):
@@ -45,13 +48,14 @@ class Session:
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
 
-        transcript_stub = TranscriptGrpcModule.TranscriptStub(
-            self.__channel)
+        transcript_stub = TranscriptGrpcModule.TranscriptStub(self.__channel)
         request = TranscriptModule.TranscriptRequest()
         responses = transcript_stub.BeginStreaming(
-            request, metadata=[('password', password)])
+            request, metadata=[("password", password)]
+        )
         self.transcript_thread = threading.Thread(
-            target=Session.log_transcript, args=(self, responses))
+            target=Session.log_transcript, args=(self, responses)
+        )
         self.transcript_thread.start()
 
         datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
@@ -60,13 +64,14 @@ class Session:
 
         health_stub = HealthGrpcModule.HealthStub(self.__channel)
         health_check_request = HealthModule.HealthCheckRequest()
-        self.__health_checker = lambda : health_stub.Check(
-            health_check_request, metadata=[('password', password)])
+        self.__health_checker = lambda: health_stub.Check(
+            health_check_request, metadata=[("password", password)]
+        )
 
         Session.__all_sessions.append(self)
 
     def log_transcript(self, responses):
-        transcript = ''
+        transcript = ""
         while True:
             with self.lock:
                 if self.__is_exiting:
@@ -75,16 +80,14 @@ class Session:
             try:
                 response = next(responses)
                 transcript += response.transcript
-                if transcript[-1] == '\n':
+                if transcript[-1] == "\n":
                     LOG.debug(transcript[0:-1])
-                    transcript = ''
+                    transcript = ""
             except StopIteration:
                 break
 
     def health_check(self):
-        """Check health of Fluent connection
-
-        """
+        """Check health of Fluent connection"""
         response_cls = HealthModule.HealthCheckResponse
         if self.__channel:
             response = self.__health_checker()
@@ -93,9 +96,7 @@ class Session:
             return response_cls.ServingStatus.Name(response_cls.NOT_SERVING)
 
     def exit(self):
-        """Close the Fluent connection and exit Fluent.
-
-        """
+        """Close the Fluent connection and exit Fluent."""
         with self.lock:
             self.__is_exiting = True
         if self.__channel:
@@ -123,9 +124,9 @@ class Session:
             self.service = service
             for mod in self.__class__.__application_modules:
                 for name, cls in mod.__dict__.items():
-                    if cls.__class__.__name__ == 'PyMenuMeta':
+                    if cls.__class__.__name__ == "PyMenuMeta":
                         setattr(self, name, cls([(name, None)], service))
-                    if cls.__class__.__name__ in 'PyNamedObjectMeta':
+                    if cls.__class__.__name__ in "PyNamedObjectMeta":
                         setattr(self, name, cls([(name, None)], None, service))
 
         @classmethod
@@ -136,6 +137,7 @@ class Session:
                     setattr(cls, name, obj)
 
         def __dir__(self):
-            return PyMenu(self.service).get_child_names('')
+            return PyMenu(self.service).get_child_names("")
+
 
 atexit.register(Session.exit_all)
