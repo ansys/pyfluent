@@ -1,15 +1,11 @@
 import atexit
 import threading
 
-from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
-from ansys.api.fluent.v0 import health_pb2 as HealthModule
-from ansys.api.fluent.v0 import health_pb2_grpc as HealthGrpcModule
-from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
-from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
-
 import grpc
 from ansys.fluent.core import LOG
-from ansys.fluent.core.core import DatamodelService, PyMenu
+from ansys.fluent.services.health_check import HealthCheckService
+from ansys.fluent.services.transcript import TranscriptService
+from ansys.fluent.services.tui_datamodel import DatamodelService, PyMenu
 
 
 def parse_server_info_file(filename: str):
@@ -21,8 +17,6 @@ def parse_server_info_file(filename: str):
 class Session:
     """
     Encapsulates a Fluent connection.
-
-    ...
 
     Attributes
     ----------
@@ -48,25 +42,19 @@ class Session:
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
 
-        transcript_stub = TranscriptGrpcModule.TranscriptStub(self.__channel)
-        request = TranscriptModule.TranscriptRequest()
-        responses = transcript_stub.BeginStreaming(
-            request, metadata=[("password", password)]
-        )
+        transcript_service = TranscriptService(self.__channel, password)
+        responses = transcript_service.begin_streaming()
         self.transcript_thread = threading.Thread(
             target=Session.log_transcript, args=(self, responses)
         )
         self.transcript_thread.start()
 
-        datamodel_stub = DataModelGrpcModule.DataModelStub(self.__channel)
-        self.service = DatamodelService(datamodel_stub, password)
+        self.service = DatamodelService(self.__channel, password)
         self.tui = Session.Tui(self.service)
 
-        health_stub = HealthGrpcModule.HealthStub(self.__channel)
-        health_check_request = HealthModule.HealthCheckRequest()
-        self.__health_checker = lambda: health_stub.Check(
-            health_check_request, metadata=[("password", password)]
-        )
+        self.__health_check_service = HealthCheckService(
+            self.__channel, password
+            )
 
         Session.__all_sessions.append(self)
 
@@ -86,14 +74,12 @@ class Session:
             except StopIteration:
                 break
 
-    def health_check(self):
+    def check_health(self):
         """Check health of Fluent connection"""
-        response_cls = HealthModule.HealthCheckResponse
         if self.__channel:
-            response = self.__health_checker()
-            return response_cls.ServingStatus.Name(response.status)
+            return self.__health_check_service.check_health()
         else:
-            return response_cls.ServingStatus.Name(response_cls.NOT_SERVING)
+            return HealthCheckService.Status.NOT_SERVING.name
 
     def exit(self):
         """Close the Fluent connection and exit Fluent."""

@@ -20,5 +20,5 @@ class Logger:
         self.critical = self.logger.critical
         self.log = self.logger.log
 
-    def setLevel(self, level):
+    def set_level(self, level):
         self.logger.setLevel(level)
