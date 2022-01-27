@@ -85,7 +85,7 @@ class PyMenuMeta(type):
         return super(PyMenuMeta, cls).__new__(cls, name, bases, attrs)
 
 
-class PyLocaPropertyMeta(type):
+class PyLocalPropertyMeta(type):
     @classmethod
     def __create_validate(cls):
         def wrapper(self, value):
@@ -103,7 +103,7 @@ class PyLocaPropertyMeta(type):
                         value < self.range[0] or value > self.range[1]
                     ):
                         raise ValueError(
-                            f"Value {value} is not within {self.range}."
+                            f"Value {value}, is not within {self.range}."
                         )
                     if attr == "allowed_values":
                         if isinstance(value, list):
@@ -111,12 +111,13 @@ class PyLocaPropertyMeta(type):
                                 v in self.allowed_values for v in value
                             ):
                                 raise ValueError(
-                                    f"Values {value} are not within "\
+                                    f"Not all values in {value} are in the "\
+                                     "list of allowed values, "\
                                     f"{self.allowed_values}."
                                 )
                         elif not value in self.allowed_values:
                             raise ValueError(
-                                f"Value {value} is not within "\
+                                f"Value {value}, is not within "\
                                 f"{self.allowed_values}."
                             )
 
@@ -141,7 +142,7 @@ class PyLocaPropertyMeta(type):
                         lambda: setattr(self, "_value", None)
                     )
             for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocaPropertyMeta":
+                if cls.__class__.__name__ == "PyLocalPropertyMeta":
                     setattr(
                         self,
                         name,
@@ -183,7 +184,7 @@ class PyLocaPropertyMeta(type):
         def wrapper(self, show_attributes=False):
             state = {}
             for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocaPropertyMeta":
+                if cls.__class__.__name__ == "PyLocalPropertyMeta":
                     availability = (
                         getattr(self, "availability")(name)
                         if hasattr(self, "availability")
@@ -233,7 +234,7 @@ class PyLocaPropertyMeta(type):
             if (
                 attr
                 and attr.__class__.__class__.__name__
-                == "PyLocaPropertyMeta"
+                == "PyLocalPropertyMeta"
             ):
                 attr.set_state(value)
             else:
@@ -271,7 +272,7 @@ class PyLocaPropertyMeta(type):
         ] = cls.__create_register_on_change()
         attrs["set_state"] = cls.__create_set_state()
         attrs["parent"] = None
-        return super(PyLocaPropertyMeta, cls).__new__(
+        return super(PyLocalPropertyMeta, cls).__new__(
             cls, name, bases, attrs
         )
 
@@ -284,7 +285,7 @@ class PyLocalNamedObjectMeta(type):
             self.session = session
             self.parent = parent
             for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocaPropertyMeta":
+                if cls.__class__.__name__ == "PyLocalPropertyMeta":
                     setattr(
                         self,
                         name,
@@ -332,12 +333,12 @@ class PyLocalNamedObjectMeta(type):
 
     # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
     # c1 = graphics.contour['contour-1']
-    # graphics.contour['contour-2'] = c1
+    # graphics.contour['contour-2'] = c1()
     @classmethod
     def __create_setitem(cls):
         def wrapper(self, name, value):
             o = self[name]
-            o.update(value())
+            o.update(value)
 
         return wrapper
 
@@ -357,7 +358,7 @@ class PyLocalNamedObjectMeta(type):
         def wrapper(self, show_attributes=False):
             state = {}
             for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocaPropertyMeta":
+                if cls.__class__.__name__ == "PyLocalPropertyMeta":
                     availability = (
                         getattr(self, "availability")(name)
                         if hasattr(self, "availability")
@@ -389,7 +390,7 @@ class PyLocalNamedObjectMeta(type):
             if (
                 attr
                 and attr.__class__.__class__.__name__
-                == "PyLocaPropertyMeta"
+                == "PyLocalPropertyMeta"
             ):
                 getattr(self, name).set_state(value)
             else:

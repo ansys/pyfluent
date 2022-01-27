@@ -22,7 +22,7 @@ Usage
 
 .. code:: python
 
-  import ansys.fluent.solver as pyfluent
+  import ansys.fluent.solver as pyfluent  
   import logging
   pyfluent.setLogLevel(logging.DEBUG) # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
@@ -37,6 +37,9 @@ Post Processing
 
 In Fluent(server)  
 -----------------
+
+.. code:: python
+
   session.tui.display.objects.contour['contour-1'] = {'boundary_values': True, 'color_map': {'color': 'field-velocity', 'font_automatic': True, 'font_name': 'Helvetica', 'font_size': 0.032, 'format': '%0.2e', 'length': 0.54, 'log_scale': False, 'position': 1, 'show_all': True, 'size': 100, 'user_skip': 9, 'visible': True, 'width': 6.0}, 'coloring': {'smooth': False}, 'contour_lines': False, 'display_state_name': 'None', 'draw_mesh': False, 'field': 'pressure', 'filled': True, 'mesh_object': '', 'node_values': True, 'range_option': {'auto_range_on': {'global_range': True}}, 'surfaces_list': [2, 5]}
   session.tui.display.objects.contour['contour-1']()
   session.tui.display.objects.contour['contour-1'].field.set_state('velocity-magnitude')
@@ -48,16 +51,19 @@ In Fluent(server)
   
 PyVista (client)  
 -----------------  
+
+.. code:: python
+
   #import module
   import ansys.fluent.postprocessing.pyvista as pv
 
   #get the graphics objects for the session
   
   graphics_session1 = pv.Graphics(session)
-  mesh1 = graphics_session1.mesh["mesh-1"]
-  contour1 = graphics_session1.contour["contour-1"]
-  contour2 = graphics_session1.contour["contour-2"]
-  surface1 = graphics_session1.surface["surface-1"]
+  mesh1 = graphics_session1.Mesh["mesh-1"]
+  contour1 = graphics_session1.Contour["contour-1"]
+  contour2 = graphics_session1.Contour["contour-2"]
+  surface1 = graphics_session1.Surface["surface-1"]
 
   #set graphics objects properties
   

@@ -1,5 +1,5 @@
 from ansys.fluent.solver.meta import (
-    PyLocaPropertyMeta,
+    PyLocalPropertyMeta,
     PyLocalNamedObjectMeta,
     Attribute,
 )
@@ -11,7 +11,7 @@ import sys
 
 class Graphics:
     """
-    Instantiate the graphics objects.
+    Graphics objects provider.
     """
 
     def __init__(self, session):
@@ -36,7 +36,7 @@ class Graphics:
 Session.register_on_exit(lambda: plotter.close())
 
 
-class mesh(metaclass=PyLocalNamedObjectMeta):
+class Mesh(metaclass=PyLocalNamedObjectMeta):
     """
     Mesh graphics.
     """
@@ -47,7 +47,7 @@ class mesh(metaclass=PyLocalNamedObjectMeta):
         """
         plotter.set_graphics(self)
 
-    class surfaces_list(metaclass=PyLocaPropertyMeta):
+    class surfaces_list(metaclass=PyLocalPropertyMeta):
         """
         List of surfaces for mesh graphics.
         """
@@ -60,7 +60,7 @@ class mesh(metaclass=PyLocalNamedObjectMeta):
                 .keys()
             )
 
-    class show_edges(metaclass=PyLocaPropertyMeta):
+    class show_edges(metaclass=PyLocalPropertyMeta):
         """
         Show edges for mesh.
         """
@@ -68,7 +68,7 @@ class mesh(metaclass=PyLocalNamedObjectMeta):
         value = False
 
 
-class surface(metaclass=PyLocalNamedObjectMeta):
+class Surface(metaclass=PyLocalNamedObjectMeta):
     """
     Surface graphics.
     """
@@ -79,14 +79,14 @@ class surface(metaclass=PyLocalNamedObjectMeta):
         """
         plotter.set_graphics(self)
 
-    class show_edges(metaclass=PyLocaPropertyMeta):
+    class show_edges(metaclass=PyLocalPropertyMeta):
         """
         Show edges for surface.
         """
 
         value = True
 
-    class surface_type(metaclass=PyLocaPropertyMeta):
+    class surface_type(metaclass=PyLocalPropertyMeta):
         """
         Specify surface type.
         """
@@ -98,24 +98,24 @@ class surface(metaclass=PyLocalNamedObjectMeta):
                 return self.surface_type() == "iso-surface"
             return True
 
-        class surface_type(metaclass=PyLocaPropertyMeta):
+        class surface_type(metaclass=PyLocalPropertyMeta):
             value = "iso-surface"
 
             @Attribute
             def allowed_values(self):
                 return ["plane_surface", "iso_surface"]
 
-        class plane_surface(metaclass=PyLocaPropertyMeta):
+        class plane_surface(metaclass=PyLocalPropertyMeta):
             """
             Plane surface data.
             """
 
-        class iso_surface(metaclass=PyLocaPropertyMeta):
+        class iso_surface(metaclass=PyLocalPropertyMeta):
             """
             Iso surface data.
             """
 
-            class field(metaclass=PyLocaPropertyMeta):
+            class field(metaclass=PyLocalPropertyMeta):
                 """
                 Iso surface field.
                 """
@@ -124,14 +124,12 @@ class surface(metaclass=PyLocalNamedObjectMeta):
                 def allowed_values(self):
                     return [
                         v["solver_name"]
-                        for k, v in FieldData(
-                            self.session.field_service
-                        )
+                        for k, v in FieldData(self.session.field_service)
                         .get_fields_info()
                         .items()
                     ]
 
-            class rendering(metaclass=PyLocaPropertyMeta):
+            class rendering(metaclass=PyLocalPropertyMeta):
                 """
                 Iso surface rendering.
                 """
@@ -142,7 +140,7 @@ class surface(metaclass=PyLocalNamedObjectMeta):
                 def allowed_values(self):
                     return ["mesh", "contour"]
 
-            class iso_value(metaclass=PyLocaPropertyMeta):
+            class iso_value(metaclass=PyLocalPropertyMeta):
                 """
                 Iso surface iso value.
                 """
@@ -152,10 +150,7 @@ class surface(metaclass=PyLocalNamedObjectMeta):
 
                 @property
                 def value(self):
-                    if (
-                        not hasattr(self, "_value")
-                        or self._value == None
-                    ):
+                    if not hasattr(self, "_value") or self._value == None:
                         range = self.range
                         self._value = range[0] if range else None
                     return self._value
@@ -168,12 +163,12 @@ class surface(metaclass=PyLocalNamedObjectMeta):
                 def range(self):
                     field = self.parent.field()
                     if field:
-                        return FieldData(
-                            self.session.field_service
-                        ).get_range(field)
+                        return FieldData(self.session.field_service).get_range(
+                            field
+                        )
 
 
-class contour(metaclass=PyLocalNamedObjectMeta):
+class Contour(metaclass=PyLocalNamedObjectMeta):
     """
     Contour graphics.
     """
@@ -184,7 +179,7 @@ class contour(metaclass=PyLocalNamedObjectMeta):
         """
         plotter.set_graphics(self)
 
-    class field(metaclass=PyLocaPropertyMeta):
+    class field(metaclass=PyLocalPropertyMeta):
         """
         Contour field.
         """
@@ -198,7 +193,7 @@ class contour(metaclass=PyLocalNamedObjectMeta):
                 .items()
             ]
 
-    class surfaces_list(metaclass=PyLocaPropertyMeta):
+    class surfaces_list(metaclass=PyLocalPropertyMeta):
         """
         Contour surfaces.
         """
@@ -211,42 +206,42 @@ class contour(metaclass=PyLocalNamedObjectMeta):
                 .keys()
             )
 
-    class filled(metaclass=PyLocaPropertyMeta):
+    class filled(metaclass=PyLocalPropertyMeta):
         """
         Show filled contour.
         """
 
         value = True
 
-    class node_values(metaclass=PyLocaPropertyMeta):
+    class node_values(metaclass=PyLocalPropertyMeta):
         """
         Show nodal data.
         """
 
         value = True
 
-    class boundary_values(metaclass=PyLocaPropertyMeta):
+    class boundary_values(metaclass=PyLocalPropertyMeta):
         """
         Show boundary values.
         """
 
         value = False
 
-    class contour_lines(metaclass=PyLocaPropertyMeta):
+    class contour_lines(metaclass=PyLocalPropertyMeta):
         """
         Show contour lines.
         """
 
         value = False
 
-    class show_edges(metaclass=PyLocaPropertyMeta):
+    class show_edges(metaclass=PyLocalPropertyMeta):
         """
         Show edges.
         """
 
         value = False
 
-    class range_option(metaclass=PyLocaPropertyMeta):
+    class range_option(metaclass=PyLocalPropertyMeta):
         """
         Specify range options.
         """
@@ -258,7 +253,7 @@ class contour(metaclass=PyLocalNamedObjectMeta):
                 return self.range_option() == "auto-range-off"
             return True
 
-        class range_option(metaclass=PyLocaPropertyMeta):
+        class range_option(metaclass=PyLocalPropertyMeta):
             __doc__ = ""
             value = "auto-range-on"
 
@@ -266,25 +261,25 @@ class contour(metaclass=PyLocalNamedObjectMeta):
             def allowed_values(self):
                 return ["auto-range-on", "auto-range-off"]
 
-        class auto_range_on(metaclass=PyLocaPropertyMeta):
-            class global_range(metaclass=PyLocaPropertyMeta):
+        class auto_range_on(metaclass=PyLocalPropertyMeta):
+            class global_range(metaclass=PyLocalPropertyMeta):
                 """
                 Show global range.
                 """
 
                 value = False
 
-        class auto_range_off(metaclass=PyLocaPropertyMeta):
+        class auto_range_off(metaclass=PyLocalPropertyMeta):
             __doc__ = ""
 
-            class clip_to_range(metaclass=PyLocaPropertyMeta):
+            class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """
                 Clip contour within range.
                 """
 
                 value = False
 
-            class minimum(metaclass=PyLocaPropertyMeta):
+            class minimum(metaclass=PyLocalPropertyMeta):
                 """
                 Range minimum.
                 """
@@ -297,10 +292,7 @@ class contour(metaclass=PyLocalNamedObjectMeta):
 
                 @property
                 def value(self):
-                    if (
-                        not hasattr(self, "_value")
-                        or self._value == None
-                    ):
+                    if not hasattr(self, "_value") or self._value == None:
                         field = self.parent.parent.parent.field()
                         if field:
                             field_range = FieldData(
@@ -316,7 +308,7 @@ class contour(metaclass=PyLocalNamedObjectMeta):
                 def value(self, value):
                     self._value = value
 
-            class maximum(metaclass=PyLocaPropertyMeta):
+            class maximum(metaclass=PyLocalPropertyMeta):
                 """
                 Range maximum.
                 """
@@ -329,10 +321,7 @@ class contour(metaclass=PyLocalNamedObjectMeta):
 
                 @property
                 def value(self):
-                    if (
-                        not hasattr(self, "_value")
-                        or self._value == None
-                    ):
+                    if not hasattr(self, "_value") or self._value == None:
                         field = self.parent.parent.parent.field()
                         if field:
                             field_range = FieldData(
