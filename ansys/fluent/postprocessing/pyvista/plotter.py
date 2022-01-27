@@ -104,7 +104,7 @@ class _Plotter(metaclass=Singleton):
         surface_ids = [
             id
             for surf in obj.surfaces_list()
-            for id in surfaces_info.get(surf, {}).get("surface_id", [])
+            for id in surfaces_info[surf]["surface_id"]
         ]
         # get scalar field data
         scalar_field_data = field_data.get_scalar_field(
