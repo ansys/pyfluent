@@ -25,9 +25,9 @@ class HealthCheckService:
         NOT_SERVING = 2
         SERVICE_UNKNOWN = 3
 
-    def __init__(self, channel: grpc.Channel, password: str):
+    def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = HealthCheckGrpcModule.HealthStub(channel)
-        self.__metadata = [("password", password)]
+        self.__metadata = metadata
 
     def check_health(self) -> str:
         """

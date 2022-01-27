@@ -17,9 +17,9 @@ class TranscriptService:
 
     """
 
-    def __init__(self, channel: grpc.Channel, password: str):
+    def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = TranscriptGrpcModule.TranscriptStub(channel)
-        self.__metadata = [("password", password)]
+        self.__metadata = metadata
 
     def begin_streaming(self):
         """

@@ -15,9 +15,9 @@ class DatamodelService:
     It is suggested to use the methods from PyMenu class.
     """
 
-    def __init__(self, channel: grpc.Channel, password: str):
+    def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = DataModelGrpcModule.DataModelStub(channel)
-        self.__metadata = [("password", password)]
+        self.__metadata = metadata
 
     def get_attribute_value(self, request):
         return self.__stub.GetAttributeValue(request, metadata=self.__metadata)

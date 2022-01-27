@@ -1,5 +1,5 @@
 import atexit
-import threading
+from threading import Lock, Thread
 
 import grpc
 from ansys.fluent.core import LOG
@@ -26,7 +26,13 @@ class Session:
 
     Methods
     -------
-    health_check()
+    start_transcript()
+        Start streaming of Fluent transcript
+
+    stop_transcript()
+        Stop streaming of Fluent transcript
+
+    check_health()
         Check health of Fluent connection
 
     exit()
@@ -37,32 +43,33 @@ class Session:
     __all_sessions = []
 
     def __init__(self, server_info_filepath):
-        self.__is_exiting = False
-        self.lock = threading.Lock()
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
+        self.__metadata = [("password", password)]
 
-        transcript_service = TranscriptService(self.__channel, password)
-        responses = transcript_service.begin_streaming()
-        self.transcript_thread = threading.Thread(
-            target=Session.log_transcript, args=(self, responses)
-        )
-        self.transcript_thread.start()
+        self.__transcript_service: TranscriptService = None
+        self.__transcript_thread: Thread = None
+        self.__lock = Lock()
+        self.__is_transcript_stopping = False
+        self.start_transcript()
 
-        self.service = DatamodelService(self.__channel, password)
-        self.tui = Session.Tui(self.service)
+        self.__datamodel_service = DatamodelService(
+            self.__channel, self.__metadata
+            )
+        self.tui = Session.Tui(self.__datamodel_service)
 
         self.__health_check_service = HealthCheckService(
-            self.__channel, password
+            self.__channel, self.__metadata
             )
 
         Session.__all_sessions.append(self)
 
-    def log_transcript(self, responses):
+    def __log_transcript(self):
+        responses = self.__transcript_service.begin_streaming()
         transcript = ""
         while True:
-            with self.lock:
-                if self.__is_exiting:
+            with self.__lock:
+                if self.__is_transcript_stopping:
                     LOG.debug(transcript)
                     break
             try:
@@ -74,6 +81,23 @@ class Session:
             except StopIteration:
                 break
 
+    def start_transcript(self):
+        """Start streaming of Fluent transcript"""
+        self.__transcript_service = TranscriptService(
+            self.__channel, self.__metadata
+            )
+        self.__transcript_thread = Thread(
+            target=Session.__log_transcript, args=(self,)
+            )
+        self.__transcript_thread.start()
+
+    def stop_transcript(self):
+        """Stop streaming of Fluent transcript"""
+        with self.__lock:
+            self.__is_transcript_stopping = True
+        if self.__transcript_thread:
+            self.__transcript_thread.join()
+
     def check_health(self):
         """Check health of Fluent connection"""
         if self.__channel:
@@ -83,12 +107,9 @@ class Session:
 
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
-        with self.lock:
-            self.__is_exiting = True
         if self.__channel:
             self.tui.exit()
-            if self.transcript_thread:
-                self.transcript_thread.join()
+            self.stop_transcript()
             self.__channel.close()
             self.__channel = None
 
