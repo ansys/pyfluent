@@ -94,9 +94,7 @@ class PyLocalPropertyMeta(type):
                 raise TypeError(
                     f"Value {value} should be of type {type(old_value)}"
                 )
-            attrs = hasattr(self, "attributes") and getattr(
-                self, "attributes"
-            )
+            attrs = getattr(self, "attributes", None)
             if attrs:
                 for attr in attrs:
                     if attr == "range" and (
@@ -195,8 +193,7 @@ class PyLocalPropertyMeta(type):
                         state[name] = o(show_attributes)
                         attrs = (
                             show_attributes
-                            and hasattr(o, "attributes")
-                            and getattr(o, "attributes")
+                            and getattr(o, "attributes", False)
                         )
                         if attrs:
                             for attr in attrs:
@@ -230,7 +227,7 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_setattr(cls):
         def wrapper(self, name, value):
-            attr = hasattr(self, name) and getattr(self, name)
+            attr = getattr(self, name, None)
             if (
                 attr
                 and attr.__class__.__class__.__name__
@@ -369,8 +366,7 @@ class PyLocalNamedObjectMeta(type):
                         state[name] = o(show_attributes)
                         attrs = (
                             show_attributes
-                            and hasattr(o, "attributes")
-                            and getattr(o, "attributes")
+                            and getattr(o, "attributes", None)
                         )
                         if attrs:
                             for attr in attrs:
@@ -386,13 +382,13 @@ class PyLocalNamedObjectMeta(type):
     @classmethod
     def __create_setattr(cls):
         def wrapper(self, name, value):
-            attr = hasattr(self, name) and getattr(self, name)
+            attr = getattr(self, name, None)
             if (
                 attr
                 and attr.__class__.__class__.__name__
                 == "PyLocalPropertyMeta"
             ):
-                getattr(self, name).set_state(value)
+                attr.set_state(value)
             else:
                 object.__setattr__(self, name, value)
 

@@ -22,7 +22,7 @@ Usage
 
 .. code:: python
 
-  import ansys.fluent.solver as pyfluent  
+  import ansys.fluent.solver as pyfluent
   import logging
   pyfluent.setLogLevel(logging.DEBUG) # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
@@ -35,8 +35,8 @@ Usage
 Post Processing
 ---------------
 
-In Fluent(server)  
------------------
+In Fluent (server)  
+------------------
 
 .. code:: python
 
