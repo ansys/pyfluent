@@ -3,6 +3,7 @@ import os
 MODULE_NAME_ALIAS = "pyfluent"
 JOURNAL_FILENAME = None
 
+
 def start_journal(filename: str):
     global JOURNAL_FILENAME
     JOURNAL_FILENAME = filename

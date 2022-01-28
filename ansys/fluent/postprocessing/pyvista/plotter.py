@@ -17,20 +17,20 @@ class Singleton(type):
 
 class _Plotter(metaclass=Singleton):
     """
-    Plots the graphics.
+    Plot the graphics object.
 
     Properties
     ----------
     background_plotter
-        BackgroundPlotter to plot graphics
+        BackgroundPlotter to plot graphics.
 
     Methods
     -------
     set_graphics(obj)
-        sets the graphics to be plotted.
+        Set the graphics object to plot.
 
     close(obj)
-        closes the background_plotter.
+        Close the background_plotter.
     """
 
     __condition = threading.Condition()
