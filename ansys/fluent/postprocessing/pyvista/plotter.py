@@ -1,6 +1,5 @@
 import numpy as np
 import pyvista as pv
-from ansys.fluent.core.core import FieldData
 from pyvistaqt import BackgroundPlotter
 import threading
 
@@ -99,7 +98,7 @@ class _Plotter(metaclass=Singleton):
             position_y=0.3,
         )
 
-        field_data = FieldData(obj.session.field_service)
+        field_data = obj.session.field_data
         surfaces_info = field_data.get_surfaces_info()
         surface_ids = [
             id
@@ -223,9 +222,7 @@ class _Plotter(metaclass=Singleton):
             raise RuntimeError("Iso surface definition is incomplete.")
 
         dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
-        surfaces_list = list(
-            FieldData(obj.session.field_service).get_surfaces_info().keys()
-        )
+        surfaces_list = list(obj.session.field_data.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
             obj.session.tui.surface.delete_surface(dummy_surface_name)
@@ -238,9 +235,7 @@ class _Plotter(metaclass=Singleton):
             Graphics,
         )
 
-        surfaces_list = list(
-            FieldData(obj.session.field_service).get_surfaces_info().keys()
-        )
+        surfaces_list = list(obj.session.field_data.get_surfaces_info().keys())
         if not dummy_surface_name in surfaces_list:
             raise RuntimeError("Iso surface creation failed.")
         graphics_session = Graphics(obj.session)
@@ -263,7 +258,7 @@ class _Plotter(metaclass=Singleton):
     def _display_mesh(self, obj):
         if not obj.surfaces_list():
             raise RuntimeError("Mesh definition is incomplete.")
-        field_data = FieldData(obj.session.field_service)
+        field_data = obj.session.field_data
         surfaces_info = field_data.get_surfaces_info()
         surface_ids = [
             id

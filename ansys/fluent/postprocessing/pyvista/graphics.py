@@ -3,7 +3,6 @@ from ansys.fluent.solver.meta import (
     PyLocalNamedObjectMeta,
     Attribute,
 )
-from ansys.fluent.core.core import FieldData
 from ansys.fluent.postprocessing.pyvista.plotter import plotter
 from ansys.fluent.session import Session
 import sys
@@ -43,7 +42,7 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
 
     def display(self):
         """
-        Displays mesh graphics.
+        Display mesh graphics.
         """
         plotter.set_graphics(self)
 
@@ -54,11 +53,7 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(
-                FieldData(self.session.field_service)
-                .get_surfaces_info()
-                .keys()
-            )
+            return list(self.session.field_data.get_surfaces_info().keys())
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -75,7 +70,7 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
 
     def display(self):
         """
-        Displays contour graphics.
+        Display contour graphics.
         """
         plotter.set_graphics(self)
 
@@ -124,9 +119,8 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
                 def allowed_values(self):
                     return [
                         v["solver_name"]
-                        for k, v in FieldData(self.session.field_service)
-                        .get_fields_info()
-                        .items()
+                        for k, v in self.session.field_data
+                        .get_fields_info().items()
                     ]
 
             class rendering(metaclass=PyLocalPropertyMeta):
@@ -163,9 +157,7 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
                 def range(self):
                     field = self.parent.field()
                     if field:
-                        return FieldData(self.session.field_service).get_range(
-                            field
-                        )
+                        return self.session.field_data.get_range(field)
 
 
 class Contour(metaclass=PyLocalNamedObjectMeta):
@@ -175,7 +167,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
     def display(self):
         """
-        Displays Contour graphics.
+        Display Contour graphics.
         """
         plotter.set_graphics(self)
 
@@ -188,9 +180,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
         def allowed_values(self):
             return [
                 v["solver_name"]
-                for k, v in FieldData(self.session.field_service)
-                .get_fields_info()
-                .items()
+                for k, v in self.session.field_data.get_fields_info().items()
             ]
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -200,11 +190,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(
-                FieldData(self.session.field_service)
-                .get_surfaces_info()
-                .keys()
-            )
+            return list(self.session.field_data.get_surfaces_info().keys())
 
     class filled(metaclass=PyLocalPropertyMeta):
         """
@@ -262,6 +248,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                 return ["auto-range-on", "auto-range-off"]
 
         class auto_range_on(metaclass=PyLocalPropertyMeta):
+
             class global_range(metaclass=PyLocalPropertyMeta):
                 """
                 Show global range.
@@ -270,7 +257,6 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                 value = False
 
         class auto_range_off(metaclass=PyLocalPropertyMeta):
-            __doc__ = ""
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """
@@ -295,9 +281,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                     if not hasattr(self, "_value") or self._value == None:
                         field = self.parent.parent.parent.field()
                         if field:
-                            field_range = FieldData(
-                                self.session.field_service
-                            ).get_range(
+                            field_range = self.session.field_data.get_range(
                                 field,
                                 self.parent.parent.parent.node_values(),
                             )
@@ -324,9 +308,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                     if not hasattr(self, "_value") or self._value == None:
                         field = self.parent.parent.parent.field()
                         if field:
-                            field_range = FieldData(
-                                self.session.field_service
-                            ).get_range(
+                            field_range = self.session.field_data.get_range(
                                 field,
                                 self.parent.parent.parent.node_values(),
                             )

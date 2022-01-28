@@ -1,4 +1,7 @@
-from ansys.fluent.core.core import PyMenu, convert_path_to_grpc_path
+from ansys.fluent.services.tui_datamodel import (
+    PyMenu,
+    convert_path_to_grpc_path
+    )
 from pprint import pformat
 
 
@@ -19,11 +22,10 @@ class Attribute:
         obj.attributes.add(name)
 
     def __set__(self, obj, value):
-        raise AttributeError("Attributes are readonly.")
+        raise AttributeError("Attributes are read only.")
 
     def __get__(self, obj, type=None):
         return self.function(obj)
-
 
 class PyMenuMeta(type):
     @classmethod
@@ -92,7 +94,7 @@ class PyLocalPropertyMeta(type):
             old_value = self()
             if old_value and type(old_value) != type(value):
                 raise TypeError(
-                    f"Value {value} should be of type {type(old_value)}"
+                    f"Value {value}, should be of type {type(old_value)}"
                 )
             attrs = getattr(self, "attributes", None)
             if attrs:
@@ -101,7 +103,8 @@ class PyLocalPropertyMeta(type):
                         value < self.range[0] or value > self.range[1]
                     ):
                         raise ValueError(
-                            f"Value {value}, is not within {self.range}."
+                            f"Value {value}, is not within valid range"\
+                            f" {self.range}."
                         )
                     if attr == "allowed_values":
                         if isinstance(value, list):
@@ -109,14 +112,14 @@ class PyLocalPropertyMeta(type):
                                 v in self.allowed_values for v in value
                             ):
                                 raise ValueError(
-                                    f"Not all values in {value} are in the "\
-                                     "list of allowed values, "\
+                                    f"Not all values in {value}, are in the "\
+                                     "list of allowed values "\
                                     f"{self.allowed_values}."
                                 )
                         elif not value in self.allowed_values:
                             raise ValueError(
-                                f"Value {value}, is not within "\
-                                f"{self.allowed_values}."
+                                f"Value {value}, is not in the list of "\
+                                f"allowed values {self.allowed_values}."
                             )
 
             return value
