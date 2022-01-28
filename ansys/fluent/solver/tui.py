@@ -1,7 +1,7 @@
 # This is an auto-generated file.  DO NOT EDIT!
 
 from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta
-from ansys.fluent.services.tui_datamodel import PyMenu
+from ansys.fluent.services.datamodel_tui import PyMenu
 
 
 def close_fluent(self, *args, **kwargs):

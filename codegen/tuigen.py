@@ -6,7 +6,7 @@ TUIGenerator().generate()
 import os
 from pathlib import Path
 
-from ansys.fluent.services.tui_datamodel import (
+from ansys.fluent.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name
@@ -156,7 +156,7 @@ class TUIGenerator:
             "# This is an auto-generated file.  DO NOT EDIT!\n\n"
             "from ansys.fluent.solver.meta "
             "import PyMenuMeta, PyNamedObjectMeta\n"
-            "from ansys.fluent.services.tui_datamodel import PyMenu\n\n\n"
+            "from ansys.fluent.services.datamodel_tui import PyMenu\n\n\n"
         )
         self.__write_menu_to_tui_file(self.main_menu)
         self.__write_to_init_file()
