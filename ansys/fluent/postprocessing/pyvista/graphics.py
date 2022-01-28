@@ -1,11 +1,11 @@
-from ansys.fluent.solver.meta import (
-    PyLocalPropertyMeta,
-    PyLocalNamedObjectMeta,
-    Attribute,
-)
+import sys
 from ansys.fluent.postprocessing.pyvista.plotter import plotter
 from ansys.fluent.session import Session
-import sys
+from ansys.fluent.solver.meta import (
+    Attribute,
+    PyLocalNamedObjectMeta,
+    PyLocalPropertyMeta,
+)
 
 
 class Graphics:
@@ -53,7 +53,9 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(self.session.field_data.get_surfaces_info().keys())
+            return list(
+                self.session.field_data.get_surfaces_info().keys()
+            )
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -144,7 +146,7 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
 
                 @property
                 def value(self):
-                    if not hasattr(self, "_value") or self._value == None:
+                    if getattr(self, "_value", None) == None:
                         range = self.range
                         self._value = range[0] if range else None
                     return self._value
@@ -190,7 +192,9 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(self.session.field_data.get_surfaces_info().keys())
+            return list(
+                self.session.field_data.get_surfaces_info().keys()
+            )
 
     class filled(metaclass=PyLocalPropertyMeta):
         """
@@ -240,7 +244,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
             return True
 
         class range_option(metaclass=PyLocalPropertyMeta):
-            __doc__ = ""
+
             value = "auto-range-on"
 
             @Attribute
@@ -248,6 +252,9 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                 return ["auto-range-on", "auto-range-off"]
 
         class auto_range_on(metaclass=PyLocalPropertyMeta):
+            """
+            Specify auto range on.
+            """
 
             class global_range(metaclass=PyLocalPropertyMeta):
                 """
@@ -257,6 +264,9 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                 value = False
 
         class auto_range_off(metaclass=PyLocalPropertyMeta):
+            """
+            Specify auto range off.
+            """
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
                 """
@@ -278,7 +288,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
                 @property
                 def value(self):
-                    if not hasattr(self, "_value") or self._value == None:
+                    if getattr(self, "_value", None) == None:
                         field = self.parent.parent.parent.field()
                         if field:
                             field_range = self.session.field_data.get_range(
@@ -305,7 +315,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
                 @property
                 def value(self):
-                    if not hasattr(self, "_value") or self._value == None:
+                    if getattr(self, "_value", None) == None:
                         field = self.parent.parent.parent.field()
                         if field:
                             field_range = self.session.field_data.get_range(
