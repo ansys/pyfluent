@@ -31,7 +31,10 @@ from ansys.fluent.solver.tui import (
 
 from ansys.fluent.core import LOG
 
+
 Session.Tui.register_module(tui)
 
-def setLogLevel(level):
-    LOG.setLevel(level)
+
+def set_log_level(level):
+    LOG.set_level(level)
+

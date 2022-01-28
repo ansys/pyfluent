@@ -15,7 +15,7 @@ Add one new design point and set an input parameter
 >>> dp1.set_input("parameter_1", 0.235)
 >>> dp1.set_input("velocity_inlet_5_y_velocity", 0.772)
 
-The solver has not been run yet so no ouputs are computed
+The solver has not been run yet so no outputs are computed
 The design point is out of date
 
 >>> assert(dp1.status == DesignPointStatus.OUT_OF_DATE)
@@ -206,7 +206,7 @@ class DesignPointTable(list):
 class FluentParameterAccessor:
     """
     Extracts parameter name to value dicts from table strs
-    currenty returned by the API
+    currently returned by the API
 
     Attributes
     ----------
@@ -257,7 +257,7 @@ class FluentParameterAccessor:
 
 class ParametricSession:
     """
-    Full set of interactions with Fluent inthe context of a parametric study
+    Full set of interactions with Fluent in the context of a parametric study
 
     Attributes
     ----------

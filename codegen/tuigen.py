@@ -6,10 +6,10 @@ TUIGenerator().generate()
 import os
 from pathlib import Path
 
-from ansys.fluent.core.core import (
+from ansys.fluent.services.tui_datamodel import (
     PyMenu,
     convert_path_to_grpc_path,
-    convert_tui_menu_to_fname
+    convert_tui_menu_to_func_name
     )
 from ansys.fluent.launcher.launcher import launch_fluent
 
@@ -43,7 +43,7 @@ class TUIMenuGenerator:
 class TUIMenu:
     def __init__(self, path):
         self.path = path
-        self.name = convert_tui_menu_to_fname(path[-1][0]) if path else ""
+        self.name = convert_tui_menu_to_func_name(path[-1][0]) if path else ""
         self.grpc_path = convert_path_to_grpc_path(path)
         self.doc = None
         self.children = {}
@@ -59,10 +59,10 @@ class TUIGenerator:
     def __init__(self, tui_file=TUI_FILE, init_file=INIT_FILE):
         self.tui_file = tui_file
         self.init_file = init_file
-        Path(TUI_FILE).unlink(missing_ok=True)
-        Path(INIT_FILE).unlink(missing_ok=True)
-        session = launch_fluent()
-        self.service = session.service
+        Path(TUI_FILE).unlink()
+        Path(INIT_FILE).unlink()
+        self.session = launch_fluent()
+        self.service = self.session.service
         self.main_menu = TUIMenu([])
 
     def __populate_menu(self, menu: TUIMenu):
@@ -134,34 +134,30 @@ class TUIGenerator:
     def __write_to_init_file(self):
         self.__write_code_to_init_file(
             "# This is an auto-generated file.  DO NOT EDIT!\n\n"
-        )
-        self.__write_code_to_init_file(
             "from ansys.fluent.session import Session\n"
-        )
-        self.__write_code_to_init_file(
             "from ansys.fluent.launcher.launcher import launch_fluent\n\n"
-        )
-        self.__write_code_to_init_file("from ansys.fluent.solver import tui\n")
-        self.__write_code_to_init_file(
+            "from ansys.fluent.solver import tui\n"
             "from ansys.fluent.solver.tui import (\n"
-        )
+            )
         for k, v in self.main_menu.children.items():
             if not v.is_command:
-                self.__write_code_to_init_file(f"    {k},\n")
-        self.__write_code_to_init_file(")\n\n")
-        self.__write_code_to_init_file("Session.Tui.register_module(tui)")
+                self.__write_code_to_init_file(f"{k},\n", 1)
+        self.__write_code_to_init_file(
+            ")\n\n"
+            "from ansys.fluent.core import LOG\n\n\n"
+            "Session.Tui.register_module(tui)\n\n\n"
+            "def set_log_level(level):\n"
+            )
+        self.__write_code_to_init_file("LOG.set_level(level)\n\n", 1)
 
     def generate(self):
         self.__populate_menu(self.main_menu)
         self.__write_code_to_tui_file(
             "# This is an auto-generated file.  DO NOT EDIT!\n\n"
-        )
-        self.__write_code_to_tui_file(
             "from ansys.fluent.solver.meta "
             "import PyMenuMeta, PyNamedObjectMeta\n"
-        )
-        self.__write_code_to_tui_file(
-            "from ansys.fluent.core.core import PyMenu\n\n\n"
+            "from ansys.fluent.services.tui_datamodel import PyMenu\n\n\n"
         )
         self.__write_menu_to_tui_file(self.main_menu)
         self.__write_to_init_file()
+        self.session.exit()

@@ -1,7 +1,7 @@
 # This is an auto-generated file.  DO NOT EDIT!
 
 from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta
-from ansys.fluent.core.core import PyMenu
+from ansys.fluent.services.tui_datamodel import PyMenu
 
 
 def close_fluent(self, *args, **kwargs):
@@ -414,6 +414,18 @@ class display(metaclass=PyMenuMeta):
                 __doc__ = ''
                 is_extended_tui = True
 
+            class physics(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class geometry(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
         class contour(metaclass=PyNamedObjectMeta):
             __doc__ = ''
             is_extended_tui = True
@@ -551,6 +563,18 @@ class display(metaclass=PyMenuMeta):
                 is_extended_tui = True
 
             class display_state_name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class physics(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class geometry(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces(metaclass=PyMenuMeta):
                 __doc__ = ''
                 is_extended_tui = True
 
@@ -719,6 +743,18 @@ class display(metaclass=PyMenuMeta):
                 is_extended_tui = True
 
             class display_state_name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class physics(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class geometry(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces(metaclass=PyMenuMeta):
                 __doc__ = ''
                 is_extended_tui = True
 
@@ -12570,6 +12606,11 @@ class define(metaclass=PyMenuMeta):
                 Writes harmonic export data
                 """
                 return PyMenu(self.service).execute('/define/turbo_model/blade_flutter_harmonics/write_harmonic_exports', *args, **kwargs)
+            def write_aerodamping_vs_nodal_diameter(self, *args, **kwargs):
+                """
+                Reads report definition file and Writes influence coefficient aerodynamic damping values vs nodal diameter.
+                """
+                return PyMenu(self.service).execute('/define/turbo_model/blade_flutter_harmonics/write_aerodamping_vs_nodal_diameter', *args, **kwargs)
 
     class phases(metaclass=PyMenuMeta):
         __doc__ = 'Enter the phases menu.'
@@ -17031,12 +17072,12 @@ class mesh(metaclass=PyMenuMeta):
         return PyMenu(self.service).execute('/mesh/replace', *args, **kwargs)
     def rotate(self, *args, **kwargs):
         """
-        Rotate the mesh
+        Rotate the mesh.
         """
         return PyMenu(self.service).execute('/mesh/rotate', *args, **kwargs)
     def scale(self, *args, **kwargs):
         """
-        Scale the mesh
+        Scale the mesh.
         """
         return PyMenu(self.service).execute('/mesh/scale', *args, **kwargs)
     def size_info(self, *args, **kwargs):
@@ -17054,6 +17095,11 @@ class mesh(metaclass=PyMenuMeta):
         Swap mesh faces.
         """
         return PyMenu(self.service).execute('/mesh/swap_mesh_faces', *args, **kwargs)
+    def show_periodic_shadow_zones(self, *args, **kwargs):
+        """
+        Option to show periodic shadow zones in user interface.
+        """
+        return PyMenu(self.service).execute('/mesh/show_periodic_shadow_zones', *args, **kwargs)
     def translate(self, *args, **kwargs):
         """
         Translate the mesh.
@@ -18524,10 +18570,6 @@ class preferences(metaclass=PyMenuMeta):
             """
             """
             return PyMenu(self.service).execute('/preferences/appearance/show_model_edges', *args, **kwargs)
-        def show_periodic_shadow_zones(self, *args, **kwargs):
-            """
-            """
-            return PyMenu(self.service).execute('/preferences/appearance/show_periodic_shadow_zones', *args, **kwargs)
         def solution_mode_edge_color_in_meshing_mode(self, *args, **kwargs):
             """
             """
@@ -18710,6 +18752,10 @@ class preferences(metaclass=PyMenuMeta):
             """
             """
             return PyMenu(self.service).execute('/preferences/general/default_ioformat', *args, **kwargs)
+        def dock_editor(self, *args, **kwargs):
+            """
+            """
+            return PyMenu(self.service).execute('/preferences/general/dock_editor', *args, **kwargs)
         def enable_parametric_study(self, *args, **kwargs):
             """
             """
@@ -19434,10 +19480,6 @@ class preferences(metaclass=PyMenuMeta):
             """
             """
             return PyMenu(self.service).execute('/preferences/meshing_workflow/checkpointing_option', *args, **kwargs)
-        def dock_editor(self, *args, **kwargs):
-            """
-            """
-            return PyMenu(self.service).execute('/preferences/meshing_workflow/dock_editor', *args, **kwargs)
         def save_checkpoint_files(self, *args, **kwargs):
             """
             """
@@ -19596,10 +19638,18 @@ class preferences(metaclass=PyMenuMeta):
             """
             """
             return PyMenu(self.service).execute('/preferences/prj_app/display_mesh_after_case_load', *args, **kwargs)
+        def multi_console(self, *args, **kwargs):
+            """
+            """
+            return PyMenu(self.service).execute('/preferences/prj_app/multi_console', *args, **kwargs)
         def ncpu(self, *args, **kwargs):
             """
             """
             return PyMenu(self.service).execute('/preferences/prj_app/ncpu', *args, **kwargs)
+        def session_color(self, *args, **kwargs):
+            """
+            """
+            return PyMenu(self.service).execute('/preferences/prj_app/session_color', *args, **kwargs)
         def show_fluent_window(self, *args, **kwargs):
             """
             """
@@ -19645,6 +19695,14 @@ class preferences(metaclass=PyMenuMeta):
 
     class turbo_workflow(metaclass=PyMenuMeta):
         __doc__ = ''
+        def checkpointing_option(self, *args, **kwargs):
+            """
+            """
+            return PyMenu(self.service).execute('/preferences/turbo_workflow/checkpointing_option', *args, **kwargs)
+        def save_checkpoint_files(self, *args, **kwargs):
+            """
+            """
+            return PyMenu(self.service).execute('/preferences/turbo_workflow/save_checkpoint_files', *args, **kwargs)
 
         class cell_zone_settings(metaclass=PyMenuMeta):
             __doc__ = ''
@@ -22505,6 +22563,18 @@ class results(metaclass=PyMenuMeta):
                     __doc__ = ''
                     is_extended_tui = True
 
+                class physics(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class geometry(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
             class contour(metaclass=PyNamedObjectMeta):
                 __doc__ = ''
                 is_extended_tui = True
@@ -22642,6 +22712,18 @@ class results(metaclass=PyMenuMeta):
                     is_extended_tui = True
 
                 class display_state_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class physics(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class geometry(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces(metaclass=PyMenuMeta):
                     __doc__ = ''
                     is_extended_tui = True
 
@@ -22810,6 +22892,18 @@ class results(metaclass=PyMenuMeta):
                     is_extended_tui = True
 
                 class display_state_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class physics(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class geometry(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces(metaclass=PyMenuMeta):
                     __doc__ = ''
                     is_extended_tui = True
 
@@ -26347,6 +26441,11 @@ class solution(metaclass=PyMenuMeta):
                     sets relaxation factor
                     """
                     return PyMenu(self.service).execute('/solution/methods/high_order_term_relaxation/options/relaxation_factor', *args, **kwargs)
+                def expert(self, *args, **kwargs):
+                    """
+                    Enter high order relaxation option with respect to diffusion gradient.
+                    """
+                    return PyMenu(self.service).execute('/solution/methods/high_order_term_relaxation/options/expert', *args, **kwargs)
 
                 class variables(metaclass=PyMenuMeta):
                     __doc__ = 'Select Variables'
@@ -29612,6 +29711,11 @@ class solve(metaclass=PyMenuMeta):
                     sets relaxation factor
                     """
                     return PyMenu(self.service).execute('/solve/set/high_order_term_relaxation/options/relaxation_factor', *args, **kwargs)
+                def expert(self, *args, **kwargs):
+                    """
+                    Enter high order relaxation option with respect to diffusion gradient.
+                    """
+                    return PyMenu(self.service).execute('/solve/set/high_order_term_relaxation/options/expert', *args, **kwargs)
 
                 class variables(metaclass=PyMenuMeta):
                     __doc__ = 'Select Variables'
@@ -29819,6 +29923,11 @@ class solve(metaclass=PyMenuMeta):
                 in order to improve timestep convergence.
                 """
                 return PyMenu(self.service).execute('/solve/set/advanced/bcd_weights_freeze', *args, **kwargs)
+            def anisotropic_heat_flux(self, *args, **kwargs):
+                """
+                Choose anisotropic heat flux.
+                """
+                return PyMenu(self.service).execute('/solve/set/advanced/anisotropic_heat_flux', *args, **kwargs)
 
             class non_reflecting_boundary_treatment(metaclass=PyMenuMeta):
                 __doc__ = 'Enter non reflecting boundary treatment using minimal pressure reflection approach menu.'
@@ -40308,6 +40417,11 @@ class setup(metaclass=PyMenuMeta):
                 Writes harmonic export data
                 """
                 return PyMenu(self.service).execute('/setup/turbo_model/blade_flutter_harmonics/write_harmonic_exports', *args, **kwargs)
+            def write_aerodamping_vs_nodal_diameter(self, *args, **kwargs):
+                """
+                Reads report definition file and Writes influence coefficient aerodynamic damping values vs nodal diameter.
+                """
+                return PyMenu(self.service).execute('/setup/turbo_model/blade_flutter_harmonics/write_aerodamping_vs_nodal_diameter', *args, **kwargs)
 
 class surface(metaclass=PyMenuMeta):
     __doc__ = 'Enter the data surface manipulation menu.'

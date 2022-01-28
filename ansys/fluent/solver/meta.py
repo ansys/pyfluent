@@ -1,4 +1,7 @@
-from ansys.fluent.core.core import PyMenu, convert_path_to_grpc_path
+from ansys.fluent.services.tui_datamodel import (
+    PyMenu,
+    convert_path_to_grpc_path
+    )
 
 
 class PyMenuMeta(type):
