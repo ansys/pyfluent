@@ -53,9 +53,7 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(
-                self.session.field_data.get_surfaces_info().keys()
-            )
+            return list(self.session.field_data.get_surfaces_info().keys())
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -192,9 +190,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(
-                self.session.field_data.get_surfaces_info().keys()
-            )
+            return list(self.session.field_data.get_surfaces_info().keys())
 
     class filled(metaclass=PyLocalPropertyMeta):
         """

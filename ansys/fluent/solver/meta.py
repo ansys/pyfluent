@@ -1,7 +1,7 @@
 from ansys.fluent.services.tui_datamodel import (
     PyMenu,
-    convert_path_to_grpc_path
-    )
+    convert_path_to_grpc_path,
+)
 from pprint import pformat
 
 
@@ -14,7 +14,7 @@ class Attribute:
     def __set_name__(self, obj, name):
         if not name in self.VALID_NAMES:
             raise ValueError(
-                f"Attribute {name} is not allowed."\
+                f"Attribute {name} is not allowed."
                 f"Expected values are {self.VALID_NAMES}"
             )
         if not hasattr(obj, "attributes"):
@@ -26,6 +26,7 @@ class Attribute:
 
     def __get__(self, obj, type=None):
         return self.function(obj)
+
 
 class PyMenuMeta(type):
     @classmethod
@@ -103,7 +104,7 @@ class PyLocalPropertyMeta(type):
                         value < self.range[0] or value > self.range[1]
                     ):
                         raise ValueError(
-                            f"Value {value}, is not within valid range"\
+                            f"Value {value}, is not within valid range"
                             f" {self.range}."
                         )
                     if attr == "allowed_values":
@@ -112,13 +113,13 @@ class PyLocalPropertyMeta(type):
                                 v in self.allowed_values for v in value
                             ):
                                 raise ValueError(
-                                    f"Not all values in {value}, are in the "\
-                                     "list of allowed values "\
+                                    f"Not all values in {value}, are in the "
+                                    "list of allowed values "
                                     f"{self.allowed_values}."
                                 )
                         elif not value in self.allowed_values:
                             raise ValueError(
-                                f"Value {value}, is not in the list of "\
+                                f"Value {value}, is not in the list of "
                                 f"allowed values {self.allowed_values}."
                             )
 
@@ -194,15 +195,12 @@ class PyLocalPropertyMeta(type):
                     if availability:
                         o = getattr(self, name)
                         state[name] = o(show_attributes)
-                        attrs = (
-                            show_attributes
-                            and getattr(o, "attributes", False)
+                        attrs = show_attributes and getattr(
+                            o, "attributes", False
                         )
                         if attrs:
                             for attr in attrs:
-                                state[name + "." + attr] = getattr(
-                                    o, attr
-                                )
+                                state[name + "." + attr] = getattr(o, attr)
 
             if len(state) > 0:
                 return state
@@ -233,8 +231,7 @@ class PyLocalPropertyMeta(type):
             attr = getattr(self, name, None)
             if (
                 attr
-                and attr.__class__.__class__.__name__
-                == "PyLocalPropertyMeta"
+                and attr.__class__.__class__.__name__ == "PyLocalPropertyMeta"
             ):
                 attr.set_state(value)
             else:
@@ -267,14 +264,10 @@ class PyLocalPropertyMeta(type):
         attrs["__setattr__"] = cls.__create_setattr()
         attrs["__repr__"] = cls.__create_repr()
         attrs["_validate"] = cls.__create_validate()
-        attrs[
-            "_register_on_change_cb"
-        ] = cls.__create_register_on_change()
+        attrs["_register_on_change_cb"] = cls.__create_register_on_change()
         attrs["set_state"] = cls.__create_set_state()
         attrs["parent"] = None
-        return super(PyLocalPropertyMeta, cls).__new__(
-            cls, name, bases, attrs
-        )
+        return super(PyLocalPropertyMeta, cls).__new__(cls, name, bases, attrs)
 
 
 class PyLocalNamedObjectMeta(type):
@@ -367,15 +360,12 @@ class PyLocalNamedObjectMeta(type):
                     if availability:
                         o = getattr(self, name)
                         state[name] = o(show_attributes)
-                        attrs = (
-                            show_attributes
-                            and getattr(o, "attributes", None)
+                        attrs = show_attributes and getattr(
+                            o, "attributes", None
                         )
                         if attrs:
                             for attr in attrs:
-                                state[name + "." + attr] = getattr(
-                                    o, attr
-                                )
+                                state[name + "." + attr] = getattr(o, attr)
             return state
 
         return wrapper
@@ -388,8 +378,7 @@ class PyLocalNamedObjectMeta(type):
             attr = getattr(self, name, None)
             if (
                 attr
-                and attr.__class__.__class__.__name__
-                == "PyLocalPropertyMeta"
+                and attr.__class__.__class__.__name__ == "PyLocalPropertyMeta"
             ):
                 attr.set_state(value)
             else:
@@ -408,9 +397,7 @@ class PyLocalNamedObjectMeta(type):
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs["_path"] = {
-            x: None for x in attrs["__qualname__"].split(".")
-        }
+        attrs["_path"] = {x: None for x in attrs["__qualname__"].split(".")}
         attrs["__init__"] = cls.__create_init()
         attrs["__getitem__"] = cls.__create_getitem()
         attrs["__setitem__"] = cls.__create_setitem()
@@ -472,9 +459,7 @@ class PyNamedObjectMeta(type):
     def __create_delitem(cls):
         def wrapper(self, name):
             o = self.__class__(self.path, name, self.service)
-            PyMenu(self.service).del_item(
-                convert_path_to_grpc_path(o.path)
-            )
+            PyMenu(self.service).del_item(convert_path_to_grpc_path(o.path))
 
         return wrapper
 
@@ -499,15 +484,11 @@ class PyNamedObjectMeta(type):
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs["path"] = {
-            x: None for x in attrs["__qualname__"].split(".")
-        }
+        attrs["path"] = {x: None for x in attrs["__qualname__"].split(".")}
         attrs["__init__"] = cls.__create_init()
         attrs["__getitem__"] = cls.__create_getitem()
         attrs["__setitem__"] = cls.__create_setitem()
         attrs["__delitem__"] = cls.__create_delitem()
         attrs["__call__"] = cls.__create_get_state()
         attrs["rename"] = cls.__create_rename()
-        return super(PyNamedObjectMeta, cls).__new__(
-            cls, name, bases, attrs
-        )
+        return super(PyNamedObjectMeta, cls).__new__(cls, name, bases, attrs)

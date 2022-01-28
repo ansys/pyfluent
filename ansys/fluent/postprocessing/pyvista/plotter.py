@@ -31,6 +31,7 @@ class _Plotter(metaclass=Singleton):
 
     close(obj)
         Close the background_plotter.
+
     """
 
     __condition = threading.Condition()
@@ -118,9 +119,7 @@ class _Plotter(metaclass=Singleton):
         # loop over all meshes
         for mesh_data in scalar_field_data:
 
-            topology = (
-                "line" if mesh_data["faces"][0][0] == 2 else "face"
-            )
+            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
                     np.array(mesh_data["vertices"]),
@@ -132,13 +131,9 @@ class _Plotter(metaclass=Singleton):
                     faces=np.hstack(mesh_data["faces"]),
                 )
             if node_values:
-                mesh.point_data[field] = np.array(
-                    mesh_data["scalar_field"]
-                )
+                mesh.point_data[field] = np.array(mesh_data["scalar_field"])
             else:
-                mesh.cell_data[field] = np.array(
-                    mesh_data["scalar_field"]
-                )
+                mesh.cell_data[field] = np.array(mesh_data["scalar_field"])
             if not meta_data:
                 meta_data = mesh_data["meta_data"]
 
@@ -172,9 +167,7 @@ class _Plotter(metaclass=Singleton):
                                 != np.max(minimum_above[field])
                             ):
                                 plotter.add_mesh(
-                                    minimum_above.contour(
-                                        isosurfaces=20
-                                    )
+                                    minimum_above.contour(isosurfaces=20)
                                 )
                 else:
                     if filled:
@@ -230,9 +223,7 @@ class _Plotter(metaclass=Singleton):
             raise RuntimeError("Iso surface definition is incomplete.")
 
         dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
-        surfaces_list = list(
-            obj.session.field_data.get_surfaces_info().keys()
-        )
+        surfaces_list = list(obj.session.field_data.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
             obj.session.tui.surface.delete_surface(dummy_surface_name)
@@ -245,9 +236,7 @@ class _Plotter(metaclass=Singleton):
             Graphics,
         )
 
-        surfaces_list = list(
-            obj.session.field_data.get_surfaces_info().keys()
-        )
+        surfaces_list = list(obj.session.field_data.get_surfaces_info().keys())
         if not dummy_surface_name in surfaces_list:
             raise RuntimeError("Iso surface creation failed.")
         graphics_session = Graphics(obj.session)
@@ -279,9 +268,7 @@ class _Plotter(metaclass=Singleton):
         ]
         surfaces_data = field_data.get_surfaces(surface_ids)
         for mesh_data in surfaces_data:
-            topology = (
-                "line" if mesh_data["faces"][0][0] == 2 else "face"
-            )
+            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
                     np.array(mesh_data["vertices"]),
