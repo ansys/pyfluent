@@ -14,6 +14,9 @@ For a local "development" version, install with:
   pip install -e .
 
 We need to install the grpc package as it is not yet in PyPI.
+Also for python 3.10 we need to install `pyVista`_.
+
+.. _pyVista: https://github.com/pyvista/pyvista/discussions/2064
 
 Usage
 -----
@@ -36,7 +39,7 @@ Post Processing
 ---------------
 
 In Fluent (server)  
-------------------
+^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -50,7 +53,7 @@ In Fluent (server)
   del session.tui.display.objects.contour['my-contour']
   
 PyVista (client)  
------------------  
+^^^^^^^^^^^^^^^^^^ 
 
 .. code:: python
 

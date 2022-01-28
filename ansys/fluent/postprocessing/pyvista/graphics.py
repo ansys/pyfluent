@@ -157,7 +157,7 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
                 def range(self):
                     field = self.parent.field()
                     if field:
-                        return self.session.field_data.get_range(field)
+                        return self.session.field_data.get_range(field, True)
 
 
 class Contour(metaclass=PyLocalNamedObjectMeta):

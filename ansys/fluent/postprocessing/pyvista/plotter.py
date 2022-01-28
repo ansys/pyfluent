@@ -264,7 +264,7 @@ class _Plotter(metaclass=Singleton):
         surface_ids = [
             id
             for surf in obj.surfaces_list()
-            for id in surfaces_info.get(surf, {}).get("surface_id", [])
+            for id in surfaces_info[surf]["surface_id"]
         ]
         surfaces_data = field_data.get_surfaces(surface_ids)
         for mesh_data in surfaces_data:
