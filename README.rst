@@ -41,3 +41,17 @@ Usage
   del session.tui.display.objects.contour['my-contour']
   session.exit()
 
+Settings objects
+****************
+Settings can also be accessed and modified using the settings objects ``setup``,
+``solution`` and ``results``:
+
+.. code:: Python
+
+  session.setup.models.energy.enabled = True
+  print (session.setup.models.energy())
+  session.setup.boundary_conditions.velocity_inlet['inlet2'].vmag = {
+      'option' : 'constant or expression',
+      'constant' : 1.2
+      }
+  session.solution.initialize.standard_initialize()

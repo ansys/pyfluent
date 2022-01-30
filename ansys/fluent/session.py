@@ -13,6 +13,8 @@ from ansys.fluent.services.datamodel_tui import (
 from ansys.fluent.services.datamodel_tui import PyMenu as PyMenu_TUI
 from ansys.fluent.services.health_check import HealthCheckService
 from ansys.fluent.services.transcript import TranscriptService
+from ansys.fluent.services.settings import SettingsService
+from ansys.fluent.solver import flobject
 
 
 def parse_server_info_file(filename: str):
@@ -30,6 +32,15 @@ class Session:
     tui : Session.Tui
         Instance of Session.Tui on which Fluent's TUI methods can be
         executed.
+    setup: flobject.Group
+        Instance of flobject.Group object from which setup related
+        settings can be accessed or modified.
+    solution: flobject.Group
+        Instance of flobject.Group object from which solution related
+        settings can be accessed or modified.
+    results: flobject.Group
+        Instance of flobject.Group object from which results related
+        settings can be accessed or modified.
 
     Methods
     -------
@@ -74,8 +85,16 @@ class Session:
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
         )
+        self._setup_settings_objects()
 
         Session.__all_sessions.append(self)
+
+    def _setup_settings_objects(self):
+        proxy = SettingsService(self.__channel, self.__metadata)
+        r = flobject.get_root(flproxy=proxy)
+        for k in r.member_names:
+            setattr(self, k, getattr(r, k))
+        self.root = r
 
     def __log_transcript(self):
         responses = self.__transcript_service.begin_streaming()
