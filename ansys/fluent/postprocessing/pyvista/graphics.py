@@ -20,11 +20,6 @@ class Graphics:
 
     def _init_module(self, obj, mod):
         for name, cls in mod.__dict__.items():
-            if cls.__class__.__name__ == "module":
-                module = mod.__dict__[name]
-                cls_obj = type(name, (), {})()
-                setattr(obj, name, cls_obj)
-                self._init_module(cls_obj, module)
             if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
                 setattr(obj, cls.PLURAL, PyLocalContainer(obj, cls))
 
