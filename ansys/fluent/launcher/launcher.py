@@ -53,7 +53,7 @@ def get_subprocess_kwargs_for_fluent():
         kwargs.update(shell=True, start_new_session=True)
     return kwargs
 
-
+#   pylint: disable=unused-argument
 def launch_fluent(
     version=None,
     precision=None,

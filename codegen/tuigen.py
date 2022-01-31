@@ -13,10 +13,11 @@ from ansys.fluent.services.datamodel_tui import (
 )
 from ansys.fluent.launcher.launcher import launch_fluent
 
-THIS_FILE = os.path.dirname(__file__)
-TUI_FILE = os.path.join(THIS_FILE, "..", "ansys", "fluent", "solver", "tui.py")
-INIT_FILE = os.path.join(
-    THIS_FILE, "..", "ansys", "fluent", "solver", "__init__.py"
+THIS_DIRNAME = os.path.dirname(__file__)
+TUI_FILE = os.path.normpath(os.path.join(
+    THIS_DIRNAME, "..", "ansys", "fluent", "solver", "tui.py"))
+INIT_FILE = os.path.normpath(os.path.join(
+    THIS_DIRNAME, "..", "ansys", "fluent", "solver", "__init__.py")
 )
 INDENT_STEP = 4
 
@@ -135,7 +136,9 @@ class TUIGenerator:
 
     def __write_to_init_file(self):
         self.__write_code_to_init_file(
-            "# This is an auto-generated file.  DO NOT EDIT!\n\n"
+            "\"\"\"\n"
+            "This is an auto-generated file.  DO NOT EDIT!\n"
+            "\"\"\"\n\n"
             "from ansys.fluent.session import Session\n"
             "from ansys.fluent.launcher.launcher import launch_fluent\n\n"
             "from ansys.fluent.solver import tui\n"
@@ -159,7 +162,10 @@ class TUIGenerator:
     def generate(self):
         self.__populate_menu(self.main_menu)
         self.__write_code_to_tui_file(
-            "# This is an auto-generated file.  DO NOT EDIT!\n\n"
+            "\"\"\"\n"
+            "This is an auto-generated file.  DO NOT EDIT!\n"
+            "\"\"\"\n"
+            "# pylint: disable=line-too-long\n\n"
             "from ansys.fluent.solver.meta "
             "import PyMenuMeta, PyNamedObjectMeta\n"
             "from ansys.fluent.services.datamodel_tui import PyMenu\n\n\n"
@@ -167,3 +173,6 @@ class TUIGenerator:
         self.__write_menu_to_tui_file(self.main_menu)
         self.__write_to_init_file()
         self.session.exit()
+
+if __name__ == "__main__":
+    TUIGenerator().generate()
