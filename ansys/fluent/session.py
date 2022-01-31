@@ -100,7 +100,7 @@ class Session:
             self.__channel, self.__metadata
         )
         self.__transcript_thread = Thread(
-            target=Session.__log_transcript, args=(self,)
+            target=Session.__log_transcript, args=(self,), daemon=True
         )
         self.__transcript_thread.start()
 
