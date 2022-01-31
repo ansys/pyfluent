@@ -9,8 +9,8 @@ from pathlib import Path
 from ansys.fluent.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
-    convert_tui_menu_to_func_name
-    )
+    convert_tui_menu_to_func_name,
+)
 from ansys.fluent.launcher.launcher import launch_fluent
 
 THIS_FILE = os.path.dirname(__file__)
@@ -59,10 +59,12 @@ class TUIGenerator:
     def __init__(self, tui_file=TUI_FILE, init_file=INIT_FILE):
         self.tui_file = tui_file
         self.init_file = init_file
-        Path(TUI_FILE).unlink()
-        Path(INIT_FILE).unlink()
+        if Path(TUI_FILE).exists():
+            Path(TUI_FILE).unlink()
+        if Path(INIT_FILE).exists():
+            Path(INIT_FILE).unlink()
         self.session = launch_fluent()
-        self.service = self.session.service
+        self.service = self.session._Session__datamodel_service_tui
         self.main_menu = TUIMenu([])
 
     def __populate_menu(self, menu: TUIMenu):
@@ -138,17 +140,21 @@ class TUIGenerator:
             "from ansys.fluent.launcher.launcher import launch_fluent\n\n"
             "from ansys.fluent.solver import tui\n"
             "from ansys.fluent.solver.tui import (\n"
-            )
+        )
         for k, v in self.main_menu.children.items():
             if not v.is_command:
                 self.__write_code_to_init_file(f"{k},\n", 1)
         self.__write_code_to_init_file(
             ")\n\n"
-            "from ansys.fluent.core import LOG\n\n\n"
-            "Session.Tui.register_module(tui)\n\n\n"
-            "def set_log_level(level):\n"
-            )
-        self.__write_code_to_init_file("LOG.set_level(level)\n\n", 1)
+            "from ansys.fluent.solver.logging import (\n"
+            "    set_log_level,\n"
+            "    enable_logging_to_stdout,\n"
+            "    disable_logging_to_stdout,\n"
+            "    enable_logging_to_file,\n"
+            "    disable_logging_to_file,\n"
+            ")\n\n\n"
+            "Session.Tui.register_module(tui)\n\n"
+        )
 
     def generate(self):
         self.__populate_menu(self.main_menu)

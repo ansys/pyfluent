@@ -29,12 +29,14 @@ from ansys.fluent.solver.tui import (
     turbo_workflow,
 )
 
-from ansys.fluent.core import LOG
+from ansys.fluent.solver.logging import (
+    set_log_level,
+    enable_logging_to_stdout,
+    disable_logging_to_stdout,
+    enable_logging_to_file,
+    disable_logging_to_file,
+)
 
 
 Session.Tui.register_module(tui)
-
-
-def set_log_level(level):
-    LOG.set_level(level)
 

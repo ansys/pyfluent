@@ -159,7 +159,7 @@ def convert_se_name_to_python_name(se_name: str) -> str:
 
     Parameters
     ----------
-    se_menu : str
+    se_name : str
 
     Returns
     -------
@@ -213,7 +213,7 @@ class PyMenu:
 
     """
 
-    __slots__ = ("service", "rules", "path", "docstring")
+    __slots__ = ("service", "rules", "path")
 
     def __init__(
         self, service: DatamodelService, rules: str, path: Path = None
