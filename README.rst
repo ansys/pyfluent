@@ -71,7 +71,7 @@ PyVista (client)
   #set graphics objects properties
   
   #mesh
-  mesh1.draw_mesh = True
+  mesh1.show_edges = True
   mesh1.surfaces_list = ['symmetry']
 
   #contour
