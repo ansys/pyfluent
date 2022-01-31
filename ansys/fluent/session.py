@@ -3,9 +3,16 @@ from threading import Lock, Thread
 
 import grpc
 from ansys.fluent.core import LOG
+# from ansys.fluent.services.datamodel_se import (
+#     DatamodelService as DatamodelService_SE,
+# )
+# from ansys.fluent.services.datamodel_se import PyMenu as PyMenu_SE
+from ansys.fluent.services.datamodel_tui import (
+    DatamodelService as DatamodelService_TUI,
+)
+from ansys.fluent.services.datamodel_tui import PyMenu as PyMenu_TUI
 from ansys.fluent.services.health_check import HealthCheckService
 from ansys.fluent.services.transcript import TranscriptService
-from ansys.fluent.services.tui_datamodel import DatamodelService, PyMenu
 
 
 def parse_server_info_file(filename: str):
@@ -53,14 +60,20 @@ class Session:
         self.__is_transcript_stopping = False
         self.start_transcript()
 
-        self.__datamodel_service = DatamodelService(
+        self.__datamodel_service_tui = DatamodelService_TUI(
             self.__channel, self.__metadata
-            )
-        self.tui = Session.Tui(self.__datamodel_service)
+        )
+        self.tui = Session.Tui(self.__datamodel_service_tui)
+
+        # for testing
+        # self.__datamodel_service_se = DatamodelService_SE(
+        #     self.__channel, self.__metadata
+        #     )
+        # self.meshing = PyMenu_SE(self.__datamodel_service_se, "flserver")
 
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
-            )
+        )
 
         Session.__all_sessions.append(self)
 
@@ -85,10 +98,10 @@ class Session:
         """Start streaming of Fluent transcript"""
         self.__transcript_service = TranscriptService(
             self.__channel, self.__metadata
-            )
+        )
         self.__transcript_thread = Thread(
             target=Session.__log_transcript, args=(self,)
-            )
+        )
         self.__transcript_thread.start()
 
     def stop_transcript(self):
@@ -144,7 +157,7 @@ class Session:
                     setattr(cls, name, obj)
 
         def __dir__(self):
-            return PyMenu(self.service).get_child_names("")
+            return PyMenu_TUI(self.service).get_child_names("")
 
 
 atexit.register(Session.exit_all)

@@ -28,6 +28,7 @@ def get_fluent_exe_path():
         exe_path = exe_path / "bin" / "fluent"
     return str(exe_path)
 
+
 def get_server_info_filepath():
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()

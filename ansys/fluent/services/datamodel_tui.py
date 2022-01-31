@@ -3,10 +3,12 @@
 import keyword
 from typing import Any, List, Tuple
 
-from ansys.api.fluent.v0 import datamodel_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
+from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 
 import grpc
+
+Path = List[Tuple[str, str]]
 
 
 class DatamodelService:
@@ -47,7 +49,7 @@ def _convert_value_to_gvalue(val, gval):
     elif isinstance(val, str):
         gval.string_value = val
     elif isinstance(val, list) or isinstance(val, tuple):
-        # set the one_of to variant_vector_state
+        # set the one_of to list_value
         gval.list_value.values.add()
         gval.list_value.values.pop()
         for item in val:
@@ -131,8 +133,9 @@ class PyMenu:
     def __init__(self, service: DatamodelService):
         self.__service = service
 
-    def is_extended_tui(self, path: str,
-                        include_unavailable: bool = False) -> bool:
+    def is_extended_tui(
+        self, path: str, include_unavailable: bool = False
+    ) -> bool:
         """Check if path is part of extended TUI
 
         Parameters
@@ -155,8 +158,9 @@ class PyMenu:
         response = self.__service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def is_container(self, path: str,
-                     include_unavailable: bool = False) -> bool:
+    def is_container(
+        self, path: str, include_unavailable: bool = False
+    ) -> bool:
         """Check if path is of a container
 
         Parameters
@@ -180,8 +184,9 @@ class PyMenu:
             _convert_gvalue_to_value(response.value) == "NamedObjectContainer"
         )
 
-    def get_child_names(self, path: str,
-                        include_unavailable: bool = False) -> bool:
+    def get_child_names(
+        self, path: str, include_unavailable: bool = False
+    ) -> bool:
         """Get child menu names
 
         Parameters
@@ -269,8 +274,9 @@ class PyMenu:
             _convert_gvalue_to_value(ret.result)
         )
 
-    def get_doc_string(self, path: str,
-                       include_unavailable: bool = False) -> str:
+    def get_doc_string(
+        self, path: str, include_unavailable: bool = False
+    ) -> str:
         """Get docstring for path
 
         Parameters
@@ -377,7 +383,8 @@ def convert_func_name_to_tui_menu(func_name: str) -> str:
 
 
 def convert_tui_menu_to_func_name(menu: str) -> str:
-    """Convert TUI menu string to Python function name
+    """
+    Convert TUI menu string to Python function name
     E.g. import -> import_
          type? -> type_flag
     TODO convert hyphen -> underscore, currently those are done in
@@ -398,14 +405,14 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
     return menu
 
 
-def convert_path_to_grpc_path(path: List[Tuple[str, str]]) -> str:
+def convert_path_to_grpc_path(path: Path) -> str:
     """
     Convert path structure to a string which can be passed to
     datamodel grpc service
 
     Parameters
     ----------
-    path : List[Tuple[str, str]]
+    path : Path
         Path structure
 
     Returns
