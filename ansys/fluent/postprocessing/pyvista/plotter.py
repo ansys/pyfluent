@@ -241,19 +241,19 @@ class _Plotter(metaclass=Singleton):
             raise RuntimeError("Iso surface creation failed.")
         graphics_session = Graphics(obj.session)
         if obj.surface_type.iso_surface.rendering() == "mesh":
-            mesh = graphics_session.Mesh[dummy_surface_name]
+            mesh = graphics_session.Meshes[dummy_surface_name]
             mesh.surfaces_list = [dummy_surface_name]
             mesh.show_edges = True
             self._display_mesh(mesh)
-            del graphics_session.Mesh[dummy_surface_name]
+            del graphics_session.Meshes[dummy_surface_name]
         else:
-            contour = graphics_session.Contour[dummy_surface_name]
+            contour = graphics_session.Contours[dummy_surface_name]
             contour.field = obj.surface_type.iso_surface.field()
             contour.surfaces_list = [dummy_surface_name]
             contour.show_edges = True
             contour.range_option.auto_range_on.global_range = True
             self._display_contour(contour)
-            del graphics_session.Contour[dummy_surface_name]
+            del graphics_session.Contours[dummy_surface_name]
         obj.session.tui.surface.delete_surface(dummy_surface_name)
 
     def _display_mesh(self, obj):

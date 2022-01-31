@@ -5,6 +5,7 @@ from ansys.fluent.solver.meta import (
     Attribute,
     PyLocalNamedObjectMeta,
     PyLocalPropertyMeta,
+    PyLocalContainer,
 )
 
 
@@ -19,17 +20,8 @@ class Graphics:
 
     def _init_module(self, obj, mod):
         for name, cls in mod.__dict__.items():
-            if cls.__class__.__name__ == "module":
-                module = mod.__dict__[name]
-                cls_obj = type(name, (), {})()
-                setattr(obj, name, cls_obj)
-                self._init_module(cls_obj, module)
             if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
-                setattr(
-                    obj,
-                    name,
-                    cls([(name, None)], None, self.session, obj),
-                )
+                setattr(obj, cls.PLURAL, PyLocalContainer(obj, cls))
 
 
 Session.register_on_exit(lambda: plotter.close())
@@ -39,6 +31,8 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
     """
     Mesh graphics.
     """
+
+    PLURAL = "Meshes"
 
     def display(self):
         """
@@ -67,6 +61,8 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
     """
     Surface graphics.
     """
+
+    PLURAL = "Surfaces"
 
     def display(self):
         """
@@ -119,8 +115,8 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
                 def allowed_values(self):
                     return [
                         v["solver_name"]
-                        for k, v in self.session.field_data
-                        .get_fields_info().items()
+                        for k, v in self.session.field_data.get_fields_info()
+                        .items()
                     ]
 
             class rendering(metaclass=PyLocalPropertyMeta):
@@ -164,6 +160,8 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
     """
     Contour graphics.
     """
+
+    PLURAL = "Contours"
 
     def display(self):
         """

@@ -63,10 +63,10 @@ PyVista (client)
   #get the graphics objects for the session
   
   graphics_session1 = pv.Graphics(session)
-  mesh1 = graphics_session1.Mesh["mesh-1"]
-  contour1 = graphics_session1.Contour["contour-1"]
-  contour2 = graphics_session1.Contour["contour-2"]
-  surface1 = graphics_session1.Surface["surface-1"]
+  mesh1 = graphics_session1.Meshes["mesh-1"]
+  contour1 = graphics_session1.Contours["contour-1"]
+  contour2 = graphics_session1.Contours["contour-2"]
+  surface1 = graphics_session1.Surfaces["surface-1"]
 
   #set graphics objects properties
   
@@ -80,6 +80,20 @@ PyVista (client)
 
   contour2.field = "temperature"
   contour2.surfaces_list = ['symmetry', 'wall']
+
+  #copy
+  graphics_session1.Contours["contour-3"] = contour2()
+  
+  #update
+  contour3 = graphics_session1.Contours["contour-3"]
+  contour3.update(contour1())
+  
+  #delete
+  del graphics_session1.Contours["contour-3"] 
+  
+  #loop
+  for name, _ in graphics_session1.Contours.items():
+      print(name)
 
   #iso surface
   surface1.surface_type.iso_surface.field= "velocity-magnitude"
