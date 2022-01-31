@@ -1,8 +1,9 @@
+from collections.abc import MutableMapping
+from pprint import pformat
 from ansys.fluent.services.tui_datamodel import (
     PyMenu,
     convert_path_to_grpc_path,
 )
-from pprint import pformat
 
 
 class Attribute:
@@ -129,9 +130,8 @@ class PyLocalPropertyMeta(type):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, path, session, parent=None):
-            self._path = path
-            self.session = session
+        def wrapper(self, parent):
+            self.session = parent.session
             self.parent = parent
             self._on_change_cbs = []
             reset_on_change = (
@@ -148,18 +148,13 @@ class PyLocalPropertyMeta(type):
                     setattr(
                         self,
                         name,
-                        cls(self._path + [(name, None)], session, self),
+                        cls(self),
                     )
                 if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
                     setattr(
                         self,
-                        name,
-                        cls(
-                            self._path + [(name, None)],
-                            None,
-                            session,
-                            self,
-                        ),
+                        cls.PLURAL,
+                        PyLocalContainer(self, cls),
                     )
 
         return wrapper
@@ -273,42 +268,23 @@ class PyLocalPropertyMeta(type):
 class PyLocalNamedObjectMeta(type):
     @classmethod
     def __create_init(cls):
-        def wrapper(self, path, name, session, parent=None):
-            self._path = path[:-1] + [(path[-1][0], name)]
-            self.session = session
+        def wrapper(self, name, parent):
+            self.__name = name
+            self.session = parent.session
             self.parent = parent
             for name, cls in self.__class__.__dict__.items():
                 if cls.__class__.__name__ == "PyLocalPropertyMeta":
                     setattr(
                         self,
                         name,
-                        cls(self._path + [(name, None)], session, self),
+                        cls(self),
                     )
                 if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
                     setattr(
                         self,
-                        name,
-                        cls(
-                            self._path + [(name, None)],
-                            None,
-                            session,
-                            self,
-                        ),
+                        cls.PLURAL,
+                        PyLocalContainer(self, cls),
                     )
-
-        return wrapper
-
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # c1 = graphics.contour['contour-1']
-    @classmethod
-    def __create_getitem(cls):
-        def wrapper(self, name):
-            o = self._collection.get(name, None)
-            if not o:
-                o = self._collection[name] = self.__class__(
-                    self._path, name, self.session, self
-                )
-            return o
 
         return wrapper
 
@@ -321,26 +297,6 @@ class PyLocalNamedObjectMeta(type):
         def wrapper(self, value):
             for name, val in value.items():
                 getattr(self, name).set_state(val)
-
-        return wrapper
-
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # c1 = graphics.contour['contour-1']
-    # graphics.contour['contour-2'] = c1()
-    @classmethod
-    def __create_setitem(cls):
-        def wrapper(self, name, value):
-            o = self[name]
-            o.update(value)
-
-        return wrapper
-
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # del graphics.contour['contour-1']
-    @classmethod
-    def __create_delitem(cls):
-        def wrapper(self, name):
-            del self._collection[name]
 
         return wrapper
 
@@ -389,28 +345,55 @@ class PyLocalNamedObjectMeta(type):
     @classmethod
     def __create_repr(cls):
         def wrapper(self):
-            if self._path[-1][-1]:
-                return pformat(self(True), depth=1, indent=2)
-            else:
-                return object.__repr__(self)
+            return pformat(self(True), depth=1, indent=2)
 
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs["_path"] = {x: None for x in attrs["__qualname__"].split(".")}
         attrs["__init__"] = cls.__create_init()
-        attrs["__getitem__"] = cls.__create_getitem()
-        attrs["__setitem__"] = cls.__create_setitem()
-        attrs["__delitem__"] = cls.__create_delitem()
         attrs["__call__"] = cls.__create_get_state()
         attrs["__setattr__"] = cls.__create_setattr()
         attrs["__repr__"] = cls.__create_repr()
-        attrs["_collection"] = {}
         attrs["update"] = cls.__create_updateitem()
         attrs["parent"] = None
         return super(PyLocalNamedObjectMeta, cls).__new__(
             cls, name, bases, attrs
         )
+
+
+class PyLocalContainer(MutableMapping):
+    def __init__(self, parent, object_class):
+        self.__object_class = object_class
+        self.__parent = parent
+        self.__collection: dict = {}
+
+    def __iter__(self):
+        return iter(self.__collection)
+
+    def __len__(self):
+        return len(self.__collection)
+
+    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
+    # c1 = graphics.Contours['contour-1']
+    def __getitem__(self, name):
+        o = self.__collection.get(name, None)
+        if not o:
+            o = self.__collection[name] = self.__object_class(
+                name, self.__parent
+            )
+        return o
+
+    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
+    # c1 = graphics.Contours['contour-1']
+    # graphics.Contours['contour-2'] = c1()
+    def __setitem__(self, name, value):
+        o = self[name]
+        o.update(value)
+
+    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
+    # del graphics.Contours['contour-1']
+    def __delitem__(self, name):
+        del self.__collection[name]
 
 
 class PyNamedObjectMeta(type):
