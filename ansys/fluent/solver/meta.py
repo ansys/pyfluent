@@ -1,6 +1,6 @@
 from collections.abc import MutableMapping
 from pprint import pformat
-from ansys.fluent.services.tui_datamodel import (
+from ansys.fluent.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
 )

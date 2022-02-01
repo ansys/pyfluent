@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import grpc
 from ansys.api.fluent.v0 import fielddata_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
@@ -108,7 +108,7 @@ class FieldData:
 
     def get_surfaces(
         self, surface_ids: List[int], overset_mesh: bool = False
-    ) -> dict:
+    ) -> List[Dict]:
         request = FieldDataProtoModule.GetSurfacesRequest()
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
@@ -142,7 +142,7 @@ class FieldData:
         scalar_field: str,
         node_value: bool,
         boundary_value: bool,
-    ) -> dict:
+    ) -> List[Dict]:
         request = FieldDataProtoModule.GetScalarFieldRequest()
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]

@@ -1,7 +1,7 @@
 # This is an auto-generated file.  DO NOT EDIT!
 
 from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta
-from ansys.fluent.services.tui_datamodel import PyMenu
+from ansys.fluent.services.datamodel_tui import PyMenu
 
 
 def close_fluent(self, *args, **kwargs):
@@ -2827,6 +2827,11 @@ class define(metaclass=PyMenuMeta):
             Set boundary conditions for a zone of this type.
             """
             return PyMenu(self.service).execute('/define/boundary_conditions/fluid', *args, **kwargs)
+        def geometry(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/define/boundary_conditions/geometry', *args, **kwargs)
         def inlet_vent(self, *args, **kwargs):
             """
             Set boundary conditions for a zone of this type.
@@ -4531,6 +4536,11 @@ class define(metaclass=PyMenuMeta):
                 Set boundary conditions for a zone or multiple zones of this type.
                 """
                 return PyMenu(self.service).execute('/define/boundary_conditions/set/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Set boundary conditions for a zone or multiple zones of this type.
+                """
+                return PyMenu(self.service).execute('/define/boundary_conditions/set/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Set boundary conditions for a zone or multiple zones of this type.
@@ -16140,6 +16150,11 @@ class file(metaclass=PyMenuMeta):
         Write currently defined profiles. To use *.csv format specify filename with .csv suffix
         """
         return PyMenu(self.service).execute('/file/write_currently_defined_profiles', *args, **kwargs)
+    def set_target_reference_frame_for_write_profiles(self, *args, **kwargs):
+        """
+        set reference frame options, which will be used for position transformation during writing of profiles
+        """
+        return PyMenu(self.service).execute('/file/set_target_reference_frame_for_write_profiles', *args, **kwargs)
     def write_circumferential_averaged_profile(self, *args, **kwargs):
         """
         Write surface data as a boundary profile file. To use *.csv format specify filename with .csv suffix
@@ -20175,6 +20190,11 @@ class report(metaclass=PyMenuMeta):
                 Compute reference values from a zone of this type.
                 """
                 return PyMenu(self.service).execute('/report/reference_values/compute/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Compute reference values from a zone of this type.
+                """
+                return PyMenu(self.service).execute('/report/reference_values/compute/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Compute reference values from a zone of this type.
@@ -23615,6 +23635,11 @@ class results(metaclass=PyMenuMeta):
                     Compute reference values from a zone of this type.
                     """
                     return PyMenu(self.service).execute('/results/report/reference_values/compute/fluid', *args, **kwargs)
+                def geometry(self, *args, **kwargs):
+                    """
+                    Compute reference values from a zone of this type.
+                    """
+                    return PyMenu(self.service).execute('/results/report/reference_values/compute/geometry', *args, **kwargs)
                 def inlet_vent(self, *args, **kwargs):
                     """
                     Compute reference values from a zone of this type.
@@ -26117,6 +26142,11 @@ class solution(metaclass=PyMenuMeta):
                 Compute flow-initialization defaults from a zone of this type.
                 """
                 return PyMenu(self.service).execute('/solution/initialize/compute_defaults/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Compute flow-initialization defaults from a zone of this type.
+                """
+                return PyMenu(self.service).execute('/solution/initialize/compute_defaults/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Compute flow-initialization defaults from a zone of this type.
@@ -27754,6 +27784,253 @@ class solve(metaclass=PyMenuMeta):
                 """
                 return PyMenu(self.service).execute('/solve/animate/pulse/write', *args, **kwargs)
 
+            class video(metaclass=PyMenuMeta):
+                __doc__ = 'Enter the video window options menu.'
+                def fps(self, *args, **kwargs):
+                    """
+                    Set the Frame Per Sec(FPS) for exporting video file.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/fps', *args, **kwargs)
+                def format(self, *args, **kwargs):
+                    """
+                    Set format for exporting video file.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/format', *args, **kwargs)
+                def quality(self, *args, **kwargs):
+                    """
+                    Set quality for exporting video file.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/quality', *args, **kwargs)
+                def name(self, *args, **kwargs):
+                    """
+                    Exporting video file name
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/name', *args, **kwargs)
+                def use_original_resolution(self, *args, **kwargs):
+                    """
+                    enable original resolution
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/use_original_resolution', *args, **kwargs)
+                def scale(self, *args, **kwargs):
+                    """
+                    Set scale by which video resolution will expand.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/scale', *args, **kwargs)
+                def set_standard_resolution(self, *args, **kwargs):
+                    """
+                    Select from pre-defined resolution list.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/set_standard_resolution', *args, **kwargs)
+                def width(self, *args, **kwargs):
+                    """
+                    Set the width for exporting video file.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/width', *args, **kwargs)
+                def height(self, *args, **kwargs):
+                    """
+                    Set the height for exporting video file.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/video/height', *args, **kwargs)
+
+                class advance_quality(metaclass=PyMenuMeta):
+                    __doc__ = 'Advance Quality setting'
+                    def bitrate_scale(self, *args, **kwargs):
+                        """
+                        Mp4 bitrate scale - Best-64000 High-32000 Medium-16000 Low-8000
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/video/advance_quality/bitrate_scale', *args, **kwargs)
+                    def enable_h264(self, *args, **kwargs):
+                        """
+                        H264 encoding flag
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/video/advance_quality/enable_h264', *args, **kwargs)
+                    def bitrate(self, *args, **kwargs):
+                        """
+                        Set video bitrate(kbits/sec) for exporting video file.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/video/advance_quality/bitrate', *args, **kwargs)
+                    def compression_method(self, *args, **kwargs):
+                        """
+                        Compression methode for Microsoft AVI movie
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/video/advance_quality/compression_method', *args, **kwargs)
+                    def keyframe(self, *args, **kwargs):
+                        """
+                        Set video keyframe rate for exporting video file.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/video/advance_quality/keyframe', *args, **kwargs)
+
+            class hardcopy(metaclass=PyMenuMeta):
+                __doc__ = 'Hardcopy options menu.'
+                def invert_background(self, *args, **kwargs):
+                    """
+                    Exchange foreground/background colors for hardcopy.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/invert_background', *args, **kwargs)
+                def landscape(self, *args, **kwargs):
+                    """
+                    Plot hardcopies in landscape or portrait orientation.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/landscape', *args, **kwargs)
+                def preview(self, *args, **kwargs):
+                    """
+                    Display a preview image of a hardcopy.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/preview', *args, **kwargs)
+                def x_resolution(self, *args, **kwargs):
+                    """
+                    Set the width of raster-formatted images in pixels (0 implies current window size).
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/x_resolution', *args, **kwargs)
+                def y_resolution(self, *args, **kwargs):
+                    """
+                    Set the height of raster-formatted images in pixels (0 implies current window size).
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/y_resolution', *args, **kwargs)
+                def dpi(self, *args, **kwargs):
+                    """
+                    Set the DPI for EPS and Postscript files, specifies the resolution in dots per inch (DPI) instead of setting the width and height
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/dpi', *args, **kwargs)
+                def use_window_resolution(self, *args, **kwargs):
+                    """
+                    Use the currently active window's resolution for hardcopy (ignores the x-resolution and y-resolution in this case).
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/use_window_resolution', *args, **kwargs)
+                def set_standard_resolution(self, *args, **kwargs):
+                    """
+                    Select from pre-defined resolution list.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/set_standard_resolution', *args, **kwargs)
+                def jpeg_hardcopy_quality(self, *args, **kwargs):
+                    """
+                    To set jpeg hardcopy quality.
+                    """
+                    return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/jpeg_hardcopy_quality', *args, **kwargs)
+
+                class color_mode(metaclass=PyMenuMeta):
+                    __doc__ = 'Enter the hardcopy color mode menu.'
+                    def color(self, *args, **kwargs):
+                        """
+                        Plot hardcopies in color.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/color_mode/color', *args, **kwargs)
+                    def gray_scale(self, *args, **kwargs):
+                        """
+                        Convert color to grayscale for hardcopy.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/color_mode/gray_scale', *args, **kwargs)
+                    def mono_chrome(self, *args, **kwargs):
+                        """
+                        Convert color to monochrome (black and white) for hardcopy.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/color_mode/mono_chrome', *args, **kwargs)
+                    def list(self, *args, **kwargs):
+                        """
+                        Display the current hardcopy color mode.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/color_mode/list', *args, **kwargs)
+
+                class driver(metaclass=PyMenuMeta):
+                    __doc__ = 'Enter the set hardcopy driver menu.'
+                    def dump_window(self, *args, **kwargs):
+                        """
+                        Set the command used to dump the graphics window to a file.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/dump_window', *args, **kwargs)
+                    def eps(self, *args, **kwargs):
+                        """
+                        Produce encapsulated PostScript (EPS) output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/eps', *args, **kwargs)
+                    def jpeg(self, *args, **kwargs):
+                        """
+                        Produce JPEG output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/jpeg', *args, **kwargs)
+                    def post_script(self, *args, **kwargs):
+                        """
+                        Produce PostScript output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/post_script', *args, **kwargs)
+                    def ppm(self, *args, **kwargs):
+                        """
+                        Produce PPM output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/ppm', *args, **kwargs)
+                    def tiff(self, *args, **kwargs):
+                        """
+                        Use TIFF output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/tiff', *args, **kwargs)
+                    def png(self, *args, **kwargs):
+                        """
+                        Use PNG output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/png', *args, **kwargs)
+                    def hsf(self, *args, **kwargs):
+                        """
+                        Use HSF output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/hsf', *args, **kwargs)
+                    def avz(self, *args, **kwargs):
+                        """
+                        Use AVZ output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/avz', *args, **kwargs)
+                    def glb(self, *args, **kwargs):
+                        """
+                        Use GLB output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/glb', *args, **kwargs)
+                    def vrml(self, *args, **kwargs):
+                        """
+                        Use VRML output for hardcopies.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/vrml', *args, **kwargs)
+                    def list(self, *args, **kwargs):
+                        """
+                        List the current hardcopy driver.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/list', *args, **kwargs)
+                    def options(self, *args, **kwargs):
+                        """
+                        Set the hardcopy options. Available options are:
+                        \\n               	"no gamma correction", disables gamma correction of colors,
+                        \\n               	"physical size = (width,height)", where width and height
+                                  are the actual measurements of the printable area of the page
+                                  in centimeters.
+                        \\n               	"subscreen = (left,right,bottom,top)", where left,right,
+                                  bottom, and top are numbers in [-1,1] describing a subwindow on
+                                  the page in which to place the hardcopy.
+                        
+                        \\n          The options may be combined by separating them with commas.
+                        """
+                        return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/options', *args, **kwargs)
+
+                    class post_format(metaclass=PyMenuMeta):
+                        __doc__ = 'Enter the PostScript driver format menu.'
+                        def fast_raster(self, *args, **kwargs):
+                            """
+                            Use the new raster format.
+                            """
+                            return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/post_format/fast_raster', *args, **kwargs)
+                        def raster(self, *args, **kwargs):
+                            """
+                            Use the original raster format.
+                            """
+                            return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/post_format/raster', *args, **kwargs)
+                        def rle_raster(self, *args, **kwargs):
+                            """
+                            Use the run-length encoded raster format.
+                            """
+                            return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/post_format/rle_raster', *args, **kwargs)
+                        def vector(self, *args, **kwargs):
+                            """
+                            Use vector format.
+                            """
+                            return PyMenu(self.service).execute('/solve/animate/pulse/hardcopy/driver/post_format/vector', *args, **kwargs)
+
     class initialize(metaclass=PyMenuMeta):
         __doc__ = 'Enter the flow initialization menu.'
         def open_channel_auto_init(self, *args, **kwargs):
@@ -27885,6 +28162,11 @@ class solve(metaclass=PyMenuMeta):
                 Compute flow-initialization defaults from a zone of this type.
                 """
                 return PyMenu(self.service).execute('/solve/initialize/compute_defaults/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Compute flow-initialization defaults from a zone of this type.
+                """
+                return PyMenu(self.service).execute('/solve/initialize/compute_defaults/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Compute flow-initialization defaults from a zone of this type.
@@ -30168,6 +30450,11 @@ class setup(metaclass=PyMenuMeta):
             Set boundary conditions for a zone of this type.
             """
             return PyMenu(self.service).execute('/setup/boundary_conditions/fluid', *args, **kwargs)
+        def geometry(self, *args, **kwargs):
+            """
+            Set boundary conditions for a zone of this type.
+            """
+            return PyMenu(self.service).execute('/setup/boundary_conditions/geometry', *args, **kwargs)
         def inlet_vent(self, *args, **kwargs):
             """
             Set boundary conditions for a zone of this type.
@@ -31668,6 +31955,11 @@ class setup(metaclass=PyMenuMeta):
                 Show boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service).execute('/setup/boundary_conditions/query/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Show boundary conditions for a zone of this type.
+                """
+                return PyMenu(self.service).execute('/setup/boundary_conditions/query/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Show boundary conditions for a zone of this type.
@@ -31864,6 +32156,11 @@ class setup(metaclass=PyMenuMeta):
                 Set boundary conditions for a zone or multiple zones of this type.
                 """
                 return PyMenu(self.service).execute('/setup/boundary_conditions/set/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Set boundary conditions for a zone or multiple zones of this type.
+                """
+                return PyMenu(self.service).execute('/setup/boundary_conditions/set/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Set boundary conditions for a zone or multiple zones of this type.
@@ -40085,6 +40382,11 @@ class setup(metaclass=PyMenuMeta):
                 Compute reference values from a zone of this type.
                 """
                 return PyMenu(self.service).execute('/setup/reference_values/compute/fluid', *args, **kwargs)
+            def geometry(self, *args, **kwargs):
+                """
+                Compute reference values from a zone of this type.
+                """
+                return PyMenu(self.service).execute('/setup/reference_values/compute/geometry', *args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
                 Compute reference values from a zone of this type.

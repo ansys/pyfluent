@@ -28,6 +28,7 @@ def get_fluent_exe_path():
         exe_path = exe_path / "bin" / "fluent"
     return str(exe_path)
 
+
 def get_server_info_filepath():
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
@@ -38,7 +39,7 @@ def get_server_info_filepath():
     return filepath
 
 
-def get_subprocess_kwargs_for_detached_process():
+def get_subprocess_kwargs_for_fluent():
     kwargs = {}
     kwargs.update(
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -49,10 +50,10 @@ def get_subprocess_kwargs_for_detached_process():
             | subprocess.DETACHED_PROCESS
         )
     else:
-        kwargs.update(start_new_session=True)
+        kwargs.update(shell=True, start_new_session=True)
     return kwargs
 
-
+#   pylint: disable=unused-argument
 def launch_fluent(
     version=None,
     precision=None,
@@ -133,7 +134,7 @@ def launch_fluent(
             launch_string += " -hidden"
         LOG.info("Launching Fluent with cmd: %s", launch_string)
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
-        kwargs = get_subprocess_kwargs_for_detached_process()
+        kwargs = get_subprocess_kwargs_for_fluent()
         subprocess.Popen(launch_string, **kwargs)
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
