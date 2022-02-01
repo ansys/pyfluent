@@ -13,12 +13,14 @@ THIS_DIR = os.path.dirname(__file__)
 OPTIONS_FILE = os.path.join(THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
 
+
 def get_awp_path():
     if "AWP_ROOT" in os.environ:
         awp_path = os.environ["AWP_ROOT"]
     else:
         awp_path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
     return Path(awp_path)
+
 
 def get_fluent_exe_path():
     exe_path = get_awp_path() / "fluent"
@@ -53,12 +55,14 @@ def get_subprocess_kwargs_for_fluent():
         kwargs.update(shell=True, start_new_session=True)
     return kwargs
 
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     version=None,
     precision=None,
     processor_count=None,
     journal_filename=None,
+    meshing_mode=None,
     start_timeout=100,
 ):
     """Start Fluent locally in server mode.
@@ -78,6 +82,9 @@ def launch_fluent(
 
     journal_filename : str, optional
         Read the specified journal file.
+
+    meshing_mode : bool, optional
+        Launch Fluent in meshing mode
 
     start_timeout : int, optional
         Maximum allowable time in seconds to connect to the Fluent
@@ -122,10 +129,13 @@ def launch_fluent(
                         allowed_values,
                     )
                     continue
-            fluent_values = v.get("fluent_values")
-            if fluent_values:
-                i = allowed_values.index(argval)
-                argval = fluent_values[i]
+            fluent_map = v.get("fluent_map")
+            if fluent_map:
+                if isinstance(argval, str):
+                    json_key = argval
+                else:
+                    json_key = json.dumps(argval)
+                argval = fluent_map[json_key]
             launch_string += v["fluent_format"].replace("{}", str(argval))
     server_info_filepath = get_server_info_filepath()
     try:

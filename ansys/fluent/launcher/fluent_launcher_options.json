@@ -17,10 +17,10 @@
         ],
         "default": "double",
         "required": true,
-        "fluent_values": [
-            "",
-            "dp"
-        ],
+        "fluent_map": {
+            "single": "",
+            "double": "dp"
+        },
         "fluent_format": "{}"
     },
     "processor_count": {
@@ -30,5 +30,13 @@
     "journal_filename": {
         "type": "str",
         "fluent_format": " -i {}"
+    },
+    "meshing_mode": {
+        "type": "bool",
+        "fluent_map": {
+            "true": " -meshing",
+            "false": ""
+        },
+        "fluent_format": "{}"
     }
 }

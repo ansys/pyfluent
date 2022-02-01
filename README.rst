@@ -22,24 +22,23 @@ Usage
 
 .. code:: python
 
-  import ansys.fluent.solver as pyfluent
-  import logging
-  pyfluent.set_log_level(logging.DEBUG) # for development, by default only errors are shown
+  import ansys.fluent as pyfluent
+  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
   session.check_health()
-  session.tui.file.read_case(case_file_name='elbow.cas.gz')
-  session.tui.define.models.unsteady_2nd_order("yes")
-  session.tui.solve.initialize.initialize_flow()
-  session.tui.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
-  session.tui.display.objects.contour['contour-1'] = {'boundary_values': True, 'color_map': {'color': 'field-velocity', 'font_automatic': True, 'font_name': 'Helvetica', 'font_size': 0.032, 'format': '%0.2e', 'length': 0.54, 'log_scale': False, 'position': 1, 'show_all': True, 'size': 100, 'user_skip': 9, 'visible': True, 'width': 6.0}, 'coloring': {'smooth': False}, 'contour_lines': False, 'display_state_name': 'None', 'draw_mesh': False, 'field': 'pressure', 'filled': True, 'mesh_object': '', 'node_values': True, 'range_option': {'auto_range_on': {'global_range': True}}, 'surfaces_list': [2, 5]}
-  session.tui.display.objects.contour['contour-1']()
-  session.tui.display.objects.contour['contour-1'].field.set_state('velocity-magnitude')
-  session.tui.display.objects.contour['contour-1'].field()
-  session.tui.display.objects.contour['contour-1'].color_map.size.set_state(80.0)
-  session.tui.display.objects.contour['contour-1'].color_map.size()
-  session.tui.display.objects.contour['contour-1'].rename('my-contour')
-  del session.tui.display.objects.contour['my-contour']
-  session.exit()
+  session.tui.solver.file.read_case(case_file_name='elbow.cas.gz')
+  session.tui.solver.define.models.unsteady_2nd_order("yes")
+  session.tui.solver.solve.initialize.initialize_flow()
+  session.tui.solver.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
+  session.tui.solver.display.objects.contour['contour-1'] = {'boundary_values': True, 'color_map': {'color': 'field-velocity', 'font_automatic': True, 'font_name': 'Helvetica', 'font_size': 0.032, 'format': '%0.2e', 'length': 0.54, 'log_scale': False, 'position': 1, 'show_all': True, 'size': 100, 'user_skip': 9, 'visible': True, 'width': 6.0}, 'coloring': {'smooth': False}, 'contour_lines': False, 'display_state_name': 'None', 'draw_mesh': False, 'field': 'pressure', 'filled': True, 'mesh_object': '', 'node_values': True, 'range_option': {'auto_range_on': {'global_range': True}}, 'surfaces_list': [2, 5]}
+  session.tui.solver.display.objects.contour['contour-1']()
+  session.tui.solver.display.objects.contour['contour-1'].field.set_state('velocity-magnitude')
+  session.tui.solver.display.objects.contour['contour-1'].field()
+  session.tui.solver.display.objects.contour['contour-1'].color_map.size.set_state(80.0)
+  session.tui.solver.display.objects.contour['contour-1'].color_map.size()
+  session.tui.solver.display.objects.contour['contour-1'].rename('my-contour')
+  del session.tui.solver.display.objects.contour['my-contour']
+
 
 Settings objects
 ****************
@@ -55,3 +54,8 @@ Settings objects provide a more natural way to access and modify Fluent settings
       'constant' : 1.2
       }
   session.solution.initialize.standard_initialize()
+
+
+Meshing TUI and workflow
+************************
+TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing.rst <https://https://github.com/pyansys/pyfluent/blob/main/doc/meshing.rst>`_ for example usage.

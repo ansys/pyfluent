@@ -3,10 +3,11 @@ from threading import Lock, Thread
 
 import grpc
 from ansys.fluent.core import LOG
-# from ansys.fluent.services.datamodel_se import (
-#     DatamodelService as DatamodelService_SE,
-# )
-# from ansys.fluent.services.datamodel_se import PyMenu as PyMenu_SE
+
+from ansys.fluent.services.datamodel_se import (
+    DatamodelService as DatamodelService_SE,
+)
+from ansys.fluent.services.datamodel_se import PyMenu as PyMenu_SE
 from ansys.fluent.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
@@ -76,11 +77,11 @@ class Session:
         )
         self.tui = Session.Tui(self.__datamodel_service_tui)
 
-        # for testing
-        # self.__datamodel_service_se = DatamodelService_SE(
-        #     self.__channel, self.__metadata
-        #     )
-        # self.meshing = PyMenu_SE(self.__datamodel_service_se, "flserver")
+        self.__datamodel_service_se = DatamodelService_SE(
+            self.__channel, self.__metadata
+            )
+        self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
+        self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
 
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
@@ -139,7 +140,7 @@ class Session:
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
         if self.__channel:
-            self.tui.exit()
+            self.tui.solver.exit()
             self.stop_transcript()
             self.__channel.close()
             self.__channel = None
@@ -156,11 +157,14 @@ class Session:
             session.exit()
 
     class Tui:
-        __application_modules = []
+        def __init__(self, service):
+            self.meshing = Session.MeshingTui(service)
+            self.solver = Session.SolverTui(service)
 
+    class TuiMode:
         def __init__(self, service):
             self.service = service
-            for mod in self.__class__.__application_modules:
+            for mod in self.__class__.application_modules:
                 for name, cls in mod.__dict__.items():
                     if cls.__class__.__name__ == "PyMenuMeta":
                         setattr(self, name, cls([(name, None)], service))
@@ -169,13 +173,19 @@ class Session:
 
         @classmethod
         def register_module(cls, mod):
-            cls.__application_modules.append(mod)
+            cls.application_modules.append(mod)
             for name, obj in mod.__dict__.items():
                 if callable(obj):
                     setattr(cls, name, obj)
 
         def __dir__(self):
             return PyMenu_TUI(self.service).get_child_names("")
+
+    class MeshingTui(TuiMode):
+        application_modules = []
+
+    class SolverTui(TuiMode):
+        application_modules = []
 
 
 atexit.register(Session.exit_all)
