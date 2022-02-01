@@ -66,14 +66,6 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Install pyvista for python 3.10 linux
-        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.10' }}
-        run: make install-pyvista-for-python3.10-linux
-
-      - name: Install pyvista for python 3.10 windows
-        if: ${{ runner.os == 'Windows' && matrix.python-version == '3.10' }}
-        run: make install-pyvista-for-python3.10-windows
-
       - name: Install pyfluent
         run: make install
 
@@ -100,14 +92,6 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_*.txt') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
-
-      - name: Install pyvista for python 3.10 linux
-        if: ${{ runner.os == 'Linux' && matrix.python-version == '3.10' }}
-        run: make install-pyvista-for-python3.10-linux
-
-      - name: Install pyvista for python 3.10 windows
-        if: ${{ runner.os == 'Windows' && matrix.python-version == '3.10' }}
-        run: make install-pyvista-for-python3.10-windows
 
       - name: Install pyfluent
         run: make install
