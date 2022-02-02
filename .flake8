@@ -1,6 +1,6 @@
 [flake8]
 exclude = venv, __init__.py, doc/_build, tui.py
-select = W191, W291, W293, W391, E115, E117, E122, E124, E125, E225, E231, E301, E303, E501, F401, F403
+select = W191, W291, W293, W391, E115, E117, E122, E124, E125, E225, E231, E301, E303, E501, F401, F403, ANN001, ANN002, ANN003, ANN101, ANN102, ANN201, ANN202, ANN203, ANN204, ANN205, ANN206, ANN301
 count = True
 max-complexity = 10
 max-line-length = 79

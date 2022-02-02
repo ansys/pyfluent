@@ -1,1 +1,2 @@
 flake8==3.9.2
+flake8-annotations==2.7.0
