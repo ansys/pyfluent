@@ -24,6 +24,13 @@ def _trace(fn):
             return fn(self, *args, **kwds)
     return _fn
 
+def _get_request_instance_for_path(request_class, path):
+    request = request_class()
+    request.path_info.path = path
+    request.path_info.root = 'fluent'
+    return request
+
+
 class SettingsService:
     """
     Service for accessing and modifying Fluent settings
@@ -74,9 +81,9 @@ class SettingsService:
         """
         Set the value for the given path
         """
-        request = SettingsModule.SetVarRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
+        request = _get_request_instance_for_path(
+                SettingsModule.SetVarRequest,
+                path)
         self._set_state_from_value(request.value, value)
         self.__stub.SetVar(request, metadata=self.__metadata)
 
@@ -85,10 +92,9 @@ class SettingsService:
         """
         Get the value for the given path
         """
-        request = SettingsModule.GetVarRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.GetVarRequest,
+                path)
         response = self.__stub.GetVar(request, metadata=self.__metadata)
         return self._get_state_from_value(response.value)
 
@@ -97,10 +103,9 @@ class SettingsService:
         """
         Rename the object at the given path
         """
-        request = SettingsModule.RenameRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.RenameRequest,
+                path)
         request.old_name = old
         request.new_name = new
 
@@ -111,10 +116,9 @@ class SettingsService:
         """
         Create a new named object child for the given path
         """
-        request = SettingsModule.CreateRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.CreateRequest,
+                path)
         request.name = name
 
         self.__stub.Create(request, metadata=self.__metadata)
@@ -124,10 +128,9 @@ class SettingsService:
         """
         Delete the object with the given name at the give path
         """
-        request = SettingsModule.DeleteRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.DeleteRequest,
+                path)
         request.name = name
 
         self.__stub.Delete(request, metadata=self.__metadata)
@@ -137,10 +140,9 @@ class SettingsService:
         """
         Get the list of named objects
         """
-        request = SettingsModule.GetObjectNamesRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.GetObjectNamesRequest,
+                path)
         return self.__stub.GetObjectNames(request,
                 metadata=self.__metadata).names
 
@@ -149,10 +151,9 @@ class SettingsService:
         """
         Get the number of elements in a list object
         """
-        request = SettingsModule.GetListSizeRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.GetListSizeRequest,
+                path)
         return self.__stub.GetListSize(request,
                 metata=self.__metadata).size
 
@@ -161,12 +162,10 @@ class SettingsService:
         """
         Resize a list object
         """
-        request = SettingsModule.ResizeListObjectRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
-
+        request = _get_request_instance_for_path(
+                SettingsModule.ResizeListObjectRequest,
+                path)
         request.size = size
-
         return self.__stub.ResizeListObject(request,
                 metadata=self.__metadata)
 
@@ -188,7 +187,6 @@ class SettingsService:
     def get_obj_static_info(self):
         request = SettingsModule.GetObjectStaticInfoRequest()
         request.root = 'fluent'
-
         response = self.__stub.GetObjectStaticInfo(request,
                 metadata=self.__metadata)
 
@@ -199,9 +197,9 @@ class SettingsService:
         """
         Execute a command of given name with the provided keyword arguments
         """
-        request = SettingsModule.ExecuteCommandRequest()
-        request.path_info.path = path
-        request.path_info.root = 'fluent'
+        request = _get_request_instance_for_path(
+                SettingsModule.ExecuteCommandRequest,
+                path)
         request.command = command
         self._set_state_from_value(request.args, kwds)
 

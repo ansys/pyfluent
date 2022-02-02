@@ -85,7 +85,6 @@ class Session:
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
         )
-        self.setup_settings_objects()
 
         Session.__all_sessions.append(self)
 
