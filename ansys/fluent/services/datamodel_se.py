@@ -214,6 +214,7 @@ class PyMenu:
     """
 
     __slots__ = ("service", "rules", "path")
+    docstring = None
 
     def __init__(
         self, service: DatamodelService, rules: str, path: Path = None
@@ -354,6 +355,21 @@ class PyMenu:
         request.attribute = attrib
         response = self.service.get_attribute_value(request)
         return _convert_variant_to_value(response.result, False)
+
+    def get_docstring(self):
+        if self.__class__.docstring is None:
+            request = DataModelProtoModule.GetSpecsRequest()
+            request.rules = self.rules
+            request.path = _convert_path_to_se_path(self.path)
+            response = self.service.get_specs(request)
+            self.__class__.docstring = getattr(
+                response.member, response.member.WhichOneof("as")
+            ).common.helpstring
+        return self.__class__.docstring
+
+    def help(self):
+        """Prints command help string"""
+        print(self.get_docstring())
 
 
 class PyNamedObjectContainer:

@@ -1,5 +1,5 @@
 from ansys.fluent.core import LOG
-from ansys.fluent.launcher.launcher import launch_fluent
+from ansys.fluent.launcher.launcher import launch_fluent  # noqa: F401
 from ansys.fluent.session import Session
 
 try:

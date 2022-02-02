@@ -344,10 +344,6 @@ class PyMenu:
         request = DataModelProtoModule.SetStateRequest()
         request.path = path
         _convert_value_to_gvalue(value, request.state)
-        if request.state.HasField("null_value"):  # creation with default value
-            _convert_value_to_gvalue(
-                name, request.state.struct_value.fields["name"]
-            )
         self.__service.set_state(request)
 
     def del_item(self, path: str):

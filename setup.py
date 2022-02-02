@@ -15,11 +15,13 @@ with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
 
 install_requires = [
     "grpcio>=1.30.0",
-    #'ansys-api-fluent-v0>=0.0.1'
+    "protobuf>=3.12.2"
 ]
 
 packages = []
 for package in find_namespace_packages(include="ansys*"):
+    if package.startswith("ansys.api"):
+        packages.append(package)
     if package.startswith("ansys.fluent"):
         packages.append(package)
 

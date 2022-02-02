@@ -1,0 +1,123 @@
+//
+// Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
+//
+
+syntax = "proto3";
+
+package ansys.api.fluent.v0;
+
+import "google/protobuf/struct.proto";
+
+service DataModel
+{
+  rpc NotifyChanges (NotifyChangesRequest) returns (stream NotifyChangesResponse);
+
+  rpc GetAttributeValue (GetAttributeValueRequest) returns (GetAttributeValueResponse);
+  rpc GetState (GetStateRequest) returns (GetStateResponse);
+  rpc SetState (SetStateRequest) returns (SetStateResponse);
+  rpc ExecuteCommand (ExecuteCommandRequest) returns (ExecuteCommandResponse);
+  rpc ExecuteQuery (ExecuteQueryRequest) returns (ExecuteQueryResponse);
+
+  rpc CompositeGet (CompositeGetRequest) returns (CompositeGetResponse);
+}
+
+message NotifyChangesRequest {
+  google.protobuf.Value paths = 1;
+  google.protobuf.Struct args = 2;
+}
+
+message NotifyChangesResponse {
+  google.protobuf.Value changed_paths = 1;
+  google.protobuf.Value state_difference = 2;
+}
+
+enum Attribute {
+  // Static attributes
+  CHILD_NAMES = 0;
+  DATA_TYPE = 1;
+  EXPOSURE_LEVEL = 2;
+  DISPLAY_TEXT = 3;
+  QUANTITY_TYPE = 4;
+  HELP_STRING = 5;
+
+  // Dynamic attributes
+  DEFAULT = 100;
+  ALLOWED_VALUES = 101;
+  MINIMUM = 102;
+  MAXIMUM = 103;
+  IS_ACTIVE = 104;
+  IS_READ_ONLY = 105;
+  OBJECT_NAMES = 106;
+
+  // Composite attributes
+  CONSTRAINTS = 200;
+  STATIC_ATTRIBUTES = 201;
+  UI_ATTRIBUTES = 202;
+
+  // Custom attribute
+  CUSTOM = 300;
+}
+
+message GetAttributeValueRequest {
+  string path = 1;
+  Attribute attribute = 2;
+  google.protobuf.Struct args = 3;
+}
+
+message GetAttributeValueResponse {
+  google.protobuf.Value value = 1;
+}
+
+message GetStateRequest {
+  string path = 1;
+}
+
+message GetStateResponse {
+  google.protobuf.Value state = 1;
+}
+
+message SetStateRequest {
+  string path = 1;
+  google.protobuf.Value state = 2;
+}
+
+message SetStateResponse {
+  google.protobuf.Value state = 1;
+}
+
+message ExecuteCommandRequest {
+  string path = 1;
+  string command = 2;
+  google.protobuf.Struct args = 3;
+}
+
+message ExecuteCommandResponse {
+  google.protobuf.Value result = 1;
+}
+
+message ExecuteQueryRequest {
+  string path = 1;
+}
+
+message ExecuteQueryResponse {
+  google.protobuf.Value result = 1;
+}
+
+message CompositeGetRequest
+{
+  repeated DataModelGetter getters = 1;
+}
+
+message DataModelGetter
+{
+  oneof request
+  {
+    GetAttributeValueRequest get_attribute_value_request = 1;
+    GetStateRequest get_state_request = 2;
+  }
+}
+
+message CompositeGetResponse
+{
+  google.protobuf.Value response = 1;
+}
