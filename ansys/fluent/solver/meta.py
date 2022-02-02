@@ -1,3 +1,6 @@
+# pylint: disable=unused-private-member
+# pylint: disable=bad-mcs-classmethod-argument
+
 from ansys.fluent.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path
