@@ -41,3 +41,17 @@ Usage
   del session.tui.display.objects.contour['my-contour']
   session.exit()
 
+Settings objects
+****************
+Settings objects provide a more natural way to access and modify Fluent settings and issue commands.  When the function ``session.setup_settings_objects()`` is invoked, attributes ``setup``, ``solution`` and ``results`` are added to the session object. These attributes can be used to access and modify Fluent settings:
+
+.. code:: Python
+
+  session.setup_settings_objects()
+  session.setup.models.energy.enabled = True
+  print (session.setup.models.energy())
+  session.setup.boundary_conditions.velocity_inlet['inlet2'].vmag = {
+      'option' : 'constant or expression',
+      'constant' : 1.2
+      }
+  session.solution.initialize.standard_initialize()
