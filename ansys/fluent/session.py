@@ -85,11 +85,11 @@ class Session:
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
         )
-        self._setup_settings_objects()
+        self.setup_settings_objects()
 
         Session.__all_sessions.append(self)
 
-    def _setup_settings_objects(self):
+    def setup_settings_objects(self):
         proxy = SettingsService(self.__channel, self.__metadata)
         r = flobject.get_root(flproxy=proxy)
         for k in r.member_names:

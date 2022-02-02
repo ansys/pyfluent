@@ -16,7 +16,6 @@ is_energy_on = r.setup.models.energy.enabled()
 r.setup.models.energy.enabled = True
 r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
-# This module is a duplicate of fluent/cortex/pylib/flobject.py
 __all__ = ['get_root']
 
 import weakref
