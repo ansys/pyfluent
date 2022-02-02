@@ -58,4 +58,4 @@ Settings objects provide a more natural way to access and modify Fluent settings
 
 Meshing TUI and workflow
 ************************
-TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing.rst <https://https://github.com/pyansys/pyfluent/blob/main/doc/meshing.rst>`_ for example usage.
+TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing.rst <https://github.com/pyansys/pyfluent/blob/main/doc/meshing.rst>`_ for example usage.
