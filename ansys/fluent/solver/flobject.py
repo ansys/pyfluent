@@ -62,21 +62,25 @@ def to_scheme_name(py_name: str) -> str:
     """
     return _sc_names.get(py_name, py_name)
 
-def to_scheme_keys(dct):
+def to_scheme_keys(obj):
     """
     For dictionary arguments, convert the keys recursively to scheme name
     """
-    if isinstance(dct, dict):
-        return { to_scheme_name(k): to_scheme_keys(v) for k, v in dct.items() }
-    return dct
+    if isinstance(obj, dict):
+        return { to_scheme_name(k): to_scheme_keys(v) for k, v in obj.items() }
+    if isinstance(obj, list):
+        return [ to_scheme_keys(o) for o in obj ]
+    return obj
 
-def to_python_keys(dct):
+def to_python_keys(obj):
     """
     For dictionary arguments, convert the keys recursively to python name
     """
-    if isinstance(dct, dict):
-        return { to_python_name(k): to_python_keys(v) for k, v in dct.items() }
-    return dct
+    if isinstance(obj, dict):
+        return { to_python_name(k): to_python_keys(v) for k, v in obj.items() }
+    if isinstance(obj, list):
+        return [to_python_keys(x) for x in obj]
+    return obj
 
 class Base:
     """
@@ -106,6 +110,7 @@ class Base:
 
     @classmethod
     def set_flproxy(cls, flproxy):
+        """Set flproxy object"""
         cls._flproxy = flproxy
 
     @property
@@ -119,6 +124,7 @@ class Base:
         return self._flproxy
 
     _name = None
+    _scheme_name = None
 
     @property
     def obj_name(self):
@@ -170,7 +176,6 @@ class Integer(SettingsBase[int]):
     """
     An Integer object represents an integer value setting.
     """
-    pass
 
 class Real(SettingsBase[RealType]):
     """
@@ -178,44 +183,42 @@ class Real(SettingsBase[RealType]):
     Some Real objects also accept string arguments representing expression
     values.
     """
-    pass
 
 class String(SettingsBase[str]):
     """
     A String object represents a string value setting.
     """
-    pass
 
 class Boolean(SettingsBase[bool]):
     """
     A Boolean object represents a boolean value setting.
     """
-    pass
 
 class RealList(SettingsBase[RealListType]):
     """
     A RealList object represents a real list setting.
     """
-    pass
 
 class IntegerList(SettingsBase[IntListType]):
     """
     An Integer object represents a integer list setting.
     """
-    pass
 
 class RealVector(SettingsBase[RealVectorType]):
     """
     A RealVector object represents a real vector setting consisting of
     3 real values.
     """
-    pass
 
 class StringList(SettingsBase[StringListType]):
     """
     A StringList object represents a string list setting.
     """
-    pass
+
+class BooleanList(SettingsBase[StringListType]):
+    """
+    A BooleanList object represents a boolean list setting.
+    """
 
 class Group(SettingsBase[DictStateType]):
     """
@@ -231,12 +234,12 @@ class Group(SettingsBase[DictStateType]):
     """
     def __init__(self, name: str = None, parent = None):
         super().__init__(name, parent)
-        for c in self.member_names:
-            cls = getattr(self.__class__, c)
-            setattr(self, c, cls(None, self))
-        for c in self.command_names:
-            cls = getattr(self.__class__, c)
-            setattr(self, c, cls(None, self))
+        for member in self.member_names:
+            cls = getattr(self.__class__, member)
+            setattr(self, member, cls(None, self))
+        for cmd in self.command_names:
+            cls = getattr(self.__class__, cmd)
+            setattr(self, cmd, cls(None, self))
         self._initialized = True
 
     member_names = []
@@ -266,27 +269,28 @@ class NamedObject(SettingsBase[DictStateType]):
     def __init__(self, name: str = None, parent = None):
         super().__init__(name, parent)
         self._objects = {}
-        for c in self.command_names:
-            cls = getattr(self.__class__, c)
-            setattr(self, c, cls(None, self))
+        for cmd in self.command_names:
+            cls = getattr(self.__class__, cmd)
+            setattr(self, cmd, cls(None, self))
 
     command_names = []
 
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
         if not ret:
+            #pylint: disable=no-member
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = cls(cname, self)
         return ret
 
     def _update_objects(self):
         names = self.object_names
-        for n in list(self._objects.keys()):
-            if n not in names:
-                del self._objects[n]
-        for n in names:
-            if n not in self._objects:
-                self._create_child_object(n)
+        for name in list(self._objects.keys()):
+            if name not in names:
+                del self._objects[name]
+        for name in names:
+            if name not in self._objects:
+                self._create_child_object(name)
 
     def rename(self, new: str, old: str):
         """
@@ -320,14 +324,17 @@ class NamedObject(SettingsBase[DictStateType]):
         return iter(self._objects)
 
     def keys(self):
+        """object names"""
         self._update_objects()
         return self._objects.keys()
 
     def values(self):
+        """object values"""
         self._update_objects()
         return self._objects.values()
 
     def items(self):
+        """Items"""
         self._update_objects()
         return self._objects.items()
 
@@ -349,6 +356,7 @@ class NamedObject(SettingsBase[DictStateType]):
 
     @property
     def object_names(self):
+        """object names"""
         return self.flproxy.get_object_names(self.path)
 
     def __getitem__(self, name: str):
@@ -384,13 +392,14 @@ class ListObject(SettingsBase[ListStateType]):
     def __init__(self, name = None, parent = None):
         super().__init__(name, parent)
         self._objects = []
-        for c in self.command_names:
-            cls = getattr(self.__class__, c)
-            setattr(self, c, cls(None, self))
+        for cmd in self.command_names:
+            cls = getattr(self.__class__, cmd)
+            setattr(self, cmd, cls(None, self))
 
     command_names = []
 
     def _update_objects(self):
+        # pylint: disable=no-member
         cls = self.__class__.child_object_type
         self._objects = [cls(str(x), self) for x in range(self.size)]
 
@@ -436,6 +445,7 @@ class ListObject(SettingsBase[ListStateType]):
         child.set_state(value)
 
 class Command(Base):
+    """Command object"""
     def __call__(self, **kwds):
         """
         Call a command with the specified keyword arguments
@@ -452,12 +462,13 @@ _baseTypes = {
         'boolean'      : Boolean,
         'real-list'    : RealList,
         'integer-list' : IntegerList,
+        'string-list'  : StringList,
+        'boolean-list' : BooleanList,
         'named-object' : NamedObject,
         'vector'       : RealVector,
         'command'      : Command,
         'material-property' : String,
         'thread-var'   : String,
-        'string-list'  : StringList,
         'list-object' : ListObject,
         }
 
@@ -466,11 +477,11 @@ def get_cls(name, info, parent = None):
     Create a class for the object identified by "path"
     """
     if name == '':
-        pn = 'root'
+        pname = 'root'
     else:
-        pn = to_python_name(name)
-    t = info['type']
-    base = _baseTypes[t]
+        pname = to_python_name(name)
+    obj_type = info['type']
+    base = _baseTypes[obj_type]
     dct = { '_scheme_name' : name }
     helpinfo = info.get('help')
     if helpinfo:
@@ -479,21 +490,23 @@ def get_cls(name, info, parent = None):
         if parent is None:
             dct['__doc__'] = 'root object'
         else:
-            dct['__doc__'] = f"'{pn}' member of '{parent.__name__}' object"
-    cls = type(pn, (base,), dct)
+            dct['__doc__'] = f"'{pname}' member of '{parent.__name__}' object"
+    cls = type(pname, (base,), dct)
 
     children = info.get('children')
     if children:
         cls.member_names = []
-        for c, v in children.items():
-            ccls = get_cls(c, v, cls)
+        for cname, cinfo in children.items():
+            ccls = get_cls(cname, cinfo, cls)
+            #pylint: disable=no-member
             cls.member_names.append(ccls.__name__)
             setattr(cls, ccls.__name__, ccls)
     commands = info.get('commands')
     if commands:
         cls.command_names = []
-        for c, v in commands.items():
-            ccls = get_cls(c, v, cls)
+        for cname, cinfo in commands.items():
+            ccls = get_cls(cname, cinfo, cls)
+            #pylint: disable=no-member
             cls.command_names.append(ccls.__name__)
             setattr(cls, ccls.__name__, ccls)
     object_type = info.get('object-type')
@@ -514,5 +527,6 @@ def get_root(flproxy):
 
     obj_info = flproxy.get_obj_static_info()
     cls = get_cls('', obj_info)
+    #pylint: disable=no-member
     cls.set_flproxy(flproxy)
     return cls()
