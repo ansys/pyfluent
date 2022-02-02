@@ -1,4 +1,7 @@
-# This is an auto-generated file.  DO NOT EDIT!
+"""
+This is an auto-generated file.  DO NOT EDIT!
+"""
+# pylint: disable=line-too-long
 
 from ansys.fluent.solver.meta import PyMenuMeta, PyNamedObjectMeta
 from ansys.fluent.services.datamodel_tui import PyMenu
@@ -301,6 +304,90 @@ class display(metaclass=PyMenuMeta):
             Add graphics object to existing graphics.
             """
             return PyMenu(self.service).execute('/display/objects/add_to_graphics', *args, **kwargs)
+
+        class xy_plot(metaclass=PyNamedObjectMeta):
+            __doc__ = ''
+            is_extended_tui = True
+
+            class name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class uid(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class options(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class node_values(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class position_on_x_axis(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class position_on_y_axis(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class plot_direction(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class direction_vector(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class x_component(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class y_component(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class z_component(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class curve_length(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class default(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class reverse(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+            class x_axis_function(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class y_axis_function(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces_list(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class physics(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class geometry(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
 
         class mesh(metaclass=PyNamedObjectMeta):
             __doc__ = ''
@@ -755,6 +842,594 @@ class display(metaclass=PyMenuMeta):
                 is_extended_tui = True
 
             class surfaces(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+        class pathlines(metaclass=PyNamedObjectMeta):
+            __doc__ = ''
+            is_extended_tui = True
+
+            class name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class uid(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class options(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class oil_flow(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class reverse(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class node_values(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class relative(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class range(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class auto_range(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class clip_to_range(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class min_value(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class max_value(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+            class style_attribute(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class style(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class line_width(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class arrow_space(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class arrow_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class marker_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class sphere_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class sphere_lod(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class radius(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class ribbon(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class field(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class scalefactor(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+            class accuracy_control(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class step_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class tolerance(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class plot(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class x_axis_function(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class enabled(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class step(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class skip(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class coarsen(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class onzone(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class field(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces_list(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class velocity_domain(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class color_map(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class visible(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class color(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class log_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class format(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class user_skip(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class show_all(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class position(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class font_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class font_automatic(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class font_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class length(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class width(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class draw_mesh(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class mesh_object(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class display_state_name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class physics(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class geometry(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class surfaces(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+        class particle_tracks(metaclass=PyNamedObjectMeta):
+            __doc__ = ''
+            is_extended_tui = True
+
+            class name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class uid(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class options(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class node_values(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class filter_settings(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class field(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class inside(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class outside(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class enabled(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class filter_minimum(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class filter_maximum(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class range(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class auto_range(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class clip_to_range(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class min_value(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class max_value(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+            class style_attribute(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class style(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class line_width(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class arrow_space(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class arrow_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class marker_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class sphere_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class sphere_lod(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class radius(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class ribbon_settings(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class field(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class scalefactor(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class sphere_settings(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class scale(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class sphere_lod(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class options(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class constant(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                            class diameter(metaclass=PyMenuMeta):
+                                __doc__ = ''
+                                is_extended_tui = True
+
+                        class variable(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                            class size_by(metaclass=PyMenuMeta):
+                                __doc__ = ''
+                                is_extended_tui = True
+
+                            class range(metaclass=PyMenuMeta):
+                                __doc__ = ''
+                                is_extended_tui = True
+
+                                class auto_range(metaclass=PyMenuMeta):
+                                    __doc__ = ''
+                                    is_extended_tui = True
+
+                                class clip_to_range(metaclass=PyMenuMeta):
+                                    __doc__ = ''
+                                    is_extended_tui = True
+
+                                    class min_value(metaclass=PyMenuMeta):
+                                        __doc__ = ''
+                                        is_extended_tui = True
+
+                                    class max_value(metaclass=PyMenuMeta):
+                                        __doc__ = ''
+                                        is_extended_tui = True
+
+            class vector_settings(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class style(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class vector_length(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class constant_length(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class variable_length(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class constant_color(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class enabled(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class color(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class vector_of(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class length_to_head_ratio(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class plot(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class x_axis_function(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class enabled(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class track_single_particle_stream(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class enabled(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class stream_id(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class skip(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class coarsen(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class field(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class injections_list(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class free_stream_particles(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class wall_film_particles(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class track_pdf_particles(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class color_map(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class visible(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class color(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class log_scale(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class format(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class user_skip(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class show_all(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class position(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class font_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class font_automatic(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class font_size(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class length(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class width(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class draw_mesh(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class mesh_object(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class display_state_name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+        class scene(metaclass=PyNamedObjectMeta):
+            __doc__ = ''
+            is_extended_tui = True
+
+            class name(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class title(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class temporary(metaclass=PyMenuMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+            class display_state_name(metaclass=PyMenuMeta):
                 __doc__ = ''
                 is_extended_tui = True
 
@@ -22471,6 +23146,90 @@ class results(metaclass=PyMenuMeta):
                 """
                 return PyMenu(self.service).execute('/results/graphics/objects/add_to_graphics', *args, **kwargs)
 
+            class xy_plot(metaclass=PyNamedObjectMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class uid(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class node_values(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class position_on_x_axis(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class position_on_y_axis(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class plot_direction(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class direction_vector(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class x_component(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class y_component(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class z_component(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                    class curve_length(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class default(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class reverse(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                class x_axis_function(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class y_axis_function(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces_list(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class physics(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class geometry(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
             class mesh(metaclass=PyNamedObjectMeta):
                 __doc__ = ''
                 is_extended_tui = True
@@ -22924,6 +23683,594 @@ class results(metaclass=PyMenuMeta):
                     is_extended_tui = True
 
                 class surfaces(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class pathlines(metaclass=PyNamedObjectMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class uid(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class oil_flow(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class reverse(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class node_values(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class relative(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class range(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class auto_range(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class clip_to_range(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class min_value(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class max_value(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                class style_attribute(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class style(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class line_width(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class arrow_space(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class arrow_scale(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class marker_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class sphere_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class sphere_lod(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class radius(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class ribbon(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class field(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class scalefactor(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                class accuracy_control(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class step_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class tolerance(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class plot(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class x_axis_function(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class enabled(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class step(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class skip(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class coarsen(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class onzone(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class field(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces_list(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class velocity_domain(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class color_map(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class visible(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class color(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class log_scale(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class format(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class user_skip(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class show_all(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class position(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class font_name(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class font_automatic(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class font_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class length(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class width(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class draw_mesh(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class mesh_object(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class display_state_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class physics(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class geometry(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class surfaces(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class particle_tracks(metaclass=PyNamedObjectMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class uid(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class options(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class node_values(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class filter_settings(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class field(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class options(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class inside(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class outside(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                    class enabled(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class filter_minimum(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class filter_maximum(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class range(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class auto_range(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class clip_to_range(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class min_value(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class max_value(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                class style_attribute(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class style(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class line_width(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class arrow_space(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class arrow_scale(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class marker_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class sphere_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class sphere_lod(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class radius(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class ribbon_settings(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class field(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class scalefactor(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                    class sphere_settings(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class scale(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class sphere_lod(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class options(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                            class constant(metaclass=PyMenuMeta):
+                                __doc__ = ''
+                                is_extended_tui = True
+
+                                class diameter(metaclass=PyMenuMeta):
+                                    __doc__ = ''
+                                    is_extended_tui = True
+
+                            class variable(metaclass=PyMenuMeta):
+                                __doc__ = ''
+                                is_extended_tui = True
+
+                                class size_by(metaclass=PyMenuMeta):
+                                    __doc__ = ''
+                                    is_extended_tui = True
+
+                                class range(metaclass=PyMenuMeta):
+                                    __doc__ = ''
+                                    is_extended_tui = True
+
+                                    class auto_range(metaclass=PyMenuMeta):
+                                        __doc__ = ''
+                                        is_extended_tui = True
+
+                                    class clip_to_range(metaclass=PyMenuMeta):
+                                        __doc__ = ''
+                                        is_extended_tui = True
+
+                                        class min_value(metaclass=PyMenuMeta):
+                                            __doc__ = ''
+                                            is_extended_tui = True
+
+                                        class max_value(metaclass=PyMenuMeta):
+                                            __doc__ = ''
+                                            is_extended_tui = True
+
+                class vector_settings(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class style(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class vector_length(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class constant_length(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class variable_length(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                    class constant_color(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                        class enabled(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                        class color(metaclass=PyMenuMeta):
+                            __doc__ = ''
+                            is_extended_tui = True
+
+                    class vector_of(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class scale(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class length_to_head_ratio(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class plot(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class x_axis_function(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class enabled(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class track_single_particle_stream(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class enabled(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class stream_id(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class skip(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class coarsen(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class field(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class injections_list(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class free_stream_particles(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class wall_film_particles(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class track_pdf_particles(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class color_map(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                    class visible(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class color(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class log_scale(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class format(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class user_skip(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class show_all(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class position(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class font_name(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class font_automatic(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class font_size(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class length(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                    class width(metaclass=PyMenuMeta):
+                        __doc__ = ''
+                        is_extended_tui = True
+
+                class draw_mesh(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class mesh_object(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class display_state_name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+            class scene(metaclass=PyNamedObjectMeta):
+                __doc__ = ''
+                is_extended_tui = True
+
+                class name(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class title(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class temporary(metaclass=PyMenuMeta):
+                    __doc__ = ''
+                    is_extended_tui = True
+
+                class display_state_name(metaclass=PyMenuMeta):
                     __doc__ = ''
                     is_extended_tui = True
 
@@ -41271,6 +42618,11 @@ class parametric_study(metaclass=PyMenuMeta):
             Duplicate Design Point
             """
             return PyMenu(self.service).execute('/parametric_study/design_points/duplicate_design_point', *args, **kwargs)
+        def save_journals(self, *args, **kwargs):
+            """
+            Save Journals
+            """
+            return PyMenu(self.service).execute('/parametric_study/design_points/save_journals', *args, **kwargs)
         def clear_generated_data(self, *args, **kwargs):
             """
             Clear Generated Data
