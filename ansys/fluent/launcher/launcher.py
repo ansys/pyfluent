@@ -41,7 +41,7 @@ def get_server_info_filepath():
     return filepath
 
 
-def get_subprocess_kwargs_for_fluent():
+def get_subprocess_kwargs_for_fluent(is_pro_license: bool = False):
     kwargs = {}
     kwargs.update(
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -53,6 +53,10 @@ def get_subprocess_kwargs_for_fluent():
         )
     else:
         kwargs.update(shell=True, start_new_session=True)
+    fluent_env = os.environ.copy()
+    if is_pro_license:
+        fluent_env["FLUENT_STARTED_FROM_LAUNCHER"] = "1"
+    kwargs.update(env=fluent_env)
     return kwargs
 
 
@@ -64,6 +68,7 @@ def launch_fluent(
     journal_filename=None,
     meshing_mode=None,
     start_timeout=100,
+    additional_arguments="",
 ):
     """Start Fluent locally in server mode.
 
@@ -89,6 +94,10 @@ def launch_fluent(
     start_timeout : int, optional
         Maximum allowable time in seconds to connect to the Fluent
         server. Default is 100 seconds.
+
+    additional_arguments : str, optional
+        Additional arguments in string format which will be sent to
+        Fluent launcher as is.
 
     Returns
     -------
@@ -139,12 +148,14 @@ def launch_fluent(
             launch_string += v["fluent_format"].replace("{}", str(argval))
     server_info_filepath = get_server_info_filepath()
     try:
+        launch_string += f" {additional_arguments}"
         launch_string += f' -sifile="{server_info_filepath}"'
         if not os.getenv("PYFLUENT_SHOW_SERVER_GUI"):
             launch_string += " -hidden"
         LOG.info("Launching Fluent with cmd: %s", launch_string)
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
-        kwargs = get_subprocess_kwargs_for_fluent()
+        is_pro_license = "-license=pro" in additional_arguments
+        kwargs = get_subprocess_kwargs_for_fluent(is_pro_license)
         subprocess.Popen(launch_string, **kwargs)
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:

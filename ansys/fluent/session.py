@@ -144,6 +144,7 @@ class Session:
             self.stop_transcript()
             self.__channel.close()
             self.__channel = None
+            Session.__all_sessions.remove(self)
 
     def __enter__(self):
         return self
