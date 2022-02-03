@@ -3,7 +3,7 @@ Classes for running a parametric study in Fluent.
 
 Example
 -------
->>> from ansys.fluent.addons.parametric import ParametricStudy, DesignPointStatus
+>>> from ansys.fluent.addons.parametric import ParametricStudy, DesignPointStatus  # noqa: E501
 
 Instantiate the study, specifying the case
 

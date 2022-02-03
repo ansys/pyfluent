@@ -3,7 +3,6 @@ flake8:
 	@flake8 .
 
 install:
-	@pip install grpc/ansys-api-fluent-v0-0.0.1.tar.gz
 	@pip install -r requirements_build.txt
 	@python setup.py sdist
 	@python setup.py bdist_wheel

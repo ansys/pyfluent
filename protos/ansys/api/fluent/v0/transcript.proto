@@ -1,0 +1,26 @@
+//
+// Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
+//
+
+syntax = "proto3";
+
+option objc_class_prefix = "HLW";
+
+package grpcRemoting;
+service Transcript
+{
+
+  rpc BeginStreaming (TranscriptRequest) returns (stream TranscriptResponse) {}
+
+}
+message TranscriptRequest
+{
+}
+
+message TranscriptResponse
+{
+  string  transcript   = 1;
+}
+
+
+

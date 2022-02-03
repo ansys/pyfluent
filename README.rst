@@ -10,14 +10,11 @@ For a local "development" version, install with:
 
   git clone https://github.com/pyansys/pyfluent.git
   cd pyfluent
-  pip install grpc\ansys-api-fluent-v0-0.0.1.tar.gz
   pip install -e .
-
-We need to install the grpc package as it is not yet in PyPI.
 
 Usage
 -----
-1) Fluent should be installed from the latest daily build. PyFluent determines the Fluent launch path from AWP_ROOT222 environment variable. That environment variable can be modified to use a custom Fluent build.
+1) Fluent should be installed from the latest daily build. Set AWP_ROOT environment variable to vXXX directory to use a custom Fluent build.
 2) Within a Python 3 console, execute:
 
 .. code:: python
