@@ -8,8 +8,8 @@ package ansys.api.fluent.v0.settings;
 
 service Settings
 {
-  /* Static info about objects (type, children, commands, object-type) in a
-   * recursive manner */
+  /* Static info about objects (type, children, commands, arguments,
+     object-type) in a recursive manner*/
   rpc GetObjectStaticInfo (GetObjectStaticInfoRequest) returns (GetObjectStaticInfoResponse);
 
   /* Get the value of a path */
@@ -71,6 +71,7 @@ message ObjectStaticInfo {
   string type = 1;
   map<string, ObjectStaticInfo> children = 2;
   map<string, ObjectStaticInfo> commands = 3;
+  map<string, ObjectStaticInfo> arguments = 5;
   ObjectStaticInfo object_type = 4;
 }
 
