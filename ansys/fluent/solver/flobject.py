@@ -18,12 +18,10 @@ r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 __all__ = ['get_root']
 
+import collections
 import weakref
 import string
 from typing import Union, List, Dict, Generic, TypeVar
-
-_py_names = {}
-_sc_names = {}
 
 # Type hints
 RealType = Union[float, str] # constant or expression
@@ -47,40 +45,7 @@ def to_python_name(scheme_name: str) -> str:
     """
     if not scheme_name:
         return scheme_name
-    py_name = _py_names.get(scheme_name)
-    if py_name:
-        return py_name
-    ret = scheme_name.translate(_ttable)
-    _py_names[scheme_name] = ret
-    _sc_names[ret] = scheme_name
-    return ret
-
-def to_scheme_name(py_name: str) -> str:
-    """
-    Convert a python string to a scheme string using the lookup table built
-    during the invocation of to_python_name
-    """
-    return _sc_names.get(py_name, py_name)
-
-def to_scheme_keys(obj):
-    """
-    For dictionary arguments, convert the keys recursively to scheme name
-    """
-    if isinstance(obj, dict):
-        return { to_scheme_name(k): to_scheme_keys(v) for k, v in obj.items() }
-    if isinstance(obj, list):
-        return [ to_scheme_keys(o) for o in obj ]
-    return obj
-
-def to_python_keys(obj):
-    """
-    For dictionary arguments, convert the keys recursively to python name
-    """
-    if isinstance(obj, dict):
-        return { to_python_name(k): to_python_keys(v) for k, v in obj.items() }
-    if isinstance(obj, list):
-        return [to_python_keys(x) for x in obj]
-    return obj
+    return scheme_name.translate(_ttable)
 
 class Base:
     """
@@ -97,6 +62,7 @@ class Base:
     ----------
     flproxy
     obj_name
+    scheme_name
 
     """
     _initialized = False
@@ -124,7 +90,7 @@ class Base:
         return self._flproxy
 
     _name = None
-    _scheme_name = None
+    scheme_name = None
 
     @property
     def obj_name(self):
@@ -134,7 +100,7 @@ class Base:
         If the object is a named-object child, the object's name is returned
         """
         if self._name is None:
-            return self._scheme_name
+            return self.scheme_name
         return self._name
 
     @property
@@ -153,6 +119,23 @@ class Base:
 StateT = TypeVar('StateT')
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects"""
+
+    @classmethod
+    def to_scheme_keys(cls, value):
+        """
+        Convert value to have keys with scheme names.
+        This is overridden in Group, NamedObject and ListObject classes.
+        """
+        return value
+
+    @classmethod
+    def to_python_keys(cls, value):
+        """
+        Convert value to have keys with python names.
+        This is overridden in Group, NamedObject and ListObject classes.
+        """
+        return value
+
     def __call__(self) -> StateT:
         """
         Alias for self.get_state
@@ -163,13 +146,13 @@ class SettingsBase(Base, Generic[StateT]):
         """
         Get the state of this object
         """
-        return to_python_keys(self.flproxy.get_var(self.path))
+        return self.to_python_keys(self.flproxy.get_var(self.path))
 
     def set_state(self, state: StateT):
         """
         Set the state of this object
         """
-        return self.flproxy.set_var(self.path, to_scheme_keys(state))
+        return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
 
 class Integer(SettingsBase[int]):
@@ -242,6 +225,40 @@ class Group(SettingsBase[DictStateType]):
             setattr(self, cmd, cls(None, self))
         self._initialized = True
 
+    @classmethod
+    def to_scheme_keys(cls, value):
+        """
+        Convert value to have keys with scheme names.
+        """
+        if isinstance(value, collections.abc.Mapping):
+            ret = {}
+            for k, v in value.items():
+                if k in cls.member_names:
+                    ccls = getattr(cls, k)
+                    ret[ccls.scheme_name] = ccls.to_scheme_keys(v)
+                else:
+                    raise RuntimeError("Key '" + str(k) + "' is invalid")
+            return ret
+        else:
+            return value
+
+    @classmethod
+    def to_python_keys(cls, value):
+        """
+        Convert value to have keys with python names.
+        """
+        if isinstance(value, collections.abc.Mapping):
+            ret = {}
+            undef = object()
+            for mname in cls.member_names:
+                ccls = getattr(cls, mname)
+                mvalue = value.get(ccls.scheme_name, undef)
+                if mvalue is not undef:
+                    ret[mname] = ccls.to_python_keys(mvalue)
+            return ret
+        else:
+            return value
+
     member_names = []
     command_names = []
 
@@ -272,6 +289,29 @@ class NamedObject(SettingsBase[DictStateType]):
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
             setattr(self, cmd, cls(None, self))
+
+    @classmethod
+    def to_scheme_keys(cls, value):
+        """
+        Convert value to have keys with scheme names.
+        """
+        if isinstance(value, collections.abc.Mapping):
+            ret = {}
+            for k, v in value.items():
+                ret[k] = cls.child_object_type.to_scheme_keys(v)
+            return ret
+        else:
+            return value
+
+    @classmethod
+    def to_python_keys(cls, value):
+        if isinstance(value, collections.abc.Mapping):
+            ret = {}
+            for k, v in value.items():
+                ret[k] = cls.child_object_type.to_python_keys(v)
+            return ret
+        else:
+            return value
 
     command_names = []
 
@@ -396,6 +436,26 @@ class ListObject(SettingsBase[ListStateType]):
             cls = getattr(self.__class__, cmd)
             setattr(self, cmd, cls(None, self))
 
+    @classmethod
+    def to_scheme_keys(cls, value):
+        """
+        Convert value to have keys with scheme names.
+        """
+        if isinstance(value, collections.abc.Sequence):
+            return [cls.child_object_type.to_scheme_keys(v) for v in value]
+        else:
+            return value
+
+    @classmethod
+    def to_python_keys(cls, value):
+        """
+        Convert value to have keys with scheme names.
+        """
+        if isinstance(value, collections.abc.Sequence):
+            return [cls.child_object_type.to_python_keys(v) for v in value]
+        else:
+            return value
+
     command_names = []
 
     def _update_objects(self):
@@ -450,9 +510,16 @@ class Command(Base):
         """
         Call a command with the specified keyword arguments
         """
-        self.flproxy.execute_cmd(self._parent.path,
+        newkwds = {}
+        for k, v in kwds.items():
+            if k in self.argument_names:
+                ccls = getattr(self, k)
+                newkwds[ccls.scheme_name] = ccls.to_scheme_keys(v)
+            else:
+                raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        return self.flproxy.execute_cmd(self._parent.path,
                 self.obj_name,
-                **to_scheme_keys(kwds))
+                **newkwds)
 
 _baseTypes = {
         'group'        : Group,
@@ -482,7 +549,7 @@ def get_cls(name, info, parent = None):
         pname = to_python_name(name)
     obj_type = info['type']
     base = _baseTypes[obj_type]
-    dct = { '_scheme_name' : name }
+    dct = { 'scheme_name' : name }
     helpinfo = info.get('help')
     if helpinfo:
         dct['__doc__'] = helpinfo
@@ -508,6 +575,14 @@ def get_cls(name, info, parent = None):
             ccls = get_cls(cname, cinfo, cls)
             #pylint: disable=no-member
             cls.command_names.append(ccls.__name__)
+            setattr(cls, ccls.__name__, ccls)
+    arguments = info.get('arguments')
+    if arguments:
+        cls.argument_names = []
+        for aname, ainfo in arguments.items():
+            ccls = get_cls(aname, ainfo, cls)
+            #pylint: disable=no-member
+            cls.argument_names.append(ccls.__name__)
             setattr(cls, ccls.__name__, ccls)
     object_type = info.get('object-type')
     if object_type:

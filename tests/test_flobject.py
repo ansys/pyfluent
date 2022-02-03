@@ -224,7 +224,7 @@ class ListObject(Setting):
                     }
         return ret
 
-class Command(Group):
+class Command(Setting):
     """Command class"""
 
     objtype = 'command'
@@ -247,7 +247,7 @@ class Command(Group):
         if cls.arguments:
             ret['arguments'] = {
                     c: v.get_static_info()
-                    for c, v in cls.commands.items()
+                    for c, v in cls.arguments.items()
                     }
         return ret
 
@@ -287,8 +287,8 @@ class Root(Group):
             value = True
 
         arguments = {
-                'a1' : A1,
-                'a2' : A2,
+                'a-1' : A1,
+                'a-2' : A2,
                 }
 
         def cb(self, a1, a2):
@@ -420,9 +420,9 @@ def test_command():
     r.g_1.r_1 = 2.4
     r.c_1()
     assert r.g_1.r_1() == 2.4 + 2.3
-    r.c_1(a2 = False)
+    r.c_1(a_2 = False)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3
-    r.c_1(a1 = 3.2, a2 = True)
+    r.c_1(a_1 = 3.2, a_2 = True)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2
-    r.c_1(a1 = 4.5, a2 = False)
+    r.c_1(a_1 = 4.5, a_2 = False)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2 - 4.5
