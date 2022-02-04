@@ -179,6 +179,9 @@ class SettingsService:
         if info.commands:
             ret['commands'] = { k : self._extract_info(v)
                     for k, v in info.commands.items() }
+        if info.arguments:
+            ret['arguments'] = { k : self._extract_info(v)
+                    for k, v in info.arguments.items() }
         if info.HasField('object_type'):
             ret['object-type'] = self._extract_info(info.object_type)
         return ret

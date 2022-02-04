@@ -70,8 +70,8 @@ class SettingsServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetObjectStaticInfo(self, request, context):
-        """Static info about objects (type, children, commands, object-type) in a
-        recursive manner 
+        """Static info about objects (type, children, commands, arguments,
+        object-type) in a recursive manner
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
