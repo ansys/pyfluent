@@ -18,8 +18,11 @@ with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
 
 install_requires = [
     "grpcio>=1.30.0",
+    "numpy>=1.21.5",
     "pyvista>=0.33.2",
-    "protobuf>=3.12.2"
+    "protobuf>=3.12.2",
+    "pyvistaqt>=0.7.0",
+    "PySide6>=6.2.3",
 ]
 
 is64 = struct.calcsize("P") * 8 == 64
