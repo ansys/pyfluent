@@ -1,5 +1,8 @@
 """Setup file for ansys-fluent-solver"""
 import os
+import platform
+import struct
+import sys
 
 from setuptools import find_namespace_packages, setup
 
@@ -15,9 +18,19 @@ with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
 
 install_requires = [
     "grpcio>=1.30.0",
-    "pyvista>=0.33.2"
-    #'ansys-api-fluent-v0>=0.0.1'
+    "pyvista>=0.33.2",
 ]
+
+is64 = struct.calcsize("P") * 8 == 64
+if sys.version_info.minor == 10 and is64:
+    if platform.system().lower() == "linux":
+        install_requires.append(
+            "vtk @ https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" # noqa: E501
+        )
+    elif platform.system().lower() == "windows":
+        install_requires.append(
+            "vtk @ https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-win_amd64.whl" # noqa: E501
+        )
 
 packages = []
 for package in find_namespace_packages(include="ansys*"):

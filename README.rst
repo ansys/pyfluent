@@ -10,13 +10,8 @@ For a local "development" version, install with:
 
   git clone https://github.com/pyansys/pyfluent.git
   cd pyfluent
-  pip install grpc\ansys-api-fluent-v0-0.0.1.tar.gz
+  pip install grpc/ansys-api-fluent-v0-0.0.1.tar.gz
   pip install -e .
-
-We need to install the grpc package as it is not yet in PyPI.
-Also for python 3.10 we need to install `pyVista`_.
-
-.. _pyVista: https://github.com/pyvista/pyvista/discussions/2064
 
 Usage
 -----
@@ -34,11 +29,11 @@ Usage
   session.tui.define.models.unsteady_2nd_order("yes")
   session.tui.solve.initialize.initialize_flow()
   session.tui.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
-  
+
 Post Processing
 ---------------
 
-In Fluent (server)  
+In Fluent (server)
 ^^^^^^^^^^^^^^^^^^
 
 .. code:: python
@@ -51,9 +46,9 @@ In Fluent (server)
   session.tui.display.objects.contour['contour-1'].color_map.size()
   session.tui.display.objects.contour['contour-1'].rename('my-contour')
   del session.tui.display.objects.contour['my-contour']
-  
-PyVista (client)  
-^^^^^^^^^^^^^^^^^^ 
+
+PyVista (client)
+^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -61,7 +56,7 @@ PyVista (client)
   import ansys.fluent.postprocessing.pyvista as pv
 
   #get the graphics objects for the session
-  
+
   graphics_session1 = pv.Graphics(session)
   mesh1 = graphics_session1.Meshes["mesh-1"]
   contour1 = graphics_session1.Contours["contour-1"]
@@ -69,7 +64,7 @@ PyVista (client)
   surface1 = graphics_session1.Surfaces["surface-1"]
 
   #set graphics objects properties
-  
+
   #mesh
   mesh1.show_edges = True
   mesh1.surfaces_list = ['symmetry']
@@ -83,14 +78,14 @@ PyVista (client)
 
   #copy
   graphics_session1.Contours["contour-3"] = contour2()
-  
+
   #update
   contour3 = graphics_session1.Contours["contour-3"]
   contour3.update(contour1())
-  
+
   #delete
   del graphics_session1.Contours["contour-3"] 
-  
+
   #loop
   for name, _ in graphics_session1.Contours.items():
       print(name)
@@ -103,6 +98,5 @@ PyVista (client)
   contour1.display()
   mesh1.display()
   surface1.display()
-  
-  session.exit()
 
+  session.exit()
