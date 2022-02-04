@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 import time
 from pathlib import Path
+from typing import Any, Dict
 
 from ansys.fluent.core import LOG
 from ansys.fluent.session import Session
@@ -14,7 +15,7 @@ OPTIONS_FILE = os.path.join(THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
 
 
-def get_awp_path():
+def _get_awp_path():
     if "AWP_ROOT" in os.environ:
         awp_path = os.environ["AWP_ROOT"]
     else:
@@ -22,8 +23,8 @@ def get_awp_path():
     return Path(awp_path)
 
 
-def get_fluent_exe_path():
-    exe_path = get_awp_path() / "fluent"
+def _get_fluent_exe_path():
+    exe_path = _get_awp_path() / "fluent"
     if platform.system() == "Windows":
         exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
     else:
@@ -31,7 +32,7 @@ def get_fluent_exe_path():
     return str(exe_path)
 
 
-def get_server_info_filepath():
+def _get_server_info_filepath():
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
     fd, filepath = tempfile.mkstemp(
@@ -41,7 +42,7 @@ def get_server_info_filepath():
     return filepath
 
 
-def get_subprocess_kwargs_for_fluent(is_pro_license: bool = False):
+def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs = {}
     kwargs.update(
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -54,22 +55,22 @@ def get_subprocess_kwargs_for_fluent(is_pro_license: bool = False):
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
-    if is_pro_license:
-        fluent_env["FLUENT_STARTED_FROM_LAUNCHER"] = "1"
+    fluent_env.update({k: str(v) for k, v in env.items()})
     kwargs.update(env=fluent_env)
     return kwargs
 
 
 #   pylint: disable=unused-argument
 def launch_fluent(
-    version=None,
-    precision=None,
-    processor_count=None,
-    journal_filename=None,
-    meshing_mode=None,
-    start_timeout=100,
-    additional_arguments="",
-):
+    version: str = None,
+    precision: str = None,
+    processor_count: int = None,
+    journal_filename: str = None,
+    meshing_mode: bool = None,
+    start_timeout: int = 100,
+    additional_arguments: str = "",
+    env: Dict[str, Any] = None,
+) -> Session:
     """Start Fluent locally in server mode.
 
     Parameters
@@ -99,12 +100,15 @@ def launch_fluent(
         Additional arguments in string format which will be sent to
         Fluent launcher as is.
 
+    env : Dict[str, str], optional
+        Mapping to modify environment variables in Fluent
+
     Returns
     -------
     ansys.fluent.session.Session
         Fluent session.
     """
-    exe_path = get_fluent_exe_path()
+    exe_path = _get_fluent_exe_path()
     launch_string = exe_path
     argvals = locals()
     all_options = None
@@ -146,7 +150,7 @@ def launch_fluent(
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_string += v["fluent_format"].replace("{}", str(argval))
-    server_info_filepath = get_server_info_filepath()
+    server_info_filepath = _get_server_info_filepath()
     try:
         launch_string += f" {additional_arguments}"
         launch_string += f' -sifile="{server_info_filepath}"'
@@ -154,8 +158,9 @@ def launch_fluent(
             launch_string += " -hidden"
         LOG.info("Launching Fluent with cmd: %s", launch_string)
         sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
-        is_pro_license = "-license=pro" in additional_arguments
-        kwargs = get_subprocess_kwargs_for_fluent(is_pro_license)
+        if env is None:
+            env = {}
+        kwargs = _get_subprocess_kwargs_for_fluent(env)
         subprocess.Popen(launch_string, **kwargs)
         while True:
             if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
