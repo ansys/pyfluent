@@ -1,4 +1,6 @@
 import threading
+import sys
+import signal
 import numpy as np
 from pyvistaqt import BackgroundPlotter
 import pyvista as pv
@@ -28,52 +30,75 @@ class _Plotter(metaclass=Singleton):
     -------
     set_graphics(obj)
         Set the graphics object to plot.
-
-    close(obj)
-        Close the background_plotter.
-
     """
 
     __condition = threading.Condition()
 
     def __init__(self):
         self.__exit = False
-        self.__background_plotter = None
-        self.__graphics = None
+        self.__active_plotter = None
+        self.__graphics = {}
+        self.__plotter_thread = None
+        self.__plotters = {}
 
-    @property
-    def background_plotter(self):
-        return self.__background_plotter
-
-    def close(self) -> None:
-        with self.__condition:
-            self.__exit = True
-
-    def set_graphics(self, obj: object) -> None:
+    def set_graphics(self, obj: object, plotter_id: str) -> None:
+        if self.__exit:
+            return
 
         with self.__condition:
-            plotter_initialized = self.__background_plotter
-            self.__graphics = obj
+            self.__graphics[plotter_id] = obj
+            self.__active_plotter = self.__plotters.get(plotter_id)
 
-        if not plotter_initialized:
-            thread = threading.Thread(target=self._display, args=())
-            thread.start()
+        if not self.__plotter_thread:
+            self.__plotter_thread = threading.Thread(
+                target=self._display, args=(), daemon=True
+            )
+            self.__plotter_thread.start()
 
         with self.__condition:
             self.__condition.wait()
+            self.__plotters[plotter_id] = self.__active_plotter
 
     # private methods
+
+    def _exit(self) -> None:
+        if self.__plotter_thread:
+            with self.__condition:
+                self.__exit = True
+                self.__condition.wait()
+            self.__plotter_thread.join()
+            self.__plotter_thread = None
+
     def _init_properties(self):
-        self.__background_plotter.theme.cmap = "jet"
-        self.__background_plotter.background_color = "white"
-        self.__background_plotter.theme.font.color = "black"
+        self.__active_plotter.theme.cmap = "jet"
+        self.__active_plotter.background_color = "white"
+        self.__active_plotter.theme.font.color = "black"
 
     def _display(self):
-        self.__background_plotter = BackgroundPlotter(title="PyFluent")
-        self._init_properties()
-        self._refresh()
-        self.__background_plotter.add_callback(self._refresh, 100)
-        self.__background_plotter.app.exec_()
+        while True:
+            with self.__condition:
+                if self.__exit:
+                    break
+                if (
+                    not self.__active_plotter or self.__active_plotter._closed
+                ) and len(self.__graphics) > 0:
+                    plotter_id = next(iter(self.__graphics))
+                    self.__active_plotter = BackgroundPlotter(
+                        title=f"PyFluent ({plotter_id})"
+                    )
+                    self._init_properties()
+                    self.__active_plotter.add_callback(
+                        self._get_refresh_for_plotter(plotter_id),
+                        100,
+                    )
+            self.__active_plotter.app.processEvents()
+        with self.__condition:
+            for plotter in self.__plotters.values():
+                plotter.close()
+            self.__active_plotter.app.quit()
+            self.__active_plotter = None
+            self.__plotters.clear()
+            self.__condition.notify()
 
     def _display_contour(self, obj):
         if not obj.surfaces_list() or not obj.field():
@@ -114,7 +139,7 @@ class _Plotter(metaclass=Singleton):
             boundary_values,
         )
         meta_data = None
-        plotter = self.__background_plotter
+        plotter = self.__active_plotter
 
         # loop over all meshes
         for mesh_data in scalar_field_data:
@@ -279,36 +304,44 @@ class _Plotter(metaclass=Singleton):
                     np.array(mesh_data["vertices"]),
                     faces=np.hstack(mesh_data["faces"]),
                 )
-            self.__background_plotter.add_mesh(
+            self.__active_plotter.add_mesh(
                 mesh, show_edges=obj.show_edges(), color="lightgrey"
             )
 
-    def _refresh(self):
-        with self.__condition:
-            obj = self.__graphics
-            if not obj:
+    def _get_refresh_for_plotter(self, plotter_id: str):
+        def refresh():
+            with self.__condition:
+                obj = self.__graphics.get(plotter_id)
+                if not obj:
+                    self.__condition.notify()
+                    return
+
+                del self.__graphics[plotter_id]
+                plotter = self.__active_plotter
+                plotter.clear()
+
+                camera = plotter.camera.copy()
+
+                if obj.__class__.__name__ == "Mesh":
+                    self._display_mesh(obj)
+                elif obj.__class__.__name__ == "Surface":
+                    if obj.surface_type.surface_type() == "iso-surface":
+                        self._display_iso_surface(obj)
+                elif obj.__class__.__name__ == "Contour":
+                    self._display_contour(obj)
+
+                plotter.camera = camera.copy()
                 self.__condition.notify()
-                return
-            if self.__exit:
-                self.__background_plotter.close()
-                return
 
-            self.__graphics = None
-            plotter = self.__background_plotter
-            plotter.clear()
-
-            camera = plotter.camera.copy()
-
-            if obj.__class__.__name__ == "Mesh":
-                self._display_mesh(obj)
-            elif obj.__class__.__name__ == "Surface":
-                if obj.surface_type.surface_type() == "iso-surface":
-                    self._display_iso_surface(obj)
-            elif obj.__class__.__name__ == "Contour":
-                self._display_contour(obj)
-
-            plotter.camera = camera.copy()
-            self.__condition.notify()
+        return refresh
 
 
 plotter = _Plotter()
+
+
+def signal_handler(sig, frame):
+    plotter._exit()
+    sys.exit(0)
+
+
+signal.signal(signal.SIGINT, signal_handler)

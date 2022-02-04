@@ -1,6 +1,6 @@
 import sys
+from typing import Optional
 from ansys.fluent.postprocessing.pyvista.plotter import plotter
-from ansys.fluent.session import Session
 from ansys.fluent.solver.meta import (
     Attribute,
     PyLocalNamedObjectMeta,
@@ -24,9 +24,6 @@ class Graphics:
                 setattr(obj, cls.PLURAL, PyLocalContainer(obj, cls))
 
 
-Session.register_on_exit(lambda: plotter.close())
-
-
 class Mesh(metaclass=PyLocalNamedObjectMeta):
     """
     Mesh graphics.
@@ -34,11 +31,13 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
 
     PLURAL = "Meshes"
 
-    def display(self):
+    def display(self, plotter_id: Optional[str] = None):
         """
         Display mesh graphics.
         """
-        plotter.set_graphics(self)
+        plotter.set_graphics(
+            self, plotter_id if plotter_id else self.session.id
+        )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """
@@ -64,11 +63,13 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
 
     PLURAL = "Surfaces"
 
-    def display(self):
+    def display(self, plotter_id: Optional[str] = None):
         """
         Display contour graphics.
         """
-        plotter.set_graphics(self)
+        plotter.set_graphics(
+            self, plotter_id if plotter_id else self.session.id
+        )
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -163,11 +164,13 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
     PLURAL = "Contours"
 
-    def display(self):
+    def display(self, plotter_id: Optional[str] = None):
         """
         Display Contour graphics.
         """
-        plotter.set_graphics(self)
+        plotter.set_graphics(
+            self, plotter_id if plotter_id else self.session.id
+        )
 
     class field(metaclass=PyLocalPropertyMeta):
         """

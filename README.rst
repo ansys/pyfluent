@@ -113,9 +113,12 @@ PyVista (client)
   surface1.surface_type.iso_surface.field= "velocity-magnitude"
   surface1.surface_type.iso_surface.rendering= "contour"
 
-  #display
+  #display in default plotter
   contour1.display()
   mesh1.display()
   surface1.display()
+  
+  #display in seprate plotter e.g. plotter-2
+  contour1.display("plotter-2")
 
   session.exit()
