@@ -19,6 +19,7 @@ with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
 install_requires = [
     "grpcio>=1.30.0",
     "pyvista>=0.33.2",
+    "protobuf>=3.12.2"
 ]
 
 is64 = struct.calcsize("P") * 8 == 64
@@ -34,6 +35,8 @@ if sys.version_info.minor == 10 and is64:
 
 packages = []
 for package in find_namespace_packages(include="ansys*"):
+    if package.startswith("ansys.api"):
+        packages.append(package)
     if package.startswith("ansys.fluent"):
         packages.append(package)
 

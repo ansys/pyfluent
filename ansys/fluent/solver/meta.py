@@ -1,5 +1,7 @@
 from collections.abc import MutableMapping
 from pprint import pformat
+# pylint: disable=unused-private-member
+# pylint: disable=bad-mcs-classmethod-argument
 from ansys.fluent.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
@@ -430,9 +432,11 @@ class PyNamedObjectMeta(type):
     @classmethod
     def __create_setitem(cls):
         def wrapper(self, name, value):
-            o = self.__class__(self.path, name, self.service)
+            obj = self.__class__(self.path, name, self.service)
+            if isinstance(value, dict) and not value:
+                value["name"] = name  # creation with default value
             PyMenu(self.service).set_state(
-                convert_path_to_grpc_path(o.path), value
+                convert_path_to_grpc_path(obj.path), value
             )
 
         return wrapper
@@ -441,8 +445,8 @@ class PyNamedObjectMeta(type):
     @classmethod
     def __create_delitem(cls):
         def wrapper(self, name):
-            o = self.__class__(self.path, name, self.service)
-            PyMenu(self.service).del_item(convert_path_to_grpc_path(o.path))
+            obj = self.__class__(self.path, name, self.service)
+            PyMenu(self.service).del_item(convert_path_to_grpc_path(obj.path))
 
         return wrapper
 
@@ -467,7 +471,6 @@ class PyNamedObjectMeta(type):
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs["path"] = {x: None for x in attrs["__qualname__"].split(".")}
         attrs["__init__"] = cls.__create_init()
         attrs["__getitem__"] = cls.__create_getitem()
         attrs["__setitem__"] = cls.__create_setitem()

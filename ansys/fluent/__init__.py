@@ -1,4 +1,15 @@
 from ansys.fluent.core import LOG
+from ansys.fluent.launcher.launcher import launch_fluent  # noqa: F401
+from ansys.fluent.session import Session
+
+try:
+    from ansys.fluent.meshing import tui as meshing_tui
+    from ansys.fluent.solver import tui as solver_tui
+
+    Session.MeshingTui.register_module(meshing_tui)
+    Session.SolverTui.register_module(solver_tui)
+except ImportError:
+    pass
 
 
 def set_log_level(level):

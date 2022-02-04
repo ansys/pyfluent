@@ -4,10 +4,10 @@ from threading import Lock, Thread
 import grpc
 from ansys.fluent.core import LOG
 
-# from ansys.fluent.services.datamodel_se import (
-#     DatamodelService as DatamodelService_SE,
-# )
-# from ansys.fluent.services.datamodel_se import PyMenu as PyMenu_SE
+from ansys.fluent.services.datamodel_se import (
+    DatamodelService as DatamodelService_SE,
+)
+from ansys.fluent.services.datamodel_se import PyMenu as PyMenu_SE
 from ansys.fluent.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
@@ -15,6 +15,8 @@ from ansys.fluent.services.datamodel_tui import PyMenu as PyMenu_TUI
 from ansys.fluent.services.health_check import HealthCheckService
 from ansys.fluent.services.transcript import TranscriptService
 from ansys.fluent.services.field_data import FieldDataService, FieldData
+from ansys.fluent.services.settings import SettingsService
+from ansys.fluent.solver import flobject
 
 
 def parse_server_info_file(filename: str):
@@ -32,6 +34,15 @@ class Session:
     tui : Session.Tui
         Instance of Session.Tui on which Fluent's TUI methods can be
         executed.
+    setup: flobject.Group
+        Instance of flobject.Group object from which setup related
+        settings can be accessed or modified.
+    solution: flobject.Group
+        Instance of flobject.Group object from which solution related
+        settings can be accessed or modified.
+    results: flobject.Group
+        Instance of flobject.Group object from which results related
+        settings can be accessed or modified.
 
     Methods
     -------
@@ -73,17 +84,24 @@ class Session:
         self.field_data = FieldData(self.__field_data_service)
         self.tui = Session.Tui(self.__datamodel_service_tui)
 
-        # for testing
-        # self.__datamodel_service_se = DatamodelService_SE(
-        #     self.__channel, self.__metadata
-        #     )
-        # self.meshing = PyMenu_SE(self.__datamodel_service_se, "flserver")
+        self.__datamodel_service_se = DatamodelService_SE(
+            self.__channel, self.__metadata
+            )
+        self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
+        self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
 
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
         )
 
         Session.__all_sessions.append(self)
+
+    def setup_settings_objects(self):
+        proxy = SettingsService(self.__channel, self.__metadata)
+        r = flobject.get_root(flproxy=proxy)
+        for k in r.member_names:
+            setattr(self, k, getattr(r, k))
+        self.root = r
 
     def __log_transcript(self):
         responses = self.__transcript_service.begin_streaming()
@@ -129,10 +147,11 @@ class Session:
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
         if self.__channel:
-            self.tui.exit()
+            self.tui.solver.exit()
             self.stop_transcript()
             self.__channel.close()
             self.__channel = None
+            Session.__all_sessions.remove(self)
 
     def __enter__(self):
         return self
@@ -152,11 +171,14 @@ class Session:
             cb()
 
     class Tui:
-        __application_modules = []
+        def __init__(self, service):
+            self.meshing = Session.MeshingTui(service)
+            self.solver = Session.SolverTui(service)
 
+    class TuiMode:
         def __init__(self, service):
             self.service = service
-            for mod in self.__class__.__application_modules:
+            for mod in self.__class__.application_modules:
                 for name, cls in mod.__dict__.items():
                     if cls.__class__.__name__ == "PyMenuMeta":
                         setattr(self, name, cls([(name, None)], service))
@@ -165,13 +187,19 @@ class Session:
 
         @classmethod
         def register_module(cls, mod):
-            cls.__application_modules.append(mod)
+            cls.application_modules.append(mod)
             for name, obj in mod.__dict__.items():
                 if callable(obj):
                     setattr(cls, name, obj)
 
         def __dir__(self):
             return PyMenu_TUI(self.service).get_child_names("")
+
+    class MeshingTui(TuiMode):
+        application_modules = []
+
+    class SolverTui(TuiMode):
+        application_modules = []
 
 
 atexit.register(Session.exit_all)
