@@ -1,4 +1,5 @@
 import atexit
+import itertools
 from threading import Lock, Thread
 
 import grpc
@@ -14,6 +15,7 @@ from ansys.fluent.services.datamodel_tui import (
 from ansys.fluent.services.datamodel_tui import PyMenu as PyMenu_TUI
 from ansys.fluent.services.health_check import HealthCheckService
 from ansys.fluent.services.transcript import TranscriptService
+from ansys.fluent.services.field_data import FieldDataService, FieldData
 from ansys.fluent.services.settings import SettingsService
 from ansys.fluent.solver import flobject
 
@@ -60,12 +62,14 @@ class Session:
     """
 
     __all_sessions = []
+    __on_exit_cbs = []
+    __id_iter = itertools.count()
 
     def __init__(self, server_info_filepath):
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
         self.__metadata = [("password", password)]
-
+        self.__id = f"session-{next(Session.__id_iter)}"
         self.__transcript_service: TranscriptService = None
         self.__transcript_thread: Thread = None
         self.__lock = Lock()
@@ -75,6 +79,11 @@ class Session:
         self.__datamodel_service_tui = DatamodelService_TUI(
             self.__channel, self.__metadata
         )
+
+        self.__field_data_service = FieldDataService(
+            self.__channel, self.__metadata
+        )
+        self.field_data = FieldData(self.__field_data_service)
         self.tui = Session.Tui(self.__datamodel_service_tui)
 
         self.__datamodel_service_se = DatamodelService_SE(
@@ -88,6 +97,10 @@ class Session:
         )
 
         Session.__all_sessions.append(self)
+
+    @property
+    def id(self):
+        return self.__id
 
     def setup_settings_objects(self):
         proxy = SettingsService(self.__channel, self.__metadata)
@@ -152,10 +165,16 @@ class Session:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.exit()
 
+    @classmethod
+    def register_on_exit(cls, callback):
+        cls.__on_exit_cbs.append(callback)
+
     @staticmethod
     def exit_all():
         for session in Session.__all_sessions:
             session.exit()
+        for cb in Session.__on_exit_cbs:
+            cb()
 
     class Tui:
         def __init__(self, service):

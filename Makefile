@@ -11,6 +11,9 @@ install:
 test-import:
 	@python -c "import ansys.fluent.solver as pyfluent"
 
+test-post-import:
+	@python -c "import ansys.fluent.postprocessing.pyvista as pv"
+  
 unittest:
 	@echo "Running unittest"
 	@pip install -r requirements_test.txt
