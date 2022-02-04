@@ -35,9 +35,7 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
         """
         Display mesh graphics.
         """
-        plotter.set_graphics(
-            self, plotter_id if plotter_id else self.session.id
-        )
+        plotter.plot_graphics(self, plotter_id)
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """
@@ -67,9 +65,7 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
         """
         Display contour graphics.
         """
-        plotter.set_graphics(
-            self, plotter_id if plotter_id else self.session.id
-        )
+        plotter.plot_graphics(self, plotter_id)
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -168,9 +164,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
         """
         Display Contour graphics.
         """
-        plotter.set_graphics(
-            self, plotter_id if plotter_id else self.session.id
-        )
+        plotter.plot_graphics(self, plotter_id)
 
     class field(metaclass=PyLocalPropertyMeta):
         """

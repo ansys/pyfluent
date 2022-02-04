@@ -1,6 +1,7 @@
-import threading
 import sys
-import signal
+import threading
+#import signal
+from typing import Optional
 import numpy as np
 from pyvistaqt import BackgroundPlotter
 import pyvista as pv
@@ -28,8 +29,8 @@ class _Plotter(metaclass=Singleton):
 
     Methods
     -------
-    set_graphics(obj)
-        Set the graphics object to plot.
+    plot_graphics(obj, plotter_id: str)
+        Plot graphics.
     """
 
     __condition = threading.Condition()
@@ -41,10 +42,13 @@ class _Plotter(metaclass=Singleton):
         self.__plotter_thread = None
         self.__plotters = {}
 
-    def set_graphics(self, obj: object, plotter_id: str) -> None:
+    def plot_graphics(
+        self, obj: object, plotter_id: Optional[str] = None
+    ) -> None:
         if self.__exit:
             return
-
+        if not plotter_id:
+            plotter_id = obj.session.id
         with self.__condition:
             self.__graphics[plotter_id] = obj
             self.__active_plotter = self.__plotters.get(plotter_id)
@@ -257,9 +261,7 @@ class _Plotter(metaclass=Singleton):
             field, dummy_surface_name, (), (), iso_value, ()
         )
 
-        from ansys.fluent.postprocessing.pyvista.graphics import (
-            Graphics,
-        )
+        from ansys.fluent.postprocessing.pyvista.graphics import Graphics
 
         surfaces_list = list(obj.session.field_data.get_surfaces_info().keys())
         if not dummy_surface_name in surfaces_list:
@@ -344,4 +346,5 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 
-signal.signal(signal.SIGINT, signal_handler)
+# Need to associate ctrl+z signal
+# signal.signal(signal.SIGINT, signal_handler)
