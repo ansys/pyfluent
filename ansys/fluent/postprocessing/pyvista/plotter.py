@@ -226,9 +226,9 @@ class _Plotter(metaclass=Singleton):
         surfaces_list = list(obj.session.field_data.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
-            obj.session.tui.surface.delete_surface(dummy_surface_name)
+            obj.session.tui.solver.surface.delete_surface(dummy_surface_name)
 
-        obj.session.tui.surface.iso_surface(
+        obj.session.tui.solver.surface.iso_surface(
             field, dummy_surface_name, (), (), iso_value, ()
         )
 
@@ -254,7 +254,7 @@ class _Plotter(metaclass=Singleton):
             contour.range_option.auto_range_on.global_range = True
             self._display_contour(contour)
             del graphics_session.Contours[dummy_surface_name]
-        obj.session.tui.surface.delete_surface(dummy_surface_name)
+        obj.session.tui.solver.surface.delete_surface(dummy_surface_name)
 
     def _display_mesh(self, obj):
         if not obj.surfaces_list():

@@ -25,8 +25,7 @@ Usage
   session.check_health()
   session.tui.solver.file.read_case(case_file_name='elbow.cas.gz')
   session.tui.solver.define.models.unsteady_2nd_order("yes")
-  session.tui.solver.solve.initialize.initialize_flow()
-  session.tui.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
+  session.tui.solver.solve.initialize.initialize_flow()  
   session.tui.solver.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
 
 Settings objects
