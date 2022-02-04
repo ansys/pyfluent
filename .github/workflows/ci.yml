@@ -73,12 +73,12 @@ jobs:
         run: make test-import
         
   test-post-import:
-    name: Smoke Tests
+    name: Post Import
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
-        python-version: ['3.7', '3.8', '3.9'] 
+        os: [windows-latest]
+        python-version: ['3.7', '3.8', '3.9', '3.10'] 
 
     steps:
       - uses: actions/checkout@v2
