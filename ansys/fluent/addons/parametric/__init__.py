@@ -218,7 +218,7 @@ class FluentParameterAccessor:
 
     def __init__(self, fluent_session):
         self.__list_parameters = (
-            fluent_session.tui.define.parameters.list_parameters
+            fluent_session.tui.solver.define.parameters.list_parameters
         )
 
     @property
@@ -289,16 +289,18 @@ class ParametricSession:
         return self.__parameter_accessor.output_parameters
 
     def set_input_parameter(self, parameter_name: str, value):
-        self.__fluent_session.tui.define.parameters.input_parameters.edit(
+        self.__fluent_session.tui.solver.define.parameters.input_parameters.edit(  # noqa: E501
             parameter_name, parameter_name, value
         )
 
     def initialize_with_case(self, case_file_name: str):
-        self.__fluent_session.tui.file.read_case(case_file_name=case_file_name)
+        self.__fluent_session.tui.solver.file.read_case(
+            case_file_name=case_file_name
+        )
 
     def update(self):
-        self.__fluent_session.tui.solve.initialize.initialize_flow()
-        self.__fluent_session.tui.solve.iterate()
+        self.__fluent_session.tui.solver.solve.initialize.initialize_flow()
+        self.__fluent_session.tui.solver.solve.iterate()
 
     def __del__(self):
         self.__fluent_session.exit()
