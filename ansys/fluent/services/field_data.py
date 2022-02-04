@@ -41,12 +41,12 @@ class FieldData:
     get_surfaces_info(self) -> dict
         Get surfaces information i.e. surface name, id and type.
 
-    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> dict
+    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> List[Dict]
         Get surfaces data i.e. coordinates and connectivity.
 
     def get_scalar_field(
         surface_ids: List[int], scalar_field: str, node_value: bool,
-        boundary_value: bool) -> dict
+        boundary_value: bool) -> List[Dict]
         Get field data i.e. surface data and associated scalar field values.
 
     """

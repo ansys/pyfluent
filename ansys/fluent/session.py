@@ -1,4 +1,5 @@
 import atexit
+import itertools
 from threading import Lock, Thread
 
 import grpc
@@ -62,12 +63,13 @@ class Session:
 
     __all_sessions = []
     __on_exit_cbs = []
+    __id_iter = itertools.count()
 
     def __init__(self, server_info_filepath):
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
         self.__metadata = [("password", password)]
-
+        self.__id = f"session-{next(Session.__id_iter)}"
         self.__transcript_service: TranscriptService = None
         self.__transcript_thread: Thread = None
         self.__lock = Lock()
@@ -95,6 +97,10 @@ class Session:
         )
 
         Session.__all_sessions.append(self)
+
+    @property
+    def id(self):
+        return self.__id
 
     def setup_settings_objects(self):
         proxy = SettingsService(self.__channel, self.__metadata)
