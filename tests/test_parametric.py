@@ -2,7 +2,7 @@
 Unit tests for parameteric study code - no framework used for now
 """
 
-from ansys.fluent.addons.parametric import (
+from ansys.fluent.addons.parametric_old import (
     DesignPoint,
     DesignPointStatus,
     DesignPointTable,
