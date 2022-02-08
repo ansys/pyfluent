@@ -209,3 +209,17 @@ class SettingsService:
         response = self.__stub.ExecuteCommand(request,
                 metadata=self.__metadata)
         return self._get_state_from_value(response.reply)
+
+    @_trace
+    def get_attrs(self, path: str, attrs: List[str]) -> Any:
+        """
+        Return values of given attributes
+        """
+        request = _get_request_instance_for_path(
+                SettingsModule.GetAttrsRequest,
+                path)
+        request.attrs[:] = attrs
+
+        response = self.__stub.GetAttrs(request,
+                metadata=self.__metadata)
+        return self._get_state_from_value(response.values)

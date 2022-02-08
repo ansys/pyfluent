@@ -38,6 +38,9 @@ service Settings
 
   /* Execute a command */
   rpc ExecuteCommand (ExecuteCommandRequest) returns (ExecuteCommandResponse);
+
+  /* Attribute access */
+  rpc GetAttrs (GetAttrsRequest) returns (GetAttrsResponse);
 }
 
 /* Represents value of an object -- return value of GetVar */
@@ -152,4 +155,13 @@ message ExecuteCommandRequest {
 
 message ExecuteCommandResponse {
   Value reply = 1;
+}
+
+message GetAttrsRequest {
+  PathInfo path_info = 1;
+  repeated string attrs = 2;
+}
+
+message GetAttrsResponse {
+  Value values = 1;
 }

@@ -64,6 +64,11 @@ class SettingsStub(object):
                 request_serializer=settings__pb2.ExecuteCommandRequest.SerializeToString,
                 response_deserializer=settings__pb2.ExecuteCommandResponse.FromString,
                 )
+        self.GetAttrs = channel.unary_unary(
+                '/ansys.api.fluent.v0.settings.Settings/GetAttrs',
+                request_serializer=settings__pb2.GetAttrsRequest.SerializeToString,
+                response_deserializer=settings__pb2.GetAttrsResponse.FromString,
+                )
 
 
 class SettingsServicer(object):
@@ -140,6 +145,13 @@ class SettingsServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetAttrs(self, request, context):
+        """Attribute access 
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SettingsServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -192,6 +204,11 @@ def add_SettingsServicer_to_server(servicer, server):
                     servicer.ExecuteCommand,
                     request_deserializer=settings__pb2.ExecuteCommandRequest.FromString,
                     response_serializer=settings__pb2.ExecuteCommandResponse.SerializeToString,
+            ),
+            'GetAttrs': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAttrs,
+                    request_deserializer=settings__pb2.GetAttrsRequest.FromString,
+                    response_serializer=settings__pb2.GetAttrsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -370,5 +387,22 @@ class Settings(object):
         return grpc.experimental.unary_unary(request, target, '/ansys.api.fluent.v0.settings.Settings/ExecuteCommand',
             settings__pb2.ExecuteCommandRequest.SerializeToString,
             settings__pb2.ExecuteCommandResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetAttrs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ansys.api.fluent.v0.settings.Settings/GetAttrs',
+            settings__pb2.GetAttrsRequest.SerializeToString,
+            settings__pb2.GetAttrsResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

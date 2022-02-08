@@ -116,12 +116,24 @@ class Base:
             return self.obj_name
         return ppath + '/' + self.obj_name
 
+    def get_attrs(self, attrs):
+        return self.flproxy.get_attrs(self.path, attrs)
+
+    def get_attr(self, attr):
+        attrs = self.get_attrs([attr])
+        if attr != "active?" and attrs.get('active?', True) is False:
+            raise RuntimeError("Object is not active")
+        return attrs[attr]
+
+    def is_active(self):
+        return self.get_attr('active?')
+
 StateT = TypeVar('StateT')
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects"""
 
     @classmethod
-    def to_scheme_keys(cls, value):
+    def to_scheme_keys(cls, value: StateT) -> StateT:
         """
         Convert value to have keys with scheme names.
         This is overridden in Group, NamedObject and ListObject classes.
@@ -129,7 +141,7 @@ class SettingsBase(Base, Generic[StateT]):
         return value
 
     @classmethod
-    def to_python_keys(cls, value):
+    def to_python_keys(cls, value: StateT) -> StateT:
         """
         Convert value to have keys with python names.
         This is overridden in Group, NamedObject and ListObject classes.
@@ -261,6 +273,32 @@ class Group(SettingsBase[DictStateType]):
 
     member_names = []
     command_names = []
+
+    def get_active_member_names(self):
+        """
+        Names of members that are currently active
+        """
+        ret = []
+        for member in self.member_names:
+            if getattr(self, member).is_active():
+                ret.append(member)
+        return ret
+
+    def get_active_command_names(self):
+        """
+        Names of commands that are currently active
+        """
+        ret = []
+        for command in self.command_names:
+            if getattr(self, command).is_active():
+                ret.append(command)
+        return ret
+
+    def __getattribute__(self, name):
+        if name in super().__getattribute__('member_names'):
+            if not self.is_active():
+                raise RuntimeError(f"'{self.path}' is currently not active")
+        return super().__getattribute__(name)
 
     def __setattr__(self, name: str, value):
         if not self._initialized or name[0] == '_':
@@ -543,51 +581,56 @@ def get_cls(name, info, parent = None):
     """
     Create a class for the object identified by "path"
     """
-    if name == '':
-        pname = 'root'
-    else:
-        pname = to_python_name(name)
-    obj_type = info['type']
-    base = _baseTypes[obj_type]
-    dct = { 'scheme_name' : name }
-    helpinfo = info.get('help')
-    if helpinfo:
-        dct['__doc__'] = helpinfo
-    else:
-        if parent is None:
-            dct['__doc__'] = 'root object'
-        else:
-            dct['__doc__'] = f"'{pname}' member of '{parent.__name__}' object"
-    cls = type(pname, (base,), dct)
+    try:
+       if name == '':
+           pname = 'root'
+       else:
+           pname = to_python_name(name)
+       obj_type = info['type']
+       base = _baseTypes[obj_type]
+       dct = { 'scheme_name' : name }
+       helpinfo = info.get('help')
+       if helpinfo:
+           dct['__doc__'] = helpinfo
+       else:
+           if parent is None:
+               dct['__doc__'] = 'root object'
+           else:
+               dct['__doc__'] = f"'{pname}' member of '{parent.__name__}' object"
+       cls = type(pname, (base,), dct)
 
-    children = info.get('children')
-    if children:
-        cls.member_names = []
-        for cname, cinfo in children.items():
-            ccls = get_cls(cname, cinfo, cls)
-            #pylint: disable=no-member
-            cls.member_names.append(ccls.__name__)
-            setattr(cls, ccls.__name__, ccls)
-    commands = info.get('commands')
-    if commands:
-        cls.command_names = []
-        for cname, cinfo in commands.items():
-            ccls = get_cls(cname, cinfo, cls)
-            #pylint: disable=no-member
-            cls.command_names.append(ccls.__name__)
-            setattr(cls, ccls.__name__, ccls)
-    arguments = info.get('arguments')
-    if arguments:
-        cls.argument_names = []
-        for aname, ainfo in arguments.items():
-            ccls = get_cls(aname, ainfo, cls)
-            #pylint: disable=no-member
-            cls.argument_names.append(ccls.__name__)
-            setattr(cls, ccls.__name__, ccls)
-    object_type = info.get('object-type')
-    if object_type:
-        cls.child_object_type = \
-                get_cls(cls.__name__ + '-object-type', object_type, cls)
+       children = info.get('children')
+       if children:
+           cls.member_names = []
+           for cname, cinfo in children.items():
+               ccls = get_cls(cname, cinfo, cls)
+               #pylint: disable=no-member
+               cls.member_names.append(ccls.__name__)
+               setattr(cls, ccls.__name__, ccls)
+       commands = info.get('commands')
+       if commands:
+           cls.command_names = []
+           for cname, cinfo in commands.items():
+               ccls = get_cls(cname, cinfo, cls)
+               #pylint: disable=no-member
+               cls.command_names.append(ccls.__name__)
+               setattr(cls, ccls.__name__, ccls)
+       arguments = info.get('arguments')
+       if arguments:
+           cls.argument_names = []
+           for aname, ainfo in arguments.items():
+               ccls = get_cls(aname, ainfo, cls)
+               #pylint: disable=no-member
+               cls.argument_names.append(ccls.__name__)
+               setattr(cls, ccls.__name__, ccls)
+       object_type = info.get('object-type')
+       if object_type:
+           cls.child_object_type = \
+                   get_cls(cls.__name__ + '-object-type', object_type, cls)
+    except Exception:
+        print (f"Unable to construct class for '{name}' of "
+                 f"'{parent.scheme_name if parent else None}'")
+        raise
     return cls
 
 def get_root(flproxy):
