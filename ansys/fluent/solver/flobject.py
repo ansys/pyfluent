@@ -596,7 +596,8 @@ def get_cls(name, info, parent = None):
            if parent is None:
                dct['__doc__'] = 'root object'
            else:
-               dct['__doc__'] = f"'{pname}' member of '{parent.__name__}' object"
+               dct['__doc__'] = \
+                       f"'{pname}' member of '{parent.__name__}' object"
        cls = type(pname, (base,), dct)
 
        children = info.get('children')
