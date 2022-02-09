@@ -1,6 +1,7 @@
 """
 Unit tests for flobject module
 """
+import pytest
 import weakref
 from ansys.fluent.solver import flobject
 from collections.abc import MutableMapping
@@ -9,6 +10,29 @@ class Setting:
     """Base class for setting objects"""
     def __init__(self, parent):
         self.parent = None if parent is None else weakref.proxy(parent)
+
+    def get_attr(self, attr):
+        attrs = self.get_attrs([attr])
+        if attrs.get('active?'):
+            return attrs[attr]
+        else:
+            raise RuntimeError("Object is not active")
+
+    def get_attrs(self, attrs):
+        active = self.attrs.get('active?', lambda self: True)(self)
+        if active:
+            return {
+                    attr : self.attrs[attr](self)
+                    for attr in attrs
+                    }
+        else:
+            return {
+                    'active?' : False
+                    }
+
+    attrs = {
+            'active?' : lambda self: True,
+            }
 
 class PrimitiveSetting(Setting):
     """Primitive setting objects"""
@@ -65,7 +89,9 @@ class Group(Setting):
     def get_state(self):
         ret = {}
         for c in self.members:
-            ret[c] = self.objs[c].get_state()
+            cobj = self.objs[c]
+            if cobj.get_attr('active?'):
+                ret[c] = cobj.get_state()
         return ret
 
     def set_state(self, value):
@@ -254,11 +280,17 @@ class Command(Setting):
 class Root(Group):
     """Root class"""
     class G1(Group):
+        class S1(String):
+            attrs = {
+                    'active?' :
+                       lambda self: not self.parent.objs['b-3'].get_state(),
+                    'allowed-values' : lambda self: ["foo", "bar"],
+                    }
         members = {
                 'r-1' : Real,
                 'i-2' : Int,
                 'b-3' : Bool,
-                's-4' : String,
+                's-4' : S1,
                 }
 
     class N1(NamedObject):
@@ -350,6 +382,9 @@ class Proxy:
     def execute_cmd(self, path, command, **kwds):
         return self.get_obj(path).get_command(command)(**kwds)
 
+    def get_attrs(self, path, attrs):
+        return self.get_obj(path).get_attrs(attrs)
+
     @classmethod
     def get_obj_static_info(cls):
         return cls.root.get_static_info()
@@ -426,3 +461,13 @@ def test_command():
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2
     r.c_1(a_1 = 4.5, a_2 = False)
     assert r.g_1.r_1() == 2.4 + 2.3 - 2.3 + 3.2 - 4.5
+
+def test_attrs():
+    r = flobject.get_root(Proxy())
+    assert r.g_1.s_4.get_attr('active?')
+    assert r.g_1.s_4.get_attr('allowed-values') == ['foo', 'bar']
+    r.g_1.b_3 = True
+    assert not r.g_1.s_4.get_attr('active?')
+    with pytest.raises(RuntimeError) as einfo:
+        r.g_1.s_4.get_attr('allowed-values') == ['foo', 'bar']
+    assert einfo.value.args == ("Object is not active",)
