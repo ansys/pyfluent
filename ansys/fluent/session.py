@@ -16,6 +16,7 @@ from ansys.fluent.services.datamodel_tui import PyMenu as PyMenu_TUI
 from ansys.fluent.services.health_check import HealthCheckService
 from ansys.fluent.services.transcript import TranscriptService
 from ansys.fluent.services.field_data import FieldDataService, FieldData
+from ansys.fluent.services.scheme_eval import SchemeEvalService, SchemeEval
 from ansys.fluent.services.settings import SettingsService
 from ansys.fluent.solver import flobject
 
@@ -95,6 +96,11 @@ class Session:
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
         )
+
+        self.__scheme_eval_service = SchemeEvalService(
+            self.__channel, self.__metadata
+        )
+        self.__scheme_eval = SchemeEval(self.__scheme_eval_service)
 
         Session.__all_sessions.append(self)
 
