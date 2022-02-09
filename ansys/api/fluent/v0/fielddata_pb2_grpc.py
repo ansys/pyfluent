@@ -24,6 +24,11 @@ class FieldDataStub(object):
                 request_serializer=fielddata__pb2.GetSurfacesInfoRequest.SerializeToString,
                 response_deserializer=fielddata__pb2.GetSurfacesInfoResponse.FromString,
                 )
+        self.GetVectorFieldsInfo = channel.unary_unary(
+                '/grpcRemoting.FieldData/GetVectorFieldsInfo',
+                request_serializer=fielddata__pb2.GetVectorFieldsInfoRequest.SerializeToString,
+                response_deserializer=fielddata__pb2.GetVectorFieldsInfoResponse.FromString,
+                )
         self.GetFieldsInfo = channel.unary_unary(
                 '/grpcRemoting.FieldData/GetFieldsInfo',
                 request_serializer=fielddata__pb2.GetFieldsInfoRequest.SerializeToString,
@@ -71,6 +76,12 @@ class FieldDataServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetSurfacesInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetVectorFieldsInfo(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -130,6 +141,11 @@ def add_FieldDataServicer_to_server(servicer, server):
                     servicer.GetSurfacesInfo,
                     request_deserializer=fielddata__pb2.GetSurfacesInfoRequest.FromString,
                     response_serializer=fielddata__pb2.GetSurfacesInfoResponse.SerializeToString,
+            ),
+            'GetVectorFieldsInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetVectorFieldsInfo,
+                    request_deserializer=fielddata__pb2.GetVectorFieldsInfoRequest.FromString,
+                    response_serializer=fielddata__pb2.GetVectorFieldsInfoResponse.SerializeToString,
             ),
             'GetFieldsInfo': grpc.unary_unary_rpc_method_handler(
                     servicer.GetFieldsInfo,
@@ -207,6 +223,23 @@ class FieldData(object):
         return grpc.experimental.unary_unary(request, target, '/grpcRemoting.FieldData/GetSurfacesInfo',
             fielddata__pb2.GetSurfacesInfoRequest.SerializeToString,
             fielddata__pb2.GetSurfacesInfoResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetVectorFieldsInfo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpcRemoting.FieldData/GetVectorFieldsInfo',
+            fielddata__pb2.GetVectorFieldsInfoRequest.SerializeToString,
+            fielddata__pb2.GetVectorFieldsInfoResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

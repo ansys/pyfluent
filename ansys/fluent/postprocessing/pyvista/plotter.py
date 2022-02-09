@@ -1,6 +1,7 @@
 import sys
 import threading
-#import signal
+
+# import signal
 from typing import Optional
 import numpy as np
 from pyvistaqt import BackgroundPlotter
@@ -78,6 +79,18 @@ class _Plotter(metaclass=Singleton):
         self.__active_plotter.background_color = "white"
         self.__active_plotter.theme.font.color = "black"
 
+    def _scalar_bar_default_properties(self):
+        return dict(
+            title_font_size=20,
+            label_font_size=16,
+            shadow=True,
+            fmt="%.6e",
+            font_family="arial",
+            vertical=True,
+            position_x=0.06,
+            position_y=0.3,
+        )
+
     def _display(self):
         while True:
             with self.__condition:
@@ -104,6 +117,88 @@ class _Plotter(metaclass=Singleton):
             self.__plotters.clear()
             self.__condition.notify()
 
+    def _display_vector(self, obj):
+
+        if not obj.surfaces_list():
+            raise RuntimeError("Vector definition is incomplete.")
+
+        field_data = obj.session.field_data
+
+        # surface ids
+        surfaces_info = field_data.get_surfaces_info()
+        surface_ids = [
+            id
+            for surf in obj.surfaces_list()
+            for id in surfaces_info[surf]["surface_id"]
+        ]
+
+        # field
+        field = "velocity-magnitude"
+
+        # scalar bar properties
+        scalar_bar_args = self._scalar_bar_default_properties()
+
+        # get vector field data
+        vector_field_data = obj.session.field_data.get_vector_field(
+            surface_ids, obj.vectors_of()
+        )
+        plotter = self.__active_plotter
+        for mesh_data in vector_field_data:
+
+            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
+            if topology == "line":
+                mesh = pv.PolyData(
+                    np.array(mesh_data["vertices"]),
+                    lines=np.hstack(mesh_data["faces"]),
+                )
+            else:
+                mesh = pv.PolyData(
+                    np.array(mesh_data["vertices"]),
+                    faces=np.hstack(mesh_data["faces"]),
+                )
+            mesh.cell_data["vectors"] = np.array(mesh_data["vector"])
+            velocity_magnitude = [
+                np.linalg.norm(v) for v in mesh_data["vector"]
+            ]
+
+            if obj.range_option.range_option() == "auto-range-off":
+                auto_range_off = obj.range_option.auto_range_off
+                range = [auto_range_off.minimum(), auto_range_off.maximum()]
+                if auto_range_off.clip_to_range():
+                    velocity_magnitude = [
+                        0
+                        if vmag > auto_range_off.maximum()
+                        or vmag < auto_range_off.minimum()
+                        else vmag
+                        for vmag in velocity_magnitude
+                    ]
+            else:
+                auto_range_on = obj.range_option.auto_range_on
+                if auto_range_on.global_range():
+                    range = obj.session.field_data.get_range(field, False)
+                else:
+                    range = obj.session.field_data.get_range(
+                        field, False, surface_ids
+                    )
+
+            if obj.skip():
+                vmag = np.zeros(len(velocity_magnitude))
+                vmag[:: obj.skip() + 1] = velocity_magnitude[:: obj.skip() + 1]
+                velocity_magnitude = vmag
+            mesh.cell_data["Velocity Magnitude"] = velocity_magnitude
+            glyphs = mesh.glyph(
+                orient="vectors",
+                scale="Velocity Magnitude",
+                factor=obj.scale(),
+                geom=pv.Arrow(),
+            )
+            plotter.add_mesh(
+                glyphs,
+                scalar_bar_args=scalar_bar_args,
+                clim=range,
+                show_edges=obj.show_edges(),
+            )
+
     def _display_contour(self, obj):
         if not obj.surfaces_list() or not obj.field():
             raise RuntimeError("Contour definition is incomplete.")
@@ -117,16 +212,7 @@ class _Plotter(metaclass=Singleton):
         boundary_values = obj.boundary_values()
 
         # scalar bar properties
-        scalar_bar_args = dict(
-            title_font_size=20,
-            label_font_size=16,
-            shadow=True,
-            fmt="%.6e",
-            font_family="arial",
-            vertical=True,
-            position_x=0.06,
-            position_y=0.3,
-        )
+        scalar_bar_args = self._scalar_bar_default_properties()
 
         field_data = obj.session.field_data
         surfaces_info = field_data.get_surfaces_info()
@@ -331,6 +417,8 @@ class _Plotter(metaclass=Singleton):
                         self._display_iso_surface(obj)
                 elif obj.__class__.__name__ == "Contour":
                     self._display_contour(obj)
+                elif obj.__class__.__name__ == "Vector":
+                    self._display_vector(obj)
 
                 plotter.camera = camera.copy()
                 self.__condition.notify()

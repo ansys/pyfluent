@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 import grpc
 from ansys.api.fluent.v0 import fielddata_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
@@ -18,8 +18,16 @@ class FieldDataService:
     def get_scalar_field(self, request):
         return self.__stub.GetScalarField(request, metadata=self.__metadata)
 
+    def get_vector_field(self, request):
+        return self.__stub.GetVectorField(request, metadata=self.__metadata)
+
     def get_fields_info(self, request):
         return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
+
+    def get_vector_fields_info(self, request):
+        return self.__stub.GetVectorFieldsInfo(
+            request, metadata=self.__metadata
+        )
 
     def get_surfaces_info(self, request):
         return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
@@ -38,6 +46,9 @@ class FieldData:
     get_fields_info(self) -> dict
         Get fields information i.e. field name, domain and  section.
 
+    get_vector_fields_info(self) -> dict
+        Get vector fields information i.e. vector of and components.
+
     get_surfaces_info(self) -> dict
         Get surfaces information i.e. surface name, id and type.
 
@@ -48,6 +59,13 @@ class FieldData:
         surface_ids: List[int], scalar_field: str, node_value: bool,
         boundary_value: bool) -> List[Dict]
         Get field data i.e. surface data and associated scalar field values.
+
+    def get_vector_field(
+        surface_ids: List[int], scalar_field: str, node_value: bool,
+        vector_field: str) -> List[Dict]
+        Get vector field data i.e. surface data and associated
+        vector field values.
+
 
     """
 
@@ -76,6 +94,19 @@ class FieldData:
                 "domain": field_info.domain,
             }
             for field_info in response.fieldInfo
+        }
+
+    def get_vector_fields_info(self) -> dict:
+        request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
+        response = self.__service.get_vector_fields_info(request)
+        return {
+            vector_field_info.displayName: {
+                "x-component": vector_field_info.xComponent,
+                "y-component": vector_field_info.yComponent,
+                "z-component": vector_field_info.zComponent,
+                "is-custom-vector": vector_field_info.isCustomVector,
+            }
+            for vector_field_info in response.vectorFieldInfo
         }
 
     def get_surfaces_info(self) -> dict:
@@ -152,3 +183,58 @@ class FieldData:
         request.boundaryvalues = boundary_value
         response_iterator = self.__service.get_scalar_field(request)
         return self._extract_scalar_field_data(response_iterator)
+
+    def _extract_vector_field_data(self, response_iterator):
+        return [
+            {
+                "vertices": [
+                    [point.x, point.y, point.z]
+                    for point in response.vectorfielddata.surfacedata.point
+                ],
+                "faces": [
+                    [len(facet.node)] + [node for node in facet.node]
+                    for facet in response.vectorfielddata.surfacedata.facet
+                ],
+                "scalar_field": [
+                    data for data in response.vectorfielddata.scalarfield.data
+                ],
+                "active_field": [
+                    data
+                    for data in response.vectorfielddata.activefield.active
+                ],
+                "base": [
+                    [components.x, components.y, components.z]
+                    for components in response.vectorfielddata.base
+                    .vectorComponents
+                ],
+                "vector": [
+                    [components.x, components.y, components.z]
+                    for components in response.vectorfielddata.vector
+                    .vectorComponents
+                ],
+                "normal": [
+                    [components.x, components.y, components.z]
+                    for components in response.vectorfielddata.normal
+                    .vectorComponents
+                ],
+                "meta_data": response.vectorfielddata.vectorfieldmetadata,
+            }
+            for response in response_iterator
+        ]
+
+    def get_vector_field(
+        self,
+        surface_ids: List[int],
+        vector_field: Optional[str] = "velocity",
+        scalar_field: Optional[str] = "",
+        node_value: Optional[bool] = True,
+    ) -> List[Dict]:
+        request = FieldDataProtoModule.GetVectorFieldRequest()
+        request.surfaceid.extend(
+            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+        )
+        request.scalarfield = scalar_field
+        request.nodevalue = node_value
+        request.vectorfield = vector_field
+        response_iterator = self.__service.get_vector_field(request)
+        return self._extract_vector_field_data(response_iterator)
