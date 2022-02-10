@@ -157,13 +157,19 @@ class _Plotter(metaclass=Singleton):
                     faces=np.hstack(mesh_data["faces"]),
                 )
             mesh.cell_data["vectors"] = np.array(mesh_data["vector"])
-            velocity_magnitude = np.linalg.norm(mesh.cell_data["vectors"], axis=1)           
+            velocity_magnitude = np.linalg.norm(
+                mesh.cell_data["vectors"], axis=1
+            )
             if obj.range_option.range_option() == "auto-range-off":
                 auto_range_off = obj.range_option.auto_range_off
                 range = [auto_range_off.minimum(), auto_range_off.maximum()]
-                if auto_range_off.clip_to_range():                  
-                    velocity_magnitude_mask = np.ma.masked_outside(velocity_magnitude, auto_range_off.minimum(), auto_range_off.maximum())
-                    velocity_magnitude_mask.fill_value  = 0
+                if auto_range_off.clip_to_range():
+                    velocity_magnitude_mask = np.ma.masked_outside(
+                        velocity_magnitude,
+                        auto_range_off.minimum(),
+                        auto_range_off.maximum(),
+                    )
+                    velocity_magnitude_mask.fill_value = 0
                     velocity_magnitude = velocity_magnitude_mask.filled()
             else:
                 auto_range_on = obj.range_option.auto_range_on
@@ -182,7 +188,7 @@ class _Plotter(metaclass=Singleton):
             glyphs = mesh.glyph(
                 orient="vectors",
                 scale="Velocity Magnitude",
-                factor=vector_scale*obj.scale(),
+                factor=vector_scale * obj.scale(),
                 geom=pv.Arrow(),
             )
             plotter.add_mesh(
