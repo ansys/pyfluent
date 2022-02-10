@@ -196,8 +196,9 @@ class _Plotter(metaclass=Singleton):
                 glyphs,
                 scalar_bar_args=scalar_bar_args,
                 clim=range,
-                show_edges=obj.show_edges(),
             )
+            if obj.show_edges():
+                plotter.add_mesh(mesh, show_edges=True, color="white")
 
     def _display_contour(self, obj):
         if not obj.surfaces_list() or not obj.field():
