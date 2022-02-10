@@ -144,7 +144,7 @@ class _Plotter(metaclass=Singleton):
         )
         plotter = self.__active_plotter
         for mesh_data in vector_field_data:
-
+            vector_scale = mesh_data["vector_scale"]
             topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
@@ -189,7 +189,7 @@ class _Plotter(metaclass=Singleton):
             glyphs = mesh.glyph(
                 orient="vectors",
                 scale="Velocity Magnitude",
-                factor=obj.scale(),
+                factor=vector_scale*obj.scale(),
                 geom=pv.Arrow(),
             )
             plotter.add_mesh(

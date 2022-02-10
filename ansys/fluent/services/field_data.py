@@ -218,6 +218,7 @@ class FieldData:
                     .vectorComponents
                 ],
                 "meta_data": response.vectorfielddata.vectorfieldmetadata,
+                "vector_scale": response.vectorfielddata.vectorscale.data
             }
             for response in response_iterator
         ]
