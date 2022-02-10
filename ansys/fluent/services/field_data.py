@@ -198,23 +198,9 @@ class FieldData:
                 "scalar_field": [
                     data for data in response.vectorfielddata.scalarfield.data
                 ],
-                "active_field": [
-                    data
-                    for data in response.vectorfielddata.activefield.active
-                ],
-                "base": [
-                    [components.x, components.y, components.z]
-                    for components in response.vectorfielddata.base
-                    .vectorComponents
-                ],
                 "vector": [
                     [components.x, components.y, components.z]
                     for components in response.vectorfielddata.vector
-                    .vectorComponents
-                ],
-                "normal": [
-                    [components.x, components.y, components.z]
-                    for components in response.vectorfielddata.normal
                     .vectorComponents
                 ],
                 "meta_data": response.vectorfielddata.vectorfieldmetadata,

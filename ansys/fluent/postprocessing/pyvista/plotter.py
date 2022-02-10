@@ -157,21 +157,14 @@ class _Plotter(metaclass=Singleton):
                     faces=np.hstack(mesh_data["faces"]),
                 )
             mesh.cell_data["vectors"] = np.array(mesh_data["vector"])
-            velocity_magnitude = [
-                np.linalg.norm(v) for v in mesh_data["vector"]
-            ]
-
+            velocity_magnitude = np.linalg.norm(mesh.cell_data["vectors"], axis=1)           
             if obj.range_option.range_option() == "auto-range-off":
                 auto_range_off = obj.range_option.auto_range_off
                 range = [auto_range_off.minimum(), auto_range_off.maximum()]
-                if auto_range_off.clip_to_range():
-                    velocity_magnitude = [
-                        0
-                        if vmag > auto_range_off.maximum()
-                        or vmag < auto_range_off.minimum()
-                        else vmag
-                        for vmag in velocity_magnitude
-                    ]
+                if auto_range_off.clip_to_range():                  
+                    velocity_magnitude_mask = np.ma.masked_outside(velocity_magnitude, auto_range_off.minimum(), auto_range_off.maximum())
+                    velocity_magnitude_mask.fill_value  = 0
+                    velocity_magnitude = velocity_magnitude_mask.filled()
             else:
                 auto_range_on = obj.range_option.auto_range_on
                 if auto_range_on.global_range():
@@ -182,7 +175,7 @@ class _Plotter(metaclass=Singleton):
                     )
 
             if obj.skip():
-                vmag = np.zeros(len(velocity_magnitude))
+                vmag = np.zeros_like(velocity_magnitude)
                 vmag[:: obj.skip() + 1] = velocity_magnitude[:: obj.skip() + 1]
                 velocity_magnitude = vmag
             mesh.cell_data["Velocity Magnitude"] = velocity_magnitude
