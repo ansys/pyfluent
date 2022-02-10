@@ -64,7 +64,7 @@ class TUIGenerator:
     ):
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
-            Path(self._tui_File).unlink()
+            Path(self._tui_file).unlink()
         self._session = launch_fluent(meshing_mode=meshing)
         self._service = self._session._Session__datamodel_service_tui
         self._main_menu = TUIMenu([])
@@ -85,8 +85,7 @@ class TUIGenerator:
             menu.is_command = True
 
     def _write_code_to_tui_file(self, code, indent=0):
-        with open(self._tui_file, "a", encoding="utf8") as f:
-            f.write(" " * _INDENT_STEP * indent + code)
+        self.__writer.write(" " * _INDENT_STEP * indent + code)
 
     def _write_menu_to_tui_file(self, menu: TUIMenu, indent=0):
         if menu.name:
@@ -131,18 +130,18 @@ class TUIGenerator:
                 self._write_menu_to_tui_file(v, indent)
 
     def generate(self):
-        self._populate_menu(self._main_menu)
-        self._write_code_to_tui_file(
-            '"""\n'
-            "This is an auto-generated file.  DO NOT EDIT!\n"
-            '"""\n'
-            "# pylint: disable=line-too-long\n\n"
-            "from ansys.fluent.solver.meta "
-            "import PyMenuMeta, PyNamedObjectMeta\n"
-            "from ansys.fluent.services.datamodel_tui import PyMenu\n\n\n"
-        )
-        self.__write_menu_to_tui_file(self.main_menu)
-
+        with open(self._tui_file, "a", encoding="utf8") as self.__writer:
+            self._populate_menu(self._main_menu)
+            self._write_code_to_tui_file(
+                '"""\n'
+                "This is an auto-generated file.  DO NOT EDIT!\n"
+                '"""\n'
+                "# pylint: disable=line-too-long\n\n"
+                "from ansys.fluent.solver.meta "
+                "import PyMenuMeta, PyNamedObjectMeta\n"
+                "from ansys.fluent.services.datamodel_tui import PyMenu\n\n\n"
+            )
+            self._write_menu_to_tui_file(self._main_menu)
 
 if __name__ == "__main__":
     TUIGenerator(meshing=True).generate()
