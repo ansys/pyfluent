@@ -88,26 +88,34 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer):
             _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
             _convert_py_value_to_scheme_pointer(val[1:], p.pair.cdr)
     elif isinstance(val, dict):
-        p.pair.car.sym = "__map__"
         as_list = list(val.items())
         if as_list:
-            _convert_pair_to_scheme_pointer(as_list[0], p.pair.cdr.pair.car)
-            _convert_list_of_pairs_to_scheme_pointer(
-                as_list[1:], p.pair.cdr.pair.cdr
-            )
+            _convert_pair_to_scheme_pointer(as_list[0], p.pair.car)
+            _convert_list_of_pairs_to_scheme_pointer(as_list[1:], p.pair.cdr)
 
 
-def _convert_scheme_pointer_to_pair(p: SchemePointer):
-    k = _convert_scheme_pointer_to_py_value(p.pair.car)
-    v = _convert_scheme_pointer_to_py_value(p.pair.cdr)
-    return k, v
-
-
-def _convert_scheme_pointer_to_list_of_pairs(p: SchemePointer):
+def _convert_scheme_pointer_to_py_list(p: SchemePointer):
     val = []
-    if p.HasField("pair"):
-        val.append(_convert_scheme_pointer_to_pair(p.pair.car))
-        val.extend(_convert_scheme_pointer_to_list_of_pairs(p.pair.cdr))
+    val.append(_convert_scheme_pointer_to_py_value(p.pair.car))
+    if p.pair.cdr.HasField("pair"):
+        tail = _convert_scheme_pointer_to_py_list(p.pair.cdr)
+        val.extend([tail] if isinstance(tail, dict) else tail)
+    if all(
+        isinstance(x, dict)
+        or (
+            (isinstance(x, tuple) or isinstance(x, list))
+            and x
+            and isinstance(x[0], str)
+        )
+        for x in val
+    ):
+        d = {}
+        for x in val:
+            if isinstance(x, dict):
+                d.update(x)
+            else:
+                d[x[0]] = x[1:] if len(x) > 2 else x[1]
+        return d
     return val
 
 
@@ -126,17 +134,7 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer):
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        if p.pair.car.HasField("sym") and p.pair.car.sym == "__map__":
-            d = {}
-            if p.pair.cdr.HasField("pair"):
-                k, v = _convert_scheme_pointer_to_pair(p.pair.cdr.pair.car)
-                d[k] = v
-                for kv in _convert_scheme_pointer_to_list_of_pairs(
-                    p.pair.cdr.pair.cdr
-                ):
-                    d[kv[0]] = kv[1]
-            return d
-        elif any(
+        if any(
             p.pair.cdr.HasField(x)
             for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
         ):
@@ -145,10 +143,7 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer):
                 _convert_scheme_pointer_to_py_value(p.pair.cdr),
             )
         else:
-            val = []
-            val.append(_convert_scheme_pointer_to_py_value(p.pair.car))
-            if p.pair.cdr.HasField("pair"):
-                val.extend(_convert_scheme_pointer_to_py_value(p.pair.cdr))
+            val = _convert_scheme_pointer_to_py_list(p)
             return val
     return None
 
@@ -187,9 +182,10 @@ class SchemeEval:
         commands : List[str]
             List of scheme commands in string format
         wait : bool, optional
-            Whether to wait till execution completes, by default True
+            Specifies whether to wait until execution completes, by
+            default True
         silent : bool, optional
-            Whether to execute silently, by default True
+            Specifies whether to execute silently, by default True
 
         Returns
         -------

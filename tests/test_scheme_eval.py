@@ -59,18 +59,30 @@ from ansys.fluent.services.scheme_eval import (
                 }
             },
         ),
-        ({}, {"pair": {"car": {"sym": "__map__"}}}),
+        ({}, {}),
         (
-            {"abc": 5.0},
+            {"a": 5.0},
             {
                 "pair": {
-                    "car": {"sym": "__map__"},
+                    "car": {
+                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
+                    },
+                }
+            },
+        ),
+        (
+            {"a": 5.0, "b": 10.0},
+            {
+                "pair": {
+                    "car": {
+                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
+                    },
                     "cdr": {
                         "pair": {
                             "car": {
                                 "pair": {
-                                    "car": {"str": "abc"},
-                                    "cdr": {"flonum": 5.0},
+                                    "car": {"str": "b"},
+                                    "cdr": {"flonum": 10.0},
                                 }
                             }
                         }
@@ -124,18 +136,110 @@ def test_convert_py_value_to_scheme_pointer(py_value, json_dict):
                 }
             },
         ),
-        ({}, {"pair": {"car": {"sym": "__map__"}}}),
+        (None, {}),
         (
-            {"abc": 5.0},
+            {"a": 5.0, "b": 10.0},
             {
                 "pair": {
-                    "car": {"sym": "__map__"},
+                    "car": {
+                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
+                    },
                     "cdr": {
                         "pair": {
                             "car": {
                                 "pair": {
-                                    "car": {"str": "abc"},
-                                    "cdr": {"flonum": 5.0},
+                                    "car": {"str": "b"},
+                                    "cdr": {"flonum": 10.0},
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+        ),
+        (
+            [("a", 5.0), (5, 10.0)],
+            {
+                "pair": {
+                    "car": {
+                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
+                    },
+                    "cdr": {
+                        "pair": {
+                            "car": {
+                                "pair": {
+                                    "car": {"fixednum": "5"},
+                                    "cdr": {"flonum": 10.0},
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+        ),
+        (
+            {"a": [5.0, False], "b": [10.0, True]},
+            {
+                "pair": {
+                    "car": {
+                        "pair": {
+                            "car": {"str": "a"},
+                            "cdr": {
+                                "pair": {
+                                    "car": {"flonum": 5.0},
+                                    "cdr": {"pair": {"car": {"b": False}}},
+                                }
+                            },
+                        }
+                    },
+                    "cdr": {
+                        "pair": {
+                            "car": {
+                                "pair": {
+                                    "car": {"str": "b"},
+                                    "cdr": {
+                                        "pair": {
+                                            "car": {"flonum": 10.0},
+                                            "cdr": {
+                                                "pair": {"car": {"b": True}}
+                                            },
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+        ),
+        (
+            [["a", 5.0, False], [5, 10.0, True]],
+            {
+                "pair": {
+                    "car": {
+                        "pair": {
+                            "car": {"str": "a"},
+                            "cdr": {
+                                "pair": {
+                                    "car": {"flonum": 5.0},
+                                    "cdr": {"pair": {"car": {"b": False}}},
+                                }
+                            },
+                        }
+                    },
+                    "cdr": {
+                        "pair": {
+                            "car": {
+                                "pair": {
+                                    "car": {"fixednum": "5"},
+                                    "cdr": {
+                                        "pair": {
+                                            "car": {"flonum": 10.0},
+                                            "cdr": {
+                                                "pair": {"car": {"b": True}}
+                                            },
+                                        }
+                                    },
                                 }
                             }
                         }
@@ -204,10 +308,11 @@ def test_convert_scheme_pointer_having_pair_to_py_value():
         "abc",
         ["abc"],
         [False, 5.0, "abc"],
-        {},
         {"abc": 5.0},
         {"abc": 5.0, "def": [2.0, False]},
+        {"a": {"b": 3.0}},
         {"a": {"b": {"c": 3.0}}},
+        {"a": {"b": {"c": 3.0}, "d": 4.0}},
     ],
 )
 def test_two_way_conversion(py_value):
