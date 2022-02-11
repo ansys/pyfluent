@@ -42,6 +42,7 @@ class _Plotter(metaclass=Singleton):
         self.__graphics = {}
         self.__plotter_thread = None
         self.__plotters = {}
+        self.__monitor_thread = None
 
     def plot_graphics(
         self, obj: object, plotter_id: Optional[str] = None
@@ -54,9 +55,15 @@ class _Plotter(metaclass=Singleton):
             self.__graphics[plotter_id] = obj
             self.__active_plotter = self.__plotters.get(plotter_id)
 
+        if not self.__monitor_thread:
+            self.__monitor_thread = threading.Thread(
+                target=self._start_monitor_thread, args=(), daemon=True
+            )
+            self.__monitor_thread.start()
+
         if not self.__plotter_thread:
             self.__plotter_thread = threading.Thread(
-                target=self._display, args=(), daemon=True
+                target=self._display, args=()
             )
             self.__plotter_thread.start()
 
@@ -91,7 +98,13 @@ class _Plotter(metaclass=Singleton):
             position_y=0.3,
         )
 
+    def _start_monitor_thread(self):
+        main_thread = threading.main_thread()
+        main_thread.join()
+        self._exit()
+
     def _display(self):
+
         while True:
             with self.__condition:
                 if self.__exit:
@@ -112,7 +125,8 @@ class _Plotter(metaclass=Singleton):
         with self.__condition:
             for plotter in self.__plotters.values():
                 plotter.close()
-            self.__active_plotter.app.quit()
+                plotter.app.quit()
+
             self.__active_plotter = None
             self.__plotters.clear()
             self.__condition.notify()
