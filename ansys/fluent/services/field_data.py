@@ -62,10 +62,13 @@ class FieldData:
         Get field data i.e. surface data and associated scalar field values.
 
     def get_vector_field(
-        surface_ids: List[int], scalar_field: str, node_value: bool,
-        vector_field: str) -> List[Dict]
+        surface_ids: List[int],
+        vector_field: Optional[str] = "velocity",
+        scalar_field: Optional[str] = "",
+        node_value: Optional[bool] = True,
+    ) -> List[Dict]:
         Get vector field data i.e. surface data and associated
-        vector field values.
+        scalar and vector field values.
 
 
     """
