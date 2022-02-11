@@ -1,11 +1,10 @@
 import sys
 import threading
-
 # import signal
 from typing import Optional
+import numpy as np
 from pyvistaqt import BackgroundPlotter
 import pyvista as pv
-import numpy as np
 
 
 class Singleton(type):
