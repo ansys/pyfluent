@@ -3,9 +3,9 @@ import threading
 
 # import signal
 from typing import Optional
-import numpy as np
 from pyvistaqt import BackgroundPlotter
 import pyvista as pv
+import numpy as np
 
 
 class Singleton(type):
@@ -145,32 +145,28 @@ class _Plotter(metaclass=Singleton):
         plotter = self.__active_plotter
         for mesh_data in vector_field_data:
             vector_scale = mesh_data["vector_scale"]
-            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
+            topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    lines=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    lines=mesh_data["faces"],
                 )
             else:
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    faces=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    faces=mesh_data["faces"],
                 )
-            mesh.cell_data["vectors"] = np.array(mesh_data["vector"])
-            velocity_magnitude = np.linalg.norm(
-                mesh.cell_data["vectors"], axis=1
-            )
+            mesh.cell_data["vectors"] = mesh_data["vector"]
+            velocity_magnitude = np.linalg.norm(mesh_data["vector"], axis=1)
             if obj.range_option.range_option() == "auto-range-off":
                 auto_range_off = obj.range_option.auto_range_off
                 range = [auto_range_off.minimum(), auto_range_off.maximum()]
                 if auto_range_off.clip_to_range():
-                    velocity_magnitude_mask = np.ma.masked_outside(
+                    velocity_magnitude = np.ma.masked_outside(
                         velocity_magnitude,
                         auto_range_off.minimum(),
                         auto_range_off.maximum(),
-                    )
-                    velocity_magnitude_mask.fill_value = 0
-                    velocity_magnitude = velocity_magnitude_mask.filled()
+                    ).filled(fill_value=0)
             else:
                 auto_range_on = obj.range_option.auto_range_on
                 if auto_range_on.global_range():
@@ -181,7 +177,7 @@ class _Plotter(metaclass=Singleton):
                     )
 
             if obj.skip():
-                vmag = np.zeros_like(velocity_magnitude)
+                vmag = np.zeros(velocity_magnitude.size)
                 vmag[:: obj.skip() + 1] = velocity_magnitude[:: obj.skip() + 1]
                 velocity_magnitude = vmag
             mesh.cell_data["Velocity Magnitude"] = velocity_magnitude
@@ -234,21 +230,21 @@ class _Plotter(metaclass=Singleton):
         # loop over all meshes
         for mesh_data in scalar_field_data:
 
-            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
+            topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    lines=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    lines=mesh_data["faces"],
                 )
             else:
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    faces=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    faces=mesh_data["faces"],
                 )
             if node_values:
-                mesh.point_data[field] = np.array(mesh_data["scalar_field"])
+                mesh.point_data[field] = mesh_data["scalar_field"]
             else:
-                mesh.cell_data[field] = np.array(mesh_data["scalar_field"])
+                mesh.cell_data[field] = mesh_data["scalar_field"]
             if not meta_data:
                 meta_data = mesh_data["meta_data"]
 
@@ -381,16 +377,16 @@ class _Plotter(metaclass=Singleton):
         ]
         surfaces_data = field_data.get_surfaces(surface_ids)
         for mesh_data in surfaces_data:
-            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
+            topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    lines=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    lines=mesh_data["faces"],
                 )
             else:
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    faces=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    faces=mesh_data["faces"],
                 )
             self.__active_plotter.add_mesh(
                 mesh, show_edges=obj.show_edges(), color="lightgrey"
@@ -398,30 +394,29 @@ class _Plotter(metaclass=Singleton):
 
     def _get_refresh_for_plotter(self, plotter_id: str):
         def refresh():
+
             with self.__condition:
                 obj = self.__graphics.get(plotter_id)
                 if not obj:
-                    self.__condition.notify()
                     return
-
                 del self.__graphics[plotter_id]
                 plotter = self.__active_plotter
                 plotter.clear()
 
                 camera = plotter.camera.copy()
-
-                if obj.__class__.__name__ == "Mesh":
-                    self._display_mesh(obj)
-                elif obj.__class__.__name__ == "Surface":
-                    if obj.surface_type.surface_type() == "iso-surface":
-                        self._display_iso_surface(obj)
-                elif obj.__class__.__name__ == "Contour":
-                    self._display_contour(obj)
-                elif obj.__class__.__name__ == "Vector":
-                    self._display_vector(obj)
-
+                try:
+                    if obj.__class__.__name__ == "Mesh":
+                        self._display_mesh(obj)
+                    elif obj.__class__.__name__ == "Surface":
+                        if obj.surface_type.surface_type() == "iso-surface":
+                            self._display_iso_surface(obj)
+                    elif obj.__class__.__name__ == "Contour":
+                        self._display_contour(obj)
+                    elif obj.__class__.__name__ == "Vector":
+                        self._display_vector(obj)
+                finally:
+                    self.__condition.notify()
                 plotter.camera = camera.copy()
-                self.__condition.notify()
 
         return refresh
 

@@ -1,5 +1,6 @@
 from typing import List, Dict, Optional
 import grpc
+import numpy as np
 from ansys.api.fluent.v0 import fielddata_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
 
@@ -125,14 +126,18 @@ class FieldData:
     def _extract_surfaces_data(self, response_iterator):
         return [
             {
-                "vertices": [
-                    [point.x, point.y, point.z]
-                    for point in response.surfacedata.point
-                ],
-                "faces": [
-                    [len(facet.node)] + [node for node in facet.node]
-                    for facet in response.surfacedata.facet
-                ],
+                "vertices": np.array(
+                    [
+                        [point.x, point.y, point.z]
+                        for point in response.surfacedata.point
+                    ]
+                ),
+                "faces": np.hstack(
+                    [
+                        [len(facet.node)] + list(facet.node)
+                        for facet in response.surfacedata.facet
+                    ]
+                ),
             }
             for response in response_iterator
         ]
@@ -151,17 +156,21 @@ class FieldData:
     def _extract_scalar_field_data(self, response_iterator):
         return [
             {
-                "vertices": [
-                    [point.x, point.y, point.z]
-                    for point in response.scalarfielddata.surfacedata.point
-                ],
-                "faces": [
-                    [len(facet.node)] + [node for node in facet.node]
-                    for facet in response.scalarfielddata.surfacedata.facet
-                ],
-                "scalar_field": [
-                    data for data in response.scalarfielddata.scalarfield.data
-                ],
+                "vertices": np.array(
+                    [
+                        [point.x, point.y, point.z]
+                        for point in response.scalarfielddata.surfacedata.point
+                    ]
+                ),
+                "faces": np.hstack(
+                    [
+                        [len(facet.node)] + list(facet.node)
+                        for facet in response.scalarfielddata.surfacedata.facet
+                    ]
+                ),
+                "scalar_field": np.array(
+                    response.scalarfielddata.scalarfield.data
+                ),
                 "meta_data": response.scalarfielddata.scalarfieldmetadata,
             }
             for response in response_iterator
@@ -187,24 +196,30 @@ class FieldData:
     def _extract_vector_field_data(self, response_iterator):
         return [
             {
-                "vertices": [
-                    [point.x, point.y, point.z]
-                    for point in response.vectorfielddata.surfacedata.point
-                ],
-                "faces": [
-                    [len(facet.node)] + [node for node in facet.node]
-                    for facet in response.vectorfielddata.surfacedata.facet
-                ],
-                "scalar_field": [
-                    data for data in response.vectorfielddata.scalarfield.data
-                ],
-                "vector": [
-                    [components.x, components.y, components.z]
-                    for components in response.vectorfielddata.vector
-                    .vectorComponents
-                ],
+                "vertices": np.array(
+                    [
+                        [point.x, point.y, point.z]
+                        for point in response.vectorfielddata.surfacedata.point
+                    ]
+                ),
+                "faces": np.hstack(
+                    [
+                        [len(facet.node)] + list(facet.node)
+                        for facet in response.vectorfielddata.surfacedata.facet
+                    ]
+                ),
+                "scalar_field": np.array(
+                    response.vectorfielddata.scalarfield.data
+                ),
+                "vector": np.array(
+                    [
+                        [components.x, components.y, components.z]
+                        for components in response.vectorfielddata.vector
+                        .vectorComponents
+                    ]
+                ),
                 "meta_data": response.vectorfielddata.vectorfieldmetadata,
-                "vector_scale": response.vectorfielddata.vectorscale.data
+                "vector_scale": response.vectorfielddata.vectorscale.data,
             }
             for response in response_iterator
         ]
