@@ -1,5 +1,6 @@
 import sys
 import threading
+
 # import signal
 from typing import Optional
 import numpy as np
@@ -142,7 +143,7 @@ class _Plotter(metaclass=Singleton):
             surface_ids, obj.vectors_of()
         )
         plotter = self.__active_plotter
-        for mesh_data in vector_field_data:
+        for surface_id, mesh_data in vector_field_data.items():
             vector_scale = mesh_data["vector_scale"]
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
@@ -227,7 +228,7 @@ class _Plotter(metaclass=Singleton):
         plotter = self.__active_plotter
 
         # loop over all meshes
-        for mesh_data in scalar_field_data:
+        for surface_id, mesh_data in scalar_field_data.items():
 
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
@@ -375,7 +376,7 @@ class _Plotter(metaclass=Singleton):
             for id in surfaces_info[surf]["surface_id"]
         ]
         surfaces_data = field_data.get_surfaces(surface_ids)
-        for mesh_data in surfaces_data:
+        for surface_id, mesh_data in surfaces_data.items():
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(

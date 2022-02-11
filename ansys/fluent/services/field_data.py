@@ -53,20 +53,24 @@ class FieldData:
     get_surfaces_info(self) -> dict
         Get surfaces information i.e. surface name, id and type.
 
-    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> List[Dict]
+    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> Dict[int, Dict]
         Get surfaces data i.e. coordinates and connectivity.
 
     def get_scalar_field(
-        surface_ids: List[int], scalar_field: str, node_value: bool,
-        boundary_value: bool) -> List[Dict]
-        Get field data i.e. surface data and associated scalar field values.
+        surface_ids: List[int],
+        scalar_field: str,
+        node_value: Optional[bool] = True,
+        boundary_value: Optional[bool] = False,
+    ) -> Dict[int, Dict]:
+        Get scalar field data i.e. surface data and associated
+        scalar field values.
 
     def get_vector_field(
         surface_ids: List[int],
         vector_field: Optional[str] = "velocity",
         scalar_field: Optional[str] = "",
         node_value: Optional[bool] = True,
-    ) -> List[Dict]:
+    ) -> Dict[int, Dict]:
         Get vector field data i.e. surface data and associated
         scalar and vector field values.
 
@@ -127,8 +131,8 @@ class FieldData:
         }
 
     def _extract_surfaces_data(self, response_iterator):
-        return [
-            {
+        return {
+            response.surfacedata.surfaceid.id: {
                 "vertices": np.array(
                     [
                         [point.x, point.y, point.z]
@@ -143,11 +147,11 @@ class FieldData:
                 ),
             }
             for response in response_iterator
-        ]
+        }
 
     def get_surfaces(
         self, surface_ids: List[int], overset_mesh: bool = False
-    ) -> List[Dict]:
+    ) -> Dict[int, Dict]:
         request = FieldDataProtoModule.GetSurfacesRequest()
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
@@ -157,8 +161,8 @@ class FieldData:
         return self._extract_surfaces_data(response_iterator)
 
     def _extract_scalar_field_data(self, response_iterator):
-        return [
-            {
+        return {
+            response.scalarfielddata.surfaceid.id: {
                 "vertices": np.array(
                     [
                         [point.x, point.y, point.z]
@@ -177,15 +181,15 @@ class FieldData:
                 "meta_data": response.scalarfielddata.scalarfieldmetadata,
             }
             for response in response_iterator
-        ]
+        }
 
     def get_scalar_field(
         self,
         surface_ids: List[int],
         scalar_field: str,
-        node_value: bool,
-        boundary_value: bool,
-    ) -> List[Dict]:
+        node_value: Optional[bool] = True,
+        boundary_value: Optional[bool] = False,
+    ) -> Dict[int, Dict]:
         request = FieldDataProtoModule.GetScalarFieldRequest()
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
@@ -197,8 +201,8 @@ class FieldData:
         return self._extract_scalar_field_data(response_iterator)
 
     def _extract_vector_field_data(self, response_iterator):
-        return [
-            {
+        return {
+            response.vectorfielddata.surfaceid.id: {
                 "vertices": np.array(
                     [
                         [point.x, point.y, point.z]
@@ -225,7 +229,7 @@ class FieldData:
                 "vector_scale": response.vectorfielddata.vectorscale.data,
             }
             for response in response_iterator
-        ]
+        }
 
     def get_vector_field(
         self,
@@ -233,7 +237,7 @@ class FieldData:
         vector_field: Optional[str] = "velocity",
         scalar_field: Optional[str] = "",
         node_value: Optional[bool] = True,
-    ) -> List[Dict]:
+    ) -> Dict[int, Dict]:
         request = FieldDataProtoModule.GetVectorFieldRequest()
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
