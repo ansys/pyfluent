@@ -130,7 +130,7 @@ class TUIGenerator:
                 self._write_menu_to_tui_file(v, indent)
 
     def generate(self):
-        with open(self._tui_file, "a", encoding="utf8") as self.__writer:
+        with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             self._write_code_to_tui_file(
                 '"""\n'
