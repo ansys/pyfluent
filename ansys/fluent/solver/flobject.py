@@ -21,6 +21,7 @@ __all__ = ['get_root']
 import collections
 import weakref
 import string
+import sys
 from typing import Union, List, Dict, Generic, TypeVar
 
 # Type hints
@@ -121,8 +122,8 @@ class Base:
 
     def get_attr(self, attr):
         attrs = self.get_attrs([attr])
-        if attr != "active?" and attrs.get('active?', True) is False:
-            raise RuntimeError("Object is not active")
+        if attr != 'active?' and attrs.get('active?', True) is False:
+            raise RuntimeError('Object is not active')
         return attrs[attr]
 
     def is_active(self):
@@ -130,7 +131,17 @@ class Base:
 
 StateT = TypeVar('StateT')
 class SettingsBase(Base, Generic[StateT]):
-    """Base class for settings objects"""
+    """
+    Base class for settings objects
+
+    Methods
+    -------
+    get_state()
+        Return the current state of the object
+
+    set_state(state)
+        Set the state of the object
+    """
 
     @classmethod
     def to_scheme_keys(cls, value: StateT) -> StateT:
@@ -166,6 +177,24 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
+    @staticmethod
+    def _print_state_helper(state, out=sys.stdout, indent=0):
+        if isinstance(state, dict):
+            out.write('\n')
+            for key, value in state.items():
+                if value is not None:
+                    out.write(f'{indent*" "}{key} : ')
+                    SettingsBase._print_state_helper(value, out, indent+2)
+        elif isinstance(state, list):
+            out.write('\n')
+            for index, value in enumerate(state):
+                out.write(f'{indent*" "}{index} : ')
+                SettingsBase._print_state_helper(value, out, indent+2)
+        else:
+            out.write(f'{state}\n')
+
+    def print_state(self, out=sys.stdout):
+        self._print_state_helper(self.get_state(), out)
 
 class Integer(SettingsBase[int]):
     """
@@ -458,10 +487,16 @@ class ListObject(SettingsBase[ListStateType]):
     A ListObject object is a container object, similar to a Python list object.
     Generally, many such objects can be created.
 
+    Methods
+    -------
+    get_size()
+        Return the size of the list
+
+    resize(size)
+        Resize the list
+
     Attributes
     ----------
-    size: int
-          Number of items in the list
     command_names: list[str]
                    Names of the commands
     """
@@ -499,17 +534,16 @@ class ListObject(SettingsBase[ListStateType]):
     def _update_objects(self):
         # pylint: disable=no-member
         cls = self.__class__.child_object_type
-        self._objects = [cls(str(x), self) for x in range(self.size)]
+        self._objects = [cls(str(x), self) for x in range(self.get_size())]
 
     def __len__(self):
-        return self.size
+        return self.get_size()
 
     def __iter__(self):
         self._update_objects()
         return iter(self._objects)
 
-    @property
-    def size(self) -> int:
+    def get_size(self) -> int:
         """
         Return the number of elements in a list object
 
@@ -521,7 +555,7 @@ class ListObject(SettingsBase[ListStateType]):
 
     def resize(self, size: int):
         """
-        Resize a list object
+        Resize the list object
 
         Parameters
         ----------
@@ -531,7 +565,7 @@ class ListObject(SettingsBase[ListStateType]):
         self.flproxy.resize_list_object(self.path, size)
 
     def __getitem__(self, index: int):
-        size = self.size
+        size = self.get_size()
         if index >= size:
             raise IndexError(index)
         if len(self._objects) != size:
@@ -564,6 +598,7 @@ _baseTypes = {
         'integer'      : Integer,
         'real'         : Real,
         'string/symbol': String,
+        'string'       : String,
         'boolean'      : Boolean,
         'real-list'    : RealList,
         'integer-list' : IntegerList,
@@ -582,52 +617,52 @@ def get_cls(name, info, parent = None):
     Create a class for the object identified by "path"
     """
     try:
-       if name == '':
-           pname = 'root'
-       else:
-           pname = to_python_name(name)
-       obj_type = info['type']
-       base = _baseTypes[obj_type]
-       dct = { 'scheme_name' : name }
-       helpinfo = info.get('help')
-       if helpinfo:
-           dct['__doc__'] = helpinfo
-       else:
-           if parent is None:
-               dct['__doc__'] = 'root object'
-           else:
-               dct['__doc__'] = \
-                       f"'{pname}' member of '{parent.__name__}' object"
-       cls = type(pname, (base,), dct)
+        if name == '':
+            pname = 'root'
+        else:
+            pname = to_python_name(name)
+        obj_type = info['type']
+        base = _baseTypes[obj_type]
+        dct = { 'scheme_name' : name }
+        helpinfo = info.get('help')
+        if helpinfo:
+            dct['__doc__'] = helpinfo
+        else:
+            if parent is None:
+                dct['__doc__'] = 'root object'
+            else:
+                dct['__doc__'] = \
+                        f"'{pname}' member of '{parent.__name__}' object"
+        cls = type(pname, (base,), dct)
 
-       children = info.get('children')
-       if children:
-           cls.member_names = []
-           for cname, cinfo in children.items():
-               ccls = get_cls(cname, cinfo, cls)
-               #pylint: disable=no-member
-               cls.member_names.append(ccls.__name__)
-               setattr(cls, ccls.__name__, ccls)
-       commands = info.get('commands')
-       if commands:
-           cls.command_names = []
-           for cname, cinfo in commands.items():
-               ccls = get_cls(cname, cinfo, cls)
-               #pylint: disable=no-member
-               cls.command_names.append(ccls.__name__)
-               setattr(cls, ccls.__name__, ccls)
-       arguments = info.get('arguments')
-       if arguments:
-           cls.argument_names = []
-           for aname, ainfo in arguments.items():
-               ccls = get_cls(aname, ainfo, cls)
-               #pylint: disable=no-member
-               cls.argument_names.append(ccls.__name__)
-               setattr(cls, ccls.__name__, ccls)
-       object_type = info.get('object-type')
-       if object_type:
-           cls.child_object_type = \
-                   get_cls(cls.__name__ + '-object-type', object_type, cls)
+        children = info.get('children')
+        if children:
+            cls.member_names = []
+            for cname, cinfo in children.items():
+                ccls = get_cls(cname, cinfo, cls)
+                #pylint: disable=no-member
+                cls.member_names.append(ccls.__name__)
+                setattr(cls, ccls.__name__, ccls)
+        commands = info.get('commands')
+        if commands:
+            cls.command_names = []
+            for cname, cinfo in commands.items():
+                ccls = get_cls(cname, cinfo, cls)
+                #pylint: disable=no-member
+                cls.command_names.append(ccls.__name__)
+                setattr(cls, ccls.__name__, ccls)
+        arguments = info.get('arguments')
+        if arguments:
+            cls.argument_names = []
+            for aname, ainfo in arguments.items():
+                ccls = get_cls(aname, ainfo, cls)
+                #pylint: disable=no-member
+                cls.argument_names.append(ccls.__name__)
+                setattr(cls, ccls.__name__, ccls)
+        object_type = info.get('object-type')
+        if object_type:
+            cls.child_object_type = \
+                    get_cls(cls.__name__ + '-object-type', object_type, cls)
     except Exception:
         print (f"Unable to construct class for '{name}' of "
                  f"'{parent.scheme_name if parent else None}'")

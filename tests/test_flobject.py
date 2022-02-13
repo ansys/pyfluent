@@ -435,11 +435,11 @@ def test_named_object():
 
 def test_list_object():
     r = flobject.get_root(Proxy())
-    assert r.l_1.size == 0
+    assert r.l_1.get_size() == 0
     r.l_1.resize(3)
-    assert r.l_1.size == 3
+    assert r.l_1.get_size() == 3
     r.l_1.resize(2)
-    assert r.l_1.size == 2
+    assert r.l_1.get_size() == 2
     assert r.l_1() == [{'il_1' : None, 'bl_1' : None},
                        {'il_1' : None, 'bl_1' : None}]
     r.l_1[1].il_1 = [1, 2]

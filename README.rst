@@ -30,9 +30,8 @@ Usage
 
 Settings objects
 ****************
-Settings objects provide a more natural way to access and modify Fluent settings and issue commands.  When the function ``session.setup_settings_objects()`` is invoked, attributes ``setup``, ``solution`` and ``results`` are added to the session object. These attributes can be used to access and modify Fluent settings:
+Settings objects provide a more natural way to access and modify Fluent settings and issue commands.  More information can be found in :doc:`doc/settings.rst` page.
 
-.. code:: Python
 
   session.setup_settings_objects()
   session.setup.models.energy.enabled = True
