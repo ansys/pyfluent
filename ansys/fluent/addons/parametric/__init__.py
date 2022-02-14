@@ -36,6 +36,16 @@ Create, rename, delete parametric studies
 >>> study2.name = "abc"
 >>> study1.delete()
 
+Project workflow
+
+>>> from ansys.fluent.addons.parametric import ParametricProject
+>>> proj = ParametricProject(session)
+>>> proj.open(project_filename="nozzle_para_named.flprj")
+>>> proj.save()
+>>> proj.save_as(project_filename="nozzle_para_named1.flprj")
+>>> proj.export(project_filename="nozzle_para_named2.flprj")
+>>> proj.archive(archive_name="nozzle_para_named.flprz")
+
 """
 
 import atexit
@@ -44,7 +54,7 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from ansys.fluent import LOG, Session
 
@@ -57,6 +67,14 @@ def _get_parametric_study_tui(tui: Session.SolverTui):
             tui.define.beta_feature_access("yes", "OK")
         tui.preferences.general.enable_parametric_study()
     return tui.parametric_study
+
+
+def _get_parametric_project_tui(tui: Session.SolverTui):
+    if "parametric_project" not in dir(tui.file):
+        if "enable_parametric_study" not in dir(tui.preferences.general):
+            tui.define.beta_feature_access("yes", "OK")
+        tui.preferences.general.enable_parametric_study()
+    return tui.file.parametric_project
 
 
 class DesignPoint:
@@ -530,6 +548,112 @@ class ParametricStudy:
                     design_points.append(line.split(",")[0])
         Path(filepath).unlink()
         return design_points
+
+
+class ParametricProject:
+    """
+    Parametric project workflow
+
+    Methods
+    -------
+    create(project_filename)
+        Create a new project
+    open(project_filename, load_current_case, open_lock)
+        Open a project
+    save(project_filename)
+        Save project
+    save_as(project_filename)
+        Save as project
+    export(project_filename)
+        Save project as a copy
+    archive(archive_name)
+        Archive project
+
+    """
+
+    def __init__(self, session: Session):
+        self.__tui = session.tui.solver
+
+    def create(self, project_filename: str = "default.flprj") -> None:
+        """
+        Create a new project
+
+        Parameters
+        ----------
+        project_filename : str, optional
+            project filename, by default "default.flprj"
+        """
+        _get_parametric_project_tui(self.__tui).new(project_filename)
+
+    def open(
+        self,
+        project_filename: str = "default.flprj",
+        load_current_case: bool = True,
+        open_lock: bool = False,
+    ):
+        """
+        Open a project
+
+        Parameters
+        ----------
+        project_filename : str, optional
+            project filename, by default "default.flprj"
+        load_current_case : bool, optional
+            Specifies whether to load the current case, by default True
+        open_lock : bool, optional
+            Specifies whether to open the lock if project file is
+            locked, by default False
+        """
+        args = ["yes" if load_current_case else "no", project_filename]
+        if open_lock:
+            args.append("yes")
+
+        _get_parametric_project_tui(self.__tui).open(*args)
+
+    def save(self, project_filename: Optional[str] = None):
+        """
+        Save project
+
+        Parameters
+        ----------
+        project_filename : Optional[str], optional
+            project filename, by default None
+        """
+        args = () if project_filename is None else (project_filename,)
+        _get_parametric_project_tui(self.__tui).save(*args)
+
+    def save_as(self, project_filename: str):
+        """
+        Save as project
+
+        Parameters
+        ----------
+        project_filename : str
+            project filename
+        """
+        _get_parametric_project_tui(self.__tui).save_as(project_filename)
+
+    def export(self, project_filename: str):
+        """
+        Save project as a copy
+
+        Parameters
+        ----------
+        project_filename : str
+            project filename
+        """
+        _get_parametric_project_tui(self.__tui).save_as_copy(project_filename)
+
+    def archive(self, archive_name: str):
+        """
+        Archive project
+
+        Parameters
+        ----------
+        archive_name : str
+            archive name
+        """
+        _get_parametric_project_tui(self.__tui).archive(archive_name)
 
 
 atexit.register(ParametricStudy.cleanup_project_dirs)
