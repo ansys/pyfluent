@@ -1,10 +1,11 @@
 import atexit
 import itertools
-from threading import Lock, Thread
+import threading
+from typing import Callable, List, Optional
 
 import grpc
-from ansys.fluent.core import LOG
 
+from ansys.fluent.core import LOG
 from ansys.fluent.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -13,10 +14,11 @@ from ansys.fluent.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.services.datamodel_tui import PyMenu as PyMenu_TUI
+from ansys.fluent.services.field_data import FieldData, FieldDataService
 from ansys.fluent.services.health_check import HealthCheckService
-from ansys.fluent.services.transcript import TranscriptService
-from ansys.fluent.services.field_data import FieldDataService, FieldData
+from ansys.fluent.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.services.settings import SettingsService
+from ansys.fluent.services.transcript import TranscriptService
 from ansys.fluent.solver import flobject
 
 
@@ -24,6 +26,28 @@ def parse_server_info_file(filename: str):
     with open(filename, "rb") as f:
         lines = f.readlines()
     return lines[0].strip(), lines[1].strip()
+
+
+class MonitorThread(threading.Thread):
+    """
+    Deamon thread which will ensure cleanup of session objects, shutdown
+    of non-deamon threads etc.
+
+    Attributes
+    ----------
+    cbs : List[Callable]
+        Cleanup/shutdown functions
+    """
+
+    def __init__(self):
+        super().__init__(daemon=True)
+        self.cbs: List[Callable] = []
+
+    def run(self):
+        main_thread = threading.main_thread()
+        main_thread.join()
+        for cb in self.cbs:
+            cb()
 
 
 class Session:
@@ -61,19 +85,23 @@ class Session:
 
     """
 
-    __all_sessions = []
-    __on_exit_cbs = []
-    __id_iter = itertools.count()
+    _on_exit_cbs: List[Callable] = []
+    _id_iter = itertools.count()
+    _monitor_thread: Optional[MonitorThread] = None
 
     def __init__(self, server_info_filepath):
         address, password = parse_server_info_file(server_info_filepath)
         self.__channel = grpc.insecure_channel(address)
         self.__metadata = [("password", password)]
-        self.__id = f"session-{next(Session.__id_iter)}"
+        self.__id = f"session-{next(Session._id_iter)}"
+
+        if not Session._monitor_thread:
+            Session._monitor_thread = MonitorThread()
+            Session._monitor_thread.start()
+
         self.__transcript_service: TranscriptService = None
-        self.__transcript_thread: Thread = None
-        self.__lock = Lock()
-        self.__is_transcript_stopping = False
+        self.__transcript_thread: threading.Thread = None
+
         self.start_transcript()
 
         self.__datamodel_service_tui = DatamodelService_TUI(
@@ -88,7 +116,7 @@ class Session:
 
         self.__datamodel_service_se = DatamodelService_SE(
             self.__channel, self.__metadata
-            )
+        )
         self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
         self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
 
@@ -96,7 +124,12 @@ class Session:
             self.__channel, self.__metadata
         )
 
-        Session.__all_sessions.append(self)
+        self.__scheme_eval_service = SchemeEvalService(
+            self.__channel, self.__metadata
+        )
+        self.__scheme_eval = SchemeEval(self.__scheme_eval_service)
+
+        Session._monitor_thread.cbs.append(self.exit)
 
     @property
     def id(self):
@@ -113,10 +146,6 @@ class Session:
         responses = self.__transcript_service.begin_streaming()
         transcript = ""
         while True:
-            with self.__lock:
-                if self.__is_transcript_stopping:
-                    LOG.debug(transcript)
-                    break
             try:
                 response = next(responses)
                 transcript += response.transcript
@@ -131,17 +160,11 @@ class Session:
         self.__transcript_service = TranscriptService(
             self.__channel, self.__metadata
         )
-        self.__transcript_thread = Thread(
-            target=Session.__log_transcript, args=(self,), daemon=True
+        self.__transcript_thread = threading.Thread(
+            target=Session.__log_transcript, args=(self,)
         )
-        self.__transcript_thread.start()
 
-    def stop_transcript(self):
-        """Stop streaming of Fluent transcript"""
-        with self.__lock:
-            self.__is_transcript_stopping = True
-        if self.__transcript_thread:
-            self.__transcript_thread.join()
+        self.__transcript_thread.start()
 
     def check_health(self):
         """Check health of Fluent connection"""
@@ -154,10 +177,9 @@ class Session:
         """Close the Fluent connection and exit Fluent."""
         if self.__channel:
             self.tui.solver.exit()
-            self.stop_transcript()
+            self.__transcript_service.end_streaming()
             self.__channel.close()
             self.__channel = None
-            Session.__all_sessions.remove(self)
 
     def __enter__(self):
         return self
@@ -167,13 +189,11 @@ class Session:
 
     @classmethod
     def register_on_exit(cls, callback):
-        cls.__on_exit_cbs.append(callback)
+        cls._on_exit_cbs.append(callback)
 
     @staticmethod
     def exit_all():
-        for session in Session.__all_sessions:
-            session.exit()
-        for cb in Session.__on_exit_cbs:
+        for cb in Session._on_exit_cbs:
             cb()
 
     class Tui:

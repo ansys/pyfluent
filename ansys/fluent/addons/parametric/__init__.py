@@ -3,378 +3,533 @@ Classes for running a parametric study in Fluent.
 
 Example
 -------
->>> from ansys.fluent.addons.parametric import ParametricStudy, DesignPointStatus  # noqa: E501
+>>> from ansys.fluent.addons.parametric import ParametricStudy
 
-Instantiate the study, specifying the case
+Instantiate the study from a Fluent session which has already read a case
 
->>> study = ParametricStudy(case_file_name=my_case_file_name)
+>>> study1 = ParametricStudy(session)
 
-Add one new design point and set an input parameter
+Access and modify the input parameters of base design point
 
->>> dp1 = study.add_design_point("DP1")
->>> dp1.set_input("parameter_1", 0.235)
->>> dp1.set_input("velocity_inlet_5_y_velocity", 0.772)
+>>> ip = study1.design_points["Base DP"].input_parameters
+>>> ip['vel_hot'] = 0.2
+>>> study1.design_points["Base DP"].input_parameters = ip
 
-The solver has not been run yet so no outputs are computed
-The design point is out of date
+Update the base design point
 
->>> assert(dp1.status == DesignPointStatus.OUT_OF_DATE)
+>>> study1.design_points["Base DP"].update()
 
-Get the base design point
+Access the output parameters of base design point
 
->>> base = study.design_point("Base DP")
+>>> study1.design_points["Base DP"].output_parameters
 
-Check that block updates works
+Create, update more design points and delete them
 
->>> dp1.block_updates()
->>> base.block_updates()
->>> assert(dp1.status == DesignPointStatus.BLOCKED)
->>> study.update_all()
->>> assert(dp1.outputs == base.outputs)
+>>> dp1 = study1.add_design_point()
+>>> dp2 = study1.duplicate_design_point(dp1)
+>>> study1.update_all_design_points()
+>>> study1.delete_design_points([dp1, dp2])
 
-Update the design points
+Create, rename, delete parametric studies
 
->>> dp1.allow_updates()
->>> base.allow_updates()
->>> assert(dp1.status == DesignPointStatus.OUT_OF_DATE)
->>> study.update_all()
+>>> study2 = study1.duplicate()
+>>> study2.name = "abc"
+>>> study1.delete()
 
-Check that dp1 is up to date and that the outputs differ
-
->>> assert(dp1.status == DesignPointStatus.UPDATED)
->>> assert(dp1.outputs != base.outputs)
-
-It's important to clean up any studies to help ensure that
-all Fluent sessions are cleaned up
-
->>> del study
 """
 
-from enum import Enum
+import atexit
+import os
+import re
+import shutil
+import tempfile
+from pathlib import Path
+from typing import Dict, List
 
-import ansys.fluent.solver as pyfluent
+from ansys.fluent import LOG, Session
+
+BASE_DP_NAME = "Base DP"
 
 
-class DesignPointStatus(Enum):
-    """
-    Status of a design point in a parametric study.
-
-    Attributes
-    ----------
-    OUT_OF_DATE : int
-    UPDATING : int
-    UPDATED : int
-    FAILED : int
-    BLOCKED : int
-    """
-
-    OUT_OF_DATE = 1
-    UPDATING = 2
-    UPDATED = 3
-    FAILED = 4
-    BLOCKED = 5
+def _get_parametric_study_tui(tui: Session.SolverTui):
+    if "parametric_study" not in dir(tui):
+        if "enable_parametric_study" not in dir(tui.preferences.general):
+            tui.define.beta_feature_access("yes", "OK")
+        tui.preferences.general.enable_parametric_study()
+    return tui.parametric_study
 
 
 class DesignPoint:
     """
-    Design point in a parametric study.
+    Design point in a parametric study
 
     Attributes
     ----------
     name : str
-        Name of the design point as a str.
-    outputs : dict
-        Dict of output parameters
-        (name of parameter to value).
-    inputs : dict
-        Dict of input parameters
-        (name of parameter to value).
-    status : DesignPointStatus
-        Current status of the design point.
+        Name of the design point
+    is_current : bool
+        Whether the design point is the current design point
+    input_parameters : Dict[str, float]
+        Input parameters values by name
+    output_parameters : Dict[str, float]
+        Output parameters values by name
+    write_data_enabled : bool
+        Whether to write data for the design point
+    capture_simulation_report_data_enabled : bool
+        Whether to capture simulation report data for the design point
 
     Methods
     -------
-    set_input(parameter_name: str, value)
-        Set one parameter in the design point to the value provided.
-    on_end_updating(outputs: dict)
-        Inform the design point that it is in an UPDATED state and
-        provides the associated output parameters.
-    block_updates()
-        Move the design point into a do not update state.
-    block_updates()
-        Move the design point into a needs update state.
+    update()
+        Update the design point
+
     """
 
-    def __init__(self, design_point_name: str, base_design_point=None):
-        self.name = design_point_name
-        if base_design_point:
-            self.__inputs = base_design_point.inputs.copy()
-            self.__outputs = base_design_point.outputs.copy()
-        else:
-            self.__inputs = {}
-            self.__outputs = {}
-        # TODO add listener for __status:
-        self.__status = DesignPointStatus.OUT_OF_DATE
+    def __init__(self, name: str, tui: Session.SolverTui):
+        self.name = name
+        self.__tui = tui
 
     @property
-    def inputs(self) -> dict:
-        return self.__inputs
+    def is_current(self) -> bool:
+        """
+        bool: Whether the design point is the current design point
+        """
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        out = dp_tui.get_current_design_point()
+        current_dp = out.result.strip().strip('"')
+        return current_dp == self.name
 
-    @inputs.setter
-    def inputs(self, inputs: dict):
-        self.__status = DesignPointStatus.OUT_OF_DATE
-        self.__inputs = inputs
-
-    @property
-    def outputs(self) -> dict:
-        return self.__outputs
-
-    @outputs.setter
-    def outputs(self, outputs: dict):
-        self.__status = DesignPointStatus.OUT_OF_DATE
-        self.__outputs = outputs
+    @is_current.setter
+    def is_current(self, value: bool) -> None:
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.set_as_current(f'"{self.name if value else BASE_DP_NAME}"')
 
     @property
-    def status(self) -> DesignPointStatus:
-        return self.__status
+    def input_parameters(self) -> Dict[str, float]:
+        """Dict[str, float]: Input parameters values by name."""
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        out = dp_tui.get_input_parameters_of_dp(f'"{self.name}"')
+        return DesignPoint.__convert_scheme_string_to_parameter_dict(
+            out.result.strip()
+        )
 
-    def set_input(self, parameter_name: str, value):
-        self.__status = DesignPointStatus.OUT_OF_DATE
-        self.__inputs[parameter_name] = value
-
-    def on_start_updating(self):
-        self.__status = DesignPointStatus.UPDATING
-
-    def on_end_updating(self, outputs: dict):
-        self.__outputs = outputs
-        self.__status = DesignPointStatus.UPDATED
-
-    def block_updates(self):
-        self.__status = DesignPointStatus.BLOCKED
-
-    def allow_updates(self):
-        self.__status = DesignPointStatus.OUT_OF_DATE
-
-
-class DesignPointTable(list):
-    """
-    Design point study in a parametric study
-
-    Methods
-    -------
-    add_design_point(design_point_name: str) -> DesignPoint
-        Add a new design point to the table with the provided name.
-    find_design_point(idx_or_name)
-        Get a design point, either by name (str) or an index
-        indicating the position in the table (by order of insertion).
-        Raises
-        ------
-        RuntimeError
-            If the design point is not found.
-    remove_design_point(idx_or_name)
-        Remove a design point, either by name (str) or an index
-        indicating the position in the table (by order of insertion).
-        Raises
-        ------
-        RuntimeError
-            If the design point is not found.
-    """
-
-    def __init__(self, base_design_point: DesignPoint):
-        super().__init__()
-        self.append(base_design_point)
-
-    def add_design_point(self, design_point_name: str) -> DesignPoint:
-        self.append(DesignPoint(design_point_name, self[0]))
-        return self[-1]
-
-    def find_design_point(self, idx_or_name) -> DesignPoint:
-        if isinstance(idx_or_name, int):
-            return self[idx_or_name]
-        for design_point in self:
-            if idx_or_name == design_point.name:
-                return design_point
-        raise RuntimeError(f"Design point not found: {idx_or_name}")
-
-    def remove_design_point(self, idx_or_name):
-        design_point = self.find_design_point(idx_or_name)
-        if design_point is self[0]:
-            raise RuntimeError("Cannot remove base design point")
-        self.remove(self.find_design_point(idx_or_name))
-
-
-class FluentParameterAccessor:
-    """
-    Extracts parameter name to value dicts from table strs
-    currently returned by the API
-
-    Attributes
-    ----------
-    input_parameters : dict
-        The current input parameter dict.
-    output_parameters : dict
-        The current input parameter dict.
-    """
-
-    def __init__(self, fluent_session):
-        self.__list_parameters = (
-            fluent_session.tui.solver.define.parameters.list_parameters
+    @input_parameters.setter
+    def input_parameters(self, value: Dict[str, float]) -> None:
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.set_input_parameters_of_dp(
+            f'"{self.name}"', *[v for _, v in value.items()]
         )
 
     @property
-    def input_parameters(self) -> dict:
-        return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.input_parameters()
+    def output_parameters(self) -> Dict[str, float]:
+        """Dict[str, float]: Output parameters values by name"""
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        out = dp_tui.get_output_parameters_of_dp(f'"{self.name}"')
+        return DesignPoint.__convert_scheme_string_to_parameter_dict(
+            out.result.strip()
         )
 
     @property
-    def output_parameters(self) -> dict:
-        return FluentParameterAccessor.__parameter_table_to_dict(
-            self.__list_parameters.output_parameters()
+    def write_data_enabled(self) -> bool:
+        """bool: Whether to write data for the design point"""
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        out = dp_tui.get_write_data(f'"{self.name}"')
+        return out.result.strip().strip('"') == "True"
+
+    @write_data_enabled.setter
+    def write_data_enabled(self, value: bool) -> None:
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.set_write_data(f'"{self.name}"', "yes" if value else "no")
+
+    @property
+    def capture_simulation_report_data_enabled(self) -> bool:
+        """
+        bool: Whether to capture simulation report data for the design
+        point
+        """
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        out = dp_tui.get_capture_simulation_report_data(f'"{self.name}"')
+        return out.result.strip().strip('"') == "True"
+
+    @capture_simulation_report_data_enabled.setter
+    def capture_simulation_report_data_enabled(self, value: bool):
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.set_capture_simulation_report_data(
+            f'"{self.name}"', "yes" if value else "no"
         )
+
+    def update(self) -> None:
+        """Update the design point"""
+        update_tui = _get_parametric_study_tui(self.__tui).update
+        update_tui.update_selected_design_points([f'"{self.name}"'])
 
     @staticmethod
-    def __parameter_table_to_dict(table: str) -> dict:
-        # this code has become more complex now. Originally table was
-        # str here - now ExecuteCommandResult is returned by the calls
-        # to (in|out)put_parameters()
-        table_str = table
-        if not isinstance(table, str):
-            try:
-                table_str = table.result
-            except AttributeError as attr_err:
-                raise RuntimeError(
-                    "Unexpected design point table "
-                    f"type in parse: {type(table)}"
-                ) from attr_err
-        data_lines = table_str.splitlines()[3:]
-        table_as_dict = {}
-        for line in data_lines:
-            line_as_list = line.split()
-            table_as_dict[line_as_list[0]] = line_as_list[1]
-        return table_as_dict
-
-
-class ParametricSession:
-    """
-    Full set of interactions with Fluent in the context of a parametric study
-
-    Attributes
-    ----------
-    input_parameters : dict
-        The current input parameter dict.
-    output_parameters : dict
-        The current input parameter dict.
-
-    Methods
-    -------
-    set_input_parameter(parameter_name: str)
-        Set a single input parameter value in the Fluent session.
-    initialize_with_case(case_file_name: str)
-        Read the specified case into Fluent.
-    update()
-        Run the solver until convergence.
-    """
-
-    def __init__(self, fluent_session):
-        self.__fluent_session = fluent_session
-        self.__parameter_accessor = FluentParameterAccessor(fluent_session)
-
-    @property
-    def input_parameters(self) -> dict:
-        return self.__parameter_accessor.input_parameters
-
-    @property
-    def output_parameters(self) -> dict:
-        return self.__parameter_accessor.output_parameters
-
-    def set_input_parameter(self, parameter_name: str, value):
-        self.__fluent_session.tui.solver.define.parameters.input_parameters.edit(  # noqa: E501
-            parameter_name, parameter_name, value
-        )
-
-    def initialize_with_case(self, case_file_name: str):
-        self.__fluent_session.tui.solver.file.read_case(
-            case_file_name=case_file_name
-        )
-
-    def update(self):
-        self.__fluent_session.tui.solver.solve.initialize.initialize_flow()
-        self.__fluent_session.tui.solver.solve.iterate()
-
-    def __del__(self):
-        self.__fluent_session.exit()
-
-
-class FluentLauncher:
-    """
-    Launches fluent sessions.
-
-    Methods
-    -------
-    __call__()
-        Launch a session
-    """
-
-    def __call__(self):
-        return ParametricSession(fluent_session=pyfluent.launch_fluent())
+    def __convert_scheme_string_to_parameter_dict(
+        inp: str,
+    ) -> Dict[str, float]:
+        parameters = {}
+        for pair in re.findall("\((.*?)\)", inp[1:-1]):
+            pair = pair.split(".", 1)
+            key = pair[0].strip().strip('"')
+            val = float(pair[1].strip())
+            parameters[key] = val
+        return parameters
 
 
 class ParametricStudy:
     """
     Parametric study that manages design points to parametrize a
     Fluent solver set-up. Provides ability to run Fluent for a series
-    of design points, and access the inputs and outputs.
+    of design points, and access/modify the input and output parameters.
+
+    Attributes
+    ----------
+    name : str
+        Name of the parametric study
+    is_current : bool
+        Whether the parametric study is the current parametric study
+    design_points : Dict[str, DesignPoint]
+        Design points under the parametric study by name
+    current_design_point : DesignPoint
+        The current design point within the design points under the
+        parametric study
 
     Methods
     -------
-    update_all()
-        Bring all design point outputs up to date by running the
-        solver on each design point. Ignores BLOCKED design points.
-    update_design_point()
-        Bring the outputs of the specified design point up to date
-        by running the solver.
-    add_design_point(design_point_name: str) -> DesignPoint
-        Add a design point
-    design_point(idx_or_name)
-        Get a design point, either by name (str) or an index
-        indicating the position in the table (by order of insertion).
-        Raises
-        ------
-        RuntimeError
-            If the design point is not found.
+    set_as_current()
+        Set the parametric study as the current parametric study
+    duplicate(copy_design_points)
+        Duplicate the parametric study
+    delete()
+        Delete the parametric study
+    use_base_data()
+        Use base data for the parametric study
+    export_design_table(filepath)
+        Export the design table for the parametric study
+    add_design_point(write_data, capture_simulation_report_data)
+        Add a new design point under the parametric study
+    delete_design_points(design_points)
+        Delete a list of design points
+    duplicate_design_point(design_point)
+        Duplicate the design point
+    save_journals(separate_journal)
+        Save journals
+    clear_generated_data(design_points)
+        Clear generated data for a list of design points
+    load_current_design_point_case_data()
+        Load case-data of the current design point
+    update_current_design_point()
+        Update the current design point
+    update_all_design_points()
+        Update all design points
+    update_selected_design_points(design_points)
+        Update a list of design points
+
     """
 
-    def __init__(
+    _current_study_name = None
+    _project_dirs: List[Path] = []
+
+    def __init__(self, session: Session):
+        self.__tui = session.tui.solver
+        if self.__is_initialized():
+            LOG.error("Parametric study is already initialized.")
+        elif not self.__is_init_available():
+            LOG.error(
+                "Parametric study is not available. Please try reading a case."
+            )
+        else:
+            self.__project_dir = Path(
+                tempfile.mkdtemp(
+                    prefix="project-",
+                    suffix=".cffdb",
+                    dir=str(Path.cwd()),  # TODO: should be cwd of server
+                )
+            )
+            self.__project_dir.rmdir()
+            tui_output = (
+                _get_parametric_study_tui(self.__tui)
+                .initialize("yes", self.__project_dir.stem)
+                .result
+            )
+            self._name = self.__extract_study_name(tui_output)
+            base_design_point = DesignPoint(BASE_DP_NAME, self.__tui)
+            base_design_point.is_current = True
+            self.design_points = {BASE_DP_NAME: base_design_point}
+            ParametricStudy._current_study_name = self._name
+            ParametricStudy._project_dirs.append(self.__project_dir)
+
+    @property
+    def name(self) -> str:
+        """str: Name of the parametric study"""
+        return self._name
+
+    @name.setter
+    def name(self, new_name: str) -> None:
+        _get_parametric_study_tui(self.__tui).rename_study(self.name, new_name)
+        self._name = new_name
+
+    @property
+    def is_current(self) -> bool:
+        """
+        bool: Whether the parametric study is the current parametric
+        study
+        """
+        return ParametricStudy._current_study_name == self.name
+
+    def set_as_current(self) -> None:
+        """Set the parametric study as the current parametric study."""
+        if not self.is_current:
+            _get_parametric_study_tui(self.__tui).set_as_current_study(
+                self.name, "yes"
+            )
+            ParametricStudy._current_study_name = self.name
+
+    def duplicate(self, copy_design_points: bool = True) -> "ParametricStudy":
+        """
+        Duplicate the design point
+
+        Parameters
+        ----------
+        copy_design_points : bool
+            Whether to copy the design points
+
+        Returns
+        -------
+        ParametricStudy
+            New parametric study instance
+        """
+        tui_output = (
+            _get_parametric_study_tui(self.__tui)
+            .duplicate_study("yes" if copy_design_points else "no")
+            .result
+        )
+        cls = self.__class__
+        clone = cls.__new__(cls)
+        clone.__dict__.update(self.__dict__)
+        clone._name = self.__extract_study_name(tui_output)
+        if copy_design_points:
+            clone.design_points = self.design_points.copy()
+        else:
+            base_design_point = DesignPoint(BASE_DP_NAME, self.__tui)
+            base_design_point.is_current = True
+            self.design_points = {BASE_DP_NAME: base_design_point}
+        ParametricStudy._current_study_name = clone.name
+        return clone
+
+    def delete(self) -> None:
+        """
+        Delete the parametric study
+        """
+        if self.is_current:
+            LOG.error(f"Cannot delete the current study {self.name}")
+        else:
+            _get_parametric_study_tui(self.__tui).delete_study(
+                self.name, "yes"
+            )
+            del self
+
+    @classmethod
+    def cleanup_project_dirs(cls) -> None:
+        for project_dir in cls._project_dirs:
+            flprj = os.path.splitext(str(project_dir))[0] + ".flprj"
+            shutil.rmtree(str(project_dir))
+            Path(flprj).unlink()
+
+    def use_base_data(self) -> None:
+        """Use base data for the parametric study"""
+        _get_parametric_study_tui(self.__tui).use_base_data("yes")
+
+    def export_design_table(self, filepath: str) -> None:
+        """
+        Export the design table for the parametric study
+
+        Parameters
+        ----------
+        filepath : str
+            Output filepath
+        """
+        _get_parametric_study_tui(self.__tui).export_design_table(filepath)
+
+    def __is_init_available(self) -> bool:
+        return "initialize" in dir(_get_parametric_study_tui(self.__tui))
+
+    def __is_initialized(self) -> bool:
+        return "delete_study" in dir(_get_parametric_study_tui(self.__tui))
+
+    def __extract_study_name(self, tui_output: str) -> str:
+        project_dirname = self.__project_dir.name
+        for line in tui_output.split("\n"):
+            if project_dirname in line:
+                comps = line.replace("\\", "/").split("/")
+                index = comps.index(project_dirname)
+                return comps[index + 1]
+        LOG.error("Study name cannot be retrieved")
+        return ""
+
+    @property
+    def current_design_point(self) -> DesignPoint:
+        """
+        DesignPoint: The current design point within the design points
+        under the parametric study.
+        """
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        out = dp_tui.get_current_design_point()
+        dp_name = out.result.strip().strip('"')
+        return self.design_points[dp_name]
+
+    def add_design_point(
         self,
-        case_file_name: str = "",
-        base_design_point_name: str = "Base DP",
-        launcher=FluentLauncher(),
-    ):
-        self.__session = launcher()
-        if case_file_name:
-            self.__session.initialize_with_case(case_file_name)
-        base_design_point = DesignPoint(base_design_point_name)
-        base_design_point.inputs = self.__session.input_parameters.copy()
-        base_design_point.outputs = self.__session.output_parameters.copy()
-        self.__design_point_table = DesignPointTable(base_design_point)
+        write_data: bool = False,
+        capture_simulation_report_data: bool = True,
+    ) -> DesignPoint:
+        """
+        Add a new design point under the parametric study
 
-    def update_all(self):
-        for design_point in self.__design_point_table:
-            if design_point.status != DesignPointStatus.BLOCKED:
-                self.update_design_point(design_point)
+        Parameters
+        ----------
+        write_data : bool, optional
+            Whether to write data for the design point, by default False
+        capture_simulation_report_data : bool, optional
+            Whether to capture simulation report data for the design
+            point, by default True
 
-    def update_design_point(self, design_point: DesignPoint):
-        design_point.on_start_updating()
-        for parameter_name, value in design_point.inputs.items():
-            self.__session.set_input_parameter(parameter_name, value)
-        self.__session.update()
-        design_point.on_end_updating(
-            outputs=self.__session.output_parameters.copy()
+        Returns
+        -------
+        DesignPoint
+            The new design point
+        """
+        self.set_as_current()
+        dps_before = self.__extract_design_point_names()
+        base_input_params = self.design_points[BASE_DP_NAME].input_parameters
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.add_design_point(
+            *[v for _, v in base_input_params.items()],
+            "yes" if write_data else "no",
+            "yes" if capture_simulation_report_data else "no",
+        )
+        dps_after = self.__extract_design_point_names()
+        dp_name = set(dps_after).difference(set(dps_before)).pop()
+        design_point = DesignPoint(dp_name, self.__tui)
+        self.design_points[dp_name] = design_point
+        return design_point
+
+    def delete_design_points(self, design_points: List[DesignPoint]) -> None:
+        """
+        Delete a list of design points
+
+        Parameters
+        ----------
+        design_points : List[DesignPoint]
+            List of design points to delete
+        """
+        if self.current_design_point in design_points:
+            LOG.error(
+                "Cannot delete the current design point "
+                f"{self.current_design_point.name}"
+            )
+            design_points.remove(self.current_design_point)
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.delete_design_point(
+            [f'"{dp.name}"' for dp in design_points], "yes"
+        )
+        for design_point in design_points:
+            self.design_points.pop(design_point.name)
+            del design_point
+
+    def duplicate_design_point(self, design_point: DesignPoint) -> DesignPoint:
+        """
+        Duplicate the design point
+
+        Parameters
+        ----------
+        design_point : DesignPoint
+            Design point to duplicate
+
+        Returns
+        -------
+        DesignPoint
+            The new design point
+        """
+        dps_before = self.__extract_design_point_names()
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.duplicate_design_point(f'"{design_point.name}"')
+        dps_after = self.__extract_design_point_names()
+        new_dp_name = set(dps_after).difference(set(dps_before)).pop()
+        new_dp = DesignPoint(new_dp_name, self.__tui)
+        self.design_points[new_dp_name] = new_dp
+        return new_dp
+
+    def save_journals(self, separate_journal: bool) -> None:
+        """
+        Save journals
+
+        Parameters
+        ----------
+        separate_journal : bool
+            Whether to save separate journal per design point.
+        """
+        _get_parametric_study_tui(self.__tui).design_points.save_journals(
+            "yes", 1 if separate_journal else 2
         )
 
-    def add_design_point(self, design_point_name: str) -> DesignPoint:
-        return self.__design_point_table.add_design_point(design_point_name)
+    def clear_generated_data(self, design_points: List[DesignPoint]) -> None:
+        """
+        Clear generated data for a list of design points
 
-    def design_point(self, idx_or_name) -> DesignPoint:
-        return self.__design_point_table.find_design_point(idx_or_name)
+        Parameters
+        ----------
+        design_points : List[DesignPoint]
+            List of design points
+        """
+        dp_tui = _get_parametric_study_tui(self.__tui).design_point
+        dp_tui.clear_generated_data(
+            [f'"{dp.name}"' for dp in design_points], "yes"
+        )
+
+    def load_current_design_point_case_data(self) -> None:
+        """Load case-data of the current design point"""
+        dp_tui = _get_parametric_study_tui(self.__tui).design_points
+        dp_tui.load_case_data_for_current_dp()
+
+    def update_current_design_point(self) -> None:
+        """Update the current design point"""
+        _get_parametric_study_tui(self.__tui).update.update_current()
+
+    def update_all_design_points(self) -> None:
+        """Update all design points"""
+        _get_parametric_study_tui(self.__tui).update.update_all()
+
+    def update_selected_design_points(
+        self, design_points: List[DesignPoint]
+    ) -> None:
+        """
+        Update a list of design points
+
+        Parameters
+        ----------
+        design_points : List[str]
+            List of design points to update
+        """
+        update_tui = _get_parametric_study_tui(self.__tui).update
+        update_tui.update_selected_design_points(
+            [f'"{dp.name}"' for dp in design_points]
+        )
+
+    def __extract_design_point_names(self) -> List[str]:
+        fd, filepath = tempfile.mkstemp(suffix=".csv")
+        os.close(fd)
+        self.export_design_table(filepath)
+        design_points = []
+        with open(filepath) as f:
+            f.readline()
+            f.readline()
+            for line in f.readlines():
+                line = line.strip()
+                if line:
+                    design_points.append(line.split(",")[0])
+        Path(filepath).unlink()
+        return design_points
+
+
+atexit.register(ParametricStudy.cleanup_project_dirs)
