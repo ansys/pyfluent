@@ -340,7 +340,7 @@ class ParametricStudy:
         Delete the parametric study
         """
         if self.is_current:
-            LOG.error(f"Cannot delete the current study {self.name}")
+            LOG.error("Cannot delete the current study %s", self.name)
         else:
             _get_parametric_study_tui(self.__tui).delete_study(
                 self.name, "yes"
@@ -443,8 +443,8 @@ class ParametricStudy:
         """
         if self.current_design_point in design_points:
             LOG.error(
-                "Cannot delete the current design point "
-                f"{self.current_design_point.name}"
+                "Cannot delete the current design point %s",
+                self.current_design_point.name
             )
             design_points.remove(self.current_design_point)
         dp_tui = _get_parametric_study_tui(self.__tui).design_points
@@ -590,7 +590,7 @@ class ParametricProject:
         project_filename: str = "default.flprj",
         load_current_case: bool = True,
         open_lock: bool = False,
-    ):
+    ) -> None:
         """
         Open a project
 
@@ -610,7 +610,7 @@ class ParametricProject:
 
         _get_parametric_project_tui(self.__tui).open(*args)
 
-    def save(self, project_filename: Optional[str] = None):
+    def save(self, project_filename: Optional[str] = None) -> None:
         """
         Save project
 
@@ -622,7 +622,7 @@ class ParametricProject:
         args = () if project_filename is None else (project_filename,)
         _get_parametric_project_tui(self.__tui).save(*args)
 
-    def save_as(self, project_filename: str):
+    def save_as(self, project_filename: str) -> None:
         """
         Save as project
 
@@ -633,7 +633,7 @@ class ParametricProject:
         """
         _get_parametric_project_tui(self.__tui).save_as(project_filename)
 
-    def export(self, project_filename: str):
+    def export(self, project_filename: str) -> None:
         """
         Save project as a copy
 
@@ -644,7 +644,7 @@ class ParametricProject:
         """
         _get_parametric_project_tui(self.__tui).save_as_copy(project_filename)
 
-    def archive(self, archive_name: str):
+    def archive(self, archive_name: str) -> None:
         """
         Archive project
 
