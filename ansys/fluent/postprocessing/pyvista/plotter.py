@@ -40,7 +40,6 @@ class _Plotter(metaclass=Singleton):
         self.__graphics = {}
         self.__plotter_thread = None
         self.__plotters = {}
-        Session._monitor_thread.cbs.append(self._exit)
 
     def plot_graphics(
         self, obj: object, plotter_id: Optional[str] = None
@@ -54,6 +53,7 @@ class _Plotter(metaclass=Singleton):
             self.__active_plotter = self.__plotters.get(plotter_id)
 
         if not self.__plotter_thread:
+            Session._monitor_thread.cbs.append(self._exit)
             self.__plotter_thread = threading.Thread(
                 target=self._display, args=()
             )
