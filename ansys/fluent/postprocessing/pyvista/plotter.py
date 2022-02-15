@@ -1,11 +1,10 @@
 import sys
 import threading
-
-# import signal
 from typing import Optional
 import numpy as np
 from pyvistaqt import BackgroundPlotter
 import pyvista as pv
+from ansys.fluent.session import Session
 
 
 class Singleton(type):
@@ -42,7 +41,7 @@ class _Plotter(metaclass=Singleton):
         self.__graphics = {}
         self.__plotter_thread = None
         self.__plotters = {}
-        self.__monitor_thread = None
+        Session._monitor_thread.cbs.append(self._exit)
 
     def plot_graphics(
         self, obj: object, plotter_id: Optional[str] = None
@@ -54,12 +53,6 @@ class _Plotter(metaclass=Singleton):
         with self.__condition:
             self.__graphics[plotter_id] = obj
             self.__active_plotter = self.__plotters.get(plotter_id)
-
-        if not self.__monitor_thread:
-            self.__monitor_thread = threading.Thread(
-                target=self._start_monitor_thread, args=(), daemon=True
-            )
-            self.__monitor_thread.start()
 
         if not self.__plotter_thread:
             self.__plotter_thread = threading.Thread(
@@ -97,11 +90,6 @@ class _Plotter(metaclass=Singleton):
             position_x=0.06,
             position_y=0.3,
         )
-
-    def _start_monitor_thread(self):
-        main_thread = threading.main_thread()
-        main_thread.join()
-        self._exit()
 
     def _display(self):
 
@@ -436,12 +424,3 @@ class _Plotter(metaclass=Singleton):
 
 
 plotter = _Plotter()
-
-
-def signal_handler(sig, frame):
-    plotter._exit()
-    sys.exit(0)
-
-
-# Need to associate ctrl+z signal
-# signal.signal(signal.SIGINT, signal_handler)
