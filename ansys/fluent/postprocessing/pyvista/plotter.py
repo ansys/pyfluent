@@ -1,10 +1,9 @@
-import sys
 import threading
-#import signal
 from typing import Optional
 import numpy as np
 from pyvistaqt import BackgroundPlotter
 import pyvista as pv
+from ansys.fluent.session import Session
 
 
 class Singleton(type):
@@ -54,8 +53,9 @@ class _Plotter(metaclass=Singleton):
             self.__active_plotter = self.__plotters.get(plotter_id)
 
         if not self.__plotter_thread:
+            Session._monitor_thread.cbs.append(self._exit)
             self.__plotter_thread = threading.Thread(
-                target=self._display, args=(), daemon=True
+                target=self._display, args=()
             )
             self.__plotter_thread.start()
 
@@ -78,7 +78,20 @@ class _Plotter(metaclass=Singleton):
         self.__active_plotter.background_color = "white"
         self.__active_plotter.theme.font.color = "black"
 
+    def _scalar_bar_default_properties(self):
+        return dict(
+            title_font_size=20,
+            label_font_size=16,
+            shadow=True,
+            fmt="%.6e",
+            font_family="arial",
+            vertical=True,
+            position_x=0.06,
+            position_y=0.3,
+        )
+
     def _display(self):
+
         while True:
             with self.__condition:
                 if self.__exit:
@@ -99,10 +112,89 @@ class _Plotter(metaclass=Singleton):
         with self.__condition:
             for plotter in self.__plotters.values():
                 plotter.close()
-            self.__active_plotter.app.quit()
+                plotter.app.quit()
+
             self.__active_plotter = None
             self.__plotters.clear()
             self.__condition.notify()
+
+    def _display_vector(self, obj):
+
+        if not obj.surfaces_list():
+            raise RuntimeError("Vector definition is incomplete.")
+
+        field_data = obj.session.field_data
+
+        # surface ids
+        surfaces_info = field_data.get_surfaces_info()
+        surface_ids = [
+            id
+            for surf in obj.surfaces_list()
+            for id in surfaces_info[surf]["surface_id"]
+        ]
+
+        # field
+        field = "velocity-magnitude"
+
+        # scalar bar properties
+        scalar_bar_args = self._scalar_bar_default_properties()
+
+        # get vector field data
+        vector_field_data = obj.session.field_data.get_vector_field(
+            surface_ids, obj.vectors_of()
+        )
+        plotter = self.__active_plotter
+        for surface_id, mesh_data in vector_field_data.items():
+            vector_scale = mesh_data["vector_scale"]
+            topology = "line" if mesh_data["faces"][0] == 2 else "face"
+            if topology == "line":
+                mesh = pv.PolyData(
+                    mesh_data["vertices"],
+                    lines=mesh_data["faces"],
+                )
+            else:
+                mesh = pv.PolyData(
+                    mesh_data["vertices"],
+                    faces=mesh_data["faces"],
+                )
+            mesh.cell_data["vectors"] = mesh_data["vector"]
+            velocity_magnitude = np.linalg.norm(mesh_data["vector"], axis=1)
+            if obj.range_option.range_option() == "auto-range-off":
+                auto_range_off = obj.range_option.auto_range_off
+                range = [auto_range_off.minimum(), auto_range_off.maximum()]
+                if auto_range_off.clip_to_range():
+                    velocity_magnitude = np.ma.masked_outside(
+                        velocity_magnitude,
+                        auto_range_off.minimum(),
+                        auto_range_off.maximum(),
+                    ).filled(fill_value=0)
+            else:
+                auto_range_on = obj.range_option.auto_range_on
+                if auto_range_on.global_range():
+                    range = obj.session.field_data.get_range(field, False)
+                else:
+                    range = obj.session.field_data.get_range(
+                        field, False, surface_ids
+                    )
+
+            if obj.skip():
+                vmag = np.zeros(velocity_magnitude.size)
+                vmag[:: obj.skip() + 1] = velocity_magnitude[:: obj.skip() + 1]
+                velocity_magnitude = vmag
+            mesh.cell_data["Velocity Magnitude"] = velocity_magnitude
+            glyphs = mesh.glyph(
+                orient="vectors",
+                scale="Velocity Magnitude",
+                factor=vector_scale * obj.scale(),
+                geom=pv.Arrow(),
+            )
+            plotter.add_mesh(
+                glyphs,
+                scalar_bar_args=scalar_bar_args,
+                clim=range,
+            )
+            if obj.show_edges():
+                plotter.add_mesh(mesh, show_edges=True, color="white")
 
     def _display_contour(self, obj):
         if not obj.surfaces_list() or not obj.field():
@@ -117,16 +209,7 @@ class _Plotter(metaclass=Singleton):
         boundary_values = obj.boundary_values()
 
         # scalar bar properties
-        scalar_bar_args = dict(
-            title_font_size=20,
-            label_font_size=16,
-            shadow=True,
-            fmt="%.6e",
-            font_family="arial",
-            vertical=True,
-            position_x=0.06,
-            position_y=0.3,
-        )
+        scalar_bar_args = self._scalar_bar_default_properties()
 
         field_data = obj.session.field_data
         surfaces_info = field_data.get_surfaces_info()
@@ -146,23 +229,23 @@ class _Plotter(metaclass=Singleton):
         plotter = self.__active_plotter
 
         # loop over all meshes
-        for mesh_data in scalar_field_data:
+        for surface_id, mesh_data in scalar_field_data.items():
 
-            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
+            topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    lines=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    lines=mesh_data["faces"],
                 )
             else:
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    faces=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    faces=mesh_data["faces"],
                 )
             if node_values:
-                mesh.point_data[field] = np.array(mesh_data["scalar_field"])
+                mesh.point_data[field] = mesh_data["scalar_field"]
             else:
-                mesh.cell_data[field] = np.array(mesh_data["scalar_field"])
+                mesh.cell_data[field] = mesh_data["scalar_field"]
             if not meta_data:
                 meta_data = mesh_data["meta_data"]
 
@@ -294,17 +377,17 @@ class _Plotter(metaclass=Singleton):
             for id in surfaces_info[surf]["surface_id"]
         ]
         surfaces_data = field_data.get_surfaces(surface_ids)
-        for mesh_data in surfaces_data:
-            topology = "line" if mesh_data["faces"][0][0] == 2 else "face"
+        for surface_id, mesh_data in surfaces_data.items():
+            topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    lines=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    lines=mesh_data["faces"],
                 )
             else:
                 mesh = pv.PolyData(
-                    np.array(mesh_data["vertices"]),
-                    faces=np.hstack(mesh_data["faces"]),
+                    mesh_data["vertices"],
+                    faces=mesh_data["faces"],
                 )
             self.__active_plotter.add_mesh(
                 mesh, show_edges=obj.show_edges(), color="lightgrey"
@@ -312,39 +395,31 @@ class _Plotter(metaclass=Singleton):
 
     def _get_refresh_for_plotter(self, plotter_id: str):
         def refresh():
+
             with self.__condition:
                 obj = self.__graphics.get(plotter_id)
                 if not obj:
-                    self.__condition.notify()
                     return
-
                 del self.__graphics[plotter_id]
                 plotter = self.__active_plotter
                 plotter.clear()
 
                 camera = plotter.camera.copy()
-
-                if obj.__class__.__name__ == "Mesh":
-                    self._display_mesh(obj)
-                elif obj.__class__.__name__ == "Surface":
-                    if obj.surface_type.surface_type() == "iso-surface":
-                        self._display_iso_surface(obj)
-                elif obj.__class__.__name__ == "Contour":
-                    self._display_contour(obj)
-
+                try:
+                    if obj.__class__.__name__ == "Mesh":
+                        self._display_mesh(obj)
+                    elif obj.__class__.__name__ == "Surface":
+                        if obj.surface_type.surface_type() == "iso-surface":
+                            self._display_iso_surface(obj)
+                    elif obj.__class__.__name__ == "Contour":
+                        self._display_contour(obj)
+                    elif obj.__class__.__name__ == "Vector":
+                        self._display_vector(obj)
+                finally:
+                    self.__condition.notify()
                 plotter.camera = camera.copy()
-                self.__condition.notify()
 
         return refresh
 
 
 plotter = _Plotter()
-
-
-def signal_handler(sig, frame):
-    plotter._exit()
-    sys.exit(0)
-
-
-# Need to associate ctrl+z signal
-# signal.signal(signal.SIGINT, signal_handler)

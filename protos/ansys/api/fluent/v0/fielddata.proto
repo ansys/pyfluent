@@ -12,6 +12,7 @@ service FieldData
 {
   rpc GetRange(GetRangeRequest) returns (GetRangeResponse) {}
   rpc GetSurfacesInfo(GetSurfacesInfoRequest) returns (GetSurfacesInfoResponse) {}
+  rpc GetVectorFieldsInfo(GetVectorFieldsInfoRequest) returns (GetVectorFieldsInfoResponse) {}
   rpc GetFieldsInfo(GetFieldsInfoRequest) returns (GetFieldsInfoResponse) {}
   rpc GetSurfaces(GetSurfacesRequest) returns (stream GetSurfacesResponse) {}
   rpc GetScalarField(GetScalarFieldRequest) returns (stream GetScalarFieldResponse) {}
@@ -142,6 +143,24 @@ message GetFieldsInfoRequest
 message GetFieldsInfoResponse
 {
   repeated FieldInfo fieldInfo = 1;
+}
+
+message GetVectorFieldsInfoRequest
+{
+
+}
+message VectorFieldInfo
+{
+  string displayName = 1;
+  string xComponent = 2;
+  string yComponent = 3;
+  string zComponent = 4;
+  bool isCustomVector = 5;
+}
+
+message GetVectorFieldsInfoResponse
+{
+  repeated VectorFieldInfo vectorFieldInfo = 1;
 }
 
 message GetSurfacesInfoRequest
