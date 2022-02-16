@@ -1,10 +1,13 @@
 """
 Wrapper to settings grpc service of Fluent
 """
+from typing import Any, List
+
+import grpc
+
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
-
-from typing import List, Any
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 trace = False
 _indent = 0
@@ -36,7 +39,11 @@ class SettingsService:
     Service for accessing and modifying Fluent settings
     """
     def __init__(self, channel, metadata):
-        self.__stub = SettingsGrpcModule.SettingsStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 
     @_trace

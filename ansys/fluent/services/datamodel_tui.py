@@ -3,10 +3,11 @@
 import keyword
 from typing import Any, List, Tuple
 
+import grpc
+
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-
-import grpc
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 Path = List[Tuple[str, str]]
 
@@ -18,7 +19,11 @@ class DatamodelService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = DataModelGrpcModule.DataModelStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
     def get_attribute_value(self, request):

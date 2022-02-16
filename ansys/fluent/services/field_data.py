@@ -1,13 +1,20 @@
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
 import grpc
 import numpy as np
+
 from ansys.api.fluent.v0 import fielddata_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 
 class FieldDataService:
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = FieldGrpcModule.FieldDataStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
     def get_surfaces(self, request):

@@ -4,10 +4,11 @@ import itertools
 from enum import Enum
 from typing import Any, Iterator, List, Tuple
 
+import grpc
+
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
-
-import grpc
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 Path = List[Tuple[str, str]]
 
@@ -51,7 +52,11 @@ class DatamodelService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = DataModelGrpcModule.DataModelStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
     def initialize_datamodel(self, request):
