@@ -7,30 +7,92 @@ import grpc
 
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
+from ansys.fluent.services.error_handler import catch_grpc_error
 from ansys.fluent.services.interceptors import TracingInterceptor
+
+
+class _SettingsServiceImpl:
+    def __init__(self, channel: grpc.Channel, metadata):
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
+        self.__metadata = metadata
+
+    @catch_grpc_error(SettingsModule.SetVarResponse)
+    def set_var(self, request):
+        return self.__stub.SetVar(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.GetVarResponse)
+    def get_var(self, request):
+        return self.__stub.GetVar(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.RenameResponse)
+    def rename(self, request):
+        return self.__stub.Rename(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.CreateResponse)
+    def create(self, request):
+        return self.__stub.Create(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.DeleteResponse)
+    def delete(self, request):
+        return self.__stub.Delete(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.GetObjectNamesResponse)
+    def get_object_names(self, request):
+        return self.__stub.GetObjectNames(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.GetListSizeResponse)
+    def get_list_size(self, request):
+        return self.__stub.GetListSize(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.ResizeListObjectResponse)
+    def resize_list_object(self, request):
+        return self.__stub.ResizeListObject(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.GetObjectStaticInfoResponse)
+    def get_obj_static_info(self, request):
+        return self.__stub.GetObjectStaticInfo(
+            request, metadata=self.__metadata
+        )
+
+    @catch_grpc_error(SettingsModule.ExecuteCommandResponse)
+    def execute_cmd(self, request):
+        return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
+
+    @catch_grpc_error(SettingsModule.GetAttrsResponse)
+    def get_attrs(self, request):
+        return self.__stub.GetAttrs(request, metadata=self.__metadata)
+
 
 trace = False
 _indent = 0
+
+
 def _trace(fn):
     def _fn(self, *args, **kwds):
         global _indent
         if trace:
-            print (f"{' '*_indent}fn={fn.__name__}, args={args} {{")
+            print(f"{' '*_indent}fn={fn.__name__}, args={args} {{")
             try:
                 _indent += 1
                 ret = fn(self, *args, **kwds)
             finally:
                 _indent -= 1
-            print (f"{' '*_indent}fn = {fn.__name__}, ret={ret} }}")
+            print(f"{' '*_indent}fn = {fn.__name__}, ret={ret} }}")
             return ret
         else:
             return fn(self, *args, **kwds)
+
     return _fn
+
 
 def _get_request_instance_for_path(request_class, path):
     request = request_class()
     request.path_info.path = path
-    request.path_info.root = 'fluent'
+    request.path_info.root = "fluent"
     return request
 
 
@@ -38,13 +100,9 @@ class SettingsService:
     """
     Service for accessing and modifying Fluent settings
     """
+
     def __init__(self, channel, metadata):
-        tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(
-            channel, tracing_interceptor
-        )
-        self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
-        self.__metadata = metadata
+        self.__service_impl = _SettingsServiceImpl(channel, metadata)
 
     @_trace
     def _set_state_from_value(self, state, value):
@@ -65,21 +123,24 @@ class SettingsService:
 
     @_trace
     def _get_state_from_value(self, state):
-        t = state.WhichOneof('value')
-        if t == 'boolean':
+        t = state.WhichOneof("value")
+        if t == "boolean":
             return state.boolean
-        elif t == 'integer':
+        elif t == "integer":
             return state.integer
-        elif t == 'real':
+        elif t == "real":
             return state.real
-        elif t == 'string':
+        elif t == "string":
             return state.string
-        elif t == 'value_list':
-            return [self._get_state_from_value(v)
-                    for v in state.value_list.lst]
-        elif t == 'value_map':
-            return {k : self._get_state_from_value(v) for k, v in
-                    state.value_map.m.items()}
+        elif t == "value_list":
+            return [
+                self._get_state_from_value(v) for v in state.value_list.lst
+            ]
+        elif t == "value_map":
+            return {
+                k: self._get_state_from_value(v)
+                for k, v in state.value_map.m.items()
+            }
         else:
             return None
 
@@ -89,10 +150,10 @@ class SettingsService:
         Set the value for the given path
         """
         request = _get_request_instance_for_path(
-                SettingsModule.SetVarRequest,
-                path)
+            SettingsModule.SetVarRequest, path
+        )
         self._set_state_from_value(request.value, value)
-        self.__stub.SetVar(request, metadata=self.__metadata)
+        self.__service_impl.set_var(request)
 
     @_trace
     def get_var(self, path: str) -> Any:
@@ -100,9 +161,9 @@ class SettingsService:
         Get the value for the given path
         """
         request = _get_request_instance_for_path(
-                SettingsModule.GetVarRequest,
-                path)
-        response = self.__stub.GetVar(request, metadata=self.__metadata)
+            SettingsModule.GetVarRequest, path
+        )
+        response = self.__service_impl.get_var(request)
         return self._get_state_from_value(response.value)
 
     @_trace
@@ -111,12 +172,12 @@ class SettingsService:
         Rename the object at the given path
         """
         request = _get_request_instance_for_path(
-                SettingsModule.RenameRequest,
-                path)
+            SettingsModule.RenameRequest, path
+        )
         request.old_name = old
         request.new_name = new
 
-        self.__stub.Rename(request, metadata=self.__metadata)
+        self.__service_impl.rename(request)
 
     @_trace
     def create(self, path: str, name: str):
@@ -124,11 +185,11 @@ class SettingsService:
         Create a new named object child for the given path
         """
         request = _get_request_instance_for_path(
-                SettingsModule.CreateRequest,
-                path)
+            SettingsModule.CreateRequest, path
+        )
         request.name = name
 
-        self.__stub.Create(request, metadata=self.__metadata)
+        self.__service_impl.create(request)
 
     @_trace
     def delete(self, path: str, name: str):
@@ -136,11 +197,11 @@ class SettingsService:
         Delete the object with the given name at the give path
         """
         request = _get_request_instance_for_path(
-                SettingsModule.DeleteRequest,
-                path)
+            SettingsModule.DeleteRequest, path
+        )
         request.name = name
 
-        self.__stub.Delete(request, metadata=self.__metadata)
+        self.__service_impl.delete(request)
 
     @_trace
     def get_object_names(self, path: str) -> List[int]:
@@ -148,10 +209,9 @@ class SettingsService:
         Get the list of named objects
         """
         request = _get_request_instance_for_path(
-                SettingsModule.GetObjectNamesRequest,
-                path)
-        return self.__stub.GetObjectNames(request,
-                metadata=self.__metadata).names
+            SettingsModule.GetObjectNamesRequest, path
+        )
+        return self.__service_impl.get_object_names(request).names
 
     @_trace
     def get_list_size(self, path: str) -> int:
@@ -159,10 +219,9 @@ class SettingsService:
         Get the number of elements in a list object
         """
         request = _get_request_instance_for_path(
-                SettingsModule.GetListSizeRequest,
-                path)
-        return self.__stub.GetListSize(request,
-                metata=self.__metadata).size
+            SettingsModule.GetListSizeRequest, path
+        )
+        return self.__service_impl.get_list_size(request).size
 
     @_trace
     def resize_list_object(self, path: str, size: int):
@@ -170,35 +229,36 @@ class SettingsService:
         Resize a list object
         """
         request = _get_request_instance_for_path(
-                SettingsModule.ResizeListObjectRequest,
-                path)
+            SettingsModule.ResizeListObjectRequest, path
+        )
         request.size = size
-        return self.__stub.ResizeListObject(request,
-                metadata=self.__metadata)
+        return self.__service_impl.resize_list_object(request)
 
     @_trace
     def _extract_info(self, info):
         ret = {}
-        ret['type'] = info.type
+        ret["type"] = info.type
         if info.children:
-            ret['children'] = { k : self._extract_info(v)
-                    for k, v in info.children.items() }
+            ret["children"] = {
+                k: self._extract_info(v) for k, v in info.children.items()
+            }
         if info.commands:
-            ret['commands'] = { k : self._extract_info(v)
-                    for k, v in info.commands.items() }
+            ret["commands"] = {
+                k: self._extract_info(v) for k, v in info.commands.items()
+            }
         if info.arguments:
-            ret['arguments'] = { k : self._extract_info(v)
-                    for k, v in info.arguments.items() }
-        if info.HasField('object_type'):
-            ret['object-type'] = self._extract_info(info.object_type)
+            ret["arguments"] = {
+                k: self._extract_info(v) for k, v in info.arguments.items()
+            }
+        if info.HasField("object_type"):
+            ret["object-type"] = self._extract_info(info.object_type)
         return ret
 
     @_trace
     def get_obj_static_info(self):
         request = SettingsModule.GetObjectStaticInfoRequest()
-        request.root = 'fluent'
-        response = self.__stub.GetObjectStaticInfo(request,
-                metadata=self.__metadata)
+        request.root = "fluent"
+        response = self.__service_impl.get_obj_static_info(request)
 
         return self._extract_info(response.info)
 
@@ -208,13 +268,12 @@ class SettingsService:
         Execute a command of given name with the provided keyword arguments
         """
         request = _get_request_instance_for_path(
-                SettingsModule.ExecuteCommandRequest,
-                path)
+            SettingsModule.ExecuteCommandRequest, path
+        )
         request.command = command
         self._set_state_from_value(request.args, kwds)
 
-        response = self.__stub.ExecuteCommand(request,
-                metadata=self.__metadata)
+        response = self.__service_impl.execute_cmd(request)
         return self._get_state_from_value(response.reply)
 
     @_trace
@@ -223,10 +282,9 @@ class SettingsService:
         Return values of given attributes
         """
         request = _get_request_instance_for_path(
-                SettingsModule.GetAttrsRequest,
-                path)
+            SettingsModule.GetAttrsRequest, path
+        )
         request.attrs[:] = attrs
 
-        response = self.__stub.GetAttrs(request,
-                metadata=self.__metadata)
+        response = self.__service_impl.get_attrs(request)
         return self._get_state_from_value(response.values)

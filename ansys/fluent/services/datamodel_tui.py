@@ -7,6 +7,7 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
+from ansys.fluent.services.error_handler import catch_grpc_error
 from ansys.fluent.services.interceptors import TracingInterceptor
 
 Path = List[Tuple[str, str]]
@@ -26,18 +27,23 @@ class DatamodelService:
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
+    @catch_grpc_error(DataModelProtoModule.GetAttributeValueResponse)
     def get_attribute_value(self, request):
         return self.__stub.GetAttributeValue(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.GetAttributeValueResponse)
     def get_state(self, request):
         return self.__stub.GetState(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.SetStateResponse)
     def set_state(self, request):
         return self.__stub.SetState(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.ExecuteCommandResponse)
     def execute_command(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.ExecuteQueryResponse)
     def execute_query(self, request):
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 

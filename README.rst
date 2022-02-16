@@ -41,7 +41,7 @@ Settings objects provide a more natural way to access and modify Fluent settings
       'option' : 'constant or expression',
       'constant' : 1.2
       }
-  session.solution.initialize.standard_initialize()
+  session.solution.initialization.standard_initialize()
 
 
 Meshing TUI and workflow
