@@ -1,6 +1,6 @@
 PyFluent
 ========
-Fluent's SolverAPI exposed in Python
+Fluent's Solver and Meshing capabilities exposed in Python
 
 Installation
 ------------
