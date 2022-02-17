@@ -8,13 +8,14 @@ install:
 	@python setup.py bdist_wheel
 	@pip install dist/*.whl
 
+install-pyvistaqt-requirements:
+	@sudo apt-get update
+	@sudo apt-get install libegl1 -y
+
 test-import:
 	@python -c "import ansys.fluent.solver as pyfluent"
 
-test-post-import:
-	@python -c "import ansys.fluent.postprocessing.pyvista as pv"
-  
 unittest:
 	@echo "Running unittest"
 	@pip install -r requirements_test.txt
-	@pytest -v
+	@pytest -v --cov=ansys.fluent --cov-report=term
