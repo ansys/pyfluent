@@ -11,8 +11,6 @@ try:
 except ImportError:
     pass
 
-import ansys.fluent.postprocessing.pyvista as pv  # noqa: F401
-
 
 def set_log_level(level):
     """Set logging level
