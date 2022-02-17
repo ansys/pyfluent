@@ -145,7 +145,9 @@ class _Plotter(metaclass=Singleton):
         )
         plotter = self.__active_plotter
         for surface_id, mesh_data in vector_field_data.items():
-            vector_scale = mesh_data["vector_scale"]
+            mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
+            mesh_data["vector"].shape = mesh_data["vector"].size // 3, 3
+            vector_scale = mesh_data["vector-scale"][0]
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
@@ -225,12 +227,11 @@ class _Plotter(metaclass=Singleton):
             node_values,
             boundary_values,
         )
-        meta_data = None
         plotter = self.__active_plotter
 
         # loop over all meshes
         for surface_id, mesh_data in scalar_field_data.items():
-
+            mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(
@@ -243,12 +244,9 @@ class _Plotter(metaclass=Singleton):
                     faces=mesh_data["faces"],
                 )
             if node_values:
-                mesh.point_data[field] = mesh_data["scalar_field"]
+                mesh.point_data[field] = mesh_data[field]
             else:
-                mesh.cell_data[field] = mesh_data["scalar_field"]
-            if not meta_data:
-                meta_data = mesh_data["meta_data"]
-
+                mesh.cell_data[field] = mesh_data[field]
             if range_option == "auto-range-off":
                 auto_range_off = obj.range_option.auto_range_off
                 if auto_range_off.clip_to_range():
@@ -303,10 +301,9 @@ class _Plotter(metaclass=Singleton):
                     if filled:
                         plotter.add_mesh(
                             mesh,
-                            clim=[
-                                meta_data.scalarFieldrange.globalmin,
-                                meta_data.scalarFieldrange.globalmax,
-                            ],
+                            clim=obj.session.field_data.get_range(
+                                field, False
+                            ),
                             scalars=field,
                             show_edges=obj.show_edges(),
                             scalar_bar_args=scalar_bar_args,
@@ -378,6 +375,7 @@ class _Plotter(metaclass=Singleton):
         ]
         surfaces_data = field_data.get_surfaces(surface_ids)
         for surface_id, mesh_data in surfaces_data.items():
+            mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
                 mesh = pv.PolyData(

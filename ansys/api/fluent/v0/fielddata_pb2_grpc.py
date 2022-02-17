@@ -14,6 +14,11 @@ class FieldDataStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.GetFields = channel.unary_stream(
+                '/grpcRemoting.FieldData/GetFields',
+                request_serializer=fielddata__pb2.GetFieldsRequest.SerializeToString,
+                response_deserializer=fielddata__pb2.GetFieldsResponse.FromString,
+                )
         self.GetRange = channel.unary_unary(
                 '/grpcRemoting.FieldData/GetRange',
                 request_serializer=fielddata__pb2.GetRangeRequest.SerializeToString,
@@ -69,62 +74,79 @@ class FieldDataStub(object):
 class FieldDataServicer(object):
     """Missing associated documentation comment in .proto file."""
 
+    def GetFields(self, request, context):
+        """Get fields e.g. scalar, vector, surfaces etc in a single request.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetRange(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get scalar field range.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSurfacesInfo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get surfaces info.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetVectorFieldsInfo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get vector fields info.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetFieldsInfo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get scalar fields info.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetSurfaces(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get surfaces data.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetScalarField(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get scalar field data.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetVectorField(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get vector field data.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetPathlinesField(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get pathlines field data.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetParticleTracksField(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Get particle tracks field data.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def IsBoundaryValuesOn(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Check if boundary values are on.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -132,6 +154,11 @@ class FieldDataServicer(object):
 
 def add_FieldDataServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'GetFields': grpc.unary_stream_rpc_method_handler(
+                    servicer.GetFields,
+                    request_deserializer=fielddata__pb2.GetFieldsRequest.FromString,
+                    response_serializer=fielddata__pb2.GetFieldsResponse.SerializeToString,
+            ),
             'GetRange': grpc.unary_unary_rpc_method_handler(
                     servicer.GetRange,
                     request_deserializer=fielddata__pb2.GetRangeRequest.FromString,
@@ -191,6 +218,23 @@ def add_FieldDataServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class FieldData(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetFields(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/grpcRemoting.FieldData/GetFields',
+            fielddata__pb2.GetFieldsRequest.SerializeToString,
+            fielddata__pb2.GetFieldsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetRange(request,

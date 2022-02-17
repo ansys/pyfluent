@@ -8,7 +8,6 @@ from ansys.fluent.solver.meta import (
     PyLocalContainer,
 )
 
-
 class Graphics:
     """
     Graphics objects provider.
