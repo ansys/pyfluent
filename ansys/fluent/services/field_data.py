@@ -1,35 +1,50 @@
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
 import grpc
 import numpy as np
+
 from ansys.api.fluent.v0 import fielddata_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
+from ansys.fluent.services.error_handler import catch_grpc_error
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 
 class FieldDataService:
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = FieldGrpcModule.FieldDataStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
+    @catch_grpc_error(FieldDataProtoModule.GetSurfacesResponse)
     def get_surfaces(self, request):
         return self.__stub.GetSurfaces(request, metadata=self.__metadata)
 
+    @catch_grpc_error(FieldDataProtoModule.GetRangeResponse)
     def get_range(self, request):
         return self.__stub.GetRange(request, metadata=self.__metadata)
 
+    @catch_grpc_error(FieldDataProtoModule.GetScalarFieldResponse)
     def get_scalar_field(self, request):
         return self.__stub.GetScalarField(request, metadata=self.__metadata)
 
+    @catch_grpc_error(FieldDataProtoModule.GetVectorFieldResponse)
     def get_vector_field(self, request):
         return self.__stub.GetVectorField(request, metadata=self.__metadata)
 
+    @catch_grpc_error(FieldDataProtoModule.GetFieldsInfoResponse)
     def get_fields_info(self, request):
         return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
 
+    @catch_grpc_error(FieldDataProtoModule.GetVectorFieldsInfoResponse)
     def get_vector_fields_info(self, request):
         return self.__stub.GetVectorFieldsInfo(
             request, metadata=self.__metadata
         )
 
+    @catch_grpc_error(FieldDataProtoModule.GetSurfacesInfoResponse)
     def get_surfaces_info(self, request):
         return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
 

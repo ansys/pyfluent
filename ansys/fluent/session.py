@@ -150,7 +150,7 @@ class Session:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    LOG.debug(transcript[0:-1])
+                    LOG.info(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break

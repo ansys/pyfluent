@@ -4,10 +4,12 @@ import itertools
 from enum import Enum
 from typing import Any, Iterator, List, Tuple
 
+import grpc
+
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
-
-import grpc
+from ansys.fluent.services.error_handler import catch_grpc_error
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 Path = List[Tuple[str, str]]
 
@@ -51,27 +53,38 @@ class DatamodelService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = DataModelGrpcModule.DataModelStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
+    @catch_grpc_error(DataModelProtoModule.InitDatamodelResponse)
     def initialize_datamodel(self, request):
         return self.__stub.initDatamodel(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.GetAttributeValueResponse)
     def get_attribute_value(self, request):
         return self.__stub.getAttributeValue(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.GetStateResponse)
     def get_state(self, request):
         return self.__stub.getState(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.SetStateResponse)
     def set_state(self, request):
         return self.__stub.setState(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.DeleteObjectResponse)
     def delete_object(self, request):
         return self.__stub.deleteObject(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.ExecuteCommandResponse)
     def execute_command(self, request):
         return self.__stub.executeCommand(request, metadata=self.__metadata)
 
+    @catch_grpc_error(DataModelProtoModule.GetSpecsResponse)
     def get_specs(self, request):
         return self.__stub.getSpecs(request, metadata=self.__metadata)
 
