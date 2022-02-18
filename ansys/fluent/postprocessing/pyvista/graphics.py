@@ -8,6 +8,7 @@ from ansys.fluent.solver.meta import (
     PyLocalContainer,
 )
 
+
 class Graphics:
     """
     Graphics objects provider.
@@ -20,7 +21,11 @@ class Graphics:
     def _init_module(self, obj, mod):
         for name, cls in mod.__dict__.items():
             if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
-                setattr(obj, cls.PLURAL, PyLocalContainer(obj, cls))
+                setattr(
+                    obj,
+                    cls.PLURAL,
+                    PyLocalContainer(self, cls),
+                )
 
 
 class Mesh(metaclass=PyLocalNamedObjectMeta):
@@ -34,7 +39,7 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
         """
         Display mesh graphics.
         """
-        plotter.plot_graphics(self, plotter_id)
+        plotter.plot(self, plotter_id)
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """
@@ -43,7 +48,10 @@ class Mesh(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(self.session.field_data.get_surfaces_info().keys())
+            return list(
+                (self.parent.parent.parent.
+                session.field_data.get_surfaces_info().keys())
+            )
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -64,7 +72,7 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
         """
         Display contour graphics.
         """
-        plotter.plot_graphics(self, plotter_id)
+        plotter.plot(self, plotter_id)
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """
@@ -109,10 +117,11 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
 
                 @Attribute
                 def allowed_values(self):
+                    field_data = (self.parent.parent.parent.parent.
+                                 parent.session.field_data)
                     return [
                         v["solver_name"]
-                        for k, v in self.session.field_data.get_fields_info()
-                        .items()
+                        for k, v in field_data.get_fields_info().items()
                     ]
 
             class rendering(metaclass=PyLocalPropertyMeta):
@@ -149,7 +158,8 @@ class Surface(metaclass=PyLocalNamedObjectMeta):
                 def range(self):
                     field = self.parent.field()
                     if field:
-                        return self.session.field_data.get_range(field, True)
+                        return (self.parent.parent.parent.parent.parent.
+                        session.field_data.get_range(field, True))
 
 
 class Contour(metaclass=PyLocalNamedObjectMeta):
@@ -163,7 +173,7 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
         """
         Display Contour graphics.
         """
-        plotter.plot_graphics(self, plotter_id)
+        plotter.plot(self, plotter_id)
 
     class field(metaclass=PyLocalPropertyMeta):
         """
@@ -172,9 +182,10 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
+            field_data = self.parent.parent.parent.session.field_data
             return [
                 v["solver_name"]
-                for k, v in self.session.field_data.get_fields_info().items()
+                for k, v in field_data.get_fields_info().items()
             ]
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -184,7 +195,10 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(self.session.field_data.get_surfaces_info().keys())
+            return list(
+                self.parent.parent.parent.
+                session.field_data.get_surfaces_info().keys()
+            )
 
     class filled(metaclass=PyLocalPropertyMeta):
         """
@@ -281,9 +295,12 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                     if getattr(self, "_value", None) == None:
                         field = self.parent.parent.parent.field()
                         if field:
-                            field_range = self.session.field_data.get_range(
-                                field,
-                                self.parent.parent.parent.node_values(),
+                            field_data = (self.parent.parent.parent.parent.
+                                          parent.session.field_data)
+                            field_range = field_data.get_range(
+                                          field,
+                                          self.parent.parent.parent.
+                                          node_values()
                             )
                             self._value = field_range[0]
                     return self._value
@@ -308,7 +325,9 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                     if getattr(self, "_value", None) == None:
                         field = self.parent.parent.parent.field()
                         if field:
-                            field_range = self.session.field_data.get_range(
+                            field_data = (self.parent.parent.parent.parent.
+                                          parent.session.field_data)
+                            field_range = field_data.get_range(
                                 field,
                                 self.parent.parent.parent.node_values(),
                             )
@@ -332,7 +351,7 @@ class Vector(metaclass=PyLocalNamedObjectMeta):
         """
         Display vector graphics.
         """
-        plotter.plot_graphics(self, plotter_id)
+        plotter.plot(self, plotter_id)
 
     class vectors_of(metaclass=PyLocalPropertyMeta):
         """
@@ -344,7 +363,8 @@ class Vector(metaclass=PyLocalNamedObjectMeta):
         @Attribute
         def allowed_values(self):
             return list(
-                self.session.field_data.get_vector_fields_info().keys()
+                self.parent.parent.parent.session.
+                field_data.get_vector_fields_info().keys()
             )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -354,7 +374,10 @@ class Vector(metaclass=PyLocalNamedObjectMeta):
 
         @Attribute
         def allowed_values(self):
-            return list(self.session.field_data.get_surfaces_info().keys())
+            return list(
+                self.parent.parent.parent.session.
+                field_data.get_surfaces_info().keys()
+            )
 
     class scale(metaclass=PyLocalPropertyMeta):
         """
@@ -429,7 +452,9 @@ class Vector(metaclass=PyLocalNamedObjectMeta):
                 @property
                 def value(self):
                     if getattr(self, "_value", None) == None:
-                        field_range = self.session.field_data.get_range(
+                        field_data = (self.parent.parent.parent.parent.
+                                      parent.session.field_data)
+                        field_range = field_data.get_range(
                             "velocity-magnitude",
                             False,
                         )
@@ -448,7 +473,9 @@ class Vector(metaclass=PyLocalNamedObjectMeta):
                 @property
                 def value(self):
                     if getattr(self, "_value", None) == None:
-                        field_range = self.session.field_data.get_range(
+                        field_data = (self.parent.parent.parent.parent.
+                                      parent.session.field_data)
+                        field_range = field_data.get_range(
                             "velocity-magnitude",
                             False,
                         )
