@@ -59,6 +59,13 @@ class _SettingsServiceImpl:
         )
 
     @catch_grpc_error
+    @catch_grpc_error(SettingsModule.GetStaticInfoResponse)
+    def get_static_info(self, request):
+        return self.__stub.GetStaticInfo(
+            request, metadata=self.__metadata
+        )
+
+    @catch_grpc_error(SettingsModule.ExecuteCommandResponse)
     def execute_cmd(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
@@ -66,10 +73,8 @@ class _SettingsServiceImpl:
     def get_attrs(self, request):
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
-
 trace = False
 _indent = 0
-
 
 def _trace(fn):
     def _fn(self, *args, **kwds):
@@ -256,12 +261,45 @@ class SettingsService:
         return ret
 
     @_trace
+    def _extract_static_info(self, info):
+        ret = {}
+        ret["type"] = info.type
+        if info.children:
+            ret["children"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.children
+            }
+        if info.commands:
+            ret["commands"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.commands
+            }
+        if info.arguments:
+            ret["arguments"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.arguments
+            }
+        if info.HasField("object_type"):
+            ret["object-type"] = self._extract_static_info(info.object_type)
+        return ret
+
+    @_trace
     def get_obj_static_info(self):
         request = SettingsModule.GetObjectStaticInfoRequest()
         request.root = "fluent"
         response = self.__service_impl.get_obj_static_info(request)
 
         return self._extract_info(response.info)
+
+    @_trace
+    def get_static_info(self):
+        request = SettingsModule.GetStaticInfoRequest()
+        request.root = "fluent"
+        try: # temporary code to fall back to get_obj_static_info()
+            response = self.__service_impl.get_static_info(request)
+            return self._extract_static_info(response.info)
+        except Exception:
+            return self.get_obj_static_info()
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:

@@ -27,6 +27,16 @@ def parse_server_info_file(filename: str):
         lines = f.readlines()
     return lines[0].strip(), lines[1].strip()
 
+class _SettingProperty:
+    def __init__(self, name):
+        self.name = name
+
+    def __get__(self, instance, owner = None):
+        return getattr(instance.root, self.name)
+
+    def __set__(self, instance, value):
+        return setattr(instance.root, self.name, value)
+
 
 class MonitorThread(threading.Thread):
     """
@@ -135,12 +145,19 @@ class Session:
     def id(self):
         return self.__id
 
-    def setup_settings_objects(self):
-        proxy = SettingsService(self.__channel, self.__metadata)
-        r = flobject.get_root(flproxy=proxy)
-        for k in r.member_names:
-            setattr(self, k, getattr(r, k))
-        self.root = r
+    def get_settings_service(self):
+        """Return an instance of SettingsService object"""
+        return SettingsService(self.__channel, self.__metadata)
+
+    _root = None
+
+    def get_root(self):
+        """Return root settings object"""
+        if self._root is None:
+            self._root = flobject.get_root(
+                    flproxy = self.get_settings_service()
+                    )
+        return self._root
 
     def __log_transcript(self):
         responses = self.__transcript_service.begin_streaming()

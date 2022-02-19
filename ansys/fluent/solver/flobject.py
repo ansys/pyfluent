@@ -16,18 +16,20 @@ is_energy_on = r.setup.models.energy.enabled()
 r.setup.models.energy.enabled = True
 r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
-__all__ = ['get_root']
-
 import collections
-import weakref
+import hashlib
+import keyword
+import pickle
 import string
 import sys
-from typing import Union, List, Dict, Generic, TypeVar
+import weakref
+from typing import Union, List, Tuple, Dict, Generic, TypeVar, NewType
+from ansys.fluent.core import LOG
 
 # Type hints
-RealType = Union[float, str] # constant or expression
+RealType = NewType('real', Union[float, str]) # constant or expression
 RealListType = List[RealType]
-RealVectorType = List[RealType]
+RealVectorType = Tuple[RealType, RealType, RealType]
 IntListType = List[int]
 StringListType = List[str]
 BoolListType = List[bool]
@@ -46,7 +48,10 @@ def to_python_name(scheme_name: str) -> str:
     """
     if not scheme_name:
         return scheme_name
-    return scheme_name.translate(_ttable)
+    name = scheme_name.translate(_ttable)
+    while name in keyword.kwlist:
+        name = name + '_'
+    return name
 
 class Base:
     """
@@ -94,7 +99,7 @@ class Base:
     scheme_name = None
 
     @property
-    def obj_name(self):
+    def obj_name(self) -> str:
         """
         Scheme name of this object.
         By default, this returns the object's static name.
@@ -105,7 +110,7 @@ class Base:
         return self._name
 
     @property
-    def path(self):
+    def path(self) -> str:
         """
         Path of this object.
         Constructed from obj_name of self and path of parent
@@ -117,16 +122,16 @@ class Base:
             return self.obj_name
         return ppath + '/' + self.obj_name
 
-    def get_attrs(self, attrs):
+    def get_attrs(self, attrs) -> DictStateType:
         return self.flproxy.get_attrs(self.path, attrs)
 
-    def get_attr(self, attr):
+    def get_attr(self, attr) -> StateType:
         attrs = self.get_attrs([attr])
         if attr != 'active?' and attrs.get('active?', True) is False:
             raise RuntimeError('Object is not active')
         return attrs[attr]
 
-    def is_active(self):
+    def is_active(self) -> bool:
         return self.get_attr('active?')
 
 StateT = TypeVar('StateT')
@@ -200,6 +205,7 @@ class Integer(SettingsBase[int]):
     """
     An Integer object represents an integer value setting.
     """
+    _state_type = int
 
 class Real(SettingsBase[RealType]):
     """
@@ -207,42 +213,56 @@ class Real(SettingsBase[RealType]):
     Some Real objects also accept string arguments representing expression
     values.
     """
+    _state_type = RealType
 
 class String(SettingsBase[str]):
     """
     A String object represents a string value setting.
     """
+    _state_type = str
+
+class Filename(SettingsBase[str]):
+    """
+    A Filename object represents a file name
+    """
+    _state_type = str
 
 class Boolean(SettingsBase[bool]):
     """
     A Boolean object represents a boolean value setting.
     """
+    _state_type = bool
 
 class RealList(SettingsBase[RealListType]):
     """
     A RealList object represents a real list setting.
     """
+    _state_type = RealListType
 
 class IntegerList(SettingsBase[IntListType]):
     """
     An Integer object represents a integer list setting.
     """
+    _state_type = IntListType
 
 class RealVector(SettingsBase[RealVectorType]):
     """
     A RealVector object represents a real vector setting consisting of
     3 real values.
     """
+    _state_type = RealVectorType
 
 class StringList(SettingsBase[StringListType]):
     """
     A StringList object represents a string list setting.
     """
+    _state_type = StringListType
 
-class BooleanList(SettingsBase[StringListType]):
+class BooleanList(SettingsBase[BoolListType]):
     """
     A BooleanList object represents a boolean list setting.
     """
+    _state_type = BoolListType
 
 class Group(SettingsBase[DictStateType]):
     """
@@ -256,6 +276,8 @@ class Group(SettingsBase[DictStateType]):
     command_names: list[str]
                    Names of the commands
     """
+    _state_type = DictStateType
+
     def __init__(self, name: str = None, parent = None):
         super().__init__(name, parent)
         for member in self.member_names:
@@ -609,7 +631,8 @@ _baseTypes = {
         'command'      : Command,
         'material-property' : String,
         'thread-var'   : String,
-        'list-object' : ListObject,
+        'list-object'  : ListObject,
+        'file'         : Filename,
         }
 
 def get_cls(name, info, parent = None):
@@ -631,8 +654,12 @@ def get_cls(name, info, parent = None):
             if parent is None:
                 dct['__doc__'] = 'root object'
             else:
-                dct['__doc__'] = \
-                        f"'{pname}' member of '{parent.__name__}' object"
+                if obj_type == 'command':
+                    dct['__doc__'] = \
+                            f"'{pname}' command of '{parent.__name__}' object"
+                else:
+                    dct['__doc__'] = \
+                            f"'{pname}' member of '{parent.__name__}' object"
         cls = type(pname, (base,), dct)
 
         children = info.get('children')
@@ -651,25 +678,40 @@ def get_cls(name, info, parent = None):
                 #pylint: disable=no-member
                 cls.command_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
+
         arguments = info.get('arguments')
         if arguments:
+            doc = cls.__doc__
+            doc += '\n\n'
+            doc += 'Parameters\n'
+            doc += '----------\n'
             cls.argument_names = []
             for aname, ainfo in arguments.items():
                 ccls = get_cls(aname, ainfo, cls)
+                th = ccls._state_type
+                th = th.__name__ if hasattr(th, '__name__') else str(th)
+                doc += f'    {ccls.__name__} : {th}\n'
+                doc += f'        {ccls.__doc__}\n'
                 #pylint: disable=no-member
                 cls.argument_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
+            cls.__doc__ = doc
         object_type = info.get('object-type')
         if object_type:
             cls.child_object_type = \
-                    get_cls(cls.__name__ + '-object-type', object_type, cls)
+                    get_cls('child-object-type', object_type, cls)
     except Exception:
         print (f"Unable to construct class for '{name}' of "
                  f"'{parent.scheme_name if parent else None}'")
         raise
     return cls
 
-def get_root(flproxy):
+def _gethash(obj_info):
+    dhash = hashlib.sha256()
+    dhash.update(pickle.dumps(obj_info))
+    return dhash.hexdigest()
+
+def get_root(flproxy) -> Group:
     """
     Get the root settings object.
 
@@ -677,10 +719,22 @@ def get_root(flproxy):
     ----------
     flproxy: Proxy
              Object that interfaces with the Fluent backend
-    """
 
-    obj_info = flproxy.get_obj_static_info()
-    cls = get_cls('', obj_info)
+    Returns
+    -------
+    root object
+    """
+    obj_info = flproxy.get_static_info()
+    try:
+        from ansys.fluent.solver import settings
+        if settings.SHASH != _gethash(obj_info):
+            LOG.warning("Mismatch between generated file and server object "
+                        "info. Dynamically created settings classes will "
+                        "be used.")
+            raise RuntimeError("Mismatch in hash values")
+        cls = settings.root
+    except Exception:
+        cls = get_cls('', obj_info)
     #pylint: disable=no-member
     cls.set_flproxy(flproxy)
     return cls()
