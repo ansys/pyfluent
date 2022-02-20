@@ -5,7 +5,7 @@ import io
 import pytest
 import weakref
 from ansys.fluent.solver import flobject
-import codegen.settingsgen
+#import codegen.settingsgen
 from collections.abc import MutableMapping
 
 class Setting:
@@ -474,7 +474,9 @@ def test_attrs():
         r.g_1.s_4.get_attr('allowed-values') == ['foo', 'bar']
     assert einfo.value.args == ("Object is not active",)
 
-def test_settings_gen():
+# The following test is commented out as codegen module is not packaged in the
+# install
+def _disabled_test_settings_gen():
     info = Proxy().get_static_info()
     cls = flobject.get_cls('', info)
     f = io.StringIO()
