@@ -114,6 +114,3 @@ PyVista (client)
   contour1.display("plotter-2")
 
   session.exit()
-
-
-.. include:: doc/source/api/settings.rst
