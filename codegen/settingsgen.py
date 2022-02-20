@@ -22,54 +22,54 @@ def _gethash(obj_info):
     dhash.update(pickle.dumps(obj_info))
     return dhash.hexdigest()
 
-def _getIndentStr(indent):
+def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 def _write_cls_helper(out, cls, indent = 0):
     try:
-        iStr = _getIndentStr(indent)
-        iStr1 = _getIndentStr(indent+1)
-        iStr2 = _getIndentStr(indent+2)
+        istr = _get_indent_str(indent)
+        istr1 = _get_indent_str(indent+1)
+        istr2 = _get_indent_str(indent+2)
         out.write('\n')
-        out.write(f'{iStr}class {cls.__name__}'
+        out.write(f'{istr}class {cls.__name__}'
                    f'({", ".join(c.__name__ for c in cls.__bases__)}):\n')
 
-        doc = ('\n' + iStr1).join(cls.__doc__.split('\n'))
-        out.write(f'{iStr1}"""\n')
-        out.write(f'{iStr1}{doc}')
-        out.write(f'\n{iStr1}"""\n')
-        out.write(f'{iStr1}scheme_name = "{cls.scheme_name}"\n')
+        doc = ('\n' + istr1).join(cls.__doc__.split('\n'))
+        out.write(f'{istr1}"""\n')
+        out.write(f'{istr1}{doc}')
+        out.write(f'\n{istr1}"""\n')
+        out.write(f'{istr1}scheme_name = "{cls.scheme_name}"\n')
 
         member_names = getattr(cls, 'member_names', None)
         if member_names:
-            out.write(f'{iStr1}member_names = \\\n')
+            out.write(f'{istr1}member_names = \\\n')
             strout = io.StringIO()
             pprint.pprint(member_names, stream=strout, compact=True,
                     width=80-indent*4-10)
-            mn = ('\n' + iStr2).join(strout.getvalue().strip().split('\n'))
-            out.write(f'{iStr2}{mn}\n')
+            mn = ('\n' + istr2).join(strout.getvalue().strip().split('\n'))
+            out.write(f'{istr2}{mn}\n')
             for member in member_names:
                 _write_cls_helper(out, getattr(cls, member), indent+1)
 
         command_names = getattr(cls, 'command_names', None)
         if command_names:
-            out.write(f'{iStr1}command_names = \\\n')
+            out.write(f'{istr1}command_names = \\\n')
             strout = io.StringIO()
             pprint.pprint(command_names, stream=strout, compact=True,
                     width=80-indent*4-10)
-            mn = ('\n' + iStr2).join(strout.getvalue().strip().split('\n'))
-            out.write(f'{iStr2}{mn}\n')
+            mn = ('\n' + istr2).join(strout.getvalue().strip().split('\n'))
+            out.write(f'{istr2}{mn}\n')
             for command in command_names:
                 _write_cls_helper(out, getattr(cls, command), indent+1)
 
         arguments = getattr(cls, 'argument_names', None)
         if arguments:
-            out.write(f'{iStr1}argument_names = \\\n')
+            out.write(f'{istr1}argument_names = \\\n')
             strout = io.StringIO()
             pprint.pprint(arguments, stream=strout, compact=True,
                     width=80-indent*4-10)
-            mn = ('\n' + iStr2).join(strout.getvalue().strip().split('\n'))
-            out.write(f'{iStr2}{mn}\n')
+            mn = ('\n' + istr2).join(strout.getvalue().strip().split('\n'))
+            out.write(f'{istr2}{mn}\n')
             for argument in arguments:
                 _write_cls_helper(out, getattr(cls, argument), indent+1)
         child_object_type = getattr(cls, 'child_object_type', None)

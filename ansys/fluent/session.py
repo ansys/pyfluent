@@ -27,17 +27,6 @@ def parse_server_info_file(filename: str):
         lines = f.readlines()
     return lines[0].strip(), lines[1].strip()
 
-class _SettingProperty:
-    def __init__(self, name):
-        self.name = name
-
-    def __get__(self, instance, owner = None):
-        return getattr(instance.root, self.name)
-
-    def __set__(self, instance, value):
-        return setattr(instance.root, self.name, value)
-
-
 class MonitorThread(threading.Thread):
     """
     Deamon thread which will ensure cleanup of session objects, shutdown
@@ -154,6 +143,7 @@ class Session:
     def get_root(self):
         """Return root settings object"""
         if self._root is None:
+            LOG.warning("The settings API is currently experimental.")
             self._root = flobject.get_root(
                     flproxy = self.get_settings_service()
                     )

@@ -183,23 +183,29 @@ class SettingsBase(Base, Generic[StateT]):
         return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
-    def _print_state_helper(state, out=sys.stdout, indent=0):
+    def _print_state_helper(state, out=sys.stdout, indent=0, indent_factor=2):
         if isinstance(state, dict):
             out.write('\n')
             for key, value in state.items():
                 if value is not None:
-                    out.write(f'{indent*" "}{key} : ')
-                    SettingsBase._print_state_helper(value, out, indent+2)
+                    out.write(f'{indent*indent_factor*" "}{key} : ')
+                    SettingsBase._print_state_helper(value, out, indent+1,
+                            indent_factor)
         elif isinstance(state, list):
             out.write('\n')
             for index, value in enumerate(state):
-                out.write(f'{indent*" "}{index} : ')
-                SettingsBase._print_state_helper(value, out, indent+2)
+                out.write(f'{indent*indent_factor*" "}{index} : ')
+                SettingsBase._print_state_helper(value, out, indent+1,
+                        indent_factor)
         else:
             out.write(f'{state}\n')
 
-    def print_state(self, out=sys.stdout):
-        self._print_state_helper(self.get_state(), out)
+    def print_state(self, out=sys.stdout, indent_factor=2):
+        """
+        Print the state of this object
+        """
+        self._print_state_helper(self.get_state(), out,
+                indent_factor=indent_factor)
 
 class Integer(SettingsBase[int]):
     """
@@ -365,8 +371,6 @@ class NamedObject(SettingsBase[DictStateType]):
 
     Attributes
     ----------
-    object_names: list[str]
-                  Names of the created objects
     command_names: list[str]
                    Names of the commands
     """
@@ -413,7 +417,7 @@ class NamedObject(SettingsBase[DictStateType]):
         return ret
 
     def _update_objects(self):
-        names = self.object_names
+        names = self.get_object_names()
         for name in list(self._objects.keys()):
             if name not in names:
                 del self._objects[name]
@@ -443,7 +447,7 @@ class NamedObject(SettingsBase[DictStateType]):
             del self._objects[name]
 
     def __contains__(self, name: str):
-        return name in self.object_names
+        return name in self.get_object_names()
 
     def __len__(self):
         return len(self.keys())
@@ -483,13 +487,12 @@ class NamedObject(SettingsBase[DictStateType]):
         self.flproxy.create(self.path, name)
         return self._create_child_object(name)
 
-    @property
-    def object_names(self):
+    def get_object_names(self):
         """object names"""
         return self.flproxy.get_object_names(self.path)
 
     def __getitem__(self, name: str):
-        if name not in self.object_names:
+        if name not in self.get_object_names():
             raise KeyError(name)
         obj = self._objects.get(name)
         if not obj:
@@ -497,7 +500,7 @@ class NamedObject(SettingsBase[DictStateType]):
         return obj
 
     def __setitem__(self, name: str, value):
-        if name not in self.object_names:
+        if name not in self.get_object_names():
             self.flproxy.create(self.path, name)
         child = self._objects.get(name)
         if not child:
@@ -645,7 +648,12 @@ def get_cls(name, info, parent = None):
         else:
             pname = to_python_name(name)
         obj_type = info['type']
-        base = _baseTypes[obj_type]
+        base = _baseTypes.get(obj_type)
+        if base is None:
+            LOG.error(f"Unable to find base class for '{name}' "
+                    f"(type = '{obj_type}'). "
+                    f"Falling back to String.")
+            base = String
         dct = { 'scheme_name' : name }
         helpinfo = info.get('help')
         if helpinfo:

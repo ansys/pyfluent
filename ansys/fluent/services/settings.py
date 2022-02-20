@@ -295,9 +295,14 @@ class SettingsService:
     def get_static_info(self):
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
-        try: # temporary code to fall back to get_obj_static_info()
+        # temporary code to fall back to get_obj_static_info()
+        try:
             response = self.__service_impl.get_static_info(request)
-            return self._extract_static_info(response.info)
+            # The rpc calls no longer raise an exception. Force an exception if
+            # type is empty
+            if not response.info.type:
+                raise RuntimeError
+            return self._extract_info(response.info)
         except Exception:
             return self.get_obj_static_info()
 
