@@ -302,7 +302,7 @@ class SettingsService:
             # type is empty
             if not response.info.type:
                 raise RuntimeError
-            return self._extract_info(response.info)
+            return self._extract_static_info(response.info)
         except Exception:
             return self.get_obj_static_info()
 
