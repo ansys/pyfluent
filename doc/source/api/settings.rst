@@ -7,10 +7,10 @@ Introduction
 Settings objects provide a natural way to access and modify Fluent settings
 and issue commands with a hierarchy of objects.
 
-Top-level objects
+Top-level Objects
 ^^^^^^^^^^^^^^^^^
 
-The top-level settings object can be access by
+The top-level settings object can be accessed by
 executing the ``get_root`` method on a session object. 
 
 .. code-block::
@@ -23,8 +23,8 @@ The root object contains attributes such as ``file``, ``setup``, ``solution``
 and ``results``.  These objects are also instances of 'settings' objects and
 roughly mirror the outline view in Fluent.
 
-Type of settings objects
-^^^^^^^^^^^^^^^^^^^^^^^^
+Types of Settings Objects
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A settings object can be one of the primitive types like ``Integer``,
 ``Real``, ``String`` and ``Boolean`` or a container object.
@@ -39,23 +39,25 @@ names of the child objects of a group can be accessed with the ``child_names``
 attribute of a ``Group`` object.
 
 A ``NamedObject`` is a container holding dynamically created named objects of
-its specified child type similar to a dictionary o. A specified named object
+its specified child type (accessible via ``child_object_type`` attribute
+similar to a dictionary. A specified named object
 can be accessed using the index operator. For example,
 ``root.setup.boundary_conditions.velocity_inlet['inlet2']`` refers to the
 ``velocity_object`` object with name ``inlet2``. The current list of named
-object children can be accessed with the ``object_names`` attribute of the
+object children can be accessed with the ``get_object_names()`` function of the
 container class.
 
 A ``ListObject`` is a container holding dynamically created unnamed objects of
-its specified child type in a list. Children of `ListObject` can be accessed
+its specified child type (accessible via ``child_object_type`` attribute
+in a list. Children of `ListObject` can be accessed
 using the index operator. For example,
 ``root.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
 refers to the third (starting from index 0) mass source entry for the fluid
 zone named ``fluid-1``. The current number of child objects can be accessed via
-the `size` attribute.
+the `get_size()` function.
  
 
-Setting and modifying state
+Setting and Modifying State
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The state of any object can be accessed by "calling" it. For container objects,
 this will return the state of the children as a dictionary (for ``Group`` and
