@@ -39,7 +39,7 @@ names of the child objects of a group can be accessed with the ``child_names``
 attribute of a ``Group`` object.
 
 A ``NamedObject`` is a container holding dynamically created named objects of
-its specified child type (accessible via ``child_object_type`` attribute
+its specified child type (accessible via ``child_object_type`` attribute)
 similar to a dictionary. A specified named object
 can be accessed using the index operator. For example,
 ``root.setup.boundary_conditions.velocity_inlet['inlet2']`` refers to the
@@ -48,7 +48,7 @@ object children can be accessed with the ``get_object_names()`` function of the
 container class.
 
 A ``ListObject`` is a container holding dynamically created unnamed objects of
-its specified child type (accessible via ``child_object_type`` attribute
+its specified child type (accessible via ``child_object_type`` attribute)
 in a list. Children of `ListObject` can be accessed
 using the index operator. For example,
 ``root.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
