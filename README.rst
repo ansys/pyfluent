@@ -36,7 +36,7 @@ TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing
 Settings access
 ***************
 The settings objects provide a natural way to access and modify settings. The
-top-level settings object for a session can be accessed with the ``get_root()``
+top-level settings object for a session can be accessed with the ``get_settings_root()``
 method of the session object. More information can be found at 
 `settings <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/settings.rst>`_.
 

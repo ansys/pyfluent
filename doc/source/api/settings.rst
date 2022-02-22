@@ -11,13 +11,13 @@ Top-level Objects
 ^^^^^^^^^^^^^^^^^
 
 The top-level settings object can be accessed by
-executing the ``get_root`` method on a session object. 
+executing the ``get_settings_root`` method on a session object.
 
 .. code-block::
 
   >>> import ansys.fluent as pyfluent
   >>> session = pyfluent.launch_fluent()
-  >>> root = session.get_root()
+  >>> root = session.get_settings_root()
 
 The root object contains attributes such as ``file``, ``setup``, ``solution``
 and ``results``.  These objects are also instances of 'settings' objects and

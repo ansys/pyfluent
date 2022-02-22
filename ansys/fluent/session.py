@@ -140,7 +140,7 @@ class Session:
 
     _root = None
 
-    def get_root(self):
+    def get_settings_root(self):
         """Return root settings object"""
         if self._root is None:
             LOG.warning("The settings API is currently experimental.")
