@@ -21,6 +21,11 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
             MessageToDict(request),
         )
         response = continuation(client_call_details, request)
+        if not response.exception():
+            LOG.debug(
+                "GRPC_TRACE: respone = %s",
+                MessageToDict(response.result()),
+            )
         return response
 
     def intercept_unary_unary(

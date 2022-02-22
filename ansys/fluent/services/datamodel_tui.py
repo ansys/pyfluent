@@ -27,23 +27,23 @@ class DatamodelService:
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
-    @catch_grpc_error(DataModelProtoModule.GetAttributeValueResponse)
+    @catch_grpc_error
     def get_attribute_value(self, request):
         return self.__stub.GetAttributeValue(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.GetAttributeValueResponse)
+    @catch_grpc_error
     def get_state(self, request):
         return self.__stub.GetState(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.SetStateResponse)
+    @catch_grpc_error
     def set_state(self, request):
         return self.__stub.SetState(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.ExecuteCommandResponse)
+    @catch_grpc_error
     def execute_command(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.ExecuteQueryResponse)
+    @catch_grpc_error
     def execute_query(self, request):
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 

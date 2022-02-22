@@ -18,33 +18,33 @@ class FieldDataService:
         self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
-    @catch_grpc_error(FieldDataProtoModule.GetSurfacesResponse)
+    @catch_grpc_error
     def get_surfaces(self, request):
         return self.__stub.GetSurfaces(request, metadata=self.__metadata)
 
-    @catch_grpc_error(FieldDataProtoModule.GetRangeResponse)
+    @catch_grpc_error
     def get_range(self, request):
         return self.__stub.GetRange(request, metadata=self.__metadata)
 
-    @catch_grpc_error(FieldDataProtoModule.GetScalarFieldResponse)
+    @catch_grpc_error
     def get_scalar_field(self, request):
         return self.__stub.GetScalarField(request, metadata=self.__metadata)
 
-    @catch_grpc_error(FieldDataProtoModule.GetVectorFieldResponse)
+    @catch_grpc_error
     def get_vector_field(self, request):
         return self.__stub.GetVectorField(request, metadata=self.__metadata)
 
-    @catch_grpc_error(FieldDataProtoModule.GetFieldsInfoResponse)
+    @catch_grpc_error
     def get_fields_info(self, request):
         return self.__stub.GetFieldsInfo(request, metadata=self.__metadata)
 
-    @catch_grpc_error(FieldDataProtoModule.GetVectorFieldsInfoResponse)
+    @catch_grpc_error
     def get_vector_fields_info(self, request):
         return self.__stub.GetVectorFieldsInfo(
             request, metadata=self.__metadata
         )
 
-    @catch_grpc_error(FieldDataProtoModule.GetSurfacesInfoResponse)
+    @catch_grpc_error
     def get_surfaces_info(self, request):
         return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
 

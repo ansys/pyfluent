@@ -20,49 +20,49 @@ class _SettingsServiceImpl:
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 
-    @catch_grpc_error(SettingsModule.SetVarResponse)
+    @catch_grpc_error
     def set_var(self, request):
         return self.__stub.SetVar(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.GetVarResponse)
+    @catch_grpc_error
     def get_var(self, request):
         return self.__stub.GetVar(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.RenameResponse)
+    @catch_grpc_error
     def rename(self, request):
         return self.__stub.Rename(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.CreateResponse)
+    @catch_grpc_error
     def create(self, request):
         return self.__stub.Create(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.DeleteResponse)
+    @catch_grpc_error
     def delete(self, request):
         return self.__stub.Delete(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.GetObjectNamesResponse)
+    @catch_grpc_error
     def get_object_names(self, request):
         return self.__stub.GetObjectNames(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.GetListSizeResponse)
+    @catch_grpc_error
     def get_list_size(self, request):
         return self.__stub.GetListSize(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.ResizeListObjectResponse)
+    @catch_grpc_error
     def resize_list_object(self, request):
         return self.__stub.ResizeListObject(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.GetObjectStaticInfoResponse)
+    @catch_grpc_error
     def get_obj_static_info(self, request):
         return self.__stub.GetObjectStaticInfo(
             request, metadata=self.__metadata
         )
 
-    @catch_grpc_error(SettingsModule.ExecuteCommandResponse)
+    @catch_grpc_error
     def execute_cmd(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
-    @catch_grpc_error(SettingsModule.GetAttrsResponse)
+    @catch_grpc_error
     def get_attrs(self, request):
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
