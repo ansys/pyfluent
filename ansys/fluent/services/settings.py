@@ -59,13 +59,12 @@ class _SettingsServiceImpl:
         )
 
     @catch_grpc_error
-    @catch_grpc_error(SettingsModule.GetStaticInfoResponse)
     def get_static_info(self, request):
         return self.__stub.GetStaticInfo(
             request, metadata=self.__metadata
         )
 
-    @catch_grpc_error(SettingsModule.ExecuteCommandResponse)
+    @catch_grpc_error
     def execute_cmd(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
