@@ -19,20 +19,8 @@ class FieldDataService:
         self.__metadata = metadata
 
     @catch_grpc_error
-    def get_surfaces(self, request):
-        return self.__stub.GetSurfaces(request, metadata=self.__metadata)
-
-    @catch_grpc_error
     def get_range(self, request):
         return self.__stub.GetRange(request, metadata=self.__metadata)
-
-    @catch_grpc_error
-    def get_scalar_field(self, request):
-        return self.__stub.GetScalarField(request, metadata=self.__metadata)
-
-    @catch_grpc_error
-    def get_vector_field(self, request):
-        return self.__stub.GetVectorField(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_fields_info(self, request):
@@ -47,6 +35,10 @@ class FieldDataService:
     @catch_grpc_error
     def get_surfaces_info(self, request):
         return self.__stub.GetSurfacesInfo(request, metadata=self.__metadata)
+
+    @catch_grpc_error
+    def get_fields(self, request):
+        return self.__stub.GetFields(request, metadata=self.__metadata)
 
 
 class FieldData:
@@ -71,7 +63,7 @@ class FieldData:
     get_surfaces(surface_ids: List[int], overset_mesh: bool) -> Dict[int, Dict]
         Get surfaces data i.e. coordinates and connectivity.
 
-    def get_scalar_field(
+    get_scalar_field(
         surface_ids: List[int],
         scalar_field: str,
         node_value: Optional[bool] = True,
@@ -80,17 +72,26 @@ class FieldData:
         Get scalar field data i.e. surface data and associated
         scalar field values.
 
-    def get_vector_field(
+    get_vector_field(
         surface_ids: List[int],
         vector_field: Optional[str] = "velocity",
         scalar_field: Optional[str] = "",
-        node_value: Optional[bool] = True,
+        node_value: Optional[bool] = False,
     ) -> Dict[int, Dict]:
         Get vector field data i.e. surface data and associated
         scalar and vector field values.
 
-
     """
+
+    # data mapping
+    _proto_field_type_to_np_data_type = {
+        FieldDataProtoModule.FieldType.INT_ARRAY: np.int32,
+        FieldDataProtoModule.FieldType.LONG_ARRAY: np.int64,
+        FieldDataProtoModule.FieldType.FLOAT_ARRAY: np.float32,
+        FieldDataProtoModule.FieldType.DOUBLE_ARRAY: np.float64,
+    }
+    _chunk_size = 256 * 1024
+    _bytes_stream = True
 
     def __init__(self, service: FieldDataService):
         self.__service = service
@@ -145,120 +146,152 @@ class FieldData:
             for surface_info in response.surfaceInfo
         }
 
-    def _extract_surfaces_data(self, response_iterator):
-        return {
-            response.surfacedata.surfaceid.id: {
-                "vertices": np.array(
-                    [
-                        [point.x, point.y, point.z]
-                        for point in response.surfacedata.point
-                    ]
-                ),
-                "faces": np.hstack(
-                    [
-                        [len(facet.node)] + list(facet.node)
-                        for facet in response.surfacedata.facet
-                    ]
-                ),
-            }
-            for response in response_iterator
-        }
+    def _extract_fields(self, chunk_iterator):
+        def _extract_field(field_datatype, field_size, chunk_iterator):
+            if not chunk_iterator.is_active():
+                raise RuntimeError("Chunk is Empty.")
+            field_arr = np.empty(field_size, dtype=field_datatype)
+            field_datatype_item_size = np.dtype(field_datatype).itemsize
+            index = 0
+            for chunk in chunk_iterator:
+                if chunk.bytePayload:
+                    count = min(
+                        len(chunk.bytePayload) // field_datatype_item_size,
+                        field_size - index,
+                    )
+                    field_arr[index : index + count] = np.frombuffer(
+                        chunk.bytePayload, field_datatype, count=count
+                    )
+                    index += count
+                    if index == field_size:
+                        return field_arr
+                else:
+                    payload = (
+                        chunk.floatPayload.payload
+                        or chunk.intPayload.payload
+                        or chunk.doublePayload.payload
+                        or chunk.longPayload.payload
+                    )
+                    count = len(payload)
+                    field_arr[index : index + count] = np.fromiter(
+                        payload, dtype=field_datatype
+                    )
+                    index += count
+                    if index == field_size:
+                        return field_arr
+
+        fields_data = {}
+        for chunk in chunk_iterator:
+            payload_info = chunk.payloadInfo
+            surface_id = payload_info.surfaceId
+            surface_data = fields_data.get(surface_id)
+            field = _extract_field(
+                self._proto_field_type_to_np_data_type[payload_info.fieldType],
+                payload_info.fieldSize,
+                chunk_iterator,
+            )
+            if surface_data:
+                surface_data.update({payload_info.fieldName: field})
+            else:
+                fields_data[surface_id] = {payload_info.fieldName: field}
+        return fields_data
 
     def get_surfaces(
         self, surface_ids: List[int], overset_mesh: bool = False
     ) -> Dict[int, Dict]:
-        request = FieldDataProtoModule.GetSurfacesRequest()
-        request.surfaceid.extend(
-            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+        request = FieldDataProtoModule.GetFieldsRequest(
+            provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
         )
-        request.oversetMesh = overset_mesh
-        response_iterator = self.__service.get_surfaces(request)
-        return self._extract_surfaces_data(response_iterator)
-
-    def _extract_scalar_field_data(self, response_iterator):
-        return {
-            response.scalarfielddata.surfaceid.id: {
-                "vertices": np.array(
-                    [
-                        [point.x, point.y, point.z]
-                        for point in response.scalarfielddata.surfacedata.point
-                    ]
-                ),
-                "faces": np.hstack(
-                    [
-                        [len(facet.node)] + list(facet.node)
-                        for facet in response.scalarfielddata.surfacedata.facet
-                    ]
-                ),
-                "scalar_field": np.array(
-                    response.scalarfielddata.scalarfield.data
-                ),
-                "meta_data": response.scalarfielddata.scalarfieldmetadata,
-            }
-            for response in response_iterator
-        }
+        request.surfaceRequest.extend(
+            [
+                FieldDataProtoModule.SurfaceRequest(
+                    surfaceId=surface_id,
+                    oversetMesh=overset_mesh,
+                    provideFaces=True,
+                )
+                for surface_id in surface_ids
+            ]
+        )
+        return self._extract_fields(self.__service.get_fields(request))
 
     def get_scalar_field(
         self,
         surface_ids: List[int],
-        scalar_field: str,
+        field_name: str,
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
     ) -> Dict[int, Dict]:
-        request = FieldDataProtoModule.GetScalarFieldRequest()
-        request.surfaceid.extend(
-            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+        request = FieldDataProtoModule.GetFieldsRequest(
+            provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
         )
-        request.scalarfield = scalar_field
-        request.nodevalue = node_value
-        request.boundaryvalues = boundary_value
-        response_iterator = self.__service.get_scalar_field(request)
-        return self._extract_scalar_field_data(response_iterator)
-
-    def _extract_vector_field_data(self, response_iterator):
-        return {
-            response.vectorfielddata.surfaceid.id: {
-                "vertices": np.array(
-                    [
-                        [point.x, point.y, point.z]
-                        for point in response.vectorfielddata.surfacedata.point
-                    ]
-                ),
-                "faces": np.hstack(
-                    [
-                        [len(facet.node)] + list(facet.node)
-                        for facet in response.vectorfielddata.surfacedata.facet
-                    ]
-                ),
-                "scalar_field": np.array(
-                    response.vectorfielddata.scalarfield.data
-                ),
-                "vector": np.array(
-                    [
-                        [components.x, components.y, components.z]
-                        for components in response.vectorfielddata.vector
-                        .vectorComponents
-                    ]
-                ),
-                "meta_data": response.vectorfielddata.vectorfieldmetadata,
-                "vector_scale": response.vectorfielddata.vectorscale.data,
-            }
-            for response in response_iterator
-        }
+        request.surfaceRequest.extend(
+            [
+                FieldDataProtoModule.SurfaceRequest(
+                    surfaceId=surface_id,
+                    oversetMesh=False,
+                    provideFaces=True,
+                )
+                for surface_id in surface_ids
+            ]
+        )
+        request.scalarFieldRequest.extend(
+            [
+                FieldDataProtoModule.ScalarFieldRequest(
+                    surfaceId=surface_id,
+                    scalarFieldName=field_name,
+                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
+                    if node_value
+                    else FieldDataProtoModule.DataLocation.Elements,
+                    provideBoundaryValues=boundary_value,
+                )
+                for surface_id in surface_ids
+            ]
+        )
+        return self._extract_fields(self.__service.get_fields(request))
 
     def get_vector_field(
         self,
         surface_ids: List[int],
         vector_field: Optional[str] = "velocity",
-        scalar_field: Optional[str] = "",
-        node_value: Optional[bool] = True,
+        field_name: Optional[str] = "",
+        node_value: Optional[bool] = False,
     ) -> Dict[int, Dict]:
-        request = FieldDataProtoModule.GetVectorFieldRequest()
-        request.surfaceid.extend(
-            [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
+        request = FieldDataProtoModule.GetFieldsRequest(
+            provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
         )
-        request.scalarfield = scalar_field
-        request.nodevalue = node_value
-        request.vectorfield = vector_field
-        response_iterator = self.__service.get_vector_field(request)
-        return self._extract_vector_field_data(response_iterator)
+        request.surfaceRequest.extend(
+            [
+                FieldDataProtoModule.SurfaceRequest(
+                    surfaceId=surface_id,
+                    oversetMesh=False,
+                    provideFaces=True,
+                )
+                for surface_id in surface_ids
+            ]
+        )
+        if field_name:
+            request.scalarFieldRequest.extend(
+                [
+                    FieldDataProtoModule.ScalarFieldRequest(
+                        surfaceId=surface_id,
+                        scalarFieldName=field_name,
+                        dataLocation=FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements,
+                        provideBoundaryValues=boundary_value,
+                    )
+                    for surface_id in surface_ids
+                ]
+            )
+        request.vectorFieldRequest.extend(
+            [
+                FieldDataProtoModule.VectorFieldRequest(
+                    surfaceId=surface_id,
+                    vectorFieldName=vector_field,
+                    provideFacesCentroid=False,
+                    provideFacesAreaNormal=False,
+                )
+                for surface_id in surface_ids
+            ]
+        )
+        return self._extract_fields(self.__service.get_fields(request))
