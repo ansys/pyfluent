@@ -280,6 +280,8 @@ class SettingsService:
             }
         if info.HasField("object_type"):
             ret["object-type"] = self._extract_static_info(info.object_type)
+        if info.help:
+            ret["help"] = info.help
         return ret
 
     @_trace
