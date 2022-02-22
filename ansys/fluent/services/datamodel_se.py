@@ -60,31 +60,31 @@ class DatamodelService:
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
-    @catch_grpc_error(DataModelProtoModule.InitDatamodelResponse)
+    @catch_grpc_error
     def initialize_datamodel(self, request):
         return self.__stub.initDatamodel(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.GetAttributeValueResponse)
+    @catch_grpc_error
     def get_attribute_value(self, request):
         return self.__stub.getAttributeValue(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.GetStateResponse)
+    @catch_grpc_error
     def get_state(self, request):
         return self.__stub.getState(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.SetStateResponse)
+    @catch_grpc_error
     def set_state(self, request):
         return self.__stub.setState(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.DeleteObjectResponse)
+    @catch_grpc_error
     def delete_object(self, request):
         return self.__stub.deleteObject(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.ExecuteCommandResponse)
+    @catch_grpc_error
     def execute_command(self, request):
         return self.__stub.executeCommand(request, metadata=self.__metadata)
 
-    @catch_grpc_error(DataModelProtoModule.GetSpecsResponse)
+    @catch_grpc_error
     def get_specs(self, request):
         return self.__stub.getSpecs(request, metadata=self.__metadata)
 
