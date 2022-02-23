@@ -149,7 +149,7 @@ at a particular time for the viscous model can be accessed as following:
   >>> root.setup.models.viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
-Attributes are dynamic and the values can change depending on the state of the
+Attributes are dynamic and the values can change depending on the application state.
 application.
 
 Active objects and commands
