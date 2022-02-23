@@ -154,7 +154,7 @@ application.
 
 Active objects and commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Objects and commands can be active or inactive based on the state of the
+Objects and commands can be active or inactive based on the application state.
 application. The ``is_active()`` method returns ``True`` if an object or
 command is active at a particular time. ``get_active_member_names`` returns
 the list of active children. ``get_active_command_names`` returns the list of
