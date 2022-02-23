@@ -59,6 +59,12 @@ class _SettingsServiceImpl:
         )
 
     @catch_grpc_error
+    def get_static_info(self, request):
+        return self.__stub.GetStaticInfo(
+            request, metadata=self.__metadata
+        )
+
+    @catch_grpc_error
     def execute_cmd(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
@@ -66,10 +72,8 @@ class _SettingsServiceImpl:
     def get_attrs(self, request):
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
-
 trace = False
 _indent = 0
-
 
 def _trace(fn):
     def _fn(self, *args, **kwds):
@@ -219,9 +223,10 @@ class SettingsService:
         Get the number of elements in a list object
         """
         request = _get_request_instance_for_path(
-            SettingsModule.GetListSizeRequest, path
-        )
-        return self.__service_impl.get_list_size(request).size
+                SettingsModule.GetListSizeRequest,
+                path)
+        return self.__stub.GetListSize(request,
+                metadata=self.__metadata).size
 
     @_trace
     def resize_list_object(self, path: str, size: int):
@@ -255,12 +260,52 @@ class SettingsService:
         return ret
 
     @_trace
+    def _extract_static_info(self, info):
+        ret = {}
+        ret["type"] = info.type
+        if info.children:
+            ret["children"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.children
+            }
+        if info.commands:
+            ret["commands"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.commands
+            }
+        if info.arguments:
+            ret["arguments"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.arguments
+            }
+        if info.HasField("object_type"):
+            ret["object-type"] = self._extract_static_info(info.object_type)
+        if info.help:
+            ret["help"] = info.help
+        return ret
+
+    @_trace
     def get_obj_static_info(self):
         request = SettingsModule.GetObjectStaticInfoRequest()
         request.root = "fluent"
         response = self.__service_impl.get_obj_static_info(request)
 
         return self._extract_info(response.info)
+
+    @_trace
+    def get_static_info(self):
+        request = SettingsModule.GetStaticInfoRequest()
+        request.root = "fluent"
+        # temporary code to fall back to get_obj_static_info()
+        try:
+            response = self.__service_impl.get_static_info(request)
+            # The rpc calls no longer raise an exception. Force an exception if
+            # type is empty
+            if not response.info.type:
+                raise RuntimeError
+            return self._extract_static_info(response.info)
+        except Exception:
+            return self.get_obj_static_info()
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:

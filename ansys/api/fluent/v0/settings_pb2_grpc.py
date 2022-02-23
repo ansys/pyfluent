@@ -19,6 +19,11 @@ class SettingsStub(object):
                 request_serializer=settings__pb2.GetObjectStaticInfoRequest.SerializeToString,
                 response_deserializer=settings__pb2.GetObjectStaticInfoResponse.FromString,
                 )
+        self.GetStaticInfo = channel.unary_unary(
+                '/ansys.api.fluent.v0.settings.Settings/GetStaticInfo',
+                request_serializer=settings__pb2.GetStaticInfoRequest.SerializeToString,
+                response_deserializer=settings__pb2.GetStaticInfoResponse.FromString,
+                )
         self.GetVar = channel.unary_unary(
                 '/ansys.api.fluent.v0.settings.Settings/GetVar',
                 request_serializer=settings__pb2.GetVarRequest.SerializeToString,
@@ -76,7 +81,16 @@ class SettingsServicer(object):
 
     def GetObjectStaticInfo(self, request, context):
         """Static info about objects (type, children, commands, arguments,
-        object-type) in a recursive manner
+        object-type) in a recursive manner.
+        This rpc is deprecated, use GetStaticInfo instead 
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetStaticInfo(self, request, context):
+        """Static info about objects (type, children, commands, arguments,
+        object-type) in a recursive manner. 
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -160,6 +174,11 @@ def add_SettingsServicer_to_server(servicer, server):
                     request_deserializer=settings__pb2.GetObjectStaticInfoRequest.FromString,
                     response_serializer=settings__pb2.GetObjectStaticInfoResponse.SerializeToString,
             ),
+            'GetStaticInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetStaticInfo,
+                    request_deserializer=settings__pb2.GetStaticInfoRequest.FromString,
+                    response_serializer=settings__pb2.GetStaticInfoResponse.SerializeToString,
+            ),
             'GetVar': grpc.unary_unary_rpc_method_handler(
                     servicer.GetVar,
                     request_deserializer=settings__pb2.GetVarRequest.FromString,
@@ -234,6 +253,23 @@ class Settings(object):
         return grpc.experimental.unary_unary(request, target, '/ansys.api.fluent.v0.settings.Settings/GetObjectStaticInfo',
             settings__pb2.GetObjectStaticInfoRequest.SerializeToString,
             settings__pb2.GetObjectStaticInfoResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetStaticInfo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/ansys.api.fluent.v0.settings.Settings/GetStaticInfo',
+            settings__pb2.GetStaticInfoRequest.SerializeToString,
+            settings__pb2.GetStaticInfoResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
