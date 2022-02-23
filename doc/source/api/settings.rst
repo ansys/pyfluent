@@ -133,7 +133,7 @@ the application. For example, ``hybrid_initialize()`` method of
 initialization method. The ``command_names`` attribute of a settings object
 provides the names of its commands.
 
-Commands may have arguments. Only keyword arguments are supported.  The list of
+If needed, commands can be passed keyword arguments, and the list of
 valid arguments can be accessed using the ``arguments`` attribute.  If an
 argument is not specified, its default value is used. Arguments are also
 settings objects and can be either primitive type or container type.
