@@ -138,7 +138,7 @@ valid arguments can be accessed using the ``arguments`` attribute.  If an
 argument is not specified, its default value is used. Arguments are also
 settings objects and can be either primitive type or container type.
 
-Additional metadata
+Additional Metadata
 ^^^^^^^^^^^^^^^^^^^
 Settings objects have some additional metadata which can be accessed using the
 ``get_attr`` and ``get_attrs`` methods. For example, the list of allowed values
