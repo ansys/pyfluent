@@ -1,0 +1,4 @@
+{BasedOnStyle: Google,
+ Language: Proto,
+ IndentWidth: 2,
+ ColumnLimit: 0}

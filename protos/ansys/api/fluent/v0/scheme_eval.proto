@@ -9,17 +9,16 @@ import "common.proto";
 
 package grpcRemoting;
 
-service SchemeEval
-{
-  rpc Eval (SchemePointer) returns (SchemePointer);
-  rpc Exec (ExecRequest) returns (ExecResponse);
-  rpc StringEval (StringEvalRequest) returns (StringEvalResponse);
+service SchemeEval {
+  rpc Eval(SchemePointer) returns (SchemePointer);
+  rpc Exec(ExecRequest) returns (ExecResponse);
+  rpc StringEval(StringEvalRequest) returns (StringEvalResponse);
 }
 
 message ExecRequest {
-  repeated string  command = 1;
-  bool wait =2;
-  bool silent = 3; // if true, input won't be printed
+  repeated string command = 1;
+  bool wait = 2;
+  bool silent = 3;  // if true, input won't be printed
 }
 
 message ExecResponse {
@@ -33,4 +32,3 @@ message StringEvalRequest {
 message StringEvalResponse {
   string output = 1;
 }
-
