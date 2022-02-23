@@ -152,7 +152,7 @@ at a particular state for the viscous model can be accessed as follows:
 Attributes are dynamic and the values can change depending on the application state.
 application.
 
-Active objects and commands
+Active Objects and Commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Objects and commands can be active or inactive based on the application state.
 application. The ``is_active()`` method returns ``True`` if an object or
