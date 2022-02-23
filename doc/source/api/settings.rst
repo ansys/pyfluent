@@ -128,7 +128,7 @@ Commands
 ^^^^^^^^
 
 Commands are methods of settings objects that are used to modify the state of
-the application. For example, ``hybrid_initialize()`` method of
+the application. For example, the ``hybrid_initialize()`` method of
 ``solution.initialization`` initializes the solution using the hybrid
 initialization method. The ``command_names`` attribute of a settings object
 provides the names of its commands.
