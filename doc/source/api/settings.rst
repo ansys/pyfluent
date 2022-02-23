@@ -49,12 +49,12 @@ container class.
 
 A ``ListObject`` is a container holding dynamically created unnamed objects of
 its specified child type (accessible via ``child_object_type`` attribute)
-in a list. Children of `ListObject` can be accessed
+in a list. Children of ``ListObject`` can be accessed
 using the index operator. For example,
 ``root.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
 refers to the third (starting from index 0) mass source entry for the fluid
 zone named ``fluid-1``. The current number of child objects can be accessed via
-the `get_size()` function.
+the ``get_size()`` function.
  
 
 Setting and Modifying State
@@ -150,7 +150,6 @@ at a particular state for the viscous model can be accessed as follows:
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 Attributes are dynamic and the values can change depending on the application state.
-application.
 
 Active Objects and Commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
