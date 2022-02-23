@@ -142,7 +142,7 @@ Additional metadata
 ^^^^^^^^^^^^^^^^^^^
 Settings objects have some additional metadata which can be accessed using the
 ``get_attr`` and ``get_attrs`` methods. For example, the list of allowed values
-at a particular time for the viscous model can be accessed as following:
+at a particular state for the viscous model can be accessed as follows:
 
 .. code-block::
 
