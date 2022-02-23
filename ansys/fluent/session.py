@@ -93,6 +93,7 @@ class Session:
         self.__channel = grpc.insecure_channel(address)
         self.__metadata = [("password", password)]
         self.__id = f"session-{next(Session._id_iter)}"
+        self._settings_root = None
 
         if not Session._monitor_thread:
             Session._monitor_thread = MonitorThread()
@@ -138,16 +139,14 @@ class Session:
         """Return an instance of SettingsService object"""
         return SettingsService(self.__channel, self.__metadata)
 
-    _root = None
-
     def get_settings_root(self):
         """Return root settings object"""
-        if self._root is None:
+        if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
-            self._root = flobject.get_root(
+            self._settings_root = flobject.get_root(
                     flproxy = self.get_settings_service()
                     )
-        return self._root
+        return self._settings_root
 
     def __log_transcript(self):
         responses = self.__transcript_service.begin_streaming()
