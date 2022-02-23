@@ -91,7 +91,7 @@ and ``NamedObject`` type objects, the state value will be a dictionary, and for
   >>> root.setup.models.energy = { 'enabled' : False }
   >>> root.setup.boundary_conditions.velocity['inlet1'].vmag.constant = 14
 
-State of an object call also be accessed via the ``get_state`` method, and
+The state of an object can also be accessed via the ``get_state`` method, and
 modified via the ``set_state`` method.
 
 The current state can also be printed in a simple text format with the
