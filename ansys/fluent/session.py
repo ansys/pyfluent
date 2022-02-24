@@ -182,7 +182,7 @@ class Session:
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
         if self.__channel:
-            self.tui.solver.exit()
+            self.tui.solver.exit().result()
             self.__transcript_service.end_streaming()
             self.__channel.close()
             self.__channel = None
