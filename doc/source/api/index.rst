@@ -14,6 +14,8 @@ Here we should discuss the different API modules at a high level.
    :maxdepth: 4
    :hidden:
    
+   meshing
+   settings
    addons/parametric/index
    core/index
    launcher/index
