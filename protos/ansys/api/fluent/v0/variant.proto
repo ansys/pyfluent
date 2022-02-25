@@ -4,50 +4,36 @@
 
 syntax = "proto3";
 
-
-
 package utils;
 
-message Empty {
-}
-message StringVector {
-  repeated string item = 1;
-}
+message Empty {}
 
-message DoubleVector {
-  repeated double item = 1;
-}
+message StringVector { repeated string item = 1; }
 
-message BoolVector {
-  repeated bool item = 1;
-}
+message DoubleVector { repeated double item = 1; }
 
-message Int64Vector {
-  repeated sint64 item = 1;
-}
-message VariantMap {
-  map<string, Variant> item = 1;
-}
+message BoolVector { repeated bool item = 1; }
 
+message Int64Vector { repeated sint64 item = 1; }
 
-message VariantVector {
-  repeated Variant item = 1;
-}
+message VariantMap { map<string, Variant> item = 1; }
+
+message VariantVector { repeated Variant item = 1; }
 
 message Variant {
   oneof as {
-      utils.Empty empty_state = 1;
+    utils.Empty empty_state = 1;
 
-      bool bool_state = 2;
-      sint64 int64_state = 3;
-      double double_state = 5;
-      string string_state = 6;
+    bool bool_state = 2;
+    sint64 int64_state = 3;
+    double double_state = 5;
+    string string_state = 6;
 
-      BoolVector bool_vector_state = 7;
-      Int64Vector int64_vector_state = 8;
-      DoubleVector double_vector_state = 9;
-      StringVector string_vector_state = 10;
-      VariantVector variant_vector_state = 11;
-      VariantMap variant_map_state = 12;
+    BoolVector bool_vector_state = 7;
+    Int64Vector int64_vector_state = 8;
+    DoubleVector double_vector_state = 9;
+    StringVector string_vector_state = 10;
+    VariantVector variant_vector_state = 11;
+    VariantMap variant_map_state = 12;
   }
 }

@@ -1,6 +1,6 @@
 PyFluent
 ========
-Fluent's SolverAPI exposed in Python
+Fluent's Solver and Meshing capabilities exposed in Python
 
 Installation
 ------------
@@ -28,25 +28,17 @@ Usage
   session.tui.solver.solve.initialize.initialize_flow()  
   session.tui.solver.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
 
-Settings objects
-****************
-Settings objects provide a more natural way to access and modify Fluent settings and issue commands.  When the function ``session.setup_settings_objects()`` is invoked, attributes ``setup``, ``solution`` and ``results`` are added to the session object. These attributes can be used to access and modify Fluent settings:
-
-.. code:: Python
-
-  session.setup_settings_objects()
-  session.setup.models.energy.enabled = True
-  print (session.setup.models.energy())
-  session.setup.boundary_conditions.velocity_inlet['inlet2'].vmag = {
-      'option' : 'constant or expression',
-      'constant' : 1.2
-      }
-  session.solution.initialize.standard_initialize()
-
 
 Meshing TUI and workflow
 ************************
 TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/meshing.rst>`_ for example usage.
+
+Settings access
+***************
+The settings objects provide a natural way to access and modify settings. The
+top-level settings object for a session can be accessed with the ``get_settings_root()``
+method of the session object. More information can be found at 
+`settings <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/settings.rst>`_.
 
 
 Post Processing

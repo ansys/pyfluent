@@ -27,7 +27,6 @@ def parse_server_info_file(filename: str):
         lines = f.readlines()
     return lines[0].strip(), lines[1].strip()
 
-
 class MonitorThread(threading.Thread):
     """
     Deamon thread which will ensure cleanup of session objects, shutdown
@@ -94,6 +93,7 @@ class Session:
         self.__channel = grpc.insecure_channel(address)
         self.__metadata = [("password", password)]
         self.__id = f"session-{next(Session._id_iter)}"
+        self._settings_root = None
 
         if not Session._monitor_thread:
             Session._monitor_thread = MonitorThread()
@@ -135,12 +135,18 @@ class Session:
     def id(self):
         return self.__id
 
-    def setup_settings_objects(self):
-        proxy = SettingsService(self.__channel, self.__metadata)
-        r = flobject.get_root(flproxy=proxy)
-        for k in r.member_names:
-            setattr(self, k, getattr(r, k))
-        self.root = r
+    def get_settings_service(self):
+        """Return an instance of SettingsService object"""
+        return SettingsService(self.__channel, self.__metadata)
+
+    def get_settings_root(self):
+        """Return root settings object"""
+        if self._settings_root is None:
+            LOG.warning("The settings API is currently experimental.")
+            self._settings_root = flobject.get_root(
+                    flproxy = self.get_settings_service()
+                    )
+        return self._settings_root
 
     def __log_transcript(self):
         responses = self.__transcript_service.begin_streaming()
@@ -150,7 +156,7 @@ class Session:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    LOG.debug(transcript[0:-1])
+                    LOG.info(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break

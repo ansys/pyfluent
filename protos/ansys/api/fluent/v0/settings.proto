@@ -6,41 +6,46 @@ syntax = "proto3";
 
 package ansys.api.fluent.v0.settings;
 
-service Settings
-{
+service Settings {
+  /* Static info about objects (type, children, commands, arguments, object-type) in a recursive manner.
+     This rpc is deprecated, use GetStaticInfo instead */
+  rpc GetObjectStaticInfo(GetObjectStaticInfoRequest) returns (GetObjectStaticInfoResponse) {
+    option deprecated = true;
+  };
+
   /* Static info about objects (type, children, commands, arguments,
-     object-type) in a recursive manner*/
-  rpc GetObjectStaticInfo (GetObjectStaticInfoRequest) returns (GetObjectStaticInfoResponse);
+     object-type) in a recursive manner. */
+  rpc GetStaticInfo(GetStaticInfoRequest) returns (GetStaticInfoResponse);
 
   /* Get the value of a path */
-  rpc GetVar (GetVarRequest) returns (GetVarResponse);
+  rpc GetVar(GetVarRequest) returns (GetVarResponse);
 
   /* Set the value of a path */
-  rpc SetVar (SetVarRequest) returns (SetVarResponse);
+  rpc SetVar(SetVarRequest) returns (SetVarResponse);
 
   /* Rename an object */
-  rpc Rename (RenameRequest) returns (RenameResponse);
+  rpc Rename(RenameRequest) returns (RenameResponse);
 
   /* Create a new object */
-  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
 
   /* Delete an object */
-  rpc Delete (DeleteRequest) returns (DeleteResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
 
   /* Get the current list of object names */
-  rpc GetObjectNames (GetObjectNamesRequest) returns (GetObjectNamesResponse);
+  rpc GetObjectNames(GetObjectNamesRequest) returns (GetObjectNamesResponse);
 
   /* Get the number of elements in a list object */
-  rpc GetListSize (GetListSizeRequest) returns (GetListSizeResponse);
+  rpc GetListSize(GetListSizeRequest) returns (GetListSizeResponse);
 
   /* Resize a list object */
-  rpc ResizeListObject (ResizeListObjectRequest) returns (ResizeListObjectResponse);
+  rpc ResizeListObject(ResizeListObjectRequest) returns (ResizeListObjectResponse);
 
   /* Execute a command */
-  rpc ExecuteCommand (ExecuteCommandRequest) returns (ExecuteCommandResponse);
+  rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
 
   /* Attribute access */
-  rpc GetAttrs (GetAttrsRequest) returns (GetAttrsResponse);
+  rpc GetAttrs(GetAttrsRequest) returns (GetAttrsResponse);
 }
 
 /* Represents value of an object -- return value of GetVar */
@@ -80,6 +85,28 @@ message ObjectStaticInfo {
 
 message GetObjectStaticInfoResponse {
   ObjectStaticInfo info = 1;
+}
+
+message StaticInfoMap {
+  string name = 1;
+  StaticInfo value = 2;
+}
+
+message StaticInfo {
+  string type = 1;
+  repeated StaticInfoMap children = 2;
+  repeated StaticInfoMap commands = 3;
+  repeated StaticInfoMap arguments = 4;
+  StaticInfo object_type = 5;
+  string help = 6;
+}
+
+message GetStaticInfoRequest {
+  string root = 1;
+}
+
+message GetStaticInfoResponse {
+  StaticInfo info = 1;
 }
 
 message GetVarRequest {

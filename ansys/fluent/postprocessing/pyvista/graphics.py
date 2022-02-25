@@ -8,7 +8,6 @@ from ansys.fluent.solver.meta import (
     PyLocalContainer,
 )
 
-
 class Graphics:
     """
     Graphics objects provider.
@@ -315,6 +314,145 @@ class Contour(metaclass=PyLocalNamedObjectMeta):
                             )
                             self._value = field_range[1]
 
+                    return self._value
+
+                @value.setter
+                def value(self, value):
+                    self._value = value
+
+
+class Vector(metaclass=PyLocalNamedObjectMeta):
+    """
+    Vector graphics.
+    """
+
+    PLURAL = "Vectors"
+
+    def display(self, plotter_id: Optional[str] = None):
+        """
+        Display vector graphics.
+        """
+        plotter.plot_graphics(self, plotter_id)
+
+    class vectors_of(metaclass=PyLocalPropertyMeta):
+        """
+        Vector type.
+        """
+
+        value = "velocity"
+
+        @Attribute
+        def allowed_values(self):
+            return list(
+                self.session.field_data.get_vector_fields_info().keys()
+            )
+
+    class surfaces_list(metaclass=PyLocalPropertyMeta):
+        """
+        List of surfaces for vector graphics.
+        """
+
+        @Attribute
+        def allowed_values(self):
+            return list(self.session.field_data.get_surfaces_info().keys())
+
+    class scale(metaclass=PyLocalPropertyMeta):
+        """
+        Vector scale.
+        """
+
+        value = 1.0
+
+    class skip(metaclass=PyLocalPropertyMeta):
+        """
+        Vector skip.
+        """
+
+        value = 0
+
+    class show_edges(metaclass=PyLocalPropertyMeta):
+        """
+        Show edges.
+        """
+
+        value = False
+
+    class range_option(metaclass=PyLocalPropertyMeta):
+        """
+        Specify range options.
+        """
+
+        def availability(self, name):
+            if name == "auto_range_on":
+                return self.range_option() == "auto-range-on"
+            if name == "auto_range_off":
+                return self.range_option() == "auto-range-off"
+            return True
+
+        class range_option(metaclass=PyLocalPropertyMeta):
+
+            value = "auto-range-on"
+
+            @Attribute
+            def allowed_values(self):
+                return ["auto-range-on", "auto-range-off"]
+
+        class auto_range_on(metaclass=PyLocalPropertyMeta):
+            """
+            Specify auto range on.
+            """
+
+            class global_range(metaclass=PyLocalPropertyMeta):
+                """
+                Show global range.
+                """
+
+                value = False
+
+        class auto_range_off(metaclass=PyLocalPropertyMeta):
+            """
+            Specify auto range off.
+            """
+
+            class clip_to_range(metaclass=PyLocalPropertyMeta):
+                """
+                Clip vector within range.
+                """
+
+                value = False
+
+            class minimum(metaclass=PyLocalPropertyMeta):
+                """
+                Range minimum.
+                """
+
+                @property
+                def value(self):
+                    if getattr(self, "_value", None) == None:
+                        field_range = self.session.field_data.get_range(
+                            "velocity-magnitude",
+                            False,
+                        )
+                        self._value = field_range[0]
+                    return self._value
+
+                @value.setter
+                def value(self, value):
+                    self._value = value
+
+            class maximum(metaclass=PyLocalPropertyMeta):
+                """
+                Range maximum.
+                """
+
+                @property
+                def value(self):
+                    if getattr(self, "_value", None) == None:
+                        field_range = self.session.field_data.get_range(
+                            "velocity-magnitude",
+                            False,
+                        )
+                        self._value = field_range[1]
                     return self._value
 
                 @value.setter

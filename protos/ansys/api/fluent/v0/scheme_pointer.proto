@@ -10,18 +10,18 @@ package grpcRemoting;
 
 message SchemePointer {
   message SchemePair {
-      SchemePointer car = 1;
-      SchemePointer cdr = 2;
+    SchemePointer car = 1;
+    SchemePointer cdr = 2;
   }
 
   oneof val {
-      Empty empty = 1;
-      string sym = 2;
-      SchemePair pair = 3;
-      double flonum = 4;
-      sint64 fixednum = 5;
-      string c = 6;
-      string str = 7;
-      bool b = 8;
+    Empty empty = 1;
+    string sym = 2;
+    SchemePair pair = 3;
+    double flonum = 4;
+    sint64 fixednum = 5;
+    string c = 6;
+    string str = 7;
+    bool b = 8;
   }
 }

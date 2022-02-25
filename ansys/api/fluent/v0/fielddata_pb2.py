@@ -21,10 +21,72 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0f\x66ielddata.proto\x12\x0cgrpcRemoting\x1a\x0c\x63ommon.proto\"y\n\x0c\x44\x61taStamping\x12\x38\n\x10\x64\x61tastampingtype\x18\x01 \x01(\x0e\x32\x1e.grpcRemoting.DataStampingType\x12\x15\n\x0b\x64oublevalue\x18\x02 \x01(\x01H\x00\x12\x12\n\x08intvalue\x18\x03 \x01(\x12H\x00\x42\x04\n\x02\x61s\"U\n\x08UnitInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04unit\x18\x02 \x01(\t\x12\x0e\n\x06\x66\x61\x63tor\x18\x03 \x01(\x01\x12\x0e\n\x06offset\x18\x04 \x01(\x01\x12\r\n\x05label\x18\x05 \x01(\t\"D\n\x10\x44\x61taStampingInfo\x12\x30\n\x0c\x64\x61tastamping\x18\x01 \x03(\x0b\x32\x1a.grpcRemoting.DataStamping\"\x17\n\tSurfaceId\x12\n\n\x02id\x18\x01 \x01(\x12\"\xc3\x01\n\x12GetSurfacesRequest\x12*\n\tsurfaceid\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0boversetMesh\x18\x02 \x01(\x08\x12\x38\n\x10\x64\x61tastampinginfo\x18\x03 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\x32\n\x11\x61vailablesurfaces\x18\x04 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\"w\n\x0fSurfaceMetaData\x12\x38\n\x10\x64\x61tastampinginfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthunit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"-\n\nCoordinate\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\t\n\x01z\x18\x03 \x01(\x01\"\x15\n\x05\x46\x61\x63\x65t\x12\x0c\n\x04node\x18\x01 \x03(\x11\"\x97\x01\n\x0bSurfaceInfo\x12*\n\tsurfaceId\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\'\n\x06zoneId\x18\x02 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0bsurfaceName\x18\x03 \x01(\t\x12\x10\n\x08zoneType\x18\x04 \x01(\t\x12\x0c\n\x04type\x18\x05 \x01(\t\"\xf2\x01\n\x0bSurfaceData\x12*\n\tsurfaceid\x18\x01 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\'\n\x05point\x18\x02 \x03(\x0b\x32\x18.grpcRemoting.Coordinate\x12\"\n\x05\x66\x61\x63\x65t\x18\x03 \x03(\x0b\x32\x13.grpcRemoting.Facet\x12*\n\x0b\x65mpty_state\x18\x05 \x01(\x0b\x32\x13.grpcRemoting.EmptyH\x00\x12\x38\n\x0fsurfacemetadata\x18\x06 \x01(\x0b\x32\x1d.grpcRemoting.SurfaceMetaDataH\x00\x42\x04\n\x02\x61s\"E\n\x13GetSurfacesResponse\x12.\n\x0bsurfacedata\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.SurfaceData\"c\n\x0fGetRangeRequest\x12\x11\n\tfieldName\x18\x01 \x01(\t\x12*\n\tsurfaceid\x18\x02 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x11\n\tnodeValue\x18\x03 \x01(\x08\"4\n\x10GetRangeResponse\x12\x0f\n\x07minimum\x18\x01 \x01(\x01\x12\x0f\n\x07maximum\x18\x02 \x01(\x01\"U\n\tFieldInfo\x12\x13\n\x0b\x64isplayName\x18\x01 \x01(\t\x12\x12\n\nsolverName\x18\x02 \x01(\t\x12\x0f\n\x07section\x18\x03 \x01(\t\x12\x0e\n\x06\x64omain\x18\x04 \x01(\t\"\x16\n\x14GetFieldsInfoRequest\"C\n\x15GetFieldsInfoResponse\x12*\n\tfieldInfo\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.FieldInfo\"\x18\n\x16GetSurfacesInfoRequest\"I\n\x17GetSurfacesInfoResponse\x12.\n\x0bsurfaceInfo\x18\x01 \x03(\x0b\x32\x19.grpcRemoting.SurfaceInfo\"\xa8\x02\n\x15GetScalarFieldRequest\x12*\n\tsurfaceid\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0bscalarfield\x18\x02 \x01(\t\x12\x11\n\tnodevalue\x18\x03 \x01(\x08\x12\x16\n\x0e\x62oundaryvalues\x18\x07 \x01(\x08\x12\x38\n\x10\x64\x61tastampinginfo\x18\x04 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\x32\n\x11\x61vailablesurfaces\x18\x05 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x35\n\x14\x61vailablescalarfield\x18\x06 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\"3\n\x0bGlobalRange\x12\x11\n\tglobalmin\x18\x01 \x01(\x01\x12\x11\n\tglobalmax\x18\x02 \x01(\x01\"\xe1\x01\n\x13ScalarFieldMetaData\x12\x38\n\x10\x64\x61tastampinginfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthunit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldrange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarfieldunit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"3\n\x10VectorComponents\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\t\n\x01z\x18\x03 \x01(\x01\"\x1b\n\x0bScalarField\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\x01\"G\n\x0bVectorField\x12\x38\n\x10vectorComponents\x18\x01 \x03(\x0b\x32\x1e.grpcRemoting.VectorComponents\"\x1d\n\x0b\x41\x63tiveField\x12\x0e\n\x06\x61\x63tive\x18\x01 \x03(\x12\"\xc1\x02\n\x0fScalarFieldData\x12*\n\tsurfaceid\x18\x01 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12.\n\x0bsurfacedata\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.SurfaceData\x12.\n\x0bscalarfield\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12.\n\x0b\x61\x63tivefield\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.ActiveField\x12*\n\x0b\x65mpty_state\x18\x05 \x01(\x0b\x32\x13.grpcRemoting.EmptyH\x00\x12@\n\x13scalarfieldmetadata\x18\x06 \x01(\x0b\x32!.grpcRemoting.ScalarFieldMetaDataH\x00\x42\x04\n\x02\x61s\"P\n\x16GetScalarFieldResponse\x12\x36\n\x0fscalarfielddata\x18\x01 \x01(\x0b\x32\x1d.grpcRemoting.ScalarFieldData\"\xdc\x02\n\x15GetVectorFieldRequest\x12*\n\tsurfaceid\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0bscalarfield\x18\x02 \x01(\t\x12\x11\n\tnodevalue\x18\x03 \x01(\x08\x12\x13\n\x0bvectorfield\x18\x04 \x01(\t\x12\x38\n\x10\x64\x61tastampinginfo\x18\x06 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\x32\n\x11\x61vailablesurfaces\x18\x07 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x35\n\x14\x61vailablescalarfield\x18\x08 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x35\n\x14\x61vailablevectorfield\x18\t \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\"\xe1\x01\n\x13VectorFieldMetaData\x12\x38\n\x10\x64\x61tastampinginfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthunit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldrange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarfieldunit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"\x1b\n\x0bVectorScale\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x01\"\xf0\x03\n\x0fVectorFieldData\x12*\n\tsurfaceid\x18\x01 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12.\n\x0bsurfacedata\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.SurfaceData\x12.\n\x0bscalarfield\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12.\n\x0b\x61\x63tivefield\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.ActiveField\x12*\n\x0b\x65mpty_state\x18\x05 \x01(\x0b\x32\x13.grpcRemoting.EmptyH\x00\x12@\n\x13vectorfieldmetadata\x18\x06 \x01(\x0b\x32!.grpcRemoting.VectorFieldMetaDataH\x00\x12\'\n\x04\x62\x61se\x18\x07 \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12)\n\x06vector\x18\x08 \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12)\n\x06normal\x18\t \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12.\n\x0bvectorscale\x18\n \x01(\x0b\x32\x19.grpcRemoting.VectorScaleB\x04\n\x02\x61s\"P\n\x16GetVectorFieldResponse\x12\x36\n\x0fvectorfielddata\x18\x01 \x01(\x0b\x32\x1d.grpcRemoting.VectorFieldData\"\xed\x02\n\x18GetPathlinesFieldRequest\x12,\n\x0breleaseFrom\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x0e\n\x06\x66ield1\x18\x02 \x01(\t\x12\x0e\n\x06\x66ield2\x18\x03 \x01(\t\x12\x11\n\tnodeValue\x18\x04 \x01(\x08\x12\r\n\x05steps\x18\x05 \x01(\x11\x12\x10\n\x08stepSize\x18\x06 \x01(\x01\x12\x0c\n\x04skip\x18\x08 \x01(\x11\x12\x0f\n\x07reverse\x18\t \x01(\x08\x12\x19\n\x11\x61\x63\x63uracyControlOn\x18\n \x01(\x08\x12\x11\n\ttolerance\x18\x0b \x01(\x01\x12\x0f\n\x07\x63oarsen\x18\x0c \x01(\x11\x12\x10\n\x04zone\x18\r \x01(\tB\x02\x18\x01\x12\x16\n\x0evelocityDomain\x18\x0e \x01(\t\x12\x38\n\x10\x64\x61taStampingInfo\x18\x0f \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\r\n\x05zones\x18\x10 \x03(\t\"\xb7\x02\n\x10PathlineMetaData\x12\x38\n\x10\x64\x61taStampingInfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthUnit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldRange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarFieldUnit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12-\n\ntwistRange\x18\x05 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12(\n\x08timeUnit\x18\x06 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"\x9c\x01\n\x11PathlineFieldData\x12\x12\n\nparticleId\x18\x01 \x01(\x12\x12\x19\n\x11particlePositions\x18\x02 \x03(\x01\x12\x14\n\x0cparticleTime\x18\x03 \x03(\x01\x12\x0e\n\x06\x66ield1\x18\x04 \x03(\x01\x12\x0e\n\x06\x66ield2\x18\x05 \x03(\x01\x12\x11\n\tbeginStep\x18\x06 \x01(\x12\x12\x0f\n\x07\x65ndStep\x18\x07 \x01(\x12\"\x8e\x01\n\x0cPathlineData\x12<\n\x11pathlineFieldData\x18\x01 \x01(\x0b\x32\x1f.grpcRemoting.PathlineFieldDataH\x00\x12:\n\x10pathlineMetaData\x18\x02 \x01(\x0b\x32\x1e.grpcRemoting.PathlineMetaDataH\x00\x42\x04\n\x02\x61s\"M\n\x19GetPathlinesFieldResponse\x12\x30\n\x0cpathlineData\x18\x01 \x01(\x0b\x32\x1a.grpcRemoting.PathlineData\"j\n\x14ParticleTracksFilter\x12\r\n\x05\x66ield\x18\x01 \x01(\t\x12.\n\x0b\x66ilterRange\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12\x13\n\x0binsideRange\x18\x03 \x01(\x08\"\xfd\x02\n\x1dGetParticleTracksFieldRequest\x12\x13\n\x0breleaseFrom\x18\x01 \x03(\t\x12\x0e\n\x06\x66ield1\x18\x02 \x01(\t\x12\x0e\n\x06\x66ield2\x18\x03 \x01(\t\x12\x0e\n\x06\x66ield3\x18\x04 \x01(\t\x12\x11\n\tvectorsOf\x18\x05 \x01(\t\x12\x11\n\tnodeValue\x18\x06 \x01(\x08\x12\x0c\n\x04skip\x18\x07 \x01(\x11\x12\x16\n\x0esingleStreamId\x18\x08 \x01(\x11\x12\x0f\n\x07\x63oarsen\x18\t \x01(\x11\x12\x1b\n\x13\x66reeStreamParticles\x18\n \x01(\x08\x12\x19\n\x11wallFilmParticles\x18\x0b \x01(\x08\x12\x14\n\x0cpdfParticles\x18\x0c \x01(\x08\x12\x32\n\x06\x66ilter\x18\r \x01(\x0b\x32\".grpcRemoting.ParticleTracksFilter\x12\x38\n\x10\x64\x61taStampingInfo\x18\x0e \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\"\xbc\x02\n\x15ParticleTrackMetaData\x12\x38\n\x10\x64\x61taStampingInfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthUnit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldRange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarFieldUnit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12-\n\ntwistRange\x18\x05 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12(\n\x08timeUnit\x18\x06 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"\xfc\x02\n\x16ParticleTrackFieldData\x12\x12\n\nparticleId\x18\x01 \x01(\x12\x12\x33\n\x10particlePosition\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12/\n\x0cparticleTime\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12)\n\x06\x66ield1\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12)\n\x06\x66ield2\x18\x05 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12)\n\x06\x66ield3\x18\x06 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12\x33\n\x10particleVelocity\x18\x07 \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12\x19\n\x11particleStartTime\x18\x08 \x01(\x01\x12\x17\n\x0fparticleEndTime\x18\t \x01(\x01\"\xa7\x01\n\x11ParticleTrackData\x12\x46\n\x16particleTrackFieldData\x18\x01 \x01(\x0b\x32$.grpcRemoting.ParticleTrackFieldDataH\x00\x12\x44\n\x15particleTrackMetaData\x18\x02 \x01(\x0b\x32#.grpcRemoting.ParticleTrackMetaDataH\x00\x42\x04\n\x02\x61s\"\\\n\x1eGetParticleTracksFieldResponse\x12:\n\x11particleTrackData\x18\x01 \x01(\x0b\x32\x1f.grpcRemoting.ParticleTrackData\"\x1b\n\x19IsBoundaryValuesOnRequest\"8\n\x1aIsBoundaryValuesOnResponse\x12\x1a\n\x12isboundaryvalueson\x18\x01 \x01(\x08*z\n\x10\x44\x61taStampingType\x12\x12\n\x0eIterationIndex\x10\x00\x12\x11\n\rTimeStepIndex\x10\x01\x12\x0c\n\x08\x46lowTime\x10\x02\x12\r\n\tSolidTime\x10\x03\x12\n\n\x06\x43\x61seID\x10\x04\x12\n\n\x06MeshID\x10\x05\x12\n\n\x06\x44\x61taID\x10\x06\x32\xfe\x06\n\tFieldData\x12K\n\x08GetRange\x12\x1d.grpcRemoting.GetRangeRequest\x1a\x1e.grpcRemoting.GetRangeResponse\"\x00\x12`\n\x0fGetSurfacesInfo\x12$.grpcRemoting.GetSurfacesInfoRequest\x1a%.grpcRemoting.GetSurfacesInfoResponse\"\x00\x12Z\n\rGetFieldsInfo\x12\".grpcRemoting.GetFieldsInfoRequest\x1a#.grpcRemoting.GetFieldsInfoResponse\"\x00\x12V\n\x0bGetSurfaces\x12 .grpcRemoting.GetSurfacesRequest\x1a!.grpcRemoting.GetSurfacesResponse\"\x00\x30\x01\x12_\n\x0eGetScalarField\x12#.grpcRemoting.GetScalarFieldRequest\x1a$.grpcRemoting.GetScalarFieldResponse\"\x00\x30\x01\x12_\n\x0eGetVectorField\x12#.grpcRemoting.GetVectorFieldRequest\x1a$.grpcRemoting.GetVectorFieldResponse\"\x00\x30\x01\x12h\n\x11GetPathlinesField\x12&.grpcRemoting.GetPathlinesFieldRequest\x1a\'.grpcRemoting.GetPathlinesFieldResponse\"\x00\x30\x01\x12w\n\x16GetParticleTracksField\x12+.grpcRemoting.GetParticleTracksFieldRequest\x1a,.grpcRemoting.GetParticleTracksFieldResponse\"\x00\x30\x01\x12i\n\x12IsBoundaryValuesOn\x12\'.grpcRemoting.IsBoundaryValuesOnRequest\x1a(.grpcRemoting.IsBoundaryValuesOnResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0f\x66ielddata.proto\x12\x0cgrpcRemoting\x1a\x0c\x63ommon.proto\" \n\rDoublePayload\x12\x0f\n\x07payload\x18\x01 \x03(\x01\"\x1f\n\x0c\x46loatPayload\x12\x0f\n\x07payload\x18\x01 \x03(\x02\"\x1d\n\nIntPayload\x12\x0f\n\x07payload\x18\x01 \x03(\x11\"\x1e\n\x0bLongPayload\x12\x0f\n\x07payload\x18\x01 \x03(\x12\"r\n\x0bPayloadInfo\x12\x11\n\tsurfaceId\x18\x01 \x01(\x04\x12\x11\n\tfieldName\x18\x02 \x01(\t\x12*\n\tfieldType\x18\x03 \x01(\x0e\x32\x17.grpcRemoting.FieldType\x12\x11\n\tfieldSize\x18\x04 \x01(\x04\"\xb1\x02\n\x11GetFieldsResponse\x12\x15\n\x0b\x62ytePayload\x18\x01 \x01(\x0cH\x00\x12\x34\n\rdoublePayload\x18\x02 \x01(\x0b\x32\x1b.grpcRemoting.DoublePayloadH\x00\x12\x32\n\x0c\x66loatPayload\x18\x03 \x01(\x0b\x32\x1a.grpcRemoting.FloatPayloadH\x00\x12\x30\n\x0blongPayload\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.LongPayloadH\x00\x12.\n\nintPayload\x18\x05 \x01(\x0b\x32\x18.grpcRemoting.IntPayloadH\x00\x12\x30\n\x0bpayloadInfo\x18\x06 \x01(\x0b\x32\x19.grpcRemoting.PayloadInfoH\x00\x42\x07\n\x05\x63hunk\"N\n\x0eSurfaceRequest\x12\x11\n\tsurfaceId\x18\x01 \x01(\x04\x12\x13\n\x0boversetMesh\x18\x02 \x01(\x08\x12\x14\n\x0cprovideFaces\x18\x03 \x01(\x08\"\x91\x01\n\x12ScalarFieldRequest\x12\x11\n\tsurfaceId\x18\x01 \x01(\x04\x12\x17\n\x0fscalarFieldName\x18\x02 \x01(\t\x12\x30\n\x0c\x64\x61taLocation\x18\x03 \x01(\x0e\x32\x1a.grpcRemoting.DataLocation\x12\x1d\n\x15provideBoundaryValues\x18\x04 \x01(\x08\"~\n\x12VectorFieldRequest\x12\x11\n\tsurfaceId\x18\x01 \x01(\x04\x12\x17\n\x0fvectorFieldName\x18\x02 \x01(\t\x12\x1c\n\x14provideFacesCentroid\x18\x03 \x01(\x08\x12\x1e\n\x16provideFacesAreaNormal\x18\x04 \x01(\x08\"\xf3\x01\n\x10GetFieldsRequest\x12\x11\n\tchunkSize\x18\x01 \x01(\r\x12\x1a\n\x12provideBytesStream\x18\x02 \x01(\x08\x12\x34\n\x0esurfaceRequest\x18\x03 \x03(\x0b\x32\x1c.grpcRemoting.SurfaceRequest\x12<\n\x12scalarFieldRequest\x18\x04 \x03(\x0b\x32 .grpcRemoting.ScalarFieldRequest\x12<\n\x12vectorFieldRequest\x18\x05 \x03(\x0b\x32 .grpcRemoting.VectorFieldRequest\"y\n\x0c\x44\x61taStamping\x12\x38\n\x10\x64\x61tastampingtype\x18\x01 \x01(\x0e\x32\x1e.grpcRemoting.DataStampingType\x12\x15\n\x0b\x64oublevalue\x18\x02 \x01(\x01H\x00\x12\x12\n\x08intvalue\x18\x03 \x01(\x12H\x00\x42\x04\n\x02\x61s\"U\n\x08UnitInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04unit\x18\x02 \x01(\t\x12\x0e\n\x06\x66\x61\x63tor\x18\x03 \x01(\x01\x12\x0e\n\x06offset\x18\x04 \x01(\x01\x12\r\n\x05label\x18\x05 \x01(\t\"D\n\x10\x44\x61taStampingInfo\x12\x30\n\x0c\x64\x61tastamping\x18\x01 \x03(\x0b\x32\x1a.grpcRemoting.DataStamping\"\x17\n\tSurfaceId\x12\n\n\x02id\x18\x01 \x01(\x12\"\xc3\x01\n\x12GetSurfacesRequest\x12*\n\tsurfaceid\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0boversetMesh\x18\x02 \x01(\x08\x12\x38\n\x10\x64\x61tastampinginfo\x18\x03 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\x32\n\x11\x61vailablesurfaces\x18\x04 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\"w\n\x0fSurfaceMetaData\x12\x38\n\x10\x64\x61tastampinginfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthunit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"-\n\nCoordinate\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\t\n\x01z\x18\x03 \x01(\x01\"\x15\n\x05\x46\x61\x63\x65t\x12\x0c\n\x04node\x18\x01 \x03(\x11\"\x97\x01\n\x0bSurfaceInfo\x12*\n\tsurfaceId\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\'\n\x06zoneId\x18\x02 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0bsurfaceName\x18\x03 \x01(\t\x12\x10\n\x08zoneType\x18\x04 \x01(\t\x12\x0c\n\x04type\x18\x05 \x01(\t\"\xf2\x01\n\x0bSurfaceData\x12*\n\tsurfaceid\x18\x01 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\'\n\x05point\x18\x02 \x03(\x0b\x32\x18.grpcRemoting.Coordinate\x12\"\n\x05\x66\x61\x63\x65t\x18\x03 \x03(\x0b\x32\x13.grpcRemoting.Facet\x12*\n\x0b\x65mpty_state\x18\x05 \x01(\x0b\x32\x13.grpcRemoting.EmptyH\x00\x12\x38\n\x0fsurfacemetadata\x18\x06 \x01(\x0b\x32\x1d.grpcRemoting.SurfaceMetaDataH\x00\x42\x04\n\x02\x61s\"E\n\x13GetSurfacesResponse\x12.\n\x0bsurfacedata\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.SurfaceData\"c\n\x0fGetRangeRequest\x12\x11\n\tfieldName\x18\x01 \x01(\t\x12*\n\tsurfaceid\x18\x02 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x11\n\tnodeValue\x18\x03 \x01(\x08\"4\n\x10GetRangeResponse\x12\x0f\n\x07minimum\x18\x01 \x01(\x01\x12\x0f\n\x07maximum\x18\x02 \x01(\x01\"U\n\tFieldInfo\x12\x13\n\x0b\x64isplayName\x18\x01 \x01(\t\x12\x12\n\nsolverName\x18\x02 \x01(\t\x12\x0f\n\x07section\x18\x03 \x01(\t\x12\x0e\n\x06\x64omain\x18\x04 \x01(\t\"\x16\n\x14GetFieldsInfoRequest\"C\n\x15GetFieldsInfoResponse\x12*\n\tfieldInfo\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.FieldInfo\"\x1c\n\x1aGetVectorFieldsInfoRequest\"b\n\x0fVectorFieldInfo\x12\x13\n\x0b\x64isplayName\x18\x01 \x01(\t\x12\x12\n\nxComponent\x18\x02 \x01(\t\x12\x12\n\nyComponent\x18\x03 \x01(\t\x12\x12\n\nzComponent\x18\x04 \x01(\t\"U\n\x1bGetVectorFieldsInfoResponse\x12\x36\n\x0fvectorFieldInfo\x18\x01 \x03(\x0b\x32\x1d.grpcRemoting.VectorFieldInfo\"\x18\n\x16GetSurfacesInfoRequest\"I\n\x17GetSurfacesInfoResponse\x12.\n\x0bsurfaceInfo\x18\x01 \x03(\x0b\x32\x19.grpcRemoting.SurfaceInfo\"\xa8\x02\n\x15GetScalarFieldRequest\x12*\n\tsurfaceid\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0bscalarfield\x18\x02 \x01(\t\x12\x11\n\tnodevalue\x18\x03 \x01(\x08\x12\x16\n\x0e\x62oundaryvalues\x18\x07 \x01(\x08\x12\x38\n\x10\x64\x61tastampinginfo\x18\x04 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\x32\n\x11\x61vailablesurfaces\x18\x05 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x35\n\x14\x61vailablescalarfield\x18\x06 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\"3\n\x0bGlobalRange\x12\x11\n\tglobalmin\x18\x01 \x01(\x01\x12\x11\n\tglobalmax\x18\x02 \x01(\x01\"\xe1\x01\n\x13ScalarFieldMetaData\x12\x38\n\x10\x64\x61tastampinginfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthunit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldrange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarfieldunit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"3\n\x10VectorComponents\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\t\n\x01z\x18\x03 \x01(\x01\"\x1b\n\x0bScalarField\x12\x0c\n\x04\x64\x61ta\x18\x01 \x03(\x01\"G\n\x0bVectorField\x12\x38\n\x10vectorComponents\x18\x01 \x03(\x0b\x32\x1e.grpcRemoting.VectorComponents\"\x1d\n\x0b\x41\x63tiveField\x12\x0e\n\x06\x61\x63tive\x18\x01 \x03(\x12\"\xc1\x02\n\x0fScalarFieldData\x12*\n\tsurfaceid\x18\x01 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12.\n\x0bsurfacedata\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.SurfaceData\x12.\n\x0bscalarfield\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12.\n\x0b\x61\x63tivefield\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.ActiveField\x12*\n\x0b\x65mpty_state\x18\x05 \x01(\x0b\x32\x13.grpcRemoting.EmptyH\x00\x12@\n\x13scalarfieldmetadata\x18\x06 \x01(\x0b\x32!.grpcRemoting.ScalarFieldMetaDataH\x00\x42\x04\n\x02\x61s\"P\n\x16GetScalarFieldResponse\x12\x36\n\x0fscalarfielddata\x18\x01 \x01(\x0b\x32\x1d.grpcRemoting.ScalarFieldData\"\xdc\x02\n\x15GetVectorFieldRequest\x12*\n\tsurfaceid\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x13\n\x0bscalarfield\x18\x02 \x01(\t\x12\x11\n\tnodevalue\x18\x03 \x01(\x08\x12\x13\n\x0bvectorfield\x18\x04 \x01(\t\x12\x38\n\x10\x64\x61tastampinginfo\x18\x06 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\x32\n\x11\x61vailablesurfaces\x18\x07 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x35\n\x14\x61vailablescalarfield\x18\x08 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x35\n\x14\x61vailablevectorfield\x18\t \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\"\xe1\x01\n\x13VectorFieldMetaData\x12\x38\n\x10\x64\x61tastampinginfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthunit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldrange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarfieldunit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"\x1b\n\x0bVectorScale\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x01\"\xf0\x03\n\x0fVectorFieldData\x12*\n\tsurfaceid\x18\x01 \x01(\x0b\x32\x17.grpcRemoting.SurfaceId\x12.\n\x0bsurfacedata\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.SurfaceData\x12.\n\x0bscalarfield\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12.\n\x0b\x61\x63tivefield\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.ActiveField\x12*\n\x0b\x65mpty_state\x18\x05 \x01(\x0b\x32\x13.grpcRemoting.EmptyH\x00\x12@\n\x13vectorfieldmetadata\x18\x06 \x01(\x0b\x32!.grpcRemoting.VectorFieldMetaDataH\x00\x12\'\n\x04\x62\x61se\x18\x07 \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12)\n\x06vector\x18\x08 \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12)\n\x06normal\x18\t \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12.\n\x0bvectorscale\x18\n \x01(\x0b\x32\x19.grpcRemoting.VectorScaleB\x04\n\x02\x61s\"P\n\x16GetVectorFieldResponse\x12\x36\n\x0fvectorfielddata\x18\x01 \x01(\x0b\x32\x1d.grpcRemoting.VectorFieldData\"\xed\x02\n\x18GetPathlinesFieldRequest\x12,\n\x0breleaseFrom\x18\x01 \x03(\x0b\x32\x17.grpcRemoting.SurfaceId\x12\x0e\n\x06\x66ield1\x18\x02 \x01(\t\x12\x0e\n\x06\x66ield2\x18\x03 \x01(\t\x12\x11\n\tnodeValue\x18\x04 \x01(\x08\x12\r\n\x05steps\x18\x05 \x01(\x11\x12\x10\n\x08stepSize\x18\x06 \x01(\x01\x12\x0c\n\x04skip\x18\x08 \x01(\x11\x12\x0f\n\x07reverse\x18\t \x01(\x08\x12\x19\n\x11\x61\x63\x63uracyControlOn\x18\n \x01(\x08\x12\x11\n\ttolerance\x18\x0b \x01(\x01\x12\x0f\n\x07\x63oarsen\x18\x0c \x01(\x11\x12\x10\n\x04zone\x18\r \x01(\tB\x02\x18\x01\x12\x16\n\x0evelocityDomain\x18\x0e \x01(\t\x12\x38\n\x10\x64\x61taStampingInfo\x18\x0f \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12\r\n\x05zones\x18\x10 \x03(\t\"\xb7\x02\n\x10PathlineMetaData\x12\x38\n\x10\x64\x61taStampingInfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthUnit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldRange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarFieldUnit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12-\n\ntwistRange\x18\x05 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12(\n\x08timeUnit\x18\x06 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"\x9c\x01\n\x11PathlineFieldData\x12\x12\n\nparticleId\x18\x01 \x01(\x12\x12\x19\n\x11particlePositions\x18\x02 \x03(\x01\x12\x14\n\x0cparticleTime\x18\x03 \x03(\x01\x12\x0e\n\x06\x66ield1\x18\x04 \x03(\x01\x12\x0e\n\x06\x66ield2\x18\x05 \x03(\x01\x12\x11\n\tbeginStep\x18\x06 \x01(\x12\x12\x0f\n\x07\x65ndStep\x18\x07 \x01(\x12\"\x8e\x01\n\x0cPathlineData\x12<\n\x11pathlineFieldData\x18\x01 \x01(\x0b\x32\x1f.grpcRemoting.PathlineFieldDataH\x00\x12:\n\x10pathlineMetaData\x18\x02 \x01(\x0b\x32\x1e.grpcRemoting.PathlineMetaDataH\x00\x42\x04\n\x02\x61s\"M\n\x19GetPathlinesFieldResponse\x12\x30\n\x0cpathlineData\x18\x01 \x01(\x0b\x32\x1a.grpcRemoting.PathlineData\"j\n\x14ParticleTracksFilter\x12\r\n\x05\x66ield\x18\x01 \x01(\t\x12.\n\x0b\x66ilterRange\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12\x13\n\x0binsideRange\x18\x03 \x01(\x08\"\xfd\x02\n\x1dGetParticleTracksFieldRequest\x12\x13\n\x0breleaseFrom\x18\x01 \x03(\t\x12\x0e\n\x06\x66ield1\x18\x02 \x01(\t\x12\x0e\n\x06\x66ield2\x18\x03 \x01(\t\x12\x0e\n\x06\x66ield3\x18\x04 \x01(\t\x12\x11\n\tvectorsOf\x18\x05 \x01(\t\x12\x11\n\tnodeValue\x18\x06 \x01(\x08\x12\x0c\n\x04skip\x18\x07 \x01(\x11\x12\x16\n\x0esingleStreamId\x18\x08 \x01(\x11\x12\x0f\n\x07\x63oarsen\x18\t \x01(\x11\x12\x1b\n\x13\x66reeStreamParticles\x18\n \x01(\x08\x12\x19\n\x11wallFilmParticles\x18\x0b \x01(\x08\x12\x14\n\x0cpdfParticles\x18\x0c \x01(\x08\x12\x32\n\x06\x66ilter\x18\r \x01(\x0b\x32\".grpcRemoting.ParticleTracksFilter\x12\x38\n\x10\x64\x61taStampingInfo\x18\x0e \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\"\xbc\x02\n\x15ParticleTrackMetaData\x12\x38\n\x10\x64\x61taStampingInfo\x18\x01 \x01(\x0b\x32\x1e.grpcRemoting.DataStampingInfo\x12*\n\nlengthUnit\x18\x02 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12\x33\n\x10scalarFieldRange\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12/\n\x0fscalarFieldUnit\x18\x04 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\x12-\n\ntwistRange\x18\x05 \x01(\x0b\x32\x19.grpcRemoting.GlobalRange\x12(\n\x08timeUnit\x18\x06 \x01(\x0b\x32\x16.grpcRemoting.UnitInfo\"\xfc\x02\n\x16ParticleTrackFieldData\x12\x12\n\nparticleId\x18\x01 \x01(\x12\x12\x33\n\x10particlePosition\x18\x02 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12/\n\x0cparticleTime\x18\x03 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12)\n\x06\x66ield1\x18\x04 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12)\n\x06\x66ield2\x18\x05 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12)\n\x06\x66ield3\x18\x06 \x01(\x0b\x32\x19.grpcRemoting.ScalarField\x12\x33\n\x10particleVelocity\x18\x07 \x01(\x0b\x32\x19.grpcRemoting.VectorField\x12\x19\n\x11particleStartTime\x18\x08 \x01(\x01\x12\x17\n\x0fparticleEndTime\x18\t \x01(\x01\"\xa7\x01\n\x11ParticleTrackData\x12\x46\n\x16particleTrackFieldData\x18\x01 \x01(\x0b\x32$.grpcRemoting.ParticleTrackFieldDataH\x00\x12\x44\n\x15particleTrackMetaData\x18\x02 \x01(\x0b\x32#.grpcRemoting.ParticleTrackMetaDataH\x00\x42\x04\n\x02\x61s\"\\\n\x1eGetParticleTracksFieldResponse\x12:\n\x11particleTrackData\x18\x01 \x01(\x0b\x32\x1f.grpcRemoting.ParticleTrackData\"\x1b\n\x19IsBoundaryValuesOnRequest\"8\n\x1aIsBoundaryValuesOnResponse\x12\x1a\n\x12isboundaryvalueson\x18\x01 \x01(\x08*M\n\tFieldType\x12\r\n\tINT_ARRAY\x10\x00\x12\x0e\n\nLONG_ARRAY\x10\x01\x12\x0f\n\x0b\x46LOAT_ARRAY\x10\x02\x12\x10\n\x0c\x44OUBLE_ARRAY\x10\x03*\'\n\x0c\x44\x61taLocation\x12\t\n\x05Nodes\x10\x00\x12\x0c\n\x08\x45lements\x10\x01*z\n\x10\x44\x61taStampingType\x12\x12\n\x0eIterationIndex\x10\x00\x12\x11\n\rTimeStepIndex\x10\x01\x12\x0c\n\x08\x46lowTime\x10\x02\x12\r\n\tSolidTime\x10\x03\x12\n\n\x06\x43\x61seID\x10\x04\x12\n\n\x06MeshID\x10\x05\x12\n\n\x06\x44\x61taID\x10\x06\x32\xbc\x08\n\tFieldData\x12N\n\tGetFields\x12\x1e.grpcRemoting.GetFieldsRequest\x1a\x1f.grpcRemoting.GetFieldsResponse0\x01\x12K\n\x08GetRange\x12\x1d.grpcRemoting.GetRangeRequest\x1a\x1e.grpcRemoting.GetRangeResponse\"\x00\x12`\n\x0fGetSurfacesInfo\x12$.grpcRemoting.GetSurfacesInfoRequest\x1a%.grpcRemoting.GetSurfacesInfoResponse\"\x00\x12l\n\x13GetVectorFieldsInfo\x12(.grpcRemoting.GetVectorFieldsInfoRequest\x1a).grpcRemoting.GetVectorFieldsInfoResponse\"\x00\x12Z\n\rGetFieldsInfo\x12\".grpcRemoting.GetFieldsInfoRequest\x1a#.grpcRemoting.GetFieldsInfoResponse\"\x00\x12V\n\x0bGetSurfaces\x12 .grpcRemoting.GetSurfacesRequest\x1a!.grpcRemoting.GetSurfacesResponse\"\x00\x30\x01\x12_\n\x0eGetScalarField\x12#.grpcRemoting.GetScalarFieldRequest\x1a$.grpcRemoting.GetScalarFieldResponse\"\x00\x30\x01\x12_\n\x0eGetVectorField\x12#.grpcRemoting.GetVectorFieldRequest\x1a$.grpcRemoting.GetVectorFieldResponse\"\x00\x30\x01\x12h\n\x11GetPathlinesField\x12&.grpcRemoting.GetPathlinesFieldRequest\x1a\'.grpcRemoting.GetPathlinesFieldResponse\"\x00\x30\x01\x12w\n\x16GetParticleTracksField\x12+.grpcRemoting.GetParticleTracksFieldRequest\x1a,.grpcRemoting.GetParticleTracksFieldResponse\"\x00\x30\x01\x12i\n\x12IsBoundaryValuesOn\x12\'.grpcRemoting.IsBoundaryValuesOnRequest\x1a(.grpcRemoting.IsBoundaryValuesOnResponse\"\x00\x62\x06proto3'
   ,
   dependencies=[common__pb2.DESCRIPTOR,])
 
+_FIELDTYPE = _descriptor.EnumDescriptor(
+  name='FieldType',
+  full_name='grpcRemoting.FieldType',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='INT_ARRAY', index=0, number=0,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='LONG_ARRAY', index=1, number=1,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='FLOAT_ARRAY', index=2, number=2,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='DOUBLE_ARRAY', index=3, number=3,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=7991,
+  serialized_end=8068,
+)
+_sym_db.RegisterEnumDescriptor(_FIELDTYPE)
+
+FieldType = enum_type_wrapper.EnumTypeWrapper(_FIELDTYPE)
+_DATALOCATION = _descriptor.EnumDescriptor(
+  name='DataLocation',
+  full_name='grpcRemoting.DataLocation',
+  filename=None,
+  file=DESCRIPTOR,
+  create_key=_descriptor._internal_create_key,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='Nodes', index=0, number=0,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+    _descriptor.EnumValueDescriptor(
+      name='Elements', index=1, number=1,
+      serialized_options=None,
+      type=None,
+      create_key=_descriptor._internal_create_key),
+  ],
+  containing_type=None,
+  serialized_options=None,
+  serialized_start=8070,
+  serialized_end=8109,
+)
+_sym_db.RegisterEnumDescriptor(_DATALOCATION)
+
+DataLocation = enum_type_wrapper.EnumTypeWrapper(_DATALOCATION)
 _DATASTAMPINGTYPE = _descriptor.EnumDescriptor(
   name='DataStampingType',
   full_name='grpcRemoting.DataStampingType',
@@ -70,12 +132,18 @@ _DATASTAMPINGTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=6618,
-  serialized_end=6740,
+  serialized_start=8111,
+  serialized_end=8233,
 )
 _sym_db.RegisterEnumDescriptor(_DATASTAMPINGTYPE)
 
 DataStampingType = enum_type_wrapper.EnumTypeWrapper(_DATASTAMPINGTYPE)
+INT_ARRAY = 0
+LONG_ARRAY = 1
+FLOAT_ARRAY = 2
+DOUBLE_ARRAY = 3
+Nodes = 0
+Elements = 1
 IterationIndex = 0
 TimeStepIndex = 1
 FlowTime = 2
@@ -84,6 +152,471 @@ CaseID = 4
 MeshID = 5
 DataID = 6
 
+
+
+_DOUBLEPAYLOAD = _descriptor.Descriptor(
+  name='DoublePayload',
+  full_name='grpcRemoting.DoublePayload',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='payload', full_name='grpcRemoting.DoublePayload.payload', index=0,
+      number=1, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=47,
+  serialized_end=79,
+)
+
+
+_FLOATPAYLOAD = _descriptor.Descriptor(
+  name='FloatPayload',
+  full_name='grpcRemoting.FloatPayload',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='payload', full_name='grpcRemoting.FloatPayload.payload', index=0,
+      number=1, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=81,
+  serialized_end=112,
+)
+
+
+_INTPAYLOAD = _descriptor.Descriptor(
+  name='IntPayload',
+  full_name='grpcRemoting.IntPayload',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='payload', full_name='grpcRemoting.IntPayload.payload', index=0,
+      number=1, type=17, cpp_type=1, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=114,
+  serialized_end=143,
+)
+
+
+_LONGPAYLOAD = _descriptor.Descriptor(
+  name='LongPayload',
+  full_name='grpcRemoting.LongPayload',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='payload', full_name='grpcRemoting.LongPayload.payload', index=0,
+      number=1, type=18, cpp_type=2, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=145,
+  serialized_end=175,
+)
+
+
+_PAYLOADINFO = _descriptor.Descriptor(
+  name='PayloadInfo',
+  full_name='grpcRemoting.PayloadInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='surfaceId', full_name='grpcRemoting.PayloadInfo.surfaceId', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fieldName', full_name='grpcRemoting.PayloadInfo.fieldName', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fieldType', full_name='grpcRemoting.PayloadInfo.fieldType', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fieldSize', full_name='grpcRemoting.PayloadInfo.fieldSize', index=3,
+      number=4, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=177,
+  serialized_end=291,
+)
+
+
+_GETFIELDSRESPONSE = _descriptor.Descriptor(
+  name='GetFieldsResponse',
+  full_name='grpcRemoting.GetFieldsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='bytePayload', full_name='grpcRemoting.GetFieldsResponse.bytePayload', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='doublePayload', full_name='grpcRemoting.GetFieldsResponse.doublePayload', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='floatPayload', full_name='grpcRemoting.GetFieldsResponse.floatPayload', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='longPayload', full_name='grpcRemoting.GetFieldsResponse.longPayload', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='intPayload', full_name='grpcRemoting.GetFieldsResponse.intPayload', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='payloadInfo', full_name='grpcRemoting.GetFieldsResponse.payloadInfo', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='chunk', full_name='grpcRemoting.GetFieldsResponse.chunk',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=294,
+  serialized_end=599,
+)
+
+
+_SURFACEREQUEST = _descriptor.Descriptor(
+  name='SurfaceRequest',
+  full_name='grpcRemoting.SurfaceRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='surfaceId', full_name='grpcRemoting.SurfaceRequest.surfaceId', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='oversetMesh', full_name='grpcRemoting.SurfaceRequest.oversetMesh', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='provideFaces', full_name='grpcRemoting.SurfaceRequest.provideFaces', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=601,
+  serialized_end=679,
+)
+
+
+_SCALARFIELDREQUEST = _descriptor.Descriptor(
+  name='ScalarFieldRequest',
+  full_name='grpcRemoting.ScalarFieldRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='surfaceId', full_name='grpcRemoting.ScalarFieldRequest.surfaceId', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='scalarFieldName', full_name='grpcRemoting.ScalarFieldRequest.scalarFieldName', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='dataLocation', full_name='grpcRemoting.ScalarFieldRequest.dataLocation', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='provideBoundaryValues', full_name='grpcRemoting.ScalarFieldRequest.provideBoundaryValues', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=682,
+  serialized_end=827,
+)
+
+
+_VECTORFIELDREQUEST = _descriptor.Descriptor(
+  name='VectorFieldRequest',
+  full_name='grpcRemoting.VectorFieldRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='surfaceId', full_name='grpcRemoting.VectorFieldRequest.surfaceId', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='vectorFieldName', full_name='grpcRemoting.VectorFieldRequest.vectorFieldName', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='provideFacesCentroid', full_name='grpcRemoting.VectorFieldRequest.provideFacesCentroid', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='provideFacesAreaNormal', full_name='grpcRemoting.VectorFieldRequest.provideFacesAreaNormal', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=829,
+  serialized_end=955,
+)
+
+
+_GETFIELDSREQUEST = _descriptor.Descriptor(
+  name='GetFieldsRequest',
+  full_name='grpcRemoting.GetFieldsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='chunkSize', full_name='grpcRemoting.GetFieldsRequest.chunkSize', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='provideBytesStream', full_name='grpcRemoting.GetFieldsRequest.provideBytesStream', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='surfaceRequest', full_name='grpcRemoting.GetFieldsRequest.surfaceRequest', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='scalarFieldRequest', full_name='grpcRemoting.GetFieldsRequest.scalarFieldRequest', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='vectorFieldRequest', full_name='grpcRemoting.GetFieldsRequest.vectorFieldRequest', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=958,
+  serialized_end=1201,
+)
 
 
 _DATASTAMPING = _descriptor.Descriptor(
@@ -132,8 +665,8 @@ _DATASTAMPING = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=47,
-  serialized_end=168,
+  serialized_start=1203,
+  serialized_end=1324,
 )
 
 
@@ -192,8 +725,8 @@ _UNITINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=170,
-  serialized_end=255,
+  serialized_start=1326,
+  serialized_end=1411,
 )
 
 
@@ -224,8 +757,8 @@ _DATASTAMPINGINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=257,
-  serialized_end=325,
+  serialized_start=1413,
+  serialized_end=1481,
 )
 
 
@@ -256,8 +789,8 @@ _SURFACEID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=327,
-  serialized_end=350,
+  serialized_start=1483,
+  serialized_end=1506,
 )
 
 
@@ -309,8 +842,8 @@ _GETSURFACESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=353,
-  serialized_end=548,
+  serialized_start=1509,
+  serialized_end=1704,
 )
 
 
@@ -348,8 +881,8 @@ _SURFACEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=550,
-  serialized_end=669,
+  serialized_start=1706,
+  serialized_end=1825,
 )
 
 
@@ -394,8 +927,8 @@ _COORDINATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=671,
-  serialized_end=716,
+  serialized_start=1827,
+  serialized_end=1872,
 )
 
 
@@ -426,8 +959,8 @@ _FACET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=718,
-  serialized_end=739,
+  serialized_start=1874,
+  serialized_end=1895,
 )
 
 
@@ -486,8 +1019,8 @@ _SURFACEINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=742,
-  serialized_end=893,
+  serialized_start=1898,
+  serialized_end=2049,
 )
 
 
@@ -551,8 +1084,8 @@ _SURFACEDATA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=896,
-  serialized_end=1138,
+  serialized_start=2052,
+  serialized_end=2294,
 )
 
 
@@ -583,8 +1116,8 @@ _GETSURFACESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1140,
-  serialized_end=1209,
+  serialized_start=2296,
+  serialized_end=2365,
 )
 
 
@@ -629,8 +1162,8 @@ _GETRANGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1211,
-  serialized_end=1310,
+  serialized_start=2367,
+  serialized_end=2466,
 )
 
 
@@ -668,8 +1201,8 @@ _GETRANGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1312,
-  serialized_end=1364,
+  serialized_start=2468,
+  serialized_end=2520,
 )
 
 
@@ -721,8 +1254,8 @@ _FIELDINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1366,
-  serialized_end=1451,
+  serialized_start=2522,
+  serialized_end=2607,
 )
 
 
@@ -746,8 +1279,8 @@ _GETFIELDSINFOREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1453,
-  serialized_end=1475,
+  serialized_start=2609,
+  serialized_end=2631,
 )
 
 
@@ -778,8 +1311,118 @@ _GETFIELDSINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1477,
-  serialized_end=1544,
+  serialized_start=2633,
+  serialized_end=2700,
+)
+
+
+_GETVECTORFIELDSINFOREQUEST = _descriptor.Descriptor(
+  name='GetVectorFieldsInfoRequest',
+  full_name='grpcRemoting.GetVectorFieldsInfoRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2702,
+  serialized_end=2730,
+)
+
+
+_VECTORFIELDINFO = _descriptor.Descriptor(
+  name='VectorFieldInfo',
+  full_name='grpcRemoting.VectorFieldInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='displayName', full_name='grpcRemoting.VectorFieldInfo.displayName', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='xComponent', full_name='grpcRemoting.VectorFieldInfo.xComponent', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='yComponent', full_name='grpcRemoting.VectorFieldInfo.yComponent', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='zComponent', full_name='grpcRemoting.VectorFieldInfo.zComponent', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2732,
+  serialized_end=2830,
+)
+
+
+_GETVECTORFIELDSINFORESPONSE = _descriptor.Descriptor(
+  name='GetVectorFieldsInfoResponse',
+  full_name='grpcRemoting.GetVectorFieldsInfoResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='vectorFieldInfo', full_name='grpcRemoting.GetVectorFieldsInfoResponse.vectorFieldInfo', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2832,
+  serialized_end=2917,
 )
 
 
@@ -803,8 +1446,8 @@ _GETSURFACESINFOREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1546,
-  serialized_end=1570,
+  serialized_start=2919,
+  serialized_end=2943,
 )
 
 
@@ -835,8 +1478,8 @@ _GETSURFACESINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1572,
-  serialized_end=1645,
+  serialized_start=2945,
+  serialized_end=3018,
 )
 
 
@@ -909,8 +1552,8 @@ _GETSCALARFIELDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1648,
-  serialized_end=1944,
+  serialized_start=3021,
+  serialized_end=3317,
 )
 
 
@@ -948,8 +1591,8 @@ _GLOBALRANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1946,
-  serialized_end=1997,
+  serialized_start=3319,
+  serialized_end=3370,
 )
 
 
@@ -1001,8 +1644,8 @@ _SCALARFIELDMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2000,
-  serialized_end=2225,
+  serialized_start=3373,
+  serialized_end=3598,
 )
 
 
@@ -1047,8 +1690,8 @@ _VECTORCOMPONENTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2227,
-  serialized_end=2278,
+  serialized_start=3600,
+  serialized_end=3651,
 )
 
 
@@ -1079,8 +1722,8 @@ _SCALARFIELD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2280,
-  serialized_end=2307,
+  serialized_start=3653,
+  serialized_end=3680,
 )
 
 
@@ -1111,8 +1754,8 @@ _VECTORFIELD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2309,
-  serialized_end=2380,
+  serialized_start=3682,
+  serialized_end=3753,
 )
 
 
@@ -1143,8 +1786,8 @@ _ACTIVEFIELD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2382,
-  serialized_end=2411,
+  serialized_start=3755,
+  serialized_end=3784,
 )
 
 
@@ -1215,8 +1858,8 @@ _SCALARFIELDDATA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=2414,
-  serialized_end=2735,
+  serialized_start=3787,
+  serialized_end=4108,
 )
 
 
@@ -1247,8 +1890,8 @@ _GETSCALARFIELDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2737,
-  serialized_end=2817,
+  serialized_start=4110,
+  serialized_end=4190,
 )
 
 
@@ -1328,8 +1971,8 @@ _GETVECTORFIELDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2820,
-  serialized_end=3168,
+  serialized_start=4193,
+  serialized_end=4541,
 )
 
 
@@ -1381,8 +2024,8 @@ _VECTORFIELDMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3171,
-  serialized_end=3396,
+  serialized_start=4544,
+  serialized_end=4769,
 )
 
 
@@ -1413,8 +2056,8 @@ _VECTORSCALE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3398,
-  serialized_end=3425,
+  serialized_start=4771,
+  serialized_end=4798,
 )
 
 
@@ -1513,8 +2156,8 @@ _VECTORFIELDDATA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=3428,
-  serialized_end=3924,
+  serialized_start=4801,
+  serialized_end=5297,
 )
 
 
@@ -1545,8 +2188,8 @@ _GETVECTORFIELDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3926,
-  serialized_end=4006,
+  serialized_start=5299,
+  serialized_end=5379,
 )
 
 
@@ -1675,8 +2318,8 @@ _GETPATHLINESFIELDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4009,
-  serialized_end=4374,
+  serialized_start=5382,
+  serialized_end=5747,
 )
 
 
@@ -1742,8 +2385,8 @@ _PATHLINEMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4377,
-  serialized_end=4688,
+  serialized_start=5750,
+  serialized_end=6061,
 )
 
 
@@ -1816,8 +2459,8 @@ _PATHLINEFIELDDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4691,
-  serialized_end=4847,
+  serialized_start=6064,
+  serialized_end=6220,
 )
 
 
@@ -1860,8 +2503,8 @@ _PATHLINEDATA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=4850,
-  serialized_end=4992,
+  serialized_start=6223,
+  serialized_end=6365,
 )
 
 
@@ -1892,8 +2535,8 @@ _GETPATHLINESFIELDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4994,
-  serialized_end=5071,
+  serialized_start=6367,
+  serialized_end=6444,
 )
 
 
@@ -1938,8 +2581,8 @@ _PARTICLETRACKSFILTER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5073,
-  serialized_end=5179,
+  serialized_start=6446,
+  serialized_end=6552,
 )
 
 
@@ -2061,8 +2704,8 @@ _GETPARTICLETRACKSFIELDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5182,
-  serialized_end=5563,
+  serialized_start=6555,
+  serialized_end=6936,
 )
 
 
@@ -2128,8 +2771,8 @@ _PARTICLETRACKMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5566,
-  serialized_end=5882,
+  serialized_start=6939,
+  serialized_end=7255,
 )
 
 
@@ -2216,8 +2859,8 @@ _PARTICLETRACKFIELDDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5885,
-  serialized_end=6265,
+  serialized_start=7258,
+  serialized_end=7638,
 )
 
 
@@ -2260,8 +2903,8 @@ _PARTICLETRACKDATA = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=6268,
-  serialized_end=6435,
+  serialized_start=7641,
+  serialized_end=7808,
 )
 
 
@@ -2292,8 +2935,8 @@ _GETPARTICLETRACKSFIELDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6437,
-  serialized_end=6529,
+  serialized_start=7810,
+  serialized_end=7902,
 )
 
 
@@ -2317,8 +2960,8 @@ _ISBOUNDARYVALUESONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6531,
-  serialized_end=6558,
+  serialized_start=7904,
+  serialized_end=7931,
 )
 
 
@@ -2349,10 +2992,38 @@ _ISBOUNDARYVALUESONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6560,
-  serialized_end=6616,
+  serialized_start=7933,
+  serialized_end=7989,
 )
 
+_PAYLOADINFO.fields_by_name['fieldType'].enum_type = _FIELDTYPE
+_GETFIELDSRESPONSE.fields_by_name['doublePayload'].message_type = _DOUBLEPAYLOAD
+_GETFIELDSRESPONSE.fields_by_name['floatPayload'].message_type = _FLOATPAYLOAD
+_GETFIELDSRESPONSE.fields_by_name['longPayload'].message_type = _LONGPAYLOAD
+_GETFIELDSRESPONSE.fields_by_name['intPayload'].message_type = _INTPAYLOAD
+_GETFIELDSRESPONSE.fields_by_name['payloadInfo'].message_type = _PAYLOADINFO
+_GETFIELDSRESPONSE.oneofs_by_name['chunk'].fields.append(
+  _GETFIELDSRESPONSE.fields_by_name['bytePayload'])
+_GETFIELDSRESPONSE.fields_by_name['bytePayload'].containing_oneof = _GETFIELDSRESPONSE.oneofs_by_name['chunk']
+_GETFIELDSRESPONSE.oneofs_by_name['chunk'].fields.append(
+  _GETFIELDSRESPONSE.fields_by_name['doublePayload'])
+_GETFIELDSRESPONSE.fields_by_name['doublePayload'].containing_oneof = _GETFIELDSRESPONSE.oneofs_by_name['chunk']
+_GETFIELDSRESPONSE.oneofs_by_name['chunk'].fields.append(
+  _GETFIELDSRESPONSE.fields_by_name['floatPayload'])
+_GETFIELDSRESPONSE.fields_by_name['floatPayload'].containing_oneof = _GETFIELDSRESPONSE.oneofs_by_name['chunk']
+_GETFIELDSRESPONSE.oneofs_by_name['chunk'].fields.append(
+  _GETFIELDSRESPONSE.fields_by_name['longPayload'])
+_GETFIELDSRESPONSE.fields_by_name['longPayload'].containing_oneof = _GETFIELDSRESPONSE.oneofs_by_name['chunk']
+_GETFIELDSRESPONSE.oneofs_by_name['chunk'].fields.append(
+  _GETFIELDSRESPONSE.fields_by_name['intPayload'])
+_GETFIELDSRESPONSE.fields_by_name['intPayload'].containing_oneof = _GETFIELDSRESPONSE.oneofs_by_name['chunk']
+_GETFIELDSRESPONSE.oneofs_by_name['chunk'].fields.append(
+  _GETFIELDSRESPONSE.fields_by_name['payloadInfo'])
+_GETFIELDSRESPONSE.fields_by_name['payloadInfo'].containing_oneof = _GETFIELDSRESPONSE.oneofs_by_name['chunk']
+_SCALARFIELDREQUEST.fields_by_name['dataLocation'].enum_type = _DATALOCATION
+_GETFIELDSREQUEST.fields_by_name['surfaceRequest'].message_type = _SURFACEREQUEST
+_GETFIELDSREQUEST.fields_by_name['scalarFieldRequest'].message_type = _SCALARFIELDREQUEST
+_GETFIELDSREQUEST.fields_by_name['vectorFieldRequest'].message_type = _VECTORFIELDREQUEST
 _DATASTAMPING.fields_by_name['datastampingtype'].enum_type = _DATASTAMPINGTYPE
 _DATASTAMPING.oneofs_by_name['as'].fields.append(
   _DATASTAMPING.fields_by_name['doublevalue'])
@@ -2382,6 +3053,7 @@ _SURFACEDATA.fields_by_name['surfacemetadata'].containing_oneof = _SURFACEDATA.o
 _GETSURFACESRESPONSE.fields_by_name['surfacedata'].message_type = _SURFACEDATA
 _GETRANGEREQUEST.fields_by_name['surfaceid'].message_type = _SURFACEID
 _GETFIELDSINFORESPONSE.fields_by_name['fieldInfo'].message_type = _FIELDINFO
+_GETVECTORFIELDSINFORESPONSE.fields_by_name['vectorFieldInfo'].message_type = _VECTORFIELDINFO
 _GETSURFACESINFORESPONSE.fields_by_name['surfaceInfo'].message_type = _SURFACEINFO
 _GETSCALARFIELDREQUEST.fields_by_name['surfaceid'].message_type = _SURFACEID
 _GETSCALARFIELDREQUEST.fields_by_name['datastampinginfo'].message_type = _DATASTAMPINGINFO
@@ -2472,6 +3144,16 @@ _PARTICLETRACKDATA.oneofs_by_name['as'].fields.append(
   _PARTICLETRACKDATA.fields_by_name['particleTrackMetaData'])
 _PARTICLETRACKDATA.fields_by_name['particleTrackMetaData'].containing_oneof = _PARTICLETRACKDATA.oneofs_by_name['as']
 _GETPARTICLETRACKSFIELDRESPONSE.fields_by_name['particleTrackData'].message_type = _PARTICLETRACKDATA
+DESCRIPTOR.message_types_by_name['DoublePayload'] = _DOUBLEPAYLOAD
+DESCRIPTOR.message_types_by_name['FloatPayload'] = _FLOATPAYLOAD
+DESCRIPTOR.message_types_by_name['IntPayload'] = _INTPAYLOAD
+DESCRIPTOR.message_types_by_name['LongPayload'] = _LONGPAYLOAD
+DESCRIPTOR.message_types_by_name['PayloadInfo'] = _PAYLOADINFO
+DESCRIPTOR.message_types_by_name['GetFieldsResponse'] = _GETFIELDSRESPONSE
+DESCRIPTOR.message_types_by_name['SurfaceRequest'] = _SURFACEREQUEST
+DESCRIPTOR.message_types_by_name['ScalarFieldRequest'] = _SCALARFIELDREQUEST
+DESCRIPTOR.message_types_by_name['VectorFieldRequest'] = _VECTORFIELDREQUEST
+DESCRIPTOR.message_types_by_name['GetFieldsRequest'] = _GETFIELDSREQUEST
 DESCRIPTOR.message_types_by_name['DataStamping'] = _DATASTAMPING
 DESCRIPTOR.message_types_by_name['UnitInfo'] = _UNITINFO
 DESCRIPTOR.message_types_by_name['DataStampingInfo'] = _DATASTAMPINGINFO
@@ -2488,6 +3170,9 @@ DESCRIPTOR.message_types_by_name['GetRangeResponse'] = _GETRANGERESPONSE
 DESCRIPTOR.message_types_by_name['FieldInfo'] = _FIELDINFO
 DESCRIPTOR.message_types_by_name['GetFieldsInfoRequest'] = _GETFIELDSINFOREQUEST
 DESCRIPTOR.message_types_by_name['GetFieldsInfoResponse'] = _GETFIELDSINFORESPONSE
+DESCRIPTOR.message_types_by_name['GetVectorFieldsInfoRequest'] = _GETVECTORFIELDSINFOREQUEST
+DESCRIPTOR.message_types_by_name['VectorFieldInfo'] = _VECTORFIELDINFO
+DESCRIPTOR.message_types_by_name['GetVectorFieldsInfoResponse'] = _GETVECTORFIELDSINFORESPONSE
 DESCRIPTOR.message_types_by_name['GetSurfacesInfoRequest'] = _GETSURFACESINFOREQUEST
 DESCRIPTOR.message_types_by_name['GetSurfacesInfoResponse'] = _GETSURFACESINFORESPONSE
 DESCRIPTOR.message_types_by_name['GetScalarFieldRequest'] = _GETSCALARFIELDREQUEST
@@ -2517,8 +3202,80 @@ DESCRIPTOR.message_types_by_name['ParticleTrackData'] = _PARTICLETRACKDATA
 DESCRIPTOR.message_types_by_name['GetParticleTracksFieldResponse'] = _GETPARTICLETRACKSFIELDRESPONSE
 DESCRIPTOR.message_types_by_name['IsBoundaryValuesOnRequest'] = _ISBOUNDARYVALUESONREQUEST
 DESCRIPTOR.message_types_by_name['IsBoundaryValuesOnResponse'] = _ISBOUNDARYVALUESONRESPONSE
+DESCRIPTOR.enum_types_by_name['FieldType'] = _FIELDTYPE
+DESCRIPTOR.enum_types_by_name['DataLocation'] = _DATALOCATION
 DESCRIPTOR.enum_types_by_name['DataStampingType'] = _DATASTAMPINGTYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+DoublePayload = _reflection.GeneratedProtocolMessageType('DoublePayload', (_message.Message,), {
+  'DESCRIPTOR' : _DOUBLEPAYLOAD,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.DoublePayload)
+  })
+_sym_db.RegisterMessage(DoublePayload)
+
+FloatPayload = _reflection.GeneratedProtocolMessageType('FloatPayload', (_message.Message,), {
+  'DESCRIPTOR' : _FLOATPAYLOAD,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.FloatPayload)
+  })
+_sym_db.RegisterMessage(FloatPayload)
+
+IntPayload = _reflection.GeneratedProtocolMessageType('IntPayload', (_message.Message,), {
+  'DESCRIPTOR' : _INTPAYLOAD,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.IntPayload)
+  })
+_sym_db.RegisterMessage(IntPayload)
+
+LongPayload = _reflection.GeneratedProtocolMessageType('LongPayload', (_message.Message,), {
+  'DESCRIPTOR' : _LONGPAYLOAD,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.LongPayload)
+  })
+_sym_db.RegisterMessage(LongPayload)
+
+PayloadInfo = _reflection.GeneratedProtocolMessageType('PayloadInfo', (_message.Message,), {
+  'DESCRIPTOR' : _PAYLOADINFO,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.PayloadInfo)
+  })
+_sym_db.RegisterMessage(PayloadInfo)
+
+GetFieldsResponse = _reflection.GeneratedProtocolMessageType('GetFieldsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETFIELDSRESPONSE,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.GetFieldsResponse)
+  })
+_sym_db.RegisterMessage(GetFieldsResponse)
+
+SurfaceRequest = _reflection.GeneratedProtocolMessageType('SurfaceRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SURFACEREQUEST,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.SurfaceRequest)
+  })
+_sym_db.RegisterMessage(SurfaceRequest)
+
+ScalarFieldRequest = _reflection.GeneratedProtocolMessageType('ScalarFieldRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SCALARFIELDREQUEST,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.ScalarFieldRequest)
+  })
+_sym_db.RegisterMessage(ScalarFieldRequest)
+
+VectorFieldRequest = _reflection.GeneratedProtocolMessageType('VectorFieldRequest', (_message.Message,), {
+  'DESCRIPTOR' : _VECTORFIELDREQUEST,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.VectorFieldRequest)
+  })
+_sym_db.RegisterMessage(VectorFieldRequest)
+
+GetFieldsRequest = _reflection.GeneratedProtocolMessageType('GetFieldsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETFIELDSREQUEST,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.GetFieldsRequest)
+  })
+_sym_db.RegisterMessage(GetFieldsRequest)
 
 DataStamping = _reflection.GeneratedProtocolMessageType('DataStamping', (_message.Message,), {
   'DESCRIPTOR' : _DATASTAMPING,
@@ -2631,6 +3388,27 @@ GetFieldsInfoResponse = _reflection.GeneratedProtocolMessageType('GetFieldsInfoR
   # @@protoc_insertion_point(class_scope:grpcRemoting.GetFieldsInfoResponse)
   })
 _sym_db.RegisterMessage(GetFieldsInfoResponse)
+
+GetVectorFieldsInfoRequest = _reflection.GeneratedProtocolMessageType('GetVectorFieldsInfoRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETVECTORFIELDSINFOREQUEST,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.GetVectorFieldsInfoRequest)
+  })
+_sym_db.RegisterMessage(GetVectorFieldsInfoRequest)
+
+VectorFieldInfo = _reflection.GeneratedProtocolMessageType('VectorFieldInfo', (_message.Message,), {
+  'DESCRIPTOR' : _VECTORFIELDINFO,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.VectorFieldInfo)
+  })
+_sym_db.RegisterMessage(VectorFieldInfo)
+
+GetVectorFieldsInfoResponse = _reflection.GeneratedProtocolMessageType('GetVectorFieldsInfoResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETVECTORFIELDSINFORESPONSE,
+  '__module__' : 'fielddata_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.GetVectorFieldsInfoResponse)
+  })
+_sym_db.RegisterMessage(GetVectorFieldsInfoResponse)
 
 GetSurfacesInfoRequest = _reflection.GeneratedProtocolMessageType('GetSurfacesInfoRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETSURFACESINFOREQUEST,
@@ -2845,13 +3623,23 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=6743,
-  serialized_end=7637,
+  serialized_start=8236,
+  serialized_end=9320,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='GetFields',
+    full_name='grpcRemoting.FieldData.GetFields',
+    index=0,
+    containing_service=None,
+    input_type=_GETFIELDSREQUEST,
+    output_type=_GETFIELDSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
   _descriptor.MethodDescriptor(
     name='GetRange',
     full_name='grpcRemoting.FieldData.GetRange',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_GETRANGEREQUEST,
     output_type=_GETRANGERESPONSE,
@@ -2861,7 +3649,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetSurfacesInfo',
     full_name='grpcRemoting.FieldData.GetSurfacesInfo',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_GETSURFACESINFOREQUEST,
     output_type=_GETSURFACESINFORESPONSE,
@@ -2869,9 +3657,19 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='GetVectorFieldsInfo',
+    full_name='grpcRemoting.FieldData.GetVectorFieldsInfo',
+    index=3,
+    containing_service=None,
+    input_type=_GETVECTORFIELDSINFOREQUEST,
+    output_type=_GETVECTORFIELDSINFORESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='GetFieldsInfo',
     full_name='grpcRemoting.FieldData.GetFieldsInfo',
-    index=2,
+    index=4,
     containing_service=None,
     input_type=_GETFIELDSINFOREQUEST,
     output_type=_GETFIELDSINFORESPONSE,
@@ -2881,7 +3679,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetSurfaces',
     full_name='grpcRemoting.FieldData.GetSurfaces',
-    index=3,
+    index=5,
     containing_service=None,
     input_type=_GETSURFACESREQUEST,
     output_type=_GETSURFACESRESPONSE,
@@ -2891,7 +3689,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetScalarField',
     full_name='grpcRemoting.FieldData.GetScalarField',
-    index=4,
+    index=6,
     containing_service=None,
     input_type=_GETSCALARFIELDREQUEST,
     output_type=_GETSCALARFIELDRESPONSE,
@@ -2901,7 +3699,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetVectorField',
     full_name='grpcRemoting.FieldData.GetVectorField',
-    index=5,
+    index=7,
     containing_service=None,
     input_type=_GETVECTORFIELDREQUEST,
     output_type=_GETVECTORFIELDRESPONSE,
@@ -2911,7 +3709,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetPathlinesField',
     full_name='grpcRemoting.FieldData.GetPathlinesField',
-    index=6,
+    index=8,
     containing_service=None,
     input_type=_GETPATHLINESFIELDREQUEST,
     output_type=_GETPATHLINESFIELDRESPONSE,
@@ -2921,7 +3719,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetParticleTracksField',
     full_name='grpcRemoting.FieldData.GetParticleTracksField',
-    index=7,
+    index=9,
     containing_service=None,
     input_type=_GETPARTICLETRACKSFIELDREQUEST,
     output_type=_GETPARTICLETRACKSFIELDRESPONSE,
@@ -2931,7 +3729,7 @@ _FIELDDATA = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='IsBoundaryValuesOn',
     full_name='grpcRemoting.FieldData.IsBoundaryValuesOn',
-    index=8,
+    index=10,
     containing_service=None,
     input_type=_ISBOUNDARYVALUESONREQUEST,
     output_type=_ISBOUNDARYVALUESONRESPONSE,

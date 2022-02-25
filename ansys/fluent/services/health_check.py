@@ -2,10 +2,10 @@
 
 from enum import Enum
 
+import grpc
+
 from ansys.api.fluent.v0 import health_pb2 as HealthCheckModule
 from ansys.api.fluent.v0 import health_pb2_grpc as HealthCheckGrpcModule
-
-import grpc
 
 
 class HealthCheckService:

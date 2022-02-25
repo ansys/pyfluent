@@ -1,0 +1,2 @@
+[run]
+omit = */ansys/fluent/meshing/tui.py, */ansys/fluent/solver/tui.py, */ansys/fluent/solver/settings.py

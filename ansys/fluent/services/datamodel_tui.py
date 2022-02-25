@@ -3,10 +3,12 @@
 import keyword
 from typing import Any, List, Tuple
 
+import grpc
+
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-
-import grpc
+from ansys.fluent.services.error_handler import catch_grpc_error
+from ansys.fluent.services.interceptors import TracingInterceptor
 
 Path = List[Tuple[str, str]]
 
@@ -18,21 +20,30 @@ class DatamodelService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = DataModelGrpcModule.DataModelStub(channel)
+        tracing_interceptor = TracingInterceptor()
+        intercept_channel = grpc.intercept_channel(
+            channel, tracing_interceptor
+        )
+        self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
+    @catch_grpc_error
     def get_attribute_value(self, request):
         return self.__stub.GetAttributeValue(request, metadata=self.__metadata)
 
+    @catch_grpc_error
     def get_state(self, request):
         return self.__stub.GetState(request, metadata=self.__metadata)
 
+    @catch_grpc_error
     def set_state(self, request):
         return self.__stub.SetState(request, metadata=self.__metadata)
 
+    @catch_grpc_error
     def execute_command(self, request):
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
+    @catch_grpc_error
     def execute_query(self, request):
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 

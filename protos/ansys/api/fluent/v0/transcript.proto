@@ -7,20 +7,11 @@ syntax = "proto3";
 option objc_class_prefix = "HLW";
 
 package grpcRemoting;
-service Transcript
-{
 
-  rpc BeginStreaming (TranscriptRequest) returns (stream TranscriptResponse) {}
-
-}
-message TranscriptRequest
-{
+service Transcript {
+  rpc BeginStreaming(TranscriptRequest) returns (stream TranscriptResponse) {}
 }
 
-message TranscriptResponse
-{
-  string  transcript   = 1;
-}
+message TranscriptRequest {}
 
-
-
+message TranscriptResponse { string transcript = 1; }

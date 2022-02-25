@@ -4,7 +4,6 @@ import grpc
 
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
-from ansys.fluent import LOG
 
 
 class TranscriptService:
@@ -39,8 +38,7 @@ class TranscriptService:
         while True:
             try:
                 yield next(self.__streams)
-            except Exception as e:
-                LOG.error(str(e))
+            except Exception:
                 break
 
     def end_streaming(self):
