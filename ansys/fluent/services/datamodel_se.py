@@ -227,7 +227,15 @@ class PyMenu:
         Get state of the current object
     get_attrib_value(attrib)
         Get attribute value of the current object
-
+    get_state()
+        Get state of the current object (same as __call__())
+    set_state(state)
+        Set state of the current object
+    update_dict(dict_state)
+        Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError 
+        (currently not showing up in Python). Update is executed according 
+        to dict.update semantics
     """
 
     __slots__ = ("service", "rules", "path")
@@ -300,11 +308,11 @@ class PyMenu:
         _convert_value_to_variant(state, request.state)
         self.service.set_state(request)
 
-    def update_dict(self, state):
+    def update_dict(self, dict_state : dict):
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(state, request.state)
+        _convert_value_to_variant(dict_state, request.state)
         self.service.update_dict(request)
 
     def __dir__(self) -> List[str]:
