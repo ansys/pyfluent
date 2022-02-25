@@ -75,6 +75,10 @@ class DatamodelService:
     @catch_grpc_error
     def set_state(self, request):
         return self.__stub.setState(request, metadata=self.__metadata)
+    
+    @catch_grpc_error
+    def update_dict(self, request):
+        return self.__stub.updateDict(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def delete_object(self, request):
@@ -295,6 +299,13 @@ class PyMenu:
         request.path = _convert_path_to_se_path(self.path)
         _convert_value_to_variant(state, request.state)
         self.service.set_state(request)
+
+    def update_dict(self, state):
+        request = DataModelProtoModule.UpdateDictRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(state, request.state)
+        self.service.update_dict(request)
 
     def __dir__(self) -> List[str]:
         """Returns list of child object names

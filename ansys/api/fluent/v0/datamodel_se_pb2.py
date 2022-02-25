@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12\x64\x61tamodel_se.proto\x12\x0cgrpcRemoting\x1a\rvariant.proto\"=\n\x10\x44\x61taModelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"X\n\x11\x44\x61taModelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\x12\x0e\n\x06\x65vents\x18\x03 \x03(\t\"A\n\x14InitDatamodelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"L\n\x15InitDatamodelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\".\n\x0fGetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"1\n\x10GetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"[\n\x0fSetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x1d\n\x05state\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"G\n\x10SetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"@\n\x13\x44\x65leteObjectRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04wait\x18\x03 \x01(\x08\"K\n\x14\x44\x65leteObjectResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"J\n\x18GetAttributeValueRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x11\n\tattribute\x18\x03 \x01(\t\";\n\x19GetAttributeValueResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"q\n\x15\x45xecuteCommandRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x03 \x01(\t\x12\x0c\n\x04wait\x18\x04 \x01(\x08\x12\x1c\n\x04\x61rgs\x18\x05 \x01(\x0b\x32\x0e.utils.Variant\"m\n\x16\x45xecuteCommandResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x1d\n\x05state\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x03 \x03(\t\"G\n\x0fGetSpecsRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x17\n\x0fincludeChildren\x18\x03 \x01(\x08\"\xb5\x01\n\x0b\x43ommonSpecs\x12\x10\n\x08readonly\x18\x01 \x01(\x08\x12\x1f\n\x07\x64\x65\x66\x61ult\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x13\n\x0b\x64isplaytext\x18\x03 \x01(\t\x12\x10\n\x08isactive\x18\x04 \x01(\x08\x12\x15\n\rreferencepath\x18\x05 \x01(\t\x12!\n\x19hasDeveloperExposureLevel\x18\x06 \x01(\x08\x12\x12\n\nhelpstring\x18\x07 \x01(\t\"?\n\x12\x42oolParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"v\n\x11IntParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x05H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x05H\x01\x42\x04\n\x02ilB\x04\n\x02iu\"w\n\x12RealParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x01H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x01H\x01\x42\x04\n\x02rlB\x04\n\x02ru\"\\\n\x14StringParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\"B\n\x15IntListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"`\n\x18StringListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\".\n\x0c\x43ommandSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08isactive\x18\x02 \x01(\x08\"\x92\x01\n\x0eSingletonSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x94\x01\n\x10NamedObjectSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x86\x04\n\x0bMemberSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x30\n\x04\x62ool\x18\x03 \x01(\x0b\x32 .grpcRemoting.BoolParameterSpecsH\x00\x12.\n\x03int\x18\x04 \x01(\x0b\x32\x1f.grpcRemoting.IntParameterSpecsH\x00\x12\x30\n\x04real\x18\x05 \x01(\x0b\x32 .grpcRemoting.RealParameterSpecsH\x00\x12\x34\n\x06string\x18\x06 \x01(\x0b\x32\".grpcRemoting.StringParameterSpecsH\x00\x12\x36\n\x07intlist\x18\x07 \x01(\x0b\x32#.grpcRemoting.IntListParameterSpecsH\x00\x12<\n\nstringlist\x18\x08 \x01(\x0b\x32&.grpcRemoting.StringListParameterSpecsH\x00\x12\x31\n\tsingleton\x18\t \x01(\x0b\x32\x1c.grpcRemoting.SingletonSpecsH\x00\x12\x35\n\x0bnamedobject\x18\n \x01(\x0b\x32\x1e.grpcRemoting.NamedObjectSpecsH\x00\x12+\n\x08\x63hildren\x18\x0b \x03(\x0b\x32\x19.grpcRemoting.MemberSpecsB\x04\n\x02\x61s\"=\n\x10GetSpecsResponse\x12)\n\x06member\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.MemberSpecs2\xc5\x05\n\tDataModel\x12U\n\x0e\x42\x65ginStreaming\x12\x1e.grpcRemoting.DataModelRequest\x1a\x1f.grpcRemoting.DataModelResponse\"\x00\x30\x01\x12Z\n\rinitDatamodel\x12\".grpcRemoting.InitDatamodelRequest\x1a#.grpcRemoting.InitDatamodelResponse\"\x00\x12K\n\x08getState\x12\x1d.grpcRemoting.GetStateRequest\x1a\x1e.grpcRemoting.GetStateResponse\"\x00\x12K\n\x08setState\x12\x1d.grpcRemoting.SetStateRequest\x1a\x1e.grpcRemoting.SetStateResponse\"\x00\x12W\n\x0c\x64\x65leteObject\x12!.grpcRemoting.DeleteObjectRequest\x1a\".grpcRemoting.DeleteObjectResponse\"\x00\x12\x66\n\x11getAttributeValue\x12&.grpcRemoting.GetAttributeValueRequest\x1a\'.grpcRemoting.GetAttributeValueResponse\"\x00\x12]\n\x0e\x65xecuteCommand\x12#.grpcRemoting.ExecuteCommandRequest\x1a$.grpcRemoting.ExecuteCommandResponse\"\x00\x12K\n\x08getSpecs\x12\x1d.grpcRemoting.GetSpecsRequest\x1a\x1e.grpcRemoting.GetSpecsResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x12\x64\x61tamodel_se.proto\x12\x0cgrpcRemoting\x1a\rvariant.proto\"=\n\x10\x44\x61taModelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"X\n\x11\x44\x61taModelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\x12\x0e\n\x06\x65vents\x18\x03 \x03(\t\"A\n\x14InitDatamodelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"L\n\x15InitDatamodelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\".\n\x0fGetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"1\n\x10GetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"[\n\x0fSetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x1d\n\x05state\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"G\n\x10SetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"]\n\x11UpdateDictRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x1d\n\x05state\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"\x14\n\x12UpdateDictResponse\"@\n\x13\x44\x65leteObjectRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04wait\x18\x03 \x01(\x08\"K\n\x14\x44\x65leteObjectResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"J\n\x18GetAttributeValueRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x11\n\tattribute\x18\x03 \x01(\t\";\n\x19GetAttributeValueResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"q\n\x15\x45xecuteCommandRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x03 \x01(\t\x12\x0c\n\x04wait\x18\x04 \x01(\x08\x12\x1c\n\x04\x61rgs\x18\x05 \x01(\x0b\x32\x0e.utils.Variant\"m\n\x16\x45xecuteCommandResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x1d\n\x05state\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x03 \x03(\t\"G\n\x0fGetSpecsRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x17\n\x0fincludeChildren\x18\x03 \x01(\x08\"\xb5\x01\n\x0b\x43ommonSpecs\x12\x10\n\x08readonly\x18\x01 \x01(\x08\x12\x1f\n\x07\x64\x65\x66\x61ult\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x13\n\x0b\x64isplaytext\x18\x03 \x01(\t\x12\x10\n\x08isactive\x18\x04 \x01(\x08\x12\x15\n\rreferencepath\x18\x05 \x01(\t\x12!\n\x19hasDeveloperExposureLevel\x18\x06 \x01(\x08\x12\x12\n\nhelpstring\x18\x07 \x01(\t\"?\n\x12\x42oolParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"v\n\x11IntParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x05H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x05H\x01\x42\x04\n\x02ilB\x04\n\x02iu\"w\n\x12RealParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x01H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x01H\x01\x42\x04\n\x02rlB\x04\n\x02ru\"\\\n\x14StringParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\"B\n\x15IntListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"`\n\x18StringListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\".\n\x0c\x43ommandSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08isactive\x18\x02 \x01(\x08\"\x92\x01\n\x0eSingletonSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x94\x01\n\x10NamedObjectSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x86\x04\n\x0bMemberSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x30\n\x04\x62ool\x18\x03 \x01(\x0b\x32 .grpcRemoting.BoolParameterSpecsH\x00\x12.\n\x03int\x18\x04 \x01(\x0b\x32\x1f.grpcRemoting.IntParameterSpecsH\x00\x12\x30\n\x04real\x18\x05 \x01(\x0b\x32 .grpcRemoting.RealParameterSpecsH\x00\x12\x34\n\x06string\x18\x06 \x01(\x0b\x32\".grpcRemoting.StringParameterSpecsH\x00\x12\x36\n\x07intlist\x18\x07 \x01(\x0b\x32#.grpcRemoting.IntListParameterSpecsH\x00\x12<\n\nstringlist\x18\x08 \x01(\x0b\x32&.grpcRemoting.StringListParameterSpecsH\x00\x12\x31\n\tsingleton\x18\t \x01(\x0b\x32\x1c.grpcRemoting.SingletonSpecsH\x00\x12\x35\n\x0bnamedobject\x18\n \x01(\x0b\x32\x1e.grpcRemoting.NamedObjectSpecsH\x00\x12+\n\x08\x63hildren\x18\x0b \x03(\x0b\x32\x19.grpcRemoting.MemberSpecsB\x04\n\x02\x61s\"=\n\x10GetSpecsResponse\x12)\n\x06member\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.MemberSpecs2\x98\x06\n\tDataModel\x12U\n\x0e\x42\x65ginStreaming\x12\x1e.grpcRemoting.DataModelRequest\x1a\x1f.grpcRemoting.DataModelResponse\"\x00\x30\x01\x12Z\n\rinitDatamodel\x12\".grpcRemoting.InitDatamodelRequest\x1a#.grpcRemoting.InitDatamodelResponse\"\x00\x12K\n\x08getState\x12\x1d.grpcRemoting.GetStateRequest\x1a\x1e.grpcRemoting.GetStateResponse\"\x00\x12K\n\x08setState\x12\x1d.grpcRemoting.SetStateRequest\x1a\x1e.grpcRemoting.SetStateResponse\"\x00\x12Q\n\nupdateDict\x12\x1f.grpcRemoting.UpdateDictRequest\x1a .grpcRemoting.UpdateDictResponse\"\x00\x12W\n\x0c\x64\x65leteObject\x12!.grpcRemoting.DeleteObjectRequest\x1a\".grpcRemoting.DeleteObjectResponse\"\x00\x12\x66\n\x11getAttributeValue\x12&.grpcRemoting.GetAttributeValueRequest\x1a\'.grpcRemoting.GetAttributeValueResponse\"\x00\x12]\n\x0e\x65xecuteCommand\x12#.grpcRemoting.ExecuteCommandRequest\x1a$.grpcRemoting.ExecuteCommandResponse\"\x00\x12K\n\x08getSpecs\x12\x1d.grpcRemoting.GetSpecsRequest\x1a\x1e.grpcRemoting.GetSpecsResponse\"\x00\x62\x06proto3'
   ,
   dependencies=[variant__pb2.DESCRIPTOR,])
 
@@ -353,6 +353,84 @@ _SETSTATERESPONSE = _descriptor.Descriptor(
 )
 
 
+_UPDATEDICTREQUEST = _descriptor.Descriptor(
+  name='UpdateDictRequest',
+  full_name='grpcRemoting.UpdateDictRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='rules', full_name='grpcRemoting.UpdateDictRequest.rules', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='path', full_name='grpcRemoting.UpdateDictRequest.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='grpcRemoting.UpdateDictRequest.state', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='wait', full_name='grpcRemoting.UpdateDictRequest.wait', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=614,
+  serialized_end=707,
+)
+
+
+_UPDATEDICTRESPONSE = _descriptor.Descriptor(
+  name='UpdateDictResponse',
+  full_name='grpcRemoting.UpdateDictResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=709,
+  serialized_end=729,
+)
+
+
 _DELETEOBJECTREQUEST = _descriptor.Descriptor(
   name='DeleteObjectRequest',
   full_name='grpcRemoting.DeleteObjectRequest',
@@ -394,8 +472,8 @@ _DELETEOBJECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=614,
-  serialized_end=678,
+  serialized_start=731,
+  serialized_end=795,
 )
 
 
@@ -433,8 +511,8 @@ _DELETEOBJECTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=680,
-  serialized_end=755,
+  serialized_start=797,
+  serialized_end=872,
 )
 
 
@@ -479,8 +557,8 @@ _GETATTRIBUTEVALUEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=757,
-  serialized_end=831,
+  serialized_start=874,
+  serialized_end=948,
 )
 
 
@@ -511,8 +589,8 @@ _GETATTRIBUTEVALUERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=833,
-  serialized_end=892,
+  serialized_start=950,
+  serialized_end=1009,
 )
 
 
@@ -571,8 +649,8 @@ _EXECUTECOMMANDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=894,
-  serialized_end=1007,
+  serialized_start=1011,
+  serialized_end=1124,
 )
 
 
@@ -617,8 +695,8 @@ _EXECUTECOMMANDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1009,
-  serialized_end=1118,
+  serialized_start=1126,
+  serialized_end=1235,
 )
 
 
@@ -663,8 +741,8 @@ _GETSPECSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1120,
-  serialized_end=1191,
+  serialized_start=1237,
+  serialized_end=1308,
 )
 
 
@@ -737,8 +815,8 @@ _COMMONSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1194,
-  serialized_end=1375,
+  serialized_start=1311,
+  serialized_end=1492,
 )
 
 
@@ -769,8 +847,8 @@ _BOOLPARAMETERSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1377,
-  serialized_end=1440,
+  serialized_start=1494,
+  serialized_end=1557,
 )
 
 
@@ -825,8 +903,8 @@ _INTPARAMETERSPECS = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1442,
-  serialized_end=1560,
+  serialized_start=1559,
+  serialized_end=1677,
 )
 
 
@@ -881,8 +959,8 @@ _REALPARAMETERSPECS = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=1562,
-  serialized_end=1681,
+  serialized_start=1679,
+  serialized_end=1798,
 )
 
 
@@ -920,8 +998,8 @@ _STRINGPARAMETERSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1683,
-  serialized_end=1775,
+  serialized_start=1800,
+  serialized_end=1892,
 )
 
 
@@ -952,8 +1030,8 @@ _INTLISTPARAMETERSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1777,
-  serialized_end=1843,
+  serialized_start=1894,
+  serialized_end=1960,
 )
 
 
@@ -991,8 +1069,8 @@ _STRINGLISTPARAMETERSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1845,
-  serialized_end=1941,
+  serialized_start=1962,
+  serialized_end=2058,
 )
 
 
@@ -1030,8 +1108,8 @@ _COMMANDSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1943,
-  serialized_end=1989,
+  serialized_start=2060,
+  serialized_end=2106,
 )
 
 
@@ -1083,8 +1161,8 @@ _SINGLETONSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1992,
-  serialized_end=2138,
+  serialized_start=2109,
+  serialized_end=2255,
 )
 
 
@@ -1136,8 +1214,8 @@ _NAMEDOBJECTSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2141,
-  serialized_end=2289,
+  serialized_start=2258,
+  serialized_end=2406,
 )
 
 
@@ -1243,8 +1321,8 @@ _MEMBERSPECS = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=2292,
-  serialized_end=2810,
+  serialized_start=2409,
+  serialized_end=2927,
 )
 
 
@@ -1275,8 +1353,8 @@ _GETSPECSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2812,
-  serialized_end=2873,
+  serialized_start=2929,
+  serialized_end=2990,
 )
 
 _DATAMODELRESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
@@ -1284,6 +1362,7 @@ _INITDATAMODELRESPONSE.fields_by_name['state'].message_type = variant__pb2._VARI
 _GETSTATERESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
 _SETSTATEREQUEST.fields_by_name['state'].message_type = variant__pb2._VARIANT
 _SETSTATERESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
+_UPDATEDICTREQUEST.fields_by_name['state'].message_type = variant__pb2._VARIANT
 _DELETEOBJECTRESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
 _GETATTRIBUTEVALUERESPONSE.fields_by_name['result'].message_type = variant__pb2._VARIANT
 _EXECUTECOMMANDREQUEST.fields_by_name['args'].message_type = variant__pb2._VARIANT
@@ -1354,6 +1433,8 @@ DESCRIPTOR.message_types_by_name['GetStateRequest'] = _GETSTATEREQUEST
 DESCRIPTOR.message_types_by_name['GetStateResponse'] = _GETSTATERESPONSE
 DESCRIPTOR.message_types_by_name['SetStateRequest'] = _SETSTATEREQUEST
 DESCRIPTOR.message_types_by_name['SetStateResponse'] = _SETSTATERESPONSE
+DESCRIPTOR.message_types_by_name['UpdateDictRequest'] = _UPDATEDICTREQUEST
+DESCRIPTOR.message_types_by_name['UpdateDictResponse'] = _UPDATEDICTRESPONSE
 DESCRIPTOR.message_types_by_name['DeleteObjectRequest'] = _DELETEOBJECTREQUEST
 DESCRIPTOR.message_types_by_name['DeleteObjectResponse'] = _DELETEOBJECTRESPONSE
 DESCRIPTOR.message_types_by_name['GetAttributeValueRequest'] = _GETATTRIBUTEVALUEREQUEST
@@ -1430,6 +1511,20 @@ SetStateResponse = _reflection.GeneratedProtocolMessageType('SetStateResponse', 
   # @@protoc_insertion_point(class_scope:grpcRemoting.SetStateResponse)
   })
 _sym_db.RegisterMessage(SetStateResponse)
+
+UpdateDictRequest = _reflection.GeneratedProtocolMessageType('UpdateDictRequest', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEDICTREQUEST,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.UpdateDictRequest)
+  })
+_sym_db.RegisterMessage(UpdateDictRequest)
+
+UpdateDictResponse = _reflection.GeneratedProtocolMessageType('UpdateDictResponse', (_message.Message,), {
+  'DESCRIPTOR' : _UPDATEDICTRESPONSE,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.UpdateDictResponse)
+  })
+_sym_db.RegisterMessage(UpdateDictResponse)
 
 DeleteObjectRequest = _reflection.GeneratedProtocolMessageType('DeleteObjectRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETEOBJECTREQUEST,
@@ -1573,8 +1668,8 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=2876,
-  serialized_end=3585,
+  serialized_start=2993,
+  serialized_end=3785,
   methods=[
   _descriptor.MethodDescriptor(
     name='BeginStreaming',
@@ -1617,9 +1712,19 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='updateDict',
+    full_name='grpcRemoting.DataModel.updateDict',
+    index=4,
+    containing_service=None,
+    input_type=_UPDATEDICTREQUEST,
+    output_type=_UPDATEDICTRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='deleteObject',
     full_name='grpcRemoting.DataModel.deleteObject',
-    index=4,
+    index=5,
     containing_service=None,
     input_type=_DELETEOBJECTREQUEST,
     output_type=_DELETEOBJECTRESPONSE,
@@ -1629,7 +1734,7 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='getAttributeValue',
     full_name='grpcRemoting.DataModel.getAttributeValue',
-    index=5,
+    index=6,
     containing_service=None,
     input_type=_GETATTRIBUTEVALUEREQUEST,
     output_type=_GETATTRIBUTEVALUERESPONSE,
@@ -1639,7 +1744,7 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='executeCommand',
     full_name='grpcRemoting.DataModel.executeCommand',
-    index=6,
+    index=7,
     containing_service=None,
     input_type=_EXECUTECOMMANDREQUEST,
     output_type=_EXECUTECOMMANDRESPONSE,
@@ -1649,7 +1754,7 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='getSpecs',
     full_name='grpcRemoting.DataModel.getSpecs',
-    index=7,
+    index=8,
     containing_service=None,
     input_type=_GETSPECSREQUEST,
     output_type=_GETSPECSRESPONSE,

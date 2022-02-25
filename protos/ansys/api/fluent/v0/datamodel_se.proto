@@ -15,6 +15,7 @@ service DataModel
   rpc initDatamodel(InitDatamodelRequest) returns (InitDatamodelResponse) {}
   rpc getState(GetStateRequest) returns (GetStateResponse) {}
   rpc setState(SetStateRequest) returns (SetStateResponse) {}
+  rpc updateDict(UpdateDictRequest) returns (UpdateDictResponse) {}
   rpc deleteObject(DeleteObjectRequest) returns (DeleteObjectResponse) {}
   rpc getAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse) {}
   rpc executeCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse) {}
@@ -70,6 +71,19 @@ message SetStateResponse
   utils.Variant state = 1;
   repeated string deletedpaths = 2;
 }
+
+message UpdateDictRequest
+{
+   string rules = 1;
+   string path = 2;
+   utils.Variant state = 3;
+   bool wait = 4;
+}
+
+message UpdateDictResponse
+{
+}
+
 message DeleteObjectRequest
 {
    string rules = 1;

@@ -34,6 +34,11 @@ class DataModelStub(object):
                 request_serializer=datamodel__se__pb2.SetStateRequest.SerializeToString,
                 response_deserializer=datamodel__se__pb2.SetStateResponse.FromString,
                 )
+        self.updateDict = channel.unary_unary(
+                '/grpcRemoting.DataModel/updateDict',
+                request_serializer=datamodel__se__pb2.UpdateDictRequest.SerializeToString,
+                response_deserializer=datamodel__se__pb2.UpdateDictResponse.FromString,
+                )
         self.deleteObject = channel.unary_unary(
                 '/grpcRemoting.DataModel/deleteObject',
                 request_serializer=datamodel__se__pb2.DeleteObjectRequest.SerializeToString,
@@ -78,6 +83,12 @@ class DataModelServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def setState(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def updateDict(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -129,6 +140,11 @@ def add_DataModelServicer_to_server(servicer, server):
                     servicer.setState,
                     request_deserializer=datamodel__se__pb2.SetStateRequest.FromString,
                     response_serializer=datamodel__se__pb2.SetStateResponse.SerializeToString,
+            ),
+            'updateDict': grpc.unary_unary_rpc_method_handler(
+                    servicer.updateDict,
+                    request_deserializer=datamodel__se__pb2.UpdateDictRequest.FromString,
+                    response_serializer=datamodel__se__pb2.UpdateDictResponse.SerializeToString,
             ),
             'deleteObject': grpc.unary_unary_rpc_method_handler(
                     servicer.deleteObject,
@@ -225,6 +241,23 @@ class DataModel(object):
         return grpc.experimental.unary_unary(request, target, '/grpcRemoting.DataModel/setState',
             datamodel__se__pb2.SetStateRequest.SerializeToString,
             datamodel__se__pb2.SetStateResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def updateDict(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpcRemoting.DataModel/updateDict',
+            datamodel__se__pb2.UpdateDictRequest.SerializeToString,
+            datamodel__se__pb2.UpdateDictResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
