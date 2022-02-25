@@ -15,6 +15,10 @@ Path = List[Tuple[str, str]]
 
 
 class Attribute(Enum):
+    """
+    Class containing the standard names of data model attributes
+    associated with the datamodel service
+    """
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
     IS_READ_ONLY = "isReadOnly"
@@ -75,7 +79,7 @@ class DatamodelService:
     @catch_grpc_error
     def set_state(self, request):
         return self.__stub.setState(request, metadata=self.__metadata)
-    
+
     @catch_grpc_error
     def update_dict(self, request):
         return self.__stub.updateDict(request, metadata=self.__metadata)
@@ -104,7 +108,7 @@ def _convert_value_to_variant(val, var, convert_keys=True):
         var.double_state = val
     elif isinstance(val, str):
         var.string_state = val
-    elif isinstance(val, list) or isinstance(val, tuple):
+    elif isinstance(val, (list, tuple)):
         # set the one_of to variant_vector_state
         var.variant_vector_state.item.add()
         var.variant_vector_state.item.pop()
@@ -233,8 +237,8 @@ class PyMenu:
         Set state of the current object
     update_dict(dict_state)
         Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError 
-        (currently not showing up in Python). Update is executed according 
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
         to dict.update semantics
     """
 
