@@ -76,12 +76,14 @@ message UpdateDictRequest
 {
    string rules = 1;
    string path = 2;
-   utils.Variant state = 3;
+   utils.Variant dicttomerge = 3;
    bool wait = 4;
 }
 
 message UpdateDictResponse
 {
+  utils.Variant state = 1;
+  repeated string deletedpaths = 2;
 }
 
 message DeleteObjectRequest

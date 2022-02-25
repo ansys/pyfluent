@@ -312,7 +312,7 @@ class PyMenu:
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(dict_state, request.state)
+        _convert_value_to_variant(dict_state, request.dicttomerge)
         self.service.update_dict(request)
 
     def __dir__(self) -> List[str]:
