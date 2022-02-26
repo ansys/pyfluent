@@ -35,7 +35,7 @@ There are three types of container objects: ``Group``, ``NamedObject`` and
 A ``Group`` object is a static container with pre-defined child objects which
 can be accessed via attribute access. For example, ``setup.models.energy``
 refers to the ``energy`` child of ``models`` child of the ``setup`` object. The
-names of the child objects of a group can be accessed with the ``child_names``
+names of the child objects of a group can be accessed with the ``member_names``
 attribute of a ``Group`` object.
 
 A ``NamedObject`` is a container holding dynamically created named objects of
@@ -77,7 +77,7 @@ this will return the state of the children as a dictionary (for ``Group`` and
    'kinetic_energy': False,
    'pressure_work': False,
    'viscous_dissipation': False}
-  >>> root.setup.boundary_conditions.velocity['inlet1'].vmag.constant()
+  >>> root.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
   10.0
 
 To modify the state of any object, you could assign the corresponding attribute
