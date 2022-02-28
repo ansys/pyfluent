@@ -4,9 +4,9 @@
 
 syntax = "proto3";
 
-import "common.proto";
-
 package grpcRemoting;
+
+import "common.proto";
 
 message SchemePointer {
   message SchemePair {

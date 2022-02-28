@@ -6,7 +6,8 @@ syntax = "proto3";
 
 package utils;
 
-message Empty {}
+message Empty {
+}
 
 message StringVector {
   repeated string item = 1;

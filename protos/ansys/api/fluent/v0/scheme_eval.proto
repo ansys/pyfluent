@@ -4,10 +4,10 @@
 
 syntax = "proto3";
 
-import "scheme_pointer.proto";
-import "common.proto";
-
 package grpcRemoting;
+
+import "common.proto";
+import "scheme_pointer.proto";
 
 service SchemeEval {
   rpc Eval(SchemePointer) returns (SchemePointer);
