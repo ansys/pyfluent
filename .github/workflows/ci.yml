@@ -32,6 +32,11 @@ jobs:
         run: |
           make flake8
 
+      - name: protolint
+        uses: plexsystems/protolint-action@v0.6.0
+        with:
+          configDirectory: protos
+
   test-import:
     name: Smoke Tests
     runs-on: ${{ matrix.os }}
