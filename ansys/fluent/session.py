@@ -19,7 +19,7 @@ from ansys.fluent.services.health_check import HealthCheckService
 from ansys.fluent.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.services.settings import SettingsService
 from ansys.fluent.services.transcript import TranscriptService
-from ansys.fluent.solver import flobject
+from ansys.fluent.solver.flobject import get_root as settings_get_root
 
 
 def parse_server_info_file(filename: str):
@@ -143,7 +143,7 @@ class Session:
         """Return root settings object"""
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
-            self._settings_root = flobject.get_root(
+            self._settings_root = settings_get_root(
                     flproxy = self.get_settings_service()
                     )
         return self._settings_root

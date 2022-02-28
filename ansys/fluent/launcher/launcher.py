@@ -10,8 +10,8 @@ from typing import Any, Dict
 from ansys.fluent.core import LOG
 from ansys.fluent.session import Session
 
-THIS_DIR = os.path.dirname(__file__)
-OPTIONS_FILE = os.path.join(THIS_DIR, "fluent_launcher_options.json")
+_THIS_DIR = os.path.dirname(__file__)
+_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
 
 
@@ -112,7 +112,7 @@ def launch_fluent(
     launch_string = exe_path
     argvals = locals()
     all_options = None
-    with open(OPTIONS_FILE, encoding="utf-8") as fp:
+    with open(_OPTIONS_FILE, encoding="utf-8") as fp:
         all_options = json.load(fp)
     for k, v in all_options.items():
         argval = argvals.get(k)
