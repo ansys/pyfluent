@@ -653,7 +653,8 @@ def get_cls(name, info, parent = None):
             LOG.warning(f"Unable to find base class for '{name}' "
                     f"(type = '{obj_type}'). "
                     f"Falling back to String. "
-                    f"Please report this serious issue including the details shown.")
+                    f"Please report this serious "
+                    f"issue including the details shown.")
             base = String
         dct = { 'scheme_name' : name }
         helpinfo = info.get('help')
