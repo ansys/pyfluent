@@ -18,11 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Python
+      - name: install_python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Style
+
+      - name: setup_venv
         run: |
           pip install -r requirements_style.txt --disable-pip-version-check
           make
