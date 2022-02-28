@@ -4,9 +4,9 @@
 
 syntax = "proto3";
 
-import "variant.proto";
-
 package grpcRemoting;
+
+import "variant.proto";
 
 service DataModel {
   rpc BeginStreaming(DataModelRequest) returns (stream DataModelResponse) {}
