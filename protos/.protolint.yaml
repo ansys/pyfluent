@@ -2,8 +2,12 @@
 # https://github.com/yoheimuta/protolint/blob/master/_example/config/.protolint.yaml
 lint:
   # Linter directories to walk.
-  #directories:
-  #  - protos/ansys
+  directories:
+    exclude:
+      - ansys
+      - codegen
+      - doc
+      - tests
 
   rules:
     # Use default rules
