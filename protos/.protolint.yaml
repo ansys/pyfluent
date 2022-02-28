@@ -1,0 +1,17 @@
+# Lint directives.  Documentation:
+# https://github.com/yoheimuta/protolint/blob/master/_example/config/.protolint.yaml
+lint:
+  # Linter directories to walk.
+  #directories:
+  #  - protos/ansys
+
+  rules:
+    # Use default rules
+    all_default: true
+
+  # Linter rules option.
+  rules_option:
+    max_line_length:
+      # Unlimit the maximum line length
+      max_chars: 0
+
