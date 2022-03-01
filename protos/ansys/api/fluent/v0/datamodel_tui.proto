@@ -8,17 +8,16 @@ package ansys.api.fluent.v0;
 
 import "google/protobuf/struct.proto";
 
-service DataModel
-{
-  rpc NotifyChanges (NotifyChangesRequest) returns (stream NotifyChangesResponse);
+service DataModel {
+  rpc NotifyChanges(NotifyChangesRequest) returns (stream NotifyChangesResponse);
 
-  rpc GetAttributeValue (GetAttributeValueRequest) returns (GetAttributeValueResponse);
-  rpc GetState (GetStateRequest) returns (GetStateResponse);
-  rpc SetState (SetStateRequest) returns (SetStateResponse);
-  rpc ExecuteCommand (ExecuteCommandRequest) returns (ExecuteCommandResponse);
-  rpc ExecuteQuery (ExecuteQueryRequest) returns (ExecuteQueryResponse);
+  rpc GetAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse);
+  rpc GetState(GetStateRequest) returns (GetStateResponse);
+  rpc SetState(SetStateRequest) returns (SetStateResponse);
+  rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
+  rpc ExecuteQuery(ExecuteQueryRequest) returns (ExecuteQueryResponse);
 
-  rpc CompositeGet (CompositeGetRequest) returns (CompositeGetResponse);
+  rpc CompositeGet(CompositeGetRequest) returns (CompositeGetResponse);
 }
 
 message NotifyChangesRequest {
@@ -103,21 +102,17 @@ message ExecuteQueryResponse {
   google.protobuf.Value result = 1;
 }
 
-message CompositeGetRequest
-{
+message CompositeGetRequest {
   repeated DataModelGetter getters = 1;
 }
 
-message DataModelGetter
-{
-  oneof request
-  {
+message DataModelGetter {
+  oneof request {
     GetAttributeValueRequest get_attribute_value_request = 1;
     GetStateRequest get_state_request = 2;
   }
 }
 
-message CompositeGetResponse
-{
+message CompositeGetResponse {
   google.protobuf.Value response = 1;
 }

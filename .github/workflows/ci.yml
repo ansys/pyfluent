@@ -18,19 +18,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Style
+
+      - name: Install Style Requirements
         run: |
           pip install -r requirements_style.txt --disable-pip-version-check
-          make
 
-      - name: flake8
+      - name: Run flake8
         if: always()
         run: |
           make flake8
+
+      - name: Run protolint
+        uses: plexsystems/protolint-action@v0.6.0
+        if: always()
+        with:
+          configDirectory: protos
 
   test-import:
     name: Smoke Tests
@@ -57,7 +63,7 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Window pip cache
+      - name: Windows pip cache
         uses: actions/cache@v2
         if: ${{ runner.os == 'Windows' }}
         with:
@@ -111,7 +117,7 @@ jobs:
           pip install twine
           twine check dist/*
 
-      - name: Upload wheel and binaries
+      - name: Upload package
         uses: actions/upload-artifact@v2
         with:
           name: PyFluent-packages
@@ -133,7 +139,7 @@ jobs:
 
       - uses: actions/download-artifact@v2
 
-      - name: Display structure of downloaded files
+      - name: Display package file list
         run: ls -R
 
       - name: Release
