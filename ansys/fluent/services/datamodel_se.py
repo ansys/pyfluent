@@ -598,6 +598,7 @@ class PyCommand:
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
         request.command = self.command
+        request.wait = True
         _convert_value_to_variant(kwds, request.args)
         response = self.service.execute_command(request)
         return _convert_variant_to_value(response.result)
