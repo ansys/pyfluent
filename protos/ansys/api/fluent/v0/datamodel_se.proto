@@ -65,10 +65,10 @@ message SetStateResponse {
 
 message UpdateDictRequest
 {
-   string rules = 1;
-   string path = 2;
-   utils.Variant dicttomerge = 3;
-   bool wait = 4;
+  string rules = 1;
+  string path = 2;
+  utils.Variant dicttomerge = 3;
+  bool wait = 4;
 }
 
 message UpdateDictResponse
