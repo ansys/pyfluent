@@ -4,123 +4,121 @@
 
 syntax = "proto3";
 
-import "variant.proto";
-
 package grpcRemoting;
 
-service DataModel
-{
-  rpc BeginStreaming (DataModelRequest) returns (stream DataModelResponse) {}
+import "variant.proto";
+
+service DataModel {
+  rpc BeginStreaming(DataModelRequest) returns (stream DataModelResponse) {}
 
   rpc initDatamodel(InitDatamodelRequest) returns (InitDatamodelResponse) {}
   rpc getState(GetStateRequest) returns (GetStateResponse) {}
   rpc setState(SetStateRequest) returns (SetStateResponse) {}
+  rpc updateDict(UpdateDictRequest) returns (UpdateDictResponse) {}
   rpc deleteObject(DeleteObjectRequest) returns (DeleteObjectResponse) {}
   rpc getAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse) {}
   rpc executeCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse) {}
   rpc getSpecs(GetSpecsRequest) returns (GetSpecsResponse) {}
 }
 
-message DataModelRequest
-{
-   string rules = 1;
-   bool returnstatechanges = 2;
+message DataModelRequest {
+  string rules = 1;
+  bool returnstatechanges = 2;
 }
 
-message DataModelResponse
-{
+message DataModelResponse {
   utils.Variant state = 1;
   repeated string deletedpaths = 2;
   repeated string events = 3;
 }
 
-message InitDatamodelRequest
-{
+message InitDatamodelRequest {
   string rules = 1;
   bool returnstatechanges = 2;
 }
 
-message InitDatamodelResponse
+message InitDatamodelResponse {
+  utils.Variant state = 1;
+  repeated string deletedpaths = 2;
+}
+
+message GetStateRequest {
+  string rules = 1;
+  string path = 2;
+}
+
+message GetStateResponse {
+  utils.Variant state = 1;
+}
+
+message SetStateRequest {
+  string rules = 1;
+  string path = 2;
+  utils.Variant state = 3;
+  bool wait = 4;
+}
+
+message SetStateResponse {
+  utils.Variant state = 1;
+  repeated string deletedpaths = 2;
+}
+
+message UpdateDictRequest
+{
+  string rules = 1;
+  string path = 2;
+  utils.Variant dicttomerge = 3;
+  bool wait = 4;
+}
+
+message UpdateDictResponse
 {
   utils.Variant state = 1;
   repeated string deletedpaths = 2;
 }
 
-message GetStateRequest
-{
-   string rules = 1;
-   string path = 2;
+message DeleteObjectRequest {
+  string rules = 1;
+  string path = 2;
+  bool wait = 3;
 }
 
-message GetStateResponse
-{
-   utils.Variant state = 1;
-}
-
-message SetStateRequest
-{
-   string rules = 1;
-   string path = 2;
-   utils.Variant state = 3;
-   bool wait = 4;
-}
-
-message SetStateResponse
-{
-  utils.Variant state = 1;
-  repeated string deletedpaths = 2;
-}
-message DeleteObjectRequest
-{
-   string rules = 1;
-   string path = 2;
-   bool wait = 3;
-}
-
-message DeleteObjectResponse
-{
+message DeleteObjectResponse {
   utils.Variant state = 1;
   repeated string deletedpaths = 2;
 }
 
-message GetAttributeValueRequest
-{
-   string rules = 1;
-   string path = 2;
-   string attribute = 3;
+message GetAttributeValueRequest {
+  string rules = 1;
+  string path = 2;
+  string attribute = 3;
 }
 
-message GetAttributeValueResponse
-{
-   utils.Variant result = 1;
+message GetAttributeValueResponse {
+  utils.Variant result = 1;
 }
 
-message ExecuteCommandRequest
-{
-   string rules = 1;
-   string path = 2;
-   string command = 3;
-   bool wait = 4;
-   utils.Variant args = 5;
-
+message ExecuteCommandRequest {
+  string rules = 1;
+  string path = 2;
+  string command = 3;
+  bool wait = 4;
+  utils.Variant args = 5;
 }
 
-message ExecuteCommandResponse
-{
-   utils.Variant result = 1;
-   utils.Variant state = 2;
-   repeated string deletedpaths = 3;
+message ExecuteCommandResponse {
+  utils.Variant result = 1;
+  utils.Variant state = 2;
+  repeated string deletedpaths = 3;
 }
 
-message GetSpecsRequest
-{
+message GetSpecsRequest {
   string rules = 1;
   string path = 2;
   bool includeChildren = 3;
 }
 
-message CommonSpecs
-{
+message CommonSpecs {
   bool readonly = 1;
   utils.Variant default = 2;
   string displaytext = 3;
@@ -130,70 +128,67 @@ message CommonSpecs
   string helpstring = 7;
 }
 
-message BoolParameterSpecs
-{
+message BoolParameterSpecs {
   CommonSpecs common = 1;
 }
 
-message IntParameterSpecs
-{
+message IntParameterSpecs {
   CommonSpecs common = 1;
-  oneof il { int32 lowerbound = 2; }
-  oneof iu { int32 upperbound = 3; }
+  oneof il {
+    int32 lowerbound = 2;
+  }
+  oneof iu {
+    int32 upperbound = 3;
+  }
 }
 
-message RealParameterSpecs
-{
+message RealParameterSpecs {
   CommonSpecs common = 1;
-  oneof rl { double lowerbound = 2; }
-  oneof ru { double upperbound = 3; }
+  oneof rl {
+    double lowerbound = 2;
+  }
+  oneof ru {
+    double upperbound = 3;
+  }
 }
 
-message StringParameterSpecs
-{
-  CommonSpecs common = 1;
-  repeated string allowedstringlist = 2;
-}
-
-message IntListParameterSpecs
-{
-  CommonSpecs common = 1;
-}
-
-message StringListParameterSpecs
-{
+message StringParameterSpecs {
   CommonSpecs common = 1;
   repeated string allowedstringlist = 2;
 }
 
-message CommandSpecs
-{
+message IntListParameterSpecs {
+  CommonSpecs common = 1;
+}
+
+message StringListParameterSpecs {
+  CommonSpecs common = 1;
+  repeated string allowedstringlist = 2;
+}
+
+message CommandSpecs {
   string name = 1;
   bool isactive = 2;
 }
 
-message SingletonSpecs
-{
+message SingletonSpecs {
   CommonSpecs common = 1;
   repeated string members = 2;
   repeated CommandSpecs commands = 3;
   repeated string creatabletypes = 4;
 }
 
-message NamedObjectSpecs
-{
+message NamedObjectSpecs {
   CommonSpecs common = 1;
   repeated string members = 2;
   repeated CommandSpecs commands = 3;
   repeated string creatabletypes = 4;
 }
 
-message MemberSpecs
-{
+message MemberSpecs {
   string name = 1;
   string type = 2;
-  oneof as
-  {
+  oneof as {
     BoolParameterSpecs bool = 3;
     IntParameterSpecs int = 4;
     RealParameterSpecs real = 5;
@@ -206,7 +201,6 @@ message MemberSpecs
   repeated MemberSpecs children = 11;
 }
 
-message GetSpecsResponse
-{
+message GetSpecsResponse {
   MemberSpecs member = 1;
 }
