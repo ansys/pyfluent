@@ -7,6 +7,7 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
+from ansys.fluent.core.async_execution import asynchronous
 from ansys.fluent.services.error_handler import catch_grpc_error
 from ansys.fluent.services.interceptors import TracingInterceptor
 
@@ -127,20 +128,6 @@ class PyMenu:
 
     """
 
-    class ExecuteCommandResult:
-        """
-        Class wrapping raw TUI-output returned from ExecuteCommand
-
-        Attributes
-        ----------
-        result : str
-            TUI output
-
-        """
-
-        def __init__(self, result: str):
-            self.result = result
-
     def __init__(self, service: DatamodelService):
         self.__service = service
 
@@ -250,6 +237,7 @@ class PyMenu:
         _convert_value_to_gvalue(value, request.state)
         self.__service.set_state(request)
 
+    @asynchronous
     def execute(self, path: str, *args, **kwargs) -> Any:
         """Execute command/query at path with positional or keyword
         arguments
@@ -261,7 +249,7 @@ class PyMenu:
         Returns
         -------
         Any
-            Query result (any Python datatype) or ExecuteCommandResult
+            Query result (any Python datatype) or Future object
             wrapping TUI output of a command
         """
         request = DataModelProtoModule.ExecuteCommandRequest()
@@ -276,14 +264,7 @@ class PyMenu:
             return _convert_gvalue_to_value(ret.result)
         else:
             ret = self.__service.execute_command(request)
-            return PyMenu.ExecuteCommandResult(
-                _convert_gvalue_to_value(ret.result)
-            )
-
-        ret = self.__service.execute_command(request)
-        return PyMenu.ExecuteCommandResult(
-            _convert_gvalue_to_value(ret.result)
-        )
+            return _convert_gvalue_to_value(ret.result)
 
     def get_doc_string(
         self, path: str, include_unavailable: bool = False
