@@ -134,7 +134,6 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent):
-            self.session = parent.session
             self.parent = parent
             self._on_change_cbs = []
             reset_on_change = (
@@ -273,7 +272,6 @@ class PyLocalNamedObjectMeta(type):
     def __create_init(cls):
         def wrapper(self, name, parent):
             self.__name = name
-            self.session = parent.session
             self.parent = parent
             for name, cls in self.__class__.__dict__.items():
                 if cls.__class__.__name__ == "PyLocalPropertyMeta":
@@ -366,8 +364,8 @@ class PyLocalNamedObjectMeta(type):
 
 class PyLocalContainer(MutableMapping):
     def __init__(self, parent, object_class):
+        self.parent = parent
         self.__object_class = object_class
-        self.__parent = parent
         self.__collection: dict = {}
 
     def __iter__(self):
@@ -381,9 +379,7 @@ class PyLocalContainer(MutableMapping):
     def __getitem__(self, name):
         o = self.__collection.get(name, None)
         if not o:
-            o = self.__collection[name] = self.__object_class(
-                name, self.__parent
-            )
+            o = self.__collection[name] = self.__object_class(name, self)
         return o
 
     # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)

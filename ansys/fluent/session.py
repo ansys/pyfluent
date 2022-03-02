@@ -20,6 +20,8 @@ from ansys.fluent.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.services.settings import SettingsService
 from ansys.fluent.services.transcript import TranscriptService
 from ansys.fluent.solver.flobject import get_root as settings_get_root
+from ansys.fluent.services.events import EventsService
+from ansys.fluent.solver.events_manager import EventsManager
 
 
 def parse_server_info_file(filename: str):
@@ -104,6 +106,9 @@ class Session:
 
         self.start_transcript()
 
+        self.__events_service = EventsService(self.__channel, self.__metadata)
+        self.events_manager = EventsManager(self.__id, self.__events_service)
+
         self.__datamodel_service_tui = DatamodelService_TUI(
             self.__channel, self.__metadata
         )
@@ -184,6 +189,7 @@ class Session:
         if self.__channel:
             self.tui.solver.exit().result()
             self.__transcript_service.end_streaming()
+            self.events_manager.stop()
             self.__channel.close()
             self.__channel = None
 
