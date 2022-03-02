@@ -20,9 +20,14 @@ def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
     Builds *.py source interface files given a path containing *.protos
     files
     """
-    shutil.rmtree(out_path, ignore_errors=True)
-    Path.mkdir(Path(out_path), parents=True, exist_ok=True)
-    os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "cpp"
+    # verify proto tools are installed
+    try:
+        import grpc_tools  # noqa: F401 # pylint: disable=unused-import
+    except ImportError:
+        raise ImportError(
+            "Missing ``grpcio-tools`` package.\n"
+            "Install with `pip install grpcio-tools`"
+        )
 
     # check for protos at the protos path
     proto_glob = os.path.join(protos_path, "*.proto")
@@ -32,14 +37,9 @@ def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
             f"Unable locate any *.proto files at {protos_path}"
         )
 
-    # verify proto tools are installed
-    try:
-        import grpc_tools  # noqa: F401 # pylint: disable=unused-import
-    except ImportError:
-        raise ImportError(
-            "Missing ``grpcio-tools`` package.\n"
-            "Install with `pip install grpcio-tools`"
-        )
+    shutil.rmtree(out_path, ignore_errors=True)
+    Path.mkdir(Path(out_path), parents=True, exist_ok=True)
+    os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "cpp"
 
     cmd = f"{sys.executable} -m grpc_tools.protoc -I{protos_path} "
     cmd += f"--python_out={out_path} --grpc_python_out={out_path} {proto_glob}"
