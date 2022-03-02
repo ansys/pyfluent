@@ -601,6 +601,11 @@ class ListObject(SettingsBase[ListStateType]):
         child = self[index]
         child.set_state(value)
 
+class Map(SettingsBase[DictStateType]):
+    """
+    An Map object represents key-value settings
+    """
+
 class Command(Base):
     """Command object"""
     def __call__(self, **kwds):
@@ -636,6 +641,7 @@ _baseTypes = {
         'thread-var'   : String,
         'list-object'  : ListObject,
         'file'         : Filename,
+        'map'          : Map
         }
 
 def get_cls(name, info, parent = None):
