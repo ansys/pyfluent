@@ -24,6 +24,7 @@ class InputObject:
 
 class SolverWorkflow:
     def __init__(self, session, input_object):
+        self.session = session
         self.solver = session.tui.solver
         self.api_root = session.get_settings_root()
         self.scheme_str_eval = session._Session__scheme_eval.string_eval
@@ -148,6 +149,11 @@ class SolverWorkflow:
     def material(self):
         self.solver.define.materials.change_create("air", "air", "yes", "constant", self.density)
            
+    def report_drag(self):
+        self.session.start_transcript()
+        self.solver.solve.report_definitions.compute("drag_unit")
+        self.session.stop_transcript()
+
     def run(self):
         self.material()
         self.turbulence_model()
@@ -157,4 +163,5 @@ class SolverWorkflow:
         self.report()
         self.initialization()
         self.calculation()
+        self.report_drag()
 
