@@ -19,7 +19,5 @@ def transfer_mesh_from_meshing_to_solver(meshing_session, solver_session):
             meshing_session.tui.meshing.file.write_case(path).result()
             solver_session.tui.solver.file.read_case(path).result()
             os.remove(path)
-            #status.add_done_callback(lambda _: os.remove(path))
-            #status.add_done_callback(lambda _: read_case_and_remove(solver_session, path))
             return
     raise RuntimeError("Could not write mesh to transfer")

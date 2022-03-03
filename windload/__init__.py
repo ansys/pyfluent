@@ -1,4 +1,5 @@
 
+import ansys.fluent as pyfluent
 from .import windload_mesh, windload_solve
 from ansys.fluent.addons.meshing import transfer_mesh_from_meshing_to_solver
 from functools import partial

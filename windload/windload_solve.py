@@ -150,9 +150,11 @@ class SolverWorkflow:
         self.solver.define.materials.change_create("air", "air", "yes", "constant", self.density)
            
     def report_drag(self):
-        self.session.start_transcript()
+        import ansys.fluent as pyfluent
+        print("Output for windload run with inlet velocity value of:")
+        print(self.inlet_velocity, "\n*******************************************************************\n")
+        pyfluent.set_log_level('INFO')
         self.solver.solve.report_definitions.compute("drag_unit")
-        self.session.stop_transcript()
 
     def run(self):
         self.material()
