@@ -124,7 +124,7 @@ class Session:
         )
         self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
         self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
-        self.part_management = PyMenu_SE(self.__datamodel_service_se, 
+        self.part_management = PyMenu_SE(self.__datamodel_service_se,
                                          "PartManagement")
 
         self.__health_check_service = HealthCheckService(
