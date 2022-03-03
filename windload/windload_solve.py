@@ -97,15 +97,8 @@ class SolverWorkflow:
 
     def set_up_materials(self):
         self.solver.define.materials.change_create("air", "air", "yes", "constant", self.density)
-           
+          
     def report_value(self):
-        import ansys.fluent as pyfluent
-        print("Output for windload run with inlet velocity value of:")
-        print(self.inlet_velocity, "\n*******************************************************************\n")
-        pyfluent.set_log_level('INFO')
-        self.solver.solve.report_definitions.compute("drag_unit")
-
-    def report_value2(self):
         def parameter_table_str_to_dict(table: str) -> dict:
             # this code has become more complex now. Originally table was
             # str here - now ExecuteCommandResult is returned by the calls
@@ -129,8 +122,7 @@ class SolverWorkflow:
            self.solver.define.parameters.list_parameters.output_parameters().result()
            )
         lift = parameter_dict["drag_unit-op"]
-        print("inlet velocity = ", self.inlet_velocity)
-        print("lift = ", lift)
+        print("Inlet velocity =", self.inlet_velocity, " Lift =", lift)
         
 
     def run(self):
@@ -142,5 +134,5 @@ class SolverWorkflow:
         self.create_report_definitions()
         self.initialize()
         self.calculate()
-        self.report_value2()
+        self.report_value()
 
