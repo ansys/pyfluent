@@ -12,7 +12,7 @@ def run():
     w.task_object['Add Local Sizing'].arguments = {"AddChild":"yes", "BOIControlName":"face", "BOIExecution":"Body Size", "BOIFaceLabelList":"farfield", "BOIZoneorLabel":"label"}
     status=w.task_object['Add Local Sizing'].execute()
     status=w.task_object['Add Local Sizing'].insert_compound_child_task(name='Add Local Sizing',command_name='BodyOfInfluence')
-    w.task_object['Add Local Sizing'].update_dict({"AddChild":"yes"})
+    w.task_object['Add Local Sizing'].arguments.update_dict({"AddChild":"yes"})
     w.task_object['face'].arguments.update_dict({"AddChild":"yes", "BOIControlName":"refinementzone", "BOIExecution":"Body Size", "BOIFaceLabelList":"meshrefinement", "BOISize":60})
     status=w.task_object['Generate the Surface Mesh'].execute()
     status=w.task_object['Generate the Surface Mesh'].insert_next_task(command_name='SurfaceMeshImprove')

@@ -3,7 +3,7 @@ import os
 
 from ansys.fluent.core.async_execution import asynchronous
 
-asynchronous
+@asynchronous
 def run(read_mesh, input_object):
     import ansys.fluent as pyfluent
     session = pyfluent.launch_fluent()
