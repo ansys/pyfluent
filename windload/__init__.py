@@ -10,13 +10,12 @@ class WindLoad:
     
     def run(self):
         self.meshing_session = windload_mesh.run()
+        self.solver_sessions = []
         inlet_velocities = [41.6, 41.7, 41.8]
-        id = 0
         for inlet_velocity in inlet_velocities:
             input_object = windload_solve.InputObject()
             input_object.inlet_velocity = inlet_velocity
-            windload_solve.run(
-                read_mesh=partial(transfer_mesh_from_meshing_to_solver, self.meshing_session, id),
-                input_object=input_object)
-            id += 1
+            self.solver_sessions.append(windload_solve.run(
+                read_mesh=partial(transfer_mesh_from_meshing_to_solver, self.meshing_session, len(self.solver_sessions)),
+                input_object=input_object))
             time.sleep(3)
