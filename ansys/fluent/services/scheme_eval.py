@@ -11,7 +11,7 @@ Example
 
 """
 
-from typing import Any, List, Tuple
+from typing import Any, List, Sequence, Tuple
 
 import grpc
 
@@ -172,15 +172,15 @@ class SchemeEval:
         return _convert_scheme_pointer_to_py_value(response)
 
     def exec(
-        self, commands: List[str], wait: bool = True, silent: bool = True
+        self, commands: Sequence[str], wait: bool = True, silent: bool = True
     ) -> str:
         """
         Execute a sequence of scheme commands
 
         Parameters
         ----------
-        commands : List[str]
-            List of scheme commands in string format
+        commands : Sequence[str]
+            Sequence of scheme commands in string format
         wait : bool, optional
             Specifies whether to wait until execution completes, by
             default True
