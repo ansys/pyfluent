@@ -1,67 +1,38 @@
 import pytest
+from pathlib import Path
 from pytest_mock import MockerFixture
 
-import ansys.fluent as pyfluent
 from ansys.fluent.addons.parametric import ParametricProject
-from ansys.fluent.services.datamodel_tui import PyMenu
-
-
-@pytest.fixture(name="mock_session")
-def fixture_mock_session(mocker: MockerFixture):
-    session = mocker.Mock()
-    session.tui = mocker.Mock()
-    session.tui.solver = mocker.Mock()
-    session.tui.solver.file = mocker.Mock()
-    session.tui.solver.file.parametric_project = (
-        pyfluent.solver_tui.file.parametric_project(
-            "/file/parametric_project", None
-        )
-    )
-    return session
+from ansys.fluent.solver.flobject import Command, NamedObject
+from ansys.fluent.solver.settings import root
 
 
 @pytest.fixture(autouse=True)
-def mock_pymenu_execute(mocker: MockerFixture) -> None:
-    PyMenu.execute = mocker.Mock(return_value=None)
+def mock_settings_service(mocker: MockerFixture) -> None:
+    Command.__call__ = mocker.Mock(return_value=None)
+    NamedObject.get_object_names = mocker.Mock(return_value=[])
 
 
 @pytest.fixture(name="parametric_project")
-def fixture_parametric_project(mock_session):
-    return ParametricProject(mock_session)
+def fixture_parametric_project():
+    return ParametricProject(
+        root.file.parametric_project(), root.parametric_studies(), "abc.flprj"
+    )
 
 
 class TestParamtericProject:
-    def test_create(
-        self,
-        mocker: MockerFixture,
-        parametric_project: ParametricProject,
-    ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
-        parametric_project.create(project_filename="abc.flprj")
-        spy.assert_called_once_with(
-            "/file/parametric_project/new", "abc.flprj"
-        )
 
     def test_open(
         self,
         mocker: MockerFixture,
         parametric_project: ParametricProject,
     ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
-        parametric_project.open(project_filename="abc.flprj")
+        spy = mocker.spy(root.file.parametric_project.open, "__call__")
+        project_filepath = "abc.flprj"
+        parametric_project.open(project_filepath=project_filepath)
         spy.assert_called_once_with(
-            "/file/parametric_project/open", "yes", "abc.flprj"
-        )
-
-    def test_open_with_lock(
-        self,
-        mocker: MockerFixture,
-        parametric_project: ParametricProject,
-    ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
-        parametric_project.open(project_filename="abc.flprj", open_lock=True)
-        spy.assert_called_once_with(
-            "/file/parametric_project/open", "yes", "abc.flprj", "yes"
+            project_filename=str(Path(project_filepath).resolve()),
+            load_case=True
         )
 
     def test_save(
@@ -69,30 +40,28 @@ class TestParamtericProject:
         mocker: MockerFixture,
         parametric_project: ParametricProject,
     ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
+        spy = mocker.spy(root.file.parametric_project.save, "__call__")
         parametric_project.save()
-        spy.assert_called_once_with("/file/parametric_project/save")
+        spy.assert_called_once_with()
 
     def test_save_as(
         self,
         mocker: MockerFixture,
         parametric_project: ParametricProject,
     ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
-        parametric_project.save_as(project_filename="abc.flprj")
-        spy.assert_called_once_with(
-            "/file/parametric_project/save_as", "abc.flprj"
-        )
+        spy = mocker.spy(root.file.parametric_project.save_as, "__call__")
+        parametric_project.save_as(project_filepath="abc.flprj")
+        spy.assert_called_once_with(project_filename="abc.flprj")
 
     def test_export(
         self,
         mocker: MockerFixture,
         parametric_project: ParametricProject,
     ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
-        parametric_project.export(project_filename="abc.flprj")
+        spy = mocker.spy(root.file.parametric_project.save_as_copy, "__call__")
+        parametric_project.export(project_filepath="abc.flprj")
         spy.assert_called_once_with(
-            "/file/parametric_project/save_as_copy", "abc.flprj"
+            project_filename="abc.flprj", convert_to_managed=False
         )
 
     def test_archive(
@@ -100,8 +69,6 @@ class TestParamtericProject:
         mocker: MockerFixture,
         parametric_project: ParametricProject,
     ) -> None:
-        spy = mocker.spy(PyMenu, "execute")
-        parametric_project.archive(archive_name="abc.flprz")
-        spy.assert_called_once_with(
-            "/file/parametric_project/archive", "abc.flprz"
-        )
+        spy = mocker.spy(root.file.parametric_project.archive, "__call__")
+        parametric_project.archive()
+        spy.assert_called_once_with(archive_name="abc.flprz")

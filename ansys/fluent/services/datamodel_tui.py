@@ -238,6 +238,18 @@ class PyMenu:
         self.__service.set_state(request)
 
     @asynchronous
+    def _execute_command(
+        self, request: DataModelProtoModule.ExecuteCommandRequest
+    ) -> Any:
+        ret = self.__service.execute_command(request)
+        return _convert_gvalue_to_value(ret.result)
+
+    def _execute_query(
+        self, request: DataModelProtoModule.ExecuteCommandRequest
+    ) -> Any:
+        ret = self.__service.execute_query(request)
+        return _convert_gvalue_to_value(ret.result)
+
     def execute(self, path: str, *args, **kwargs) -> Any:
         """Execute command/query at path with positional or keyword
         arguments
@@ -260,11 +272,9 @@ class PyMenu:
         else:
             _convert_value_to_gvalue(args, request.args.fields["tui_args"])
         if path.startswith("/query/"):
-            ret = self.__service.execute_query(request)
-            return _convert_gvalue_to_value(ret.result)
+            return self._execute_query(request)
         else:
-            ret = self.__service.execute_command(request)
-            return _convert_gvalue_to_value(ret.result)
+            return self._execute_command(request)
 
     def get_doc_string(
         self, path: str, include_unavailable: bool = False

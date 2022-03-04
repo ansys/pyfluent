@@ -3,11 +3,12 @@ Classes for running a parametric study in Fluent.
 
 Example
 -------
+>>> root = session.get_settings_root()
 >>> from ansys.fluent.addons.parametric import ParametricStudy
 
 Instantiate the study from a Fluent session which has already read a case
 
->>> study1 = ParametricStudy(session)
+>>> study1 = ParametricStudy(root.parametric_studies).initialize()
 
 Access and modify the input parameters of base design point
 
@@ -15,9 +16,9 @@ Access and modify the input parameters of base design point
 >>> ip['vel_hot'] = 0.2
 >>> study1.design_points["Base DP"].input_parameters = ip
 
-Update the base design point
+Update the current design point
 
->>> study1.design_points["Base DP"].update()
+>>> study1.update_current_design_point()
 
 Access the output parameters of base design point
 
@@ -33,48 +34,40 @@ Create, update more design points and delete them
 Create, rename, delete parametric studies
 
 >>> study2 = study1.duplicate()
->>> study2.name = "abc"
+>>> study2.rename("abc")
 >>> study1.delete()
 
 Project workflow
 
+>>> root = session.get_settings_root()
 >>> from ansys.fluent.addons.parametric import ParametricProject
->>> proj = ParametricProject(session)
->>> proj.open(project_filename="nozzle_para_named.flprj")
+>>> proj = ParametricProject(root.file.parametric_project, root.parametric_studies, "nozzle_para_named.flprj")  # noqa: E501
 >>> proj.save()
->>> proj.save_as(project_filename="nozzle_para_named1.flprj")
->>> proj.export(project_filename="nozzle_para_named2.flprj")
->>> proj.archive(archive_name="nozzle_para_named.flprz")
+>>> proj.save_as(project_filepath="nozzle_para_named1.flprj")
+>>> proj.export(project_filepath="nozzle_para_named2.flprj")
+>>> proj.archive()
+
+Using parametric session
+
+>>> from ansys.fluent.addons.parametric import ParametricSession
+>>> session1 = ParametricSession(case_filepath="elbow_params_2.cas.h5")
+>>> session1.studies['elbow_params_2-Solve'].design_points['Base DP'].input_parameters  # noqa: E501
+>>> study2 = session1.new_study()
+>>> session2 = ParametricSession(project_filepath="nozzle_para_named.flprj")
 
 """
 
 import atexit
 import os
-import re
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
-from ansys.fluent import LOG, Session
+import ansys.fluent as pyfluent
+from ansys.fluent import LOG
 
 BASE_DP_NAME = "Base DP"
-
-
-def _get_parametric_study_tui(tui: Session.SolverTui):
-    if "parametric_study" not in dir(tui):
-        if "enable_parametric_study" not in dir(tui.preferences.general):
-            tui.define.beta_feature_access("yes", "OK")
-        tui.preferences.general.enable_parametric_study()
-    return tui.parametric_study
-
-
-def _get_parametric_project_tui(tui: Session.SolverTui):
-    if "parametric_project" not in dir(tui.file):
-        if "enable_parametric_study" not in dir(tui.preferences.general):
-            tui.define.beta_feature_access("yes", "OK")
-        tui.preferences.general.enable_parametric_study()
-    return tui.file.parametric_project
 
 
 class DesignPoint:
@@ -85,8 +78,6 @@ class DesignPoint:
     ----------
     name : str
         Name of the design point
-    is_current : bool
-        Whether the design point is the current design point
     input_parameters : Dict[str, float]
         Input parameters values by name
     output_parameters : Dict[str, float]
@@ -96,68 +87,34 @@ class DesignPoint:
     capture_simulation_report_data_enabled : bool
         Whether to capture simulation report data for the design point
 
-    Methods
-    -------
-    update()
-        Update the design point
-
     """
 
-    def __init__(self, name: str, tui: Session.SolverTui):
+    def __init__(self, name: str, dp_settings):
         self.name = name
-        self.__tui = tui
-
-    @property
-    def is_current(self) -> bool:
-        """
-        bool: Whether the design point is the current design point
-        """
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        out = dp_tui.get_current_design_point()
-        current_dp = out.result.strip().strip('"')
-        return current_dp == self.name
-
-    @is_current.setter
-    def is_current(self, value: bool) -> None:
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.set_as_current(f'"{self.name if value else BASE_DP_NAME}"')
+        self.__dp_settings = dp_settings
 
     @property
     def input_parameters(self) -> Dict[str, float]:
         """Dict[str, float]: Input parameters values by name."""
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        out = dp_tui.get_input_parameters_of_dp(f'"{self.name}"')
-        return DesignPoint.__convert_scheme_string_to_parameter_dict(
-            out.result.strip()
-        )
+        return self.__dp_settings.input_parameters()
 
     @input_parameters.setter
     def input_parameters(self, value: Dict[str, float]) -> None:
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.set_input_parameters_of_dp(
-            f'"{self.name}"', *[v for _, v in value.items()]
-        )
+        self.__dp_settings.input_parameters = value
 
     @property
     def output_parameters(self) -> Dict[str, float]:
         """Dict[str, float]: Output parameters values by name"""
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        out = dp_tui.get_output_parameters_of_dp(f'"{self.name}"')
-        return DesignPoint.__convert_scheme_string_to_parameter_dict(
-            out.result.strip()
-        )
+        return self.__dp_settings.output_parameters()
 
     @property
     def write_data_enabled(self) -> bool:
         """bool: Whether to write data for the design point"""
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        out = dp_tui.get_write_data(f'"{self.name}"')
-        return out.result.strip().strip('"') == "True"
+        return self.__dp_settings.write_data()
 
     @write_data_enabled.setter
     def write_data_enabled(self, value: bool) -> None:
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.set_write_data(f'"{self.name}"', "yes" if value else "no")
+        self.__dp_settings.write_data = value
 
     @property
     def capture_simulation_report_data_enabled(self) -> bool:
@@ -165,33 +122,11 @@ class DesignPoint:
         bool: Whether to capture simulation report data for the design
         point
         """
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        out = dp_tui.get_capture_simulation_report_data(f'"{self.name}"')
-        return out.result.strip().strip('"') == "True"
+        return self.__dp_settings.capture_simulation_report_data()
 
     @capture_simulation_report_data_enabled.setter
     def capture_simulation_report_data_enabled(self, value: bool):
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.set_capture_simulation_report_data(
-            f'"{self.name}"', "yes" if value else "no"
-        )
-
-    def update(self) -> None:
-        """Update the design point"""
-        update_tui = _get_parametric_study_tui(self.__tui).update
-        update_tui.update_selected_design_points([f'"{self.name}"'])
-
-    @staticmethod
-    def __convert_scheme_string_to_parameter_dict(
-        inp: str,
-    ) -> Dict[str, float]:
-        parameters = {}
-        for pair in re.findall("\((.*?)\)", inp[1:-1]):
-            pair = pair.split(".", 1)
-            key = pair[0].strip().strip('"')
-            val = float(pair[1].strip())
-            parameters[key] = val
-        return parameters
+        self.__dp_settings.capture_simulation_report_data = value
 
 
 class ParametricStudy:
@@ -211,17 +146,27 @@ class ParametricStudy:
     current_design_point : DesignPoint
         The current design point within the design points under the
         parametric study
+    project_filepath : Path
+        Filepath of the associated project
 
     Methods
     -------
     set_as_current()
         Set the parametric study as the current parametric study
+    get_all_studies()
+        Get all currently active studies
+    initialize()
+        Initialize parametric study
     duplicate(copy_design_points)
         Duplicate the parametric study
+    rename(new_name)
+        Rename the parametric study
     delete()
         Delete the parametric study
     use_base_data()
         Use base data for the parametric study
+    import_design_table(filepath)
+        Import the design table for the parametric study
     export_design_table(filepath)
         Export the design table for the parametric study
     add_design_point(write_data, capture_simulation_report_data)
@@ -230,7 +175,7 @@ class ParametricStudy:
         Delete a list of design points
     duplicate_design_point(design_point)
         Duplicate the design point
-    save_journals(separate_journal)
+    save_journals(separate_journals)
         Save journals
     clear_generated_data(design_points)
         Clear generated data for a list of design points
@@ -245,47 +190,80 @@ class ParametricStudy:
 
     """
 
-    _current_study_name = None
+    _all_studies: Dict[int, "ParametricStudy"] = {}
+    current_study_name = None
     _project_dirs: List[Path] = []
 
-    def __init__(self, session: Session):
-        self.__tui = session.tui.solver
-        if self.__is_initialized():
-            LOG.error("Parametric study is already initialized.")
-        elif not self.__is_init_available():
-            LOG.error(
-                "Parametric study is not available. Please try reading a case."
-            )
-        else:
-            self.__project_dir = Path(
+    def __init__(self, parametric_studies, name=None, design_points=None):
+        self.__parametric_studies = parametric_studies
+        self.name = name
+        self.design_points = {}
+        if design_points is not None:
+            self.design_points = design_points
+        self.project_filepath = None
+        ParametricStudy._all_studies[id(self)] = self
+
+    @classmethod
+    def get_all_studies(cls) -> Dict[str, "ParametricStudy"]:
+        """
+        Get all currently active studies
+
+        Returns
+        -------
+        Dict[str, "ParametricStudy"]
+            currently active studies
+        """
+        return {v.name: v for _, v in cls._all_studies.items()}
+
+    def initialize(self):
+        """Initialize parametric study"""
+        if self.__parametric_studies.initialize.is_active():
+            self.project_filepath = Path(
                 tempfile.mkdtemp(
                     prefix="project-",
                     suffix=".cffdb",
                     dir=str(Path.cwd()),  # TODO: should be cwd of server
                 )
             )
-            self.__project_dir.rmdir()
-            tui_output = (
-                _get_parametric_study_tui(self.__tui)
-                .initialize("yes", self.__project_dir.stem)
-                .result
+            self.project_filepath.rmdir()
+            old_study_names = self.__parametric_studies.get_object_names()
+            self.__parametric_studies.initialize(
+                project_filename=self.project_filepath.stem
             )
-            self._name = self.__extract_study_name(tui_output)
-            base_design_point = DesignPoint(BASE_DP_NAME, self.__tui)
-            base_design_point.is_current = True
+            new_study_names = self.__parametric_studies.get_object_names()
+            self.name = (
+                set(new_study_names).difference(set(old_study_names)).pop()
+            )
+            base_design_point = DesignPoint(
+                BASE_DP_NAME,
+                self.__parametric_studies[self.name].design_points[
+                    BASE_DP_NAME
+                ],
+            )
             self.design_points = {BASE_DP_NAME: base_design_point}
-            ParametricStudy._current_study_name = self._name
-            ParametricStudy._project_dirs.append(self.__project_dir)
+            ParametricStudy.current_study_name = self.name
+            ParametricStudy._project_dirs.append(self.project_filepath)
+            return self
+        else:
+            LOG.error("initialize is not available")
 
-    @property
-    def name(self) -> str:
-        """str: Name of the parametric study"""
-        return self._name
+    def rename(self, new_name: str) -> None:
+        """
+        Rename the parametric study
 
-    @name.setter
-    def name(self, new_name: str) -> None:
-        _get_parametric_study_tui(self.__tui).rename_study(self.name, new_name)
-        self._name = new_name
+        Parameters
+        ----------
+        new_name : str
+            new name
+        """
+        self.__parametric_studies.rename(new_name, self.name)
+        self.name = new_name
+        self.design_points = {
+            k: DesignPoint(
+                k, self.__parametric_studies[self.name].design_points[k]
+            )
+            for k, _ in self.design_points.items()
+        }
 
     @property
     def is_current(self) -> bool:
@@ -293,46 +271,58 @@ class ParametricStudy:
         bool: Whether the parametric study is the current parametric
         study
         """
-        return ParametricStudy._current_study_name == self.name
+        return ParametricStudy.current_study_name == self.name
 
     def set_as_current(self) -> None:
         """Set the parametric study as the current parametric study."""
         if not self.is_current:
-            _get_parametric_study_tui(self.__tui).set_as_current_study(
-                self.name, "yes"
-            )
-            ParametricStudy._current_study_name = self.name
+            self.__parametric_studies.set_as_current(self.name)
+            ParametricStudy.current_study_name = self.name
 
     def duplicate(self, copy_design_points: bool = True) -> "ParametricStudy":
         """
-        Duplicate the design point
+        Duplicate the current study
 
         Parameters
         ----------
         copy_design_points : bool
-            Whether to copy the design points
+            Whether to copy the design points from the current study
 
         Returns
         -------
         ParametricStudy
             New parametric study instance
         """
-        tui_output = (
-            _get_parametric_study_tui(self.__tui)
-            .duplicate_study("yes" if copy_design_points else "no")
-            .result
+        old_study_names = self.__parametric_studies.get_object_names()
+        self.__parametric_studies.duplicate(
+            copy_design_points=copy_design_points
         )
-        cls = self.__class__
-        clone = cls.__new__(cls)
-        clone.__dict__.update(self.__dict__)
-        clone._name = self.__extract_study_name(tui_output)
+        new_study_names = self.__parametric_studies.get_object_names()
+        clone_name = (
+            set(new_study_names).difference(set(old_study_names)).pop()
+        )
+        current_study = ParametricStudy.get_all_studies()[
+            ParametricStudy.current_study_name
+        ]
         if copy_design_points:
-            clone.design_points = self.design_points.copy()
+            clone_design_points = {
+                k: DesignPoint(
+                    k, self.__parametric_studies[clone_name].design_points[k]
+                )
+                for k, _ in current_study.design_points.items()
+            }
         else:
-            base_design_point = DesignPoint(BASE_DP_NAME, self.__tui)
-            base_design_point.is_current = True
-            self.design_points = {BASE_DP_NAME: base_design_point}
-        ParametricStudy._current_study_name = clone.name
+            base_design_point = DesignPoint(
+                BASE_DP_NAME,
+                self.__parametric_studies[clone_name].design_points[
+                    BASE_DP_NAME
+                ],
+            )
+            clone_design_points = {BASE_DP_NAME: base_design_point}
+        clone = ParametricStudy(
+            self.__parametric_studies, clone_name, clone_design_points
+        )
+        ParametricStudy.current_study_name = clone.name
         return clone
 
     def delete(self) -> None:
@@ -342,9 +332,8 @@ class ParametricStudy:
         if self.is_current:
             LOG.error("Cannot delete the current study %s", self.name)
         else:
-            _get_parametric_study_tui(self.__tui).delete_study(
-                self.name, "yes"
-            )
+            del self.__parametric_studies[self.name]
+            ParametricStudy._all_studies.pop(id(self))
             del self
 
     @classmethod
@@ -356,7 +345,18 @@ class ParametricStudy:
 
     def use_base_data(self) -> None:
         """Use base data for the parametric study"""
-        _get_parametric_study_tui(self.__tui).use_base_data("yes")
+        self.__parametric_studies.use_base_data()
+
+    def import_design_table(self, filepath: str) -> None:
+        """
+        Import the design table for the parametric study
+
+        Parameters
+        ----------
+        filepath : str
+            Input filepath
+        """
+        self.__parametric_studies.import_design_table(filepath=filepath)
 
     def export_design_table(self, filepath: str) -> None:
         """
@@ -367,23 +367,7 @@ class ParametricStudy:
         filepath : str
             Output filepath
         """
-        _get_parametric_study_tui(self.__tui).export_design_table(filepath)
-
-    def __is_init_available(self) -> bool:
-        return "initialize" in dir(_get_parametric_study_tui(self.__tui))
-
-    def __is_initialized(self) -> bool:
-        return "delete_study" in dir(_get_parametric_study_tui(self.__tui))
-
-    def __extract_study_name(self, tui_output: str) -> str:
-        project_dirname = self.__project_dir.name
-        for line in tui_output.split("\n"):
-            if project_dirname in line:
-                comps = line.replace("\\", "/").split("/")
-                index = comps.index(project_dirname)
-                return comps[index + 1]
-        LOG.error("Study name cannot be retrieved")
-        return ""
+        self.__parametric_studies.export_design_table(filepath=filepath)
 
     @property
     def current_design_point(self) -> DesignPoint:
@@ -391,9 +375,7 @@ class ParametricStudy:
         DesignPoint: The current design point within the design points
         under the parametric study.
         """
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        out = dp_tui.get_current_design_point()
-        dp_name = out.result.strip().strip('"')
+        dp_name = self.__parametric_studies[self.name].current_design_point()
         return self.design_points[dp_name]
 
     def add_design_point(
@@ -418,17 +400,18 @@ class ParametricStudy:
             The new design point
         """
         self.set_as_current()
-        dps_before = self.__extract_design_point_names()
-        base_input_params = self.design_points[BASE_DP_NAME].input_parameters
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.add_design_point(
-            *[v for _, v in base_input_params.items()],
-            "yes" if write_data else "no",
-            "yes" if capture_simulation_report_data else "no",
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dps_before = dp_settings.get_object_names()
+        dp_settings.create(
+            write_data=write_data,
+            capture_simulation_report_data=capture_simulation_report_data,
         )
-        dps_after = self.__extract_design_point_names()
+        dps_after = dp_settings.get_object_names()
         dp_name = set(dps_after).difference(set(dps_before)).pop()
-        design_point = DesignPoint(dp_name, self.__tui)
+        design_point = DesignPoint(
+            dp_name,
+            self.__parametric_studies[self.name].design_points[dp_name],
+        )
         self.design_points[dp_name] = design_point
         return design_point
 
@@ -444,12 +427,12 @@ class ParametricStudy:
         if self.current_design_point in design_points:
             LOG.error(
                 "Cannot delete the current design point %s",
-                self.current_design_point.name
+                self.current_design_point.name,
             )
             design_points.remove(self.current_design_point)
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.delete_design_point(
-            [f'"{dp.name}"' for dp in design_points], "yes"
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.delete_design_points(
+            design_points=[dp.name for dp in design_points]
         )
         for design_point in design_points:
             self.design_points.pop(design_point.name)
@@ -469,27 +452,29 @@ class ParametricStudy:
         DesignPoint
             The new design point
         """
-        dps_before = self.__extract_design_point_names()
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.duplicate_design_point(f'"{design_point.name}"')
-        dps_after = self.__extract_design_point_names()
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dps_before = dp_settings.get_object_names()
+        dp_settings.duplicate(design_point=design_point.name)
+        dps_after = dp_settings.get_object_names()
         new_dp_name = set(dps_after).difference(set(dps_before)).pop()
-        new_dp = DesignPoint(new_dp_name, self.__tui)
+        new_dp = DesignPoint(
+            new_dp_name,
+            self.__parametric_studies[self.name].design_points[new_dp_name],
+        )
         self.design_points[new_dp_name] = new_dp
         return new_dp
 
-    def save_journals(self, separate_journal: bool) -> None:
+    def save_journals(self, separate_journals: bool) -> None:
         """
         Save journals
 
         Parameters
         ----------
-        separate_journal : bool
+        separate_journals : bool
             Whether to save separate journal per design point.
         """
-        _get_parametric_study_tui(self.__tui).design_points.save_journals(
-            "yes", 1 if separate_journal else 2
-        )
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.save_journals(separate_journals=separate_journals)
 
     def clear_generated_data(self, design_points: List[DesignPoint]) -> None:
         """
@@ -500,23 +485,25 @@ class ParametricStudy:
         design_points : List[DesignPoint]
             List of design points
         """
-        dp_tui = _get_parametric_study_tui(self.__tui).design_point
-        dp_tui.clear_generated_data(
-            [f'"{dp.name}"' for dp in design_points], "yes"
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.clear_generated_data(
+            design_points=[dp.name for dp in design_points]
         )
 
     def load_current_design_point_case_data(self) -> None:
         """Load case-data of the current design point"""
-        dp_tui = _get_parametric_study_tui(self.__tui).design_points
-        dp_tui.load_case_data_for_current_dp()
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.load_case_data()
 
     def update_current_design_point(self) -> None:
         """Update the current design point"""
-        _get_parametric_study_tui(self.__tui).update.update_current()
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.update_current()
 
     def update_all_design_points(self) -> None:
         """Update all design points"""
-        _get_parametric_study_tui(self.__tui).update.update_all()
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.update_all()
 
     def update_selected_design_points(
         self, design_points: List[DesignPoint]
@@ -529,131 +516,260 @@ class ParametricStudy:
         design_points : List[str]
             List of design points to update
         """
-        update_tui = _get_parametric_study_tui(self.__tui).update
-        update_tui.update_selected_design_points(
-            [f'"{dp.name}"' for dp in design_points]
+        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings.update_selected(
+            design_points=[dp.name for dp in design_points]
         )
-
-    def __extract_design_point_names(self) -> List[str]:
-        fd, filepath = tempfile.mkstemp(suffix=".csv")
-        os.close(fd)
-        self.export_design_table(filepath)
-        design_points = []
-        with open(filepath) as f:
-            f.readline()
-            f.readline()
-            for line in f.readlines():
-                line = line.strip()
-                if line:
-                    design_points.append(line.split(",")[0])
-        Path(filepath).unlink()
-        return design_points
 
 
 class ParametricProject:
     """
     Parametric project workflow
 
+    Attributes
+    ----------
+    project_filepath : str
+        Filepath of the project
+
     Methods
     -------
-    create(project_filename)
-        Create a new project
-    open(project_filename, load_current_case, open_lock)
+    open(project_filepath, load_case)
         Open a project
-    save(project_filename)
+    save()
         Save project
-    save_as(project_filename)
+    save_as(project_filepath)
         Save as project
-    export(project_filename)
+    export(project_filepath, convert_to_managed)
         Save project as a copy
     archive(archive_name)
         Archive project
 
     """
 
-    def __init__(self, session: Session):
-        self.__tui = session.tui.solver
-
-    def create(self, project_filename: str = "default.flprj") -> None:
-        """
-        Create a new project
-
-        Parameters
-        ----------
-        project_filename : str, optional
-            project filename, by default "default.flprj"
-        """
-        _get_parametric_project_tui(self.__tui).new(project_filename)
+    def __init__(
+        self,
+        parametric_project,
+        parametric_studies,
+        project_filepath: str,
+        open_project: bool = True,
+    ):
+        self.__parametric_project = parametric_project
+        self.__parametric_studies = parametric_studies
+        self.project_filepath = project_filepath
+        if open_project:
+            self.open(project_filepath=project_filepath)
 
     def open(
-        self,
-        project_filename: str = "default.flprj",
-        load_current_case: bool = True,
-        open_lock: bool = False,
+        self, project_filepath: str = "default.flprj", load_case: bool = True
     ) -> None:
         """
         Open a project
 
         Parameters
         ----------
-        project_filename : str, optional
+        project_filepath : str, optional
             project filename, by default "default.flprj"
-        load_current_case : bool, optional
+        load_case : bool, optional
             Specifies whether to load the current case, by default True
-        open_lock : bool, optional
-            Specifies whether to open the lock if project file is
-            locked, by default False
         """
-        args = ["yes" if load_current_case else "no", project_filename]
-        if open_lock:
-            args.append("yes")
+        self.__parametric_project.open(
+            project_filename=str(Path(project_filepath).resolve()),
+            load_case=load_case
+        )
+        self.project_filepath = project_filepath
+        for study_name in self.__parametric_studies.get_object_names():
+            study = ParametricStudy(self.__parametric_studies, study_name)
+            dps_settings = self.__parametric_studies[study_name].design_points
+            for dp_name in dps_settings.get_object_names():
+                study.design_points[dp_name] = DesignPoint(
+                    dp_name, dps_settings[dp_name]
+                )
 
-        _get_parametric_project_tui(self.__tui).open(*args)
+    def save(self) -> None:
+        """Save project"""
+        self.__parametric_project.save()
 
-    def save(self, project_filename: Optional[str] = None) -> None:
-        """
-        Save project
-
-        Parameters
-        ----------
-        project_filename : Optional[str], optional
-            project filename, by default None
-        """
-        args = () if project_filename is None else (project_filename,)
-        _get_parametric_project_tui(self.__tui).save(*args)
-
-    def save_as(self, project_filename: str) -> None:
+    def save_as(self, project_filepath: str) -> None:
         """
         Save as project
 
         Parameters
         ----------
-        project_filename : str
+        project_filepath : str
             project filename
         """
-        _get_parametric_project_tui(self.__tui).save_as(project_filename)
+        self.__parametric_project.save_as(project_filename=project_filepath)
 
-    def export(self, project_filename: str) -> None:
+    def export(
+        self, project_filepath: str, convert_to_managed: bool = False
+    ) -> None:
         """
         Save project as a copy
 
         Parameters
         ----------
-        project_filename : str
+        project_filepath : str
             project filename
+        convert_to_managed : bool
+            Specifies whether to convert to managed project
         """
-        _get_parametric_project_tui(self.__tui).save_as_copy(project_filename)
+        self.__parametric_project.save_as_copy(
+            project_filename=project_filepath,
+            convert_to_managed=convert_to_managed,
+        )
 
-    def archive(self, archive_name: str) -> None:
+    def archive(self, archive_path: str = None) -> None:
         """
         Archive project
 
         Parameters
         ----------
-        archive_name : str
+        archive_name : str, optional
             archive name
         """
-        _get_parametric_project_tui(self.__tui).archive(archive_name)
+        if not archive_path:
+            archive_path = str(
+                Path(self.project_filepath).with_suffix(".flprz")
+            )
+        self.__parametric_project.archive(archive_name=archive_path)
+
+
+class ParametricSessionLauncher:
+    """
+    Launches fluent for parametric sessions.
+
+    Methods
+    -------
+    __call__(*args, **kwargs)
+        Launch a session
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        self.__args = args
+        self.__kwargs = kwargs
+
+    def __call__(self):
+        return pyfluent.launch_fluent(*self.__args, **self.__kwargs)
+
+
+class ParametricSession:
+    """
+    ParametricSession class which encapsulates studies and project
+
+    Attributes
+    ----------
+    studies : Dict[str, ParametricStudy]
+        Parametric studies by their name within the session
+    project : ParametricProject
+        Parametric project if a project file is read
+
+    Methods
+    -------
+    new_study()
+        Create new study
+    delete_study(self, study_name)
+        Delete study
+    rename_study(self, new_name, old_name)
+        Rename study
+    """
+
+    def __init__(
+        self,
+        case_filepath: str = None,
+        project_filepath: str = None,
+        launcher=ParametricSessionLauncher(),
+    ):
+        """
+        Instantiates a ParametricSession
+
+        Parameters
+        ----------
+        case_filepath : str, optional
+            case file name, by default None
+        project_filepath : str, optional
+            project file name, by default None
+        launcher : _type_, optional
+            Fluent launcher, by default ParametricSessionLauncher()
+        """
+        self.studies = {}
+        self.project = None
+        session = launcher()
+        self.__root = session.get_settings_root()
+        if case_filepath is not None:
+            self.__root.file.read(file_name=case_filepath, file_type="case")
+            study = ParametricStudy(
+                self.__root.parametric_studies
+            ).initialize()
+            self.studies[study.name] = study
+            self.project = ParametricProject(
+                parametric_project=self.__root.file.parametric_project,
+                parametric_studies=self.__root.parametric_studies,
+                project_filepath=str(study.project_filepath),
+                open_project=False
+            )
+        elif project_filepath is not None:
+            self.project = ParametricProject(
+                parametric_project=self.__root.file.parametric_project,
+                parametric_studies=self.__root.parametric_studies,
+                project_filepath=project_filepath,
+            )
+            studies_settings = self.__root.parametric_studies
+            for study_name in studies_settings.get_object_names():
+                study = ParametricStudy(studies_settings, study_name)
+                dps_settings = studies_settings[study_name].design_points
+                for dp_name in dps_settings.get_object_names():
+                    study.design_points[dp_name] = DesignPoint(
+                        dp_name, dps_settings[dp_name]
+                    )
+                self.studies[study_name] = study
+            ParametricStudy.current_study_name = (
+                self.__root.current_parametric_study()
+            )
+
+    def new_study(self) -> ParametricStudy:
+        """
+        Create new study
+
+        Returns
+        -------
+        ParametricStudy
+            new study
+        """
+        study = self.studies[ParametricStudy.current_study_name].duplicate()
+        self.studies[study.name] = study
+        return study
+
+    def delete_study(self, study_name: str) -> None:
+        """
+        Delete study
+
+        Parameters
+        ----------
+        study_name : str
+            study name
+        """
+        study = self.studies[study_name]
+        if study.is_current:
+            LOG.error("Cannot delete the current study %s", study_name)
+        else:
+            study.delete()
+            self.studies.pop(study_name)
+
+    def rename_study(self, new_name: str, old_name: str) -> None:
+        """
+        Rename study
+
+        Parameters
+        ----------
+        new_name : str
+            new name
+        old_name : str
+            current name
+        """
+        study = self.studies.pop(old_name)
+        study.rename(new_name)
+        self.studies[new_name] = study
 
 
 atexit.register(ParametricStudy.cleanup_project_dirs)

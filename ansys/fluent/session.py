@@ -101,10 +101,10 @@ class Session:
             Session._monitor_thread = MonitorThread()
             Session._monitor_thread.start()
 
-        self.__transcript_service: TranscriptService = None
+        self.__transcript_service = TranscriptService(
+            self.__channel, self.__metadata
+        )
         self.__transcript_thread: threading.Thread = None
-
-        self.start_transcript()
 
         self.__events_service = EventsService(self.__channel, self.__metadata)
         self.events_manager = EventsManager(self.__id, self.__events_service)
@@ -124,6 +124,8 @@ class Session:
         )
         self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
         self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
+        self.part_management = PyMenu_SE(self.__datamodel_service_se,
+                                         "PartManagement")
 
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
@@ -132,7 +134,7 @@ class Session:
         self.__scheme_eval_service = SchemeEvalService(
             self.__channel, self.__metadata
         )
-        self.__scheme_eval = SchemeEval(self.__scheme_eval_service)
+        self.scheme_eval = SchemeEval(self.__scheme_eval_service)
 
         Session._monitor_thread.cbs.append(self.exit)
 
@@ -153,7 +155,7 @@ class Session:
                     )
         return self._settings_root
 
-    def __log_transcript(self):
+    def _process_transcript(self):
         responses = self.__transcript_service.begin_streaming()
         transcript = ""
         while True:
@@ -161,21 +163,22 @@ class Session:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    LOG.info(transcript[0:-1])
+                    print(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break
 
     def start_transcript(self):
         """Start streaming of Fluent transcript"""
-        self.__transcript_service = TranscriptService(
-            self.__channel, self.__metadata
-        )
         self.__transcript_thread = threading.Thread(
-            target=Session.__log_transcript, args=(self,)
+            target=Session._process_transcript, args=(self,)
         )
 
         self.__transcript_thread.start()
+
+    def stop_transcript(self):
+        """Stop streaming of Fluent transcript"""
+        self.__transcript_service.end_streaming()
 
     def check_health(self):
         """Check health of Fluent connection"""
@@ -187,7 +190,7 @@ class Session:
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
         if self.__channel:
-            self.tui.solver.exit().result()
+            self.scheme_eval.exec(("(exit-server)",))
             self.__transcript_service.end_streaming()
             self.events_manager.stop()
             self.__channel.close()
