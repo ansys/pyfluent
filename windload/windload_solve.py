@@ -3,13 +3,14 @@ import os
 
 from ansys.fluent.core.async_execution import asynchronous
 
-@asynchronous
-def run(read_mesh, input_object):
+#@asynchronous
+def create_workflow(read_mesh, input_object):
     import ansys.fluent as pyfluent
     session = pyfluent.launch_fluent()
-    read_mesh(session)
-    workflow = SolverWorkflow(session, input_object=input_object or InputObject())
-    workflow.run()
+    workflow = SolverWorkflow(
+        session, 
+        input_object=input_object or InputObject(),
+        mesh_reader=read_mesh)
     return workflow
 
 
@@ -26,11 +27,11 @@ class InputObject:
     
 
 class SolverWorkflow:
-    def __init__(self, session, input_object):
+    def __init__(self, session, input_object, mesh_reader):
         self.session = session
         self.solver = session.tui.solver
         self.api_root = session.get_settings_root()
-        self.scheme_str_eval = session._Session__scheme_eval.string_eval
+        self.scheme_str_eval = session.scheme_eval.string_eval
         self.hydraulic_diameter = input_object.hydraulic_diameter
         self.density = input_object.density
         self.inlet_velocity = input_object.inlet_velocity
@@ -38,8 +39,12 @@ class SolverWorkflow:
         self.unit_width = input_object.unit_width
         self.turbulence_model_name = input_object.turbulence_model_name
         self.iteration_for_average_report = input_object.iteration_for_average_report
-        self.iterations_number = input_object.iterations_number     
+        self.iterations_number = input_object.iterations_number 
+        self.mesh_reader = mesh_reader
        
+    def read_mesh(self):
+        self.mesh_reader(self.session)
+
     def calculate(self):
         self.solver.solve.iterate(self.iterations_number)
        
@@ -126,13 +131,15 @@ class SolverWorkflow:
         
 
     def run(self):
-        self.set_up_materials()
-        self.set_up_turbulence_model()
-        self.set_up_boundary_conditions()
-        self.set_up_reference_values()
-        self.set_discretization_scheme()
-        self.create_report_definitions()
-        self.initialize()
-        self.calculate()
-        self.report_value()
+        i = 0
+        print(i); i = i + 1
+        self.set_up_materials(); print(i); i = i + 1
+        self.set_up_turbulence_model(); print(i); i = i + 1
+        self.set_up_boundary_conditions(); print(i); i = i + 1
+        self.set_up_reference_values(); print(i); i = i + 1
+        self.set_discretization_scheme(); print(i); i = i + 1
+        self.create_report_definitions(); print(i); i = i + 1
+        self.initialize(); print(i); i = i + 1
+        self.calculate(); print(i); i = i + 1
+        self.report_value(); print(i); i = i + 1
 
