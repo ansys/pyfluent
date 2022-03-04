@@ -244,7 +244,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -253,7 +252,7 @@ class Settings(object):
             settings__pb2.GetObjectStaticInfoRequest.SerializeToString,
             settings__pb2.GetObjectStaticInfoResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetStaticInfo(request,
@@ -261,7 +260,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -270,7 +268,7 @@ class Settings(object):
             settings__pb2.GetStaticInfoRequest.SerializeToString,
             settings__pb2.GetStaticInfoResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetVar(request,
@@ -278,7 +276,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -287,7 +284,7 @@ class Settings(object):
             settings__pb2.GetVarRequest.SerializeToString,
             settings__pb2.GetVarResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def SetVar(request,
@@ -295,7 +292,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -304,7 +300,7 @@ class Settings(object):
             settings__pb2.SetVarRequest.SerializeToString,
             settings__pb2.SetVarResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Rename(request,
@@ -312,7 +308,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -321,7 +316,7 @@ class Settings(object):
             settings__pb2.RenameRequest.SerializeToString,
             settings__pb2.RenameResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Create(request,
@@ -329,7 +324,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -338,7 +332,7 @@ class Settings(object):
             settings__pb2.CreateRequest.SerializeToString,
             settings__pb2.CreateResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Delete(request,
@@ -346,7 +340,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -355,7 +348,7 @@ class Settings(object):
             settings__pb2.DeleteRequest.SerializeToString,
             settings__pb2.DeleteResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetObjectNames(request,
@@ -363,7 +356,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -372,7 +364,7 @@ class Settings(object):
             settings__pb2.GetObjectNamesRequest.SerializeToString,
             settings__pb2.GetObjectNamesResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetListSize(request,
@@ -380,7 +372,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -389,7 +380,7 @@ class Settings(object):
             settings__pb2.GetListSizeRequest.SerializeToString,
             settings__pb2.GetListSizeResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def ResizeListObject(request,
@@ -397,7 +388,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -406,7 +396,7 @@ class Settings(object):
             settings__pb2.ResizeListObjectRequest.SerializeToString,
             settings__pb2.ResizeListObjectResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def ExecuteCommand(request,
@@ -414,7 +404,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -423,7 +412,7 @@ class Settings(object):
             settings__pb2.ExecuteCommandRequest.SerializeToString,
             settings__pb2.ExecuteCommandResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetAttrs(request,
@@ -431,7 +420,6 @@ class Settings(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -440,4 +428,4 @@ class Settings(object):
             settings__pb2.GetAttrsRequest.SerializeToString,
             settings__pb2.GetAttrsResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
