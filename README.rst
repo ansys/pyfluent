@@ -23,10 +23,11 @@ Usage
   pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
   session.check_health()
+  session.start_transcript() # enable transcript streaming
   session.tui.solver.file.read_case(case_file_name='elbow.cas.gz')
   session.tui.solver.define.models.unsteady_2nd_order("yes")
-  session.tui.solver.solve.initialize.initialize_flow()  
-  session.tui.solver.solve.dual_time_iterate(number_of_time_steps=2, maximum_number_of_iterations_per_time_step=3)
+  session.tui.solver.solve.initialize.initialize_flow()
+  session.tui.solver.solve.dual_time_iterate(2, 3)
 
 
 Meshing TUI and workflow
