@@ -573,7 +573,8 @@ class ParametricProject:
             Specifies whether to load the current case, by default True
         """
         self.__parametric_project.open(
-            project_filename=project_filepath, load_case=load_case
+            project_filename=str(Path(project_filepath).resolve()),
+            load_case=load_case
         )
         self.project_filepath = project_filepath
         for study_name in self.__parametric_studies.get_object_names():
@@ -722,6 +723,9 @@ class ParametricSession:
                         dp_name, dps_settings[dp_name]
                     )
                 self.studies[study_name] = study
+            ParametricStudy.current_study_name = (
+                self.__root.current_parametric_study()
+            )
 
     def new_study(self) -> ParametricStudy:
         """

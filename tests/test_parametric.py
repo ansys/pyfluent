@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 from pytest_mock import MockerFixture
 
 from ansys.fluent.addons.parametric import ParametricProject
@@ -27,9 +28,10 @@ class TestParamtericProject:
         parametric_project: ParametricProject,
     ) -> None:
         spy = mocker.spy(root.file.parametric_project.open, "__call__")
-        parametric_project.open(project_filepath="abc.flprj")
+        project_filepath = "abc.flprj"
+        parametric_project.open(project_filepath=project_filepath)
         spy.assert_called_once_with(
-            project_filename="abc.flprj",
+            project_filename=str(Path(project_filepath).resolve()),
             load_case=True
         )
 
