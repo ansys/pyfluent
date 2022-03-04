@@ -15,16 +15,17 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
 
 
-def _get_awp_path():
-    if "AWP_ROOT" in os.environ:
-        awp_path = os.environ["AWP_ROOT"]
+def _get_fluent_path():
+    if "PYFLUENT_FLUENT_ROOT" in os.environ:
+        path = os.environ["PYFLUENT_FLUENT_ROOT"]
+    elif "AWP_ROOT" in os.environ:
+        path = os.environ["AWP_ROOT"]
     else:
-        awp_path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
-    return Path(awp_path)
-
+        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
+    return Path(path)
 
 def _get_fluent_exe_path():
-    exe_path = _get_awp_path() / "fluent"
+    exe_path = _get_fluent_path() / "fluent"
     if platform.system() == "Windows":
         exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
     else:
