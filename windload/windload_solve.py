@@ -3,7 +3,7 @@ import os
 
 from ansys.fluent.core.async_execution import asynchronous
 
-#@asynchronous
+@asynchronous
 def create_workflow(read_mesh, input_object):
     import ansys.fluent as pyfluent
     session = pyfluent.launch_fluent()
@@ -11,6 +11,8 @@ def create_workflow(read_mesh, input_object):
         session, 
         input_object=input_object or InputObject(),
         mesh_reader=read_mesh)
+    workflow.read_mesh()
+    workflow.run()
     return workflow
 
 
@@ -131,15 +133,13 @@ class SolverWorkflow:
         
 
     def run(self):
-        i = 0
-        print(i); i = i + 1
-        self.set_up_materials(); print(i); i = i + 1
-        self.set_up_turbulence_model(); print(i); i = i + 1
-        self.set_up_boundary_conditions(); print(i); i = i + 1
-        self.set_up_reference_values(); print(i); i = i + 1
-        self.set_discretization_scheme(); print(i); i = i + 1
-        self.create_report_definitions(); print(i); i = i + 1
-        self.initialize(); print(i); i = i + 1
-        self.calculate(); print(i); i = i + 1
-        self.report_value(); print(i); i = i + 1
+        self.set_up_materials()
+        self.set_up_turbulence_model()
+        self.set_up_boundary_conditions()
+        self.set_up_reference_values()
+        self.set_discretization_scheme()
+        self.create_report_definitions()
+        self.initialize()
+        self.calculate()
+        self.report_value()
 

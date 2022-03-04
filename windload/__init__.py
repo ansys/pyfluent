@@ -15,18 +15,11 @@ class WindLoad:
         self.meshing_session = windload_mesh.run()
         self.solver_workflows = []
         inlet_velocity = 41.0
-        for i in range(1):
+        for i in range(8):
             input_object = windload_solve.InputObject()
             input_object.inlet_velocity = inlet_velocity
-            #self.solver_workflows.append(windload_solve.create_workflow(
-            #    read_mesh=partial(transfer_mesh_from_meshing_to_solver, self.meshing_session, len(self.solver_workflows)),
-            #    input_object=input_object))
-            self.solver_workflow = windload_solve.create_workflow(
-                 read_mesh=partial(transfer_mesh_from_meshing_to_solver, self.meshing_session, len(self.solver_workflows)),
-                 input_object=input_object)
-            self.solver_workflow.read_mesh()
-            self.solver_workflow.run()
-            #self.solver_workflows[-1].read_mesh() 
-            #self.solver_workflows[-1].run() 
+            self.solver_workflows.append(windload_solve.create_workflow(
+                read_mesh=partial(transfer_mesh_from_meshing_to_solver, self.meshing_session, len(self.solver_workflows)),
+                input_object=input_object))
             inlet_velocity += 0.2
             time.sleep(3)
