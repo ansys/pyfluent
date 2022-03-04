@@ -18,8 +18,6 @@ FLUENT_VERSION = "22.2"
 def _get_fluent_path():
     if "PYFLUENT_FLUENT_ROOT" in os.environ:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
-    elif "AWP_ROOT" in os.environ:
-        path = os.environ["AWP_ROOT"]
     else:
         path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
     return Path(path)
