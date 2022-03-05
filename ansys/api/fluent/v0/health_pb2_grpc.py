@@ -87,7 +87,6 @@ class Health(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -96,7 +95,7 @@ class Health(object):
             health__pb2.HealthCheckRequest.SerializeToString,
             health__pb2.HealthCheckResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Watch(request,
@@ -104,7 +103,6 @@ class Health(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -113,4 +111,4 @@ class Health(object):
             health__pb2.HealthCheckRequest.SerializeToString,
             health__pb2.HealthCheckResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)

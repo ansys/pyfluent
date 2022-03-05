@@ -54,7 +54,6 @@ class Transcript(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -63,4 +62,4 @@ class Transcript(object):
             transcript__pb2.TranscriptRequest.SerializeToString,
             transcript__pb2.TranscriptResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
