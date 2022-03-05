@@ -1,5 +1,8 @@
 
 
+from ansys.fluent.core.async_execution import asynchronous
+
+@asynchronous
 def run():
     import ansys.fluent as pyfluent
     session = pyfluent.launch_fluent(meshing_mode=True)

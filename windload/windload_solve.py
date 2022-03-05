@@ -4,16 +4,10 @@ import os
 from ansys.fluent.core.async_execution import asynchronous
 
 @asynchronous
-def create_workflow(read_mesh, input_object):
-    import ansys.fluent as pyfluent
-    session = pyfluent.launch_fluent()
-    workflow = SolverWorkflow(
-        session, 
-        input_object=input_object or InputObject(),
-        mesh_reader=read_mesh)
-    workflow.read_mesh()
-    workflow.run()
-    return workflow
+def create_workflow(launcher, input_object):
+    return SolverWorkflow(
+        launcher = launcher, 
+        input_object=input_object or InputObject())
 
 
 class InputObject:
@@ -29,11 +23,11 @@ class InputObject:
     
 
 class SolverWorkflow:
-    def __init__(self, session, input_object, mesh_reader):
-        self.session = session
-        self.solver = session.tui.solver
-        self.api_root = session.get_settings_root()
-        self.scheme_str_eval = session.scheme_eval.string_eval
+    def __init__(self, launcher, input_object):
+        self.session = launcher()
+        self.solver = self.session.tui.solver
+        self.api_root = self.session.get_settings_root()
+        self.scheme_str_eval = self.session.scheme_eval.string_eval
         self.hydraulic_diameter = input_object.hydraulic_diameter
         self.density = input_object.density
         self.inlet_velocity = input_object.inlet_velocity
@@ -42,11 +36,7 @@ class SolverWorkflow:
         self.turbulence_model_name = input_object.turbulence_model_name
         self.iteration_for_average_report = input_object.iteration_for_average_report
         self.iterations_number = input_object.iterations_number 
-        self.mesh_reader = mesh_reader
        
-    def read_mesh(self):
-        self.mesh_reader(self.session)
-
     def calculate(self):
         self.solver.solve.iterate(self.iterations_number)
        
@@ -131,7 +121,7 @@ class SolverWorkflow:
         lift = parameter_dict["drag_unit-op"]
         print("Inlet velocity =", self.inlet_velocity, " Lift =", lift)
         
-
+    @asynchronous
     def run(self):
         self.set_up_materials()
         self.set_up_turbulence_model()
