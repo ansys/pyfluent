@@ -3,8 +3,8 @@ from typing import Dict, List, Optional
 import grpc
 import numpy as np
 
-from ansys.api.fluent.v0 import fielddata_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v0 import fielddata_pb2_grpc as FieldGrpcModule
+from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.services.error_handler import catch_grpc_error
 from ansys.fluent.services.interceptors import TracingInterceptor
 
