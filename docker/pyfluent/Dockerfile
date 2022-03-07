@@ -1,8 +1,8 @@
 # our base image
 FROM centos:7
 
-LABEL description="Linux Fluent"
-MAINTAINER FBU Fluent DevOps "fbu-fluent-buildteam@ansys.com"
+LABEL description="Ansys Fluent 2022 R2"
+MAINTAINER Laurence Janoo "laurence.janoo@ansys.com"
 
 RUN yum install -y \
         mesa-libGLU-9.0.0-4.el7.x86_64 \
