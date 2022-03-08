@@ -175,6 +175,9 @@ class SchemeEval:
         value
     """
 
+    def __init__(self, service: SchemeEvalService):
+        self.service = service
+
     def eval(self, val: Any) -> Any:
         """
         Evaluates a scheme expression
