@@ -27,7 +27,7 @@ class TranscriptService:
         Begin transcript streaming from Fluent
 
         Yields
-        -------
+        ------
         str
             A transcript line
         """
