@@ -6,7 +6,6 @@ syntax = "proto3";
 
 package grpcRemoting;
 
-import "common.proto";
 import "scheme_pointer.proto";
 
 service SchemeEval {
