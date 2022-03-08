@@ -25,9 +25,14 @@ from ansys.fluent.solver.events_manager import EventsManager
 
 
 def parse_server_info_file(filename: str):
-    with open(filename, "rb") as f:
+    with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
-    return lines[0].strip(), lines[1].strip()
+    host_and_port = lines[0].strip().split(":")
+    host = host_and_port[0]
+    port = int(host_and_port[1])
+    password = lines[1].strip()
+    return host, port, password
+
 
 class MonitorThread(threading.Thread):
     """
@@ -69,9 +74,15 @@ class Session:
     results: flobject.Group
         Instance of flobject.Group object from which results related
         settings can be accessed or modified.
+    scheme_eval: SchemeEval
+        Instance of SchemeEval on which Fluent's scheme code can be
+        executed.
 
     Methods
     -------
+    create_from_server_info_file(server_info_filepath, cleanup_on_exit)
+        Create a Session instance from server-info file
+
     start_transcript()
         Start streaming of Fluent transcript
 
@@ -90,10 +101,28 @@ class Session:
     _id_iter = itertools.count()
     _monitor_thread: Optional[MonitorThread] = None
 
-    def __init__(self, server_info_filepath):
-        address, password = parse_server_info_file(server_info_filepath)
-        self.__channel = grpc.insecure_channel(address)
-        self.__metadata = [("password", password)]
+    def __init__(
+        self,
+        ip: str,
+        port: int,
+        cleanup_on_exit: bool = True,
+    ):
+        """
+        Instantiates a Session
+
+        Parameters
+        ----------
+        ip : str
+            IP to connect to existing Fluent instance
+        port : int
+            Port to connect to existing Fluent instance
+        cleanup_on_exit : bool, optional
+            When True, the connected Fluent session will be shut down
+            when PyFluent is exited or exit() is called on the session
+            instance, by default True.
+        """
+        self.__channel = grpc.insecure_channel(f"{ip}:{port}")
+        self.__metadata = []
         self.__id = f"session-{next(Session._id_iter)}"
         self._settings_root = None
 
@@ -124,8 +153,9 @@ class Session:
         )
         self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
         self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
-        self.part_management = PyMenu_SE(self.__datamodel_service_se,
-                                         "PartManagement")
+        self.part_management = PyMenu_SE(
+            self.__datamodel_service_se, "PartManagement"
+        )
 
         self.__health_check_service = HealthCheckService(
             self.__channel, self.__metadata
@@ -136,7 +166,32 @@ class Session:
         )
         self.scheme_eval = SchemeEval(self.__scheme_eval_service)
 
+        self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)
+
+    @classmethod
+    def create_from_server_info_file(
+        cls, server_info_filepath: str, cleanup_on_exit: bool = True
+    ) -> "Session":
+        """
+        Create a Session instance from server-info file
+
+        Parameters
+        ----------
+        server_info_filepath : str
+            Path to server-info file written out by Fluent server
+        cleanup_on_exit : bool, optional
+            When True, the connected Fluent session will be shut down
+            when PyFluent is exited or exit() is called on the session
+            instance, by default True.
+
+        Returns
+        -------
+        Session
+            Session instance
+        """
+        host, port, _ = parse_server_info_file(server_info_filepath)
+        return Session(host, port, cleanup_on_exit)
 
     @property
     def id(self):
@@ -151,8 +206,8 @@ class Session:
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
             self._settings_root = settings_get_root(
-                    flproxy = self.get_settings_service()
-                    )
+                flproxy=self.get_settings_service()
+            )
         return self._settings_root
 
     def _process_transcript(self):
@@ -190,7 +245,8 @@ class Session:
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
         if self.__channel:
-            self.scheme_eval.exec(("(exit-server)",))
+            if self._cleanup_on_exit:
+                self.scheme_eval.exec(("(exit-server)",))
             self.__transcript_service.end_streaming()
             self.events_manager.stop()
             self.__channel.close()

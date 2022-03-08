@@ -20,6 +20,7 @@ class TranscriptService:
     def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = TranscriptGrpcModule.TranscriptStub(channel)
         self.__metadata = metadata
+        self.__streams = None
 
     def begin_streaming(self):
         """
@@ -42,5 +43,5 @@ class TranscriptService:
                 break
 
     def end_streaming(self):
-        if not self.__streams.cancelled():
+        if self.__streams and not self.__streams.cancelled():
             self.__streams.cancel()
