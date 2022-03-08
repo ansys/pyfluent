@@ -8,9 +8,8 @@ Solver
    :toctree: _autosummary
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    :hidden:
   
-   flobject
    meta
    tui

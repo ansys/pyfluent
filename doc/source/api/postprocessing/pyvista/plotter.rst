@@ -8,5 +8,3 @@ Plotter
    :toctree: _autosummary
 
    plotter.Singleton
-   plotter._Plotter
-   plotter.signal_handler

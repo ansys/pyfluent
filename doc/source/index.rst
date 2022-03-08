@@ -3,7 +3,7 @@ PyFluent Documentation |version|
 
 .. toctree::
    :hidden:
-   :maxdepth: 4
+   :maxdepth: 2
 
    getting_started/index
    users_guide/index
