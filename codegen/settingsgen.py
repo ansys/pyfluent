@@ -40,16 +40,16 @@ def _write_cls_helper(out, cls, indent = 0):
         out.write(f'\n{istr1}"""\n')
         out.write(f'{istr1}scheme_name = "{cls.scheme_name}"\n')
 
-        member_names = getattr(cls, 'member_names', None)
-        if member_names:
-            out.write(f'{istr1}member_names = \\\n')
+        child_names = getattr(cls, 'child_names', None)
+        if child_names:
+            out.write(f'{istr1}child_names = \\\n')
             strout = io.StringIO()
-            pprint.pprint(member_names, stream=strout, compact=True,
+            pprint.pprint(child_names, stream=strout, compact=True,
                     width=80-indent*4-10)
             mn = ('\n' + istr2).join(strout.getvalue().strip().split('\n'))
             out.write(f'{istr2}{mn}\n')
-            for member in member_names:
-                _write_cls_helper(out, getattr(cls, member), indent+1)
+            for child in child_names:
+                _write_cls_helper(out, getattr(cls, child), indent+1)
 
         command_names = getattr(cls, 'command_names', None)
         if command_names:

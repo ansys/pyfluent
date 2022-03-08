@@ -35,7 +35,7 @@ There are three types of container objects: ``Group``, ``NamedObject`` and
 A ``Group`` object is a static container with pre-defined child objects which
 can be accessed via attribute access. For example, ``setup.models.energy``
 refers to the ``energy`` child of ``models`` child of the ``setup`` object. The
-names of the child objects of a group can be accessed with the ``member_names``
+names of the child objects of a group can be accessed with the ``child_names``
 attribute of a ``Group`` object.
 
 A ``NamedObject`` is a container holding dynamically created named objects of
@@ -155,6 +155,6 @@ Active Objects and Commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Objects and commands can be active or inactive based on the application state.
 application. The ``is_active()`` method returns ``True`` if an object or
-command is active at a particular time. ``get_active_member_names`` returns
+command is active at a particular time. ``get_active_child_names`` returns
 the list of active children. ``get_active_command_names`` returns the list of
 active commands.

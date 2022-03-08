@@ -81,23 +81,23 @@ class Group(Setting):
     """Group objects"""
 
     objtype = 'group'
-    members = {}
+    children = {}
     commands = {}
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.objs = { c : v(self) for c, v in self.members.items() }
+        self.objs = { c : v(self) for c, v in self.children.items() }
 
     def get_state(self):
         ret = {}
-        for c in self.members:
+        for c in self.children:
             cobj = self.objs[c]
             if cobj.get_attr('active?'):
                 ret[c] = cobj.get_state()
         return ret
 
     def set_state(self, value):
-        for c in self.members:
+        for c in self.children:
             v = value.get(c)
             if v is not None:
                 self.objs[c].set_state(v)
@@ -113,10 +113,10 @@ class Group(Setting):
         ret = { 'type' : cls.objtype }
         if cls.__doc__:
             ret['help'] = cls.__doc__
-        if cls.members:
+        if cls.children:
             ret['children'] = {
                     c: v.get_static_info()
-                    for c, v in cls.members.items()
+                    for c, v in cls.children.items()
                     }
         if cls.commands:
             ret['commands'] = {
@@ -288,7 +288,7 @@ class Root(Group):
                        lambda self: not self.parent.objs['b-3'].get_state(),
                     'allowed-values' : lambda self: ["foo", "bar"],
                     }
-        members = {
+        children = {
                 'r-1' : Real,
                 'i-2' : Int,
                 'b-3' : Bool,
@@ -297,7 +297,7 @@ class Root(Group):
 
     class N1(NamedObject):
         class NC(Group):
-            members = {
+            children = {
                     'rl-1' : RealList,
                     'sl-1' : StringList,
                     }
@@ -306,7 +306,7 @@ class Root(Group):
 
     class L1(ListObject):
         class LC(Group):
-            members = {
+            children = {
                     'il-1' : IntList,
                     'bl-1' : BoolList,
                     }
@@ -331,7 +331,7 @@ class Root(Group):
             else:
                 self.parent.objs['g-1'].objs['r-1'].value -= a1
 
-    members = {
+    children = {
             'g-1' : G1,
             'n-1' : N1,
             'l-1' : L1,
@@ -494,90 +494,90 @@ class root(Group):
     Root class
     """
     scheme_name = ""
-    member_names = \\
+    child_names = \\
         ['g_1', 'n_1', 'l_1']
 
     class g_1(Group):
         """
-        'g_1' member of 'root' object
+        'g_1' child of 'root' object
         """
         scheme_name = "g-1"
-        member_names = \\
+        child_names = \\
             ['r_1', 'i_2', 'b_3', 's_4']
 
         class r_1(Real):
             """
-            'r_1' member of 'g_1' object
+            'r_1' child of 'g_1' object
             """
             scheme_name = "r-1"
 
         class i_2(Integer):
             """
-            'i_2' member of 'g_1' object
+            'i_2' child of 'g_1' object
             """
             scheme_name = "i-2"
 
         class b_3(Boolean):
             """
-            'b_3' member of 'g_1' object
+            'b_3' child of 'g_1' object
             """
             scheme_name = "b-3"
 
         class s_4(String):
             """
-            's_4' member of 'g_1' object
+            's_4' child of 'g_1' object
             """
             scheme_name = "s-4"
 
     class n_1(NamedObject):
         """
-        'n_1' member of 'root' object
+        'n_1' child of 'root' object
         """
         scheme_name = "n-1"
 
         class child_object_type(Group):
             """
-            'child_object_type' member of 'n_1' object
+            'child_object_type' child of 'n_1' object
             """
             scheme_name = "child-object-type"
-            member_names = \\
+            child_names = \\
                 ['rl_1', 'sl_1']
 
             class rl_1(RealList):
                 """
-                'rl_1' member of 'child_object_type' object
+                'rl_1' child of 'child_object_type' object
                 """
                 scheme_name = "rl-1"
 
             class sl_1(StringList):
                 """
-                'sl_1' member of 'child_object_type' object
+                'sl_1' child of 'child_object_type' object
                 """
                 scheme_name = "sl-1"
 
     class l_1(ListObject):
         """
-        'l_1' member of 'root' object
+        'l_1' child of 'root' object
         """
         scheme_name = "l-1"
 
         class child_object_type(Group):
             """
-            'child_object_type' member of 'l_1' object
+            'child_object_type' child of 'l_1' object
             """
             scheme_name = "child-object-type"
-            member_names = \\
+            child_names = \\
                 ['il_1', 'bl_1']
 
             class il_1(IntegerList):
                 """
-                'il_1' member of 'child_object_type' object
+                'il_1' child of 'child_object_type' object
                 """
                 scheme_name = "il-1"
 
             class bl_1(BooleanList):
                 """
-                'bl_1' member of 'child_object_type' object
+                'bl_1' child of 'child_object_type' object
                 """
                 scheme_name = "bl-1"
     command_names = \\
@@ -590,9 +590,9 @@ class root(Group):
         Parameters
         ----------
             a_1 : real
-                'a_1' member of 'c_1' object
+                'a_1' child of 'c_1' object
             a_2 : bool
-                'a_2' member of 'c_1' object
+                'a_2' child of 'c_1' object
         
         """
         scheme_name = "c-1"
@@ -601,13 +601,13 @@ class root(Group):
 
         class a_1(Real):
             """
-            'a_1' member of 'c_1' object
+            'a_1' child of 'c_1' object
             """
             scheme_name = "a-1"
 
         class a_2(Boolean):
             """
-            'a_2' member of 'c_1' object
+            'a_2' child of 'c_1' object
             """
             scheme_name = "a-2"
 ''' # noqa: W293

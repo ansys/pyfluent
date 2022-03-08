@@ -277,8 +277,8 @@ class Group(SettingsBase[DictStateType]):
 
     Attributes
     ----------
-    member_names: list[str]
-                  Names of the child (member) objects
+    child_names: list[str]
+                 Names of the child objects
     command_names: list[str]
                    Names of the commands
     """
@@ -286,9 +286,9 @@ class Group(SettingsBase[DictStateType]):
 
     def __init__(self, name: str = None, parent = None):
         super().__init__(name, parent)
-        for member in self.member_names:
-            cls = getattr(self.__class__, member)
-            setattr(self, member, cls(None, self))
+        for child in self.child_names:
+            cls = getattr(self.__class__, child)
+            setattr(self, child, cls(None, self))
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
             setattr(self, cmd, cls(None, self))
@@ -302,7 +302,7 @@ class Group(SettingsBase[DictStateType]):
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
-                if k in cls.member_names:
+                if k in cls.child_names:
                     ccls = getattr(cls, k)
                     ret[ccls.scheme_name] = ccls.to_scheme_keys(v)
                 else:
@@ -319,7 +319,7 @@ class Group(SettingsBase[DictStateType]):
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             undef = object()
-            for mname in cls.member_names:
+            for mname in cls.child_names:
                 ccls = getattr(cls, mname)
                 mvalue = value.get(ccls.scheme_name, undef)
                 if mvalue is not undef:
@@ -328,17 +328,17 @@ class Group(SettingsBase[DictStateType]):
         else:
             return value
 
-    member_names = []
+    child_names = []
     command_names = []
 
-    def get_active_member_names(self):
+    def get_active_child_names(self):
         """
-        Names of members that are currently active
+        Names of children that are currently active
         """
         ret = []
-        for member in self.member_names:
-            if getattr(self, member).is_active():
-                ret.append(member)
+        for child in self.child_names:
+            if getattr(self, child).is_active():
+                ret.append(child)
         return ret
 
     def get_active_command_names(self):
@@ -352,7 +352,7 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def __getattribute__(self, name):
-        if name in super().__getattribute__('member_names'):
+        if name in super().__getattribute__('child_names'):
             if not self.is_active():
                 raise RuntimeError(f"'{self.path}' is currently not active")
         return super().__getattribute__(name)
@@ -673,16 +673,16 @@ def get_cls(name, info, parent = None):
                             f"'{pname}' command of '{parent.__name__}' object"
                 else:
                     dct['__doc__'] = \
-                            f"'{pname}' member of '{parent.__name__}' object"
+                            f"'{pname}' child of '{parent.__name__}' object"
         cls = type(pname, (base,), dct)
 
         children = info.get('children')
         if children:
-            cls.member_names = []
+            cls.child_names = []
             for cname, cinfo in children.items():
                 ccls = get_cls(cname, cinfo, cls)
                 #pylint: disable=no-member
-                cls.member_names.append(ccls.__name__)
+                cls.child_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
         commands = info.get('commands')
         if commands:
