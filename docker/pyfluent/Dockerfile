@@ -11,3 +11,4 @@ RUN yum install -y \
         libglvnd-glx-1.0.1-0.8.git5baa1e5.el7.x86_64 \
         libglvnd-1.0.1-0.8.git5baa1e5.el7.x86_64  && yum clean all
 COPY --from=builder /ansys_inc /ansys_inc/
+ENTRYPOINT ["/ansys_inc/v222/fluent/bin/fluent"]
