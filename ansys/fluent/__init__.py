@@ -1,3 +1,5 @@
+import os
+
 from ansys.fluent.core import LOG
 from ansys.fluent.launcher.launcher import launch_fluent  # noqa: F401
 from ansys.fluent.session import Session
@@ -10,6 +12,13 @@ try:
     Session.SolverTui.register_module(solver_tui)
 except ImportError:
     pass
+
+_THIS_DIRNAME = os.path.dirname(__file__)
+_README_FILE = os.path.normpath(
+    os.path.join(_THIS_DIRNAME, "..", "..", "README.rst")
+)
+with open(_README_FILE, encoding="utf8") as f:
+    __doc__ = f.read()
 
 
 def set_log_level(level):
