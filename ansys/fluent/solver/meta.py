@@ -3,10 +3,7 @@ from pprint import pformat
 
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
-from ansys.fluent.services.datamodel_tui import (
-    PyMenu,
-    convert_path_to_grpc_path,
-)
+from ansys.fluent.services.datamodel_tui import PyMenu
 
 
 class Attribute:
@@ -58,9 +55,7 @@ class PyMenuMeta(type):
     @classmethod
     def __create_get_state(cls):
         def wrapper(self):
-            return PyMenu(self.service).get_state(
-                convert_path_to_grpc_path(self.path)
-            )
+            return PyMenu(self.service, self.path).get_state()
 
         return wrapper
 
@@ -68,18 +63,14 @@ class PyMenuMeta(type):
     @classmethod
     def __create_set_state(cls):
         def wrapper(self, value):
-            PyMenu(self.service).set_state(
-                convert_path_to_grpc_path(self.path), value
-            )
+            PyMenu(self.service, self.path).set_state(value)
 
         return wrapper
 
     @classmethod
     def __create_dir(cls):
         def wrapper(self):
-            return PyMenu(self.service).get_child_names(
-                convert_path_to_grpc_path(self.path)
-            )
+            return PyMenu(self.service, self.path).get_child_names()
 
         return wrapper
 
@@ -432,9 +423,7 @@ class PyNamedObjectMeta(type):
             obj = self.__class__(self.path, name, self.service)
             if isinstance(value, dict) and not value:
                 value["name"] = name  # creation with default value
-            PyMenu(self.service).set_state(
-                convert_path_to_grpc_path(obj.path), value
-            )
+            PyMenu(self.service, obj.path).set_state(value)
 
         return wrapper
 
@@ -443,7 +432,7 @@ class PyNamedObjectMeta(type):
     def __create_delitem(cls):
         def wrapper(self, name):
             obj = self.__class__(self.path, name, self.service)
-            PyMenu(self.service).del_item(convert_path_to_grpc_path(obj.path))
+            PyMenu(self.service, obj.path).del_item()
 
         return wrapper
 
@@ -451,9 +440,7 @@ class PyNamedObjectMeta(type):
     @classmethod
     def __create_get_state(cls):
         def wrapper(self):
-            return PyMenu(self.service).get_state(
-                convert_path_to_grpc_path(self.path)
-            )
+            return PyMenu(self.service, self.path).get_state()
 
         return wrapper
 
@@ -461,9 +448,7 @@ class PyNamedObjectMeta(type):
     @classmethod
     def __create_rename(cls):
         def wrapper(self, new_name):
-            PyMenu(self.service).rename(
-                convert_path_to_grpc_path(self.path), new_name
-            )
+            PyMenu(self.service, self.path).rename(new_name)
 
         return wrapper
 

@@ -1,7 +1,7 @@
 """Wrappers over TUI-based datamodel grpc service of Fluent."""
 
 import keyword
-from typing import Any, List, Tuple
+from typing import Any, List, Tuple, Union
 
 import grpc
 
@@ -102,43 +102,45 @@ class PyMenu:
 
     Methods
     -------
-    is_extended_tui(path, include_unavailable=False)
-        Check if path is part of extended TUI
-    is_container(path, include_unavailable=False)
-        Check if path is of a container
-    get_child_names(path, include_unavailable=False):
+    is_extended_tui(include_unavailable)
+        Check if menu is in extended TUI
+    is_container(include_unavailable)
+        Check if menu is a container
+    get_child_names(include_unavailable):
         Get child menu names
-    get_state(path)
-        Get state of the object at path
-    set_state(path, value)
-        Set state of the object at path
-    execute(path, *args, **kwargs)
-        Execute command/query at path with positional or keyword
+    get_state()
+        Get state of the object at menu
+    set_state(value)
+        Set state of the object at menu
+    execute(*args, **kwargs)
+        Execute command/query at menu with positional or keyword
         arguments
-    get_doc_string(path: str, include_unavailable=False)
-        Get docstring for path
-    rename(path, new_name)
-        Rename the object at path
-    get_child_object_names(path)
-        Get child object names of the container at path
-    set_item(path, name, value)
-        Create or set state of child object within contanier at path
-    del_item(path)
-        Delete the child object at path
+    get_doc_string(include_unavailable)
+        Get docstring for menu
+    rename(new_name)
+        Rename the object at menu
+    get_child_object_names()
+        Get child object names of the container at menu
+    set_item(name, value)
+        Create or set state of child object within contanier at menu
+    del_item()
+        Delete the child object at menu
 
     """
 
-    def __init__(self, service: DatamodelService):
-        self.__service = service
+    def __init__(self, service: DatamodelService, path: Union[Path, str]):
+        self._service = service
+        self._path = (
+            path if isinstance(path, str) else convert_path_to_grpc_path(path)
+        )
 
     def is_extended_tui(
-        self, path: str, include_unavailable: bool = False
+        self, include_unavailable: bool = False
     ) -> bool:
-        """Check if path is part of extended TUI
+        """Check if menu is in extended TUI
 
         Parameters
         ----------
-        path : str
         include_unavailable : bool, optional
             When True, will query over static TUI metadata,
             by default False
@@ -148,22 +150,21 @@ class PyMenu:
         bool
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = path
+        request.path = self._path
         request.attribute = DataModelProtoModule.Attribute.CUSTOM
         request.args["is_extended_tui"] = 1
         if include_unavailable:
             request.args["include_unavailable"] = 1
-        response = self.__service.get_attribute_value(request)
+        response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
     def is_container(
-        self, path: str, include_unavailable: bool = False
+        self, include_unavailable: bool = False
     ) -> bool:
-        """Check if path is of a container
+        """Check if menu is a container
 
         Parameters
         ----------
-        path : str
         include_unavailable : bool, optional
             When True, will query over static TUI metadata,
             by default False
@@ -173,45 +174,40 @@ class PyMenu:
         bool
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = path
+        request.path = self._path
         request.attribute = DataModelProtoModule.Attribute.DATA_TYPE
         if include_unavailable:
             request.args["include_unavailable"] = 1
-        response = self.__service.get_attribute_value(request)
+        response = self._service.get_attribute_value(request)
         return (
             _convert_gvalue_to_value(response.value) == "NamedObjectContainer"
         )
 
     def get_child_names(
-        self, path: str, include_unavailable: bool = False
-    ) -> bool:
+        self, include_unavailable: bool = False
+    ) -> List[str]:
         """Get child menu names
 
         Parameters
         ----------
-        path : str
         include_unavailable : bool, optional
             When True, will query over static TUI metadata,
             by default False
 
         Returns
         -------
-        bool
+        List[str]
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = path
+        request.path = self._path
         request.attribute = DataModelProtoModule.Attribute.CHILD_NAMES
         if include_unavailable:
             request.args["include_unavailable"] = 1
-        response = self.__service.get_attribute_value(request)
+        response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def get_state(self, path: str) -> Any:
-        """Get state of the object at path
-
-        Parameters
-        ----------
-        path : str
+    def get_state(self) -> Any:
+        """Get state of the object at menu
 
         Returns
         -------
@@ -219,44 +215,42 @@ class PyMenu:
             state
         """
         request = DataModelProtoModule.GetStateRequest()
-        request.path = path
-        response = self.__service.get_state(request)
+        request.path = self._path
+        response = self._service.get_state(request)
         return _convert_gvalue_to_value(response.state)
 
-    def set_state(self, path: str, value: Any):
-        """Set state of the object at path
+    def set_state(self, value: Any) -> None:
+        """Set state of the object at menu
 
         Parameters
         ----------
-        path : str
         value : Any
             state
         """
         request = DataModelProtoModule.SetStateRequest()
-        request.path = path
+        request.path = self._path
         _convert_value_to_gvalue(value, request.state)
-        self.__service.set_state(request)
+        self._service.set_state(request)
 
     @asynchronous
     def _execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> Any:
-        ret = self.__service.execute_command(request)
+        ret = self._service.execute_command(request)
         return _convert_gvalue_to_value(ret.result)
 
     def _execute_query(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> Any:
-        ret = self.__service.execute_query(request)
+        ret = self._service.execute_query(request)
         return _convert_gvalue_to_value(ret.result)
 
-    def execute(self, path: str, *args, **kwargs) -> Any:
+    def execute(self, *args, **kwargs) -> Any:
         """Execute command/query at path with positional or keyword
         arguments
 
         Parameters
         ----------
-        path : str
 
         Returns
         -------
@@ -265,25 +259,24 @@ class PyMenu:
             wrapping TUI output of a command
         """
         request = DataModelProtoModule.ExecuteCommandRequest()
-        request.path = path
+        request.path = self._path
         if kwargs:
             for k, v in kwargs.items():
                 _convert_value_to_gvalue(v, request.args.fields[k])
         else:
             _convert_value_to_gvalue(args, request.args.fields["tui_args"])
-        if path.startswith("/query/"):
+        if self._path.startswith("/query/"):
             return self._execute_query(request)
         else:
             return self._execute_command(request)
 
     def get_doc_string(
-        self, path: str, include_unavailable: bool = False
+        self, include_unavailable: bool = False
     ) -> str:
-        """Get docstring for path
+        """Get docstring for menu
 
         Parameters
         ----------
-        path : str
         include_unavailable : bool, optional
             When True, will query over static TUI metadata,
             by default False
@@ -293,71 +286,60 @@ class PyMenu:
         str
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = path
+        request.path = self._path
         request.attribute = DataModelProtoModule.Attribute.HELP_STRING
         if include_unavailable:
             request.args["include_unavailable"] = 1
-        response = self.__service.get_attribute_value(request)
+        response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def rename(self, path: str, new_name: str):
-        """Rename the object at path
+    def rename(self, new_name: str) -> None:
+        """Rename the object at menu
 
         Parameters
         ----------
-        path : str
         new_name : str
         """
         request = DataModelProtoModule.SetStateRequest()
-        request.path = path
+        request.path = self._path
         _convert_value_to_gvalue(
             new_name, request.state.struct_value.fields["name"]
         )
-        self.__service.set_state(request)
+        self._service.set_state(request)
 
-    def get_child_object_names(self, path: str) -> List[str]:
-        """Get child object names of the container at path
-
-        Parameters
-        ----------
-        path : str
+    def get_child_object_names(self) -> List[str]:
+        """Get child object names of the container at menu
 
         Returns
         -------
         List[str]
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
-        request.path = path
+        request.path = self._path
         request.attribute = DataModelProtoModule.Attribute.OBJECT_NAMES
-        response = self.__service.get_attribute_value(request)
+        response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def set_item(self, path: str, name: str, value: Any):
-        """Create or set state of child object within contanier at path
+    def set_item(self, name: str, value: Any) -> None:
+        """Create or set state of child object within contanier at menu
 
         Parameters
         ----------
-        path : str
         name : str
             child object name
         value : Any
             state
         """
         request = DataModelProtoModule.SetStateRequest()
-        request.path = path
+        request.path = self._path
         _convert_value_to_gvalue(value, request.state)
-        self.__service.set_state(request)
+        self._service.set_state(request)
 
-    def del_item(self, path: str):
-        """Delete the child object at path
-
-        Parameters
-        ----------
-        path : str
-        """
+    def del_item(self) -> None:
+        """Delete the child object at path"""
         request = DataModelProtoModule.SetStateRequest()
-        request.path = path
-        self.__service.set_state(request)
+        request.path = self._path
+        self._service.set_state(request)
 
 
 def convert_func_name_to_tui_menu(func_name: str) -> str:
