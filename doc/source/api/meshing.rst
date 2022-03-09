@@ -5,9 +5,10 @@ Meshing TUI and workflow example
 
     import ansys.fluent as pyfluent
     session = pyfluent.launch_fluent(meshing_mode=True)
-    session.workflow.initialize_workflow(workflow_type='Watertight Geometry')
-    session.workflow.task_object['Import Geometry'].arguments = dict(file_name='cylinder.agdb')
-    session.workflow.task_object['Import Geometry'].execute()
+    session.start_transcript()
+    session.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
+    session.workflow.TaskObject['Import Geometry'].Arguments = dict(FileName='cylinder.agdb')
+    session.workflow.TaskObject['Import Geometry'].Execute()
     session.tui.meshing.mesh.check_mesh()
     exit()
 
