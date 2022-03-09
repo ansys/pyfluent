@@ -57,9 +57,6 @@ Using parametric session
 
 """
 
-import atexit
-import os
-import shutil
 import tempfile
 from pathlib import Path
 from typing import Dict, List
@@ -192,7 +189,6 @@ class ParametricStudy:
 
     _all_studies: Dict[int, "ParametricStudy"] = {}
     current_study_name = None
-    _project_dirs: List[Path] = []
 
     def __init__(self, parametric_studies, name=None, design_points=None):
         self.__parametric_studies = parametric_studies
@@ -242,7 +238,6 @@ class ParametricStudy:
             )
             self.design_points = {BASE_DP_NAME: base_design_point}
             ParametricStudy.current_study_name = self.name
-            ParametricStudy._project_dirs.append(self.project_filepath)
             return self
         else:
             LOG.error("initialize is not available")
@@ -335,13 +330,6 @@ class ParametricStudy:
             del self.__parametric_studies[self.name]
             ParametricStudy._all_studies.pop(id(self))
             del self
-
-    @classmethod
-    def cleanup_project_dirs(cls) -> None:
-        for project_dir in cls._project_dirs:
-            flprj = os.path.splitext(str(project_dir))[0] + ".flprj"
-            shutil.rmtree(str(project_dir))
-            Path(flprj).unlink()
 
     def use_base_data(self) -> None:
         """Use base data for the parametric study"""
@@ -672,6 +660,10 @@ class ParametricSession:
         Delete study
     rename_study(self, new_name, old_name)
         Rename study
+    start_transcript()
+        Start streaming of Fluent transcript
+    stop_transcript()
+        Stop streaming of Fluent transcript
     """
 
     def __init__(
@@ -679,6 +671,7 @@ class ParametricSession:
         case_filepath: str = None,
         project_filepath: str = None,
         launcher=ParametricSessionLauncher(),
+        start_transcript: bool = False
     ):
         """
         Instantiates a ParametricSession
@@ -691,11 +684,16 @@ class ParametricSession:
             project file name, by default None
         launcher : _type_, optional
             Fluent launcher, by default ParametricSessionLauncher()
+        start_transcript : bool, optional
+            Whether to start streaming of Fluent transcript, by default
+            False
         """
         self.studies = {}
         self.project = None
-        session = launcher()
-        self.__root = session.get_settings_root()
+        self.__session = launcher()
+        if start_transcript:
+            self.start_transcript()
+        self.__root = self.__session.get_settings_root()
         if case_filepath is not None:
             self.__root.file.read(file_name=case_filepath, file_type="case")
             study = ParametricStudy(
@@ -771,5 +769,19 @@ class ParametricSession:
         study.rename(new_name)
         self.studies[new_name] = study
 
+    def __del__(self) -> None:
+        self.__session.exit()
 
-atexit.register(ParametricStudy.cleanup_project_dirs)
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.__session.exit()
+
+    def start_transcript(self):
+        """Start streaming of Fluent transcript"""
+        self.__session.start_transcript()
+
+    def stop_transcript(self):
+        """Stop streaming of Fluent transcript"""
+        self.__session.stop_transcript()
