@@ -247,7 +247,7 @@ class PyMenu:
         else:
             raise LookupError(
                 f"{name} is not found at path "
-                f"{_convert_path_to_se_path(self.path_)}"
+                f"{_convert_path_to_se_path(self.path)}"
             )
 
     def get_state(self):
