@@ -98,7 +98,7 @@ class DatamodelService:
         return self.__stub.getSpecs(request, metadata=self.__metadata)
 
 
-def _convert_value_to_variant(val, var, convert_keys=True):
+def _convert_value_to_variant(val, var):
     """Convert Python datatype to Fluent's Variant type"""
 
     if isinstance(val, bool):
@@ -115,17 +115,13 @@ def _convert_value_to_variant(val, var, convert_keys=True):
         var.variant_vector_state.item.pop()
         for item in val:
             item_var = var.variant_vector_state.item.add()
-            _convert_value_to_variant(item, item_var, convert_keys)
+            _convert_value_to_variant(item, item_var)
     elif isinstance(val, dict):
         for k, v in val.items():
-            if convert_keys:
-                k = convert_python_name_to_se_name(k)
-            _convert_value_to_variant(
-                v, var.variant_map_state.item[k], convert_keys
-            )
+            _convert_value_to_variant(v, var.variant_map_state.item[k])
 
 
-def _convert_variant_to_value(var, convert_keys=True):
+def _convert_variant_to_value(var):
     """Convert Fluent's Variant to Python datatype"""
 
     if var.HasField("bool_state"):
@@ -147,49 +143,13 @@ def _convert_variant_to_value(var, convert_keys=True):
     elif var.HasField("variant_vector_state"):
         val = []
         for item in var.variant_vector_state.item:
-            val.append(_convert_variant_to_value(item, convert_keys))
+            val.append(_convert_variant_to_value(item))
         return val
     elif var.HasField("variant_map_state"):
         val = {}
         for k, v in var.variant_map_state.item.items():
-            if convert_keys:
-                k = convert_se_name_to_python_name(k)
-            val[k] = _convert_variant_to_value(v, convert_keys)
+            val[k] = _convert_variant_to_value(v)
         return val
-
-
-def convert_python_name_to_se_name(python_name: str) -> str:
-    """
-    Convert Python name to StateEngine name
-    E.g. save_image -> SaveImage
-
-    Parameters
-    ----------
-    python_name : str
-
-    Returns
-    -------
-    str
-    """
-    return "".join([x[0].upper() + x[1:] for x in python_name.split("_")])
-
-
-def convert_se_name_to_python_name(se_name: str) -> str:
-    """
-    Convert StateEngine name to Python name
-    E.g. SaveImage -> save_image
-
-    Parameters
-    ----------
-    se_name : str
-
-    Returns
-    -------
-    str
-    """
-    return "".join(
-        ["_" + c.lower() if c.isupper() else c for c in se_name]
-    ).lstrip("_")
 
 
 def _convert_path_to_se_path(path: Path) -> str:
@@ -269,34 +229,25 @@ class PyMenu:
                 struct_field = getattr(response.member, struct_type)
                 for member in struct_field.members:
                     if ":" not in member:
-                        singleton_names.append(
-                            convert_se_name_to_python_name(member)
-                        )
-                creatable_type_names = [
-                    convert_se_name_to_python_name(x)
-                    for x in struct_field.creatabletypes
-                ]
-                for command in struct_field.commands:
-                    command_names.append(
-                        convert_se_name_to_python_name(command.name)
-                    )
+                        singleton_names.append(member)
+                creatable_type_names = struct_field.creatabletypes
+                command_names = [x.name for x in struct_field.commands]
         return singleton_names, creatable_type_names, command_names
 
     def __get_child(self, name: str):
-        se_name = convert_python_name_to_se_name(name)
         singletons, creatable_types, commands = self.__get_child_names()
         if name in singletons:
-            child_path = self.path + [(se_name, "")]
+            child_path = self.path + [(name, "")]
             return PyMenu(self.service, self.rules, child_path)
         elif name in creatable_types:
-            child_path = self.path + [(se_name, "")]
+            child_path = self.path + [(name, "")]
             return PyNamedObjectContainer(self.service, self.rules, child_path)
         elif name in commands:
-            return PyCommand(self.service, self.rules, se_name, self.path)
+            return PyCommand(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
                 f"{name} is not found at path "
-                f"{_convert_path_to_se_path(self.path_)}"
+                f"{_convert_path_to_se_path(self.path)}"
             )
 
     def get_state(self):
