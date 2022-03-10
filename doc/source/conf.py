@@ -1,8 +1,8 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
 
-from sphinx_gallery.sorting import FileNameSortKey
 from pyansys_sphinx_theme import pyansys_logo_black
+from sphinx_gallery.sorting import FileNameSortKey
 
 from ansys.fluent.core import __version__
 
@@ -34,7 +34,12 @@ extensions = [
 
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None)
+    "python": ("https://docs.python.org/dev", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
+    "numpy": ("https://numpy.org/devdocs", None),
+    "matplotlib": ("https://matplotlib.org/stable", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    "pyvista": ("https://docs.pyvista.org/", None),
 }
 
 # numpydoc configuration
@@ -92,7 +97,7 @@ sphinx_gallery_conf = {
     # convert rst to md for ipynb
     #"pypandoc": True,
     # path to your examples scripts
-    "examples_dirs": ["../examples/"],
+    "examples_dirs": ["../../examples/"],
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
     # Patter to search for example files
@@ -111,11 +116,16 @@ sphinx_gallery_conf = {
 
 
 # -- Options for HTML output -------------------------------------------------
+html_short_title = html_title = "PyFluent"
 html_theme = "pyansys_sphinx_theme"
 html_logo = pyansys_logo_black
 html_theme_options = {
     "github_url": "https://github.com/pyansys/pyfluent",
     "show_prev_next": False,
+    "show_breadcrumbs": True,
+    "additional_breadcrumbs": [
+        ("PyAnsys", "https://docs.pyansys.com/"),
+    ],
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
@@ -131,8 +141,13 @@ latex_elements = {}
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, f"pyfluent-Documentation-{__version__}.tex",
-     "ansys.fluent.core Documentation", author, "manual"),
+    (
+        master_doc,
+        f"pyfluent-Documentation-{__version__}.tex",
+        "ansys.fluent.core Documentation",
+        author,
+        "manual",
+    ),
 ]
 
 

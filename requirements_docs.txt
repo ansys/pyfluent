@@ -5,8 +5,8 @@ pyansys_sphinx_theme==0.2.1
 pypandoc==1.7.2
 pytest-sphinx==0.3.1
 sphinx-autobuild==2021.3.14
-sphinx-autodoc-typehints==1.16.0
-sphinx-copybutton==0.4.0
+sphinx-autodoc-typehints==1.17.0
+sphinx-copybutton==0.5.0
 sphinx-gallery==0.10.1
 sphinx-notfound-page==0.8
 sphinxcontrib-websupport==1.2.4
