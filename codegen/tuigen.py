@@ -19,27 +19,23 @@ _MESHING_TUI_FILE = os.path.normpath(
 )
 _SOLVER_TUI_FILE = os.path.normpath(os.path.join(
     _THIS_DIRNAME, "..", "ansys", "fluent", "solver", "tui.py"))
-_INIT_FILE = os.path.normpath(os.path.join(
-    _THIS_DIRNAME, "..", "ansys", "fluent", "solver", "__init__.py"))
 _INDENT_STEP = 4
 
 class TUIMenuGenerator:
     def __init__(self, path, service):
-        self._path = path
-        self._grpc_path = convert_path_to_grpc_path(path)
-        self._service = service
+        self._menu = PyMenu(service, path)
 
     def get_child_names(self):
-        return PyMenu(self._service).get_child_names(self._grpc_path, True)
+        return self._menu.get_child_names(True)
 
     def get_doc_string(self):
-        return PyMenu(self._service).get_doc_string(self._grpc_path, True)
+        return self._menu.get_doc_string(True)
 
     def is_extended_tui(self):
-        return PyMenu(self._service).is_extended_tui(self._grpc_path, True)
+        return self._menu.is_extended_tui(True)
 
     def is_container(self):
-        return PyMenu(self._service).is_container(self._grpc_path, True)
+        return self._menu.is_container(True)
 
 class TUIMenu:
     def __init__(self, path):
@@ -50,7 +46,6 @@ class TUIMenu:
         self.is_command = False
         self.is_extended_tui = False
         self.is_container = False
-        self._grpc_path = convert_path_to_grpc_path(path)
 
     def get_command_path(self, command):
         return convert_path_to_grpc_path(self.path + [(command, None)])
@@ -120,8 +115,9 @@ class TUIGenerator:
                     self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
-                    f"return PyMenu(self.service).execute("
-                    f"'{menu.get_command_path(command)}', *args, **kwargs)\n",
+                    f"return PyMenu(self.service, "
+                    f'"{menu.get_command_path(command)}").execute('
+                    f"*args, **kwargs)\n",
                     indent,
                 )
                 indent -= 1
