@@ -11,4 +11,5 @@ Meshing
    :maxdepth: 2
    :hidden:
 
+   meshing
    tui

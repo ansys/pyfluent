@@ -14,8 +14,6 @@ Here we should discuss the different API modules at a high level.
    :maxdepth: 4
    :hidden:
    
-   meshing
-   settings
-   parametric/index
    core/index
+   parametric
    post/pyvista/index

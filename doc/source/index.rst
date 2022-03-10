@@ -9,7 +9,7 @@ PyFluent Documentation |version|
    users_guide/index
    api/index
    examples/index
-   contributing/index
+   contributing
 
 Introduction
 ------------

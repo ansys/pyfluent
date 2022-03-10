@@ -1,7 +1,7 @@
 .. _ref_solver_tui:
 
 Solver TUI
-======================
+==========
 .. currentmodule:: ansys.fluent.core.solver
 
 .. autosummary::
