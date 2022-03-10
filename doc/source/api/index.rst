@@ -16,10 +16,6 @@ Here we should discuss the different API modules at a high level.
    
    meshing
    settings
-   addons/parametric/index
+   parametric/index
    core/index
-   launcher/index
-   meshing/index
-   postprocessing/pyvista/index
-   services/index
-   solver/index
+   post/pyvista/index

@@ -2,9 +2,9 @@ import pytest
 from pathlib import Path
 from pytest_mock import MockerFixture
 
-from ansys.fluent.addons.parametric import ParametricProject
-from ansys.fluent.solver.flobject import Command, NamedObject
-from ansys.fluent.solver.settings import root
+from ansys.fluent.parametric import ParametricProject
+from ansys.fluent.core.solver.flobject import Command, NamedObject
+from ansys.fluent.core.solver.settings import root
 
 
 @pytest.fixture(autouse=True)
