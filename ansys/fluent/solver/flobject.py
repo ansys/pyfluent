@@ -24,7 +24,7 @@ import string
 import sys
 import weakref
 from typing import Union, List, Tuple, Dict, Generic, TypeVar, NewType
-from ansys.fluent.core import LOG
+from ansys.fluent.core.logging import LOG
 
 # Type hints
 RealType = NewType('real', Union[float, str]) # constant or expression

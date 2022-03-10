@@ -4,7 +4,7 @@
 import grpc
 from google.protobuf.json_format import MessageToDict
 
-from ansys.fluent.core import LOG
+from ansys.fluent.core.logging import LOG
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):

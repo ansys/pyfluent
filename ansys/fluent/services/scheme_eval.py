@@ -8,7 +8,8 @@ Example
 5
 >>> session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])  # noqa: E501
 0.7
->>> session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))  # prints Fluent TUI output noqa: E501
+>>> session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))  # noqa: E501
+>>> # prints Fluent TUI output
 >>> session.scheme_eval.string_eval("(+ 2 3)")
 '5'
 >>> session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")

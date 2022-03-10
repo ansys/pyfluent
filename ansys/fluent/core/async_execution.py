@@ -1,3 +1,5 @@
+"""Module providing asynchronous execution functionality"""
+
 import functools
 from concurrent.futures import ThreadPoolExecutor
 

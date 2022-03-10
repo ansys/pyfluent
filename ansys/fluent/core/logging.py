@@ -1,3 +1,9 @@
+"""
+Logging module.
+
+This module supplies a general framework for logging in PyFluent.
+"""
+
 import logging
 import os
 import tempfile
@@ -5,6 +11,22 @@ from pathlib import Path
 
 
 class Logger:
+    """
+    Logger class
+
+    Methods
+    -------
+    set_level(level)
+        Set logging level
+    enable_logging_to_stdout()
+        Enable logging to stdout
+    disable_logging_to_stdout()
+        Disable logging to stdout
+    enable_logging_to_file(filepath)
+        Enable logging to file
+    disable_logging_to_file()
+        Disable logging to file
+    """
     def __init__(self, level=logging.ERROR):
         self.logger = logging.getLogger()
         self.stream_handler = None
@@ -25,9 +47,18 @@ class Logger:
         self.log = self.logger.log
 
     def set_level(self, level):
+        """
+        Set logging level
+
+        Parameters
+        ----------
+        level : Any
+            Any of the logging level (CRITICAL, ERROR, WARNING, INFO, DEBUG)
+            in string or enum format
+        """
         self.logger.setLevel(level)
 
-    def get_default_log_filepath(self):
+    def _get_default_log_filepath(self):
         fd, filepath = tempfile.mkstemp(
             suffix=f"-{os.getpid()}.txt",
             prefix="pyfluent-",
@@ -37,18 +68,29 @@ class Logger:
         return Path(filepath)
 
     def enable_logging_to_stdout(self):
+        """Enable logging to stdout"""
         if self.stream_handler is None:
             self.stream_handler = logging.StreamHandler()
             self.stream_handler.setFormatter(self.formatter)
         self.logger.addHandler(self.stream_handler)
 
     def disable_logging_to_stdout(self):
+        """Disable logging to stdout"""
         self.logger.removeHandler(self.stream_handler)
 
     def enable_logging_to_file(self, filepath=None):
+        """
+        Enable logging to file
+
+        Parameters
+        ----------
+        filepath : str, optional
+            filapath, a default filepath will be chosen if filepath is not
+            passed
+        """
         self.logger.removeHandler(self.file_handler)
         if not filepath and not self.log_filepath:
-            self.log_filepath = self.get_default_log_filepath()
+            self.log_filepath = self._get_default_log_filepath()
         elif filepath:
             self.log_filepath = Path(filepath)
         self.file_handler = logging.FileHandler(self.log_filepath)
@@ -56,4 +98,8 @@ class Logger:
         self.logger.addHandler(self.file_handler)
 
     def disable_logging_to_file(self):
+        """Disable logging to file"""
         self.logger.removeHandler(self.file_handler)
+
+
+LOG = Logger()

@@ -1,3 +1,5 @@
+"""Metaclasses used in various explicit classes in PyFluent"""
+
 from collections.abc import MutableMapping
 from pprint import pformat
 
@@ -13,7 +15,7 @@ class Attribute:
         self.function = function
 
     def __set_name__(self, obj, name):
-        if not name in self.VALID_NAMES:
+        if name not in self.VALID_NAMES:
             raise ValueError(
                 f"Attribute {name} is not allowed."
                 f"Expected values are {self.VALID_NAMES}"
@@ -25,11 +27,12 @@ class Attribute:
     def __set__(self, obj, value):
         raise AttributeError("Attributes are read only.")
 
-    def __get__(self, obj, type=None):
+    def __get__(self, obj, objtype=None):
         return self.function(obj)
 
 
 class PyMenuMeta(type):
+    """Metaclass for explicit TUI menu classes"""
     @classmethod
     def __create_init(cls):
         def wrapper(self, path, service):
@@ -112,7 +115,7 @@ class PyLocalPropertyMeta(type):
                                     "list of allowed values "
                                     f"{self.allowed_values}."
                                 )
-                        elif not value in self.allowed_values:
+                        elif value not in self.allowed_values:
                             raise ValueError(
                                 f"Value {value}, is not in the list of "
                                 f"allowed values {self.allowed_values}."
@@ -195,7 +198,7 @@ class PyLocalPropertyMeta(type):
             else:
                 try:
                     return self.value
-                except:
+                except AttributeError:
                     return None
 
         return wrapper
@@ -387,6 +390,7 @@ class PyLocalContainer(MutableMapping):
 
 
 class PyNamedObjectMeta(type):
+    """Metaclass for explicit named object classes in Fluent"""
     @classmethod
     def __create_init(cls):
         def wrapper(self, path, name, service):

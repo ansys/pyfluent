@@ -1,6 +1,12 @@
-"""Usage:
-from codegen.tuigen import TUIGenerator
-TUIGenerator().generate()
+"""
+Generates the explicit TUI menu classes in ansys/fluent/solver/tui.py and
+ansys/fluent/meshing/tui.py
+
+Usage
+-----
+
+`python codegen/tuigen.py`
+
 """
 
 import os
@@ -21,7 +27,9 @@ _SOLVER_TUI_FILE = os.path.normpath(os.path.join(
     _THIS_DIRNAME, "..", "ansys", "fluent", "solver", "tui.py"))
 _INDENT_STEP = 4
 
-class TUIMenuGenerator:
+
+class _TUIMenuGenerator:
+    """Wrapper over PyMenu to extract TUI menu metadata from Fluent"""
     def __init__(self, path, service):
         self._menu = PyMenu(service, path)
 
@@ -37,7 +45,9 @@ class TUIMenuGenerator:
     def is_container(self):
         return self._menu.is_container(True)
 
-class TUIMenu:
+
+class _TUIMenu:
+    """Class representing Fluent's TUI menu"""
     def __init__(self, path):
         self.path = path
         self.name = convert_tui_menu_to_func_name(path[-1][0]) if path else ""
@@ -50,7 +60,9 @@ class TUIMenu:
     def get_command_path(self, command):
         return convert_path_to_grpc_path(self.path + [(command, None)])
 
+
 class TUIGenerator:
+    """Class to generate explicit TUI menu classes"""
     def __init__(
         self,
         meshing_tui_file=_MESHING_TUI_FILE,
@@ -62,10 +74,10 @@ class TUIGenerator:
             Path(self._tui_file).unlink()
         self._session = launch_fluent(meshing_mode=meshing)
         self._service = self._session._Session__datamodel_service_tui
-        self._main_menu = TUIMenu([])
+        self._main_menu = _TUIMenu([])
 
-    def _populate_menu(self, menu: TUIMenu):
-        menugen = TUIMenuGenerator(menu.path, self._service)
+    def _populate_menu(self, menu: _TUIMenu):
+        menugen = _TUIMenuGenerator(menu.path, self._service)
         menu.doc = menugen.get_doc_string()
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
@@ -73,7 +85,7 @@ class TUIGenerator:
         if child_names:
             for child_name in child_names:
                 if child_name:
-                    child_menu = TUIMenu(menu.path + [(child_name, None)])
+                    child_menu = _TUIMenu(menu.path + [(child_name, None)])
                     menu.children[child_menu.name] = child_menu
                     self._populate_menu(child_menu)
         elif not menu.is_extended_tui:
@@ -82,7 +94,7 @@ class TUIGenerator:
     def _write_code_to_tui_file(self, code, indent=0):
         self.__writer.write(" " * _INDENT_STEP * indent + code)
 
-    def _write_menu_to_tui_file(self, menu: TUIMenu, indent=0):
+    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent=0):
         if menu.name:
             self._write_code_to_tui_file("\n")
             if menu.is_container:
@@ -138,6 +150,7 @@ class TUIGenerator:
                 "from ansys.fluent.services.datamodel_tui import PyMenu\n\n\n"
             )
             self._write_menu_to_tui_file(self._main_menu)
+
 
 if __name__ == "__main__":
     TUIGenerator(meshing=True).generate()
