@@ -42,6 +42,7 @@ intersphinx_mapping = {
     "pyvista": ("https://docs.pyvista.org/", None),
 }
 
+# SS01, SS02, SS03, GL08 all need clean up in the code to be reactivated.
 # numpydoc configuration
 numpydoc_use_plots = True
 numpydoc_show_class_members = False
@@ -50,11 +51,11 @@ numpydoc_validate = True
 numpydoc_validation_checks = {
     "GL06",  # Found unknown section
     "GL07",  # Sections are in the wrong order.
-    "GL08",  # The object does not have a docstring
+    # "GL08",  # The object does not have a docstring
     "GL09",  # Deprecation warning should precede extended summary
     "GL10",  # reST directives {directives} must be followed by two colons
-    "SS01",  # No summary found
-    "SS02",  # Summary does not start with a capital letter
+    # "SS01",  # No summary found
+    # "SS02",  # Summary does not start with a capital letter
     # "SS03", # Summary does not end with a period
     "SS04",  # Summary contains heading whitespaces
     # "SS05", # Summary must start with infinitive verb, not third person
@@ -121,11 +122,7 @@ html_theme = "pyansys_sphinx_theme"
 html_logo = pyansys_logo_black
 html_theme_options = {
     "github_url": "https://github.com/pyansys/pyfluent",
-    "show_prev_next": False,
-    "show_breadcrumbs": True,
-    "additional_breadcrumbs": [
-        ("PyAnsys", "https://docs.pyansys.com/"),
-    ],
+    "show_prev_next": False
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------

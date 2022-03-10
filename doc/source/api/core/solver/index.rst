@@ -11,4 +11,5 @@ Solver
    :maxdepth: 2
    :hidden:
   
+   settings
    tui

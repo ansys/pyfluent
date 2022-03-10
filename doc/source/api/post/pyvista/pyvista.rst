@@ -12,4 +12,3 @@ pyvista
    :hidden:
 
    graphics
-   plotter

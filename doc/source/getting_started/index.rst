@@ -18,6 +18,7 @@ Installation
 To install a local version of pyfluent, use:
 
 .. code::
+
 	git clone https://github.com/pyansys/pyfluent.git
 	cd pyfluent
 	pip install -e .
@@ -50,10 +51,6 @@ Python class.  For example, if we wanted to ... <add a basic example>:
 .. code:: python
 
     <type some commands here>
-
-Calling MAPDL Pythonically
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-<Is this useful>
 
 Advanced Features
 ~~~~~~~~~~~~~~~~~
