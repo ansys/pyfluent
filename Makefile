@@ -13,7 +13,7 @@ install-pyvistaqt-requirements:
 	@sudo apt-get install libegl1 -y
 
 test-import:
-	@python -c "import ansys.fluent.solver as pyfluent"
+	@python -c "import ansys.fluent.core as pyfluent"
 
 unittest:
 	@echo "Running unittest"

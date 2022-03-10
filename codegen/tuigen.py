@@ -12,19 +12,19 @@ Usage
 import os
 from pathlib import Path
 
-from ansys.fluent.services.datamodel_tui import (
+from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
-from ansys.fluent.launcher.launcher import launch_fluent
+from ansys.fluent.core.launcher.launcher import launch_fluent
 
 _THIS_DIRNAME = os.path.dirname(__file__)
-_MESHING_TUI_FILE = os.path.normpath(
-    os.path.join(_THIS_DIRNAME, "..", "ansys", "fluent", "meshing", "tui.py")
+_MESHING_TUI_FILE = os.path.normpath(os.path.join(
+    _THIS_DIRNAME, "..", "ansys", "fluent", "core", "meshing", "tui.py")
 )
 _SOLVER_TUI_FILE = os.path.normpath(os.path.join(
-    _THIS_DIRNAME, "..", "ansys", "fluent", "solver", "tui.py"))
+    _THIS_DIRNAME, "..", "ansys", "fluent", "core", "solver", "tui.py"))
 _INDENT_STEP = 4
 
 
@@ -73,7 +73,7 @@ class TUIGenerator:
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._session = launch_fluent(meshing_mode=meshing)
-        self._service = self._session._Session__datamodel_service_tui
+        self._service = self._session._datamodel_service_tui
         self._main_menu = _TUIMenu([])
 
     def _populate_menu(self, menu: _TUIMenu):
@@ -145,9 +145,10 @@ class TUIGenerator:
                 "This is an auto-generated file.  DO NOT EDIT!\n"
                 '"""\n'
                 "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.solver.meta "
+                "from ansys.fluent.core.meta "
                 "import PyMenuMeta, PyNamedObjectMeta\n"
-                "from ansys.fluent.services.datamodel_tui import PyMenu\n\n\n"
+                "from ansys.fluent.core.services.datamodel_tui "
+                "import PyMenu\n\n\n"
             )
             self._write_menu_to_tui_file(self._main_menu)
 

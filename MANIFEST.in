@@ -1,1 +1,1 @@
-include ansys/fluent/launcher/fluent_launcher_options.json
+include ansys/fluent/core/launcher/fluent_launcher_options.json

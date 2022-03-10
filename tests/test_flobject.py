@@ -4,7 +4,7 @@ Unit tests for flobject module
 import io
 import pytest
 import weakref
-from ansys.fluent.solver import flobject
+from ansys.fluent.core.solver import flobject
 #import codegen.settingsgen
 from collections.abc import MutableMapping
 

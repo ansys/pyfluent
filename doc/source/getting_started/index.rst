@@ -38,7 +38,7 @@ To start Fluent, use the following:
 
 .. code:: python
 
-    >>> from ansys.fluent import launch_fluent
+    >>> from ansys.fluent.core import launch_fluent
     >>> fluent = launch_fluent()
     >>> print(fluent)
 

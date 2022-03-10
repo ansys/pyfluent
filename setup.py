@@ -8,11 +8,11 @@ from setuptools import find_namespace_packages, setup
 
 # Get version from version info
 __version__ = None
-THIS_FILE = os.path.dirname(__file__)
-VERSION_FILE = os.path.join(
-    THIS_FILE, "ansys", "fluent", "core", "_version.py"
+_THIS_FILE = os.path.dirname(__file__)
+_VERSION_FILE = os.path.join(
+    _THIS_FILE, "ansys", "fluent", "core", "_version.py"
 )
-with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
+with open(_VERSION_FILE, mode="r", encoding="utf8") as fd:
     # execute file from raw string
     exec(fd.read())
 
@@ -48,7 +48,7 @@ setup(
     packages=packages,
     include_package_data=True,
     version=__version__,
-    description="Fluent's SolverAPI exposed in Python",
+    description="Pythonic interface to Ansys Fluent",
     long_description=open("README.rst", encoding="utf8").read(),
     long_description_content_type="text/x-rst",
     url="https://github.com/pyansys/pyfluent",

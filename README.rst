@@ -19,7 +19,7 @@ Usage
 
 .. code:: python
 
-  import ansys.fluent as pyfluent
+  import ansys.fluent.core as pyfluent
   pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
   session.check_health()
@@ -65,7 +65,7 @@ PyVista (client)
 .. code:: python
 
   #import module
-  import ansys.fluent.postprocessing.pyvista as pv
+  import ansys.fluent.post.pyvista as pv
 
   #get the graphics objects for the session
 

@@ -3,8 +3,8 @@ from concurrent import futures
 import grpc
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
-from ansys.fluent.services.health_check import HealthCheckService
-from ansys.fluent.session import Session
+from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.session import Session
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):

@@ -15,7 +15,7 @@ executing the ``get_settings_root`` method on a session object.
 
 .. code-block::
 
-  >>> import ansys.fluent as pyfluent
+  >>> import ansys.fluent.core as pyfluent
   >>> session = pyfluent.launch_fluent()
   >>> root = session.get_settings_root()
 
