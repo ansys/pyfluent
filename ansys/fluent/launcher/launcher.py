@@ -1,3 +1,8 @@
+"""
+Module for launching Fluent locally or connecting to a remote instance
+with gRPC
+"""
+
 import json
 import os
 import platform
@@ -7,7 +12,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict
 
-from ansys.fluent.core import LOG
+from ansys.fluent.core.logging import LOG
 from ansys.fluent.session import Session
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -45,7 +50,7 @@ def _get_server_info_filepath():
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
-    kwargs = {}
+    kwargs: Dict[str, Any] = {}
     kwargs.update(
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )

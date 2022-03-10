@@ -1,4 +1,10 @@
-from ansys.fluent.core import LOG
+"""
+PyFluent
+
+Fluent's Solver and Meshing capabilities exposed in Python
+"""
+
+from ansys.fluent.core.logging import LOG
 from ansys.fluent.launcher.launcher import launch_fluent  # noqa: F401
 from ansys.fluent.session import Session
 
@@ -13,7 +19,8 @@ except ImportError:
 
 
 def set_log_level(level):
-    """Set logging level
+    """
+    Set logging level
 
     Parameters
     ----------
@@ -35,7 +42,8 @@ def disable_logging_to_stdout():
 
 
 def enable_logging_to_file(filepath: str = None):
-    """Enable logging to file
+    """
+    Enable logging to file
 
     Parameters
     ----------

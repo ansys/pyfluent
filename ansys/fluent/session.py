@@ -1,11 +1,13 @@
+"""Module containing class encapsulating Fluent connection"""
+
 import atexit
 import itertools
 import threading
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Tuple
 
 import grpc
 
-from ansys.fluent.core import LOG
+from ansys.fluent.core.logging import LOG
 from ansys.fluent.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -24,7 +26,7 @@ from ansys.fluent.services.events import EventsService
 from ansys.fluent.solver.events_manager import EventsManager
 
 
-def parse_server_info_file(filename: str):
+def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
     host_and_port = lines[0].strip().split(":")
@@ -121,50 +123,50 @@ class Session:
             when PyFluent is exited or exit() is called on the session
             instance, by default True.
         """
-        self.__channel = grpc.insecure_channel(f"{ip}:{port}")
-        self.__metadata = []
-        self.__id = f"session-{next(Session._id_iter)}"
+        self._channel = grpc.insecure_channel(f"{ip}:{port}")
+        self._metadata: List[Tuple[str, str]] = []
+        self._id = f"session-{next(Session._id_iter)}"
         self._settings_root = None
 
         if not Session._monitor_thread:
             Session._monitor_thread = MonitorThread()
             Session._monitor_thread.start()
 
-        self.__transcript_service = TranscriptService(
-            self.__channel, self.__metadata
+        self._transcript_service = TranscriptService(
+            self._channel, self._metadata
         )
-        self.__transcript_thread: threading.Thread = None
+        self._transcript_thread: Optional[threading.Thread] = None
 
-        self.__events_service = EventsService(self.__channel, self.__metadata)
-        self.events_manager = EventsManager(self.__id, self.__events_service)
+        self._events_service = EventsService(self._channel, self._metadata)
+        self.events_manager = EventsManager(self._id, self._events_service)
 
-        self.__datamodel_service_tui = DatamodelService_TUI(
-            self.__channel, self.__metadata
+        self._datamodel_service_tui = DatamodelService_TUI(
+            self._channel, self._metadata
         )
 
-        self.__field_data_service = FieldDataService(
-            self.__channel, self.__metadata
+        self._field_data_service = FieldDataService(
+            self._channel, self._metadata
         )
-        self.field_data = FieldData(self.__field_data_service)
-        self.tui = Session.Tui(self.__datamodel_service_tui)
+        self.field_data = FieldData(self._field_data_service)
+        self.tui = Session.Tui(self._datamodel_service_tui)
 
-        self.__datamodel_service_se = DatamodelService_SE(
-            self.__channel, self.__metadata
+        self._datamodel_service_se = DatamodelService_SE(
+            self._channel, self._metadata
         )
-        self.meshing = PyMenu_SE(self.__datamodel_service_se, "meshing")
-        self.workflow = PyMenu_SE(self.__datamodel_service_se, "workflow")
+        self.meshing = PyMenu_SE(self._datamodel_service_se, "meshing")
+        self.workflow = PyMenu_SE(self._datamodel_service_se, "workflow")
         self.part_management = PyMenu_SE(
-            self.__datamodel_service_se, "PartManagement"
+            self._datamodel_service_se, "PartManagement"
         )
 
-        self.__health_check_service = HealthCheckService(
-            self.__channel, self.__metadata
+        self._health_check_service = HealthCheckService(
+            self._channel, self._metadata
         )
 
-        self.__scheme_eval_service = SchemeEvalService(
-            self.__channel, self.__metadata
+        self._scheme_eval_service = SchemeEvalService(
+            self._channel, self._metadata
         )
-        self.scheme_eval = SchemeEval(self.__scheme_eval_service)
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)
@@ -190,16 +192,16 @@ class Session:
         Session
             Session instance
         """
-        host, port, _ = parse_server_info_file(server_info_filepath)
+        host, port, _ = _parse_server_info_file(server_info_filepath)
         return Session(host, port, cleanup_on_exit)
 
     @property
     def id(self):
-        return self.__id
+        return self._id
 
     def get_settings_service(self):
         """Return an instance of SettingsService object"""
-        return SettingsService(self.__channel, self.__metadata)
+        return SettingsService(self._channel, self._metadata)
 
     def get_settings_root(self):
         """Return root settings object"""
@@ -211,7 +213,7 @@ class Session:
         return self._settings_root
 
     def _process_transcript(self):
-        responses = self.__transcript_service.begin_streaming()
+        responses = self._transcript_service.begin_streaming()
         transcript = ""
         while True:
             try:
@@ -225,32 +227,32 @@ class Session:
 
     def start_transcript(self):
         """Start streaming of Fluent transcript"""
-        self.__transcript_thread = threading.Thread(
+        self._transcript_thread = threading.Thread(
             target=Session._process_transcript, args=(self,)
         )
 
-        self.__transcript_thread.start()
+        self._transcript_thread.start()
 
     def stop_transcript(self):
         """Stop streaming of Fluent transcript"""
-        self.__transcript_service.end_streaming()
+        self._transcript_service.end_streaming()
 
     def check_health(self):
         """Check health of Fluent connection"""
-        if self.__channel:
-            return self.__health_check_service.check_health()
+        if self._channel:
+            return self._health_check_service.check_health()
         else:
             return HealthCheckService.Status.NOT_SERVING.name
 
     def exit(self):
         """Close the Fluent connection and exit Fluent."""
-        if self.__channel:
+        if self._channel:
             if self._cleanup_on_exit:
                 self.scheme_eval.exec(("(exit-server)",))
-            self.__transcript_service.end_streaming()
+            self._transcript_service.end_streaming()
             self.events_manager.stop()
-            self.__channel.close()
-            self.__channel = None
+            self._channel.close()
+            self._channel = None
 
     def __enter__(self):
         return self
@@ -273,6 +275,7 @@ class Session:
             self.solver = Session.SolverTui(service)
 
     class TuiMode:
+        """Base class for Meshing or Solver TUI"""
         def __init__(self, service):
             self.service = service
             for mod in self.__class__.application_modules:
@@ -290,13 +293,13 @@ class Session:
                     setattr(cls, name, obj)
 
         def __dir__(self):
-            return PyMenu_TUI(self.service).get_child_names("")
+            return PyMenu_TUI(self.service, "").get_child_names()
 
     class MeshingTui(TuiMode):
-        application_modules = []
+        application_modules: List = []
 
     class SolverTui(TuiMode):
-        application_modules = []
+        application_modules: List = []
 
 
 atexit.register(Session.exit_all)

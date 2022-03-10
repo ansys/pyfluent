@@ -2,7 +2,7 @@ import functools
 
 import grpc
 
-from ansys.fluent.core import LOG
+from ansys.fluent.core.logging import LOG
 
 
 def catch_grpc_error(f):
