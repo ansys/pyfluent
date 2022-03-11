@@ -194,8 +194,10 @@ class Session:
         Session
             Session instance
         """
-        host, port, _ = _parse_server_info_file(server_info_filepath)
-        return Session(host, port, cleanup_on_exit)
+        host, port, password = _parse_server_info_file(server_info_filepath)
+        session = Session(host, port, cleanup_on_exit)
+        session._metadata.append(("password", password))
+        return session
 
     @property
     def id(self):
