@@ -7,5 +7,5 @@ Addons - Parametric
 .. autosummary::
    :toctree: _autosummary
    
-   __init__.DesignPoint
-   __init__.ParametricStudy
+   DesignPoint
+   ParametricStudy
