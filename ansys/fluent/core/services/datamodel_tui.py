@@ -344,10 +344,7 @@ class PyMenu:
 
 def convert_func_name_to_tui_menu(func_name: str) -> str:
     """
-    Convert Python function name to TUI menu string
-    E.g. import_ -> import
-    TODO convert underscore -> hyphen, question mark etc., currently
-    those are done in server side
+    Convert Python function name to TUI menu string.
 
     Parameters
     ----------
@@ -364,11 +361,7 @@ def convert_func_name_to_tui_menu(func_name: str) -> str:
 
 def convert_tui_menu_to_func_name(menu: str) -> str:
     """
-    Convert TUI menu string to Python function name
-    E.g. import -> import_
-         type? -> type_flag
-    TODO convert hyphen -> underscore, currently those are done in
-    server side
+    Convert TUI menu string to Python function name.
 
     Parameters
     ----------

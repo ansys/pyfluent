@@ -92,7 +92,7 @@ class DesignPoint:
 
     @property
     def input_parameters(self) -> Dict[str, float]:
-        """Dict[str, float]: Input parameters values by name."""
+        """Input parameters values by name."""
         return self.__dp_settings.input_parameters()
 
     @input_parameters.setter
@@ -101,12 +101,12 @@ class DesignPoint:
 
     @property
     def output_parameters(self) -> Dict[str, float]:
-        """Dict[str, float]: Output parameters values by name"""
+        """Output parameters values by name."""
         return self.__dp_settings.output_parameters()
 
     @property
     def write_data_enabled(self) -> bool:
-        """bool: Whether to write data for the design point"""
+        """Whether to write data for the design point."""
         return self.__dp_settings.write_data()
 
     @write_data_enabled.setter
@@ -116,8 +116,7 @@ class DesignPoint:
     @property
     def capture_simulation_report_data_enabled(self) -> bool:
         """
-        bool: Whether to capture simulation report data for the design
-        point
+        Whether to capture simulation report data for the design point.
         """
         return self.__dp_settings.capture_simulation_report_data()
 
@@ -263,8 +262,7 @@ class ParametricStudy:
     @property
     def is_current(self) -> bool:
         """
-        bool: Whether the parametric study is the current parametric
-        study
+        Whether the parametric study is the current parametric study.
         """
         return ParametricStudy.current_study_name == self.name
 
@@ -360,8 +358,8 @@ class ParametricStudy:
     @property
     def current_design_point(self) -> DesignPoint:
         """
-        DesignPoint: The current design point within the design points
-        under the parametric study.
+        The current design point within the design points under the
+        parametric study.
         """
         dp_name = self.__parametric_studies[self.name].current_design_point()
         return self.design_points[dp_name]

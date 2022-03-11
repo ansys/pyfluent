@@ -239,7 +239,7 @@ class display(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/display/set_list_tree_separator").execute(*args, **kwargs)
     def update_layout(self, *args, **kwargs):
         """
-        update the fluent layout
+        Update the fluent layout
         """
         return PyMenu(self.service, "/display/update_layout").execute(*args, **kwargs)
 
@@ -6360,12 +6360,12 @@ class define(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/gap_model/advanced_options/clear_gap_regions").execute(*args, **kwargs)
             def precise_gap_marking(self, *args, **kwargs):
                 """
-                mark cells in gap regions using more accurate search algorithm.
+                Mark cells in gap regions using more accurate search algorithm.
                 """
                 return PyMenu(self.service, "/define/gap_model/advanced_options/precise_gap_marking").execute(*args, **kwargs)
             def render_flow_modeling_gaps(self, *args, **kwargs):
                 """
-                render solution inside flow modeling gap cells.
+                Render solution inside flow modeling gap cells.
                 """
                 return PyMenu(self.service, "/define/gap_model/advanced_options/render_flow_modeling_gaps").execute(*args, **kwargs)
             def reduce_gap_regions(self, *args, **kwargs):
@@ -7152,7 +7152,7 @@ class define(metaclass=PyMenuMeta):
                 __doc__ = 'Enter the erosion-dynamic mesh interactions menu.'
                 def enable_erosion_dynamic_mesh_coupling(self, *args, **kwargs):
                     """
-                    enable mesh deformation due to wall erosion
+                    Enable mesh deformation due to wall erosion
                     """
                     return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/enable_erosion_dynamic_mesh_coupling").execute(*args, **kwargs)
                 def run_simulation(self, *args, **kwargs):
@@ -7361,7 +7361,7 @@ class define(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/dpm/numerics/verbosity").execute(*args, **kwargs)
                 def error_control(self, *args, **kwargs):
                     """
-                    set the adapt integration step length based on a maximum error
+                    Set the adapt integration step length based on a maximum error
                     """
                     return PyMenu(self.service, "/define/models/dpm/numerics/error_control").execute(*args, **kwargs)
                 def automated_scheme_selection(self, *args, **kwargs):
@@ -7953,7 +7953,7 @@ class define(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/cht/explicit_time_averaged_coupling/coupling_controls").execute(*args, **kwargs)
                 def fuse_explicit_cht_zones(self, *args, **kwargs):
                     """
-                    fuse slitted conformal coupled walls marked for transient explicit thermal coupling.
+                    Fuse slitted conformal coupled walls marked for transient explicit thermal coupling.
                     """
                     return PyMenu(self.service, "/define/models/cht/explicit_time_averaged_coupling/fuse_explicit_cht_zones").execute(*args, **kwargs)
 
@@ -7976,7 +7976,7 @@ class define(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/models/two_temperature/nasa9_enhancement").execute(*args, **kwargs)
             def set_verbosity(self, *args, **kwargs):
                 """
-                set two-temperature model verbosity option
+                Set two-temperature model verbosity option
                 """
                 return PyMenu(self.service, "/define/models/two_temperature/set_verbosity").execute(*args, **kwargs)
 
@@ -7994,7 +7994,7 @@ class define(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/models/multiphase/number_of_phases").execute(*args, **kwargs)
             def regime_transition_modeling(self, *args, **kwargs):
                 """
-                regime-transition-modeling-options
+                Regime-transition-modeling-options
                 """
                 return PyMenu(self.service, "/define/models/multiphase/regime_transition_modeling").execute(*args, **kwargs)
             def eulerian_parameters(self, *args, **kwargs):
@@ -10966,22 +10966,22 @@ class define(metaclass=PyMenuMeta):
                     __doc__ = 'Enter the IAC expert setting menu'
                     def ishii_kim_model(self, *args, **kwargs):
                         """
-                        set ik model coefficients
+                        Set ik model coefficients
                         """
                         return PyMenu(self.service, "/define/models/multiphase/phases/iac_expert/ishii_kim_model").execute(*args, **kwargs)
                     def hibiki_ishii_model(self, *args, **kwargs):
                         """
-                        set hi model coefficients
+                        Set hi model coefficients
                         """
                         return PyMenu(self.service, "/define/models/multiphase/phases/iac_expert/hibiki_ishii_model").execute(*args, **kwargs)
                     def yao_morel_model(self, *args, **kwargs):
                         """
-                        set ym model coefficients
+                        Set ym model coefficients
                         """
                         return PyMenu(self.service, "/define/models/multiphase/phases/iac_expert/yao_morel_model").execute(*args, **kwargs)
                     def iac_pseudo_time_step(self, *args, **kwargs):
                         """
-                        set iac pseudo-time
+                        Set iac pseudo-time
                         """
                         return PyMenu(self.service, "/define/models/multiphase/phases/iac_expert/iac_pseudo_time_step").execute(*args, **kwargs)
 
@@ -11040,12 +11040,12 @@ class define(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/multiphase/population_balance/model").execute(*args, **kwargs)
                 def include_expansion(self, *args, **kwargs):
                     """
-                    set expansion
+                    Set expansion
                     """
                     return PyMenu(self.service, "/define/models/multiphase/population_balance/include_expansion").execute(*args, **kwargs)
                 def size_calculator(self, *args, **kwargs):
                     """
-                    calculate fluid particle diameters using different methods
+                    Calculate fluid particle diameters using different methods
                     """
                     return PyMenu(self.service, "/define/models/multiphase/population_balance/size_calculator").execute(*args, **kwargs)
 
@@ -11083,7 +11083,7 @@ class define(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/breakage_factor").execute(*args, **kwargs)
                     def breakage_aggregation_vof_cutoff(self, *args, **kwargs):
                         """
-                        control vof cut-off for breakage and aggregation
+                        Control vof cut-off for breakage and aggregation
                         """
                         return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/breakage_aggregation_vof_cutoff").execute(*args, **kwargs)
 
@@ -11094,7 +11094,7 @@ class define(metaclass=PyMenuMeta):
                         __doc__ = ''
                         def retain_qmom_sources_for_low_vof(self, *args, **kwargs):
                             """
-                            retain qmom source calculation for low secondary phase vof
+                            Retain qmom source calculation for low secondary phase vof
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/expert/qmom/retain_qmom_sources_for_low_vof").execute(*args, **kwargs)
                         def realizable_moments(self, *args, **kwargs):
@@ -11130,12 +11130,12 @@ class define(metaclass=PyMenuMeta):
                     __doc__ = 'Advanced volume fraction filtering controls for explicit formulation'
                     def enable(self, *args, **kwargs):
                         """
-                        enable volume fraction filtering treatment
+                        Enable volume fraction filtering treatment
                         """
                         return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/volume_fraction_filtering/enable").execute(*args, **kwargs)
                     def filtering_options(self, *args, **kwargs):
                         """
-                        select volume fraction filtering method
+                        Select volume fraction filtering method
                         """
                         return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/volume_fraction_filtering/filtering_options").execute(*args, **kwargs)
                     def vol_frac_cutoff(self, *args, **kwargs):
@@ -11784,7 +11784,7 @@ class define(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/models/species/set_premixed_combustion").execute(*args, **kwargs)
             def set_multi_regime_fgm(self, *args, **kwargs):
                 """
-                set-multi-regim-fgm-parameters
+                Set-multi-regim-fgm-parameters
                 """
                 return PyMenu(self.service, "/define/models/species/set_multi_regime_fgm").execute(*args, **kwargs)
             def relax_to_equil(self, *args, **kwargs):
@@ -11819,7 +11819,7 @@ class define(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/models/species/reacting_channel_model_options").execute(*args, **kwargs)
             def combustion_numerics(self, *args, **kwargs):
                 """
-                set combustion numerics options
+                Set combustion numerics options
                 """
                 return PyMenu(self.service, "/define/models/species/combustion_numerics").execute(*args, **kwargs)
 
@@ -13022,7 +13022,7 @@ class define(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/parameters/input_parameters/delete").execute(*args, **kwargs)
 
             class advance(metaclass=PyMenuMeta):
-                __doc__ = 'define custom variable to use input parameter'
+                __doc__ = 'Define custom variable to use input parameter'
                 def use_in(self, *args, **kwargs):
                     """
                     Use input parameter in solver-udf or in scheme-procedure
@@ -13035,7 +13035,7 @@ class define(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/parameters/input_parameters/advance/list").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    delete selected custom-input-parameters
+                    Delete selected custom-input-parameters
                     """
                     return PyMenu(self.service, "/define/parameters/input_parameters/advance/delete").execute(*args, **kwargs)
 
@@ -16243,22 +16243,22 @@ class define(metaclass=PyMenuMeta):
             __doc__ = 'Enter the IAC expert setting menu'
             def ishii_kim_model(self, *args, **kwargs):
                 """
-                set ik model coefficients
+                Set ik model coefficients
                 """
                 return PyMenu(self.service, "/define/phases/iac_expert/ishii_kim_model").execute(*args, **kwargs)
             def hibiki_ishii_model(self, *args, **kwargs):
                 """
-                set hi model coefficients
+                Set hi model coefficients
                 """
                 return PyMenu(self.service, "/define/phases/iac_expert/hibiki_ishii_model").execute(*args, **kwargs)
             def yao_morel_model(self, *args, **kwargs):
                 """
-                set ym model coefficients
+                Set ym model coefficients
                 """
                 return PyMenu(self.service, "/define/phases/iac_expert/yao_morel_model").execute(*args, **kwargs)
             def iac_pseudo_time_step(self, *args, **kwargs):
                 """
-                set iac pseudo-time
+                Set iac pseudo-time
                 """
                 return PyMenu(self.service, "/define/phases/iac_expert/iac_pseudo_time_step").execute(*args, **kwargs)
 
@@ -16400,7 +16400,7 @@ class define(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/define/reference_frames/display").execute(*args, **kwargs)
         def display_edit(self, *args, **kwargs):
             """
-            display and edit reference frame from graphics
+            Display and edit reference frame from graphics
             """
             return PyMenu(self.service, "/define/reference_frames/display_edit").execute(*args, **kwargs)
         def edit(self, *args, **kwargs):
@@ -16684,8 +16684,9 @@ class file(metaclass=PyMenuMeta):
     def read_case(self, *args, **kwargs):
         """
         Read a case file.
-        Arguments:
-          case_file_name: str
+        Parameters
+        ----------
+        case_file_name : str
         """
         return PyMenu(self.service, "/file/read_case").execute(*args, **kwargs)
     def read_case_data(self, *args, **kwargs):
@@ -16865,7 +16866,7 @@ class file(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/file/write_currently_defined_profiles").execute(*args, **kwargs)
     def set_target_reference_frame_for_write_profiles(self, *args, **kwargs):
         """
-        set reference frame options, which will be used for position transformation during writing of profiles
+        Set reference frame options, which will be used for position transformation during writing of profiles
         """
         return PyMenu(self.service, "/file/set_target_reference_frame_for_write_profiles").execute(*args, **kwargs)
     def write_circumferential_averaged_profile(self, *args, **kwargs):
@@ -17159,7 +17160,7 @@ class file(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/export/particle_history_data").execute(*args, **kwargs)
 
         class system_coupling_definition_file_settings(metaclass=PyMenuMeta):
-            __doc__ = 'file menu'
+            __doc__ = 'File menu'
             def enable_automatic_creation_of_scp_file(self, *args, **kwargs):
                 """
                 Enable/disable automatic creation of scp file during case write
@@ -17696,7 +17697,7 @@ class file(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/table_manager/store_in_case_file").execute(*args, **kwargs)
 
     class solution_files(metaclass=PyMenuMeta):
-        __doc__ = 'enter the solution files menu'
+        __doc__ = 'Enter the solution files menu'
         def print_solution_files(self, *args, **kwargs):
             """
             Print list of available solution files.
@@ -18466,7 +18467,7 @@ class parameters__and__customization(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/parameters__and__customization/parameters/input_parameters/delete").execute(*args, **kwargs)
 
             class advance(metaclass=PyMenuMeta):
-                __doc__ = 'define custom variable to use input parameter'
+                __doc__ = 'Define custom variable to use input parameter'
                 def use_in(self, *args, **kwargs):
                     """
                     Use input parameter in solver-udf or in scheme-procedure
@@ -18479,7 +18480,7 @@ class parameters__and__customization(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/parameters__and__customization/parameters/input_parameters/advance/list").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    delete selected custom-input-parameters
+                    Delete selected custom-input-parameters
                     """
                     return PyMenu(self.service, "/parameters__and__customization/parameters/input_parameters/advance/delete").execute(*args, **kwargs)
 
@@ -18674,7 +18675,7 @@ class parallel(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/parallel/bandwidth").execute(*args, **kwargs)
     def thread_number_control(self, *args, **kwargs):
         """
-        thread number control
+        Thread number control
         """
         return PyMenu(self.service, "/parallel/thread_number_control").execute(*args, **kwargs)
 
@@ -19123,12 +19124,12 @@ class plot(metaclass=PyMenuMeta):
         __doc__ = 'Ansys Sound analysis and specification.'
         def write_files(self, *args, **kwargs):
             """
-            write Ansys Sound out files
+            Write Ansys Sound out files
             """
             return PyMenu(self.service, "/plot/ansys_sound_analysis/write_files").execute(*args, **kwargs)
         def print_indicators(self, *args, **kwargs):
             """
-            print Ansys Sound indicators
+            Print Ansys Sound indicators
             """
             return PyMenu(self.service, "/plot/ansys_sound_analysis/print_indicators").execute(*args, **kwargs)
 
@@ -21410,7 +21411,7 @@ class results(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/results/animate/playback/video/name").execute(*args, **kwargs)
                 def use_original_resolution(self, *args, **kwargs):
                     """
-                    enable original resolution
+                    Enable original resolution
                     """
                     return PyMenu(self.service, "/results/animate/playback/video/use_original_resolution").execute(*args, **kwargs)
                 def scale(self, *args, **kwargs):
@@ -24564,12 +24565,12 @@ class results(metaclass=PyMenuMeta):
             __doc__ = 'Ansys Sound analysis and specification.'
             def write_files(self, *args, **kwargs):
                 """
-                write Ansys Sound out files
+                Write Ansys Sound out files
                 """
                 return PyMenu(self.service, "/results/plot/ansys_sound_analysis/write_files").execute(*args, **kwargs)
             def print_indicators(self, *args, **kwargs):
                 """
-                print Ansys Sound indicators
+                Print Ansys Sound indicators
                 """
                 return PyMenu(self.service, "/results/plot/ansys_sound_analysis/print_indicators").execute(*args, **kwargs)
 
@@ -25717,7 +25718,7 @@ class results(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/results/graphics_window/set_window_by_name").execute(*args, **kwargs)
         def update_layout(self, *args, **kwargs):
             """
-            update the fluent layout
+            Update the fluent layout
             """
             return PyMenu(self.service, "/results/graphics_window/update_layout").execute(*args, **kwargs)
 
@@ -26781,7 +26782,7 @@ class solution(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solution/controls/advanced/fast_transient_settings/rk2").execute(*args, **kwargs)
 
         class contact_solution_controls(metaclass=PyMenuMeta):
-            __doc__ = 'solver controls for contact marks method'
+            __doc__ = 'Solver controls for contact marks method'
             def solution_stabilization(self, *args, **kwargs):
                 """
                 Automatic solver settings adjustment for solution stabilization during contact process
@@ -26789,45 +26790,45 @@ class solution(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solution/controls/contact_solution_controls/solution_stabilization").execute(*args, **kwargs)
             def set_settings_to_default(self, *args, **kwargs):
                 """
-                set contact solution stabilization to default
+                Set contact solution stabilization to default
                 """
                 return PyMenu(self.service, "/solution/controls/contact_solution_controls/set_settings_to_default").execute(*args, **kwargs)
             def verbosity(self, *args, **kwargs):
                 """
-                specify verbosity level for contact solution controls
+                Specify verbosity level for contact solution controls
                 """
                 return PyMenu(self.service, "/solution/controls/contact_solution_controls/verbosity").execute(*args, **kwargs)
 
             class parameters(metaclass=PyMenuMeta):
-                __doc__ = 'parameters used in stabilization strategy'
+                __doc__ = 'Parameters used in stabilization strategy'
                 def iterations(self, *args, **kwargs):
                     """
-                    specify additional iterations to accomodate contact solution stabilization
+                    Specify additional iterations to accomodate contact solution stabilization
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/parameters/iterations").execute(*args, **kwargs)
                 def solution_stabilization_persistence(self, *args, **kwargs):
                     """
-                    persistence of the solution stabilization based on events [0-contact based, 1-always on]
+                    Persistence of the solution stabilization based on events [0-contact based, 1-always on]
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/parameters/solution_stabilization_persistence").execute(*args, **kwargs)
                 def persistence_fixed_time_steps(self, *args, **kwargs):
                     """
-                    specify fixed time-steps for solution stabilization persistence after trigger
+                    Specify fixed time-steps for solution stabilization persistence after trigger
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/parameters/persistence_fixed_time_steps").execute(*args, **kwargs)
                 def persistence_fixed_duration(self, *args, **kwargs):
                     """
-                    specify fixed time for solution stabilization persistence after trigger
+                    Specify fixed time for solution stabilization persistence after trigger
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/parameters/persistence_fixed_duration").execute(*args, **kwargs)
                 def extrapolation_method(self, *args, **kwargs):
                     """
-                    solution extrapolation method for cells changing status from contact to non-contact [0-none, 1-local extrapolation]
+                    Solution extrapolation method for cells changing status from contact to non-contact [0-none, 1-local extrapolation]
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/parameters/extrapolation_method").execute(*args, **kwargs)
 
             class spatial(metaclass=PyMenuMeta):
-                __doc__ = 'spatial discretization control options'
+                __doc__ = 'Spatial discretization control options'
                 def first_to_second_order_blending(self, *args, **kwargs):
                     """
                     Set factor to control first order to second order blending
@@ -26835,7 +26836,7 @@ class solution(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/spatial/first_to_second_order_blending").execute(*args, **kwargs)
                 def first_to_second_order_blending_list(self, *args, **kwargs):
                     """
-                    list set factor to control first order to second order blending
+                    List set factor to control first order to second order blending
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/spatial/first_to_second_order_blending_list").execute(*args, **kwargs)
                 def scheme(self, *args, **kwargs):
@@ -26865,7 +26866,7 @@ class solution(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/spatial/rhie_chow_method").execute(*args, **kwargs)
 
             class transient(metaclass=PyMenuMeta):
-                __doc__ = 'transient discretization control options '
+                __doc__ = 'Transient discretization control options '
                 def transient_parameters_specify(self, *args, **kwargs):
                     """
                     Allow transient parameter specification
@@ -26891,32 +26892,32 @@ class solution(metaclass=PyMenuMeta):
                 __doc__ = 'AMG control options'
                 def enforce_laplace_coarsening(self, *args, **kwargs):
                     """
-                    enforce the use of laplace coarsening in AMG
+                    Enforce the use of laplace coarsening in AMG
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/amg/enforce_laplace_coarsening").execute(*args, **kwargs)
                 def increase_pre_sweeps(self, *args, **kwargs):
                     """
-                    allow increase in AMG pre-sweep
+                    Allow increase in AMG pre-sweep
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/amg/increase_pre_sweeps").execute(*args, **kwargs)
                 def pre_sweeps(self, *args, **kwargs):
                     """
-                    specify the number of AMG pre-sweeps
+                    Specify the number of AMG pre-sweeps
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/amg/pre_sweeps").execute(*args, **kwargs)
                 def specify_coarsening_rate(self, *args, **kwargs):
                     """
-                    modify AMG coarsening rate
+                    Modify AMG coarsening rate
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/amg/specify_coarsening_rate").execute(*args, **kwargs)
                 def coarsen_rate(self, *args, **kwargs):
                     """
-                    specify AMG coarsening rate
+                    Specify AMG coarsening rate
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/amg/coarsen_rate").execute(*args, **kwargs)
 
             class models(metaclass=PyMenuMeta):
-                __doc__ = 'model control options'
+                __doc__ = 'Model control options'
                 def model_ramping(self, *args, **kwargs):
                     """
                     Activate model ramping for solver stability and accuracy
@@ -26924,53 +26925,53 @@ class solution(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/models/model_ramping").execute(*args, **kwargs)
                 def ramp_flow(self, *args, **kwargs):
                     """
-                    ramp flow for solver stability and accuracy
+                    Ramp flow for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/models/ramp_flow").execute(*args, **kwargs)
                 def ramp_turbulence(self, *args, **kwargs):
                     """
-                    ramp turbulence for solver stability and accuracy
+                    Ramp turbulence for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/models/ramp_turbulence").execute(*args, **kwargs)
                 def ramp_scalars(self, *args, **kwargs):
                     """
-                    ramp all scalar transport equations for solver stability and accuracy
+                    Ramp all scalar transport equations for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/models/ramp_scalars").execute(*args, **kwargs)
 
             class methods(metaclass=PyMenuMeta):
-                __doc__ = 'methods control options'
+                __doc__ = 'Methods control options'
                 def pressure_velocity_coupling_controls(self, *args, **kwargs):
                     """
-                    enable pressure-velocity coupling method change for solver stability and accuracy
+                    Enable pressure-velocity coupling method change for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/methods/pressure_velocity_coupling_controls").execute(*args, **kwargs)
                 def pressure_velocity_coupling_method(self, *args, **kwargs):
                     """
-                    specify pressure-velocity coupling method change for solver stability and accuracy
+                    Specify pressure-velocity coupling method change for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/methods/pressure_velocity_coupling_method").execute(*args, **kwargs)
                 def gradient_controls(self, *args, **kwargs):
                     """
-                    modify gradient method for solver stability and accuracy
+                    Modify gradient method for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/methods/gradient_controls").execute(*args, **kwargs)
                 def specify_gradient_method(self, *args, **kwargs):
                     """
-                    specify gradient method for solver stability and accuracy
+                    Specify gradient method for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/methods/specify_gradient_method").execute(*args, **kwargs)
 
             class miscellaneous(metaclass=PyMenuMeta):
-                __doc__ = 'miscellaneous'
+                __doc__ = 'Miscellaneous'
                 def compute_statistics(self, *args, **kwargs):
                     """
-                    compute solution statistics for contact updates
+                    Compute solution statistics for contact updates
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/miscellaneous/compute_statistics").execute(*args, **kwargs)
                 def statistics_level(self, *args, **kwargs):
                     """
-                    solution statistics level for contact updates
+                    Solution statistics level for contact updates
                     """
                     return PyMenu(self.service, "/solution/controls/contact_solution_controls/miscellaneous/statistics_level").execute(*args, **kwargs)
 
@@ -27088,7 +27089,7 @@ class solution(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solution/controls/query/advanced/amg_options/aggressive_amg_coarsening").execute(*args, **kwargs)
                     def amg_gpgpu_options(self, *args, **kwargs):
                         """
-                        amg gpu options
+                        Amg gpu options
                         """
                         return PyMenu(self.service, "/solution/controls/query/advanced/amg_options/amg_gpgpu_options").execute(*args, **kwargs)
 
@@ -27249,7 +27250,7 @@ class solution(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solution/expert/high_speed_numerics/enable").execute(*args, **kwargs)
             def expert(self, *args, **kwargs):
                 """
-                expert high-speed-numerics.
+                Expert high-speed-numerics.
                 """
                 return PyMenu(self.service, "/solution/expert/high_speed_numerics/expert").execute(*args, **kwargs)
             def visualize_pressure_discontinuity_sensor(self, *args, **kwargs):
@@ -27394,17 +27395,17 @@ class solution(metaclass=PyMenuMeta):
             __doc__ = 'Enter the open-channel-wave-options menu'
             def set_verbosity(self, *args, **kwargs):
                 """
-                set open channel wave verbosity
+                Set open channel wave verbosity
                 """
                 return PyMenu(self.service, "/solution/expert/open_channel_wave_options/set_verbosity").execute(*args, **kwargs)
             def stokes_wave_variants(self, *args, **kwargs):
                 """
-                set stokes wave theory variants
+                Set stokes wave theory variants
                 """
                 return PyMenu(self.service, "/solution/expert/open_channel_wave_options/stokes_wave_variants").execute(*args, **kwargs)
             def set_buffer_layer_ht(self, *args, **kwargs):
                 """
-                set bufer layer height between phases for segregated velocity inputs
+                Set bufer layer height between phases for segregated velocity inputs
                 """
                 return PyMenu(self.service, "/solution/expert/open_channel_wave_options/set_buffer_layer_ht").execute(*args, **kwargs)
 
@@ -27692,12 +27693,12 @@ class solution(metaclass=PyMenuMeta):
             __doc__ = 'Localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models'
             def enable(self, *args, **kwargs):
                 """
-                localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models
+                Localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models
                 """
                 return PyMenu(self.service, "/solution/initialize/mp_localized_turb_init/enable").execute(*args, **kwargs)
             def turb_init_parameters(self, *args, **kwargs):
                 """
-                turbulent flow parameters for localized initialization
+                Turbulent flow parameters for localized initialization
                 """
                 return PyMenu(self.service, "/solution/initialize/mp_localized_turb_init/turb_init_parameters").execute(*args, **kwargs)
 
@@ -27873,7 +27874,7 @@ class solution(metaclass=PyMenuMeta):
                 __doc__ = 'High Order Term Relaxation Options'
                 def relaxation_factor(self, *args, **kwargs):
                     """
-                    sets relaxation factor
+                    Sets relaxation factor
                     """
                     return PyMenu(self.service, "/solution/methods/high_order_term_relaxation/options/relaxation_factor").execute(*args, **kwargs)
                 def expert(self, *args, **kwargs):
@@ -27886,7 +27887,7 @@ class solution(metaclass=PyMenuMeta):
                     __doc__ = 'Select Variables'
                     def select(self, *args, **kwargs):
                         """
-                        select variables for high order term relaxation
+                        Select variables for high order term relaxation
                         """
                         return PyMenu(self.service, "/solution/methods/high_order_term_relaxation/options/variables/select").execute(*args, **kwargs)
 
@@ -27894,59 +27895,59 @@ class solution(metaclass=PyMenuMeta):
             __doc__ = 'Enter the multiphase numerics options menu'
 
             class porous_media(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase relative permeability numerics menu'
+                __doc__ = 'Multiphase relative permeability numerics menu'
                 def relative_permeability(self, *args, **kwargs):
                     """
-                    multiphase relative permeability fix option
+                    Multiphase relative permeability fix option
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/porous_media/relative_permeability").execute(*args, **kwargs)
 
             class compressible_flow(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase compressible numerics options menu'
+                __doc__ = 'Multiphase compressible numerics options menu'
                 def enhanced_numerics(self, *args, **kwargs):
                     """
-                    multiphase enhanced compressible flow numerics options
+                    Multiphase enhanced compressible flow numerics options
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/compressible_flow/enhanced_numerics").execute(*args, **kwargs)
                 def alternate_bc_formulation(self, *args, **kwargs):
                     """
-                    multiphase compressible flow BC alternate method
+                    Multiphase compressible flow BC alternate method
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/compressible_flow/alternate_bc_formulation").execute(*args, **kwargs)
 
             class boiling_parameters(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase boiling parameters menu'
+                __doc__ = 'Multiphase boiling parameters menu'
                 def thin_film(self, *args, **kwargs):
                     """
-                    multiphase boiling thin film effects
+                    Multiphase boiling thin film effects
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/boiling_parameters/thin_film").execute(*args, **kwargs)
                 def liquid_vof_factor(self, *args, **kwargs):
                     """
-                    multiphase boiling liquid volume fraction effects
+                    Multiphase boiling liquid volume fraction effects
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/boiling_parameters/liquid_vof_factor").execute(*args, **kwargs)
 
             class viscous_flow(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase viscous flow numerics options menu'
+                __doc__ = 'Multiphase viscous flow numerics options menu'
                 def viscosity_averaging(self, *args, **kwargs):
                     """
-                    multiphase options for viscosity averaging
+                    Multiphase options for viscosity averaging
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/viscous_flow/viscosity_averaging").execute(*args, **kwargs)
                 def turb_visc_based_damping(self, *args, **kwargs):
                     """
-                    turbulence viscosity based damping controls
+                    Turbulence viscosity based damping controls
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/viscous_flow/turb_visc_based_damping").execute(*args, **kwargs)
                 def interfacial_artificial_viscosity(self, *args, **kwargs):
                     """
-                    interfacial artifical viscosity controls
+                    Interfacial artifical viscosity controls
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/viscous_flow/interfacial_artificial_viscosity").execute(*args, **kwargs)
 
             class heat_mass_transfer(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase interphase heat and mass transfer numerics options menu'
+                __doc__ = 'Multiphase interphase heat and mass transfer numerics options menu'
                 def alternative_energy_treatment(self, *args, **kwargs):
                     """
                     Alternative treatment of latent heat source due to mass transfer.
@@ -27954,15 +27955,15 @@ class solution(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/alternative_energy_treatment").execute(*args, **kwargs)
 
                 class cavitation(metaclass=PyMenuMeta):
-                    __doc__ = 'cavitation numerics options menu'
+                    __doc__ = 'Cavitation numerics options menu'
                     def schnerr_evap_coeff(self, *args, **kwargs):
                         """
-                        evaporation coefficient for Schnerr-Sauer model
+                        Evaporation coefficient for Schnerr-Sauer model
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/cavitation/schnerr_evap_coeff").execute(*args, **kwargs)
                     def schnerr_cond_coeff(self, *args, **kwargs):
                         """
-                        condensation coefficient for Schnerr-Sauer model
+                        Condensation coefficient for Schnerr-Sauer model
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/cavitation/schnerr_cond_coeff").execute(*args, **kwargs)
                     def max_vapor_pressure_ratio(self, *args, **kwargs):
@@ -27972,7 +27973,7 @@ class solution(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/cavitation/max_vapor_pressure_ratio").execute(*args, **kwargs)
                     def min_vapor_pressure(self, *args, **kwargs):
                         """
-                        minimum vapor pressure limit for cavitation model
+                        Minimum vapor pressure limit for cavitation model
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/cavitation/min_vapor_pressure").execute(*args, **kwargs)
                     def display_clipped_pressure(self, *args, **kwargs):
@@ -27989,48 +27990,48 @@ class solution(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/cavitation/turbulent_diffusion").execute(*args, **kwargs)
 
                 class evaporation_condensation(metaclass=PyMenuMeta):
-                    __doc__ = 'evaporation-condensation advanced options menu'
+                    __doc__ = 'Evaporation-condensation advanced options menu'
                     def vof_from_min_limit(self, *args, **kwargs):
                         """
-                        minimum volume fraction below which mass transfer rate is set to zero
+                        Minimum volume fraction below which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_from_min_limit").execute(*args, **kwargs)
                     def vof_from_max_limit(self, *args, **kwargs):
                         """
-                        maximum volume fraction above which mass transfer rate is set to zero
+                        Maximum volume fraction above which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_from_max_limit").execute(*args, **kwargs)
                     def vof_to_min_limit(self, *args, **kwargs):
                         """
-                        minimum volume fraction below which mass transfer rate is set to zero
+                        Minimum volume fraction below which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_to_min_limit").execute(*args, **kwargs)
                     def vof_to_max_limit(self, *args, **kwargs):
                         """
-                        maximum volume fraction above which mass transfer rate is set to zero
+                        Maximum volume fraction above which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_to_max_limit").execute(*args, **kwargs)
                     def ia_norm_min_limit(self, *args, **kwargs):
                         """
-                        minimum normalized area density below which mass transfer rate is set to zero
+                        Minimum normalized area density below which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/evaporation_condensation/ia_norm_min_limit").execute(*args, **kwargs)
                     def max_rel_humidity(self, *args, **kwargs):
                         """
-                        maximum value of relative humidity to limit condensation rate
+                        Maximum value of relative humidity to limit condensation rate
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/evaporation_condensation/max_rel_humidity").execute(*args, **kwargs)
 
                 class boiling(metaclass=PyMenuMeta):
-                    __doc__ = 'boiling advanced options menu'
+                    __doc__ = 'Boiling advanced options menu'
                     def heat_flux_relaxation_factor(self, *args, **kwargs):
                         """
-                        under-relaxation factor for boiling heat flux
+                        Under-relaxation factor for boiling heat flux
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/boiling/heat_flux_relaxation_factor").execute(*args, **kwargs)
                     def show_expert_options(self, *args, **kwargs):
                         """
-                        exposes expert options of min/max superheat along with wetting fraction controls
+                        Exposes expert options of min/max superheat along with wetting fraction controls
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/boiling/show_expert_options").execute(*args, **kwargs)
                     def two_resistance_boiling_framework(self, *args, **kwargs):
@@ -28040,10 +28041,10 @@ class solution(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/boiling/two_resistance_boiling_framework").execute(*args, **kwargs)
 
                 class area_density(metaclass=PyMenuMeta):
-                    __doc__ = 'interfacial area density menu'
+                    __doc__ = 'Interfacial area density menu'
                     def vof_min_seeding(self, *args, **kwargs):
                         """
-                        minimum vof seeding for non-zero area density in heat and mass transfer
+                        Minimum vof seeding for non-zero area density in heat and mass transfer
                         """
                         return PyMenu(self.service, "/solution/methods/multiphase_numerics/heat_mass_transfer/area_density/vof_min_seeding").execute(*args, **kwargs)
                     def ia_grad_sym(self, *args, **kwargs):
@@ -28217,7 +28218,7 @@ class solution(metaclass=PyMenuMeta):
                 __doc__ = 'Enter the face pressure expert controls menu'
                 def face_pressure_options(self, *args, **kwargs):
                     """
-                    set face pressure options
+                    Set face pressure options
                     """
                     return PyMenu(self.service, "/solution/methods/multiphase_numerics/face_pressure_controls/face_pressure_options").execute(*args, **kwargs)
 
@@ -28289,12 +28290,12 @@ class solution(metaclass=PyMenuMeta):
             __doc__ = 'Enter the nita expert controls menu'
             def set_verbosity(self, *args, **kwargs):
                 """
-                set nita verbosity option
+                Set nita verbosity option
                 """
                 return PyMenu(self.service, "/solution/methods/nita_expert_controls/set_verbosity").execute(*args, **kwargs)
             def skewness_neighbor_coupling(self, *args, **kwargs):
                 """
-                set skewness neighbor coupling for nita
+                Set skewness neighbor coupling for nita
                 """
                 return PyMenu(self.service, "/solution/methods/nita_expert_controls/skewness_neighbor_coupling").execute(*args, **kwargs)
             def hybrid_nita_settings(self, *args, **kwargs):
@@ -28330,7 +28331,7 @@ class solution(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solution/methods/overset/expert/mass_flux_correction_method").execute(*args, **kwargs)
                 def hybrid_mode_selection(self, *args, **kwargs):
                     """
-                    mode for hybrid interpolation
+                    Mode for hybrid interpolation
                     """
                     return PyMenu(self.service, "/solution/methods/overset/expert/hybrid_mode_selection").execute(*args, **kwargs)
 
@@ -28749,7 +28750,7 @@ class solution(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/solution/run_calculation/multistage_time_iterate").execute(*args, **kwargs)
         def number_of_iterations(self, *args, **kwargs):
             """
-            set number of iterations
+            Set number of iterations
             """
             return PyMenu(self.service, "/solution/run_calculation/number_of_iterations").execute(*args, **kwargs)
         def reporting_interval(self, *args, **kwargs):
@@ -28804,7 +28805,7 @@ class solution(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/solution/run_calculation/variable_time_stepping").execute(*args, **kwargs)
 
         class data_sampling_options(metaclass=PyMenuMeta):
-            __doc__ = 'data sampling options for statistics'
+            __doc__ = 'Data sampling options for statistics'
             def add_datasets(self, *args, **kwargs):
                 """
                 Add a dataset. After providing the zones for a dataset, press [Enter] to move onto selecting quantities. Enter () to complete the quantity selection for this dataset.
@@ -28817,12 +28818,12 @@ class solution(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solution/run_calculation/data_sampling_options/add_rtdft_datasets").execute(*args, **kwargs)
             def remove_dataset(self, *args, **kwargs):
                 """
-                remove dataset
+                Remove dataset
                 """
                 return PyMenu(self.service, "/solution/run_calculation/data_sampling_options/remove_dataset").execute(*args, **kwargs)
             def list_datasets(self, *args, **kwargs):
                 """
-                list dataset
+                List dataset
                 """
                 return PyMenu(self.service, "/solution/run_calculation/data_sampling_options/list_datasets").execute(*args, **kwargs)
 
@@ -28850,27 +28851,27 @@ class solution(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solution/run_calculation/transient_controls/duration_specification_method").execute(*args, **kwargs)
             def incremental_time(self, *args, **kwargs):
                 """
-                set Incremental Time.
+                Set Incremental Time.
                 """
                 return PyMenu(self.service, "/solution/run_calculation/transient_controls/incremental_time").execute(*args, **kwargs)
             def max_iterations_per_time_step(self, *args, **kwargs):
                 """
-                set Max Iterations/Time step.
+                Set Max Iterations/Time step.
                 """
                 return PyMenu(self.service, "/solution/run_calculation/transient_controls/max_iterations_per_time_step").execute(*args, **kwargs)
             def number_of_time_steps(self, *args, **kwargs):
                 """
-                set inceremtal number of Time steps.
+                Set inceremtal number of Time steps.
                 """
                 return PyMenu(self.service, "/solution/run_calculation/transient_controls/number_of_time_steps").execute(*args, **kwargs)
             def total_number_of_time_steps(self, *args, **kwargs):
                 """
-                set total number of Time steps.
+                Set total number of Time steps.
                 """
                 return PyMenu(self.service, "/solution/run_calculation/transient_controls/total_number_of_time_steps").execute(*args, **kwargs)
             def total_time(self, *args, **kwargs):
                 """
-                set Total Simulation Time.
+                Set Total Simulation Time.
                 """
                 return PyMenu(self.service, "/solution/run_calculation/transient_controls/total_time").execute(*args, **kwargs)
             def time_step_size(self, *args, **kwargs):
@@ -29111,7 +29112,7 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/animate/playback/video/name").execute(*args, **kwargs)
                 def use_original_resolution(self, *args, **kwargs):
                     """
-                    enable original resolution
+                    Enable original resolution
                     """
                     return PyMenu(self.service, "/solve/animate/playback/video/use_original_resolution").execute(*args, **kwargs)
                 def scale(self, *args, **kwargs):
@@ -29195,7 +29196,7 @@ class solve(metaclass=PyMenuMeta):
             __doc__ = 'Enter save pulse menu'
             def pulse_mode(self, *args, **kwargs):
                 """
-                set pulse-mode.
+                Set pulse-mode.
                 """
                 return PyMenu(self.service, "/solve/animate/pulse/pulse_mode").execute(*args, **kwargs)
             def write(self, *args, **kwargs):
@@ -29228,7 +29229,7 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/animate/pulse/video/name").execute(*args, **kwargs)
                 def use_original_resolution(self, *args, **kwargs):
                     """
-                    enable original resolution
+                    Enable original resolution
                     """
                     return PyMenu(self.service, "/solve/animate/pulse/video/use_original_resolution").execute(*args, **kwargs)
                 def scale(self, *args, **kwargs):
@@ -29717,12 +29718,12 @@ class solve(metaclass=PyMenuMeta):
             __doc__ = 'Localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models'
             def enable(self, *args, **kwargs):
                 """
-                localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models
+                Localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models
                 """
                 return PyMenu(self.service, "/solve/initialize/mp_localized_turb_init/enable").execute(*args, **kwargs)
             def turb_init_parameters(self, *args, **kwargs):
                 """
-                turbulent flow parameters for localized initialization
+                Turbulent flow parameters for localized initialization
                 """
                 return PyMenu(self.service, "/solve/initialize/mp_localized_turb_init/turb_init_parameters").execute(*args, **kwargs)
 
@@ -30391,7 +30392,7 @@ class solve(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/solve/set/multi_stage").execute(*args, **kwargs)
         def number_of_iterations(self, *args, **kwargs):
             """
-            set number of iterations
+            Set number of iterations
             """
             return PyMenu(self.service, "/solve/set/number_of_iterations").execute(*args, **kwargs)
         def numerics(self, *args, **kwargs):
@@ -30577,7 +30578,7 @@ class solve(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/solve/set/equation_ordering").execute(*args, **kwargs)
 
         class contact_solution_controls(metaclass=PyMenuMeta):
-            __doc__ = 'solver controls for contact marks method'
+            __doc__ = 'Solver controls for contact marks method'
             def solution_stabilization(self, *args, **kwargs):
                 """
                 Automatic solver settings adjustment for solution stabilization during contact process
@@ -30585,45 +30586,45 @@ class solve(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/contact_solution_controls/solution_stabilization").execute(*args, **kwargs)
             def set_settings_to_default(self, *args, **kwargs):
                 """
-                set contact solution stabilization to default
+                Set contact solution stabilization to default
                 """
                 return PyMenu(self.service, "/solve/set/contact_solution_controls/set_settings_to_default").execute(*args, **kwargs)
             def verbosity(self, *args, **kwargs):
                 """
-                specify verbosity level for contact solution controls
+                Specify verbosity level for contact solution controls
                 """
                 return PyMenu(self.service, "/solve/set/contact_solution_controls/verbosity").execute(*args, **kwargs)
 
             class parameters(metaclass=PyMenuMeta):
-                __doc__ = 'parameters used in stabilization strategy'
+                __doc__ = 'Parameters used in stabilization strategy'
                 def iterations(self, *args, **kwargs):
                     """
-                    specify additional iterations to accomodate contact solution stabilization
+                    Specify additional iterations to accomodate contact solution stabilization
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/parameters/iterations").execute(*args, **kwargs)
                 def solution_stabilization_persistence(self, *args, **kwargs):
                     """
-                    persistence of the solution stabilization based on events [0-contact based, 1-always on]
+                    Persistence of the solution stabilization based on events [0-contact based, 1-always on]
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/parameters/solution_stabilization_persistence").execute(*args, **kwargs)
                 def persistence_fixed_time_steps(self, *args, **kwargs):
                     """
-                    specify fixed time-steps for solution stabilization persistence after trigger
+                    Specify fixed time-steps for solution stabilization persistence after trigger
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/parameters/persistence_fixed_time_steps").execute(*args, **kwargs)
                 def persistence_fixed_duration(self, *args, **kwargs):
                     """
-                    specify fixed time for solution stabilization persistence after trigger
+                    Specify fixed time for solution stabilization persistence after trigger
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/parameters/persistence_fixed_duration").execute(*args, **kwargs)
                 def extrapolation_method(self, *args, **kwargs):
                     """
-                    solution extrapolation method for cells changing status from contact to non-contact [0-none, 1-local extrapolation]
+                    Solution extrapolation method for cells changing status from contact to non-contact [0-none, 1-local extrapolation]
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/parameters/extrapolation_method").execute(*args, **kwargs)
 
             class spatial(metaclass=PyMenuMeta):
-                __doc__ = 'spatial discretization control options'
+                __doc__ = 'Spatial discretization control options'
                 def first_to_second_order_blending(self, *args, **kwargs):
                     """
                     Set factor to control first order to second order blending
@@ -30631,7 +30632,7 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/spatial/first_to_second_order_blending").execute(*args, **kwargs)
                 def first_to_second_order_blending_list(self, *args, **kwargs):
                     """
-                    list set factor to control first order to second order blending
+                    List set factor to control first order to second order blending
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/spatial/first_to_second_order_blending_list").execute(*args, **kwargs)
                 def scheme(self, *args, **kwargs):
@@ -30661,7 +30662,7 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/spatial/rhie_chow_method").execute(*args, **kwargs)
 
             class transient(metaclass=PyMenuMeta):
-                __doc__ = 'transient discretization control options '
+                __doc__ = 'Transient discretization control options '
                 def transient_parameters_specify(self, *args, **kwargs):
                     """
                     Allow transient parameter specification
@@ -30687,32 +30688,32 @@ class solve(metaclass=PyMenuMeta):
                 __doc__ = 'AMG control options'
                 def enforce_laplace_coarsening(self, *args, **kwargs):
                     """
-                    enforce the use of laplace coarsening in AMG
+                    Enforce the use of laplace coarsening in AMG
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/amg/enforce_laplace_coarsening").execute(*args, **kwargs)
                 def increase_pre_sweeps(self, *args, **kwargs):
                     """
-                    allow increase in AMG pre-sweep
+                    Allow increase in AMG pre-sweep
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/amg/increase_pre_sweeps").execute(*args, **kwargs)
                 def pre_sweeps(self, *args, **kwargs):
                     """
-                    specify the number of AMG pre-sweeps
+                    Specify the number of AMG pre-sweeps
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/amg/pre_sweeps").execute(*args, **kwargs)
                 def specify_coarsening_rate(self, *args, **kwargs):
                     """
-                    modify AMG coarsening rate
+                    Modify AMG coarsening rate
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/amg/specify_coarsening_rate").execute(*args, **kwargs)
                 def coarsen_rate(self, *args, **kwargs):
                     """
-                    specify AMG coarsening rate
+                    Specify AMG coarsening rate
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/amg/coarsen_rate").execute(*args, **kwargs)
 
             class models(metaclass=PyMenuMeta):
-                __doc__ = 'model control options'
+                __doc__ = 'Model control options'
                 def model_ramping(self, *args, **kwargs):
                     """
                     Activate model ramping for solver stability and accuracy
@@ -30720,53 +30721,53 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/models/model_ramping").execute(*args, **kwargs)
                 def ramp_flow(self, *args, **kwargs):
                     """
-                    ramp flow for solver stability and accuracy
+                    Ramp flow for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/models/ramp_flow").execute(*args, **kwargs)
                 def ramp_turbulence(self, *args, **kwargs):
                     """
-                    ramp turbulence for solver stability and accuracy
+                    Ramp turbulence for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/models/ramp_turbulence").execute(*args, **kwargs)
                 def ramp_scalars(self, *args, **kwargs):
                     """
-                    ramp all scalar transport equations for solver stability and accuracy
+                    Ramp all scalar transport equations for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/models/ramp_scalars").execute(*args, **kwargs)
 
             class methods(metaclass=PyMenuMeta):
-                __doc__ = 'methods control options'
+                __doc__ = 'Methods control options'
                 def pressure_velocity_coupling_controls(self, *args, **kwargs):
                     """
-                    enable pressure-velocity coupling method change for solver stability and accuracy
+                    Enable pressure-velocity coupling method change for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/methods/pressure_velocity_coupling_controls").execute(*args, **kwargs)
                 def pressure_velocity_coupling_method(self, *args, **kwargs):
                     """
-                    specify pressure-velocity coupling method change for solver stability and accuracy
+                    Specify pressure-velocity coupling method change for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/methods/pressure_velocity_coupling_method").execute(*args, **kwargs)
                 def gradient_controls(self, *args, **kwargs):
                     """
-                    modify gradient method for solver stability and accuracy
+                    Modify gradient method for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/methods/gradient_controls").execute(*args, **kwargs)
                 def specify_gradient_method(self, *args, **kwargs):
                     """
-                    specify gradient method for solver stability and accuracy
+                    Specify gradient method for solver stability and accuracy
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/methods/specify_gradient_method").execute(*args, **kwargs)
 
             class miscellaneous(metaclass=PyMenuMeta):
-                __doc__ = 'miscellaneous'
+                __doc__ = 'Miscellaneous'
                 def compute_statistics(self, *args, **kwargs):
                     """
-                    compute solution statistics for contact updates
+                    Compute solution statistics for contact updates
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/miscellaneous/compute_statistics").execute(*args, **kwargs)
                 def statistics_level(self, *args, **kwargs):
                     """
-                    solution statistics level for contact updates
+                    Solution statistics level for contact updates
                     """
                     return PyMenu(self.service, "/solve/set/contact_solution_controls/miscellaneous/statistics_level").execute(*args, **kwargs)
 
@@ -30794,27 +30795,27 @@ class solve(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/transient_controls/duration_specification_method").execute(*args, **kwargs)
             def incremental_time(self, *args, **kwargs):
                 """
-                set Incremental Time.
+                Set Incremental Time.
                 """
                 return PyMenu(self.service, "/solve/set/transient_controls/incremental_time").execute(*args, **kwargs)
             def max_iterations_per_time_step(self, *args, **kwargs):
                 """
-                set Max Iterations/Time step.
+                Set Max Iterations/Time step.
                 """
                 return PyMenu(self.service, "/solve/set/transient_controls/max_iterations_per_time_step").execute(*args, **kwargs)
             def number_of_time_steps(self, *args, **kwargs):
                 """
-                set inceremtal number of Time steps.
+                Set inceremtal number of Time steps.
                 """
                 return PyMenu(self.service, "/solve/set/transient_controls/number_of_time_steps").execute(*args, **kwargs)
             def total_number_of_time_steps(self, *args, **kwargs):
                 """
-                set total number of Time steps.
+                Set total number of Time steps.
                 """
                 return PyMenu(self.service, "/solve/set/transient_controls/total_number_of_time_steps").execute(*args, **kwargs)
             def total_time(self, *args, **kwargs):
                 """
-                set Total Simulation Time.
+                Set Total Simulation Time.
                 """
                 return PyMenu(self.service, "/solve/set/transient_controls/total_time").execute(*args, **kwargs)
             def time_step_size(self, *args, **kwargs):
@@ -30935,7 +30936,7 @@ class solve(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/time_scale_options/acoustic_scale").execute(*args, **kwargs)
 
         class data_sampling_options(metaclass=PyMenuMeta):
-            __doc__ = 'data sampling options for statistics'
+            __doc__ = 'Data sampling options for statistics'
             def add_datasets(self, *args, **kwargs):
                 """
                 Add a dataset. After providing the zones for a dataset, press [Enter] to move onto selecting quantities. Enter () to complete the quantity selection for this dataset.
@@ -30948,12 +30949,12 @@ class solve(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/data_sampling_options/add_rtdft_datasets").execute(*args, **kwargs)
             def remove_dataset(self, *args, **kwargs):
                 """
-                remove dataset
+                Remove dataset
                 """
                 return PyMenu(self.service, "/solve/set/data_sampling_options/remove_dataset").execute(*args, **kwargs)
             def list_datasets(self, *args, **kwargs):
                 """
-                list dataset
+                List dataset
                 """
                 return PyMenu(self.service, "/solve/set/data_sampling_options/list_datasets").execute(*args, **kwargs)
 
@@ -30994,12 +30995,12 @@ class solve(metaclass=PyMenuMeta):
             __doc__ = 'Enter the nita expert controls menu'
             def set_verbosity(self, *args, **kwargs):
                 """
-                set nita verbosity option
+                Set nita verbosity option
                 """
                 return PyMenu(self.service, "/solve/set/nita_expert_controls/set_verbosity").execute(*args, **kwargs)
             def skewness_neighbor_coupling(self, *args, **kwargs):
                 """
-                set skewness neighbor coupling for nita
+                Set skewness neighbor coupling for nita
                 """
                 return PyMenu(self.service, "/solve/set/nita_expert_controls/skewness_neighbor_coupling").execute(*args, **kwargs)
             def hybrid_nita_settings(self, *args, **kwargs):
@@ -31012,59 +31013,59 @@ class solve(metaclass=PyMenuMeta):
             __doc__ = 'Enter the multiphase numerics options menu'
 
             class porous_media(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase relative permeability numerics menu'
+                __doc__ = 'Multiphase relative permeability numerics menu'
                 def relative_permeability(self, *args, **kwargs):
                     """
-                    multiphase relative permeability fix option
+                    Multiphase relative permeability fix option
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/porous_media/relative_permeability").execute(*args, **kwargs)
 
             class compressible_flow(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase compressible numerics options menu'
+                __doc__ = 'Multiphase compressible numerics options menu'
                 def enhanced_numerics(self, *args, **kwargs):
                     """
-                    multiphase enhanced compressible flow numerics options
+                    Multiphase enhanced compressible flow numerics options
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/compressible_flow/enhanced_numerics").execute(*args, **kwargs)
                 def alternate_bc_formulation(self, *args, **kwargs):
                     """
-                    multiphase compressible flow BC alternate method
+                    Multiphase compressible flow BC alternate method
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/compressible_flow/alternate_bc_formulation").execute(*args, **kwargs)
 
             class boiling_parameters(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase boiling parameters menu'
+                __doc__ = 'Multiphase boiling parameters menu'
                 def thin_film(self, *args, **kwargs):
                     """
-                    multiphase boiling thin film effects
+                    Multiphase boiling thin film effects
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/boiling_parameters/thin_film").execute(*args, **kwargs)
                 def liquid_vof_factor(self, *args, **kwargs):
                     """
-                    multiphase boiling liquid volume fraction effects
+                    Multiphase boiling liquid volume fraction effects
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/boiling_parameters/liquid_vof_factor").execute(*args, **kwargs)
 
             class viscous_flow(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase viscous flow numerics options menu'
+                __doc__ = 'Multiphase viscous flow numerics options menu'
                 def viscosity_averaging(self, *args, **kwargs):
                     """
-                    multiphase options for viscosity averaging
+                    Multiphase options for viscosity averaging
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/viscous_flow/viscosity_averaging").execute(*args, **kwargs)
                 def turb_visc_based_damping(self, *args, **kwargs):
                     """
-                    turbulence viscosity based damping controls
+                    Turbulence viscosity based damping controls
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/viscous_flow/turb_visc_based_damping").execute(*args, **kwargs)
                 def interfacial_artificial_viscosity(self, *args, **kwargs):
                     """
-                    interfacial artifical viscosity controls
+                    Interfacial artifical viscosity controls
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/viscous_flow/interfacial_artificial_viscosity").execute(*args, **kwargs)
 
             class heat_mass_transfer(metaclass=PyMenuMeta):
-                __doc__ = 'multiphase interphase heat and mass transfer numerics options menu'
+                __doc__ = 'Multiphase interphase heat and mass transfer numerics options menu'
                 def alternative_energy_treatment(self, *args, **kwargs):
                     """
                     Alternative treatment of latent heat source due to mass transfer.
@@ -31072,15 +31073,15 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/alternative_energy_treatment").execute(*args, **kwargs)
 
                 class cavitation(metaclass=PyMenuMeta):
-                    __doc__ = 'cavitation numerics options menu'
+                    __doc__ = 'Cavitation numerics options menu'
                     def schnerr_evap_coeff(self, *args, **kwargs):
                         """
-                        evaporation coefficient for Schnerr-Sauer model
+                        Evaporation coefficient for Schnerr-Sauer model
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/schnerr_evap_coeff").execute(*args, **kwargs)
                     def schnerr_cond_coeff(self, *args, **kwargs):
                         """
-                        condensation coefficient for Schnerr-Sauer model
+                        Condensation coefficient for Schnerr-Sauer model
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/schnerr_cond_coeff").execute(*args, **kwargs)
                     def max_vapor_pressure_ratio(self, *args, **kwargs):
@@ -31090,7 +31091,7 @@ class solve(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/max_vapor_pressure_ratio").execute(*args, **kwargs)
                     def min_vapor_pressure(self, *args, **kwargs):
                         """
-                        minimum vapor pressure limit for cavitation model
+                        Minimum vapor pressure limit for cavitation model
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/min_vapor_pressure").execute(*args, **kwargs)
                     def display_clipped_pressure(self, *args, **kwargs):
@@ -31107,48 +31108,48 @@ class solve(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/turbulent_diffusion").execute(*args, **kwargs)
 
                 class evaporation_condensation(metaclass=PyMenuMeta):
-                    __doc__ = 'evaporation-condensation advanced options menu'
+                    __doc__ = 'Evaporation-condensation advanced options menu'
                     def vof_from_min_limit(self, *args, **kwargs):
                         """
-                        minimum volume fraction below which mass transfer rate is set to zero
+                        Minimum volume fraction below which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_from_min_limit").execute(*args, **kwargs)
                     def vof_from_max_limit(self, *args, **kwargs):
                         """
-                        maximum volume fraction above which mass transfer rate is set to zero
+                        Maximum volume fraction above which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_from_max_limit").execute(*args, **kwargs)
                     def vof_to_min_limit(self, *args, **kwargs):
                         """
-                        minimum volume fraction below which mass transfer rate is set to zero
+                        Minimum volume fraction below which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_to_min_limit").execute(*args, **kwargs)
                     def vof_to_max_limit(self, *args, **kwargs):
                         """
-                        maximum volume fraction above which mass transfer rate is set to zero
+                        Maximum volume fraction above which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/evaporation_condensation/vof_to_max_limit").execute(*args, **kwargs)
                     def ia_norm_min_limit(self, *args, **kwargs):
                         """
-                        minimum normalized area density below which mass transfer rate is set to zero
+                        Minimum normalized area density below which mass transfer rate is set to zero
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/evaporation_condensation/ia_norm_min_limit").execute(*args, **kwargs)
                     def max_rel_humidity(self, *args, **kwargs):
                         """
-                        maximum value of relative humidity to limit condensation rate
+                        Maximum value of relative humidity to limit condensation rate
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/evaporation_condensation/max_rel_humidity").execute(*args, **kwargs)
 
                 class boiling(metaclass=PyMenuMeta):
-                    __doc__ = 'boiling advanced options menu'
+                    __doc__ = 'Boiling advanced options menu'
                     def heat_flux_relaxation_factor(self, *args, **kwargs):
                         """
-                        under-relaxation factor for boiling heat flux
+                        Under-relaxation factor for boiling heat flux
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/boiling/heat_flux_relaxation_factor").execute(*args, **kwargs)
                     def show_expert_options(self, *args, **kwargs):
                         """
-                        exposes expert options of min/max superheat along with wetting fraction controls
+                        Exposes expert options of min/max superheat along with wetting fraction controls
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/boiling/show_expert_options").execute(*args, **kwargs)
                     def two_resistance_boiling_framework(self, *args, **kwargs):
@@ -31158,10 +31159,10 @@ class solve(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/boiling/two_resistance_boiling_framework").execute(*args, **kwargs)
 
                 class area_density(metaclass=PyMenuMeta):
-                    __doc__ = 'interfacial area density menu'
+                    __doc__ = 'Interfacial area density menu'
                     def vof_min_seeding(self, *args, **kwargs):
                         """
-                        minimum vof seeding for non-zero area density in heat and mass transfer
+                        Minimum vof seeding for non-zero area density in heat and mass transfer
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/area_density/vof_min_seeding").execute(*args, **kwargs)
                     def ia_grad_sym(self, *args, **kwargs):
@@ -31335,7 +31336,7 @@ class solve(metaclass=PyMenuMeta):
                 __doc__ = 'Enter the face pressure expert controls menu'
                 def face_pressure_options(self, *args, **kwargs):
                     """
-                    set face pressure options
+                    Set face pressure options
                     """
                     return PyMenu(self.service, "/solve/set/multiphase_numerics/face_pressure_controls/face_pressure_options").execute(*args, **kwargs)
 
@@ -31407,17 +31408,17 @@ class solve(metaclass=PyMenuMeta):
             __doc__ = 'Enter the open-channel-wave-options menu'
             def set_verbosity(self, *args, **kwargs):
                 """
-                set open channel wave verbosity
+                Set open channel wave verbosity
                 """
                 return PyMenu(self.service, "/solve/set/open_channel_wave_options/set_verbosity").execute(*args, **kwargs)
             def stokes_wave_variants(self, *args, **kwargs):
                 """
-                set stokes wave theory variants
+                Set stokes wave theory variants
                 """
                 return PyMenu(self.service, "/solve/set/open_channel_wave_options/stokes_wave_variants").execute(*args, **kwargs)
             def set_buffer_layer_ht(self, *args, **kwargs):
                 """
-                set bufer layer height between phases for segregated velocity inputs
+                Set bufer layer height between phases for segregated velocity inputs
                 """
                 return PyMenu(self.service, "/solve/set/open_channel_wave_options/set_buffer_layer_ht").execute(*args, **kwargs)
 
@@ -31433,7 +31434,7 @@ class solve(metaclass=PyMenuMeta):
                 __doc__ = 'High Order Term Relaxation Options'
                 def relaxation_factor(self, *args, **kwargs):
                     """
-                    sets relaxation factor
+                    Sets relaxation factor
                     """
                     return PyMenu(self.service, "/solve/set/high_order_term_relaxation/options/relaxation_factor").execute(*args, **kwargs)
                 def expert(self, *args, **kwargs):
@@ -31446,7 +31447,7 @@ class solve(metaclass=PyMenuMeta):
                     __doc__ = 'Select Variables'
                     def select(self, *args, **kwargs):
                         """
-                        select variables for high order term relaxation
+                        Select variables for high order term relaxation
                         """
                         return PyMenu(self.service, "/solve/set/high_order_term_relaxation/options/variables/select").execute(*args, **kwargs)
 
@@ -31704,7 +31705,7 @@ class solve(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/high_speed_numerics/enable").execute(*args, **kwargs)
             def expert(self, *args, **kwargs):
                 """
-                expert high-speed-numerics.
+                Expert high-speed-numerics.
                 """
                 return PyMenu(self.service, "/solve/set/high_speed_numerics/expert").execute(*args, **kwargs)
             def visualize_pressure_discontinuity_sensor(self, *args, **kwargs):
@@ -31773,7 +31774,7 @@ class solve(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/overset/expert/mass_flux_correction_method").execute(*args, **kwargs)
                 def hybrid_mode_selection(self, *args, **kwargs):
                     """
-                    mode for hybrid interpolation
+                    Mode for hybrid interpolation
                     """
                     return PyMenu(self.service, "/solve/set/overset/expert/hybrid_mode_selection").execute(*args, **kwargs)
 
@@ -34843,12 +34844,12 @@ class setup(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/setup/gap_model/advanced_options/clear_gap_regions").execute(*args, **kwargs)
             def precise_gap_marking(self, *args, **kwargs):
                 """
-                mark cells in gap regions using more accurate search algorithm.
+                Mark cells in gap regions using more accurate search algorithm.
                 """
                 return PyMenu(self.service, "/setup/gap_model/advanced_options/precise_gap_marking").execute(*args, **kwargs)
             def render_flow_modeling_gaps(self, *args, **kwargs):
                 """
-                render solution inside flow modeling gap cells.
+                Render solution inside flow modeling gap cells.
                 """
                 return PyMenu(self.service, "/setup/gap_model/advanced_options/render_flow_modeling_gaps").execute(*args, **kwargs)
             def reduce_gap_regions(self, *args, **kwargs):
@@ -35807,7 +35808,7 @@ class setup(metaclass=PyMenuMeta):
                 __doc__ = 'Enter the erosion-dynamic mesh interactions menu.'
                 def enable_erosion_dynamic_mesh_coupling(self, *args, **kwargs):
                     """
-                    enable mesh deformation due to wall erosion
+                    Enable mesh deformation due to wall erosion
                     """
                     return PyMenu(self.service, "/setup/models/dpm/erosion_dynamic_mesh/enable_erosion_dynamic_mesh_coupling").execute(*args, **kwargs)
                 def run_simulation(self, *args, **kwargs):
@@ -36016,7 +36017,7 @@ class setup(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/setup/models/dpm/numerics/verbosity").execute(*args, **kwargs)
                 def error_control(self, *args, **kwargs):
                     """
-                    set the adapt integration step length based on a maximum error
+                    Set the adapt integration step length based on a maximum error
                     """
                     return PyMenu(self.service, "/setup/models/dpm/numerics/error_control").execute(*args, **kwargs)
                 def automated_scheme_selection(self, *args, **kwargs):
@@ -36608,7 +36609,7 @@ class setup(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/setup/models/cht/explicit_time_averaged_coupling/coupling_controls").execute(*args, **kwargs)
                 def fuse_explicit_cht_zones(self, *args, **kwargs):
                     """
-                    fuse slitted conformal coupled walls marked for transient explicit thermal coupling.
+                    Fuse slitted conformal coupled walls marked for transient explicit thermal coupling.
                     """
                     return PyMenu(self.service, "/setup/models/cht/explicit_time_averaged_coupling/fuse_explicit_cht_zones").execute(*args, **kwargs)
 
@@ -36631,7 +36632,7 @@ class setup(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/setup/models/two_temperature/nasa9_enhancement").execute(*args, **kwargs)
             def set_verbosity(self, *args, **kwargs):
                 """
-                set two-temperature model verbosity option
+                Set two-temperature model verbosity option
                 """
                 return PyMenu(self.service, "/setup/models/two_temperature/set_verbosity").execute(*args, **kwargs)
 
@@ -36649,7 +36650,7 @@ class setup(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/setup/models/multiphase/number_of_phases").execute(*args, **kwargs)
             def regime_transition_modeling(self, *args, **kwargs):
                 """
-                regime-transition-modeling-options
+                Regime-transition-modeling-options
                 """
                 return PyMenu(self.service, "/setup/models/multiphase/regime_transition_modeling").execute(*args, **kwargs)
             def eulerian_parameters(self, *args, **kwargs):
@@ -39621,22 +39622,22 @@ class setup(metaclass=PyMenuMeta):
                     __doc__ = 'Enter the IAC expert setting menu'
                     def ishii_kim_model(self, *args, **kwargs):
                         """
-                        set ik model coefficients
+                        Set ik model coefficients
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/phases/iac_expert/ishii_kim_model").execute(*args, **kwargs)
                     def hibiki_ishii_model(self, *args, **kwargs):
                         """
-                        set hi model coefficients
+                        Set hi model coefficients
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/phases/iac_expert/hibiki_ishii_model").execute(*args, **kwargs)
                     def yao_morel_model(self, *args, **kwargs):
                         """
-                        set ym model coefficients
+                        Set ym model coefficients
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/phases/iac_expert/yao_morel_model").execute(*args, **kwargs)
                     def iac_pseudo_time_step(self, *args, **kwargs):
                         """
-                        set iac pseudo-time
+                        Set iac pseudo-time
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/phases/iac_expert/iac_pseudo_time_step").execute(*args, **kwargs)
 
@@ -39695,12 +39696,12 @@ class setup(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/setup/models/multiphase/population_balance/model").execute(*args, **kwargs)
                 def include_expansion(self, *args, **kwargs):
                     """
-                    set expansion
+                    Set expansion
                     """
                     return PyMenu(self.service, "/setup/models/multiphase/population_balance/include_expansion").execute(*args, **kwargs)
                 def size_calculator(self, *args, **kwargs):
                     """
-                    calculate fluid particle diameters using different methods
+                    Calculate fluid particle diameters using different methods
                     """
                     return PyMenu(self.service, "/setup/models/multiphase/population_balance/size_calculator").execute(*args, **kwargs)
 
@@ -39738,7 +39739,7 @@ class setup(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/setup/models/multiphase/population_balance/phenomena/breakage_factor").execute(*args, **kwargs)
                     def breakage_aggregation_vof_cutoff(self, *args, **kwargs):
                         """
-                        control vof cut-off for breakage and aggregation
+                        Control vof cut-off for breakage and aggregation
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/population_balance/phenomena/breakage_aggregation_vof_cutoff").execute(*args, **kwargs)
 
@@ -39749,7 +39750,7 @@ class setup(metaclass=PyMenuMeta):
                         __doc__ = ''
                         def retain_qmom_sources_for_low_vof(self, *args, **kwargs):
                             """
-                            retain qmom source calculation for low secondary phase vof
+                            Retain qmom source calculation for low secondary phase vof
                             """
                             return PyMenu(self.service, "/setup/models/multiphase/population_balance/expert/qmom/retain_qmom_sources_for_low_vof").execute(*args, **kwargs)
                         def realizable_moments(self, *args, **kwargs):
@@ -39785,12 +39786,12 @@ class setup(metaclass=PyMenuMeta):
                     __doc__ = 'Advanced volume fraction filtering controls for explicit formulation'
                     def enable(self, *args, **kwargs):
                         """
-                        enable volume fraction filtering treatment
+                        Enable volume fraction filtering treatment
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/explicit_expert_options/volume_fraction_filtering/enable").execute(*args, **kwargs)
                     def filtering_options(self, *args, **kwargs):
                         """
-                        select volume fraction filtering method
+                        Select volume fraction filtering method
                         """
                         return PyMenu(self.service, "/setup/models/multiphase/explicit_expert_options/volume_fraction_filtering/filtering_options").execute(*args, **kwargs)
                     def vol_frac_cutoff(self, *args, **kwargs):
@@ -40439,7 +40440,7 @@ class setup(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/setup/models/species/set_premixed_combustion").execute(*args, **kwargs)
             def set_multi_regime_fgm(self, *args, **kwargs):
                 """
-                set-multi-regim-fgm-parameters
+                Set-multi-regim-fgm-parameters
                 """
                 return PyMenu(self.service, "/setup/models/species/set_multi_regime_fgm").execute(*args, **kwargs)
             def relax_to_equil(self, *args, **kwargs):
@@ -40474,7 +40475,7 @@ class setup(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/setup/models/species/reacting_channel_model_options").execute(*args, **kwargs)
             def combustion_numerics(self, *args, **kwargs):
                 """
-                set combustion numerics options
+                Set combustion numerics options
                 """
                 return PyMenu(self.service, "/setup/models/species/combustion_numerics").execute(*args, **kwargs)
 
@@ -41717,7 +41718,7 @@ class setup(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/setup/reference_frames/display").execute(*args, **kwargs)
         def display_edit(self, *args, **kwargs):
             """
-            display and edit reference frame from graphics
+            Display and edit reference frame from graphics
             """
             return PyMenu(self.service, "/setup/reference_frames/display_edit").execute(*args, **kwargs)
         def edit(self, *args, **kwargs):
