@@ -25,13 +25,14 @@ FLUENT_DEFAULT_PORT = 63084
 def _get_fluent_path():
     if "PYFLUENT_FLUENT_ROOT" in os.environ:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
+        return Path(path)
     else:
         path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
-    return Path(path)
+        return Path(path) / "fluent"
 
 
 def _get_fluent_exe_path():
-    exe_path = _get_fluent_path() / "fluent"
+    exe_path = _get_fluent_path()
     if platform.system() == "Windows":
         exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
     else:

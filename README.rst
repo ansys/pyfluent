@@ -14,7 +14,7 @@ For a local "development" version, install with:
 
 Usage
 -----
-1) Fluent should be installed from the latest daily build. Set AWP_ROOT environment variable to vXXX directory to use a custom Fluent build.
+1) Fluent should be installed from the latest daily build. Set PYFLUENT_FLUENT_ROOT environment variable to vXXX/fluent directory to use a custom Fluent build.
 2) Within a Python 3 console, execute:
 
 .. code:: python
