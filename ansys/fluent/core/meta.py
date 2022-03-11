@@ -1,5 +1,5 @@
 """Metaclasses used in various explicit classes in PyFluent"""
-
+from abc import ABCMeta
 from collections.abc import MutableMapping
 from pprint import pformat
 
@@ -33,6 +33,7 @@ class Attribute:
 
 class PyMenuMeta(type):
     """Metaclass for explicit TUI menu classes"""
+
     @classmethod
     def __create_init(cls):
         def wrapper(self, path, service):
@@ -87,14 +88,11 @@ class PyMenuMeta(type):
 
 
 class PyLocalPropertyMeta(type):
+    """Metaclass for local property classes"""
+
     @classmethod
     def __create_validate(cls):
         def wrapper(self, value):
-            old_value = self()
-            if old_value and type(old_value) != type(value):
-                raise TypeError(
-                    f"Value {value}, should be of type {type(old_value)}"
-                )
             attrs = getattr(self, "attributes", None)
             if attrs:
                 for attr in attrs:
@@ -128,8 +126,21 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent):
+            def get_top_most_parent(obj):
+                parent = obj
+                if getattr(obj, "parent", None):
+                    parent = get_top_most_parent(obj.parent)
+                return parent
+
+            self.get_session = lambda: get_top_most_parent(self).session
             self.parent = parent
             self._on_change_cbs = []
+            annotations = self.__class__.__dict__.get("__annotations__")
+            if isinstance(getattr(self.__class__, "value", None), property):
+                value_annotation = annotations.get("_value")
+            else:
+                value_annotation = annotations.get("value")
+            self._type = value_annotation
             reset_on_change = (
                 hasattr(self, "_reset_on_change")
                 and getattr(self, "_reset_on_change")()
@@ -139,94 +150,25 @@ class PyLocalPropertyMeta(type):
                     obj._register_on_change_cb(
                         lambda: setattr(self, "_value", None)
                     )
-            for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocalPropertyMeta":
-                    setattr(
-                        self,
-                        name,
-                        cls(self),
-                    )
-                if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
-                    setattr(
-                        self,
-                        cls.PLURAL,
-                        PyLocalContainer(self, cls),
-                    )
 
         return wrapper
 
     @classmethod
-    def __create_getattribute(cls):
-        def wrapper(self, name):
-            if name == "availability":
-                return object.__getattribute__(self, "availability")
-            availability = (
-                getattr(self, "availability")(name)
-                if hasattr(self, "availability")
-                else True
-            )
-            if availability:
-                return object.__getattribute__(self, name)
-            else:
+    def __create_get_state(cls, show_attributes=False):
+        def wrapper(self):
+            try:
+                return self.value
+            except AttributeError:
                 return None
-
-        return wrapper
-
-    @classmethod
-    def __create_get_state(cls):
-        def wrapper(self, show_attributes=False):
-            state = {}
-            for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocalPropertyMeta":
-                    availability = (
-                        getattr(self, "availability")(name)
-                        if hasattr(self, "availability")
-                        else True
-                    )
-                    if availability:
-                        o = getattr(self, name)
-                        state[name] = o(show_attributes)
-                        attrs = show_attributes and getattr(
-                            o, "attributes", False
-                        )
-                        if attrs:
-                            for attr in attrs:
-                                state[name + "." + attr] = getattr(o, attr)
-
-            if len(state) > 0:
-                return state
-            else:
-                try:
-                    return self.value
-                except AttributeError:
-                    return None
 
         return wrapper
 
     @classmethod
     def __create_set_state(cls):
         def wrapper(self, value):
-            if isinstance(value, dict):
-                for k, v in value.items():
-                    setattr(self, k, v)
-            else:
-                self.value = self._validate(value)
+            self.value = self._validate(value)
             for on_change_cb in self._on_change_cbs:
                 on_change_cb()
-
-        return wrapper
-
-    @classmethod
-    def __create_setattr(cls):
-        def wrapper(self, name, value):
-            attr = getattr(self, name, None)
-            if (
-                attr
-                and attr.__class__.__class__.__name__ == "PyLocalPropertyMeta"
-            ):
-                attr.set_state(value)
-            else:
-                object.__setattr__(self, name, value)
 
         return wrapper
 
@@ -240,19 +182,14 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_repr(cls):
         def wrapper(self):
-            data = self(True)
-            if isinstance(data, dict):
-                return pformat(data, depth=1, indent=2)
-            else:
-                return f"{data}"
+            data = self()
+            return f"{data}"
 
         return wrapper
 
     def __new__(cls, name, bases, attrs):
         attrs["__init__"] = cls.__create_init()
         attrs["__call__"] = cls.__create_get_state()
-        attrs["__getattribute__"] = cls.__create_getattribute()
-        attrs["__setattr__"] = cls.__create_setattr()
         attrs["__repr__"] = cls.__create_repr()
         attrs["_validate"] = cls.__create_validate()
         attrs["_register_on_change_cb"] = cls.__create_register_on_change()
@@ -261,25 +198,52 @@ class PyLocalPropertyMeta(type):
         return super(PyLocalPropertyMeta, cls).__new__(cls, name, bases, attrs)
 
 
-class PyLocalNamedObjectMeta(type):
+class PyLocalObjectMeta(type):
+    """Metaclass for local object classes"""
+
     @classmethod
     def __create_init(cls):
-        def wrapper(self, name, parent):
-            self.__name = name
+        def wrapper(self, parent):
             self.parent = parent
-            for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocalPropertyMeta":
-                    setattr(
-                        self,
-                        name,
-                        cls(self),
-                    )
-                if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
-                    setattr(
-                        self,
-                        cls.PLURAL,
-                        PyLocalContainer(self, cls),
-                    )
+
+            def update(clss):
+                for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in (
+                        "PyLocalPropertyMeta",
+                        "PyLocalObjectMeta",
+                    ):
+                        setattr(
+                            self,
+                            name,
+                            cls(self),
+                        )
+                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
+                        setattr(
+                            self,
+                            cls.PLURAL,
+                            PyLocalContainer(self, cls),
+                        )
+                for base_class in clss.__bases__:
+                    update(base_class)
+
+            update(self.__class__)
+
+        return wrapper
+
+    @classmethod
+    def __create_getattribute(cls):
+        def wrapper(self, name):
+            if name == "_availability":
+                return object.__getattribute__(self, "_availability")
+            availability = (
+                getattr(self, "_availability")(name)
+                if hasattr(self, "_availability")
+                else True
+            )
+            if availability:
+                return object.__getattribute__(self, name)
+            else:
+                return None
 
         return wrapper
 
@@ -291,7 +255,11 @@ class PyLocalNamedObjectMeta(type):
     def __create_updateitem(cls):
         def wrapper(self, value):
             for name, val in value.items():
-                getattr(self, name).set_state(val)
+                obj = getattr(self, name)
+                if obj.__class__.__class__.__name__ == "PyLocalPropertyMeta":
+                    obj.set_state(val)
+                else:
+                    obj.update(val)
 
         return wrapper
 
@@ -301,22 +269,33 @@ class PyLocalNamedObjectMeta(type):
     def __create_get_state(cls):
         def wrapper(self, show_attributes=False):
             state = {}
-            for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyLocalPropertyMeta":
+
+            def update_state(clss):
+                for name, cls in clss.__dict__.items():
+
                     availability = (
-                        getattr(self, "availability")(name)
-                        if hasattr(self, "availability")
+                        getattr(self, "_availability")(name)
+                        if hasattr(self, "_availability")
                         else True
                     )
                     if availability:
                         o = getattr(self, name)
-                        state[name] = o(show_attributes)
-                        attrs = show_attributes and getattr(
-                            o, "attributes", None
-                        )
-                        if attrs:
-                            for attr in attrs:
-                                state[name + "." + attr] = getattr(o, attr)
+                        if cls.__class__.__name__ == "PyLocalObjectMeta":
+                            state[name] = o(show_attributes)
+
+                        if cls.__class__.__name__ == "PyLocalPropertyMeta":
+                            state[name] = o()
+                            attrs = show_attributes and getattr(
+                                o, "attributes", None
+                            )
+                            if attrs:
+                                for attr in attrs:
+                                    state[name + "." + attr] = getattr(o, attr)
+
+                for base_class in clss.__bases__:
+                    update_state(base_class)
+
+            update_state(self.__class__)
             return state
 
         return wrapper
@@ -345,18 +324,63 @@ class PyLocalNamedObjectMeta(type):
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs["__init__"] = cls.__create_init()
+        attrs["__getattribute__"] = cls.__create_getattribute()
+        attrs["__init__"] = attrs.get("__init__", cls.__create_init())
         attrs["__call__"] = cls.__create_get_state()
         attrs["__setattr__"] = cls.__create_setattr()
         attrs["__repr__"] = cls.__create_repr()
         attrs["update"] = cls.__create_updateitem()
         attrs["parent"] = None
+        return super(PyLocalObjectMeta, cls).__new__(cls, name, bases, attrs)
+
+
+class PyLocalNamedObjectMeta(PyLocalObjectMeta):
+    """Metaclass for local named object classes"""
+
+    @classmethod
+    def __create_init(cls):
+        def wrapper(self, name, parent):
+            self.__name = name
+            self.parent = parent
+
+            def update(clss):
+                for name, cls in clss.__dict__.items():
+                    if cls.__class__.__name__ in (
+                        "PyLocalPropertyMeta",
+                        "PyLocalObjectMeta",
+                    ):
+                        setattr(
+                            self,
+                            name,
+                            cls(self),
+                        )
+                    if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
+                        setattr(
+                            self,
+                            cls.PLURAL,
+                            PyLocalContainer(self, cls),
+                        )
+                for base_class in clss.__bases__:
+                    update(base_class)
+
+            update(self.__class__)
+
+        return wrapper
+
+    def __new__(cls, name, bases, attrs):
+        attrs["__init__"] = cls.__create_init()
         return super(PyLocalNamedObjectMeta, cls).__new__(
             cls, name, bases, attrs
         )
 
 
+class PyLocalNamedObjectMetaAbstract(ABCMeta, PyLocalNamedObjectMeta):
+    pass
+
+
 class PyLocalContainer(MutableMapping):
+    """Local container for named objects"""
+
     def __init__(self, parent, object_class):
         self.parent = parent
         self.__object_class = object_class
@@ -391,6 +415,7 @@ class PyLocalContainer(MutableMapping):
 
 class PyNamedObjectMeta(type):
     """Metaclass for explicit named object classes in Fluent"""
+
     @classmethod
     def __create_init(cls):
         def wrapper(self, path, name, service):

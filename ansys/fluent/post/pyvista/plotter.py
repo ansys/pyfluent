@@ -1,11 +1,12 @@
 """Module for graphics windows management."""
+import itertools
 import threading
-from typing import List, Optional
+from typing import List, Optional, Union
 import numpy as np
-from pyvistaqt import BackgroundPlotter
 import pyvista as pv
+from pyvistaqt import BackgroundPlotter
 from ansys.fluent.core.session import Session
-
+from ansys.fluent.core.utils.generic import in_notebook
 
 class Singleton(type):
     __instances = {}
@@ -23,7 +24,7 @@ class _Plotter(metaclass=Singleton):
     Class for graphics windows management.
     """
 
-    __condition = threading.Condition()
+    _condition = threading.Condition()
 
     def __init__(self):
         self.__graphics = None
@@ -32,6 +33,36 @@ class _Plotter(metaclass=Singleton):
         self.__plotter_thread = None
         self.__plotters = {}
         self.__app = None
+
+    def open_window_in_notebook(
+        self, plotter_id: Optional[str] = None
+    ) -> None:
+        """
+        Open blank window in notebook.
+
+        Parameters
+        ----------
+        plotter_id : str
+            Plotter id.
+        """
+        if in_notebook():
+            if not plotter_id:
+                plotter_id = self._get_unique_plotter_id()
+            self._open_window_notebook(plotter_id)
+            return plotter_id
+
+    def set_graphics(self, obj: object, plotter_id: str) -> None:
+        """
+        Associate graphics object with plotter instance.
+
+        Parameters
+        ----------
+        plotter_id : str
+            Plotter id.
+        """
+        plotter_data = self.__plotters.get(plotter_id)
+        if plotter_data:
+            plotter_data["graphics"] = obj
 
     def plot(self, obj: object, plotter_id: Optional[str] = None) -> None:
         """
@@ -43,26 +74,14 @@ class _Plotter(metaclass=Singleton):
             Graphics object to plot.
 
         plotter_id : Optional[str]
-            Plotter id. If not specified session id is used.
+            Plotter id. If not specified unique id is used.
         """
-
-        if self.__exit:
-            return
         if not plotter_id:
-            plotter_id = obj.parent.parent.session.id
-        with self.__condition:
-            self.__plotter_id = plotter_id
-            self.__graphics = obj
-
-        if not self.__plotter_thread:
-            Session._monitor_thread.cbs.append(self._exit)
-            self.__plotter_thread = threading.Thread(
-                target=self._display, args=()
-            )
-            self.__plotter_thread.start()
-
-        with self.__condition:
-            self.__condition.wait()
+            plotter_id = self._get_unique_plotter_id()
+        if in_notebook():
+            self._plot_notebook(obj, plotter_id)
+        else:
+            self._plot_console(obj, plotter_id)
 
     def refresh(
         self,
@@ -83,11 +102,12 @@ class _Plotter(metaclass=Singleton):
             Plotters id to refresh. If not specified, all plotters will be
             refreshed.
         """
-        with self.__condition:
+        with self._condition:
             plotters_id = self._get_plotters_id(session_id, plotters_id)
             for plotter_id in plotters_id:
                 plotter_data = self.__plotters.get(plotter_id)
                 if plotter_data:
+                    plotter_data["refresh"] = True
                     self.plot(plotter_data["graphics"], plotter_id)
 
     def animate(
@@ -110,7 +130,7 @@ class _Plotter(metaclass=Singleton):
             animated.
         """
 
-        with self.__condition:
+        with self._condition:
             plotters_id = self._get_plotters_id(session_id, plotters_id)
             for plotter_id in plotters_id:
                 plotter_data = self.__plotters.get(plotter_id)
@@ -138,21 +158,81 @@ class _Plotter(metaclass=Singleton):
             closed.
         """
 
-        with self.__condition:
+        with self._condition:
             plotters_id = self._get_plotters_id(session_id, plotters_id)
             for plotter_id in plotters_id:
                 plotter_data = self.__plotters.get(plotter_id)
                 if plotter_data:
+                    if in_notebook():
+                        plotter_data["plotter"].close()
                     plotter_data["close"] = True
 
     # private methods
+
+    def _get_unique_plotter_id(self) -> str:
+        itr_count = itertools.count()
+        with self._condition:
+            while True:
+                plotter_id = f"plotter-{next(itr_count)}"
+                if plotter_id not in self.__plotters:
+                    return plotter_id
+
+    def _plot_console(self, obj: object, plotter_id: str) -> None:
+        if self.__exit:
+            return
+        with self._condition:
+            self.__plotter_id = plotter_id
+            self.__graphics = obj
+
+        if not self.__plotter_thread:
+            Session._monitor_thread.cbs.append(self._exit)
+            self.__plotter_thread = threading.Thread(
+                target=self._display, args=()
+            )
+            self.__plotter_thread.start()
+
+        with self._condition:
+            self._condition.wait()
+
+    def _open_window_notebook(self, plotter_id: str) -> pv.Plotter:
+        plotter_data = self.__plotters.get(plotter_id)
+        plotter = None
+        if (
+            plotter_data
+            and not plotter_data["close"]
+            and plotter_data["refresh"]
+        ):
+            plotter_data["refresh"] = False
+        else:
+            plotter = pv.Plotter()
+            plotter_data = {
+                "plotter": plotter,
+                "animate": False,
+                "close": False,
+                "refresh": False,
+            }
+            self.__plotters[plotter_id] = plotter_data
+            self._init_properties(plotter)
+            plotter.show()
+        return plotter_data
+
+    def _plot_notebook(self, obj: object, plotter_id: str) -> None:
+        plotter_data = self._open_window_notebook(plotter_id)
+        self.set_graphics(obj, plotter_id)
+        plotter = plotter_data["plotter"]
+        plotter.clear()
+        camera = plotter.camera.copy()
+        self._display_object(obj, plotter)
+        plotter.camera = camera.copy()
+        if plotter_data["animate"]:
+            plotter.write_frame()
 
     def _get_plotters_id(
         self,
         session_id: Optional[str] = "",
         plotters_id: Optional[List[str]] = [],
-    ):
-        with self.__condition:
+    ) -> List[str]:
+        with self._condition:
             return [
                 plotter_id
                 for plotter_id in [
@@ -170,9 +250,9 @@ class _Plotter(metaclass=Singleton):
 
     def _exit(self) -> None:
         if self.__plotter_thread:
-            with self.__condition:
+            with self._condition:
                 self.__exit = True
-                self.__condition.wait()
+                self._condition.wait()
             self.__plotter_thread.join()
             self.__plotter_thread = None
 
@@ -181,7 +261,7 @@ class _Plotter(metaclass=Singleton):
         active_plotter.background_color = "white"
         active_plotter.theme.font.color = "black"
 
-    def _scalar_bar_default_properties(self):
+    def _scalar_bar_default_properties(self) -> dict:
         return dict(
             title_font_size=20,
             label_font_size=16,
@@ -193,10 +273,10 @@ class _Plotter(metaclass=Singleton):
             position_y=0.3,
         )
 
-    def _display(self):
+    def _display(self) -> None:
 
         while True:
-            with self.__condition:
+            with self._condition:
                 if self.__exit:
                     break
                 if self.__graphics and self.__plotter_id:
@@ -222,15 +302,17 @@ class _Plotter(metaclass=Singleton):
                         "animate": animate,
                     }
             self.__app.processEvents()
-        with self.__condition:
+        with self._condition:
             for plotter_data in self.__plotters.values():
                 plotter = plotter_data["plotter"]
                 plotter.close()
                 plotter.app.quit()
             self.__plotters.clear()
-            self.__condition.notify()
+            self._condition.notify()
 
-    def _display_vector(self, obj, plotter):
+    def _display_vector(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
 
         if not obj.surfaces_list():
             raise RuntimeError("Vector definition is incomplete.")
@@ -307,7 +389,9 @@ class _Plotter(metaclass=Singleton):
             if obj.show_edges():
                 plotter.add_mesh(mesh, show_edges=True, color="white")
 
-    def _display_contour(self, obj, plotter):
+    def _display_contour(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
         if not obj.surfaces_list() or not obj.field():
             raise RuntimeError("Contour definition is incomplete.")
 
@@ -431,7 +515,9 @@ class _Plotter(metaclass=Singleton):
                     ):
                         plotter.add_mesh(mesh.contour(isosurfaces=20))
 
-    def _display_iso_surface(self, obj, plotter):
+    def _display_iso_surface(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
         field = obj.surface_type.iso_surface.field()
         if not field:
             raise RuntimeError("Iso surface definition is incomplete.")
@@ -471,7 +557,9 @@ class _Plotter(metaclass=Singleton):
             dummy_surface_name
         )
 
-    def _display_mesh(self, obj, plotter):
+    def _display_mesh(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
         if not obj.surfaces_list():
             raise RuntimeError("Mesh definition is incomplete.")
         field_data = obj.parent.parent.session.field_data
@@ -499,10 +587,23 @@ class _Plotter(metaclass=Singleton):
                 mesh, show_edges=obj.show_edges(), color="lightgrey"
             )
 
+    def _display_object(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
+        if obj.__class__.__name__ == "Mesh":
+            self._display_mesh(obj, plotter)
+        elif obj.__class__.__name__ == "Surface":
+            if obj.surface_type.surface_type() == "iso-surface":
+                self._display_iso_surface(obj, plotter)
+        elif obj.__class__.__name__ == "Contour":
+            self._display_contour(obj, plotter)
+        elif obj.__class__.__name__ == "Vector":
+            self._display_vector(obj, plotter)
+
     def _get_refresh_for_plotter(self, plotter_id: str):
         def refresh():
 
-            with self.__condition:
+            with self._condition:
                 plotter_data = self.__plotters[plotter_id]
                 plotter = plotter_data["plotter"]
                 close_plotter = plotter_data["close"]
@@ -520,19 +621,11 @@ class _Plotter(metaclass=Singleton):
                 self.__graphics = None
                 camera = plotter.camera.copy()
                 try:
-                    if obj.__class__.__name__ == "Mesh":
-                        self._display_mesh(obj, plotter)
-                    elif obj.__class__.__name__ == "Surface":
-                        if obj.surface_type.surface_type() == "iso-surface":
-                            self._display_iso_surface(obj, plotter)
-                    elif obj.__class__.__name__ == "Contour":
-                        self._display_contour(obj, plotter)
-                    elif obj.__class__.__name__ == "Vector":
-                        self._display_vector(obj, plotter)
+                    self._display_object(obj, plotter)
                     if plotter_data["animate"]:
                         plotter.write_frame()
                 finally:
-                    self.__condition.notify()
+                    self._condition.notify()
                 plotter.camera = camera.copy()
 
         return refresh
