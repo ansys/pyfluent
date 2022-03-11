@@ -1,7 +1,7 @@
 .. _ref_addons_parametric:
 
-Addons - Parametric
-===================
+Parameters
+==========
 .. currentmodule:: ansys.fluent.parametric
 
 .. autosummary::

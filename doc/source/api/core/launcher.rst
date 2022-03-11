@@ -1,7 +1,7 @@
 .. _ref_launcher_launcher:
 
-Launcher - Launcher
-===================
+Launching Fluent
+================
 .. currentmodule:: ansys.fluent.core.launcher
 
 .. autosummary::
