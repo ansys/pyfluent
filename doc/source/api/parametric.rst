@@ -1,6 +1,6 @@
 .. _ref_addons_parametric:
 
-Addons - Parametric
+Parametric
 ===================
 .. currentmodule:: ansys.fluent.parametric
 
