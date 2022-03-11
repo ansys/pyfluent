@@ -16,4 +16,4 @@ Here we should discuss the different API modules at a high level.
    
    core/index
    parametric
-   post/pyvista/index
+   post/index
