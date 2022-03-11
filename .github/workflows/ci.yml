@@ -82,6 +82,48 @@ jobs:
       - name: Test import
         run: make test-import
 
+  docs_build:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install OS packages
+        run: |
+          sudo apt update
+          sudo apt install zip pandoc libgl1-mesa-glx xvfb
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_docs*.txt') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Build Documentation
+        run: |
+          pip install -r requirements_docs.txt
+          make -C doc html
+
+      # Verify that sphinx generates no warnings
+      - name: Check for sphinx warnings
+        run: python doc/print_errors.py
+
+      - name: Zip documentation
+        run: |
+          cd doc/_build/html
+          zip -r PyFluent_documentation.zip *
+
   build_test:
     name: Build and Unit Testing
     needs: test-import
