@@ -97,7 +97,7 @@ jobs:
       - name: Install OS packages
         run: |
           sudo apt update
-          sudo apt install zip pandoc libgl1-mesa-glx xvfb
+          sudo apt install zip pandoc libegl1
 
       - name: Cache pip
         uses: actions/cache@v2
