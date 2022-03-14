@@ -32,7 +32,7 @@ capabilities.
 
    - General command and query services are encompassed in three modules: 
 
-      + The 'tui' module is a collection of Python wrappers around the Fluent's traditional Text User Interface (TUI) command-based infrastructure.
+      + The 'tui' modules are a collection of Python wrappers around the Fluent's traditional Text User Interface (TUI) command-based infrastructure.
 
       .. code::
 
