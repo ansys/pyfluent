@@ -12,4 +12,3 @@ Postprocessing
    :hidden:
    
    graphics
-   pyvista

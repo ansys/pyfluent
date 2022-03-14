@@ -130,7 +130,6 @@ class FieldData:
                 "x-component": vector_field_info.xComponent,
                 "y-component": vector_field_info.yComponent,
                 "z-component": vector_field_info.zComponent,
-                "is-custom-vector": vector_field_info.isCustomVector,
             }
             for vector_field_info in response.vectorFieldInfo
         }

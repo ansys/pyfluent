@@ -107,9 +107,11 @@ class TUIGenerator:
                     f"class {menu.name}(metaclass=PyMenuMeta):\n", indent
                 )
             indent += 1
-            self._write_code_to_tui_file(
-                f"__doc__ = {repr(menu.doc)}\n", indent
-            )
+            self._write_code_to_tui_file('"""\n', indent)
+            doc_lines = menu.doc.splitlines()
+            for line in doc_lines:
+                self._write_code_to_tui_file(f"{line}\n", indent)
+            self._write_code_to_tui_file('"""\n', indent)
             if menu.is_extended_tui:
                 self._write_code_to_tui_file(
                     "is_extended_tui = True\n", indent
