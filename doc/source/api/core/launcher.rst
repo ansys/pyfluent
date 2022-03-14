@@ -2,6 +2,7 @@
 
 Launching Fluent
 ================
+
 .. currentmodule:: ansys.fluent.core.launcher
 
 .. autosummary::
