@@ -207,7 +207,6 @@ class PyLocalObjectMeta(type):
             self.parent = parent
 
             def update(clss):
-                """Update method."""
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
@@ -261,7 +260,7 @@ class PyLocalObjectMeta(type):
                     obj.set_state(val)
                 else:
                     obj.update(val)
-
+        wrapper.__doc__ = "Update method."
         return wrapper
 
     # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
@@ -345,7 +344,6 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self.parent = parent
 
             def update(clss):
-                """Update method."""
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
