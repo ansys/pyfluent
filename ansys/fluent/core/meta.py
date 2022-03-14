@@ -207,6 +207,7 @@ class PyLocalObjectMeta(type):
             self.parent = parent
 
             def update(clss):
+                """Update method."""
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
@@ -344,6 +345,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self.parent = parent
 
             def update(clss):
+                """Update method."""
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
                         "PyLocalPropertyMeta",
