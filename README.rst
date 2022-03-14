@@ -32,14 +32,14 @@ Usage
 
 Meshing TUI and workflow
 ************************
-TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/meshing.rst>`_ for example usage.
+TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/core/meshing/meshing.rst>`_ for example usage.
 
 Settings access
 ***************
 The settings objects provide a natural way to access and modify settings. The
 top-level settings object for a session can be accessed with the ``get_settings_root()``
 method of the session object. More information can be found at 
-`settings <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/settings.rst>`_.
+`settings <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/core/solver/settings.rst>`_.
 
 
 Post Processing
