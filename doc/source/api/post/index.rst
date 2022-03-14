@@ -11,4 +11,4 @@ Postprocessing
    :maxdepth: 2
    :hidden:
    
-   pyvista/index
+   graphics
