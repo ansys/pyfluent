@@ -95,6 +95,7 @@ class file(metaclass=PyMenuMeta):
     def read_case(self, *args, **kwargs):
         """
         Read a case file.
+
         Parameters
         ----------
         case_file_name : str

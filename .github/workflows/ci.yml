@@ -107,8 +107,8 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Install pyfluent
-        run: make install
+      - name: Install pyfluent with post module
+        run: make install-post
 
       - name: Build Documentation
         run: |
