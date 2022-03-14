@@ -42,7 +42,8 @@ capabilities.
 
       .. code::
 
-         setup.models.energy.enabled = True
+         settings = session.get_settings_root()
+         settings.setup.models.energy.enabled = True
 
       + The 'datamodel' module is a Python interface to access the datamodel-driven aspects of Fluent, such as the meshing workflows.
 
