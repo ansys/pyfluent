@@ -38,7 +38,7 @@ capabilities.
 
          solver.define.models.unsteady_2nd_order('yes’)​
 
-      + The 'settings' module is a Python interface to access Fluent's setup and solution objects, where you can, for instance, enable a physics-based model for your simulation.
+      + The 'settings' module is a Pythonic interface to access Fluent's setup and solution objects, where you can, for instance, enable a physics-based model for your simulation.
 
       .. code::
 
