@@ -48,7 +48,7 @@ del graphics_session1.Contours["contour-3"]
 
 #loop
 for name, _ in graphics_session1.Contours.items():
-print(name)
+    print(name)
 
 
 #iso surface
