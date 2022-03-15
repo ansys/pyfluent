@@ -1,4 +1,5 @@
 """Version of ansys-fluent-solver module.
+
 On the ``main`` branch, use 'dev0' to denote a development version.
 For example:
 version_info = 0, 1, 'dev0'

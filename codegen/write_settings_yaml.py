@@ -1,11 +1,12 @@
 """
 Utility to write YAML file for the current settings hierarchy.
+
 Usage:
      write_settings_yaml.py [outfile]
 """
 import sys
 import ansys.fluent as pyfluent
-from ansys.fluent.services import settings
+from ansys.fluent.core.services import settings
 
 indent_factor = 2
 def write_yaml(out, obj, indent = 0):

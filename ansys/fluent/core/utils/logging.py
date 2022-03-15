@@ -12,7 +12,7 @@ from pathlib import Path
 
 class Logger:
     """
-    Logger class
+    Logger class.
 
     Methods
     -------
@@ -27,6 +27,7 @@ class Logger:
     disable_logging_to_file()
         Disable logging to file
     """
+
     def __init__(self, level=logging.ERROR):
         self.logger = logging.getLogger()
         self.stream_handler = None
@@ -48,7 +49,7 @@ class Logger:
 
     def set_level(self, level):
         """
-        Set logging level
+        Set logging level.
 
         Parameters
         ----------
@@ -68,19 +69,19 @@ class Logger:
         return Path(filepath)
 
     def enable_logging_to_stdout(self):
-        """Enable logging to stdout"""
+        """Enable logging to stdout."""
         if self.stream_handler is None:
             self.stream_handler = logging.StreamHandler()
             self.stream_handler.setFormatter(self.formatter)
         self.logger.addHandler(self.stream_handler)
 
     def disable_logging_to_stdout(self):
-        """Disable logging to stdout"""
+        """Disable logging to stdout."""
         self.logger.removeHandler(self.stream_handler)
 
     def enable_logging_to_file(self, filepath=None):
         """
-        Enable logging to file
+        Enable logging to file.
 
         Parameters
         ----------
@@ -98,7 +99,7 @@ class Logger:
         self.logger.addHandler(self.file_handler)
 
     def disable_logging_to_file(self):
-        """Disable logging to file"""
+        """Disable logging to file."""
         self.logger.removeHandler(self.file_handler)
 
 

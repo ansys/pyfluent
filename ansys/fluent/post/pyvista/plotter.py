@@ -20,9 +20,7 @@ class Singleton(type):
 
 
 class _Plotter(metaclass=Singleton):
-    """
-    Class for graphics windows management.
-    """
+    """Class for graphics windows management."""
 
     _condition = threading.Condition()
 
@@ -66,7 +64,7 @@ class _Plotter(metaclass=Singleton):
 
     def plot(self, obj: object, plotter_id: Optional[str] = None) -> None:
         """
-        plot graphics.
+        Plot graphics.
 
         Parameters
         ----------
@@ -129,7 +127,6 @@ class _Plotter(metaclass=Singleton):
             Plotters id to animate. If not specified, all plotters will be
             animated.
         """
-
         with self._condition:
             plotters_id = self._get_plotters_id(session_id, plotters_id)
             for plotter_id in plotters_id:
@@ -157,7 +154,6 @@ class _Plotter(metaclass=Singleton):
             Plotters id to close. If not specified, all plotters will be
             closed.
         """
-
         with self._condition:
             plotters_id = self._get_plotters_id(session_id, plotters_id)
             for plotter_id in plotters_id:

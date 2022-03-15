@@ -1,6 +1,8 @@
 """
-Module for launching Fluent locally or connecting to a remote instance
-with gRPC
+Provide a module for launching Fluent.
+
+This module supports both starting Fluent locally or connecting to a remote
+instance with gRPC.
 """
 
 import json
@@ -139,7 +141,6 @@ def launch_fluent(
     ansys.fluent.session.Session
         Fluent session.
     """
-
     if start_instance:
         exe_path = _get_fluent_exe_path()
         launch_string = exe_path
