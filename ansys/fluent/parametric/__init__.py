@@ -115,9 +115,7 @@ class DesignPoint:
 
     @property
     def capture_simulation_report_data_enabled(self) -> bool:
-        """
-        Whether to capture simulation report data for the design point.
-        """
+        """Whether to capture simulation report data for the design point."""
         return self.__dp_settings.capture_simulation_report_data()
 
     @capture_simulation_report_data_enabled.setter
@@ -126,7 +124,8 @@ class DesignPoint:
 
 
 class ParametricStudy:
-    """
+    """Class to manage design points.
+
     Parametric study that manages design points to parametrize a
     Fluent solver set-up. Provides ability to run Fluent for a series
     of design points, and access/modify the input and output parameters.
@@ -261,9 +260,7 @@ class ParametricStudy:
 
     @property
     def is_current(self) -> bool:
-        """
-        Whether the parametric study is the current parametric study.
-        """
+        """Whether the parametric study is the current parametric study."""
         return ParametricStudy.current_study_name == self.name
 
     def set_as_current(self) -> None:
@@ -319,9 +316,7 @@ class ParametricStudy:
         return clone
 
     def delete(self) -> None:
-        """
-        Delete the parametric study.
-        """
+        """Delete the parametric study."""
         if self.is_current:
             LOG.error("Cannot delete the current study %s", self.name)
         else:
@@ -357,9 +352,10 @@ class ParametricStudy:
 
     @property
     def current_design_point(self) -> DesignPoint:
-        """
-        The current design point within the design points under the
-        parametric study.
+        """Return the current design point.
+
+        Current design point within the design points under the parametric
+        study.
         """
         dp_name = self.__parametric_studies[self.name].current_design_point()
         return self.design_points[dp_name]
@@ -673,7 +669,7 @@ class ParametricSession:
         start_transcript: bool = False
     ):
         """
-        Instantiates a ParametricSession.
+        Instantiate a ParametricSession.
 
         Parameters
         ----------

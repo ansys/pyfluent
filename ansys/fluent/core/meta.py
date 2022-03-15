@@ -1,4 +1,4 @@
-"""Metaclasses used in various explicit classes in PyFluent"""
+"""Metaclasses used in various explicit classes in PyFluent."""
 from abc import ABCMeta
 from collections.abc import MutableMapping
 from pprint import pformat
@@ -32,7 +32,7 @@ class Attribute:
 
 
 class PyMenuMeta(type):
-    """Metaclass for explicit TUI menu classes"""
+    """Metaclass for explicit TUI menu classes."""
 
     @classmethod
     def __create_init(cls):
@@ -88,7 +88,7 @@ class PyMenuMeta(type):
 
 
 class PyLocalPropertyMeta(type):
-    """Metaclass for local property classes"""
+    """Metaclass for local property classes."""
 
     @classmethod
     def __create_validate(cls):
@@ -199,7 +199,7 @@ class PyLocalPropertyMeta(type):
 
 
 class PyLocalObjectMeta(type):
-    """Metaclass for local object classes"""
+    """Metaclass for local object classes."""
 
     @classmethod
     def __create_init(cls):
@@ -335,7 +335,7 @@ class PyLocalObjectMeta(type):
 
 
 class PyLocalNamedObjectMeta(PyLocalObjectMeta):
-    """Metaclass for local named object classes"""
+    """Metaclass for local named object classes."""
 
     @classmethod
     def __create_init(cls):
@@ -379,7 +379,7 @@ class PyLocalNamedObjectMetaAbstract(ABCMeta, PyLocalNamedObjectMeta):
 
 
 class PyLocalContainer(MutableMapping):
-    """Local container for named objects"""
+    """Local container for named objects."""
 
     def __init__(self, parent, object_class):
         self.parent = parent
@@ -414,7 +414,7 @@ class PyLocalContainer(MutableMapping):
 
 
 class PyNamedObjectMeta(type):
-    """Metaclass for explicit named object classes in Fluent"""
+    """Metaclass for explicit named object classes in Fluent."""
 
     @classmethod
     def __create_init(cls):

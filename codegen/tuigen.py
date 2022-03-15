@@ -1,6 +1,11 @@
 """
-Generates the explicit TUI menu classes in ansys/fluent/solver/tui.py and
-ansys/fluent/meshing/tui.py
+Provide a module to generate explicit Fluent TUI menu classes.
+
+This module starts up Fluent and calls the underlying gRPC APIs to generate the
+following TUI Python modules:
+
+- ansys/fluent/core/solver/tui.py
+- ansys/fluent/core/meshing/tui.py.
 
 Usage
 -----
@@ -29,7 +34,8 @@ _INDENT_STEP = 4
 
 
 class _TUIMenuGenerator:
-    """Wrapper over PyMenu to extract TUI menu metadata from Fluent"""
+    """Wrapper over PyMenu to extract TUI menu metadata from Fluent."""
+
     def __init__(self, path, service):
         self._menu = PyMenu(service, path)
 
@@ -47,7 +53,8 @@ class _TUIMenuGenerator:
 
 
 class _TUIMenu:
-    """Class representing Fluent's TUI menu"""
+    """Class representing Fluent's TUI menu."""
+
     def __init__(self, path):
         self.path = path
         self.name = convert_tui_menu_to_func_name(path[-1][0]) if path else ""
@@ -62,7 +69,8 @@ class _TUIMenu:
 
 
 class TUIGenerator:
-    """Class to generate explicit TUI menu classes"""
+    """Class to generate explicit TUI menu classes."""
+
     def __init__(
         self,
         meshing_tui_file=_MESHING_TUI_FILE,
@@ -143,9 +151,7 @@ class TUIGenerator:
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             self._write_code_to_tui_file(
-                '"""\n'
-                "This is an auto-generated file.  DO NOT EDIT!\n"
-                '"""\n'
+                '"""This is an auto-generated file.  DO NOT EDIT!"""\n'
                 "# pylint: disable=line-too-long\n\n"
                 "from ansys.fluent.core.meta "
                 "import PyMenuMeta, PyNamedObjectMeta\n"

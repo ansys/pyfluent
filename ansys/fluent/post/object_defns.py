@@ -15,39 +15,29 @@ class Vector(NamedTuple):
 
 
 class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
-    """
-    XYPlot Definition.
-    """
+    """XYPlot Definition."""
 
     @abstractmethod
     def plot(self, plotter_id: Optional[str] = None):
         pass
 
     class node_values(metaclass=PyLocalPropertyMeta):
-        """
-        Show nodal data.
-        """
+        """Show nodal data."""
 
         value: bool = True
 
     class boundary_values(metaclass=PyLocalPropertyMeta):
-        """
-        Show Boundary values.
-        """
+        """Show Boundary values."""
 
         value: bool = True
 
     class direction_vector(metaclass=PyLocalPropertyMeta):
-        """
-        Direction Vector.
-        """
+        """Direction Vector."""
 
         value: Vector = [1, 0, 0]
 
     class y_axis_function(metaclass=PyLocalPropertyMeta):
-        """
-        Y Axis Function.
-        """
+        """Y Axis Function."""
 
         value: str
 
@@ -60,9 +50,7 @@ class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             ]
 
     class x_axis_function(metaclass=PyLocalPropertyMeta):
-        """
-        X Axis Function.
-        """
+        """X Axis Function."""
 
         value: str = "direction-vector"
 
@@ -71,9 +59,7 @@ class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             return ["direction-vector", "curve-length"]
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
-        """
-        List of surfaces for plotting.
-        """
+        """List of surfaces for plotting."""
 
         value: List[str]
 
@@ -86,9 +72,7 @@ class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
 
 class MeshDefn(metaclass=PyLocalNamedObjectMetaAbstract):
-    """
-    Mesh graphics.
-    """
+    """Mesh graphics."""
 
     PLURAL = "Meshes"
 
@@ -97,9 +81,7 @@ class MeshDefn(metaclass=PyLocalNamedObjectMetaAbstract):
         pass
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
-        """
-        List of surfaces for mesh graphics.
-        """
+        """List of surfaces for mesh graphics."""
 
         value: List[str]
 
@@ -113,17 +95,13 @@ class MeshDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             )
 
     class show_edges(metaclass=PyLocalPropertyMeta):
-        """
-        Show edges for mesh.
-        """
+        """Show edges for mesh."""
 
         value: bool = False
 
 
 class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
-    """
-    Surface graphics.
-    """
+    """Surface graphics."""
 
     PLURAL = "Surfaces"
 
@@ -132,16 +110,12 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
         pass
 
     class show_edges(metaclass=PyLocalPropertyMeta):
-        """
-        Show edges for surface.
-        """
+        """Show edges for surface."""
 
         value: bool = True
 
     class surface_type(metaclass=PyLocalObjectMeta):
-        """
-        Specify surface type.
-        """
+        """Specify surface type."""
 
         def _availability(self, name):
             if name == "plane_surface":
@@ -158,19 +132,13 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                 return ["plane-surface", "iso-surface"]
 
         class plane_surface(metaclass=PyLocalObjectMeta):
-            """
-            Plane surface data.
-            """
+            """Plane surface data."""
 
         class iso_surface(metaclass=PyLocalObjectMeta):
-            """
-            Iso surface data.
-            """
+            """Iso surface data."""
 
             class field(metaclass=PyLocalPropertyMeta):
-                """
-                Iso surface field.
-                """
+                """Iso surface field."""
 
                 value: str
 
@@ -186,9 +154,7 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                     ]
 
             class rendering(metaclass=PyLocalPropertyMeta):
-                """
-                Iso surface rendering.
-                """
+                """Iso surface rendering."""
 
                 value: str = "mesh"
 
@@ -197,9 +163,7 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                     return ["mesh", "contour"]
 
             class iso_value(metaclass=PyLocalPropertyMeta):
-                """
-                Iso surface iso value.
-                """
+                """Iso surface iso value."""
 
                 _value: float
 
@@ -228,9 +192,7 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
 
 class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
-    """
-    Contour graphics.
-    """
+    """Contour graphics."""
 
     PLURAL = "Contours"
 
@@ -239,9 +201,7 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
         pass
 
     class field(metaclass=PyLocalPropertyMeta):
-        """
-        Contour field.
-        """
+        """Contour field."""
 
         value: str
 
@@ -254,9 +214,7 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             ]
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
-        """
-        Contour surfaces.
-        """
+        """Contour surfaces."""
 
         value: List[str]
 
@@ -268,44 +226,32 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             )
 
     class filled(metaclass=PyLocalPropertyMeta):
-        """
-        Show filled contour.
-        """
+        """Show filled contour."""
 
         value: bool = True
 
     class node_values(metaclass=PyLocalPropertyMeta):
-        """
-        Show nodal data.
-        """
+        """Show nodal data."""
 
         value: bool = True
 
     class boundary_values(metaclass=PyLocalPropertyMeta):
-        """
-        Show boundary values.
-        """
+        """Show boundary values."""
 
         value: bool = False
 
     class contour_lines(metaclass=PyLocalPropertyMeta):
-        """
-        Show contour lines.
-        """
+        """Show contour lines."""
 
         value: bool = False
 
     class show_edges(metaclass=PyLocalPropertyMeta):
-        """
-        Show edges.
-        """
+        """Show edges."""
 
         value: bool = False
 
     class range_option(metaclass=PyLocalObjectMeta):
-        """
-        Specify range options.
-        """
+        """Specify range options."""
 
         def _availability(self, name):
             if name == "auto_range_on":
@@ -323,33 +269,23 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                 return ["auto-range-on", "auto-range-off"]
 
         class auto_range_on(metaclass=PyLocalObjectMeta):
-            """
-            Specify auto range on.
-            """
+            """Specify auto range on."""
 
             class global_range(metaclass=PyLocalPropertyMeta):
-                """
-                Show global range.
-                """
+                """Show global range."""
 
                 value: bool = False
 
         class auto_range_off(metaclass=PyLocalObjectMeta):
-            """
-            Specify auto range off.
-            """
+            """Specify auto range off."""
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
-                """
-                Clip contour within range.
-                """
+                """Clip contour within range."""
 
                 value: bool = False
 
             class minimum(metaclass=PyLocalPropertyMeta):
-                """
-                Range minimum.
-                """
+                """Range minimum."""
 
                 _value: float
 
@@ -379,9 +315,7 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                     self._value = value
 
             class maximum(metaclass=PyLocalPropertyMeta):
-                """
-                Range maximum.
-                """
+                """Range maximum."""
 
                 _value: float
 
@@ -414,9 +348,7 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
 
 class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
-    """
-    Vector graphics.
-    """
+    """Vector graphics."""
 
     PLURAL = "Vectors"
 
@@ -425,9 +357,7 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
         pass
 
     class vectors_of(metaclass=PyLocalPropertyMeta):
-        """
-        Vector type.
-        """
+        """Vector type."""
 
         value: str = "velocity"
 
@@ -439,9 +369,7 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
-        """
-        List of surfaces for vector graphics.
-        """
+        """List of surfaces for vector graphics."""
 
         value: List[str]
 
@@ -453,30 +381,22 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             )
 
     class scale(metaclass=PyLocalPropertyMeta):
-        """
-        Vector scale.
-        """
+        """Vector scale."""
 
         value: float = 1.0
 
     class skip(metaclass=PyLocalPropertyMeta):
-        """
-        Vector skip.
-        """
+        """Vector skip."""
 
         value: int = 0
 
     class show_edges(metaclass=PyLocalPropertyMeta):
-        """
-        Show edges.
-        """
+        """Show edges."""
 
         value: bool = False
 
     class range_option(metaclass=PyLocalObjectMeta):
-        """
-        Specify range options.
-        """
+        """Specify range options."""
 
         def _availability(self, name):
             if name == "auto_range_on":
@@ -494,33 +414,23 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                 return ["auto-range-on", "auto-range-off"]
 
         class auto_range_on(metaclass=PyLocalObjectMeta):
-            """
-            Specify auto range on.
-            """
+            """Specify auto range on."""
 
             class global_range(metaclass=PyLocalPropertyMeta):
-                """
-                Show global range.
-                """
+                """Show global range."""
 
                 value: bool = False
 
         class auto_range_off(metaclass=PyLocalObjectMeta):
-            """
-            Specify auto range off.
-            """
+            """Specify auto range off."""
 
             class clip_to_range(metaclass=PyLocalPropertyMeta):
-                """
-                Clip vector within range.
-                """
+                """Clip vector within range."""
 
                 value: bool = False
 
             class minimum(metaclass=PyLocalPropertyMeta):
-                """
-                Range minimum.
-                """
+                """Range minimum."""
 
                 _value: float
 
@@ -543,9 +453,7 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                     self._value = value
 
             class maximum(metaclass=PyLocalPropertyMeta):
-                """
-                Range maximum.
-                """
+                """Range maximum."""
 
                 _value: float
 

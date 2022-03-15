@@ -1,4 +1,4 @@
-"""Module containing class encapsulating Fluent connection"""
+"""Module containing class encapsulating Fluent connection."""
 
 import atexit
 import itertools
@@ -39,9 +39,10 @@ def _parse_server_info_file(filename: str):
 
 
 class MonitorThread(threading.Thread):
-    """
-    Deamon thread which will ensure cleanup of session objects, shutdown
-    of non-deamon threads etc.
+    """A class used for monitoring a Fluent session.
+
+    Deamon thread which will ensure cleanup of session objects, shutdown of
+    non-deamon threads etc.
 
     Attributes
     ----------
@@ -112,7 +113,7 @@ class Session:
         cleanup_on_exit: bool = True,
     ):
         """
-        Instantiates a Session
+        Instantiate a Session.
 
         Parameters
         ----------
@@ -178,7 +179,7 @@ class Session:
         cls, server_info_filepath: str, cleanup_on_exit: bool = True
     ) -> "Session":
         """
-        Create a Session instance from server-info file
+        Create a Session instance from server-info file.
 
         Parameters
         ----------
@@ -201,14 +202,15 @@ class Session:
 
     @property
     def id(self):
+        """Return the session id."""
         return self._id
 
     def get_settings_service(self):
-        """Return an instance of SettingsService object"""
+        """Return an instance of SettingsService object."""
         return SettingsService(self._channel, self._metadata)
 
     def get_settings_root(self):
-        """Return root settings object"""
+        """Return root settings object."""
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
             self._settings_root = settings_get_root(
@@ -230,7 +232,7 @@ class Session:
                 break
 
     def start_transcript(self):
-        """Start streaming of Fluent transcript"""
+        """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(
             target=Session._process_transcript, args=(self,)
         )
@@ -238,11 +240,11 @@ class Session:
         self._transcript_thread.start()
 
     def stop_transcript(self):
-        """Stop streaming of Fluent transcript"""
+        """Stop streaming of Fluent transcript."""
         self._transcript_service.end_streaming()
 
     def check_health(self):
-        """Check health of Fluent connection"""
+        """Check health of Fluent connection."""
         if self._channel:
             return self._health_check_service.check_health()
         else:
@@ -259,6 +261,7 @@ class Session:
             self._channel = None
 
     def __enter__(self):
+        """Close the Fluent connection and exit Fluent."""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -279,7 +282,8 @@ class Session:
             self.solver = Session.SolverTui(service)
 
     class TuiMode:
-        """Base class for Meshing or Solver TUI"""
+        """Base class for Meshing or Solver TUI."""
+
         def __init__(self, service):
             self.service = service
             for mod in self.__class__.application_modules:

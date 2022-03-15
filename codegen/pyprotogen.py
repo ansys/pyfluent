@@ -1,5 +1,5 @@
 """
-Builds *.py source interface files from *.protos files
+Builds *.py source interface files from *.protos files.
 
 Usage
 -----
@@ -26,9 +26,10 @@ _PACKAGE_NAME = "ansys.api.fluent.v0"
 
 
 def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
-    """
-    Builds *.py source interface files given a path containing *.protos
-    files
+    """Build the Python gRPC interface files.
+
+    Given a path containing the .proto files this function builds the .py
+    source interface files.
     """
     # verify proto tools are installed
     try:

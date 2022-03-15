@@ -10,6 +10,7 @@ from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 class EventsManager:
     """
     Manages the server side events.
+
     Allows client to register/unregister callbacks with server events.
 
     Parameters
@@ -109,14 +110,11 @@ class EventsManager:
         callback_id : str
             Registered callbak Id.
         """
-
         with self.__lock:
             for callbacks_map in self.__events_to_callbacks_map.values():
                 if callback_id in callbacks_map:
                     del callbacks_map[callback_id]
 
     def stop(self):
-        """
-        Stop Events manager.
-        """
+        """Stop Events manager."""
         self.__events_service.end_streaming()

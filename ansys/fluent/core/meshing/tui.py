@@ -1,6 +1,4 @@
-"""
-This is an auto-generated file.  DO NOT EDIT!
-"""
+"""This is an auto-generated file.  DO NOT EDIT!"""
 # pylint: disable=line-too-long
 
 from ansys.fluent.core.meta import PyMenuMeta, PyNamedObjectMeta

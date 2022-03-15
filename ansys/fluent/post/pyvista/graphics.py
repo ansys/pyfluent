@@ -12,9 +12,7 @@ from ansys.fluent.core.meta import PyLocalContainer
 
 
 class Graphics:
-    """
-    Graphics objects provider.
-    """
+    """Graphics objects provider."""
 
     def __init__(self, session):
         self.session = session
@@ -34,48 +32,32 @@ class Graphics:
 
 
 class Mesh(MeshDefn):
-    """
-    Mesh graphics.
-    """
+    """Mesh graphics."""
 
     def display(self, plotter_id: Optional[str] = None):
-        """
-        Display mesh graphics.
-        """
+        """Display mesh graphics."""
         plotter.plot(self, plotter_id)
 
 
 class Surface(SurfaceDefn):
-    """
-    Surface graphics.
-    """
+    """Surface graphics."""
 
     def display(self, plotter_id: Optional[str] = None):
-        """
-        Display surface graphics.
-        """
+        """Display surface graphics."""
         plotter.plot(self, plotter_id)
 
 
 class Contour(ContourDefn):
-    """
-    Contour graphics.
-    """
+    """Contour graphics."""
 
     def display(self, plotter_id: Optional[str] = None):
-        """
-        Display contour graphics.
-        """
+        """Display contour graphics."""
         plotter.plot(self, plotter_id)
 
 
 class Vector(VectorDefn):
-    """
-    Vector graphics.
-    """
+    """Vector graphics."""
 
     def display(self, plotter_id: Optional[str] = None):
-        """
-        Display vector graphics.
-        """
+        """Display vector graphics."""
         plotter.plot(self, plotter_id)
