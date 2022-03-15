@@ -192,15 +192,27 @@ class PyMenu:
         Get state of the current object
     get_attrib_value(attrib)
         Get attribute value of the current object
+    getAttribValue(attrib)
+        Get attribute value of the current object
+        (same as get_attrib_value(attrib))
     get_state()
+        Get state of the current object (same as __call__())
+    getState()
         Get state of the current object (same as __call__())
     set_state(state)
         Set state of the current object
+    setState(state)
+        Set state of the current object (same as set_state(state))
     update_dict(dict_state)
         Update the state of the current object if the current object
         is a Dict in the data model, else throws RuntimeError
         (currently not showing up in Python). Update is executed according
         to dict.update semantics
+    updateDict(dict_state)
+        Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
+        to dict.update semantics (same as update_dict(dict_state))
     """
 
     __slots__ = ("service", "rules", "path")
@@ -257,6 +269,8 @@ class PyMenu:
         response = self.service.get_state(request)
         return _convert_variant_to_value(response.state)
 
+    getState = get_state
+
     def set_state(self, state):
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
@@ -264,12 +278,16 @@ class PyMenu:
         _convert_value_to_variant(state, request.state)
         self.service.set_state(request)
 
+    setState = set_state
+
     def update_dict(self, dict_state : dict):
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
         _convert_value_to_variant(dict_state, request.dicttomerge)
         self.service.update_dict(request)
+
+    updateDict = update_dict
 
     def __dir__(self) -> List[str]:
         """Returns list of child object names
@@ -342,7 +360,9 @@ class PyMenu:
         request.path = _convert_path_to_se_path(self.path)
         request.attribute = attrib
         response = self.service.get_attribute_value(request)
-        return _convert_variant_to_value(response.result, False)
+        return _convert_variant_to_value(response.result)
+
+    getAttribValue = get_attrib_value
 
     def get_docstring(self):
         if self.__class__.docstring is None:
@@ -354,6 +374,8 @@ class PyMenu:
                 response.member, response.member.WhichOneof("as")
             ).common.helpstring
         return self.__class__.docstring
+
+    getDocstring = get_docstring
 
     def help(self):
         """Prints command help string"""
@@ -566,6 +588,8 @@ class PyCommand:
                 response.member, response.member.WhichOneof("as")
             ).common.helpstring
         return self.__class__.docstring
+
+    getDocstring = get_docstring
 
     def help(self):
         """Prints command help string"""
