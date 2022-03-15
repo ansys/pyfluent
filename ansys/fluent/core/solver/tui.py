@@ -2062,6 +2062,11 @@ class display(metaclass=PyMenuMeta):
                     Only list the boundary types that are assigned in this case.
                     """
                     return PyMenu(self.service, "/display/set/colors/by_type/only_list_case_boundaries").execute(*args, **kwargs)
+                def use_inherent_material_color(self, *args, **kwargs):
+                    """
+                    Use inherent material color for boundary zones.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_type/use_inherent_material_color").execute(*args, **kwargs)
                 def reset(self, *args, **kwargs):
                     """
                     To reset colors and/or materials to the defaults.
@@ -2297,6 +2302,36 @@ class display(metaclass=PyMenuMeta):
                             Set a material for the selected boundary type.
                             """
                             return PyMenu(self.service, "/display/set/colors/by_type/type_name/wall/material").execute(*args, **kwargs)
+
+            class by_surface(metaclass=PyMenuMeta):
+                """
+                Enter the surface(s) color and material assignment menu.
+                """
+                def surfaces(self, *args, **kwargs):
+                    """
+                    Select the surface(s) to specify colors and/or materials.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/surfaces").execute(*args, **kwargs)
+                def use_inherent_material_color(self, *args, **kwargs):
+                    """
+                    Use inherent material color for surfaces.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/use_inherent_material_color").execute(*args, **kwargs)
+                def reset(self, *args, **kwargs):
+                    """
+                    To reset colors and/or materials to the defaults.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/reset").execute(*args, **kwargs)
+                def list_surfaces_by_color(self, *args, **kwargs):
+                    """
+                    To list the surfaces by its color.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/list_surfaces_by_color").execute(*args, **kwargs)
+                def list_surfaces_by_material(self, *args, **kwargs):
+                    """
+                    To list the surfaces by its material.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/list_surfaces_by_material").execute(*args, **kwargs)
 
         class contours(metaclass=PyMenuMeta):
             """
@@ -17555,6 +17590,41 @@ class define(metaclass=PyMenuMeta):
             Execute the automatic initialization and case modification strategy defined at present.
             """
             return PyMenu(self.service, "/define/solution_strategy/execute_strategy").execute(*args, **kwargs)
+        def add_edit_modification(self, *args, **kwargs):
+            """
+            Define a single case modification.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/add_edit_modification").execute(*args, **kwargs)
+        def copy_modification(self, *args, **kwargs):
+            """
+            Copy a single case modification.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/copy_modification").execute(*args, **kwargs)
+        def delete_modification(self, *args, **kwargs):
+            """
+            Delete a single case modification.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/delete_modification").execute(*args, **kwargs)
+        def enable_modification(self, *args, **kwargs):
+            """
+            Enable a single defined case modification.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/enable_modification").execute(*args, **kwargs)
+        def disable_modification(self, *args, **kwargs):
+            """
+            Disable a single defined case modification.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/disable_modification").execute(*args, **kwargs)
+        def import_modifications(self, *args, **kwargs):
+            """
+            Import a list of case modifications from a tsv file.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/import_modifications").execute(*args, **kwargs)
+        def export_modifications(self, *args, **kwargs):
+            """
+            Export all case modifications to a tsv file.
+            """
+            return PyMenu(self.service, "/define/solution_strategy/export_modifications").execute(*args, **kwargs)
         def continue_strategy_execution(self, *args, **kwargs):
             """
             Continue execution of the automatic initialization and case modification strategy defined at present.
@@ -17898,6 +17968,7 @@ class file(metaclass=PyMenuMeta):
     def read_case(self, *args, **kwargs):
         """
         Read a case file.
+        
         Parameters
         ----------
         case_file_name : str
@@ -17935,7 +18006,7 @@ class file(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/file/read_macros").execute(*args, **kwargs)
     def read_profile(self, *args, **kwargs):
         """
-        Read boundary profile data (*.prof, *.csv). Default is *.prof.
+        Read boundary profile data (\*.prof, \*.csv). Default is \*.prof.
         """
         return PyMenu(self.service, "/file/read_profile").execute(*args, **kwargs)
     def read_transient_table(self, *args, **kwargs):
@@ -18070,12 +18141,12 @@ class file(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/file/write_field_functions").execute(*args, **kwargs)
     def write_profile(self, *args, **kwargs):
         """
-        Write surface data as a boundary profile file. To use *.csv format specify filename with .csv suffix.
+        Write surface data as a boundary profile file. To use \*.csv format specify filename with .csv suffix.
         """
         return PyMenu(self.service, "/file/write_profile").execute(*args, **kwargs)
     def write_currently_defined_profiles(self, *args, **kwargs):
         """
-        Write currently defined profiles. To use *.csv format specify filename with .csv suffix.
+        Write currently defined profiles. To use \*.csv format specify filename with .csv suffix.
         """
         return PyMenu(self.service, "/file/write_currently_defined_profiles").execute(*args, **kwargs)
     def set_target_reference_frame_for_write_profiles(self, *args, **kwargs):
@@ -18085,12 +18156,12 @@ class file(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/file/set_target_reference_frame_for_write_profiles").execute(*args, **kwargs)
     def write_circumferential_averaged_profile(self, *args, **kwargs):
         """
-        Write surface data as a boundary profile file. To use *.csv format specify filename with .csv suffix.
+        Write surface data as a boundary profile file. To use \*.csv format specify filename with .csv suffix.
         """
         return PyMenu(self.service, "/file/write_circumferential_averaged_profile").execute(*args, **kwargs)
     def write_merge_profiles(self, *args, **kwargs):
         """
-        Write multiple zones surface data as a single boundary profile file. To use *.csv format specify filename with .csv suffix.
+        Write multiple zones surface data as a single boundary profile file. To use \*.csv format specify filename with .csv suffix.
         """
         return PyMenu(self.service, "/file/write_merge_profiles").execute(*args, **kwargs)
     def write_pdf(self, *args, **kwargs):
@@ -22938,7 +23009,7 @@ class report(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/report/volume_integrals/sum").execute(*args, **kwargs)
         def twopisum(self, *args, **kwargs):
             """
-            Print sum of scalar over all cell zones multiplied by 2*Pi.
+            Print sum of scalar over all cell zones multiplied by 2\*Pi.
             """
             return PyMenu(self.service, "/report/volume_integrals/twopisum").execute(*args, **kwargs)
         def volume(self, *args, **kwargs):
@@ -23695,6 +23766,11 @@ class results(metaclass=PyMenuMeta):
                             Only list the boundary types that are assigned in this case.
                             """
                             return PyMenu(self.service, "/results/graphics/expert/set/colors/by_type/only_list_case_boundaries").execute(*args, **kwargs)
+                        def use_inherent_material_color(self, *args, **kwargs):
+                            """
+                            Use inherent material color for boundary zones.
+                            """
+                            return PyMenu(self.service, "/results/graphics/expert/set/colors/by_type/use_inherent_material_color").execute(*args, **kwargs)
                         def reset(self, *args, **kwargs):
                             """
                             To reset colors and/or materials to the defaults.
@@ -23930,6 +24006,36 @@ class results(metaclass=PyMenuMeta):
                                     Set a material for the selected boundary type.
                                     """
                                     return PyMenu(self.service, "/results/graphics/expert/set/colors/by_type/type_name/wall/material").execute(*args, **kwargs)
+
+                    class by_surface(metaclass=PyMenuMeta):
+                        """
+                        Enter the surface(s) color and material assignment menu.
+                        """
+                        def surfaces(self, *args, **kwargs):
+                            """
+                            Select the surface(s) to specify colors and/or materials.
+                            """
+                            return PyMenu(self.service, "/results/graphics/expert/set/colors/by_surface/surfaces").execute(*args, **kwargs)
+                        def use_inherent_material_color(self, *args, **kwargs):
+                            """
+                            Use inherent material color for surfaces.
+                            """
+                            return PyMenu(self.service, "/results/graphics/expert/set/colors/by_surface/use_inherent_material_color").execute(*args, **kwargs)
+                        def reset(self, *args, **kwargs):
+                            """
+                            To reset colors and/or materials to the defaults.
+                            """
+                            return PyMenu(self.service, "/results/graphics/expert/set/colors/by_surface/reset").execute(*args, **kwargs)
+                        def list_surfaces_by_color(self, *args, **kwargs):
+                            """
+                            To list the surfaces by its color.
+                            """
+                            return PyMenu(self.service, "/results/graphics/expert/set/colors/by_surface/list_surfaces_by_color").execute(*args, **kwargs)
+                        def list_surfaces_by_material(self, *args, **kwargs):
+                            """
+                            To list the surfaces by its material.
+                            """
+                            return PyMenu(self.service, "/results/graphics/expert/set/colors/by_surface/list_surfaces_by_material").execute(*args, **kwargs)
 
                 class contours(metaclass=PyMenuMeta):
                     """
@@ -27491,7 +27597,7 @@ class results(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/results/report/volume_integrals/sum").execute(*args, **kwargs)
             def twopisum(self, *args, **kwargs):
                 """
-                Print sum of scalar over all cell zones multiplied by 2*Pi.
+                Print sum of scalar over all cell zones multiplied by 2\*Pi.
                 """
                 return PyMenu(self.service, "/results/report/volume_integrals/twopisum").execute(*args, **kwargs)
             def volume(self, *args, **kwargs):
@@ -28818,6 +28924,41 @@ class solution(metaclass=PyMenuMeta):
                 Execute the automatic initialization and case modification strategy defined at present.
                 """
                 return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/execute_strategy").execute(*args, **kwargs)
+            def add_edit_modification(self, *args, **kwargs):
+                """
+                Define a single case modification.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/add_edit_modification").execute(*args, **kwargs)
+            def copy_modification(self, *args, **kwargs):
+                """
+                Copy a single case modification.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/copy_modification").execute(*args, **kwargs)
+            def delete_modification(self, *args, **kwargs):
+                """
+                Delete a single case modification.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/delete_modification").execute(*args, **kwargs)
+            def enable_modification(self, *args, **kwargs):
+                """
+                Enable a single defined case modification.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/enable_modification").execute(*args, **kwargs)
+            def disable_modification(self, *args, **kwargs):
+                """
+                Disable a single defined case modification.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/disable_modification").execute(*args, **kwargs)
+            def import_modifications(self, *args, **kwargs):
+                """
+                Import a list of case modifications from a tsv file.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/import_modifications").execute(*args, **kwargs)
+            def export_modifications(self, *args, **kwargs):
+                """
+                Export all case modifications to a tsv file.
+                """
+                return PyMenu(self.service, "/solution/calculation_activities/solution_strategy/export_modifications").execute(*args, **kwargs)
             def continue_strategy_execution(self, *args, **kwargs):
                 """
                 Continue execution of the automatic initialization and case modification strategy defined at present.
@@ -46089,6 +46230,21 @@ class parametric_study(metaclass=PyMenuMeta):
             Clear Generated Data.
             """
             return PyMenu(self.service, "/parametric_study/design_points/clear_generated_data").execute(*args, **kwargs)
+        def refresh_status(self, *args, **kwargs):
+            """
+            Refresh Status.
+            """
+            return PyMenu(self.service, "/parametric_study/design_points/refresh_status").execute(*args, **kwargs)
+        def interrupt_design_point_submitted_concurrently(self, *args, **kwargs):
+            """
+            Interrupt Design Point.
+            """
+            return PyMenu(self.service, "/parametric_study/design_points/interrupt_design_point_submitted_concurrently").execute(*args, **kwargs)
+        def interrupt_all_design_points_submitted_concurrently(self, *args, **kwargs):
+            """
+            Interrupt Design Points.
+            """
+            return PyMenu(self.service, "/parametric_study/design_points/interrupt_all_design_points_submitted_concurrently").execute(*args, **kwargs)
 
     class update(metaclass=PyMenuMeta):
         """

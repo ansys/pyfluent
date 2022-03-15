@@ -260,7 +260,7 @@ class PyLocalObjectMeta(type):
                     obj.set_state(val)
                 else:
                     obj.update(val)
-
+        wrapper.__doc__ = "Update method."
         return wrapper
 
     # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)

@@ -19,6 +19,13 @@ install_requires = [
     "protobuf>=3.12.2",
 ]
 
+install_requires_post = [
+    "vtk==9.1.0",
+    "pyvista==0.33.2",
+    "pyvistaqt==0.7.0",
+    "pyside6==6.2.3",
+]
+
 packages = []
 for package in find_namespace_packages(include="ansys*"):
     if package.startswith("ansys.api"):
@@ -40,6 +47,9 @@ setup(
     maintainer="Mainak Kundu",
     maintainer_email="mainak.kundu@ansys.com",
     install_requires=install_requires,
+    extras_require={
+        "post": install_requires_post,
+    },
     python_requires=">3.6",
     classifiers=[
         "Development Status :: 4 - Beta",

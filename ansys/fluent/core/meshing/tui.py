@@ -95,6 +95,7 @@ class file(metaclass=PyMenuMeta):
     def read_case(self, *args, **kwargs):
         """
         Read a case file.
+        
         Parameters
         ----------
         case_file_name : str
@@ -343,43 +344,43 @@ class file(metaclass=PyMenuMeta):
         def cad(self, *args, **kwargs):
             """
             Reads the following CAD formats:
-                ACIS  *.sat, *.sab
-                Ansys DesignModeler  *.agdb
-                Ansys ICEM CFD  *.tin
-                Ansys Workbench  *.meshdat, *.mechdat
-                Autodesk Inventor  *.ipt, *.iam
-                CATIA V4  *.model, *.exp, *.session, *.dlv
-                CATIA V5  *.CATPart, *.CATProduct
-                Creo Parametric  *.prt, *.asm
-                GAMBIT  *.dbs
-                IGES  *.igs, *.iges
-                JTOpen  *.jt
-                NX  *.prt
-                Parasolid  *.x_t, *.xmt_txt, *.x_b, *.xmt_bin
-                SolidWorks  *.sldprt, *.sldasm
-                STEP  *.stp, *.step
-                STL  *.stl.
+                ACIS  \*.sat, \*.sab
+                Ansys DesignModeler  \*.agdb
+                Ansys ICEM CFD  \*.tin
+                Ansys Workbench  \*.meshdat, \*.mechdat
+                Autodesk Inventor  \*.ipt, \*.iam
+                CATIA V4  \*.model, \*.exp, \*.session, \*.dlv
+                CATIA V5  \*.CATPart, \*.CATProduct
+                Creo Parametric  \*.prt, \*.asm
+                GAMBIT  \*.dbs
+                IGES  \*.igs, \*.iges
+                JTOpen  \*.jt
+                NX  \*.prt
+                Parasolid  \*.x_t, \*.xmt_txt, \*.x_b, \*.xmt_bin
+                SolidWorks  \*.sldprt, \*.sldasm
+                STEP  \*.stp, \*.step
+                STL  \*.stl.
             """
             return PyMenu(self.service, "/file/import/cad").execute(*args, **kwargs)
         def cad_geometry(self, *args, **kwargs):
             """
             Reads the following CAD formats:
-                ACIS  *.sat, *.sab
-                Ansys DesignModeler  *.agdb
-                Ansys ICEM CFD  *.tin
-                Ansys Workbench  *.meshdat, *.mechdat
-                Autodesk Inventor  *.ipt, *.iam
-                CATIA V4  *.model, *.exp, *.session, *.dlv
-                CATIA V5  *.CATPart, *.CATProduct
-                Creo Parametric  *.prt, *.asm
-                GAMBIT  *.dbs
-                IGES  *.igs, *.iges
-                JTOpen  *.jt
-                NX  *.prt
-                Parasolid  *.x_t, *.xmt_txt, *.x_b, *.xmt_bin
-                SolidWorks  *.sldprt, *.sldasm
-                STEP  *.stp, *.step
-                STL  *.stl.
+                ACIS  \*.sat, \*.sab
+                Ansys DesignModeler  \*.agdb
+                Ansys ICEM CFD  \*.tin
+                Ansys Workbench  \*.meshdat, \*.mechdat
+                Autodesk Inventor  \*.ipt, \*.iam
+                CATIA V4  \*.model, \*.exp, \*.session, \*.dlv
+                CATIA V5  \*.CATPart, \*.CATProduct
+                Creo Parametric  \*.prt, \*.asm
+                GAMBIT  \*.dbs
+                IGES  \*.igs, \*.iges
+                JTOpen  \*.jt
+                NX  \*.prt
+                Parasolid  \*.x_t, \*.xmt_txt, \*.x_b, \*.xmt_bin
+                SolidWorks  \*.sldprt, \*.sldasm
+                STEP  \*.stp, \*.step
+                STL  \*.stl.
             """
             return PyMenu(self.service, "/file/import/cad_geometry").execute(*args, **kwargs)
         def stl(self, *args, **kwargs):
@@ -5718,6 +5719,11 @@ class mesh(metaclass=PyMenuMeta):
             Distributes input geometry across partitions to reduce memory requirements.
             """
             return PyMenu(self.service, "/mesh/rapid_octree/distribute_geometry").execute(*args, **kwargs)
+        def improve_geometry_resolution(self, *args, **kwargs):
+            """
+            Activate improved geometry resolution, will significantly increase mesh generation time.
+            """
+            return PyMenu(self.service, "/mesh/rapid_octree/improve_geometry_resolution").execute(*args, **kwargs)
         def dry_run(self, *args, **kwargs):
             """
             If yes: Just print diagnostic information, do not create a mesh.
@@ -7469,6 +7475,11 @@ class display(metaclass=PyMenuMeta):
                     Only list the boundary types that are assigned in this case.
                     """
                     return PyMenu(self.service, "/display/set/colors/by_type/only_list_case_boundaries").execute(*args, **kwargs)
+                def use_inherent_material_color(self, *args, **kwargs):
+                    """
+                    Use inherent material color for boundary zones.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_type/use_inherent_material_color").execute(*args, **kwargs)
                 def reset(self, *args, **kwargs):
                     """
                     To reset colors and/or materials to the defaults.
@@ -7704,6 +7715,36 @@ class display(metaclass=PyMenuMeta):
                             Set a material for the selected boundary type.
                             """
                             return PyMenu(self.service, "/display/set/colors/by_type/type_name/wall/material").execute(*args, **kwargs)
+
+            class by_surface(metaclass=PyMenuMeta):
+                """
+                Enter the surface(s) color and material assignment menu.
+                """
+                def surfaces(self, *args, **kwargs):
+                    """
+                    Select the surface(s) to specify colors and/or materials.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/surfaces").execute(*args, **kwargs)
+                def use_inherent_material_color(self, *args, **kwargs):
+                    """
+                    Use inherent material color for surfaces.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/use_inherent_material_color").execute(*args, **kwargs)
+                def reset(self, *args, **kwargs):
+                    """
+                    To reset colors and/or materials to the defaults.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/reset").execute(*args, **kwargs)
+                def list_surfaces_by_color(self, *args, **kwargs):
+                    """
+                    To list the surfaces by its color.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/list_surfaces_by_color").execute(*args, **kwargs)
+                def list_surfaces_by_material(self, *args, **kwargs):
+                    """
+                    To list the surfaces by its material.
+                    """
+                    return PyMenu(self.service, "/display/set/colors/by_surface/list_surfaces_by_material").execute(*args, **kwargs)
 
         class picture(metaclass=PyMenuMeta):
             """
@@ -8455,7 +8496,7 @@ class display(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/display/set_grid/labels").execute(*args, **kwargs)
         def label_alignment(self, *args, **kwargs):
             """
-            Set label alignment; chose from "^v<>*".
+            Set label alignment; chose from "^v<>\*".
             """
             return PyMenu(self.service, "/display/set_grid/label_alignment").execute(*args, **kwargs)
         def label_font(self, *args, **kwargs):
