@@ -4,7 +4,7 @@ Postprocessing
 ==============
 
 Post processing Fluent results can be done with either Fluent in-built post
-processing capabilities or with the PyVista integration.
+processing capabilities or with the PyVista/MatplotLib integration.
 
 Fluent
 ------
@@ -23,8 +23,8 @@ written to a file using standard Fluent commands.
   session.tui.solver.display.objects.contour['contour-1'].rename('my-contour')
   del session.tui.solver.display.objects.contour['my-contour']
 
-PyVista Example
----------------
+PyVista Example (Graphics)
+--------------------------
 
 Here the field data is extracted from the Fluent session into the Python
 environment and PyVista is used to visualze the extracted data.
@@ -32,11 +32,11 @@ environment and PyVista is used to visualze the extracted data.
 .. code:: python
 
   # import module
-  import ansys.fluent.post.pyvista as pv
+  from ansys.fluent.post.pyvista import Graphics
 
   # get the graphics objects for the session
 
-  graphics_session1 = pv.Graphics(session)
+  graphics_session1 = Graphics(session)
   mesh1 = graphics_session1.Meshes["mesh-1"]
   contour1 = graphics_session1.Contours["contour-1"]
   contour2 = graphics_session1.Contours["contour-2"]
@@ -73,13 +73,37 @@ environment and PyVista is used to visualze the extracted data.
   surface1.surface_type.iso_surface.field= "velocity-magnitude"
   surface1.surface_type.iso_surface.rendering= "contour"
 
-  # display in default plotter
+  # display 
   contour1.display()
   mesh1.display()
   surface1.display()
   
-  # display in seprate plotter e.g. plotter-2
-  contour1.display("plotter-2")
+  # To display in specifc window e.g. window-2
+  contour1.display("window-2")
+  
+MatplotLib Example (XYPlots)
+----------------------------
+
+Here the plot data is extracted from the Fluent session into the Python
+environment and data is plotted in MatplotLib.
+
+.. code:: python
+
+  # import module
+  from ansys.fluent.post.matplotlib import XYPlots
+
+  # get the xyplots object for the session
+  xyplots_session1 = XYPlots(session)
+  
+  #get plot object
+  plot1=xyplots_session1["plot-1"]
+  
+  #set properties
+  plot1.surfaces_list = ["symmetry"]
+  plot1.y_axis_function = "temperature"
+  
+  #Draw plot
+  plot1.plot("window-1")
 
   session.exit()
 
