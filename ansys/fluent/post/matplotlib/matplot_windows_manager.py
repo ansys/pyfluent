@@ -125,8 +125,9 @@ class MatplotWindow(PostWindow):
             "xlabel": "position",
             "ylabel": field,
         }
-        field_data = obj.parent.session.field_data
-        surfaces_info = field_data.get_surfaces_info()
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
@@ -357,8 +358,7 @@ class MatplotWindowsManager(
                 if not window.plotter.is_closed()
                 and (
                     not session_id
-                    or session_id
-                    == window.graphics_object.parent.parent.session.id
+                    or session_id == window.post_object._data_extractor.id()
                 )
             ]
             if not windows_id or window_id in windows_id

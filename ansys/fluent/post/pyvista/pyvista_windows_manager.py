@@ -91,10 +91,11 @@ class PyVistaWindow(PostWindow):
         if not obj.surfaces_list():
             raise RuntimeError("Vector definition is incomplete.")
 
-        field_data = obj.parent.parent.session.field_data
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
 
         # surface ids
-        surfaces_info = field_data.get_surfaces_info()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
@@ -128,8 +129,8 @@ class PyVistaWindow(PostWindow):
                 )
             mesh.cell_data["vectors"] = mesh_data["vector"]
             velocity_magnitude = np.linalg.norm(mesh_data["vector"], axis=1)
-            if obj.range_option.range_option() == "auto-range-off":
-                auto_range_off = obj.range_option.auto_range_off
+            if obj.range.option() == "auto-range-off":
+                auto_range_off = obj.range.auto_range_off
                 range = [auto_range_off.minimum(), auto_range_off.maximum()]
                 if auto_range_off.clip_to_range():
                     velocity_magnitude = np.ma.masked_outside(
@@ -138,11 +139,11 @@ class PyVistaWindow(PostWindow):
                         auto_range_off.maximum(),
                     ).filled(fill_value=0)
             else:
-                auto_range_on = obj.range_option.auto_range_on
+                auto_range_on = obj.range.auto_range_on
                 if auto_range_on.global_range():
-                    range = field_data.get_range(field, False)
+                    range = field_info.get_range(field, False)
                 else:
-                    range = field_data.get_range(field, False, surface_ids)
+                    range = field_info.get_range(field, False, surface_ids)
 
             if obj.skip():
                 vmag = np.zeros(velocity_magnitude.size)
@@ -171,7 +172,7 @@ class PyVistaWindow(PostWindow):
 
         # contour properties
         field = obj.field()
-        range_option = obj.range_option.range_option()
+        range_option = obj.range.option()
         filled = obj.filled()
         contour_lines = obj.contour_lines()
         node_values = obj.node_values()
@@ -180,8 +181,9 @@ class PyVistaWindow(PostWindow):
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
 
-        field_data = obj.parent.parent.session.field_data
-        surfaces_info = field_data.get_surfaces_info()
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
@@ -213,7 +215,7 @@ class PyVistaWindow(PostWindow):
             else:
                 mesh.cell_data[field] = mesh_data[field]
             if range_option == "auto-range-off":
-                auto_range_off = obj.range_option.auto_range_off
+                auto_range_off = obj.range.auto_range_off
                 if auto_range_off.clip_to_range():
                     if np.min(mesh[field]) < auto_range_off.maximum():
                         maximum_below = mesh.clip_scalar(
@@ -261,12 +263,12 @@ class PyVistaWindow(PostWindow):
                     ):
                         plotter.add_mesh(mesh.contour(isosurfaces=20))
             else:
-                auto_range_on = obj.range_option.auto_range_on
+                auto_range_on = obj.range.auto_range_on
                 if auto_range_on.global_range():
                     if filled:
                         plotter.add_mesh(
                             mesh,
-                            clim=field_data.get_range(field, False),
+                            clim=field_info.get_range(field, False),
                             scalars=field,
                             show_edges=obj.show_edges(),
                             scalar_bar_args=scalar_bar_args,
@@ -297,22 +299,22 @@ class PyVistaWindow(PostWindow):
             raise RuntimeError("Iso surface definition is incomplete.")
 
         dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
-        field_data = obj.parent.parent.session.field_data
-        surfaces_list = list(field_data.get_surfaces_info().keys())
+        field_info = obj._data_extractor.field_info()
+        surfaces_list = list(field_info.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
-            obj.parent.parent.session.tui.solver.surface.delete_surface(
+            obj._data_extractor.surface_api().delete_surface(
                 dummy_surface_name
             )
 
-        obj.parent.parent.session.tui.solver.surface.iso_surface(
+        obj._data_extractor.surface_api().iso_surface(
             field, dummy_surface_name, (), (), iso_value, ()
         )
 
-        surfaces_list = list(field_data.get_surfaces_info().keys())
+        surfaces_list = list(field_info.get_surfaces_info().keys())
         if dummy_surface_name not in surfaces_list:
             raise RuntimeError("Iso surface creation failed.")
-        post_session = obj.parent.parent
+        post_session = obj._get_top_most_parent()
         if obj.surface_type.iso_surface.rendering() == "mesh":
             mesh = post_session.Meshes[dummy_surface_name]
             mesh.surfaces_list = [dummy_surface_name]
@@ -324,20 +326,19 @@ class PyVistaWindow(PostWindow):
             contour.field = obj.surface_type.iso_surface.field()
             contour.surfaces_list = [dummy_surface_name]
             contour.show_edges = True
-            contour.range_option.auto_range_on.global_range = True
+            contour.range.auto_range_on.global_range = True
             self._display_contour(contour, plotter)
             del post_session.Contours[dummy_surface_name]
-        obj.parent.parent.session.tui.solver.surface.delete_surface(
-            dummy_surface_name
-        )
+        obj._data_extractor.surface_api().delete_surface(dummy_surface_name)
 
     def _display_mesh(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
     ):
         if not obj.surfaces_list():
             raise RuntimeError("Mesh definition is incomplete.")
-        field_data = obj.parent.parent.session.field_data
-        surfaces_info = field_data.get_surfaces_info()
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
@@ -608,7 +609,8 @@ class PyVistaWindowsManager(
             self._post_object = obj
 
         if not self._plotter_thread:
-            Session._monitor_thread.cbs.append(self._exit)
+            if Session._monitor_thread:
+                Session._monitor_thread.cbs.append(self._exit)
             self._plotter_thread = threading.Thread(
                 target=self._display, args=()
             )
@@ -648,7 +650,7 @@ class PyVistaWindowsManager(
                     and (
                         not session_id
                         or session_id
-                        == window.post_object.parent.parent.session.id
+                        == window.post_object._data_extractor.id()
                     )
                 ]
                 if not windows_id or window_id in windows_id
