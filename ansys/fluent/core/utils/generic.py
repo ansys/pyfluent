@@ -49,7 +49,6 @@ def execute_in_event_loop(f):
 
 def in_notebook():
     """Function to check if application is running in notebook."""
-
     try:
         from IPython import get_ipython
 

@@ -43,9 +43,9 @@ class FieldDataService:
         return self.__stub.GetFields(request, metadata=self.__metadata)
 
 
-class FieldData:
+class FieldInfo:
     """
-    Provide the field data.
+    Provides access to Fluent field info.
 
     Methods
     -------
@@ -62,38 +62,7 @@ class FieldData:
     get_surfaces_info(self) -> dict
         Get surfaces information i.e. surface name, id and type.
 
-    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> Dict[int, Dict]
-        Get surfaces data i.e. coordinates and connectivity.
-
-    get_scalar_field(
-        surface_ids: List[int],
-        scalar_field: str,
-        node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        Get scalar field data i.e. surface data and associated
-        scalar field values.
-
-    get_vector_field(
-        surface_ids: List[int],
-        vector_field: Optional[str] = "velocity",
-        scalar_field: Optional[str] = "",
-        node_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        Get vector field data i.e. surface data and associated
-        scalar and vector field values.
-
     """
-
-    # data mapping
-    _proto_field_type_to_np_data_type = {
-        FieldDataProtoModule.FieldType.INT_ARRAY: np.int32,
-        FieldDataProtoModule.FieldType.LONG_ARRAY: np.int64,
-        FieldDataProtoModule.FieldType.FLOAT_ARRAY: np.float32,
-        FieldDataProtoModule.FieldType.DOUBLE_ARRAY: np.float64,
-    }
-    _chunk_size = 256 * 1024
-    _bytes_stream = True
 
     def __init__(self, service: FieldDataService):
         self.__service = service
@@ -137,7 +106,7 @@ class FieldData:
     def get_surfaces_info(self) -> dict:
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self.__service.get_surfaces_info(request)
-        return {
+        info = {
             surface_info.surfaceName: {
                 "surface_id": [surf.id for surf in surface_info.surfaceId],
                 "zone_id": surface_info.zoneId.id,
@@ -146,6 +115,50 @@ class FieldData:
             }
             for surface_info in response.surfaceInfo
         }
+        return info
+
+
+class FieldData:
+    """
+    Provides access to Fluent field data on surfaces.
+
+    Methods
+    -------
+    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> Dict[int, Dict]
+        Get surfaces data i.e. coordinates and connectivity.
+
+    get_scalar_field(
+        surface_ids: List[int],
+        scalar_field: str,
+        node_value: Optional[bool] = True,
+        boundary_value: Optional[bool] = False,
+    ) -> Dict[int, Dict]:
+        Get scalar field data i.e. surface data and associated
+        scalar field values.
+
+    get_vector_field(
+        surface_ids: List[int],
+        vector_field: Optional[str] = "velocity",
+        scalar_field: Optional[str] = "",
+        node_value: Optional[bool] = False,
+    ) -> Dict[int, Dict]:
+        Get vector field data i.e. surface data and associated
+        scalar and vector field values.
+
+    """
+
+    # data mapping
+    _proto_field_type_to_np_data_type = {
+        FieldDataProtoModule.FieldType.INT_ARRAY: np.int32,
+        FieldDataProtoModule.FieldType.LONG_ARRAY: np.int64,
+        FieldDataProtoModule.FieldType.FLOAT_ARRAY: np.float32,
+        FieldDataProtoModule.FieldType.DOUBLE_ARRAY: np.float64,
+    }
+    _chunk_size = 256 * 1024
+    _bytes_stream = True
+
+    def __init__(self, service: FieldDataService):
+        self.__service = service
 
     def _extract_fields(self, chunk_iterator):
         def _extract_field(field_datatype, field_size, chunk_iterator):
@@ -181,6 +194,10 @@ class FieldData:
                     if index == field_size:
                         return field_arr
 
+        # added this but it still gets bypassed
+        # even when is_active() == False
+        if not chunk_iterator.is_active():
+            raise RuntimeError("Chunk is Empty.")
         fields_data = {}
         for chunk in chunk_iterator:
             payload_info = chunk.payloadInfo

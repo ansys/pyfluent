@@ -23,10 +23,14 @@ class Graphics:
 
     def __init__(self, session):
         """Instantiate Graphics, containter of graphics objects."""
-        session_state = Graphics._sessions_state.get(session.id)
+        session_state = Graphics._sessions_state.get(
+            session.id if session else 1
+        )
         if not session_state:
             session_state = self.__dict__
-            Graphics._sessions_state[session.id] = session_state
+            Graphics._sessions_state[
+                session.id if session else 1
+            ] = session_state
             self.session = session
             self._init_module(self, sys.modules[__name__])
         else:

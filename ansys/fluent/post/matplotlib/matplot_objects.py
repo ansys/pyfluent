@@ -1,5 +1,6 @@
 """Module providing post objects for Matplotlib."""
-
+import inspect
+import sys
 from typing import Optional
 
 from ansys.fluent.core.meta import PyLocalContainer
@@ -7,21 +8,33 @@ from ansys.fluent.post.matplotlib import matplot_windows_manager
 from ansys.fluent.post.post_object_defns import XYPlotDefn
 
 
-class XYPlots(PyLocalContainer):
-    """XYPlot objects provider."""
+class Plots:
+    """Plot objects provider."""
 
     _sessions_state = {}
 
     def __init__(self, session):
-        """Instantiate XYPlots, containter of XYPlot."""
-        session_state = XYPlots._sessions_state.get(session.id)
+        """Instantiate Plots, containter of plot objects."""
+        session_state = Plots._sessions_state.get(session.id if session else 1)
         if not session_state:
             session_state = self.__dict__
-            XYPlots._sessions_state[session.id] = session_state
+            Plots._sessions_state[session.id if session else 1] = session_state
             self.session = session
-            super().__init__(None, XYPlot)
+            self._init_module(self, sys.modules[__name__])
         else:
             self.__dict__ = session_state
+
+    def _init_module(self, obj, mod):
+        for name, cls in mod.__dict__.items():
+
+            if cls.__class__.__name__ in (
+                "PyLocalNamedObjectMetaAbstract",
+            ) and not inspect.isabstract(cls):
+                setattr(
+                    obj,
+                    cls.PLURAL,
+                    PyLocalContainer(self, cls),
+                )
 
 
 class XYPlot(XYPlotDefn):
