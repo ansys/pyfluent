@@ -582,7 +582,9 @@ class PyCommand:
         if self.__class__.docstring is None:
             request = DataModelProtoModule.GetSpecsRequest()
             request.rules = self.rules
-            request.path = _convert_path_to_se_path(self.path)
+            request.path = _convert_path_to_se_path(
+                self.path + [(self.command, "")]
+            )
             response = self.service.get_specs(request)
             self.__class__.docstring = getattr(
                 response.member, response.member.WhichOneof("as")
