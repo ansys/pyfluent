@@ -106,7 +106,7 @@ jobs:
       - name: Install OS packages
         run: |
           sudo apt update
-          sudo apt install zip pandoc libegl1
+          sudo apt install pandoc libegl1
 
       - name: Cache pip
         uses: actions/cache@v2
@@ -123,21 +123,18 @@ jobs:
         run: |
           pip install -r requirements_docs.txt
           make -C doc html
+          touch doc/_build/html/.nojekyll
+          echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME
 
       # Verify that sphinx generates no warnings
       - name: Check for sphinx warnings
         run: python doc/print_errors.py
 
-      - name: Zip documentation
-        run: |
-          cd doc/_build/html
-          zip -r PyFluent_documentation.zip *
-
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v2
         with:
           name: HTML-Documentation
-          path: doc/build/html/PyFluent_documentation.zip
+          path: doc/_build/html
           retention-days: 7
 
       - name: Deploy
