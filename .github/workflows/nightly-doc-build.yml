@@ -28,7 +28,7 @@ jobs:
       - name: Install OS packages
         run: |
           sudo apt update
-          sudo apt install zip pandoc libegl1
+          sudo apt install pandoc libegl1
 
       - name: Install pyfluent with post module
         run: make install-post
@@ -37,6 +37,8 @@ jobs:
         run: |
           pip install -r requirements_docs.txt
           make -C doc html
+          touch doc/_build/html/.nojekyll
+          echo "dev.fluentdocs.pyansys.com" >> doc/_build/html/CNAME
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.4
