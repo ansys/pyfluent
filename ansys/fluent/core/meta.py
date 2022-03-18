@@ -133,6 +133,7 @@ class PyLocalPropertyMeta(type):
                 return parent
 
             self.get_session = lambda: get_top_most_parent(self).session
+            self.field_data = lambda: self.get_session().field_data
             self.parent = parent
             self._on_change_cbs = []
             annotations = self.__class__.__dict__.get("__annotations__")
