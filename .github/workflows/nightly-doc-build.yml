@@ -1,0 +1,48 @@
+name: Nightly Documentation Build
+
+on:
+  schedule:  # UTC at 0400
+    - cron:  '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  nightly_docs_build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # used for documentation deployment
+      - name: Get Bot Application Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: ${{ secrets.BOT_APPLICATION_ID }}
+          application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install OS packages
+        run: |
+          sudo apt update
+          sudo apt install zip pandoc libegl1
+
+      - name: Install pyfluent with post module
+        run: make install-post
+
+      - name: Build Documentation
+        run: |
+          pip install -r requirements_docs.txt
+          make -C doc html
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          repository-name: pyansys/pyfluent-dev-docs
+          token: ${{ steps.get_workflow_token.outputs.token }}
+          BRANCH: gh-pages
+          FOLDER: doc/_build/html
+          CLEAN: true
