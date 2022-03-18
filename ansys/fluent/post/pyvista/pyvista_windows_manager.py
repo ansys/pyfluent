@@ -314,7 +314,7 @@ class PyVistaWindow(PostWindow):
         surfaces_list = list(field_info.get_surfaces_info().keys())
         if dummy_surface_name not in surfaces_list:
             raise RuntimeError("Iso surface creation failed.")
-        post_session = obj.parent.parent
+        post_session = obj.get_top_most_parent()
         if obj.surface_type.iso_surface.rendering() == "mesh":
             mesh = post_session.Meshes[dummy_surface_name]
             mesh.surfaces_list = [dummy_surface_name]
@@ -651,7 +651,7 @@ class PyVistaWindowsManager(
                     and (
                         not session_id
                         or session_id
-                        == window.post_object.parent.parent.session.id
+                        == window.post_object.get_top_most_parent().session.id
                     )
                 ]
                 if not windows_id or window_id in windows_id

@@ -134,7 +134,7 @@ class PyLocalPropertyMeta(type):
         def wrapper(self, parent):
             self.field_info = lambda: _get_top_most_parent(self).session.field_info
             self.field_data = lambda: _get_top_most_parent(self).session.field_data
-            self.get_top_most_parent = _get_top_most_parent
+            self.get_top_most_parent = lambda : _get_top_most_parent(self)
             self.parent = parent
             self._on_change_cbs = []
             annotations = self.__class__.__dict__.get("__annotations__")
@@ -346,7 +346,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self.field_info = lambda: _get_top_most_parent(self).session.field_info
             self.field_data = lambda: _get_top_most_parent(self).session.field_data
             self.surface_api = lambda: _get_top_most_parent(self).tui.solver.surface
-            self.get_top_most_parent = _get_top_most_parent
+            self.get_top_most_parent = lambda : _get_top_most_parent(self)
             
             self.parent = parent
 

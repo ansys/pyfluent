@@ -319,19 +319,19 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self.parent.parent.parent.field,
-                        self.parent.parent.parent.node_values,
+                        self.get_top_most_parent().field,
+                        self.get_top_most_parent().node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self.parent.parent.parent.field()
+                        field = self.get_top_most_parent().field()
                         if field:
                             field_info = self.field_info()
                             field_range = field_info.get_range(
-                                field, self.parent.parent.parent.node_values()
+                                field, self.get_top_most_parent().node_values()
                             )
                             self._value = field_range[0]
                     return self._value
@@ -347,20 +347,20 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self.parent.parent.parent.field,
-                        self.parent.parent.parent.node_values,
+                        self.get_top_most_parent().field,
+                        self.get_top_most_parent().node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self.parent.parent.parent.field()
+                        field = self.get_top_most_parent().field()
                         if field:
                             field_info = self.field_info()
                             field_range = field_info.get_range(
                                 field,
-                                self.parent.parent.parent.node_values(),
+                                self.get_top_most_parent().node_values(),
                             )
                             self._value = field_range[1]
 
