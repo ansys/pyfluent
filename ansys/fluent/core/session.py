@@ -17,7 +17,7 @@ from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.datamodel_tui import PyMenu as PyMenu_TUI
-from ansys.fluent.core.services.field_data import FieldData, FieldDataService
+from ansys.fluent.core.services.field_data import FieldInfo, FieldData, FieldDataService
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import (
     SchemeEval, SchemeEvalService
@@ -170,6 +170,7 @@ class Session:
         self._field_data_service = FieldDataService(
             self._channel, self._metadata
         )
+        self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service)
         self.tui = Session.Tui(self._datamodel_service_tui)
 

@@ -91,10 +91,11 @@ class PyVistaWindow(PostWindow):
         if not obj.surfaces_list():
             raise RuntimeError("Vector definition is incomplete.")
 
-        field_data = obj.parent.parent.session.field_data
+        field_info = obj.field_info()
+        field_data = obj.field_data()
 
         # surface ids
-        surfaces_info = field_data.get_surfaces_info()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
@@ -140,9 +141,9 @@ class PyVistaWindow(PostWindow):
             else:
                 auto_range_on = obj.range_option.auto_range_on
                 if auto_range_on.global_range():
-                    range = field_data.get_range(field, False)
+                    range = field_info.get_range(field, False)
                 else:
-                    range = field_data.get_range(field, False, surface_ids)
+                    range = field_info.get_range(field, False, surface_ids)
 
             if obj.skip():
                 vmag = np.zeros(velocity_magnitude.size)
@@ -180,8 +181,9 @@ class PyVistaWindow(PostWindow):
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
 
-        field_data = obj.parent.parent.session.field_data
-        surfaces_info = field_data.get_surfaces_info()
+        field_info = obj.field_info()
+        field_data = obj.field_data()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
@@ -266,7 +268,7 @@ class PyVistaWindow(PostWindow):
                     if filled:
                         plotter.add_mesh(
                             mesh,
-                            clim=field_data.get_range(field, False),
+                            clim=field_info.get_range(field, False),
                             scalars=field,
                             show_edges=obj.show_edges(),
                             scalar_bar_args=scalar_bar_args,
@@ -297,19 +299,19 @@ class PyVistaWindow(PostWindow):
             raise RuntimeError("Iso surface definition is incomplete.")
 
         dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
-        field_data = obj.parent.parent.session.field_data
-        surfaces_list = list(field_data.get_surfaces_info().keys())
+        field_info = obj.field_info()
+        surfaces_list = list(field_info.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
-            obj.parent.parent.session.tui.solver.surface.delete_surface(
+            obj.surface_api().delete_surface(
                 dummy_surface_name
             )
 
-        obj.parent.parent.session.tui.solver.surface.iso_surface(
+        obj.surface_api().iso_surface(
             field, dummy_surface_name, (), (), iso_value, ()
         )
 
-        surfaces_list = list(field_data.get_surfaces_info().keys())
+        surfaces_list = list(field_info.get_surfaces_info().keys())
         if dummy_surface_name not in surfaces_list:
             raise RuntimeError("Iso surface creation failed.")
         post_session = obj.parent.parent
@@ -326,8 +328,8 @@ class PyVistaWindow(PostWindow):
             contour.show_edges = True
             contour.range_option.auto_range_on.global_range = True
             self._display_contour(contour, plotter)
-            del post_session.Contours[dummy_surface_name]
-        obj.parent.parent.session.tui.solver.surface.delete_surface(
+            del post_session.Contours[dummy_surface_name]        
+        obj.surface_api().delete_surface(
             dummy_surface_name
         )
 
@@ -336,8 +338,9 @@ class PyVistaWindow(PostWindow):
     ):
         if not obj.surfaces_list():
             raise RuntimeError("Mesh definition is incomplete.")
-        field_data = obj.parent.parent.session.field_data
-        surfaces_info = field_data.get_surfaces_info()
+        field_info = obj.field_info()
+        field_data = obj.field_data()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()

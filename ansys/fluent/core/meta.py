@@ -8,6 +8,12 @@ from pprint import pformat
 from ansys.fluent.core.services.datamodel_tui import PyMenu
 
 
+def _get_top_most_parent(obj):
+    parent = obj
+    if getattr(obj, "parent", None):
+        parent = _get_top_most_parent(obj.parent)
+    return parent
+
 class Attribute:
     VALID_NAMES = ["range", "allowed_values"]
 
@@ -126,14 +132,9 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent):
-            def get_top_most_parent(obj):
-                parent = obj
-                if getattr(obj, "parent", None):
-                    parent = get_top_most_parent(obj.parent)
-                return parent
-
-            self.get_session = lambda: get_top_most_parent(self).session
-            self.field_data = lambda: self.get_session().field_data
+            self.field_info = lambda: _get_top_most_parent(self).session.field_info
+            self.field_data = lambda: _get_top_most_parent(self).session.field_data
+            self.get_top_most_parent = _get_top_most_parent
             self.parent = parent
             self._on_change_cbs = []
             annotations = self.__class__.__dict__.get("__annotations__")
@@ -342,6 +343,11 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
     def __create_init(cls):
         def wrapper(self, name, parent):
             self.__name = name
+            self.field_info = lambda: _get_top_most_parent(self).session.field_info
+            self.field_data = lambda: _get_top_most_parent(self).session.field_data
+            self.surface_api = lambda: _get_top_most_parent(self).tui.solver.surface
+            self.get_top_most_parent = _get_top_most_parent
+            
             self.parent = parent
 
             def update(clss):

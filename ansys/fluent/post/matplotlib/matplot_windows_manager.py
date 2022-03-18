@@ -125,8 +125,9 @@ class MatplotWindow(PostWindow):
             "xlabel": "position",
             "ylabel": field,
         }
-        field_data = obj.parent.session.field_data
-        surfaces_info = field_data.get_surfaces_info()
+        field_info = obj.field_info()
+        field_data = obj.field_data()
+        surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
             for surf in obj.surfaces_list()
