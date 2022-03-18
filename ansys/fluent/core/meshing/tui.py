@@ -5291,12 +5291,13 @@ class mesh(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/mesh/cutcell").execute(*args, **kwargs)
     def prepare_for_solve(self, *args, **kwargs):
         """
-        Performs the following cleanup operations:
-            -Delete dead zones
-            -Delete geom and wrap objects
-            -Delete all edge zones
-            -Delete unused faces
-            -Delete unused nodes
+        Performs the following cleanup operations.
+        
+            - Delete dead zones.
+            - Delete geom and wrap objects.
+            - Delete all edge zones.
+            - Delete unused faces.
+            - Delete unused nodes.
         .
         """
         return PyMenu(self.service, "/mesh/prepare_for_solve").execute(*args, **kwargs)

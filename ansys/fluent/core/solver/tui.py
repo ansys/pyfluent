@@ -1,6 +1,4 @@
-"""
-This is an auto-generated file.  DO NOT EDIT!
-"""
+"""This is an auto-generated file.  DO NOT EDIT!"""
 # pylint: disable=line-too-long
 
 from ansys.fluent.core.meta import PyMenuMeta, PyNamedObjectMeta
@@ -13691,6 +13689,116 @@ class define(metaclass=PyMenuMeta):
                     """
                     return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/alternative_formulation").execute(*args, **kwargs)
 
+        class electrolysis_setup(metaclass=PyMenuMeta):
+            """
+            Enter the electrolysis model setup menu.
+            """
+            def model_options(self, *args, **kwargs):
+                """
+                Model Options.
+                """
+                return PyMenu(self.service, "/define/models/electrolysis_setup/model_options").execute(*args, **kwargs)
+            def parameters(self, *args, **kwargs):
+                """
+                Model Parameters.
+                """
+                return PyMenu(self.service, "/define/models/electrolysis_setup/parameters").execute(*args, **kwargs)
+            def electrical_tabs_setup(self, *args, **kwargs):
+                """
+                Electrical Tabs Setup.
+                """
+                return PyMenu(self.service, "/define/models/electrolysis_setup/electrical_tabs_setup").execute(*args, **kwargs)
+
+            class anode_setup(metaclass=PyMenuMeta):
+                """
+                Anode Setup.
+                """
+                def current_collector(self, *args, **kwargs):
+                    """
+                    Set Current Collector.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/anode_setup/current_collector").execute(*args, **kwargs)
+                def flow_channel(self, *args, **kwargs):
+                    """
+                    Set Flow Channel.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/anode_setup/flow_channel").execute(*args, **kwargs)
+                def porous_layer(self, *args, **kwargs):
+                    """
+                    Set Porous Layer.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/anode_setup/porous_layer").execute(*args, **kwargs)
+                def catalyst_layer(self, *args, **kwargs):
+                    """
+                    Set Catalyst Layer.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/anode_setup/catalyst_layer").execute(*args, **kwargs)
+                def electrolyte(self, *args, **kwargs):
+                    """
+                    Set Electrolyte.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/anode_setup/electrolyte").execute(*args, **kwargs)
+
+            class cathode_setup(metaclass=PyMenuMeta):
+                """
+                Cathode Setup.
+                """
+                def current_collector(self, *args, **kwargs):
+                    """
+                    Set Current Collector.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/cathode_setup/current_collector").execute(*args, **kwargs)
+                def flow_channel(self, *args, **kwargs):
+                    """
+                    Set Flow Channel.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/cathode_setup/flow_channel").execute(*args, **kwargs)
+                def porous_layer(self, *args, **kwargs):
+                    """
+                    Set Porous Layer.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/cathode_setup/porous_layer").execute(*args, **kwargs)
+                def catalyst_layer(self, *args, **kwargs):
+                    """
+                    Set Catalyst Layer.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/cathode_setup/catalyst_layer").execute(*args, **kwargs)
+                def electrolyte(self, *args, **kwargs):
+                    """
+                    Set Electrolyte.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/cathode_setup/electrolyte").execute(*args, **kwargs)
+
+            class membrane_setup(metaclass=PyMenuMeta):
+                """
+                Membrane Setup.
+                """
+                def current_collector(self, *args, **kwargs):
+                    """
+                    Set Current Collector.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/membrane_setup/current_collector").execute(*args, **kwargs)
+                def flow_channel(self, *args, **kwargs):
+                    """
+                    Set Flow Channel.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/membrane_setup/flow_channel").execute(*args, **kwargs)
+                def porous_layer(self, *args, **kwargs):
+                    """
+                    Set Porous Layer.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/membrane_setup/porous_layer").execute(*args, **kwargs)
+                def catalyst_layer(self, *args, **kwargs):
+                    """
+                    Set Catalyst Layer.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/membrane_setup/catalyst_layer").execute(*args, **kwargs)
+                def electrolyte(self, *args, **kwargs):
+                    """
+                    Set Electrolyte.
+                    """
+                    return PyMenu(self.service, "/define/models/electrolysis_setup/membrane_setup/electrolyte").execute(*args, **kwargs)
+
     class overset_interfaces(metaclass=PyMenuMeta):
         """
         Enter the overset-interfaces menu.
@@ -14235,31 +14343,31 @@ class define(metaclass=PyMenuMeta):
             Define the total number of blades in blade flutter row.
             """
             return PyMenu(self.service, "/define/turbo_model/number_of_blades_in_row").execute(*args, **kwargs)
-        def define_turbomachine_description(self, *args, **kwargs):
+        def create_turbomachine_description(self, *args, **kwargs):
             """
             Define turbomachine description.
             """
-            return PyMenu(self.service, "/define/turbo_model/define_turbomachine_description").execute(*args, **kwargs)
-        def define_phaselag_spectral_content(self, *args, **kwargs):
+            return PyMenu(self.service, "/define/turbo_model/create_turbomachine_description").execute(*args, **kwargs)
+        def create_phaselag_spectral_content(self, *args, **kwargs):
             """
             Define phaselag related spectral content.
             """
-            return PyMenu(self.service, "/define/turbo_model/define_phaselag_spectral_content").execute(*args, **kwargs)
+            return PyMenu(self.service, "/define/turbo_model/create_phaselag_spectral_content").execute(*args, **kwargs)
         def phaselag_extra_settings(self, *args, **kwargs):
             """
             Define phaselag related extra settings.
             """
             return PyMenu(self.service, "/define/turbo_model/phaselag_extra_settings").execute(*args, **kwargs)
-        def define_post_spectral_content(self, *args, **kwargs):
+        def create_graphics_spectral_content(self, *args, **kwargs):
             """
             Define post-processing related spectral content.
             """
-            return PyMenu(self.service, "/define/turbo_model/define_post_spectral_content").execute(*args, **kwargs)
-        def post_extra_settings(self, *args, **kwargs):
+            return PyMenu(self.service, "/define/turbo_model/create_graphics_spectral_content").execute(*args, **kwargs)
+        def graphics_extra_settings(self, *args, **kwargs):
             """
             Define phaselag related extra settings.
             """
-            return PyMenu(self.service, "/define/turbo_model/post_extra_settings").execute(*args, **kwargs)
+            return PyMenu(self.service, "/define/turbo_model/graphics_extra_settings").execute(*args, **kwargs)
         def delete_turbomachine_description(self, *args, **kwargs):
             """
             Delete turbomachine description.
@@ -14270,21 +14378,21 @@ class define(metaclass=PyMenuMeta):
             Delete phaselag related spectral content.
             """
             return PyMenu(self.service, "/define/turbo_model/delete_phaselag_spectral_content").execute(*args, **kwargs)
-        def delete_post_spectral_content(self, *args, **kwargs):
+        def delete_graphics_spectral_content(self, *args, **kwargs):
             """
             Delete post-processing related spectral content.
             """
-            return PyMenu(self.service, "/define/turbo_model/delete_post_spectral_content").execute(*args, **kwargs)
+            return PyMenu(self.service, "/define/turbo_model/delete_graphics_spectral_content").execute(*args, **kwargs)
         def list_turbomachine_description(self, *args, **kwargs):
             """
             List turbomachine description.
             """
             return PyMenu(self.service, "/define/turbo_model/list_turbomachine_description").execute(*args, **kwargs)
-        def list_post_spectral_content(self, *args, **kwargs):
+        def list_graphics_spectral_content(self, *args, **kwargs):
             """
             List post-processing related spectral content.
             """
-            return PyMenu(self.service, "/define/turbo_model/list_post_spectral_content").execute(*args, **kwargs)
+            return PyMenu(self.service, "/define/turbo_model/list_graphics_spectral_content").execute(*args, **kwargs)
         def list_phaselag_state(self, *args, **kwargs):
             """
             List all phaselag related case settings.
@@ -17984,6 +18092,11 @@ class file(metaclass=PyMenuMeta):
         Read a data file.
         """
         return PyMenu(self.service, "/file/read_data").execute(*args, **kwargs)
+    def read_case_info(self, *args, **kwargs):
+        """
+        Read basic case info.
+        """
+        return PyMenu(self.service, "/file/read_case_info").execute(*args, **kwargs)
     def read_field_functions(self, *args, **kwargs):
         """
         Read custom field-function definitions from a file.
@@ -44676,6 +44789,116 @@ class setup(metaclass=PyMenuMeta):
                     """
                     return PyMenu(self.service, "/setup/models/heat_exchanger/dual_cell_model/alternative_formulation").execute(*args, **kwargs)
 
+        class electrolysis_setup(metaclass=PyMenuMeta):
+            """
+            Enter the electrolysis model setup menu.
+            """
+            def model_options(self, *args, **kwargs):
+                """
+                Model Options.
+                """
+                return PyMenu(self.service, "/setup/models/electrolysis_setup/model_options").execute(*args, **kwargs)
+            def parameters(self, *args, **kwargs):
+                """
+                Model Parameters.
+                """
+                return PyMenu(self.service, "/setup/models/electrolysis_setup/parameters").execute(*args, **kwargs)
+            def electrical_tabs_setup(self, *args, **kwargs):
+                """
+                Electrical Tabs Setup.
+                """
+                return PyMenu(self.service, "/setup/models/electrolysis_setup/electrical_tabs_setup").execute(*args, **kwargs)
+
+            class anode_setup(metaclass=PyMenuMeta):
+                """
+                Anode Setup.
+                """
+                def current_collector(self, *args, **kwargs):
+                    """
+                    Set Current Collector.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/anode_setup/current_collector").execute(*args, **kwargs)
+                def flow_channel(self, *args, **kwargs):
+                    """
+                    Set Flow Channel.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/anode_setup/flow_channel").execute(*args, **kwargs)
+                def porous_layer(self, *args, **kwargs):
+                    """
+                    Set Porous Layer.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/anode_setup/porous_layer").execute(*args, **kwargs)
+                def catalyst_layer(self, *args, **kwargs):
+                    """
+                    Set Catalyst Layer.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/anode_setup/catalyst_layer").execute(*args, **kwargs)
+                def electrolyte(self, *args, **kwargs):
+                    """
+                    Set Electrolyte.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/anode_setup/electrolyte").execute(*args, **kwargs)
+
+            class cathode_setup(metaclass=PyMenuMeta):
+                """
+                Cathode Setup.
+                """
+                def current_collector(self, *args, **kwargs):
+                    """
+                    Set Current Collector.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/cathode_setup/current_collector").execute(*args, **kwargs)
+                def flow_channel(self, *args, **kwargs):
+                    """
+                    Set Flow Channel.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/cathode_setup/flow_channel").execute(*args, **kwargs)
+                def porous_layer(self, *args, **kwargs):
+                    """
+                    Set Porous Layer.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/cathode_setup/porous_layer").execute(*args, **kwargs)
+                def catalyst_layer(self, *args, **kwargs):
+                    """
+                    Set Catalyst Layer.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/cathode_setup/catalyst_layer").execute(*args, **kwargs)
+                def electrolyte(self, *args, **kwargs):
+                    """
+                    Set Electrolyte.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/cathode_setup/electrolyte").execute(*args, **kwargs)
+
+            class membrane_setup(metaclass=PyMenuMeta):
+                """
+                Membrane Setup.
+                """
+                def current_collector(self, *args, **kwargs):
+                    """
+                    Set Current Collector.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/membrane_setup/current_collector").execute(*args, **kwargs)
+                def flow_channel(self, *args, **kwargs):
+                    """
+                    Set Flow Channel.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/membrane_setup/flow_channel").execute(*args, **kwargs)
+                def porous_layer(self, *args, **kwargs):
+                    """
+                    Set Porous Layer.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/membrane_setup/porous_layer").execute(*args, **kwargs)
+                def catalyst_layer(self, *args, **kwargs):
+                    """
+                    Set Catalyst Layer.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/membrane_setup/catalyst_layer").execute(*args, **kwargs)
+                def electrolyte(self, *args, **kwargs):
+                    """
+                    Set Electrolyte.
+                    """
+                    return PyMenu(self.service, "/setup/models/electrolysis_setup/membrane_setup/electrolyte").execute(*args, **kwargs)
+
     class named_expressions(metaclass=PyMenuMeta):
         """
         Manage named expressions.
@@ -45425,31 +45648,31 @@ class setup(metaclass=PyMenuMeta):
             Define the total number of blades in blade flutter row.
             """
             return PyMenu(self.service, "/setup/turbo_model/number_of_blades_in_row").execute(*args, **kwargs)
-        def define_turbomachine_description(self, *args, **kwargs):
+        def create_turbomachine_description(self, *args, **kwargs):
             """
             Define turbomachine description.
             """
-            return PyMenu(self.service, "/setup/turbo_model/define_turbomachine_description").execute(*args, **kwargs)
-        def define_phaselag_spectral_content(self, *args, **kwargs):
+            return PyMenu(self.service, "/setup/turbo_model/create_turbomachine_description").execute(*args, **kwargs)
+        def create_phaselag_spectral_content(self, *args, **kwargs):
             """
             Define phaselag related spectral content.
             """
-            return PyMenu(self.service, "/setup/turbo_model/define_phaselag_spectral_content").execute(*args, **kwargs)
+            return PyMenu(self.service, "/setup/turbo_model/create_phaselag_spectral_content").execute(*args, **kwargs)
         def phaselag_extra_settings(self, *args, **kwargs):
             """
             Define phaselag related extra settings.
             """
             return PyMenu(self.service, "/setup/turbo_model/phaselag_extra_settings").execute(*args, **kwargs)
-        def define_post_spectral_content(self, *args, **kwargs):
+        def create_graphics_spectral_content(self, *args, **kwargs):
             """
             Define post-processing related spectral content.
             """
-            return PyMenu(self.service, "/setup/turbo_model/define_post_spectral_content").execute(*args, **kwargs)
-        def post_extra_settings(self, *args, **kwargs):
+            return PyMenu(self.service, "/setup/turbo_model/create_graphics_spectral_content").execute(*args, **kwargs)
+        def graphics_extra_settings(self, *args, **kwargs):
             """
             Define phaselag related extra settings.
             """
-            return PyMenu(self.service, "/setup/turbo_model/post_extra_settings").execute(*args, **kwargs)
+            return PyMenu(self.service, "/setup/turbo_model/graphics_extra_settings").execute(*args, **kwargs)
         def delete_turbomachine_description(self, *args, **kwargs):
             """
             Delete turbomachine description.
@@ -45460,21 +45683,21 @@ class setup(metaclass=PyMenuMeta):
             Delete phaselag related spectral content.
             """
             return PyMenu(self.service, "/setup/turbo_model/delete_phaselag_spectral_content").execute(*args, **kwargs)
-        def delete_post_spectral_content(self, *args, **kwargs):
+        def delete_graphics_spectral_content(self, *args, **kwargs):
             """
             Delete post-processing related spectral content.
             """
-            return PyMenu(self.service, "/setup/turbo_model/delete_post_spectral_content").execute(*args, **kwargs)
+            return PyMenu(self.service, "/setup/turbo_model/delete_graphics_spectral_content").execute(*args, **kwargs)
         def list_turbomachine_description(self, *args, **kwargs):
             """
             List turbomachine description.
             """
             return PyMenu(self.service, "/setup/turbo_model/list_turbomachine_description").execute(*args, **kwargs)
-        def list_post_spectral_content(self, *args, **kwargs):
+        def list_graphics_spectral_content(self, *args, **kwargs):
             """
             List post-processing related spectral content.
             """
-            return PyMenu(self.service, "/setup/turbo_model/list_post_spectral_content").execute(*args, **kwargs)
+            return PyMenu(self.service, "/setup/turbo_model/list_graphics_spectral_content").execute(*args, **kwargs)
         def list_phaselag_state(self, *args, **kwargs):
             """
             List all phaselag related case settings.
