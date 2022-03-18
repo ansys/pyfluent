@@ -196,6 +196,12 @@ class PyVistaWindow(PostWindow):
             node_values,
             boundary_values,
         )
+        #import numpy
+        #import sys
+        #numpy.set_printoptions(threshold=sys.maxsize)
+        #with open("myfile.txt", "w") as file1:
+        #    file1.write(str(scalar_field_data))
+
         # loop over all meshes
         for surface_id, mesh_data in scalar_field_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
@@ -611,7 +617,8 @@ class PyVistaWindowsManager(
             self._post_object = obj
 
         if not self._plotter_thread:
-            Session._monitor_thread.cbs.append(self._exit)
+            if Session._monitor_thread:
+                Session._monitor_thread.cbs.append(self._exit)
             self._plotter_thread = threading.Thread(
                 target=self._display, args=()
             )
@@ -651,7 +658,7 @@ class PyVistaWindowsManager(
                     and (
                         not session_id
                         or session_id
-                        == window.post_object.get_top_most_parent().session.id
+                        == window.post_object.session_id()
                     )
                 ]
                 if not windows_id or window_id in windows_id

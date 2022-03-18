@@ -106,7 +106,7 @@ class FieldInfo:
     def get_surfaces_info(self) -> dict:
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self.__service.get_surfaces_info(request)
-        return {
+        info = {
             surface_info.surfaceName: {
                 "surface_id": [surf.id for surf in surface_info.surfaceId],
                 "zone_id": surface_info.zoneId.id,
@@ -115,6 +115,7 @@ class FieldInfo:
             }
             for surface_info in response.surfaceInfo
         }
+        return info
 
 
 class FieldData:

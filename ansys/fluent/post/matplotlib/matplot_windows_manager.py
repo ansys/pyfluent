@@ -359,7 +359,7 @@ class MatplotWindowsManager(
                 and (
                     not session_id
                     or session_id
-                    == window.graphics_object.get_top_most_parent().session.id
+                    == window.graphics_object.session_id()
                 )
             ]
             if not windows_id or window_id in windows_id

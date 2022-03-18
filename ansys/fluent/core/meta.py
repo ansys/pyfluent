@@ -23,7 +23,10 @@ def extract_field_data_from_object(obj):
     return extract_session_from_object(obj).field_data
 
 def extract_surface_api_from_object(obj):
-    return extract_session_from_object(obj).session.tui.solver.surface
+    return extract_session_from_object(obj).tui.solver.surface
+
+def extract_session_id_from_object(obj):
+    return extract_session_from_object(obj).id
 
 class Attribute:
     VALID_NAMES = ["range", "allowed_values"]
@@ -143,8 +146,8 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent):
-            self.field_info = lambda: _get_top_most_parent(self).session.field_info
-            self.field_data = lambda: _get_top_most_parent(self).session.field_data
+            self.field_info = lambda: extract_field_info_from_object(self)
+            self.field_data = lambda: extract_field_data_from_object(self)
             self.get_top_most_parent = lambda : _get_top_most_parent(self)
             self.parent = parent
             self._on_change_cbs = []
@@ -357,7 +360,8 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self.field_info = lambda: extract_field_info_from_object(self)
             self.field_data = lambda: extract_field_data_from_object(self)
             self.surface_api = lambda: extract_surface_api_from_object(self)
-            self.get_top_most_parent = lambda : _get_top_most_parent(self)
+            self.session_id = lambda: extract_session_id_from_object(self)
+            self.get_top_most_parent = lambda: _get_top_most_parent(self)
             
             self.parent = parent
 
