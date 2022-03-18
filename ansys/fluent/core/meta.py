@@ -7,12 +7,23 @@ from pprint import pformat
 # pylint: disable=bad-mcs-classmethod-argument
 from ansys.fluent.core.services.datamodel_tui import PyMenu
 
-
 def _get_top_most_parent(obj):
     parent = obj
     if getattr(obj, "parent", None):
         parent = _get_top_most_parent(obj.parent)
     return parent
+
+def extract_session_from_object(obj):
+    return _get_top_most_parent(obj).session
+
+def extract_field_info_from_object(info):
+    return extract_session_from_object(info).field_info
+
+def extract_field_data_from_object(obj):
+    return extract_session_from_object(obj).field_data
+
+def extract_surface_api_from_object(obj):
+    return extract_session_from_object(obj).session.tui.solver.surface
 
 class Attribute:
     VALID_NAMES = ["range", "allowed_values"]
@@ -343,9 +354,9 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
     def __create_init(cls):
         def wrapper(self, name, parent):
             self.__name = name
-            self.field_info = lambda: _get_top_most_parent(self).session.field_info
-            self.field_data = lambda: _get_top_most_parent(self).session.field_data
-            self.surface_api = lambda: _get_top_most_parent(self).tui.solver.surface
+            self.field_info = lambda: extract_field_info_from_object(self)
+            self.field_data = lambda: extract_field_data_from_object(self)
+            self.surface_api = lambda: extract_surface_api_from_object(self)
             self.get_top_most_parent = lambda : _get_top_most_parent(self)
             
             self.parent = parent
