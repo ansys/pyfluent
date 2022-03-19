@@ -74,6 +74,23 @@ For example, if we wanted to ... <add a basic example>:
 
     <type some commands here>
 
-Advanced Features
-~~~~~~~~~~~~~~~~~
-Maybe give some basic example here for each API.
+Features
+~~~~~~~~
+TUI and meshing workflows from Fluent meshing are available. See the
+:ref:`ref_meshing` module for examples and more information.
+
+Post processing Fluent results is possible using either Fluent directly or the
+PyVista module.  See the :ref:`ref_postprocessing` module for more information
+and examples.
+
+Beta Features
+~~~~~~~~~~~~~
+The settings object interface provides a more Pythonic way to access and modify
+settings than the TUI command interface.  These API calls group Fluent settings
+into a tree of objects where individal settings for material properties,
+boundary conditions are accessible without the need to pass parameter lists.
+
+More information is available in the :ref:`ref_settings` module documentation.
+
+
+

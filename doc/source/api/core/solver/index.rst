@@ -1,7 +1,7 @@
 .. _ref_solver:
 
 Solver
-======================
+======
 .. currentmodule:: ansys.fluent.core.solver
 
 .. autosummary::
