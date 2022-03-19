@@ -1,14 +1,16 @@
-Settings Objects
-****************
+.. _ref_settings:
+
+Settings Objects (Beta)
+=======================
 
 Introduction
-^^^^^^^^^^^^
+------------
 
 Settings objects provide a natural way to access and modify Fluent settings and
 issue commands with a hierarchy of objects.
 
 Top-level Objects
-^^^^^^^^^^^^^^^^^
+-----------------
 
 The top-level settings object can be accessed by executing the
 ``get_settings_root`` method on a session object.
@@ -24,7 +26,7 @@ and ``results``.  These objects are also instances of 'settings' objects and
 roughly mirror the outline view in Fluent.
 
 Types of Settings Objects
-^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------
 
 A settings object can be one of the primitive types like ``Integer``, ``Real``,
 ``String`` and ``Boolean`` or a container object.
@@ -58,7 +60,8 @@ named ``fluid-1``. The current number of child objects can be accessed via the
  
 
 Setting and Modifying State
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
+
 The state of any object can be accessed by "calling" it. For container objects,
 this will return the state of the children as a dictionary (for ``Group`` and
 ``NamedObject`` types) or a list (for ``ListObject``) types:
@@ -125,7 +128,7 @@ gives the following output:
     models : none
 
 Commands
-^^^^^^^^
+--------
 
 Commands are methods of settings objects that are used to modify the state of
 the application. For example, the ``hybrid_initialize()`` method of
@@ -139,7 +142,8 @@ not specified, its default value is used. Arguments are also settings objects
 and can be either primitive type or container type.
 
 Additional Metadata
-^^^^^^^^^^^^^^^^^^^
+-------------------
+
 Settings objects have some additional metadata which can be accessed using the
 ``get_attr`` and ``get_attrs`` methods. For example, the list of allowed values
 at a particular state for the viscous model can be accessed as follows:
@@ -153,7 +157,8 @@ Attributes are dynamic and the values can change depending on the application
 state.
 
 Active Objects and Commands
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------
+
 Objects and commands can be active or inactive based on the application state.
 application. The ``is_active()`` method returns ``True`` if an object or command
 is active at a particular time. ``get_active_child_names`` returns the list of
