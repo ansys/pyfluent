@@ -13,11 +13,12 @@ PyFluent Documentation |version|
 
 Introduction
 ------------
-Ansys Fluent is a state-of-the-art computational fluid dynamics (CFD) software package 
-for modeling fluid flow, heat transfer, and chemical reactions in complex geometries.
+Ansys Fluent is a state-of-the-art computational fluid dynamics (CFD) software
+package for modeling fluid flow, heat transfer, and chemical reactions in
+complex geometries.
 
-PyFluent is a Python-based application programming interface 
-for the Ansys Fluent CFD solver.
+PyFluent is a Python-based application programming interface for the Ansys
+Fluent CFD solver.
 
 
 Project Index

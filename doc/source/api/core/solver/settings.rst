@@ -4,14 +4,14 @@ Settings Objects
 Introduction
 ^^^^^^^^^^^^
 
-Settings objects provide a natural way to access and modify Fluent settings
-and issue commands with a hierarchy of objects.
+Settings objects provide a natural way to access and modify Fluent settings and
+issue commands with a hierarchy of objects.
 
 Top-level Objects
 ^^^^^^^^^^^^^^^^^
 
-The top-level settings object can be accessed by
-executing the ``get_settings_root`` method on a session object.
+The top-level settings object can be accessed by executing the
+``get_settings_root`` method on a session object.
 
 .. code-block::
 
@@ -26,8 +26,8 @@ roughly mirror the outline view in Fluent.
 Types of Settings Objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A settings object can be one of the primitive types like ``Integer``,
-``Real``, ``String`` and ``Boolean`` or a container object.
+A settings object can be one of the primitive types like ``Integer``, ``Real``,
+``String`` and ``Boolean`` or a container object.
 
 There are three types of container objects: ``Group``, ``NamedObject`` and
 ``ListObject``.
@@ -40,21 +40,21 @@ attribute of a ``Group`` object.
 
 A ``NamedObject`` is a container holding dynamically created named objects of
 its specified child type (accessible via ``child_object_type`` attribute)
-similar to a dictionary. A specified named object
-can be accessed using the index operator. For example,
+similar to a dictionary. A specified named object can be accessed using the
+index operator. For example,
 ``root.setup.boundary_conditions.velocity_inlet['inlet2']`` refers to the
 ``velocity_object`` object with name ``inlet2``. The current list of named
 object children can be accessed with the ``get_object_names()`` function of the
 container class.
 
 A ``ListObject`` is a container holding dynamically created unnamed objects of
-its specified child type (accessible via ``child_object_type`` attribute)
-in a list. Children of ``ListObject`` can be accessed
-using the index operator. For example,
+its specified child type (accessible via ``child_object_type`` attribute) in a
+list. Children of ``ListObject`` can be accessed using the index operator. For
+example,
 ``root.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
-refers to the third (starting from index 0) mass source entry for the fluid
-zone named ``fluid-1``. The current number of child objects can be accessed via
-the ``get_size()`` function.
+refers to the third (starting from index 0) mass source entry for the fluid zone
+named ``fluid-1``. The current number of child objects can be accessed via the
+``get_size()`` function.
  
 
 Setting and Modifying State
@@ -133,10 +133,10 @@ the application. For example, the ``hybrid_initialize()`` method of
 initialization method. The ``command_names`` attribute of a settings object
 provides the names of its commands.
 
-If needed, commands can be passed keyword arguments, and the list of
-valid arguments can be accessed using the ``arguments`` attribute.  If an
-argument is not specified, its default value is used. Arguments are also
-settings objects and can be either primitive type or container type.
+If needed, commands can be passed keyword arguments, and the list of valid
+arguments can be accessed using the ``arguments`` attribute.  If an argument is
+not specified, its default value is used. Arguments are also settings objects
+and can be either primitive type or container type.
 
 Additional Metadata
 ^^^^^^^^^^^^^^^^^^^
@@ -149,12 +149,13 @@ at a particular state for the viscous model can be accessed as follows:
   >>> root.setup.models.viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
-Attributes are dynamic and the values can change depending on the application state.
+Attributes are dynamic and the values can change depending on the application
+state.
 
 Active Objects and Commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Objects and commands can be active or inactive based on the application state.
-application. The ``is_active()`` method returns ``True`` if an object or
-command is active at a particular time. ``get_active_child_names`` returns
-the list of active children. ``get_active_command_names`` returns the list of
-active commands.
+application. The ``is_active()`` method returns ``True`` if an object or command
+is active at a particular time. ``get_active_child_names`` returns the list of
+active children. ``get_active_command_names`` returns the list of active
+commands.
