@@ -14,7 +14,10 @@ For a local "development" version, install with:
 
 Usage
 -----
-1) Normally Fluent should be installed from the latest daily build but to use a non-default install location set the PYFLUENT_FLUENT_ROOT environment variable to the ``<version>/fluent`` directory where ``<version>`` is the Ansys release version you would like to use (eg: v222).
+1) Normally Fluent should be installed from the latest daily build but to use a
+   non-default install location set the PYFLUENT_FLUENT_ROOT environment
+   variable to the ``<version>/fluent`` directory where ``<version>`` is the
+   Ansys release version you would like to use (eg: v222).
 2) Within a Python 3 console, execute:
 
 .. code:: python
@@ -32,14 +35,17 @@ Usage
 
 Meshing TUI and workflow
 ************************
-TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/core/meshing/meshing.rst>`_ for example usage.
+TUI and meshing workflows from Fluent meshing are exposed. Please check `meshing
+<https://github.com/pyansys/pyfluent/blob/main/doc/source/api/core/meshing/meshing.rst>`_
+for example usage.
 
 Settings access
 ***************
 The settings objects provide a natural way to access and modify settings. The
-top-level settings object for a session can be accessed with the ``get_settings_root()``
-method of the session object. More information can be found at 
-`settings <https://github.com/pyansys/pyfluent/blob/main/doc/source/api/core/solver/settings.rst>`_.
+top-level settings object for a session can be accessed with the
+``get_settings_root()`` method of the session object. More information can be
+found at `settings
+<https://github.com/pyansys/pyfluent/blob/main/doc/source/api/core/solver/settings.rst>`_.
 
 
 Post Processing

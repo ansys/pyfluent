@@ -5,8 +5,8 @@ Contributing
 ============
 Overall guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/overview/contributing.html>`_ topic
-in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar
-with it and all `Guidelines and Best Practices
+in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
+it and all `Guidelines and Best Practices
 <https://dev.docs.pyansys.com/guidelines/index.html>`_ before attempting to
 contribute to PyFluent.
  
@@ -14,7 +14,8 @@ The following contribution information is specific to PyFluent.
 
 Cloning the PyFluent Repository
 -------------------------------
-Run this code to clone and install the latest version of PyFluent in development mode:
+Run this code to clone and install the latest version of PyFluent in development
+mode:
 
 .. code::
 
@@ -26,13 +27,13 @@ Run this code to clone and install the latest version of PyFluent in development
 
 Posting Issues
 --------------
-Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_
-page to submit questions, report bugs, and request new features.
+Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page to
+submit questions, report bugs, and request new features.
 
 
 Code Style
 ----------
 PyFluent follows PEP8 standard as outlined in the `PyAnsys Development Guide
-<https://dev.docs.pyansys.com>`_ and implements style checking using
-`flake8 <https://flake8.pycqa.org/>`_.
+<https://dev.docs.pyansys.com>`_ and implements style checking using `flake8
+<https://flake8.pycqa.org/>`_.
 
