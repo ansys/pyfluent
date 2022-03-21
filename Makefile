@@ -21,6 +21,9 @@ install-pyvistaqt-requirements:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
+docker-pull:
+	@docker pull ghcr.io/pyansys/pyfluent:latest
+
 unittest:
 	@echo "Running unittest"
 	@pip install -r requirements_test.txt
