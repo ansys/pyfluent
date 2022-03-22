@@ -19,11 +19,29 @@ mode:
 
 .. code::
 
-    git clone https://github.com/pyansys/pyfluent
+    git clone https://github.com/pyansys/pyfluent.git
     cd pyfluent
     pip install pip -U
     pip install -e .
 
+Building Documentation
+----------------------
+To build the documentation locally you need to follow these steps at the root
+directory of the repository:
+
+.. code:: 
+
+    pip install -r requirements_docs.txt
+    cd doc
+    make html
+
+After the build completes the html documentaion is located in the
+``_builds/html`` directory and you can load the ``index.html`` into a web
+browser.  To clean the documentation you can execute this command:
+
+.. code::
+
+    make clean
 
 Posting Issues
 --------------
