@@ -336,7 +336,7 @@ root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
 
 # Create a surface report file called outlet-temp-avg-rfile using
 # report-definition outlet-temp-avg
-#s.tui.solver.solve.report_files.add(
+# s.tui.solver.solve.report_files.add(
 #    "outlet-temp-avg-rfile",
 #    "report-defs",
 #    "outlet-temp-avg",
@@ -356,7 +356,7 @@ root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
 #    "run-index",
 #    "0",
 #    "quit",
-#)
+# )
 
 ###############################################################################
 
@@ -506,7 +506,7 @@ s.tui.solver.display.objects.create(
     "quit",
 )
 s.tui.solver.display.objects.display("xy-outlet-temp")
-#s.tui.solver.plot.plot(
+# s.tui.solver.plot.plot(
 #    "yes",
 #    "temp-1.xy",
 #    "no",
@@ -519,7 +519,7 @@ s.tui.solver.display.objects.display("xy-outlet-temp")
 #    "0",
 #    "z=0_outlet",
 #    "()",
-#)
+# )
 
 ###############################################################################
 

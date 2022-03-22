@@ -169,7 +169,7 @@ s.tui.meshing.mesh.check_mesh()
 ###############################################################################
 
 # Save the mesh file (mixing_elbow.msh.h5)
-#s.tui.meshing.file.write_mesh('mixing_elbow.msh.h5')
+# s.tui.meshing.file.write_mesh('mixing_elbow.msh.h5')
 
 ###############################################################################
 
@@ -362,7 +362,7 @@ s.tui.solver.solve.report_definitions.add(
 
 # Create a surface report file called outlet-temp-avg-rfile using
 # report-definition outlet-temp-avg
-#s.tui.solver.solve.report_files.add(
+# s.tui.solver.solve.report_files.add(
 #    "outlet-temp-avg-rfile",
 #    "report-defs",
 #    "outlet-temp-avg",
@@ -382,7 +382,7 @@ s.tui.solver.solve.report_definitions.add(
 #    "run-index",
 #    "0",
 #    "quit",
-#)
+# )
 
 ###############################################################################
 
@@ -443,9 +443,9 @@ s.tui.solver.solve.iterate(150)
 
 # Examine the mass flux report for convergence: Select cold-inlet, hot-inlet,
 # and outlet from the Boundaries selection list.
-#s.tui.solver.report.fluxes.mass_flow(
+# s.tui.solver.report.fluxes.mass_flow(
 #    "no", "cold-inlet", "hot-inlet", "outlet", "()", "yes", "mass-flux1.flp"
-#)
+# )
 
 ###############################################################################
 
@@ -551,7 +551,7 @@ s.tui.solver.display.objects.create(
     "quit",
 )
 s.tui.solver.display.objects.display("xy-outlet-temp")
-#s.tui.solver.plot.plot(
+# s.tui.solver.plot.plot(
 #    "yes",
 #    "temp-1.xy",
 #    "no",
@@ -564,7 +564,7 @@ s.tui.solver.display.objects.display("xy-outlet-temp")
 #    "0",
 #    "z=0_outlet",
 #    "()",
-#)
+# )
 
 ###############################################################################
 
