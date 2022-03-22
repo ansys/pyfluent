@@ -1,5 +1,12 @@
 .. _getting_started:
 
+===============
+Getting Started
+===============
+To use PyFluent, you need to have a local installation of Ansys.
+
+Visit `Ansys <https://www.ansys.com/>`_ for more information on
+getting a licensed copy of Ansys.
 
 ************
 Installation
