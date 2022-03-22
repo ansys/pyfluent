@@ -362,27 +362,27 @@ s.tui.solver.solve.report_definitions.add(
 
 # Create a surface report file called outlet-temp-avg-rfile using
 # report-definition outlet-temp-avg
-s.tui.solver.solve.report_files.add(
-    "outlet-temp-avg-rfile",
-    "report-defs",
-    "outlet-temp-avg",
-    "()",
-    "file-name",
-    "outlet-temp-avg-rfile.out",
-    "print?",
-    "yes",
-    "file-name",
-    "outlet-temp-avg-rfile.out",
-    "frequency",
-    "3",
-    "frequency-of",
-    "iteration",
-    "itr-index",
-    "1",
-    "run-index",
-    "0",
-    "quit",
-)
+#s.tui.solver.solve.report_files.add(
+#    "outlet-temp-avg-rfile",
+#    "report-defs",
+#    "outlet-temp-avg",
+#    "()",
+#    "file-name",
+#    "outlet-temp-avg-rfile.out",
+#    "print?",
+#    "yes",
+#    "file-name",
+#    "outlet-temp-avg-rfile.out",
+#    "frequency",
+#    "3",
+#    "frequency-of",
+#    "iteration",
+#    "itr-index",
+#    "1",
+#    "run-index",
+#    "0",
+#    "quit",
+#)
 
 ###############################################################################
 
@@ -443,9 +443,9 @@ s.tui.solver.solve.iterate(150)
 
 # Examine the mass flux report for convergence: Select cold-inlet, hot-inlet,
 # and outlet from the Boundaries selection list.
-s.tui.solver.report.fluxes.mass_flow(
-    "no", "cold-inlet", "hot-inlet", "outlet", "()", "yes", "mass-flux1.flp"
-)
+#s.tui.solver.report.fluxes.mass_flow(
+#    "no", "cold-inlet", "hot-inlet", "outlet", "()", "yes", "mass-flux1.flp"
+#)
 
 ###############################################################################
 
@@ -551,20 +551,20 @@ s.tui.solver.display.objects.create(
     "quit",
 )
 s.tui.solver.display.objects.display("xy-outlet-temp")
-s.tui.solver.plot.plot(
-    "yes",
-    "temp-1.xy",
-    "no",
-    "no",
-    "no",
-    "temperature",
-    "yes",
-    "1",
-    "0",
-    "0",
-    "z=0_outlet",
-    "()",
-)
+#s.tui.solver.plot.plot(
+#    "yes",
+#    "temp-1.xy",
+#    "no",
+#    "no",
+#    "no",
+#    "temperature",
+#    "yes",
+#    "1",
+#    "0",
+#    "0",
+#    "z=0_outlet",
+#    "()",
+#)
 
 ###############################################################################
 
