@@ -41,7 +41,6 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 # First, start Fluent as a service with Meshing Mode, Double Precision, Number
 # of Processors 4
 import ansys.fluent.core as pyfluent
-import os
 
 s = pyfluent.launch_fluent(
     meshing_mode=True, precision="double", processor_count="4"
