@@ -55,17 +55,13 @@ s.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 ###############################################################################
 
-# Import the CAD geometry (mixing_elbow.scdoc). For Length Units, select "in".
+# Import the CAD geometry. For Length Units, select "in".
 # Execute the Import Geometry task.
-if os.name == "nt":
-    Part_Name = "mixing_elbow.scdoc"
-else:
-    Part_Name = "mixing_elbow.pmdb"
+
 
 s.workflow.TaskObject["Import Geometry"].Arguments = dict(
-    FileName=Part_Name, LengthUnit="in"
+    FileName="mixing_elbow.pmdb", LengthUnit="in"
 )
-
 
 s.workflow.TaskObject["Import Geometry"].Execute()
 
@@ -213,10 +209,10 @@ s.tui.solver.define.materials.copy("fluid", "water-liquid").result()
 
 ###############################################################################
 
-# Set up the cell zone conditions for the fluid zone (fluid). Select
+# Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
 # water-liquid from the Material list.
 s.tui.solver.define.boundary_conditions.fluid(
-    "fluid",
+    "elbow-fluid",
     "yes",
     "water-liquid",
     "no",

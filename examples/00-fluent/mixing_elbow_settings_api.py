@@ -56,15 +56,12 @@ s.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 ###############################################################################
 
-# Import the CAD geometry (mixing_elbow.scdoc). For Length Units, select "in".
+# Import the CAD geometry. For Length Units, select "in".
 # Execute the Import Geometry task.
-if os.name == "nt":
-    Part_Name = "mixing_elbow.scdoc"
-else:
-    Part_Name = "mixing_elbow.pmdb"
+
 
 s.workflow.TaskObject["Import Geometry"].Arguments = dict(
-    FileName=Part_Name, LengthUnit="in"
+    FileName="mixing_elbow.pmdb", LengthUnit="in"
 )
 
 s.workflow.TaskObject["Import Geometry"].Execute()
@@ -221,10 +218,10 @@ s.tui.solver.define.materials.copy("fluid", "water-liquid")
 
 ###############################################################################
 
-# Set up the cell zone conditions for the fluid zone (fluid). Select
+# Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
 # water-liquid from the Material list.
 s.tui.solver.define.boundary_conditions.fluid(
-    "fluid",
+    "elbow-fluid",
     "yes",
     "water-liquid",
     "no",
@@ -507,7 +504,7 @@ s.tui.solver.display.objects.create(
     "()",
     "quit",
 ).result()
-s.tui.solver.display.objects.display("xy-outlet-temp").result()
+# s.tui.solver.display.objects.display("xy-outlet-temp").result()
 # s.tui.solver.plot.plot(
 #    "yes",
 #    "temp-1.xy",
@@ -526,7 +523,7 @@ s.tui.solver.display.objects.display("xy-outlet-temp").result()
 ###############################################################################
 
 # Write final case and data.
-# s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5').results()
+# s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5').result()
 
 ###############################################################################
 s.tui.solver.exit().result()
