@@ -19,7 +19,7 @@ class _ProcessPlotterHandle:
 
     def __init__(
         self,
-        plotter_id,
+        window_id,
         curves=[],
         title="XY Plot",
         xlabel="position",
@@ -28,7 +28,7 @@ class _ProcessPlotterHandle:
         self._closed = False
         self.plot_pipe, plotter_pipe = mp.Pipe()
         self.plotter = ProcessPlotter(
-            plotter_id, curves, title, xlabel, ylabel
+            window_id, curves, title, xlabel, ylabel
         )
         self.plot_process = mp.Process(
             target=self.plotter, args=(plotter_pipe,), daemon=True
@@ -326,9 +326,9 @@ class MatplotWindowsManager(
     # private methods
 
     def _open_window(
-        self, plotter_id: str
+        self, window_id: str
     ) -> Union[Plotter, _ProcessPlotterHandle]:
-        window = self._post_windows.get(plotter_id)
+        window = self._post_windows.get(window_id)
         plotter = None
         if (
             window
@@ -337,8 +337,8 @@ class MatplotWindowsManager(
         ):
             window.refresh = False
         else:
-            window = MatplotWindow(plotter_id, None)
-            self._post_windows[plotter_id] = window
+            window = MatplotWindow(window_id, None)
+            self._post_windows[window_id] = window
             if in_notebook():
                 window.plotter()
         return window
