@@ -24,6 +24,7 @@ install_requires_post = [
     "pyvista==0.33.2",
     "pyvistaqt==0.7.0",
     "pyside6==6.2.3",
+    "matplotlib==3.5.1",
 ]
 
 packages = []
