@@ -116,4 +116,4 @@ environment and data is plotted in MatplotLib.
    :maxdepth: 2
    :hidden:
    
-   graphics
+   pyvista_objects
