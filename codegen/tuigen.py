@@ -150,8 +150,18 @@ class TUIGenerator:
     def generate(self):
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
+            if self._tui_file == _SOLVER_TUI_FILE:
+                self._write_code_to_tui_file(
+                    '"""Fluent Solver TUI Commands"""\n'
+                    )
+            else:
+                self._write_code_to_tui_file(
+                    '"""Fluent Meshing TUI Commands"""\n'
+                )
             self._write_code_to_tui_file(
-                '"""This is an auto-generated file.  DO NOT EDIT!"""\n'
+                "#\n"
+                "# This is an auto-generated file.  DO NOT EDIT!\n"
+                "#\n"
                 "# pylint: disable=line-too-long\n\n"
                 "from ansys.fluent.core.meta "
                 "import PyMenuMeta, PyNamedObjectMeta\n"
@@ -159,7 +169,6 @@ class TUIGenerator:
                 "import PyMenu\n\n\n"
             )
             self._write_menu_to_tui_file(self._main_menu)
-
 
 if __name__ == "__main__":
     TUIGenerator(meshing=True).generate()
