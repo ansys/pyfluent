@@ -59,13 +59,13 @@ s.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # Import the CAD geometry (mixing_elbow.scdoc). For Length Units, select "in".
 # Execute the Import Geometry task.
 if os.name == "nt":
-    s.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName="mixing_elbow.scdoc", LengthUnit="in"
-    )
+    Part_Name = "mixing_elbow.scdoc"
 else:
-    s.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName="mixing_elbow.pmdb", LengthUnit="in"
-    )
+    Part_Name = "mixing_elbow.pmdb"
+
+s.workflow.TaskObject["Import Geometry"].Arguments = dict(
+    FileName=Part_Name, LengthUnit="in"
+)
 
 s.workflow.TaskObject["Import Geometry"].Execute()
 
@@ -269,6 +269,7 @@ root.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
 root.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].ke_spec = "Intensity and Hydraulic Diameter"
+root.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 5
 root.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].turb_hydraulic_diam = "4 [in]"
@@ -397,17 +398,17 @@ s.tui.solver.solve.convergence_conditions(
     "3",
     "quit",
 )
-s.tui.solver.solve.convergence_conditions("frequency", "3", "quit")
+s.tui.solver.solve.convergence_conditions("frequency", "3", "quit").result()
 
 ###############################################################################
 
 # Initialize the flow field using the Hybrid Initialization
-s.tui.solver.solve.initialize.hyb_initialization()
+s.tui.solver.solve.initialize.hyb_initialization().result()
 
 ###############################################################################
 
 # Solve for 150 Iterations.
-s.tui.solver.solve.iterate(150)
+s.tui.solver.solve.iterate(150).result()
 
 ###############################################################################
 
@@ -479,7 +480,7 @@ root.results.graphics.vector["vector-vel"].display()
 # surface outlet. Name: z=0_outlet
 s.tui.solver.surface.iso_surface(
     "z-coordinate", "z=0_outlet", "outlet", "()", "()", "0", "()"
-)
+).result()
 
 # Create Contour on the iso-surface
 root.results.graphics.contour["contour-z_0_outlet"] = {}
@@ -491,6 +492,7 @@ root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = [
 root.results.graphics.contour["contour-z_0_outlet"].display()
 
 ###############################################################################
+# s.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5").result()
 
 # Display and save an XY plot of the temperature profile across the centerline
 # of the outlet for the initial solution
@@ -504,8 +506,8 @@ s.tui.solver.display.objects.create(
     "z=0_outlet",
     "()",
     "quit",
-)
-s.tui.solver.display.objects.display("xy-outlet-temp")
+).result()
+s.tui.solver.display.objects.display("xy-outlet-temp").result()
 # s.tui.solver.plot.plot(
 #    "yes",
 #    "temp-1.xy",
@@ -519,12 +521,12 @@ s.tui.solver.display.objects.display("xy-outlet-temp")
 #    "0",
 #    "z=0_outlet",
 #    "()",
-# )
+#).result()
 
 ###############################################################################
 
 # Write final case and data.
-# s.tui.solver.file.write_case_data('mixing_elbow2.cas.h5')
+# s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5').results()
 
 ###############################################################################
-s.tui.solver.exit()
+s.tui.solver.exit().result()
