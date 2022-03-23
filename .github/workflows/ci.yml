@@ -126,10 +126,6 @@ jobs:
           touch doc/_build/html/.nojekyll
           echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME
 
-      # Verify that sphinx generates no warnings
-      - name: Check for sphinx warnings
-        run: python doc/print_errors.py
-
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v2
         with:

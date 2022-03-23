@@ -5298,7 +5298,6 @@ class mesh(metaclass=PyMenuMeta):
             - Delete all edge zones.
             - Delete unused faces.
             - Delete unused nodes.
-        .
         """
         return PyMenu(self.service, "/mesh/prepare_for_solve").execute(*args, **kwargs)
     def zone_names_clean_up(self, *args, **kwargs):
