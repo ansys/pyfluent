@@ -221,4 +221,4 @@ def launch_fluent(
             if server_info_file.exists():
                 server_info_file.unlink()
     else:
-        return Session(ip, port, cleanup_on_exit)
+        return Session(ip=ip, port=port, cleanup_on_exit=cleanup_on_exit)
