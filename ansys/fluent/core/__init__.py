@@ -1,5 +1,8 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
+import appdirs
+import os
+
 from ansys.fluent.core.launcher.launcher import launch_fluent  # noqa: F401
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.logging import LOG
@@ -54,3 +57,17 @@ def enable_logging_to_file(filepath: str = None):
 def disable_logging_to_file():
     """Disable logging to file."""
     LOG.disable_logging_to_file()
+
+
+# Setup data directory
+try:
+    USER_DATA_PATH = appdirs.user_data_dir("ansys_fluent_core")
+    if not os.path.exists(USER_DATA_PATH):
+        os.makedirs(USER_DATA_PATH)
+
+    EXAMPLES_PATH = os.path.join(USER_DATA_PATH, "examples")
+    if not os.path.exists(EXAMPLES_PATH):
+        os.makedirs(EXAMPLES_PATH)
+
+except:
+    pass
