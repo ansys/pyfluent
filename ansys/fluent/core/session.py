@@ -118,16 +118,16 @@ class Session:
 
         Parameters
         ----------
-        ip : str
+        ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``'127.0.0.1'``
             which can be overwritten by the environment variable
             ``PYFLUENT_FLUENT_IP=<ip>``.
-        port : int
+        port : int, optional
             Port to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults value can be set by
             the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
-        channel : grpc.Channel
+        channel : grpc.Channel, optional
             Grpc channel to use to connect to existing Fluent instance.
             ip and port arguments will be ignored when channel is
             specified.

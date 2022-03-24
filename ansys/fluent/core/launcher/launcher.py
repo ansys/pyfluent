@@ -20,8 +20,6 @@ from ansys.fluent.core.session import Session
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
-LOCALHOST = "127.0.0.1"
-FLUENT_DEFAULT_PORT = 63084
 
 
 def _get_fluent_path():
@@ -82,8 +80,8 @@ def launch_fluent(
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
     start_instance: bool = True,
-    ip: str = LOCALHOST,
-    port: int = FLUENT_DEFAULT_PORT,
+    ip: str = None,
+    port: int = None,
     cleanup_on_exit: bool = True,
 ) -> Session:
     """Start Fluent locally in server mode.
@@ -123,13 +121,16 @@ def launch_fluent(
         and ``port``, which default to ``'127.0.0.1'`` at 63084.
         Otherwise, launch a local instance of Fluent. Default is True.
 
-    ip : bool, optional
-        IP to connect to existing Fluent instance. Used only when
-         ``start_instance`` is ``False``.  Defaults to ``'127.0.0.1'``.
+    ip : str, optional
+        IP address to connect to existing Fluent instance. Used only
+        when ``start_instance`` is ``False``.  Defaults to
+        ``'127.0.0.1'`` which can be overwritten by the environment
+        variable ``PYFLUENT_FLUENT_IP=<ip>``.
 
     port : int, optional
-        Port to connect to existing Fluent instance. Used only when
-         ``start_instance`` is ``False``.  Defaults to 63084.
+        Port to connect to existing Fluent instance. Used only
+        when ``start_instance`` is ``False``.  Defaults value can be set
+        by the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
 
     cleanup_on_exit : bool, optional
         When True, the connected Fluent session will be shut down when
@@ -141,10 +142,10 @@ def launch_fluent(
     ansys.fluent.session.Session
         Fluent session.
     """
+    argvals = locals()
     if start_instance:
         exe_path = _get_fluent_exe_path()
         launch_string = exe_path
-        argvals = locals()
         all_options = None
         with open(_OPTIONS_FILE, encoding="utf-8") as fp:
             all_options = json.load(fp)
@@ -221,4 +222,6 @@ def launch_fluent(
             if server_info_file.exists():
                 server_info_file.unlink()
     else:
+        ip = argvals.get("ip", None)
+        port = argvals.get("port", None)
         return Session(ip=ip, port=port, cleanup_on_exit=cleanup_on_exit)
