@@ -79,7 +79,7 @@ class XYPlotDefn(PlotDefn):
             """Y axis function allowed values."""
             return [
                 v["solver_name"]
-                for k, v in self.field_info()
+                for k, v in self.data_extractor.field_info()
                 .get_fields_info()
                 .items()
             ]
@@ -103,7 +103,7 @@ class XYPlotDefn(PlotDefn):
         def allowed_values(self):
             """Surface list allowed values."""
             return list(
-                self.field_info().get_surfaces_info().keys()
+                self.data_extractor.field_info().get_surfaces_info().keys()
             )
 
 
@@ -121,7 +121,7 @@ class MeshDefn(GraphicsDefn):
         def allowed_values(self):
             """Surface list allowed values."""
             return list(
-                (self.field_info().get_surfaces_info().keys())
+                (self.data_extractor.field_info().get_surfaces_info().keys())
             )
 
     class show_edges(metaclass=PyLocalPropertyMeta):
@@ -174,7 +174,7 @@ class SurfaceDefn(GraphicsDefn):
                 @Attribute
                 def allowed_values(self):
                     """Field allowed values."""
-                    field_info = self.field_info()
+                    field_info = self.data_extractor.field_info()
                     return [
                         v["solver_name"]
                         for k, v in field_info.get_fields_info().items()
@@ -215,7 +215,7 @@ class SurfaceDefn(GraphicsDefn):
                     """Iso value range."""
                     field = self.parent.field()
                     if field:
-                        return self.field_info().get_range(
+                        return self.data_extractor.field_info().get_range(
                             field, True
                         )
 
@@ -233,7 +233,7 @@ class ContourDefn(GraphicsDefn):
         @Attribute
         def allowed_values(self):
             """Field allowed values."""
-            field_info = self.field_info()
+            field_info = self.data_extractor.field_info()
             return [
                 v["solver_name"]
                 for k, v in field_info.get_fields_info().items()
@@ -248,7 +248,7 @@ class ContourDefn(GraphicsDefn):
         def allowed_values(self):
             """Surfaces list allowed values."""
             return list(
-                self.field_info().get_surfaces_info().keys()
+                self.data_extractor.field_info().get_surfaces_info().keys()
             )
 
     class filled(metaclass=PyLocalPropertyMeta):
@@ -319,19 +319,19 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self.get_top_most_parent().field,
-                        self.get_top_most_parent().node_values,
+                        self.get_parent_by_type(ContourDefn).field,
+                        self.get_parent_by_type(ContourDefn).node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self.get_top_most_parent().field()
+                        field = self.get_parent_by_type(ContourDefn).field()
                         if field:
-                            field_info = self.field_info()
+                            field_info = self.data_extractor.data_extractor.field_info()
                             field_range = field_info.get_range(
-                                field, self.get_top_most_parent().node_values()
+                                field, self.get_parent_by_type(ContourDefn).node_values()
                             )
                             self._value = field_range[0]
                     return self._value
@@ -347,20 +347,20 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
-                        self.get_top_most_parent().field,
-                        self.get_top_most_parent().node_values,
+                        self.get_parent_by_type(ContourDefn).field,
+                        self.get_parent_by_type(ContourDefn).node_values,
                     ]
 
                 @property
                 def value(self):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field = self.get_top_most_parent().field()
+                        field = self.get_parent_by_type(ContourDefn).field()
                         if field:
-                            field_info = self.field_info()
+                            field_info = self.data_extractor.data_extractor.field_info()
                             field_range = field_info.get_range(
                                 field,
-                                self.get_top_most_parent().node_values(),
+                                self.get_parent_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[1]
 
@@ -385,7 +385,7 @@ class VectorDefn(GraphicsDefn):
         def allowed_values(self):
             """Vectors of allowed values."""
             return list(
-                self.field_info().get_vector_fields_info().keys()
+                self.data_extractor.data_extractor.field_info().get_vector_fields_info().keys()
             )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -397,7 +397,7 @@ class VectorDefn(GraphicsDefn):
         def allowed_values(self):
             """Surface list allowed values."""
             return list(
-                self.field_info().get_surfaces_info().keys()
+                self.data_extractor.field_info().get_surfaces_info().keys()
             )
 
     class scale(metaclass=PyLocalPropertyMeta):
@@ -460,7 +460,7 @@ class VectorDefn(GraphicsDefn):
                 def value(self):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field_info = self.self.field_info()
+                        field_info = self.data_extractor.data_extractor.field_info()
                         field_range = field_info.get_range(
                             "velocity-magnitude",
                             False,
@@ -481,7 +481,7 @@ class VectorDefn(GraphicsDefn):
                 def value(self):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field_info = self.self.field_info()
+                        field_info = self.data_extractor.data_extractor.field_info()
                         field_range = field_info.get_range(
                             "velocity-magnitude",
                             False,

@@ -125,8 +125,8 @@ class MatplotWindow(PostWindow):
             "xlabel": "position",
             "ylabel": field,
         }
-        field_info = obj.field_info()
-        field_data = obj.field_data()
+        field_info = obj.data_extractor.field_info()
+        field_data = obj.data_extractor.field_data()
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id

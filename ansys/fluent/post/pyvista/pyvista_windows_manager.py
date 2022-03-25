@@ -91,8 +91,8 @@ class PyVistaWindow(PostWindow):
         if not obj.surfaces_list():
             raise RuntimeError("Vector definition is incomplete.")
 
-        field_info = obj.field_info()
-        field_data = obj.field_data()
+        field_info = obj.data_extractor.field_info()
+        field_data = obj.data_extractor.field_data()
 
         # surface ids
         surfaces_info = field_info.get_surfaces_info()
@@ -181,8 +181,8 @@ class PyVistaWindow(PostWindow):
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
 
-        field_info = obj.field_info()
-        field_data = obj.field_data()
+        field_info = obj.data_extractor.field_info()
+        field_data = obj.data_extractor.field_data()
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
@@ -305,15 +305,15 @@ class PyVistaWindow(PostWindow):
             raise RuntimeError("Iso surface definition is incomplete.")
 
         dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
-        field_info = obj.field_info()
+        field_info = obj.data_extractor.field_info()
         surfaces_list = list(field_info.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
-            obj.surface_api().delete_surface(
+            obj.data_extractor.surface_api().delete_surface(
                 dummy_surface_name
             )
 
-        obj.surface_api().iso_surface(
+        obj.data_extractor.surface_api().iso_surface(
             field, dummy_surface_name, (), (), iso_value, ()
         )
 
@@ -335,7 +335,7 @@ class PyVistaWindow(PostWindow):
             contour.range_option.auto_range_on.global_range = True
             self._display_contour(contour, plotter)
             del post_session.Contours[dummy_surface_name]        
-        obj.surface_api().delete_surface(
+        obj.data_extractor.surface_api().delete_surface(
             dummy_surface_name
         )
 
@@ -344,8 +344,8 @@ class PyVistaWindow(PostWindow):
     ):
         if not obj.surfaces_list():
             raise RuntimeError("Mesh definition is incomplete.")
-        field_info = obj.field_info()
-        field_data = obj.field_data()
+        field_info = obj.data_extractor.field_info()
+        field_data = obj.data_extractor.field_data()
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
@@ -658,7 +658,7 @@ class PyVistaWindowsManager(
                     and (
                         not session_id
                         or session_id
-                        == window.post_object.session_id()
+                        == window.post_object.data_extractor.id()
                     )
                 ]
                 if not windows_id or window_id in windows_id
