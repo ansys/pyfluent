@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0esettings.proto\x12\x1c\x61nsys.api.fluent.v0.settings\"\xbb\x03\n\x05Value\x12\x11\n\x07\x62oolean\x18\x02 \x01(\x08H\x00\x12\x11\n\x07integer\x18\x03 \x01(\x03H\x00\x12\x0e\n\x04real\x18\x04 \x01(\x01H\x00\x12\x10\n\x06string\x18\x05 \x01(\tH\x00\x12\x43\n\nvalue_list\x18\n \x01(\x0b\x32-.ansys.api.fluent.v0.settings.Value.ValueListH\x00\x12\x41\n\tvalue_map\x18\x0b \x01(\x0b\x32,.ansys.api.fluent.v0.settings.Value.ValueMapH\x00\x1a=\n\tValueList\x12\x30\n\x03lst\x18\x01 \x03(\x0b\x32#.ansys.api.fluent.v0.settings.Value\x1a\x99\x01\n\x08ValueMap\x12>\n\x01m\x18\x01 \x03(\x0b\x32\x33.ansys.api.fluent.v0.settings.Value.ValueMap.MEntry\x1aM\n\x06MEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value:\x02\x38\x01\x42\x07\n\x05value\"&\n\x08PathInfo\x12\x0c\n\x04root\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"*\n\x1aGetObjectStaticInfoRequest\x12\x0c\n\x04root\x18\x01 \x01(\t\"\xfb\x04\n\x10ObjectStaticInfo\x12\x0c\n\x04type\x18\x01 \x01(\t\x12N\n\x08\x63hildren\x18\x02 \x03(\x0b\x32<.ansys.api.fluent.v0.settings.ObjectStaticInfo.ChildrenEntry\x12N\n\x08\x63ommands\x18\x03 \x03(\x0b\x32<.ansys.api.fluent.v0.settings.ObjectStaticInfo.CommandsEntry\x12P\n\targuments\x18\x05 \x03(\x0b\x32=.ansys.api.fluent.v0.settings.ObjectStaticInfo.ArgumentsEntry\x12\x43\n\x0bobject_type\x18\x04 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo\x1a_\n\rChildrenEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo:\x02\x38\x01\x1a_\n\rCommandsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo:\x02\x38\x01\x1a`\n\x0e\x41rgumentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo:\x02\x38\x01\"[\n\x1bGetObjectStaticInfoResponse\x12<\n\x04info\x18\x01 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo\"V\n\rStaticInfoMap\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.ansys.api.fluent.v0.settings.StaticInfo\"\xa5\x02\n\nStaticInfo\x12\x0c\n\x04type\x18\x01 \x01(\t\x12=\n\x08\x63hildren\x18\x02 \x03(\x0b\x32+.ansys.api.fluent.v0.settings.StaticInfoMap\x12=\n\x08\x63ommands\x18\x03 \x03(\x0b\x32+.ansys.api.fluent.v0.settings.StaticInfoMap\x12>\n\targuments\x18\x04 \x03(\x0b\x32+.ansys.api.fluent.v0.settings.StaticInfoMap\x12=\n\x0bobject_type\x18\x05 \x01(\x0b\x32(.ansys.api.fluent.v0.settings.StaticInfo\x12\x0c\n\x04help\x18\x06 \x01(\t\"$\n\x14GetStaticInfoRequest\x12\x0c\n\x04root\x18\x01 \x01(\t\"O\n\x15GetStaticInfoResponse\x12\x36\n\x04info\x18\x01 \x01(\x0b\x32(.ansys.api.fluent.v0.settings.StaticInfo\"J\n\rGetVarRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\"D\n\x0eGetVarResponse\x12\x32\n\x05value\x18\x01 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"~\n\rSetVarRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"\x10\n\x0eSetVarResponse\"X\n\rCreateRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x10\n\x0e\x43reateResponse\"n\n\rRenameRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x10\n\x08old_name\x18\x02 \x01(\t\x12\x10\n\x08new_name\x18\x03 \x01(\t\"\x10\n\x0eRenameResponse\"X\n\rDeleteRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x10\n\x0e\x44\x65leteResponse\"R\n\x15GetObjectNamesRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\"\'\n\x16GetObjectNamesResponse\x12\r\n\x05names\x18\x01 \x03(\t\"O\n\x12GetListSizeRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\"#\n\x13GetListSizeResponse\x12\x0c\n\x04size\x18\x01 \x01(\x05\"b\n\x17ResizeListObjectRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0c\n\x04size\x18\x02 \x01(\x05\"\x1a\n\x18ResizeListObjectResponse\"\x96\x01\n\x15\x45xecuteCommandRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0f\n\x07\x63ommand\x18\x02 \x01(\t\x12\x31\n\x04\x61rgs\x18\x03 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"L\n\x16\x45xecuteCommandResponse\x12\x32\n\x05reply\x18\x01 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"[\n\x0fGetAttrsRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\r\n\x05\x61ttrs\x18\x02 \x03(\t\"G\n\x10GetAttrsResponse\x12\x33\n\x06values\x18\x01 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value2\xec\n\n\x08Settings\x12\x8f\x01\n\x13GetObjectStaticInfo\x12\x38.ansys.api.fluent.v0.settings.GetObjectStaticInfoRequest\x1a\x39.ansys.api.fluent.v0.settings.GetObjectStaticInfoResponse\"\x03\x88\x02\x01\x12x\n\rGetStaticInfo\x12\x32.ansys.api.fluent.v0.settings.GetStaticInfoRequest\x1a\x33.ansys.api.fluent.v0.settings.GetStaticInfoResponse\x12\x63\n\x06GetVar\x12+.ansys.api.fluent.v0.settings.GetVarRequest\x1a,.ansys.api.fluent.v0.settings.GetVarResponse\x12\x63\n\x06SetVar\x12+.ansys.api.fluent.v0.settings.SetVarRequest\x1a,.ansys.api.fluent.v0.settings.SetVarResponse\x12\x63\n\x06Rename\x12+.ansys.api.fluent.v0.settings.RenameRequest\x1a,.ansys.api.fluent.v0.settings.RenameResponse\x12\x63\n\x06\x43reate\x12+.ansys.api.fluent.v0.settings.CreateRequest\x1a,.ansys.api.fluent.v0.settings.CreateResponse\x12\x63\n\x06\x44\x65lete\x12+.ansys.api.fluent.v0.settings.DeleteRequest\x1a,.ansys.api.fluent.v0.settings.DeleteResponse\x12{\n\x0eGetObjectNames\x12\x33.ansys.api.fluent.v0.settings.GetObjectNamesRequest\x1a\x34.ansys.api.fluent.v0.settings.GetObjectNamesResponse\x12r\n\x0bGetListSize\x12\x30.ansys.api.fluent.v0.settings.GetListSizeRequest\x1a\x31.ansys.api.fluent.v0.settings.GetListSizeResponse\x12\x81\x01\n\x10ResizeListObject\x12\x35.ansys.api.fluent.v0.settings.ResizeListObjectRequest\x1a\x36.ansys.api.fluent.v0.settings.ResizeListObjectResponse\x12{\n\x0e\x45xecuteCommand\x12\x33.ansys.api.fluent.v0.settings.ExecuteCommandRequest\x1a\x34.ansys.api.fluent.v0.settings.ExecuteCommandResponse\x12i\n\x08GetAttrs\x12-.ansys.api.fluent.v0.settings.GetAttrsRequest\x1a..ansys.api.fluent.v0.settings.GetAttrsResponseb\x06proto3'
+  serialized_pb=b'\n\x0esettings.proto\x12\x1c\x61nsys.api.fluent.v0.settings\"\xbb\x03\n\x05Value\x12\x11\n\x07\x62oolean\x18\x02 \x01(\x08H\x00\x12\x11\n\x07integer\x18\x03 \x01(\x03H\x00\x12\x0e\n\x04real\x18\x04 \x01(\x01H\x00\x12\x10\n\x06string\x18\x05 \x01(\tH\x00\x12\x43\n\nvalue_list\x18\n \x01(\x0b\x32-.ansys.api.fluent.v0.settings.Value.ValueListH\x00\x12\x41\n\tvalue_map\x18\x0b \x01(\x0b\x32,.ansys.api.fluent.v0.settings.Value.ValueMapH\x00\x1a=\n\tValueList\x12\x30\n\x03lst\x18\x01 \x03(\x0b\x32#.ansys.api.fluent.v0.settings.Value\x1a\x99\x01\n\x08ValueMap\x12>\n\x01m\x18\x01 \x03(\x0b\x32\x33.ansys.api.fluent.v0.settings.Value.ValueMap.MEntry\x1aM\n\x06MEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value:\x02\x38\x01\x42\x07\n\x05value\"&\n\x08PathInfo\x12\x0c\n\x04root\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"*\n\x1aGetObjectStaticInfoRequest\x12\x0c\n\x04root\x18\x01 \x01(\t\"\xfb\x04\n\x10ObjectStaticInfo\x12\x0c\n\x04type\x18\x01 \x01(\t\x12N\n\x08\x63hildren\x18\x02 \x03(\x0b\x32<.ansys.api.fluent.v0.settings.ObjectStaticInfo.ChildrenEntry\x12N\n\x08\x63ommands\x18\x03 \x03(\x0b\x32<.ansys.api.fluent.v0.settings.ObjectStaticInfo.CommandsEntry\x12P\n\targuments\x18\x05 \x03(\x0b\x32=.ansys.api.fluent.v0.settings.ObjectStaticInfo.ArgumentsEntry\x12\x43\n\x0bobject_type\x18\x04 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo\x1a_\n\rChildrenEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo:\x02\x38\x01\x1a_\n\rCommandsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo:\x02\x38\x01\x1a`\n\x0e\x41rgumentsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo:\x02\x38\x01\"[\n\x1bGetObjectStaticInfoResponse\x12<\n\x04info\x18\x01 \x01(\x0b\x32..ansys.api.fluent.v0.settings.ObjectStaticInfo\"V\n\rStaticInfoMap\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.ansys.api.fluent.v0.settings.StaticInfo\"\xc1\x02\n\nStaticInfo\x12\x0c\n\x04type\x18\x01 \x01(\t\x12=\n\x08\x63hildren\x18\x02 \x03(\x0b\x32+.ansys.api.fluent.v0.settings.StaticInfoMap\x12=\n\x08\x63ommands\x18\x03 \x03(\x0b\x32+.ansys.api.fluent.v0.settings.StaticInfoMap\x12>\n\targuments\x18\x04 \x03(\x0b\x32+.ansys.api.fluent.v0.settings.StaticInfoMap\x12=\n\x0bobject_type\x18\x05 \x01(\x0b\x32(.ansys.api.fluent.v0.settings.StaticInfo\x12\x0c\n\x04help\x18\x06 \x01(\t\x12\x1a\n\x12has_allowed_values\x18\x07 \x01(\x08\"$\n\x14GetStaticInfoRequest\x12\x0c\n\x04root\x18\x01 \x01(\t\"O\n\x15GetStaticInfoResponse\x12\x36\n\x04info\x18\x01 \x01(\x0b\x32(.ansys.api.fluent.v0.settings.StaticInfo\"J\n\rGetVarRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\"D\n\x0eGetVarResponse\x12\x32\n\x05value\x18\x01 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"~\n\rSetVarRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x32\n\x05value\x18\x02 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"\x10\n\x0eSetVarResponse\"X\n\rCreateRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x10\n\x0e\x43reateResponse\"n\n\rRenameRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x10\n\x08old_name\x18\x02 \x01(\t\x12\x10\n\x08new_name\x18\x03 \x01(\t\"\x10\n\x0eRenameResponse\"X\n\rDeleteRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0c\n\x04name\x18\x02 \x01(\t\"\x10\n\x0e\x44\x65leteResponse\"R\n\x15GetObjectNamesRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\"\'\n\x16GetObjectNamesResponse\x12\r\n\x05names\x18\x01 \x03(\t\"O\n\x12GetListSizeRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\"#\n\x13GetListSizeResponse\x12\x0c\n\x04size\x18\x01 \x01(\x05\"b\n\x17ResizeListObjectRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0c\n\x04size\x18\x02 \x01(\x05\"\x1a\n\x18ResizeListObjectResponse\"\x96\x01\n\x15\x45xecuteCommandRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\x0f\n\x07\x63ommand\x18\x02 \x01(\t\x12\x31\n\x04\x61rgs\x18\x03 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"L\n\x16\x45xecuteCommandResponse\x12\x32\n\x05reply\x18\x01 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\"n\n\x0fGetAttrsRequest\x12\x39\n\tpath_info\x18\x01 \x01(\x0b\x32&.ansys.api.fluent.v0.settings.PathInfo\x12\r\n\x05\x61ttrs\x18\x02 \x03(\t\x12\x11\n\trecursive\x18\x03 \x01(\x08\"Z\n\x0b\x41ttrInfoMap\x12\x0c\n\x04name\x18\x01 \x01(\t\x12=\n\x05value\x18\x02 \x01(\x0b\x32..ansys.api.fluent.v0.settings.GetAttrsResponse\"\xe0\x02\n\x10GetAttrsResponse\x12\x33\n\x06values\x18\x01 \x01(\x0b\x32#.ansys.api.fluent.v0.settings.Value\x12\x41\n\x0egroup_children\x18\x02 \x03(\x0b\x32).ansys.api.fluent.v0.settings.AttrInfoMap\x12H\n\x15named_object_children\x18\x03 \x03(\x0b\x32).ansys.api.fluent.v0.settings.AttrInfoMap\x12L\n\x14list_object_children\x18\x04 \x03(\x0b\x32..ansys.api.fluent.v0.settings.GetAttrsResponse\x12<\n\targuments\x18\x05 \x03(\x0b\x32).ansys.api.fluent.v0.settings.AttrInfoMap2\xec\n\n\x08Settings\x12\x8f\x01\n\x13GetObjectStaticInfo\x12\x38.ansys.api.fluent.v0.settings.GetObjectStaticInfoRequest\x1a\x39.ansys.api.fluent.v0.settings.GetObjectStaticInfoResponse\"\x03\x88\x02\x01\x12x\n\rGetStaticInfo\x12\x32.ansys.api.fluent.v0.settings.GetStaticInfoRequest\x1a\x33.ansys.api.fluent.v0.settings.GetStaticInfoResponse\x12\x63\n\x06GetVar\x12+.ansys.api.fluent.v0.settings.GetVarRequest\x1a,.ansys.api.fluent.v0.settings.GetVarResponse\x12\x63\n\x06SetVar\x12+.ansys.api.fluent.v0.settings.SetVarRequest\x1a,.ansys.api.fluent.v0.settings.SetVarResponse\x12\x63\n\x06Rename\x12+.ansys.api.fluent.v0.settings.RenameRequest\x1a,.ansys.api.fluent.v0.settings.RenameResponse\x12\x63\n\x06\x43reate\x12+.ansys.api.fluent.v0.settings.CreateRequest\x1a,.ansys.api.fluent.v0.settings.CreateResponse\x12\x63\n\x06\x44\x65lete\x12+.ansys.api.fluent.v0.settings.DeleteRequest\x1a,.ansys.api.fluent.v0.settings.DeleteResponse\x12{\n\x0eGetObjectNames\x12\x33.ansys.api.fluent.v0.settings.GetObjectNamesRequest\x1a\x34.ansys.api.fluent.v0.settings.GetObjectNamesResponse\x12r\n\x0bGetListSize\x12\x30.ansys.api.fluent.v0.settings.GetListSizeRequest\x1a\x31.ansys.api.fluent.v0.settings.GetListSizeResponse\x12\x81\x01\n\x10ResizeListObject\x12\x35.ansys.api.fluent.v0.settings.ResizeListObjectRequest\x1a\x36.ansys.api.fluent.v0.settings.ResizeListObjectResponse\x12{\n\x0e\x45xecuteCommand\x12\x33.ansys.api.fluent.v0.settings.ExecuteCommandRequest\x1a\x34.ansys.api.fluent.v0.settings.ExecuteCommandResponse\x12i\n\x08GetAttrs\x12-.ansys.api.fluent.v0.settings.GetAttrsRequest\x1a..ansys.api.fluent.v0.settings.GetAttrsResponseb\x06proto3'
 )
 
 
@@ -563,6 +563,13 @@ _STATICINFO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='has_allowed_values', full_name='ansys.api.fluent.v0.settings.StaticInfo.has_allowed_values', index=6,
+      number=7, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -576,7 +583,7 @@ _STATICINFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1398,
-  serialized_end=1691,
+  serialized_end=1719,
 )
 
 
@@ -607,8 +614,8 @@ _GETSTATICINFOREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1693,
-  serialized_end=1729,
+  serialized_start=1721,
+  serialized_end=1757,
 )
 
 
@@ -639,8 +646,8 @@ _GETSTATICINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1731,
-  serialized_end=1810,
+  serialized_start=1759,
+  serialized_end=1838,
 )
 
 
@@ -671,8 +678,8 @@ _GETVARREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1812,
-  serialized_end=1886,
+  serialized_start=1840,
+  serialized_end=1914,
 )
 
 
@@ -703,8 +710,8 @@ _GETVARRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1888,
-  serialized_end=1956,
+  serialized_start=1916,
+  serialized_end=1984,
 )
 
 
@@ -742,8 +749,8 @@ _SETVARREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1958,
-  serialized_end=2084,
+  serialized_start=1986,
+  serialized_end=2112,
 )
 
 
@@ -767,8 +774,8 @@ _SETVARRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2086,
-  serialized_end=2102,
+  serialized_start=2114,
+  serialized_end=2130,
 )
 
 
@@ -806,8 +813,8 @@ _CREATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2104,
-  serialized_end=2192,
+  serialized_start=2132,
+  serialized_end=2220,
 )
 
 
@@ -831,8 +838,8 @@ _CREATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2194,
-  serialized_end=2210,
+  serialized_start=2222,
+  serialized_end=2238,
 )
 
 
@@ -877,8 +884,8 @@ _RENAMEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2212,
-  serialized_end=2322,
+  serialized_start=2240,
+  serialized_end=2350,
 )
 
 
@@ -902,8 +909,8 @@ _RENAMERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2324,
-  serialized_end=2340,
+  serialized_start=2352,
+  serialized_end=2368,
 )
 
 
@@ -941,8 +948,8 @@ _DELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2342,
-  serialized_end=2430,
+  serialized_start=2370,
+  serialized_end=2458,
 )
 
 
@@ -966,8 +973,8 @@ _DELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2432,
-  serialized_end=2448,
+  serialized_start=2460,
+  serialized_end=2476,
 )
 
 
@@ -998,8 +1005,8 @@ _GETOBJECTNAMESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2450,
-  serialized_end=2532,
+  serialized_start=2478,
+  serialized_end=2560,
 )
 
 
@@ -1030,8 +1037,8 @@ _GETOBJECTNAMESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2534,
-  serialized_end=2573,
+  serialized_start=2562,
+  serialized_end=2601,
 )
 
 
@@ -1062,8 +1069,8 @@ _GETLISTSIZEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2575,
-  serialized_end=2654,
+  serialized_start=2603,
+  serialized_end=2682,
 )
 
 
@@ -1094,8 +1101,8 @@ _GETLISTSIZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2656,
-  serialized_end=2691,
+  serialized_start=2684,
+  serialized_end=2719,
 )
 
 
@@ -1133,8 +1140,8 @@ _RESIZELISTOBJECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2693,
-  serialized_end=2791,
+  serialized_start=2721,
+  serialized_end=2819,
 )
 
 
@@ -1158,8 +1165,8 @@ _RESIZELISTOBJECTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2793,
-  serialized_end=2819,
+  serialized_start=2821,
+  serialized_end=2847,
 )
 
 
@@ -1204,8 +1211,8 @@ _EXECUTECOMMANDREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2822,
-  serialized_end=2972,
+  serialized_start=2850,
+  serialized_end=3000,
 )
 
 
@@ -1236,8 +1243,8 @@ _EXECUTECOMMANDRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2974,
-  serialized_end=3050,
+  serialized_start=3002,
+  serialized_end=3078,
 )
 
 
@@ -1263,6 +1270,13 @@ _GETATTRSREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='recursive', full_name='ansys.api.fluent.v0.settings.GetAttrsRequest.recursive', index=2,
+      number=3, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1275,8 +1289,47 @@ _GETATTRSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3052,
-  serialized_end=3143,
+  serialized_start=3080,
+  serialized_end=3190,
+)
+
+
+_ATTRINFOMAP = _descriptor.Descriptor(
+  name='AttrInfoMap',
+  full_name='ansys.api.fluent.v0.settings.AttrInfoMap',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='ansys.api.fluent.v0.settings.AttrInfoMap.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='ansys.api.fluent.v0.settings.AttrInfoMap.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3192,
+  serialized_end=3282,
 )
 
 
@@ -1295,6 +1348,34 @@ _GETATTRSRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='group_children', full_name='ansys.api.fluent.v0.settings.GetAttrsResponse.group_children', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='named_object_children', full_name='ansys.api.fluent.v0.settings.GetAttrsResponse.named_object_children', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='list_object_children', full_name='ansys.api.fluent.v0.settings.GetAttrsResponse.list_object_children', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='arguments', full_name='ansys.api.fluent.v0.settings.GetAttrsResponse.arguments', index=4,
+      number=5, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -1307,8 +1388,8 @@ _GETATTRSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3145,
-  serialized_end=3216,
+  serialized_start=3285,
+  serialized_end=3637,
 )
 
 _VALUE_VALUELIST.fields_by_name['lst'].message_type = _VALUE
@@ -1368,7 +1449,12 @@ _EXECUTECOMMANDREQUEST.fields_by_name['path_info'].message_type = _PATHINFO
 _EXECUTECOMMANDREQUEST.fields_by_name['args'].message_type = _VALUE
 _EXECUTECOMMANDRESPONSE.fields_by_name['reply'].message_type = _VALUE
 _GETATTRSREQUEST.fields_by_name['path_info'].message_type = _PATHINFO
+_ATTRINFOMAP.fields_by_name['value'].message_type = _GETATTRSRESPONSE
 _GETATTRSRESPONSE.fields_by_name['values'].message_type = _VALUE
+_GETATTRSRESPONSE.fields_by_name['group_children'].message_type = _ATTRINFOMAP
+_GETATTRSRESPONSE.fields_by_name['named_object_children'].message_type = _ATTRINFOMAP
+_GETATTRSRESPONSE.fields_by_name['list_object_children'].message_type = _GETATTRSRESPONSE
+_GETATTRSRESPONSE.fields_by_name['arguments'].message_type = _ATTRINFOMAP
 DESCRIPTOR.message_types_by_name['Value'] = _VALUE
 DESCRIPTOR.message_types_by_name['PathInfo'] = _PATHINFO
 DESCRIPTOR.message_types_by_name['GetObjectStaticInfoRequest'] = _GETOBJECTSTATICINFOREQUEST
@@ -1397,6 +1483,7 @@ DESCRIPTOR.message_types_by_name['ResizeListObjectResponse'] = _RESIZELISTOBJECT
 DESCRIPTOR.message_types_by_name['ExecuteCommandRequest'] = _EXECUTECOMMANDREQUEST
 DESCRIPTOR.message_types_by_name['ExecuteCommandResponse'] = _EXECUTECOMMANDRESPONSE
 DESCRIPTOR.message_types_by_name['GetAttrsRequest'] = _GETATTRSREQUEST
+DESCRIPTOR.message_types_by_name['AttrInfoMap'] = _ATTRINFOMAP
 DESCRIPTOR.message_types_by_name['GetAttrsResponse'] = _GETATTRSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -1644,6 +1731,13 @@ GetAttrsRequest = _reflection.GeneratedProtocolMessageType('GetAttrsRequest', (_
   })
 _sym_db.RegisterMessage(GetAttrsRequest)
 
+AttrInfoMap = _reflection.GeneratedProtocolMessageType('AttrInfoMap', (_message.Message,), {
+  'DESCRIPTOR' : _ATTRINFOMAP,
+  '__module__' : 'settings_pb2'
+  # @@protoc_insertion_point(class_scope:ansys.api.fluent.v0.settings.AttrInfoMap)
+  })
+_sym_db.RegisterMessage(AttrInfoMap)
+
 GetAttrsResponse = _reflection.GeneratedProtocolMessageType('GetAttrsResponse', (_message.Message,), {
   'DESCRIPTOR' : _GETATTRSRESPONSE,
   '__module__' : 'settings_pb2'
@@ -1664,8 +1758,8 @@ _SETTINGS = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=3219,
-  serialized_end=4607,
+  serialized_start=3640,
+  serialized_end=5028,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetObjectStaticInfo',
