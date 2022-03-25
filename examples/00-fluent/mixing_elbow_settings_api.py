@@ -99,13 +99,13 @@ s.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 # proceed
 # to the next task in the workflow.
 s.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    setup_type_changed=False
+    SetupTypeChanged=False
 )
 s.workflow.TaskObject["Describe Geometry"].Arguments = dict(
     SetupType="The geometry consists of only fluid regions with no voids"
 )
 s.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    setup_type_changed=True
+    SetupTypeChanged=True
 )
 s.workflow.TaskObject["Describe Geometry"].Execute()
 
@@ -525,4 +525,4 @@ s.tui.solver.display.objects.create(
 # s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5').result()
 
 ###############################################################################
-s.tui.solver.exit().result()
+s.exit()
