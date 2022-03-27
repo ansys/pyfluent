@@ -1,8 +1,8 @@
 """
-_ref_mixing_elbow:
+.. _ref_mixing_elbow_settings_api:
 
 Fluid Flow and Heat Transfer in a Mixing Elbow
---------------------------------------------
+----------------------------------------------
 This example illustrates the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and
@@ -39,13 +39,16 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 
 ###############################################################################
 
-# First, start Fluent as a service with Meshing Mode, Double Precision, Number
-# of Processors 4
-import ansys.fluent.core as pyfluent
+# First, connect with a Fluent server
 
-s = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count="4"
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+
+
+import_filename = examples.download_file(
+    "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
 )
+s = pyfluent.launch_fluent(start_instance=False)
 
 ###############################################################################
 
@@ -58,9 +61,8 @@ s.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # Import the CAD geometry. For Length Units, select "in".
 # Execute the Import Geometry task.
 
-
 s.workflow.TaskObject["Import Geometry"].Arguments = dict(
-    FileName="mixing_elbow.pmdb", LengthUnit="in"
+    FileName=import_filename, LengthUnit="in"
 )
 
 s.workflow.TaskObject["Import Geometry"].Execute()
@@ -439,7 +441,7 @@ root.results.graphics.contour["contour-vel"].field = "velocity-magnitude"
 root.results.graphics.contour["contour-vel"].surfaces_list = [
     "symmetry-xyplane"
 ]
-root.results.graphics.contour["contour-vel"].display()
+# root.results.graphics.contour["contour-vel"].display()
 
 ###############################################################################
 
@@ -454,7 +456,7 @@ root.results.graphics.contour["contour-temp"].field = "temperature"
 root.results.graphics.contour["contour-temp"].surfaces_list = [
     "symmetry-xyplane"
 ]
-root.results.graphics.contour["contour-temp"].display()
+# root.results.graphics.contour["contour-temp"].display()
 
 ###############################################################################
 
@@ -468,7 +470,7 @@ root.results.graphics.vector["vector-vel"].field = "temperature"
 root.results.graphics.vector["vector-vel"].surfaces_list = ["symmetry-xyplane"]
 root.results.graphics.vector["vector-vel"].scale.scale_f = 4
 root.results.graphics.vector["vector-vel"].style = "arrow"
-root.results.graphics.vector["vector-vel"].display()
+# root.results.graphics.vector["vector-vel"].display()
 
 ###############################################################################
 
@@ -485,7 +487,7 @@ root.results.graphics.contour["contour-z_0_outlet"].field = "temperature"
 root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = [
     "z=0_outlet"
 ]
-root.results.graphics.contour["contour-z_0_outlet"].display()
+# root.results.graphics.contour["contour-z_0_outlet"].display()
 
 ###############################################################################
 # s.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5").result()
@@ -525,4 +527,3 @@ s.tui.solver.display.objects.create(
 # s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5').result()
 
 ###############################################################################
-s.exit()

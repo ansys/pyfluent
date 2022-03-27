@@ -10,6 +10,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   stylecheck:
     name: Style Check
@@ -119,12 +123,25 @@ jobs:
       - name: Install pyfluent with post module
         run: make install-post
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+
       - name: Build Documentation
         run: |
           pip install -r requirements_docs.txt
           make -C doc html
           touch doc/_build/html/.nojekyll
           echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_FLUENT_PORT: 63084
 
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v2
