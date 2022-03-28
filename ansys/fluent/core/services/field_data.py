@@ -120,7 +120,7 @@ class FieldInfo:
 
 class FieldData:
     """
-    Provide the field data.
+    Provide field data.
 
     Methods
     -------
@@ -193,9 +193,10 @@ class FieldData:
                     index += count
                     if index == field_size:
                         return field_arr
-        # added this but it still gets bypassed 
-        # even when is_active() == False 
-        if not chunk_iterator.is_active(): 
+
+        # added this but it still gets bypassed
+        # even when is_active() == False
+        if not chunk_iterator.is_active():
             raise RuntimeError("Chunk is Empty.")
         fields_data = {}
         for chunk in chunk_iterator:

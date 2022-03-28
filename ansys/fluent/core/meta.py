@@ -7,26 +7,15 @@ from pprint import pformat
 # pylint: disable=bad-mcs-classmethod-argument
 from ansys.fluent.core.services.datamodel_tui import PyMenu
 
-def _get_top_most_parent(obj):
-    parent = obj
-    if getattr(obj, "parent", None):
-        parent = _get_top_most_parent(obj.parent)
-    return parent
-    
-def _get_parent_container_by_type(obj, type):
-    parent = None
-    if getattr(obj, "parent", None):        
-        if isinstance(obj.parent, type):
-            return obj.parent
-        parent = _get_parent_container_by_type(obj.parent, type)
-    return parent    
 
-class ObjectDataExtractor:
+class LocalObjectDataExtractor:
     def __init__(self, obj):
-        self.field_info = lambda : _get_top_most_parent(obj).session.field_info
-        self.field_data = lambda : _get_top_most_parent(obj).session.field_data
-        self.surface_api = lambda : _get_top_most_parent(obj).session.tui.solver.surface
-        self.id = lambda : _get_top_most_parent(obj).session.id
+        self.field_info = lambda: obj.get_top_most_parent().session.field_info
+        self.field_data = lambda: obj.get_top_most_parent().session.field_data
+        self.surface_api = (
+            lambda: obj.get_top_most_parent().session.tui.solver.surface
+        )
+        self.id = lambda: obj.get_top_most_parent().session.id
 
 
 class Attribute:
@@ -108,7 +97,40 @@ class PyMenuMeta(type):
         return super(PyMenuMeta, cls).__new__(cls, name, bases, attrs)
 
 
-class PyLocalPropertyMeta(type):
+class PyLocalBaseMeta(type):
+    @classmethod
+    def __create_get_parent_container_by_type(cls):
+        def wrapper(self, type, obj=None):
+            obj = self if obj is None else obj
+            parent = None
+            if getattr(obj, "parent", None):
+                if isinstance(obj.parent, type):
+                    return obj.parent
+                parent = self.get_parent_by_type(type, obj.parent)
+            return parent
+
+        return wrapper
+
+    @classmethod
+    def __create_get_top_most_parent(cls):
+        def wrapper(self, obj=None):
+            obj = self if obj is None else obj
+            parent = obj
+            if getattr(obj, "parent", None):
+                parent = self.get_top_most_parent(obj.parent)
+            return parent
+
+        return wrapper
+
+    def __new__(cls, name, bases, attrs):
+        attrs[
+            "get_parent_by_type"
+        ] = cls.__create_get_parent_container_by_type()
+        attrs["get_top_most_parent"] = cls.__create_get_top_most_parent()
+        return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
+
+
+class PyLocalPropertyMeta(PyLocalBaseMeta):
     """Metaclass for local property classes."""
 
     @classmethod
@@ -147,9 +169,7 @@ class PyLocalPropertyMeta(type):
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent):
-            self.get_parent_by_type = lambda type: _get_parent_container_by_type(self, type)
-            self.get_top_most_parent = lambda : _get_top_most_parent(self)
-            self.data_extractor =  ObjectDataExtractor(self)                                 
+            self.data_extractor = LocalObjectDataExtractor(self)
             self.parent = parent
             self._on_change_cbs = []
             annotations = self.__class__.__dict__.get("__annotations__")
@@ -215,13 +235,14 @@ class PyLocalPropertyMeta(type):
         return super(PyLocalPropertyMeta, cls).__new__(cls, name, bases, attrs)
 
 
-class PyLocalObjectMeta(type):
+class PyLocalObjectMeta(PyLocalBaseMeta):
     """Metaclass for local object classes."""
 
     @classmethod
     def __create_init(cls):
         def wrapper(self, parent):
             self.parent = parent
+            self.data_extractor = LocalObjectDataExtractor(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -277,6 +298,7 @@ class PyLocalObjectMeta(type):
                     obj.set_state(val)
                 else:
                     obj.update(val)
+
         wrapper.__doc__ = "Update method."
         return wrapper
 
@@ -358,8 +380,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
     def __create_init(cls):
         def wrapper(self, name, parent):
             self.__name = name
-            self.data_extractor =  ObjectDataExtractor(self)            
-            self.get_top_most_parent = lambda: _get_top_most_parent(self)            
+            self.data_extractor = LocalObjectDataExtractor(self)
             self.parent = parent
 
             def update(clss):

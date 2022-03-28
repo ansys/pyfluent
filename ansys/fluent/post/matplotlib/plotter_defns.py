@@ -108,7 +108,6 @@ class Plotter:
         """Check if window is closed."""
         return self._closed
 
-
     def set_properties(self, properties: dict):
         """
         Set plot properties.

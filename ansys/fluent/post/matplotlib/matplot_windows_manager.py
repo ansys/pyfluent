@@ -358,8 +358,7 @@ class MatplotWindowsManager(
                 if not window.plotter.is_closed()
                 and (
                     not session_id
-                    or session_id
-                    == window.graphics_object.session_id()
+                    or session_id == window.graphics_object.session_id()
                 )
             ]
             if not windows_id or window_id in windows_id

@@ -54,6 +54,8 @@ class Vector(NamedTuple):
 class XYPlotDefn(PlotDefn):
     """XYPlot Definition."""
 
+    PLURAL = "XYPlots"
+
     class node_values(metaclass=PyLocalPropertyMeta):
         """Show nodal data."""
 
@@ -319,6 +321,7 @@ class ContourDefn(GraphicsDefn):
 
                 def _reset_on_change(self):
                     return [
+                        self.parent.parent.parent.field,
                         self.get_parent_by_type(ContourDefn).field,
                         self.get_parent_by_type(ContourDefn).node_values,
                     ]
@@ -329,9 +332,12 @@ class ContourDefn(GraphicsDefn):
                     if getattr(self, "_value", None) is None:
                         field = self.get_parent_by_type(ContourDefn).field()
                         if field:
-                            field_info = self.data_extractor.data_extractor.field_info()
+                            field_info = self.data_extractor.field_info()
                             field_range = field_info.get_range(
-                                field, self.get_parent_by_type(ContourDefn).node_values()
+                                field,
+                                self.get_parent_by_type(
+                                    ContourDefn
+                                ).node_values(),
                             )
                             self._value = field_range[0]
                     return self._value
@@ -357,10 +363,12 @@ class ContourDefn(GraphicsDefn):
                     if getattr(self, "_value", None) is None:
                         field = self.get_parent_by_type(ContourDefn).field()
                         if field:
-                            field_info = self.data_extractor.data_extractor.field_info()
+                            field_info = self.data_extractor.field_info()
                             field_range = field_info.get_range(
                                 field,
-                                self.get_parent_by_type(ContourDefn).node_values(),
+                                self.get_parent_by_type(
+                                    ContourDefn
+                                ).node_values(),
                             )
                             self._value = field_range[1]
 
@@ -385,7 +393,9 @@ class VectorDefn(GraphicsDefn):
         def allowed_values(self):
             """Vectors of allowed values."""
             return list(
-                self.data_extractor.data_extractor.field_info().get_vector_fields_info().keys()
+                self.data_extractor.field_info()
+                .get_vector_fields_info()
+                .keys()
             )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -460,7 +470,7 @@ class VectorDefn(GraphicsDefn):
                 def value(self):
                     """Range minimum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field_info = self.data_extractor.data_extractor.field_info()
+                        field_info = self.data_extractor.field_info()
                         field_range = field_info.get_range(
                             "velocity-magnitude",
                             False,
@@ -481,7 +491,7 @@ class VectorDefn(GraphicsDefn):
                 def value(self):
                     """Range maximum property setter."""
                     if getattr(self, "_value", None) is None:
-                        field_info = self.data_extractor.data_extractor.field_info()
+                        field_info = self.data_extractor.field_info()
                         field_range = field_info.get_range(
                             "velocity-magnitude",
                             False,

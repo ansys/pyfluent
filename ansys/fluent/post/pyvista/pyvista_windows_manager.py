@@ -196,10 +196,10 @@ class PyVistaWindow(PostWindow):
             node_values,
             boundary_values,
         )
-        #import numpy
-        #import sys
-        #numpy.set_printoptions(threshold=sys.maxsize)
-        #with open("myfile.txt", "w") as file1:
+        # import numpy
+        # import sys
+        # numpy.set_printoptions(threshold=sys.maxsize)
+        # with open("myfile.txt", "w") as file1:
         #    file1.write(str(scalar_field_data))
 
         # loop over all meshes
@@ -309,9 +309,7 @@ class PyVistaWindow(PostWindow):
         surfaces_list = list(field_info.get_surfaces_info().keys())
         iso_value = obj.surface_type.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
-            obj.data_extractor.surface_api().delete_surface(
-                dummy_surface_name
-            )
+            obj.data_extractor.surface_api().delete_surface(dummy_surface_name)
 
         obj.data_extractor.surface_api().iso_surface(
             field, dummy_surface_name, (), (), iso_value, ()
@@ -334,10 +332,8 @@ class PyVistaWindow(PostWindow):
             contour.show_edges = True
             contour.range_option.auto_range_on.global_range = True
             self._display_contour(contour, plotter)
-            del post_session.Contours[dummy_surface_name]        
-        obj.data_extractor.surface_api().delete_surface(
-            dummy_surface_name
-        )
+            del post_session.Contours[dummy_surface_name]
+        obj.data_extractor.surface_api().delete_surface(dummy_surface_name)
 
     def _display_mesh(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
@@ -657,8 +653,7 @@ class PyVistaWindowsManager(
                     if not window.plotter._closed
                     and (
                         not session_id
-                        or session_id
-                        == window.post_object.data_extractor.id()
+                        or session_id == window.post_object.data_extractor.id()
                     )
                 ]
                 if not windows_id or window_id in windows_id

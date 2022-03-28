@@ -17,16 +17,22 @@ from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.datamodel_tui import PyMenu as PyMenu_TUI
-from ansys.fluent.core.services.field_data import FieldInfo, FieldData, FieldDataService
+from ansys.fluent.core.services.field_data import (
+    FieldInfo,
+    FieldData,
+    FieldDataService,
+)
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import (
-    SchemeEval, SchemeEvalService
+    SchemeEval,
+    SchemeEvalService,
 )
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.solver.events_manager import EventsManager
+
 
 def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
@@ -144,8 +150,9 @@ class Session:
             if not port:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
             if not port:
-                raise RuntimeError("The port to connect to Fluent "
-                                   "session is not provided.")
+                raise RuntimeError(
+                    "The port to connect to Fluent " "session is not provided."
+                )
             self._channel = grpc.insecure_channel(f"{ip}:{port}")
         self._metadata: List[Tuple[str, str]] = []
         self._id = f"session-{next(Session._id_iter)}"
