@@ -48,7 +48,7 @@ class Graphics:
 class Mesh(MeshDefn):
     """Mesh graphics."""
 
-    def display(self, plotter_id: Optional[str] = None):
+    def display(self, window_id: Optional[str] = None):
         """
         Display mesh graphics.
 
@@ -57,13 +57,13 @@ class Mesh(MeshDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        pyvista_windows_manager.plot(self, plotter_id)
+        pyvista_windows_manager.plot(self, window_id)
 
 
 class Surface(SurfaceDefn):
     """Surface graphics."""
 
-    def display(self, plotter_id: Optional[str] = None):
+    def display(self, window_id: Optional[str] = None):
         """
         Display surface graphics.
 
@@ -72,13 +72,13 @@ class Surface(SurfaceDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        pyvista_windows_manager.plot(self, plotter_id)
+        pyvista_windows_manager.plot(self, window_id)
 
 
 class Contour(ContourDefn):
     """Contour graphics."""
 
-    def display(self, plotter_id: Optional[str] = None):
+    def display(self, window_id: Optional[str] = None):
         """
         Display contour graphics.
 
@@ -87,13 +87,13 @@ class Contour(ContourDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        pyvista_windows_manager.plot(self, plotter_id)
+        pyvista_windows_manager.plot(self, window_id)
 
 
 class Vector(VectorDefn):
     """Vector graphics."""
 
-    def display(self, plotter_id: Optional[str] = None):
+    def display(self, window_id: Optional[str] = None):
         """
         Display vector graphics.
 
@@ -102,4 +102,4 @@ class Vector(VectorDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        pyvista_windows_manager.plot(self, plotter_id)
+        pyvista_windows_manager.plot(self, window_id)
