@@ -86,11 +86,10 @@ class MockFieldInfo:
 
 class MockLocalObjectDataExtractor:
     _session_data = None
-    _session_dump = "session.dump"
+    _session_dump = "tests//session.dump"
 
     def __init__(self, obj=None):
-        if not MockLocalObjectDataExtractor._session_data:
-            
+        if not MockLocalObjectDataExtractor._session_data:            
             pickle_obj = open(str(Path(MockLocalObjectDataExtractor._session_dump).resolve()), "rb")
             MockLocalObjectDataExtractor._session_data = pickle.load(
                 pickle_obj
