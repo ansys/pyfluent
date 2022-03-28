@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 import pickle
 import pytest
-
+from pathlib import Path
 from ansys.fluent.post.pyvista import Graphics
 from ansys.fluent.post.matplotlib import Plots
 
@@ -90,7 +90,8 @@ class MockLocalObjectDataExtractor:
 
     def __init__(self, obj=None):
         if not MockLocalObjectDataExtractor._session_data:
-            pickle_obj = open(MockLocalObjectDataExtractor._session_dump, "rb")
+            
+            pickle_obj = open(str(Path(MockLocalObjectDataExtractor._session_dump).resolve()), "rb")
             MockLocalObjectDataExtractor._session_data = pickle.load(
                 pickle_obj
             )
