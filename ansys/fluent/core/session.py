@@ -2,6 +2,7 @@
 
 import atexit
 import itertools
+import os
 import threading
 from typing import Callable, List, Optional, Tuple
 
@@ -27,15 +28,14 @@ from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.solver.events_manager import EventsManager
 
-
 def _parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
-    host_and_port = lines[0].strip().split(":")
-    host = host_and_port[0]
-    port = int(host_and_port[1])
+    ip_and_port = lines[0].strip().split(":")
+    ip = ip_and_port[0]
+    port = int(ip_and_port[1])
     password = lines[1].strip()
-    return host, port, password
+    return ip, port, password
 
 
 class MonitorThread(threading.Thread):
@@ -108,8 +108,9 @@ class Session:
 
     def __init__(
         self,
-        ip: str,
-        port: int,
+        ip: str = None,
+        port: int = None,
+        channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
     ):
         """
@@ -117,16 +118,35 @@ class Session:
 
         Parameters
         ----------
-        ip : str
-            IP to connect to existing Fluent instance
-        port : int
-            Port to connect to existing Fluent instance
+        ip : str, optional
+            IP address to connect to existing Fluent instance. Used only
+            when ``channel`` is ``None``.  Defaults to ``'127.0.0.1'``
+            which can be overwritten by the environment variable
+            ``PYFLUENT_FLUENT_IP=<ip>``.
+        port : int, optional
+            Port to connect to existing Fluent instance. Used only
+            when ``channel`` is ``None``.  Defaults value can be set by
+            the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
+        channel : grpc.Channel, optional
+            Grpc channel to use to connect to existing Fluent instance.
+            ip and port arguments will be ignored when channel is
+            specified.
         cleanup_on_exit : bool, optional
             When True, the connected Fluent session will be shut down
             when PyFluent is exited or exit() is called on the session
             instance, by default True.
         """
-        self._channel = grpc.insecure_channel(f"{ip}:{port}")
+        if channel is not None:
+            self._channel = channel
+        else:
+            if not ip:
+                ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+            if not port:
+                port = os.getenv("PYFLUENT_FLUENT_PORT")
+            if not port:
+                raise RuntimeError("The port to connect to Fluent "
+                                   "session is not provided.")
+            self._channel = grpc.insecure_channel(f"{ip}:{port}")
         self._metadata: List[Tuple[str, str]] = []
         self._id = f"session-{next(Session._id_iter)}"
         self._settings_root = None
@@ -195,8 +215,8 @@ class Session:
         Session
             Session instance
         """
-        host, port, password = _parse_server_info_file(server_info_filepath)
-        session = Session(host, port, cleanup_on_exit)
+        ip, port, password = _parse_server_info_file(server_info_filepath)
+        session = Session(ip=ip, port=port, cleanup_on_exit=cleanup_on_exit)
         session._metadata.append(("password", password))
         return session
 

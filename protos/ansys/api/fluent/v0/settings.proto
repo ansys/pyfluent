@@ -99,6 +99,7 @@ message StaticInfo {
   repeated StaticInfoMap arguments = 4;
   StaticInfo object_type = 5;
   string help = 6;
+  bool has_allowed_values = 7;
 }
 
 message GetStaticInfoRequest {
@@ -187,8 +188,18 @@ message ExecuteCommandResponse {
 message GetAttrsRequest {
   PathInfo path_info = 1;
   repeated string attrs = 2;
+  bool recursive = 3;
+}
+
+message AttrInfoMap {
+  string name = 1;
+  GetAttrsResponse value = 2;
 }
 
 message GetAttrsResponse {
   Value values = 1;
+  repeated AttrInfoMap group_children = 2;
+  repeated AttrInfoMap named_object_children = 3;
+  repeated GetAttrsResponse list_object_children = 4;
+  repeated AttrInfoMap arguments = 5;
 }

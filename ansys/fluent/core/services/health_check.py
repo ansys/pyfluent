@@ -6,6 +6,7 @@ import grpc
 
 from ansys.api.fluent.v0 import health_pb2 as HealthCheckModule
 from ansys.api.fluent.v0 import health_pb2_grpc as HealthCheckGrpcModule
+from ansys.fluent.core.services.error_handler import catch_grpc_error
 
 
 class HealthCheckService:
@@ -29,6 +30,7 @@ class HealthCheckService:
         self.__stub = HealthCheckGrpcModule.HealthStub(channel)
         self.__metadata = metadata
 
+    @catch_grpc_error
     def check_health(self) -> str:
         """
         Check health of Fluent connection

@@ -17,6 +17,7 @@ install_requires = [
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
     "protobuf>=3.12.2",
+    "appdirs>=1.4.0"
 ]
 
 install_requires_post = [
@@ -24,6 +25,7 @@ install_requires_post = [
     "pyvista==0.33.2",
     "pyvistaqt==0.7.0",
     "pyside6==6.2.3",
+    "matplotlib==3.5.1",
 ]
 
 packages = []

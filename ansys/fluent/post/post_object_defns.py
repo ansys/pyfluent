@@ -1,5 +1,7 @@
+"""Module providing post objects definition."""
 from abc import abstractmethod
-from typing import List, Optional, NamedTuple
+from typing import List, NamedTuple, Optional
+
 from ansys.fluent.core.meta import (
     Attribute,
     PyLocalNamedObjectMetaAbstract,
@@ -8,18 +10,49 @@ from ansys.fluent.core.meta import (
 )
 
 
+class GraphicsDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+    """Abstract base class for graphics objects."""
+
+    @abstractmethod
+    def display(self, plotter_id: Optional[str] = None):
+        """
+        Display graphics.
+
+        Parameters
+        ----------
+        window_id : str, optional
+            Window id. If not specified unique id is used.
+        """
+        pass
+
+
+class PlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+    """Abstract base class for plot objects."""
+
+    @abstractmethod
+    def plot(self, plotter_id: Optional[str] = None):
+        """
+        Draw plot.
+
+        Parameters
+        ----------
+        window_id : str, optional
+            Window id. If not specified unique id is used.
+
+        """
+        pass
+
+
 class Vector(NamedTuple):
+    """Class for vector definition."""
+
     x: float
     y: float
     z: float
 
 
-class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class XYPlotDefn(PlotDefn):
     """XYPlot Definition."""
-
-    @abstractmethod
-    def plot(self, plotter_id: Optional[str] = None):
-        pass
 
     class node_values(metaclass=PyLocalPropertyMeta):
         """Show nodal data."""
@@ -43,10 +76,12 @@ class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Y axis function allowed values."""
             return [
                 v["solver_name"]
-                for k, v in self.get_session().
-                field_data.get_fields_info().items()
+                for k, v in self.get_session()
+                .field_data.get_fields_info()
+                .items()
             ]
 
     class x_axis_function(metaclass=PyLocalPropertyMeta):
@@ -56,6 +91,7 @@ class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """X axis function allowed values."""
             return ["direction-vector", "curve-length"]
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -65,20 +101,16 @@ class XYPlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Surface list allowed values."""
             return list(
-                self.get_session().
-                field_data.get_surfaces_info().keys()
+                self.get_session().field_data.get_surfaces_info().keys()
             )
 
 
-class MeshDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class MeshDefn(GraphicsDefn):
     """Mesh graphics."""
 
     PLURAL = "Meshes"
-
-    @abstractmethod
-    def display(self, plotter_id: Optional[str] = None):
-        pass
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """List of surfaces for mesh graphics."""
@@ -87,11 +119,9 @@ class MeshDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Surface list allowed values."""
             return list(
-                (
-                    self.get_session().
-                    field_data.get_surfaces_info().keys()
-                )
+                (self.get_session().field_data.get_surfaces_info().keys())
             )
 
     class show_edges(metaclass=PyLocalPropertyMeta):
@@ -100,14 +130,10 @@ class MeshDefn(metaclass=PyLocalNamedObjectMetaAbstract):
         value: bool = False
 
 
-class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class SurfaceDefn(GraphicsDefn):
     """Surface graphics."""
 
     PLURAL = "Surfaces"
-
-    @abstractmethod
-    def display(self, plotter_id: Optional[str] = None):
-        pass
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges for surface."""
@@ -125,10 +151,13 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             return True
 
         class surface_type(metaclass=PyLocalPropertyMeta):
+            """Surface type."""
+
             value: str = "iso-surface"
 
             @Attribute
             def allowed_values(self):
+                """Surface type allowed values."""
                 return ["plane-surface", "iso-surface"]
 
         class plane_surface(metaclass=PyLocalObjectMeta):
@@ -144,10 +173,8 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @Attribute
                 def allowed_values(self):
-                    field_data = (
-                        self.get_session().
-                        field_data
-                    )
+                    """Field allowed values."""
+                    field_data = self.get_session().field_data
                     return [
                         v["solver_name"]
                         for k, v in field_data.get_fields_info().items()
@@ -160,10 +187,11 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @Attribute
                 def allowed_values(self):
+                    """Surface rendering allowed values."""
                     return ["mesh", "contour"]
 
             class iso_value(metaclass=PyLocalPropertyMeta):
-                """Iso surface iso value."""
+                """Iso surface field iso value."""
 
                 _value: float
 
@@ -172,7 +200,8 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @property
                 def value(self):
-                    if getattr(self, "_value", None) == None:
+                    """Iso value property setter."""
+                    if getattr(self, "_value", None) is None:
                         range = self.range
                         self._value = range[0] if range else None
                     return self._value
@@ -183,22 +212,18 @@ class SurfaceDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @Attribute
                 def range(self):
+                    """Iso value range."""
                     field = self.parent.field()
                     if field:
-                        return (self.get_session().
-                        field_data.get_range(
+                        return self.get_session().field_data.get_range(
                             field, True
-                        ))
+                        )
 
 
-class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class ContourDefn(GraphicsDefn):
     """Contour graphics."""
 
     PLURAL = "Contours"
-
-    @abstractmethod
-    def display(self, plotter_id: Optional[str] = None):
-        pass
 
     class field(metaclass=PyLocalPropertyMeta):
         """Contour field."""
@@ -207,6 +232,7 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Field allowed values."""
             field_data = self.get_session().field_data
             return [
                 v["solver_name"]
@@ -220,9 +246,9 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Surfaces list allowed values."""
             return list(
-                self.get_session().
-                field_data.get_surfaces_info().keys()
+                self.get_session().field_data.get_surfaces_info().keys()
             )
 
     class filled(metaclass=PyLocalPropertyMeta):
@@ -261,11 +287,13 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             return True
 
         class range_option(metaclass=PyLocalPropertyMeta):
+            """Range option."""
 
             value: str = "auto-range-on"
 
             @Attribute
             def allowed_values(self):
+                """Range option allowed values."""
                 return ["auto-range-on", "auto-range-off"]
 
         class auto_range_on(metaclass=PyLocalObjectMeta):
@@ -297,13 +325,11 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @property
                 def value(self):
-                    if getattr(self, "_value", None) == None:
+                    """Range minimum property setter."""
+                    if getattr(self, "_value", None) is None:
                         field = self.parent.parent.parent.field()
                         if field:
-                            field_data = (
-                                self.get_session().
-                                field_data
-                            )
+                            field_data = self.get_session().field_data
                             field_range = field_data.get_range(
                                 field, self.parent.parent.parent.node_values()
                             )
@@ -327,13 +353,11 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @property
                 def value(self):
-                    if getattr(self, "_value", None) == None:
+                    """Range maximum property setter."""
+                    if getattr(self, "_value", None) is None:
                         field = self.parent.parent.parent.field()
                         if field:
-                            field_data = (
-                                self.get_session().
-                                field_data
-                            )
+                            field_data = self.get_session().field_data
                             field_range = field_data.get_range(
                                 field,
                                 self.parent.parent.parent.node_values(),
@@ -347,14 +371,10 @@ class ContourDefn(metaclass=PyLocalNamedObjectMetaAbstract):
                     self._value = value
 
 
-class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class VectorDefn(GraphicsDefn):
     """Vector graphics."""
 
     PLURAL = "Vectors"
-
-    @abstractmethod
-    def display(self, plotter_id: Optional[str] = None):
-        pass
 
     class vectors_of(metaclass=PyLocalPropertyMeta):
         """Vector type."""
@@ -363,9 +383,9 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Vectors of allowed values."""
             return list(
-                self.get_session().
-                field_data.get_vector_fields_info().keys()
+                self.get_session().field_data.get_vector_fields_info().keys()
             )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
@@ -375,9 +395,9 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
         @Attribute
         def allowed_values(self):
+            """Surface list allowed values."""
             return list(
-                self.get_session().
-                field_data.get_surfaces_info().keys()
+                self.get_session().field_data.get_surfaces_info().keys()
             )
 
     class scale(metaclass=PyLocalPropertyMeta):
@@ -406,11 +426,13 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
             return True
 
         class range_option(metaclass=PyLocalPropertyMeta):
+            """Range option."""
 
             value: str = "auto-range-on"
 
             @Attribute
             def allowed_values(self):
+                """Range option allowed values."""
                 return ["auto-range-on", "auto-range-off"]
 
         class auto_range_on(metaclass=PyLocalObjectMeta):
@@ -436,11 +458,9 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @property
                 def value(self):
-                    if getattr(self, "_value", None) == None:
-                        field_data = (
-                            self.self.get_session().
-                            field_data
-                        )
+                    """Range minimum property setter."""
+                    if getattr(self, "_value", None) is None:
+                        field_data = self.self.get_session().field_data
                         field_range = field_data.get_range(
                             "velocity-magnitude",
                             False,
@@ -459,11 +479,9 @@ class VectorDefn(metaclass=PyLocalNamedObjectMetaAbstract):
 
                 @property
                 def value(self):
-                    if getattr(self, "_value", None) == None:
-                        field_data = (
-                            self.self.get_session().
-                            field_data
-                        )
+                    """Range maximum property setter."""
+                    if getattr(self, "_value", None) is None:
+                        field_data = self.self.get_session().field_data
                         field_range = field_data.get_range(
                             "velocity-magnitude",
                             False,

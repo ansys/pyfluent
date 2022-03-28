@@ -263,6 +263,8 @@ class SettingsService:
     def _extract_static_info(self, info):
         ret = {}
         ret["type"] = info.type
+        if info.has_allowed_values:
+            ret["has_allowed_values"] = info.has_allowed_values
         if info.children:
             ret["children"] = {
                 child.name: self._extract_static_info(child.value)
@@ -322,7 +324,33 @@ class SettingsService:
         return self._get_state_from_value(response.reply)
 
     @_trace
-    def get_attrs(self, path: str, attrs: List[str]) -> Any:
+    def _parse_attrs(self, response):
+        ret = {}
+        ret["attrs"] = self._get_state_from_value(response.values)
+        if response.group_children:
+            ret["group_children"] = {
+                child.name: self._parse_attrs(child.value)
+                for child in response.group_children
+            }
+        if response.named_object_children:
+            ret["named_object_children"] = {
+                child.name: self._parse_attrs(child.value)
+                for child in response.named_object_children
+            }
+        if response.list_object_children:
+            ret["list_object_children"] = [
+                self._parse_attrs(child)
+                for child in response.list_object_children
+            ]
+        if response.arguments:
+            ret["arguments"] = {
+                child.name: self._parse_attrs(child.value)
+                for child in response.arguments
+            }
+        return ret
+
+    @_trace
+    def get_attrs(self, path: str, attrs: List[str], recursive = False) -> Any:
         """
         Return values of given attributes
         """
@@ -330,6 +358,9 @@ class SettingsService:
             SettingsModule.GetAttrsRequest, path
         )
         request.attrs[:] = attrs
+        request.recursive = recursive
 
         response = self.__service_impl.get_attrs(request)
+        if(recursive):
+            return self._parse_attrs(response)
         return self._get_state_from_value(response.values)

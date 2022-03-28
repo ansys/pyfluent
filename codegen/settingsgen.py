@@ -93,7 +93,9 @@ def write_settings_classes(out: IO, cls, obj_info):
              Object that interfaces with the Fluent backend
     """
     hash = _gethash(obj_info)
-    out.write('"""This is an auto-generated file.  DO NOT EDIT!"""\n')
+    out.write('#\n')
+    out.write('# This is an auto-generated file.  DO NOT EDIT!\n')
+    out.write('#\n')
     out.write("\n")
     out.write('from ansys.fluent.core.solver.flobject import *\n\n')
     out.write(f'SHASH = "{hash}"\n')
