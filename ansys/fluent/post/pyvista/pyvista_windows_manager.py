@@ -196,12 +196,6 @@ class PyVistaWindow(PostWindow):
             node_values,
             boundary_values,
         )
-        # import numpy
-        # import sys
-        # numpy.set_printoptions(threshold=sys.maxsize)
-        # with open("myfile.txt", "w") as file1:
-        #    file1.write(str(scalar_field_data))
-
         # loop over all meshes
         for surface_id, mesh_data in scalar_field_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
