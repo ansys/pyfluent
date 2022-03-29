@@ -35,7 +35,7 @@ The ``ansys-fluent-core`` package currently supports Python 3.6 through Python
 If you want to use PyFluent please install the latest from `PyFluent GitHub
 <https://github.com/pyansys/pyfluent/issues>`_ via:
 
-.. code::
+.. code:: console
 
    pip install git+https://github.com/pyansys/pymapdl.git
 
