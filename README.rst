@@ -30,7 +30,7 @@ to post questions and code.
 Installation
 ------------
 The ``ansys-fluent-core`` package currently supports Python 3.6 through Python
-3.8 on Windows, Mac OS, and Linux.
+3.8 on Windows and Linux.
 
 If you want to use PyFluent please install the latest from `PyFluent GitHub
 <https://github.com/pyansys/pyfluent/issues>`_ via:
