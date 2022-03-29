@@ -29,7 +29,18 @@ to post questions and code.
 
 Installation
 ------------
-For a local "development" version, install with:
+The ``ansys-fluent-core`` package currently supports Python 3.6 through Python
+3.8 on Windows, Mac OS, and Linux.
+
+If you want to use PyFluent please install the latest from `PyFluent GitHub
+<https://github.com/pyansys/pyfluent/issues>`_ via:
+
+.. code::
+
+   pip install git+https://github.com/pyansys/pymapdl.git
+
+If you plan on doing local "development" of PyFluent with Git, then install
+with:
 
 .. code:: console
 
