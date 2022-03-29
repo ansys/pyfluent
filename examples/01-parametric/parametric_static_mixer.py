@@ -16,7 +16,7 @@ In this example we do the following:
 
 2) Project Based Workflow
 - Instantiate a parametric study from a Fluent session
-- Read the previously saved project - static_mixture_study.flprj
+- Read the previously saved project - static_mixer_study.flprj
 - Save the current Project
 - Save the current Project as a different file name
 - Export the current project
@@ -39,7 +39,7 @@ import ansys.fluent.core as pyfluent
 ############################################################################
 
 # Launch Fluent in 3-D and Double Precision
-s = pyfluent.launch_fluent(precision="double", processor_count="4")
+s = pyfluent.launch_fluent(precision="double", processor_count=4)
 
 ############################################################################
 
@@ -50,22 +50,34 @@ root = s.get_settings_root()
 ############################################################################
 
 # Read the Hopper/Mixer Case
+s.tui.solver.file.read_case(case_file_name="Static_Mixer_main.cas.h5")
 
-s.tui.solver.file.read_case(case_file_name="Static_Mixture_1.cas.h5")
 ############################################################################
 
-# Create Input Parameters with the following values:
+# Set Number of Iterations to 1000 to ensure convergence
+s.tui.solver.solve.set.number_of_iterations("1000")
+############################################################################
+
+# Create Input Parameters after enabling parameter creation in the TUI:
+# Parameter Values:
 # Inlet1: Velocity (inlet1_vel) 5m/s and Temperature (inlet1_temp) at 300 K
 # Inlet2: Velocity (inlet2_vel) 10 m/s and Temperature (inlet2_temp) at 350 K
-# Currently skipping because of Issue # 207 and #206
 
-# s.tui.solver.define.boundary_conditions.velocity_inlet("inlet1","no","no",
-# "yes","yes","yes","inlet1_vel","5","no","no","0","yes","inlet1_temp","300",
-# "no","no","yes","no","5","no","10")
-# s.tui.solver.define.boundary_conditions.velocity_inlet("inlet2"," no","no",
-# " yes","yes","yes","inlet2_vel","10", "no"," no"," 0."," yes","inlet2_temp",
-# "350", "no","no","yes","no","5.","no","10")
+s.tui.solver.define.parameters.enable_in_TUI("yes")
 
+s.tui.solver.define.boundary_conditions.set.velocity_inlet(
+    "inlet1", (), "vmag", "yes", "inlet1_vel", 5, "quit"
+)
+s.tui.solver.define.boundary_conditions.set.velocity_inlet(
+    "inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit"
+)
+
+s.tui.solver.define.boundary_conditions.set.velocity_inlet(
+    "inlet2", (), "vmag", "yes", "no", "inlet2_vel", 10, "quit"
+)
+s.tui.solver.define.boundary_conditions.set.velocity_inlet(
+    "inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit"
+)
 
 ###########################################################################
 
@@ -101,6 +113,17 @@ s.tui.solver.define.parameters.output_parameters.create(
     "report-definition", "outlet-vel-avg"
 )
 
+###########################################################################
+
+# Enable convergence condition check
+
+s.tui.solver.solve.monitors.residual.criterion_type("0")
+
+###########################################################################
+
+# Write Case with all the settings in place
+
+s.tui.solver.file.write_case("Static_Mixer_Parameters.cas.h5")
 
 ###########################################################################
 # 1) Parametric Study Workflow
@@ -186,12 +209,6 @@ study1.delete()
 
 #########################################################################
 
-# Update design points for the newly created design point study
-
-study2.update_all_design_points()
-
-#########################################################################
-
 # Export design point table as a CSV table
 
 # study2.export_design_table("dp_table_study2.csv")
@@ -200,7 +217,7 @@ study2.update_all_design_points()
 
 # Save Parametric Project
 
-s.tui.solver.file.parametric_project.save_as("static_mixture_study.flprj")
+s.tui.solver.file.parametric_project.save_as("static_mixer_study.flprj")
 
 #########################################################################
 
@@ -220,16 +237,16 @@ from ansys.fluent.parametric import ParametricProject
 #########################################################################
 
 # Launch Fluent and Enable the Settings Object API
-s = pyfluent.launch_fluent(precision="double", processor_count="4")
+s = pyfluent.launch_fluent(precision="double", processor_count=4)
 root = s.get_settings_root()
 
 #########################################################################
 
-# Read the previously saved project - static_mixture_study.flprj
+# Read the previously saved project - static_mixer_study.flprj
 proj = ParametricProject(
     root.file.parametric_project,
     root.parametric_studies,
-    "static_mixture_study.flprj",
+    "static_mixer_study.flprj",
 )
 
 #########################################################################
@@ -240,12 +257,12 @@ proj.save()
 #########################################################################
 
 # Save the current Project as a different file name
-proj.save_as(project_filepath="static_mixture_study_save_as.flprj")
+proj.save_as(project_filepath="static_mixer_study_save_as.flprj")
 
 #########################################################################
 
 # Export the current project
-proj.export(project_filepath="static_mixture_study_export.flprj")
+proj.export(project_filepath="static_mixer_study_export.flprj")
 
 #########################################################################
 
@@ -267,16 +284,16 @@ from ansys.fluent.parametric import ParametricSession
 
 #########################################################################
 
-# Launch Parametric Session using the Static Mixture Case File
-# This case file contains precreated input and output parameters
+# Launch Parametric Session using the Static mixer Case File
+# This case file contains pre-created input and output parameters
 
-s1 = ParametricSession(case_filepath="Static_Mixture_2.cas.h5")
+s1 = ParametricSession(case_filepath="Static_Mixer_Parameters.cas.h5")
 
 #########################################################################
 
 # Print the input parameters of the Current Parametric Session.
 
-s1.studies["Static_Mixture_param-Solve"].design_points[
+s1.studies["Static_Mixer_Parameters-Solve"].design_points[
     "Base DP"
 ].input_parameters
 
@@ -284,7 +301,11 @@ s1.studies["Static_Mixture_param-Solve"].design_points[
 
 # Access the current study of the current parametric session
 
-study1_session = s1.studies["Static_Mixture_param-Solve"]
+study1_session = s1.studies["Static_Mixer_Parameters-Solve"]
+
+ip = study1_session.design_points["Base DP"].input_parameters
+ip["inlet1_vel"] = 15
+study1_session.design_points["Base DP"].input_parameters = ip
 
 dp1 = study1_session.add_design_point()
 dp1_ip = study1_session.design_points["DP1"].input_parameters
@@ -296,19 +317,20 @@ study1_session.design_points["DP1"].input_parameters = dp1_ip
 #########################################################################
 
 # In this parametric project create a new study
-
 study2_session = s1.new_study()
 
 #########################################################################
 
-# Rename this newly created study
+# Update all design points
+study2_session.update_all_design_points()
 
-study2_session.rename("new_study")
+#########################################################################
+
+# Access a new Parametric Session using the flprj saved earlier
+s2 = ParametricSession(project_filepath="static_mixer_study_save_as.flprj")
 
 #########################################################################
 
-# Create a new Parametric Session using the flprj saved earlier
-
-s2 = ParametricSession(project_filepath="static_mixture_study_save_as.flprj")
-
-#########################################################################
+# Delete the 2 Parametric Sessions
+del s1
+del s2
