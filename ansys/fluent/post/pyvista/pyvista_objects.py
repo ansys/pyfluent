@@ -28,6 +28,7 @@ class Graphics:
             session_state = self.__dict__
             Graphics._sessions_state[session.id] = session_state
             self.session = session
+            self.dummy = 0
             self._init_module(self, sys.modules[__name__])
         else:
             self.__dict__ = session_state
