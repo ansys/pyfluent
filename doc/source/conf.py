@@ -110,6 +110,10 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
         if fname in ["mixing_elbow_settings_api.py",
                      "mixing_elbow_tui_api.py"]:
             args = ["3ddp", "-t4", "-meshing"]
+	    elif fname in ["parametric_static_mixer_1", 
+					   "parametric_static_mixer_2",
+					   "parametric_static_mixer_3"]:
+			args = ["3ddp", "-t4"]
         subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
     elif when == "after":
         subprocess.run([sys.executable, _STOP_FLUENT_FILE])

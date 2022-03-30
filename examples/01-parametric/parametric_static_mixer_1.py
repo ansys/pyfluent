@@ -4,7 +4,7 @@ Fluent Parametric Study Workflow.
 
 In this example we do the following:
 
-1) Parametric Study Workflow
+1) Parametric Study Workflow (parametric_static_mixer_1.py)
 - Read a case and data file.
 - Create input and output parameters.
 - Instantiate Design Point Study
@@ -14,7 +14,7 @@ In this example we do the following:
 - Create, Update and Delete more design points.
 - Create, Rename and Delete Parametric Studies
 
-2) Project Based Workflow
+2) Project Based Workflow (parametric_static_mixer_2.py)
 - Instantiate a parametric study from a Fluent session
 - Read the previously saved project - static_mixer_study.flprj
 - Save the current Project
@@ -23,7 +23,7 @@ In this example we do the following:
 - Archive the current project
 - Exit the Parametric Project Workflow
 
-3) Parametric Session Workflow
+3) Parametric Session Workflow (parametric_static_mixer_3.py)
 - Launch Parametric Session using the Hopper/Mixer Case File
 - Print the input parameters of the Current Parametric Session.
 - Access the current study of the current parametric session
@@ -50,7 +50,16 @@ root = s.get_settings_root()
 ############################################################################
 
 # Read the Hopper/Mixer Case
-s.tui.solver.file.read_case(case_file_name="Static_Mixer_main.cas.h5")
+
+from ansys.fluent.core import examples
+
+
+import_filename = examples.download_file(
+    "Static_Mixer_main.cas.h5", "pyfluent/parametric_static_mixture"
+)
+
+
+s.tui.solver.file.read_case(case_file_name=import_filename)
 
 ############################################################################
 
@@ -225,112 +234,3 @@ s.tui.solver.file.parametric_project.save_as("static_mixer_study.flprj")
 
 s.exit()
 
-#########################################################################
-
-# 2. Parametric Project Workflow
-
-#########################################################################
-
-# Import the Parametric Project Module and the Parametric Study Module
-from ansys.fluent.parametric import ParametricProject
-
-#########################################################################
-
-# Launch Fluent and Enable the Settings Object API
-s = pyfluent.launch_fluent(precision="double", processor_count=4)
-root = s.get_settings_root()
-
-#########################################################################
-
-# Read the previously saved project - static_mixer_study.flprj
-proj = ParametricProject(
-    root.file.parametric_project,
-    root.parametric_studies,
-    "static_mixer_study.flprj",
-)
-
-#########################################################################
-
-# Save the current Project
-proj.save()
-
-#########################################################################
-
-# Save the current Project as a different file name
-proj.save_as(project_filepath="static_mixer_study_save_as.flprj")
-
-#########################################################################
-
-# Export the current project
-proj.export(project_filepath="static_mixer_study_export.flprj")
-
-#########################################################################
-
-# Archive the current project
-proj.archive()
-
-#########################################################################
-
-# Exit the Parametric Project Workflow
-
-s.exit()
-
-#########################################################################
-
-# 3. Parametric Session Workflow
-# Import the Parametric Session workflow
-
-from ansys.fluent.parametric import ParametricSession
-
-#########################################################################
-
-# Launch Parametric Session using the Static mixer Case File
-# This case file contains pre-created input and output parameters
-
-s1 = ParametricSession(case_filepath="Static_Mixer_Parameters.cas.h5")
-
-#########################################################################
-
-# Print the input parameters of the Current Parametric Session.
-
-s1.studies["Static_Mixer_Parameters-Solve"].design_points[
-    "Base DP"
-].input_parameters
-
-#########################################################################
-
-# Access the current study of the current parametric session
-
-study1_session = s1.studies["Static_Mixer_Parameters-Solve"]
-
-ip = study1_session.design_points["Base DP"].input_parameters
-ip["inlet1_vel"] = 15
-study1_session.design_points["Base DP"].input_parameters = ip
-
-dp1 = study1_session.add_design_point()
-dp1_ip = study1_session.design_points["DP1"].input_parameters
-dp1_ip["inlet1_temp"] = 323
-dp1_ip["inlet1_vel"] = 33
-dp1_ip["inlet2_vel"] = 25
-study1_session.design_points["DP1"].input_parameters = dp1_ip
-
-#########################################################################
-
-# In this parametric project create a new study
-study2_session = s1.new_study()
-
-#########################################################################
-
-# Update all design points
-study2_session.update_all_design_points()
-
-#########################################################################
-
-# Access a new Parametric Session using the flprj saved earlier
-s2 = ParametricSession(project_filepath="static_mixer_study_save_as.flprj")
-
-#########################################################################
-
-# Delete the 2 Parametric Sessions
-del s1
-del s2
