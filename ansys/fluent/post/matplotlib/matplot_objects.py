@@ -33,11 +33,7 @@ class Plots:
         else:
             self.__dict__ = session_state
         self._local_surfaces_provider = (
-            lambda: local_surfaces_provider
-            if local_surfaces_provider
-            else self.Surfaces
-            if hasattr(self, "Surfaces")
-            else []
+            lambda: local_surfaces_provider or getattr(self, "Surfaces", [])
         )
 
     def _init_module(self, obj, mod):

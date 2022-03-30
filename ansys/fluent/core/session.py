@@ -116,6 +116,7 @@ class Session:
         self,
         ip: str = None,
         port: int = None,
+        password: str = None,
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
     ):
@@ -133,6 +134,8 @@ class Session:
             Port to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults value can be set by
             the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
+        password : str, optional
+            Password to connect to existing Fluent instance.
         channel : grpc.Channel, optional
             Grpc channel to use to connect to existing Fluent instance.
             ip and port arguments will be ignored when channel is
@@ -154,7 +157,9 @@ class Session:
                     "The port to connect to Fluent session is not provided."
                 )
             self._channel = grpc.insecure_channel(f"{ip}:{port}")
-        self._metadata: List[Tuple[str, str]] = []
+        self._metadata: List[Tuple[str, str]] = (
+            [("password", password)] if password else []
+        )
         self._id = f"session-{next(Session._id_iter)}"
         self._settings_root = None
 
@@ -229,8 +234,12 @@ class Session:
             Session instance
         """
         ip, port, password = _parse_server_info_file(server_info_filepath)
-        session = Session(ip=ip, port=port, cleanup_on_exit=cleanup_on_exit)
-        session._metadata.append(("password", password))
+        session = Session(
+            ip=ip,
+            port=port,
+            password=password,
+            cleanup_on_exit=cleanup_on_exit,
+        )
         return session
 
     @property

@@ -90,16 +90,15 @@ class MockLocalObjectDataExtractor:
 
     def __init__(self, obj=None):
         if not MockLocalObjectDataExtractor._session_data:
-            pickle_obj = open(
+            with open(
                 str(
                     Path(MockLocalObjectDataExtractor._session_dump).resolve()
                 ),
                 "rb",
-            )
-            MockLocalObjectDataExtractor._session_data = pickle.load(
-                pickle_obj
-            )
-            pickle_obj.close()
+            ) as pickle_obj:
+                MockLocalObjectDataExtractor._session_data = pickle.load(
+                    pickle_obj
+                )
         self.field_info = lambda: MockFieldInfo(
             MockLocalObjectDataExtractor._session_data
         )
@@ -109,14 +108,39 @@ class MockLocalObjectDataExtractor:
         self.id = lambda: 1
 
 
-def test_create_graphics_objects():
+def test_graphics_operations():
     pyvista_graphics1 = Graphics(session=None)
     pyvista_graphics2 = Graphics(session=None)
-    pyvista_graphics1.Contours["contour-1"]
-    pyvista_graphics2.Contours["contour-2"]
+    contour1 = pyvista_graphics1.Contours["contour-1"]
+    contour2 = pyvista_graphics2.Contours["contour-2"]
 
+    # create
     assert pyvista_graphics1 is not pyvista_graphics2
     assert pyvista_graphics1.Contours is pyvista_graphics2.Contours
+    assert list(pyvista_graphics1.Contours) == ["contour-1", "contour-2"]
+
+    contour2.field = "temperature"
+    contour2.surfaces_list = contour2.surfaces_list.allowed_values
+
+    contour1.field = "pressure"
+    contour1.surfaces_list = contour2.surfaces_list.allowed_values[0]
+
+    # copy
+    pyvista_graphics2.Contours["contour-3"] = contour1()
+    contour3 = pyvista_graphics2.Contours["contour-3"]
+    assert contour3() == contour1()
+
+    # update
+    contour3.update(contour2())
+    assert contour3() == contour2()
+
+    # del
+    assert list(pyvista_graphics1.Contours) == [
+        "contour-1",
+        "contour-2",
+        "contour-3",
+    ]
+    del pyvista_graphics1.Contours["contour-3"]
     assert list(pyvista_graphics1.Contours) == ["contour-1", "contour-2"]
 
 
