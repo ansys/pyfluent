@@ -189,6 +189,11 @@ class Session:
         self.part_management = PyMenu_SE(
             self._datamodel_service_se, "PartManagement"
         )
+        self.PartManagement = self.part_management
+        self.pm_file_management = PyMenu_SE(
+            self._datamodel_service_se, "PMFileManagement"
+        )
+        self.PMFileManagement = self.pm_file_management
 
         self._health_check_service = HealthCheckService(
             self._channel, self._metadata
