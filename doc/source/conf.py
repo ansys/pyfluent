@@ -1,5 +1,8 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
+import os
+import subprocess
+import sys
 
 from pyansys_sphinx_theme import pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
@@ -93,6 +96,25 @@ copybutton_prompt_text = r">>> ?|\.\.\. "
 copybutton_prompt_is_regexp = True
 
 
+_THIS_DIR = os.path.dirname(__file__)
+_START_FLUENT_FILE = os.path.normpath(
+    os.path.join(_THIS_DIR, "..", "..", ".ci", "start_fluent.py")
+)
+_STOP_FLUENT_FILE = os.path.normpath(
+    os.path.join(_THIS_DIR, "..", "..", ".ci", "stop_fluent.py")
+)
+
+
+def _start_or_stop_fluent_container(gallery_conf, fname, when):
+    if when == "before":
+        if fname in ["mixing_elbow_settings_api.py",
+                     "mixing_elbow_tui_api.py"]:
+            args = ["3ddp", "-t4", "-meshing"]
+        subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
+    elif when == "after":
+        subprocess.run([sys.executable, _STOP_FLUENT_FILE])
+
+
 # -- Sphinx Gallery Options ---------------------------------------------------
 sphinx_gallery_conf = {
     # convert rst to md for ipynb
@@ -113,6 +135,8 @@ sphinx_gallery_conf = {
     "doc_module": "ansys-fluent-core",
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
+    'reset_modules_order': 'both',
+    'reset_modules': (_start_or_stop_fluent_container),
 }
 
 
