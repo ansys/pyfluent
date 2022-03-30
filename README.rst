@@ -37,7 +37,7 @@ If you want to use PyFluent please install the latest from `PyFluent GitHub
 
 .. code:: console
 
-   pip install git+https://github.com/pyansys/pymapdl.git
+   pip install git+https://github.com/pyansys/pyfluent.git
 
 If you plan on doing local "development" of PyFluent with Git, then install
 with:
