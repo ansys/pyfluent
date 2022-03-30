@@ -1,20 +1,20 @@
 #########################################################################
 
-# 3. Parametric Session Workflow
-# Import the Parametric Session workflow
+# 3. Parametric session workflow
+# Import the parametric session workflow
 
 from ansys.fluent.parametric import ParametricSession
 
 #########################################################################
 
-# Launch Parametric Session using the Static mixer Case File
+# Launch parametric session using the hopper/mixer Case File
 # This case file contains pre-created input and output parameters
 
 s1 = ParametricSession(case_filepath="Static_Mixer_Parameters.cas.h5")
 
 #########################################################################
 
-# Print the input parameters of the Current Parametric Session.
+# Print the input parameters of the current parametric session.
 
 s1.studies["Static_Mixer_Parameters-Solve"].design_points[
     "Base DP"
@@ -49,11 +49,11 @@ study2_session.update_all_design_points()
 
 #########################################################################
 
-# Access a new Parametric Session using the flprj saved earlier
+# Access a new parametric session using the flprj saved earlier
 s2 = ParametricSession(project_filepath="static_mixer_study_save_as.flprj")
 
 #########################################################################
 
-# Delete the 2 Parametric Sessions
+# Delete the two parametric sessions
 del s1
 del s2

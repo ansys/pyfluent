@@ -1,15 +1,15 @@
 #########################################################################
 
-# 2. Parametric Project Workflow
+# 2. Parametric project workflow
 
 #########################################################################
 
-# Import the Parametric Project Module and the Parametric Study Module
+# Import the parametric project module and the parametric study module
 from ansys.fluent.parametric import ParametricProject
 
 #########################################################################
 
-# Launch Fluent and Enable the Settings Object API
+# Launch Fluent and enable the settings API
 s = pyfluent.launch_fluent(precision="double", processor_count=4)
 root = s.get_settings_root()
 
@@ -24,12 +24,12 @@ proj = ParametricProject(
 
 #########################################################################
 
-# Save the current Project
+# Save the current project
 proj.save()
 
 #########################################################################
 
-# Save the current Project as a different file name
+# Save the current project as a different file name
 proj.save_as(project_filepath="static_mixer_study_save_as.flprj")
 
 #########################################################################
@@ -44,8 +44,6 @@ proj.archive()
 
 #########################################################################
 
-# Exit the Parametric Project Workflow
+# Exit the parametric project workflow
 
 s.exit()
-
-#########################################################################
