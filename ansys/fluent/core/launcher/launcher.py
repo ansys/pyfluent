@@ -78,7 +78,7 @@ def launch_fluent(
     start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
-    start_instance: bool = True,
+    start_instance: bool = None,
     ip: str = None,
     port: int = None,
     cleanup_on_exit: bool = True,
@@ -118,7 +118,9 @@ def launch_fluent(
     start_instance : bool, optional
         When False, connect to an existing Fluent instance at ``ip``
         and ``port``, which default to ``'127.0.0.1'`` at 63084.
-        Otherwise, launch a local instance of Fluent. Default is True.
+        Otherwise, launch a local instance of Fluent. Default is True
+        which can be overwritten by the environment variable
+        ``PYFLUENT_START_INSTANCE=<0 or 1>``.
 
     ip : str, optional
         IP address to connect to existing Fluent instance. Used only
@@ -142,6 +144,8 @@ def launch_fluent(
         Fluent session.
     """
     argvals = locals()
+    if start_instance is None:
+        start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
     if start_instance:
         exe_path = _get_fluent_exe_path()
         launch_string = exe_path
