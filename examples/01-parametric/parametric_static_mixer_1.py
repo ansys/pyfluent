@@ -55,7 +55,7 @@ from ansys.fluent.core import examples
 
 
 import_filename = examples.download_file(
-    "Static_Mixer_main.cas.h5", "pyfluent/parametric_static_mixture"
+    "Static_Mixer_main.cas.h5", "pyfluent/static_mixer"
 )
 
 
@@ -233,4 +233,3 @@ s.tui.solver.file.parametric_project.save_as("static_mixer_study.flprj")
 # Exit the parametric study session
 
 s.exit()
-
