@@ -2,7 +2,10 @@ import subprocess
 
 
 def stop_fluent_container():
-    subprocess.run(["docker", "stop", "fluent_server"])
+    try:
+        subprocess.run(["docker", "stop", "fluent_server"])
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":
