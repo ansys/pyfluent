@@ -5,12 +5,18 @@
 
 from ansys.fluent.parametric import ParametricSession
 
+############################################################################
+# Import the pyfluent module and path
+import ansys.fluent.core as pyfluent
+from pathlib import Path
+
 #########################################################################
 
 # Launch parametric session using the hopper/mixer Case File
 # This case file contains pre-created input and output parameters
+case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
 
-s1 = ParametricSession(case_filepath="Static_Mixer_Parameters.cas.h5")
+s1 = ParametricSession(case_filepath=case_path)
 
 #########################################################################
 
@@ -50,10 +56,5 @@ study2_session.update_all_design_points()
 #########################################################################
 
 # Access a new parametric session using the flprj saved earlier
-s2 = ParametricSession(project_filepath="static_mixer_study_save_as.flprj")
-
-#########################################################################
-
-# Delete the two parametric sessions
-del s1
-del s2
+proj_path_sa = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj")
+s2 = ParametricSession(project_filepath= proj_path_sa)

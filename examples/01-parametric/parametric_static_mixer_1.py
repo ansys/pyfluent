@@ -33,9 +33,9 @@ In this example we do the following:
 
 """
 ############################################################################
-# Import the pyfluent module
+# Import the pyfluent module and path
 import ansys.fluent.core as pyfluent
-
+from pathlib import Path
 ############################################################################
 
 # Launch Fluent in 3-D and double precision
@@ -131,8 +131,8 @@ s.tui.solver.solve.monitors.residual.criterion_type("0")
 ###########################################################################
 
 # Write case with all the settings in place
-
-s.tui.solver.file.write_case("Static_Mixer_Parameters.cas.h5")
+case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
+s.tui.solver.file.write_case(case_path)
 
 ###########################################################################
 # 1) Parametric study workflow
@@ -226,10 +226,6 @@ study1.delete()
 
 # Save parametric project
 
-s.tui.solver.file.parametric_project.save_as("static_mixer_study.flprj")
+proj_path = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
-#########################################################################
-
-# Exit the parametric study session
-
-s.exit()
+s.tui.solver.file.parametric_project.save_as(proj_path)
