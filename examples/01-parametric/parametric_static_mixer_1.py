@@ -17,8 +17,10 @@ execute a parametric study workflow
 """
 
 ############################################################################
-# Import the pyfluent module and path
+# Import the pyfluent module
 import ansys.fluent.core as pyfluent
+
+# Import the path module
 from pathlib import Path
 
 ############################################################################
@@ -180,6 +182,20 @@ dp3 = study1.duplicate_design_point(dp2)
 
 study1.update_all_design_points()
 
+#########################################################################
+
+# Export design point table as a CSV table
+dp_table = str(Path(pyfluent.EXAMPLES_PATH) / "dp_table_study1.csv")
+
+study1.export_design_table(dp_table)
+
+#########################################################################
+
+# Display CSV table as pandas dataframe
+import pandas as pd
+df = pd.read_csv(dp_table)
+print(df)
+
 ##########################################################################
 
 # Delete design points
@@ -195,19 +211,13 @@ study2 = study1.duplicate()
 
 # Rename the newly create parametric study
 
-study2.rename("New Study")
+# study2.rename("New Study")
 
 #########################################################################
 
 # Delete the old parametric study
 
-study1.delete()
-
-#########################################################################
-
-# Export design point table as a CSV table
-
-# study2.export_design_table("dp_table_study2.csv")
+# study1.delete()
 
 #########################################################################
 
