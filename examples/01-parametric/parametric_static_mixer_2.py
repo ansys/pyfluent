@@ -1,6 +1,8 @@
-'''
+"""
 .. _ref_parametric_static_mixer_2:
 
+Parametric project workflow
+----------------------------------------------
 In this example we perform the following steps to
 execute a parametric project based workflow
 - Instantiate a parametric study from a Fluent session
@@ -11,7 +13,8 @@ execute a parametric project based workflow
 - Archive the current project
 - Exit the parametric project workflow
 
-'''
+"""
+
 #########################################################################
 
 # Parametric project workflow

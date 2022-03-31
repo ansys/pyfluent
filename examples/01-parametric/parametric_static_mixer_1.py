@@ -1,6 +1,8 @@
 """
 .. _ref_parametric_static_mixer_1:
 
+Parametric study workflow
+----------------------------------------------
 In this example we perform the following steps to
 execute a parametric study workflow
 - Read a case and data file.
@@ -13,6 +15,7 @@ execute a parametric study workflow
 - Create, rename and delete parametric studies
 
 """
+
 ############################################################################
 # Import the pyfluent module and path
 import ansys.fluent.core as pyfluent

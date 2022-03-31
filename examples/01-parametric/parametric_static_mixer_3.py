@@ -1,6 +1,8 @@
 """
 .. _ref_parametric_static_mixer_3:
 
+Parametric session workflow
+----------------------------------------------
 In this example we perform the following steps to
 execute a parametric session workflow
 - Launch parametric session using the hopper/mixer Case File
@@ -11,6 +13,7 @@ execute a parametric session workflow
 - Create a new parametric session using the flprj saved earlier
 
 """
+
 #########################################################################
 
 # Parametric session workflow
