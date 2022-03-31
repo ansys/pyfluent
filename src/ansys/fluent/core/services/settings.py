@@ -207,7 +207,7 @@ class SettingsService:
         request = _get_request_instance_for_path(
             SettingsModule.GetListSizeRequest, path
         )
-        return self.__stub.GetListSize(request, metadata=self.__metadata).size
+        return self.__service_impl.get_list_size(request).size
 
     @_trace
     def resize_list_object(self, path: str, size: int):
