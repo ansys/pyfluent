@@ -1,10 +1,8 @@
 """
-This example demonstrates how to perform a design point study based on
-Fluent parametric study workflow.
+.. _ref_parametric_static_mixer_1:
 
-In this example we do the following:
-
-1) Parametric study workflow (parametric_static_mixer_1.py)
+In this example we perform the following steps to
+execute a parametric study workflow
 - Read a case and data file.
 - Create input and output parameters.
 - Instantiate design point study
@@ -14,28 +12,12 @@ In this example we do the following:
 - Create, update and delete more design points.
 - Create, rename and delete parametric studies
 
-2) Project based workflow (parametric_static_mixer_2.py)
-- Instantiate a parametric study from a Fluent session
-- Read the previously saved project - static_mixer_study.flprj
-- Save the current project
-- Save the current project as a different file name
-- Export the current project
-- Archive the current project
-- Exit the parametric project Workflow
-
-3) Parametric session workflow (parametric_static_mixer_3.py)
-- Launch parametric session using the hopper/mixer Case File
-- Print the input parameters of the current parametric session.
-- Access the current study of the current parametric session
-- Create a new study in a parametric session
-- Rename this newly created study
-- Create a new parametric session using the flprj saved earlier
-
 """
 ############################################################################
 # Import the pyfluent module and path
 import ansys.fluent.core as pyfluent
 from pathlib import Path
+
 ############################################################################
 
 # Launch Fluent in 3-D and double precision
@@ -131,11 +113,13 @@ s.tui.solver.solve.monitors.residual.criterion_type("0")
 ###########################################################################
 
 # Write case with all the settings in place
-case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
+case_path = str(
+    Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5"
+)
 s.tui.solver.file.write_case(case_path)
 
 ###########################################################################
-# 1) Parametric study workflow
+# Parametric study workflow
 
 # Import the parametric study module
 

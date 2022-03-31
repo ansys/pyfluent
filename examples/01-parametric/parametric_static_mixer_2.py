@@ -1,6 +1,20 @@
+'''
+.. _ref_parametric_static_mixer_2:
+
+In this example we perform the following steps to
+execute a parametric project based workflow
+- Instantiate a parametric study from a Fluent session
+- Read the previously saved project - static_mixer_study.flprj
+- Save the current project
+- Save the current project as a different file name
+- Export the current project
+- Archive the current project
+- Exit the parametric project workflow
+
+'''
 #########################################################################
 
-# 2. Parametric project workflow
+# Parametric project workflow
 
 #########################################################################
 
@@ -37,13 +51,17 @@ proj.save()
 #########################################################################
 
 # Save the current project as a different file name
-proj_path_sa = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj")
+proj_path_sa = str(
+    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
+)
 proj.save_as(project_filepath=proj_path_sa)
 
 #########################################################################
 
 # Export the current project
-proj_path_exp = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_export.flprj")
+proj_path_exp = str(
+    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_export.flprj"
+)
 proj.export(project_filepath=proj_path_exp)
 
 #########################################################################

@@ -1,6 +1,19 @@
+"""
+.. _ref_parametric_static_mixer_3:
+
+In this example we perform the following steps to
+execute a parametric session workflow
+- Launch parametric session using the hopper/mixer Case File
+- Print the input parameters of the current parametric session.
+- Access the current study of the current parametric session
+- Create a new study in a parametric session
+- Rename this newly created study
+- Create a new parametric session using the flprj saved earlier
+
+"""
 #########################################################################
 
-# 3. Parametric session workflow
+# Parametric session workflow
 # Import the parametric session workflow
 
 from ansys.fluent.parametric import ParametricSession
@@ -14,7 +27,9 @@ from pathlib import Path
 
 # Launch parametric session using the hopper/mixer Case File
 # This case file contains pre-created input and output parameters
-case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
+case_path = str(
+    Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5"
+)
 
 s1 = ParametricSession(case_filepath=case_path)
 
@@ -56,5 +71,7 @@ study2_session.update_all_design_points()
 #########################################################################
 
 # Access a new parametric session using the flprj saved earlier
-proj_path_sa = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj")
-s2 = ParametricSession(project_filepath= proj_path_sa)
+proj_path_sa = str(
+    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
+)
+s2 = ParametricSession(project_filepath=proj_path_sa)
