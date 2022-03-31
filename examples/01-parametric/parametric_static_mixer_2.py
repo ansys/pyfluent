@@ -38,12 +38,12 @@ root = s.get_settings_root()
 #########################################################################
 
 # Read the previously saved project - static_mixer_study.flprj
-proj_path = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
+proj_path_read = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
 proj = ParametricProject(
     root.file.parametric_project,
     root.parametric_studies,
-    proj_path,
+    proj_path_read
 )
 
 #########################################################################
