@@ -106,13 +106,15 @@ _STOP_FLUENT_FILE = os.path.normpath(
 
 
 def _start_or_stop_fluent_container(gallery_conf, fname, when):
-    if when == "before":
-        if fname in ["mixing_elbow_settings_api.py",
-                     "mixing_elbow_tui_api.py"]:
-            args = ["3ddp", "-t4", "-meshing"]
-        subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
-    elif when == "after":
-        subprocess.run([sys.executable, _STOP_FLUENT_FILE])
+    start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
+    if not start_instance:
+        if when == "before":
+            if fname in ["mixing_elbow_settings_api.py",
+                         "mixing_elbow_tui_api.py"]:
+                args = ["3ddp", "-t4", "-meshing"]
+            subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
+        elif when == "after":
+            subprocess.run([sys.executable, _STOP_FLUENT_FILE])
 
 
 # -- Sphinx Gallery Options ---------------------------------------------------
