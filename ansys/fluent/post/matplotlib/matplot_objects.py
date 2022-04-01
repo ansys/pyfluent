@@ -13,8 +13,17 @@ class Plots:
 
     _sessions_state = {}
 
-    def __init__(self, session):
-        """Instantiate Plots, container of plot objects."""
+    def __init__(self, session, local_surfaces_provider=None):
+        """
+        Instantiate Plots, container of plot objects.
+
+        Parameters
+        ----------
+        session :
+            Session object.
+        local_surfaces_provider : object, optional
+            Object providing local surfaces.
+        """
         session_state = Plots._sessions_state.get(session.id if session else 1)
         if not session_state:
             session_state = self.__dict__
@@ -23,6 +32,13 @@ class Plots:
             self._init_module(self, sys.modules[__name__])
         else:
             self.__dict__ = session_state
+        self._local_surfaces_provider = (
+            lambda: local_surfaces_provider
+            if local_surfaces_provider
+            else self.Surfaces
+            if hasattr(self, "Surfaces")
+            else []
+        )
 
     def _init_module(self, obj, mod):
         for name, cls in mod.__dict__.items():
@@ -50,4 +66,6 @@ class XYPlot(XYPlotDefn):
             Window id. If not specified unique id is used.
 
         """
+        self._pre_display()
         matplot_windows_manager.plot(self, window_id)
+        self._post_display()

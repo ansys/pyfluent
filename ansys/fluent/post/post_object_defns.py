@@ -10,7 +10,41 @@ from ansys.fluent.core.meta import (
 )
 
 
-class GraphicsDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class BasePostObjectDefn:
+    """Base class for post objects."""
+
+    def _pre_display(self):
+        local_surfaces_provider = (
+            self._get_top_most_parent()._local_surfaces_provider()
+        )
+        for surf_name in self.surfaces_list():
+            if surf_name in list(local_surfaces_provider):
+                surf_obj = local_surfaces_provider[surf_name]
+                if surf_obj.surface.type() == "iso-surface":
+                    surf_api = surf_obj._data_extractor.surface_api()
+                    surf_api.iso_surface(
+                        surf_obj.surface.iso_surface.field(),
+                        surf_name,
+                        (),
+                        (),
+                        surf_obj.surface.iso_surface.iso_value(),
+                        (),
+                    )
+
+    def _post_display(self):
+        local_surfaces_provider = (
+            self._get_top_most_parent()._local_surfaces_provider()
+        )
+        for surf_name in self.surfaces_list():
+            if surf_name in list(local_surfaces_provider):
+                surf_obj = local_surfaces_provider[surf_name]
+                surf_api = surf_obj._data_extractor.surface_api()
+                surf_api.delete_surface(surf_name)
+
+
+class GraphicsDefn(
+    BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract
+):
     """Abstract base class for graphics objects."""
 
     @abstractmethod
@@ -26,7 +60,7 @@ class GraphicsDefn(metaclass=PyLocalNamedObjectMetaAbstract):
         pass
 
 
-class PlotDefn(metaclass=PyLocalNamedObjectMetaAbstract):
+class PlotDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
     """Abstract base class for plot objects."""
 
     @abstractmethod
@@ -106,7 +140,7 @@ class XYPlotDefn(PlotDefn):
             """Surface list allowed values."""
             return list(
                 self._data_extractor.field_info().get_surfaces_info().keys()
-            )
+            ) + list(self._get_top_most_parent()._local_surfaces_provider())
 
 
 class MeshDefn(GraphicsDefn):
@@ -124,7 +158,7 @@ class MeshDefn(GraphicsDefn):
             """Surface list allowed values."""
             return list(
                 (self._data_extractor.field_info().get_surfaces_info().keys())
-            )
+            ) + list(self._get_top_most_parent()._local_surfaces_provider())
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges for mesh."""
@@ -142,17 +176,17 @@ class SurfaceDefn(GraphicsDefn):
 
         value: bool = True
 
-    class surface_type(metaclass=PyLocalObjectMeta):
+    class surface(metaclass=PyLocalObjectMeta):
         """Specify surface type."""
 
         def _availability(self, name):
             if name == "plane_surface":
-                return self.surface_type() == "plane-surface"
+                return self.type() == "plane-surface"
             if name == "iso_surface":
-                return self.surface_type() == "iso-surface"
+                return self.type() == "iso-surface"
             return True
 
-        class surface_type(metaclass=PyLocalPropertyMeta):
+        class type(metaclass=PyLocalPropertyMeta):
             """Surface type."""
 
             value: str = "iso-surface"
@@ -251,7 +285,7 @@ class ContourDefn(GraphicsDefn):
             """Surfaces list allowed values."""
             return list(
                 self._data_extractor.field_info().get_surfaces_info().keys()
-            )
+            ) + list(self._get_top_most_parent()._local_surfaces_provider())
 
     class filled(metaclass=PyLocalPropertyMeta):
         """Show filled contour."""
@@ -278,7 +312,7 @@ class ContourDefn(GraphicsDefn):
 
         value: bool = False
 
-    class range (metaclass=PyLocalObjectMeta):
+    class range(metaclass=PyLocalObjectMeta):
         """Specify range options."""
 
         def _availability(self, name):
@@ -407,7 +441,7 @@ class VectorDefn(GraphicsDefn):
             """Surface list allowed values."""
             return list(
                 self._data_extractor.field_info().get_surfaces_info().keys()
-            )
+            ) + list(self._get_top_most_parent()._local_surfaces_provider())
 
     class scale(metaclass=PyLocalPropertyMeta):
         """Vector scale."""

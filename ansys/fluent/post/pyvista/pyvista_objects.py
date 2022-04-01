@@ -21,8 +21,17 @@ class Graphics:
 
     _sessions_state = {}
 
-    def __init__(self, session):
-        """Instantiate Graphics, containter of graphics objects."""
+    def __init__(self, session, local_surfaces_provider=None):
+        """
+        Instantiate Graphics, containter of graphics objects.
+
+        Parameters
+        ----------
+        session :
+            Session object.
+        local_surfaces_provider : object, optional
+            Object providing local surfaces.
+        """
         session_state = Graphics._sessions_state.get(
             session.id if session else 1
         )
@@ -35,6 +44,13 @@ class Graphics:
             self._init_module(self, sys.modules[__name__])
         else:
             self.__dict__ = session_state
+        self._local_surfaces_provider = (
+            lambda: local_surfaces_provider
+            if local_surfaces_provider
+            else self.Surfaces
+            if hasattr(self, "Surfaces")
+            else []
+        )
 
     def _init_module(self, obj, mod):
         for name, cls in mod.__dict__.items():
@@ -61,7 +77,9 @@ class Mesh(MeshDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
+        self._pre_display()
         pyvista_windows_manager.plot(self, window_id)
+        self._post_display()
 
 
 class Surface(SurfaceDefn):
@@ -91,7 +109,9 @@ class Contour(ContourDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
+        self._pre_display()
         pyvista_windows_manager.plot(self, window_id)
+        self._post_display()
 
 
 class Vector(VectorDefn):
@@ -106,4 +126,6 @@ class Vector(VectorDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
+        self._pre_display()
         pyvista_windows_manager.plot(self, window_id)
+        self._post_display()

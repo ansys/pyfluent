@@ -27,9 +27,7 @@ class _ProcessPlotterHandle:
     ):
         self._closed = False
         self.plot_pipe, plotter_pipe = mp.Pipe()
-        self.plotter = ProcessPlotter(
-            window_id, curves, title, xlabel, ylabel
-        )
+        self.plotter = ProcessPlotter(window_id, curves, title, xlabel, ylabel)
         self.plot_process = mp.Process(
             target=self.plotter, args=(plotter_pipe,), daemon=True
         )

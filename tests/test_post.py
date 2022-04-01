@@ -231,8 +231,8 @@ def test_surface_object():
     surf1 = pyvista_graphics.Surfaces["surf-1"]
     field_info = surf1._data_extractor.field_info()
 
-    surf1.surface_type.surface_type = "iso-surface"
-    iso_surf = surf1.surface_type.iso_surface
+    surf1.surface.type = "iso-surface"
+    iso_surf = surf1.surface.iso_surface
 
     assert iso_surf.field.allowed_values == [
         v["solver_name"] for k, v in field_info.get_fields_info().items()
@@ -257,6 +257,19 @@ def test_surface_object():
     iso_surf.field = "pressure"
     range = field_info.get_range(iso_surf.field(), True)
     assert range[0] == pytest.approx(iso_surf.iso_value())
+
+    cont1 = pyvista_graphics.Contours["surf-1"]
+    assert "surf-1" in cont1.surfaces_list.allowed_values
+
+    matplotlib_plots = Plots(session=None)
+    p1 = matplotlib_plots.XYPlots["p-1"]
+    assert "surf-1" not in p1.surfaces_list.allowed_values
+
+    local_surfaces_provider = Graphics(session=None).Surfaces
+    matplotlib_plots = Plots(
+        session=None, local_surfaces_provider=local_surfaces_provider
+    )
+    assert "surf-1" in p1.surfaces_list.allowed_values
 
 
 def test_create_plot_objects():

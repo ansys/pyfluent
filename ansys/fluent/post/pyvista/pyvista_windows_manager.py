@@ -55,7 +55,7 @@ class PyVistaWindow(PostWindow):
         if obj.__class__.__name__ == "Mesh":
             self._display_mesh(obj, plotter)
         elif obj.__class__.__name__ == "Surface":
-            if obj.surface_type.surface_type() == "iso-surface":
+            if obj.surface.type() == "iso-surface":
                 self._display_iso_surface(obj, plotter)
         elif obj.__class__.__name__ == "Contour":
             self._display_contour(obj, plotter)
@@ -294,14 +294,14 @@ class PyVistaWindow(PostWindow):
     def _display_iso_surface(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
     ):
-        field = obj.surface_type.iso_surface.field()
+        field = obj.surface.iso_surface.field()
         if not field:
             raise RuntimeError("Iso surface definition is incomplete.")
 
         dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
         field_info = obj._data_extractor.field_info()
         surfaces_list = list(field_info.get_surfaces_info().keys())
-        iso_value = obj.surface_type.iso_surface.iso_value()
+        iso_value = obj.surface.iso_surface.iso_value()
         if dummy_surface_name in surfaces_list:
             obj._data_extractor.surface_api().delete_surface(
                 dummy_surface_name
@@ -315,7 +315,7 @@ class PyVistaWindow(PostWindow):
         if dummy_surface_name not in surfaces_list:
             raise RuntimeError("Iso surface creation failed.")
         post_session = obj._get_top_most_parent()
-        if obj.surface_type.iso_surface.rendering() == "mesh":
+        if obj.surface.iso_surface.rendering() == "mesh":
             mesh = post_session.Meshes[dummy_surface_name]
             mesh.surfaces_list = [dummy_surface_name]
             mesh.show_edges = True
@@ -323,7 +323,7 @@ class PyVistaWindow(PostWindow):
             del post_session.Meshes[dummy_surface_name]
         else:
             contour = post_session.Contours[dummy_surface_name]
-            contour.field = obj.surface_type.iso_surface.field()
+            contour.field = obj.surface.iso_surface.field()
             contour.surfaces_list = [dummy_surface_name]
             contour.show_edges = True
             contour.range.auto_range_on.global_range = True
