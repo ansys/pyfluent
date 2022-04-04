@@ -1,17 +1,18 @@
 """
 .. _ref_parametric_static_mixer_2:
 
-Parametric project workflow
-----------------------------------------------
-In this example we perform the following steps to
-execute a parametric project based workflow
-- Instantiate a parametric study from a Fluent session
-- Read the previously saved project - static_mixer_study.flprj
-- Save the current project
-- Save the current project as a different file name
-- Export the current project
-- Archive the current project
-- Exit the parametric project workflow
+Parametric Project-Based Workflow
+----------------------------------------------------
+This example for executing a parametric project-based workflow performs these steps: 
+
+- Instantiates a parametric study from a Fluent session
+- Reads the previously saved project ``- static_mixer_study.flprj``
+- Saves the current project
+- Saves the current project to a different file name
+- Exports the current project
+- Archives the current project
+- Exits the parametric project-based workflow
+
 
 """
 
