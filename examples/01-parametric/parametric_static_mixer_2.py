@@ -54,7 +54,8 @@ proj.save()
 
 #########################################################################
 
-# Save the current project as a different file name
+# Save the current project to a different file name
+
 proj_path_sa = str(
     Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
 )
