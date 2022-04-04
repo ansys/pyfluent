@@ -194,7 +194,8 @@ study1.export_design_table(dp_table)
 
 #########################################################################
 
-# Display CSV table as pandas dataframe
+# Display CSV table as a pandas dataframe
+
 # import pandas as pd
 # df = pd.read_csv(dp_table)
 # print(df)
