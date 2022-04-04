@@ -38,7 +38,8 @@ root = s.get_settings_root()
 
 ############################################################################
 
-# Read the hopper/mixer Case
+# Read the hopper/mixer case
+
 
 from ansys.fluent.core import examples
 
