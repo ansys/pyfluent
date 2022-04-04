@@ -32,7 +32,8 @@ s = pyfluent.launch_fluent(precision="double", processor_count=4)
 
 ############################################################################
 
-# Enable the settings API
+# Enable the settings API (Beta)
+
 
 root = s.get_settings_root()
 
