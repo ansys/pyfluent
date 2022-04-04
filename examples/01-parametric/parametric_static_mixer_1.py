@@ -213,7 +213,8 @@ study2 = study1.duplicate()
 
 #########################################################################
 
-# Rename the newly create parametric study
+# Rename the newly created parametric study
+
 
 # study2.rename("New Study")
 
