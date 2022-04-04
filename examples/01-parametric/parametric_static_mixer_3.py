@@ -49,9 +49,9 @@ session.studies["Static_Mixer_Parameters-Solve"].design_points[
 
 study1 = session.studies["Static_Mixer_Parameters-Solve"]
 
-ip = study1.design_points["Base DP"].input_parameters
-ip["inlet1_vel"] = 15
-study1.design_points["Base DP"].input_parameters = ip
+input_parameters_update = study1.design_points["Base DP"].input_parameters
+input_parameters_update["inlet1_vel"] = 15
+study1.design_points["Base DP"].input_parameters = input_parameters_update
 
 design_point_1 = study1.add_design_point()
 design_point_1_input_parameters = study1.design_points["DP1"].input_parameters
@@ -68,6 +68,22 @@ study2 = session.new_study()
 #########################################################################
 # Update all design points
 study2.update_all_design_points()
+
+#########################################################################
+# Export design point table as a CSV table
+
+design_point_table_study2 = str(
+    Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study2.csv"
+)
+study2.export_design_table(design_point_table_study2)
+
+#########################################################################
+# Display CSV table as a pandas dataframe
+
+import pandas as pd
+
+df = pd.read_csv(design_point_table_study2)
+print(df)
 
 #########################################################################
 # Access a new parametric session using the flprj saved earlier

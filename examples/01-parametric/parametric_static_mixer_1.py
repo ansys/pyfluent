@@ -175,15 +175,17 @@ study1.update_all_design_points()
 #########################################################################
 # Export design point table as a CSV table
 
-dp_table = str(Path(pyfluent.EXAMPLES_PATH) / "dp_table_study1.csv")
-study1.export_design_table(dp_table)
+design_point_table = str(
+    Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study1.csv"
+)
+study1.export_design_table(design_point_table)
 
 #########################################################################
 # Display CSV table as a pandas dataframe
 
 import pandas as pd
 
-df = pd.read_csv(dp_table)
+df = pd.read_csv(design_point_table)
 print(df)
 
 ##########################################################################
