@@ -18,7 +18,8 @@ This example for executing a parametric project-based workflow performs these st
 
 #########################################################################
 
-# Parametric project workflow
+# Parametric project-based workflow
+
 
 #########################################################################
 
