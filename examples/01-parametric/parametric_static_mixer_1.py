@@ -1,18 +1,19 @@
 """
 .. _ref_parametric_static_mixer_1:
 
-Parametric study workflow
-----------------------------------------------
-In this example we perform the following steps to
-execute a parametric study workflow
-- Read a case and data file.
-- Create input and output parameters.
-- Instantiate design point study
-- Access and Modify the input parameters of base design point (DP).
-- Update the current design point.
-- Access output parameters of the base DP
-- Create, update and delete more design points.
-- Create, rename and delete parametric studies
+Parametric Study Workflow
+------------------------------
+This example for executing a parametric study workflow performs these steps: 
+
+- Reads a case file and data file
+- Creates input and output parameters
+- Instantiates a design point study
+- Accesses and modifies the input parameters of the base design point (DP)
+- Updates the current DP
+- Accesses output parameters of the base DP
+- Creates, updates, and deletes more DPs
+- Creates, renames, and deletes parametric studies
+
 
 """
 
