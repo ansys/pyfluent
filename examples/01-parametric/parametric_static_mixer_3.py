@@ -1,16 +1,17 @@
 """
 .. _ref_parametric_static_mixer_3:
 
-Parametric session workflow
+Parametric Session Workflow
 ----------------------------------------------
-In this example we perform the following steps to
-execute a parametric session workflow
-- Launch parametric session using the hopper/mixer Case File
-- Print the input parameters of the current parametric session.
-- Access the current study of the current parametric session
-- Create a new study in a parametric session
-- Rename this newly created study
-- Create a new parametric session using the flprj saved earlier
+This example for executing a parametric session workflow performs these steps:
+
+- Launches a parametric session using the hopper/mixer case file
+- Prints the input parameters of the current parametric session
+- Accesses the current study of the current parametric session
+- Creates a new study in a parametric session
+- Renames this newly created study
+- Creates a new parametric session using the flprj saved earlier
+
 
 """
 
