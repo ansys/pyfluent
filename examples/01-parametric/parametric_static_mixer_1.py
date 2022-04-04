@@ -26,7 +26,8 @@ from pathlib import Path
 
 ############################################################################
 
-# Launch Fluent in 3-D and double precision
+# Launch Fluent in 3D and double precision
+
 s = pyfluent.launch_fluent(precision="double", processor_count=4)
 
 ############################################################################
