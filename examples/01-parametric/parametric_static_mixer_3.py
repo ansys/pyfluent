@@ -16,7 +16,6 @@ This example for executing a parametric session workflow performs these steps:
 """
 
 #########################################################################
-
 # Parametric session workflow
 # Import the parametric session workflow
 
@@ -24,58 +23,56 @@ from ansys.fluent.parametric import ParametricSession
 
 ############################################################################
 # Import the pyfluent module and path
+
 import ansys.fluent.core as pyfluent
 from pathlib import Path
 
 #########################################################################
-
-# Launch parametric session using the hopper/mixer Case File
+# Launch parametric session using the hopper/mixer case File
 # This case file contains pre-created input and output parameters
+
 case_path = str(
     Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5"
 )
 
-s1 = ParametricSession(case_filepath=case_path)
+session = ParametricSession(case_filepath=case_path)
 
 #########################################################################
-
 # Print the input parameters of the current parametric session.
 
-s1.studies["Static_Mixer_Parameters-Solve"].design_points[
+session.studies["Static_Mixer_Parameters-Solve"].design_points[
     "Base DP"
 ].input_parameters
 
 #########################################################################
-
 # Access the current study of the current parametric session
 
-study1_session = s1.studies["Static_Mixer_Parameters-Solve"]
+study1 = session.studies["Static_Mixer_Parameters-Solve"]
 
-ip = study1_session.design_points["Base DP"].input_parameters
+ip = study1.design_points["Base DP"].input_parameters
 ip["inlet1_vel"] = 15
-study1_session.design_points["Base DP"].input_parameters = ip
+study1.design_points["Base DP"].input_parameters = ip
 
-dp1 = study1_session.add_design_point()
-dp1_ip = study1_session.design_points["DP1"].input_parameters
-dp1_ip["inlet1_temp"] = 323
-dp1_ip["inlet1_vel"] = 33
-dp1_ip["inlet2_vel"] = 25
-study1_session.design_points["DP1"].input_parameters = dp1_ip
+design_point_1 = study1.add_design_point()
+design_point_1_input_parameters = study1.design_points["DP1"].input_parameters
+design_point_1_input_parameters["inlet1_temp"] = 323
+design_point_1_input_parameters["inlet1_vel"] = 33
+design_point_1_input_parameters["inlet2_vel"] = 25
+study1.design_points["DP1"].input_parameters = design_point_1_input_parameters
 
 #########################################################################
-
 # In this parametric project create a new study
-study2_session = s1.new_study()
+
+study2 = session.new_study()
 
 #########################################################################
-
 # Update all design points
-study2_session.update_all_design_points()
+study2.update_all_design_points()
 
 #########################################################################
-
 # Access a new parametric session using the flprj saved earlier
-proj_path_sa = str(
+
+project_filepath_session = str(
     Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
 )
-s2 = ParametricSession(project_filepath=proj_path_sa)
+session_new = ParametricSession(project_filepath=project_filepath_session)
