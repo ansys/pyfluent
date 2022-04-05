@@ -70,3 +70,8 @@ project_filepath_export = str(
     Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_export.flprj"
 )
 proj.export(project_filepath=project_filepath_export)
+
+#########################################################################
+# Archive the current project
+
+proj.archive()
