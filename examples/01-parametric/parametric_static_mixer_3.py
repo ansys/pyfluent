@@ -75,7 +75,7 @@ study_2.update_all_design_points()
 design_point_table_study_2 = str(
     Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study_2.csv"
 )
-study2.export_design_table(design_point_table_study_2)
+study_2.export_design_table(design_point_table_study_2)
 
 #########################################################################
 # Display CSV table as a pandas dataframe
