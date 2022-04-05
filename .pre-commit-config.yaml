@@ -1,0 +1,43 @@
+repos:
+
+- repo: https://github.com/psf/black
+  rev: 22.3.0
+  hooks:
+  - id: black
+    args: [
+      --line-length, "100",
+      ansys, codegen, doc, examples, tests
+    ]
+
+- repo: https://github.com/pycqa/isort
+  rev: 5.10.1
+  hooks:
+  - id: isort
+    exclude: ^src/ansys/templates/pypkg/
+    args: [
+      --profile, black,
+      --force-sort-within-sections,
+      --line-length, "100",
+      --section-default, THIRDPARTY, 
+      --filter-files,
+      ansys, codegen, doc, examples, tests
+    ]
+
+- repo: https://gitlab.com/PyCQA/flake8
+  rev: 4.0.1
+  hooks:
+  - id: flake8
+    args: [
+      ansys, codegen, doc, examples, tests
+    ]
+
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.1.0
+  hooks:
+  - id: codespell
+
+- repo: https://github.com/pycqa/pydocstyle
+  rev: 6.1.1
+  hooks:
+  - id: pydocstyle
+    additional_dependencies: [toml]
