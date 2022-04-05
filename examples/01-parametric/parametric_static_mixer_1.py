@@ -128,85 +128,87 @@ from ansys.fluent.parametric import ParametricStudy
 ###########################################################################
 # Instantiate a parametric study from a Fluent session
 
-study1 = ParametricStudy(root.parametric_studies).initialize()
+study_1 = ParametricStudy(root.parametric_studies).initialize()
 
 ###########################################################################
 # Access and modify input parameters of base DP
 
-input_parameters_update = study1.design_points["Base DP"].input_parameters
+input_parameters_update = study_1.design_points["Base DP"].input_parameters
 input_parameters_update["inlet1_vel"] = 15
-study1.design_points["Base DP"].input_parameters = input_parameters_update
+study_1.design_points["Base DP"].input_parameters = input_parameters_update
 
 ###########################################################################
 # Update current design point
 
-study1.update_current_design_point()
+study_1.update_current_design_point()
 
 ###########################################################################
 # Change value of specific design points
 
-design_point_1 = study1.add_design_point()
-design_point_1_input_parameters = study1.design_points["DP1"].input_parameters
+design_point_1 = study_1.add_design_point()
+design_point_1_input_parameters = study_1.design_points["DP1"].input_parameters
 design_point_1_input_parameters["inlet1_temp"] = 450
 design_point_1_input_parameters["inlet1_vel"] = 30
 design_point_1_input_parameters["inlet2_vel"] = 20
-study1.design_points["DP1"].input_parameters = design_point_1_input_parameters
+study_1.design_points["DP1"].input_parameters = design_point_1_input_parameters
 
 ###########################################################################
 # Add another design point with different values of the input parameters
 
-design_point_2 = study1.add_design_point()
-design_point_2_input_parameters = study1.design_points["DP2"].input_parameters
+design_point_2 = study_1.add_design_point()
+design_point_2_input_parameters = study_1.design_points["DP2"].input_parameters
 design_point_2_input_parameters["inlet1_temp"] = 500
 design_point_2_input_parameters["inlet1_vel"] = 45
 design_point_2_input_parameters["inlet2_vel"] = 30
-study1.design_points["DP2"].input_parameters = design_point_2_input_parameters
+study_1.design_points["DP2"].input_parameters = design_point_2_input_parameters
 
 ##########################################################################
 # Duplicate design points
 
-design_point_3 = study1.duplicate_design_point(design_point_2)
+design_point_3 = study_1.duplicate_design_point(design_point_2)
 
 #########################################################################
 # Update all design points for study 1
 
-study1.update_all_design_points()
+study_1.update_all_design_points()
 
 #########################################################################
 # Export design point table as a CSV table
 
 design_point_table = str(
-    Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study1.csv"
+    Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study_1.csv"
 )
-study1.export_design_table(design_point_table)
+study_1.export_design_table(design_point_table)
 
 #########################################################################
 # Display CSV table as a pandas dataframe
 
 import pandas as pd
 
-df = pd.read_csv(design_point_table)
-print(df)
+data_frame = pd.read_csv(design_point_table)
+print(data_frame)
 
 ##########################################################################
 # Delete design points
 
-study1.delete_design_points([design_point_1, design_point_2])
+study_1.delete_design_points([design_point_1, design_point_2])
 
 ##########################################################################
 # Create a new parametric study by duplicating the current one
 
-study2 = study1.duplicate()
+study_2 = study_1.duplicate()
 
 #########################################################################
 # Rename the newly created parametric study
+# Currently affected by issue # 249, hence commented out
 
 # study2.rename("New Study")
 
 #########################################################################
 # Delete the old parametric study
+# Currently affected by issue #249, hence commented out
 
-# study1.delete()
+# study_1.delete()
 
 #########################################################################
 # Save parametric project
