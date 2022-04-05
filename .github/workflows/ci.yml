@@ -79,10 +79,6 @@ jobs:
       - name: Install pyfluent
         run: make install
 
-      - name: Install pyvistaqt requirements
-        if: matrix.os == 'ubuntu-latest'
-        run: make install-pyvistaqt-requirements
-
       - name: Test import
         run: make test-import
 
@@ -120,7 +116,7 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Install pyfluent with post module
+      - name: Install pyfluent with post requirements
         run: make install-post
 
       - name: Login to GitHub Container Registry
@@ -182,15 +178,12 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Install pyfluent
-        run: make install
-
       - name: Install pyvistaqt requirements
         run: make install-pyvistaqt-requirements
 
-      - name: Install post requirements
+      - name: Install pyfluent with post requirements
         run: make install-post
-        
+
       - name: Unit Testing
         run: make unittest
 

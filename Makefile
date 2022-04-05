@@ -15,8 +15,8 @@ install-post:
 	@pip install dist/ansys_fluent_solver-0.2.dev0-py3-none-any.whl[post]
 
 install-pyvistaqt-requirements:
-	@sudo apt-get update
-	@sudo apt-get install libegl1 -y
+	@sudo apt update
+	@sudo apt install libegl1 -y
 
 docker-pull:
 	@docker pull ghcr.io/pyansys/pyfluent:latest
