@@ -2,8 +2,8 @@ PyFluent
 ========
 |GH-CI| |MIT|
 
-.. |GH-CI| image:: https://github.com/pyansys/pymapdl/actions/workflows/ci.yml/badge.svg
-   :target: https://github.com/pyansys/pymapdl/actions/workflows/ci.yml
+.. |GH-CI| image:: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
