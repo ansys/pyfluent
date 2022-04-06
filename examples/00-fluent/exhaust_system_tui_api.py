@@ -40,7 +40,6 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
 
 ###############################################################################
-
 # First, connect with a Fluent server
 
 import ansys.fluent.core as pyfluent
@@ -51,7 +50,6 @@ import_filename = examples.download_file(
 )
 
 ###############################################################################
-
 # Start Fluent in double precision running on 4 processors
 
 session = pyfluent.launch_fluent(
@@ -59,13 +57,11 @@ session = pyfluent.launch_fluent(
 )
 
 ###############################################################################
-
 # Select the Fault Tolerant Meshing Workflow
 
 session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
 ###############################################################################
-
 # Import the CAD geometry (exhaust_system.fmd). Perform some selective part
 # management.
 
@@ -109,7 +105,6 @@ session.workflow.TaskObject[
 session.workflow.TaskObject["Import CAD and Part Management"].Execute()
 
 ###############################################################################
-
 # Provide a description for the geometry and the flow characteristics.
 
 session.workflow.TaskObject["Describe Geometry and Flow"].Arguments.setState(
@@ -139,7 +134,6 @@ session.workflow.TaskObject["Describe Geometry and Flow"].UpdateChildTasks(
 session.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 
 ###############################################################################
-
 # Cover any openings in your geometry.
 
 session.workflow.TaskObject[
@@ -300,7 +294,6 @@ session.workflow.TaskObject[
 session.workflow.TaskObject["outlet-1"].Execute()
 
 ###############################################################################
-
 # Extract edge features.
 
 session.workflow.TaskObject["Extract Edge Features"].Arguments.setState(
@@ -325,7 +318,6 @@ session.workflow.TaskObject["Extract Edge Features"].Arguments.setState({})
 session.workflow.TaskObject["edge-group-1"].Execute()
 
 ###############################################################################
-
 # Identify regions.
 
 session.workflow.TaskObject["Identify Regions"].Arguments.setState(
@@ -402,7 +394,6 @@ session.workflow.TaskObject["Identify Regions"].Arguments.setState({})
 session.workflow.TaskObject["void-region-1"].Execute()
 
 ###############################################################################
-
 # Define thresholds for any potential leakages.
 
 session.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
@@ -435,7 +426,6 @@ session.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
 session.workflow.TaskObject["leakage-1"].Execute()
 
 ###############################################################################
-
 # Review your region settings.
 
 session.workflow.TaskObject["Update Region Settings"].Arguments.setState(
@@ -540,25 +530,21 @@ session.workflow.TaskObject["Update Region Settings"].Execute()
 
 
 ###############################################################################
-
 # Select options for controlling the mesh.
 
 session.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
 ###############################################################################
-
 # Generate the surface mesh.
 
 session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 ###############################################################################
-
 # Confirm and update the boundaries.
 
 session.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
-
 # Add boundary layers.
 
 session.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
@@ -575,7 +561,6 @@ session.workflow.TaskObject["Add Boundary Layers"].Arguments.setState({})
 session.workflow.TaskObject["aspect-ratio_1"].Execute()
 
 ###############################################################################
-
 # Generate the volume mesh.
 
 session.workflow.TaskObject["Generate the Volume Mesh"].Arguments.setState(
@@ -613,13 +598,11 @@ session.workflow.TaskObject["Generate the Volume Mesh"].Arguments.setState(
 session.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
 ###############################################################################
-
 # Check the mesh.
 
 session.tui.meshing.mesh.check_mesh()
 
 ###############################################################################
-
 # Switch to Solution mode.
 
 session.tui.meshing.switch_to_solution_mode("yes")
@@ -627,18 +610,16 @@ session.tui.meshing.switch_to_solution_mode("yes")
 session.tui.solver.mesh.check()
 
 ###############################################################################
-
 # Set the units for length
+
 session.tui.solver.define.units("length", "mm")
 
 ###############################################################################
-
 # Select kw sst turbulence model
 
 session.tui.solver.define.models.viscous.kw_sst("yes")
 
 ###############################################################################
-
 # Set the velocity and turbulence boundary conditions for the first inlet
 # (inlet-1).
 
@@ -647,7 +628,6 @@ session.tui.solver.define.boundary_conditions.set.velocity_inlet(
 )
 
 ###############################################################################
-
 # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
 # and inlet_3).
 
@@ -656,7 +636,6 @@ session.tui.solver.define.boundary_conditions.copy_bc(
 )
 
 ###############################################################################
-
 # Set the boundary conditions at the outlet (outlet-1).
 
 session.tui.solver.define.boundary_conditions.set.pressure_outlet(
@@ -665,13 +644,11 @@ session.tui.solver.define.boundary_conditions.set.pressure_outlet(
 session.tui.solver.solve.monitors.residual.plot("yes")
 
 ###############################################################################
-
 # Initialize the flow field using the Initialization
 
 session.tui.solver.solve.initialize.hyb_initialization()
 
 ###############################################################################
-
 # Start the calculation by requesting 100 iterations
 
 session.tui.solver.solve.set.number_of_iterations(100)
@@ -680,7 +657,6 @@ session.tui.solver.solve.iterate()
 # session.tui.solver.report.volume_integrals.volume("fluid-region-1","()","yes","volume.vrp")
 
 ###############################################################################
-
 # Display path lines highlighting the flow field
 
 session.tui.solver.display.objects.create(
@@ -703,7 +679,6 @@ session.tui.solver.display.objects.create(
 session.tui.solver.display.objects.display("pathlines-1")
 
 ###############################################################################
-
 # Create an iso-surface through the manifold geometry.
 
 session.tui.solver.surface.iso_surface(
@@ -717,7 +692,6 @@ session.tui.solver.surface.iso_surface(
 )
 
 ###############################################################################
-
 # Create and define contours of velocity magnitude throughout the manifold
 # along with the mesh.
 
@@ -745,7 +719,6 @@ session.tui.solver.display.objects.create(
 )
 
 ###############################################################################
-
 # Create a scene containing the mesh and the contours.
 
 session.tui.solver.display.objects.create(
@@ -766,9 +739,7 @@ session.tui.solver.display.objects.create(
 session.tui.solver.display.objects.display("scene-1")
 
 ###############################################################################
-
 # Save case, data and exit.
-
 # session.tui.solver.file.write_case_data("exhaust_system.cas.h5")
 
 session.exit()
