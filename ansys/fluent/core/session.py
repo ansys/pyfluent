@@ -8,7 +8,6 @@ from typing import Callable, List, Optional, Tuple
 
 import grpc
 
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -17,10 +16,11 @@ from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.datamodel_tui import PyMenu as PyMenu_TUI
+from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import (
-    FieldInfo,
     FieldData,
     FieldDataService,
+    FieldInfo,
 )
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import (
@@ -29,9 +29,9 @@ from ansys.fluent.core.services.scheme_eval import (
 )
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
-from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.solver.events_manager import EventsManager
+from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.logging import LOG
 
 
 def _parse_server_info_file(filename: str):
@@ -47,7 +47,7 @@ def _parse_server_info_file(filename: str):
 class MonitorThread(threading.Thread):
     """A class used for monitoring a Fluent session.
 
-    Deamon thread which will ensure cleanup of session objects, shutdown of
+    Daemon thread which will ensure cleanup of session objects, shutdown of
     non-deamon threads etc.
 
     Attributes
@@ -68,8 +68,7 @@ class MonitorThread(threading.Thread):
 
 
 class Session:
-    """
-    Encapsulates a Fluent connection.
+    """Encapsulates a Fluent connection.
 
     Attributes
     ----------
@@ -105,7 +104,6 @@ class Session:
 
     exit()
         Close the Fluent connection and exit Fluent.
-
     """
 
     _on_exit_cbs: List[Callable] = []
@@ -120,8 +118,7 @@ class Session:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
     ):
-        """
-        Instantiate a Session.
+        """Instantiate a Session.
 
         Parameters
         ----------
@@ -216,8 +213,7 @@ class Session:
     def create_from_server_info_file(
         cls, server_info_filepath: str, cleanup_on_exit: bool = True
     ) -> "Session":
-        """
-        Create a Session instance from server-info file.
+        """Create a Session instance from server-info file.
 
         Parameters
         ----------

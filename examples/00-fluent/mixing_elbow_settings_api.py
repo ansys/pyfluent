@@ -1,5 +1,4 @@
-"""
-.. _ref_mixing_elbow_settings_api:
+""".. _ref_mixing_elbow_settings_api:
 
 Fluid Flow and Heat Transfer in a Mixing Elbow
 ----------------------------------------------
@@ -15,7 +14,7 @@ This example demonstrates how to do the following:
 - Use the Watertight Geometry guided workflow to:
     - Import a CAD geometry
     - Generate a surface mesh
-    - Decribe the geometry
+    - Describe the geometry
     - Generate a volume mesh
 - Launch Ansys Fluent.
 - Read an existing mesh file into Ansys Fluent.
@@ -33,7 +32,6 @@ with a warmer fluid at 40 deg C that enters through a smaller inlet located at
 the elbow. The pipe dimensions are in inches and the fluid properties and
 boundary conditions are given in SI units. The Reynolds number for the flow at
 the larger inlet is 50, 800, so a turbulent flow model will be required.
-
 """
 
 
@@ -44,7 +42,6 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-
 
 import_filename = examples.download_file(
     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
@@ -523,7 +520,7 @@ s.tui.solver.display.objects.create(
 #    "0",
 #    "z=0_outlet",
 #    "()",
-#).result()
+# ).result()
 
 ###############################################################################
 

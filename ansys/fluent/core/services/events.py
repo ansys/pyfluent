@@ -7,23 +7,18 @@ from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
 
 
 class EventsService:
-    """
-    Class wrapping the events grpc service of Fluent.
-
-    """
+    """Class wrapping the events grpc service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = EventsGrpcModule.EventsStub(channel)
         self.__metadata = metadata
 
     def begin_streaming(self):
-        """
-        Begin events streaming from Fluent.
+        """Begin events streaming from Fluent.
 
         Yields
         ------
         Event
-
         """
         request = EventsProtoModule.BeginStreamingRequest()
         self.__streams = self.__stub.BeginStreaming(

@@ -49,8 +49,7 @@ class GraphicsDefn(
 
     @abstractmethod
     def display(self, plotter_id: Optional[str] = None):
-        """
-        Display graphics.
+        """Display graphics.
 
         Parameters
         ----------
@@ -65,14 +64,12 @@ class PlotDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
 
     @abstractmethod
     def plot(self, plotter_id: Optional[str] = None):
-        """
-        Draw plot.
+        """Draw plot.
 
         Parameters
         ----------
         window_id : str, optional
             Window id. If not specified unique id is used.
-
         """
         pass
 

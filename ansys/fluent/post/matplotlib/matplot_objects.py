@@ -14,8 +14,7 @@ class Plots:
     _sessions_state = {}
 
     def __init__(self, session, local_surfaces_provider=None):
-        """
-        Instantiate Plots, container of plot objects.
+        """Instantiate Plots, container of plot objects.
 
         Parameters
         ----------
@@ -53,14 +52,12 @@ class XYPlot(XYPlotDefn):
     """XY Plot."""
 
     def plot(self, window_id: Optional[str] = None):
-        """
-        Draw XYPlot.
+        """Draw XYPlot.
 
         Parameters
         ----------
         window_id : str, optional
             Window id. If not specified unique id is used.
-
         """
         self._pre_display()
         matplot_windows_manager.plot(self, window_id)

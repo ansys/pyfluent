@@ -7,14 +7,12 @@ from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
 
 
 class TranscriptService:
-    """
-    Class wrapping the transcript grpc service of Fluent.
+    """Class wrapping the transcript grpc service of Fluent.
 
     Methods
     -------
     begin_streaming
         Begin transcript streaming from Fluent
-
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
@@ -23,8 +21,7 @@ class TranscriptService:
         self.__streams = None
 
     def begin_streaming(self):
-        """
-        Begin transcript streaming from Fluent
+        """Begin transcript streaming from Fluent.
 
         Yields
         ------

@@ -1,8 +1,9 @@
 """Python post processing integrations for the Fluent solver."""
-import pkg_resources
 import platform
 import struct
 import sys
+
+import pkg_resources
 
 required_libraries = {
     "vtk": "9.1.0",

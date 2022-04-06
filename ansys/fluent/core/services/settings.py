@@ -1,6 +1,4 @@
-"""
-Wrapper to settings grpc service of Fluent
-"""
+"""Wrapper to settings grpc service of Fluent."""
 from typing import Any, List
 
 import grpc
@@ -60,9 +58,7 @@ class _SettingsServiceImpl:
 
     @catch_grpc_error
     def get_static_info(self, request):
-        return self.__stub.GetStaticInfo(
-            request, metadata=self.__metadata
-        )
+        return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def execute_cmd(self, request):
@@ -72,8 +68,10 @@ class _SettingsServiceImpl:
     def get_attrs(self, request):
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
+
 trace = False
 _indent = 0
+
 
 def _trace(fn):
     def _fn(self, *args, **kwds):
@@ -101,9 +99,7 @@ def _get_request_instance_for_path(request_class, path):
 
 
 class SettingsService:
-    """
-    Service for accessing and modifying Fluent settings
-    """
+    """Service for accessing and modifying Fluent settings."""
 
     def __init__(self, channel, metadata):
         self.__service_impl = _SettingsServiceImpl(channel, metadata)
@@ -150,9 +146,7 @@ class SettingsService:
 
     @_trace
     def set_var(self, path: str, value: Any):
-        """
-        Set the value for the given path
-        """
+        """Set the value for the given path."""
         request = _get_request_instance_for_path(
             SettingsModule.SetVarRequest, path
         )
@@ -161,9 +155,7 @@ class SettingsService:
 
     @_trace
     def get_var(self, path: str) -> Any:
-        """
-        Get the value for the given path
-        """
+        """Get the value for the given path."""
         request = _get_request_instance_for_path(
             SettingsModule.GetVarRequest, path
         )
@@ -172,9 +164,7 @@ class SettingsService:
 
     @_trace
     def rename(self, path: str, new: str, old: str):
-        """
-        Rename the object at the given path
-        """
+        """Rename the object at the given path."""
         request = _get_request_instance_for_path(
             SettingsModule.RenameRequest, path
         )
@@ -185,9 +175,7 @@ class SettingsService:
 
     @_trace
     def create(self, path: str, name: str):
-        """
-        Create a new named object child for the given path
-        """
+        """Create a new named object child for the given path."""
         request = _get_request_instance_for_path(
             SettingsModule.CreateRequest, path
         )
@@ -197,9 +185,7 @@ class SettingsService:
 
     @_trace
     def delete(self, path: str, name: str):
-        """
-        Delete the object with the given name at the give path
-        """
+        """Delete the object with the given name at the give path."""
         request = _get_request_instance_for_path(
             SettingsModule.DeleteRequest, path
         )
@@ -209,9 +195,7 @@ class SettingsService:
 
     @_trace
     def get_object_names(self, path: str) -> List[int]:
-        """
-        Get the list of named objects
-        """
+        """Get the list of named objects."""
         request = _get_request_instance_for_path(
             SettingsModule.GetObjectNamesRequest, path
         )
@@ -219,20 +203,15 @@ class SettingsService:
 
     @_trace
     def get_list_size(self, path: str) -> int:
-        """
-        Get the number of elements in a list object
-        """
+        """Get the number of elements in a list object."""
         request = _get_request_instance_for_path(
-                SettingsModule.GetListSizeRequest,
-                path)
-        return self.__stub.GetListSize(request,
-                metadata=self.__metadata).size
+            SettingsModule.GetListSizeRequest, path
+        )
+        return self.__stub.GetListSize(request, metadata=self.__metadata).size
 
     @_trace
     def resize_list_object(self, path: str, size: int):
-        """
-        Resize a list object
-        """
+        """Resize a list object."""
         request = _get_request_instance_for_path(
             SettingsModule.ResizeListObjectRequest, path
         )
@@ -311,9 +290,8 @@ class SettingsService:
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """
-        Execute a command of given name with the provided keyword arguments
-        """
+        """Execute a command of given name with the provided keyword
+        arguments."""
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteCommandRequest, path
         )
@@ -350,10 +328,8 @@ class SettingsService:
         return ret
 
     @_trace
-    def get_attrs(self, path: str, attrs: List[str], recursive = False) -> Any:
-        """
-        Return values of given attributes
-        """
+    def get_attrs(self, path: str, attrs: List[str], recursive=False) -> Any:
+        """Return values of given attributes."""
         request = _get_request_instance_for_path(
             SettingsModule.GetAttrsRequest, path
         )
@@ -361,6 +337,6 @@ class SettingsService:
         request.recursive = recursive
 
         response = self.__service_impl.get_attrs(request)
-        if(recursive):
+        if recursive:
             return self._parse_attrs(response)
         return self._get_state_from_value(response.values)

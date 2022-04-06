@@ -1,13 +1,13 @@
-import os
 from concurrent import futures
+import os
 
 import grpc
 import pytest
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
+from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.session import Session
-from ansys.fluent.core import launch_fluent
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):

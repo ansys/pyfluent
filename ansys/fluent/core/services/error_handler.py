@@ -6,9 +6,7 @@ from ansys.fluent.core.utils.logging import LOG
 
 
 def catch_grpc_error(f):
-    """
-    Decorator to catch gRPC errors
-    """
+    """Decorator to catch gRPC errors."""
 
     @functools.wraps(f)
     def func(*args, **kwargs):

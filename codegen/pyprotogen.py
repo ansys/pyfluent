@@ -1,19 +1,17 @@
-"""
-Builds *.py source interface files from *.protos files.
+"""Builds *.py source interface files from *.protos files.
 
 Usage
 -----
 
 `python codegen/pyprotogen.py`
-
 """
 
 import glob
 import os
+from pathlib import Path
 import re
 import shutil
 import sys
-from pathlib import Path
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 _PROTOS_PATH = os.path.abspath(
@@ -28,8 +26,8 @@ _PACKAGE_NAME = "ansys.api.fluent.v0"
 def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
     """Build the Python gRPC interface files.
 
-    Given a path containing the .proto files this function builds the .py
-    source interface files.
+    Given a path containing the .proto files this function builds the
+    .py source interface files.
     """
     # verify proto tools are installed
     try:

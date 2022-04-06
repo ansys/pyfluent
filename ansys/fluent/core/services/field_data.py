@@ -44,8 +44,7 @@ class FieldDataService:
 
 
 class FieldInfo:
-    """
-    Provides access to Fluent field info.
+    """Provides access to Fluent field info.
 
     Methods
     -------
@@ -61,7 +60,6 @@ class FieldInfo:
 
     get_surfaces_info(self) -> dict
         Get surfaces information i.e. surface name, id and type.
-
     """
 
     def __init__(self, service: FieldDataService):
@@ -119,8 +117,7 @@ class FieldInfo:
 
 
 class FieldData:
-    """
-    Provides access to Fluent field data on surfaces.
+    """Provides access to Fluent field data on surfaces.
 
     Methods
     -------
@@ -144,7 +141,6 @@ class FieldData:
     ) -> Dict[int, Dict]:
         Get vector field data i.e. surface data and associated
         scalar and vector field values.
-
     """
 
     # data mapping

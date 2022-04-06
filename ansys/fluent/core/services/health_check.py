@@ -10,14 +10,12 @@ from ansys.fluent.core.services.error_handler import catch_grpc_error
 
 
 class HealthCheckService:
-    """
-    Class wrapping the health check grpc service of Fluent.
+    """Class wrapping the health check grpc service of Fluent.
 
     Methods
     -------
     check_health
         Check health of Fluent connection
-
     """
 
     class Status(Enum):
@@ -32,8 +30,7 @@ class HealthCheckService:
 
     @catch_grpc_error
     def check_health(self) -> str:
-        """
-        Check health of Fluent connection
+        """Check health of Fluent connection.
 
         Returns
         -------

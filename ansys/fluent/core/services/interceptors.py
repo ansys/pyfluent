@@ -1,14 +1,14 @@
+"""Interceptor classes to use with gRPC services."""
 
-"""Interceptor classes to use with gRPC services"""
-
-import grpc
 from google.protobuf.json_format import MessageToDict
+import grpc
 
 from ansys.fluent.core.utils.logging import LOG
 
 
 class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
-    """Interceptor class to trace gRPC calls"""
+    """Interceptor class to trace gRPC calls."""
+
     def _intercept_call(
         self,
         continuation,
@@ -16,7 +16,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         request,
     ):
         LOG.debug(
-            "GRPC_TRACE: rpc = %s, resquest = %s",
+            "GRPC_TRACE: rpc = %s, request = %s",
             client_call_details.method,
             MessageToDict(request),
         )
