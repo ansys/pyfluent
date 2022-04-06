@@ -20,8 +20,15 @@ from ansys.fluent.post.post_windows_manager import (
 class PyVistaWindow(PostWindow):
     """Class for PyVista window."""
 
-    def __init__(self, id: str, post_object: Union[GraphicsDefn, PlotDefn]):
-        """Instantiate a PyVistaWindow.
+    def __init__(
+        self,
+        id: str,
+        post_object: Union[GraphicsDefn, PlotDefn],
+        *args,
+        **kwargs,
+    ):
+        """
+        Instantiate a PyVistaWindow.
 
         Parameters
         ----------
@@ -32,10 +39,12 @@ class PyVistaWindow(PostWindow):
         """
         self.post_object: Union[GraphicsDefn, PlotDefn] = post_object
         self.id: str = id
+        if "title" not in kwargs:
+            kwargs.update({"title": f"PyFluent ({self.id})"})
         self.plotter: Union[BackgroundPlotter, pv.Plotter] = (
-            pv.Plotter(title=f"PyFluent ({self.id})")
+            pv.Plotter(*args, **kwargs)
             if in_notebook() or get_config()["blocking"]
-            else BackgroundPlotter(title=f"PyFluent ({self.id})")
+            else BackgroundPlotter(*args, **kwargs)
         )
         self.animate: bool = False
         self.close: bool = False
@@ -44,7 +53,7 @@ class PyVistaWindow(PostWindow):
         self._visible: bool = False
         self._init_properties()
 
-    def plot(self):
+    def plot(self, *args, **kwargs):
         """Plot graphics."""
         if not self.post_object:
             return
@@ -65,7 +74,7 @@ class PyVistaWindow(PostWindow):
             plotter.write_frame()
         plotter.camera = camera.copy()
         if not self._visible:
-            plotter.show()
+            plotter.show(*args, **kwargs)
             self._visible = True
 
     # private methods
@@ -177,7 +186,6 @@ class PyVistaWindow(PostWindow):
         field = obj.field()
         range_option = obj.range.option()
         filled = obj.filled()
-        contour_lines = obj.contour_lines()
         node_values = obj.node_values()
         boundary_values = obj.boundary_values()
 
@@ -242,12 +250,13 @@ class PyVistaWindow(PostWindow):
                                     scalar_bar_args=scalar_bar_args,
                                 )
 
-                            if (not filled or contour_lines) and (
+                            if not filled and (
                                 np.min(minimum_above[field])
                                 != np.max(minimum_above[field])
                             ):
                                 plotter.add_mesh(
-                                    minimum_above.contour(isosurfaces=20)
+                                    minimum_above.contour(isosurfaces=20),
+                                    show_edges=obj.show_edges(),
                                 )
                 else:
                     if filled:
@@ -261,10 +270,13 @@ class PyVistaWindow(PostWindow):
                             show_edges=obj.show_edges(),
                             scalar_bar_args=scalar_bar_args,
                         )
-                    if (not filled or contour_lines) and (
+                    if not filled and (
                         np.min(mesh[field]) != np.max(mesh[field])
                     ):
-                        plotter.add_mesh(mesh.contour(isosurfaces=20))
+                        plotter.add_mesh(
+                            mesh.contour(isosurfaces=20),
+                            show_edges=obj.show_edges(),
+                        )
             else:
                 auto_range_on = obj.range.auto_range_on
                 if auto_range_on.global_range():
@@ -276,10 +288,13 @@ class PyVistaWindow(PostWindow):
                             show_edges=obj.show_edges(),
                             scalar_bar_args=scalar_bar_args,
                         )
-                    if (not filled or contour_lines) and (
+                    if not filled and (
                         np.min(mesh[field]) != np.max(mesh[field])
                     ):
-                        plotter.add_mesh(mesh.contour(isosurfaces=20))
+                        plotter.add_mesh(
+                            mesh.contour(isosurfaces=20),
+                            show_edges=obj.show_edges(),
+                        )
 
                 else:
                     if filled:
@@ -289,10 +304,13 @@ class PyVistaWindow(PostWindow):
                             show_edges=obj.show_edges(),
                             scalar_bar_args=scalar_bar_args,
                         )
-                    if (not filled or contour_lines) and (
+                    if not filled and (
                         np.min(mesh[field]) != np.max(mesh[field])
                     ):
-                        plotter.add_mesh(mesh.contour(isosurfaces=20))
+                        plotter.add_mesh(
+                            mesh.contour(isosurfaces=20),
+                            show_edges=obj.show_edges(),
+                        )
 
     def _display_iso_surface(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
@@ -365,7 +383,20 @@ class PyVistaWindow(PostWindow):
                 mesh, show_edges=obj.show_edges(), color="lightgrey"
             )
 
-    def _get_refresh_for_plotter(self, window: "PyVistaWindow"):
+
+class PyVistaBGWindow(PyVistaWindow):
+    """Class for PyVista background window."""
+
+    def __init__(
+        self,
+        id: str,
+        post_object: Union[GraphicsDefn, PlotDefn],
+        *args,
+        **kwargs,
+    ):
+        super().__init__(id, post_object, *args, **kwargs)
+
+    def _get_refresh_for_bg_plotter(self, window: "PyVistaBGWindow"):
         def refresh():
 
             with PyVistaWindowsManager._condition:
@@ -396,13 +427,15 @@ class PyVistaWindowsManager(
         """Instantiate WindowManager for PyVista."""
         self._post_windows: Dict[str:PyVistaWindow] = {}
         self._plotter_thread: threading.Thread = None
-        self._post_object: Union[GraphicsDefn, PlotDefn] = None
-        self._window_id: str = None
+        self._background_plotter_data: dict = None
         self._exit_thread: bool = False
         self._app = None
 
-    def open_window(self, window_id: Optional[str] = None) -> str:
-        """Open new window.
+    def open_window(
+        self, window_id: Optional[str] = None, *args, **kwargs
+    ) -> str:
+        """
+        Open new window.
 
         Parameters
         ----------
@@ -418,9 +451,14 @@ class PyVistaWindowsManager(
             if not window_id:
                 window_id = self._get_unique_window_id()
             if in_notebook() or get_config()["blocking"]:
-                self._open_window_notebook(window_id)
+                self._open_window_notebook(window_id, *args, **kwargs)
             else:
-                self._open_and_plot_console(None, window_id)
+                self._background_plotter_data = {
+                    "window_id": window_id,
+                    "args": args,
+                    "kwargs": kwargs,
+                }
+                self._open_and_plot_console()
             return window_id
 
     def set_object_for_window(
@@ -452,6 +490,8 @@ class PyVistaWindowsManager(
         self,
         object: Union[GraphicsDefn, PlotDefn],
         window_id: Optional[str] = None,
+        *args,
+        **kwargs,
     ) -> None:
         """Draw plot.
 
@@ -474,9 +514,15 @@ class PyVistaWindowsManager(
             if not window_id:
                 window_id = self._get_unique_window_id()
             if in_notebook() or get_config()["blocking"]:
-                self._plot_notebook(object, window_id)
+                self._plot_notebook(object, window_id, *args, **kwargs)
             else:
-                self._open_and_plot_console(object, window_id)
+                self._background_plotter_data = {
+                    "window_id": window_id,
+                    "post_object": object,
+                    "args": args,
+                    "kwargs": kwargs,
+                }
+                self._open_and_plot_console()
 
     def save_graphic(
         self,
@@ -506,6 +552,8 @@ class PyVistaWindowsManager(
         self,
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
+        *args,
+        **kwargs,
     ) -> None:
         """Refresh windows.
 
@@ -526,7 +574,7 @@ class PyVistaWindowsManager(
                 window = self._post_windows.get(window_id)
                 if window:
                     window.refresh = True
-                    self.plot(window.post_object, window.id)
+                    self.plot(window.post_object, window.id, *args, **kwargs)
 
     def animate_windows(
         self,
@@ -593,26 +641,45 @@ class PyVistaWindowsManager(
             with self._condition:
                 if self._exit_thread:
                     break
-                if self._window_id:
-                    window = self._post_windows.get(self._window_id)
+                if self._background_plotter_data:
+                    window_id = self._background_plotter_data.get("window_id")
+                    post_object = self._background_plotter_data.get(
+                        "post_object"
+                    )
+                    args = (
+                        self._background_plotter_data.get("args", ())
+                        if not post_object
+                        else ()
+                    )
+                    kwargs = (
+                        self._background_plotter_data.get("kwargs", {})
+                        if not post_object
+                        else {}
+                    )
+                    window = self._post_windows.get(window_id)
                     plotter = window.plotter if window else None
                     animate = window.animate if window else False
                     if not plotter or plotter._closed:
-                        window = PyVistaWindow(
-                            self._window_id, self._post_object
-                        )
+                        try:
+                            window = PyVistaBGWindow(
+                                window_id, post_object, *args, **kwargs
+                            )
+                        finally:
+                            PyVistaWindowsManager._condition.notify()
                         plotter = window.plotter
                         self._app = plotter.app
                         plotter.add_callback(
-                            window._get_refresh_for_plotter(window),
+                            window._get_refresh_for_bg_plotter(window),
                             100,
                         )
-                    window.post_object = self._post_object
+                    window.post_object = self._background_plotter_data.get(
+                        "post_object"
+                    )
                     window.animate = animate
                     window.update = True
-                    self._post_windows[self._window_id] = window
-                    self._post_object = None
-                    self._window_id = None
+                    self._post_windows[window.id] = window
+                    self._background_plotter_data = None
+
             self._app.processEvents()
         with self._condition:
             for window in self._post_windows.values():
@@ -622,12 +689,9 @@ class PyVistaWindowsManager(
             self._post_windows.clear()
             self._condition.notify()
 
-    def _open_and_plot_console(self, obj: object, window_id: str) -> None:
+    def _open_and_plot_console(self) -> None:
         if self._exit_thread:
             return
-        with self._condition:
-            self._window_id = window_id
-            self._post_object = obj
 
         if not self._plotter_thread:
             if Session._monitor_thread:
@@ -640,21 +704,25 @@ class PyVistaWindowsManager(
         with self._condition:
             self._condition.wait()
 
-    def _open_window_notebook(self, window_id: str) -> pv.Plotter:
+    def _open_window_notebook(
+        self, window_id: str, *args, **kwargs
+    ) -> PyVistaWindow:
         window = self._post_windows.get(window_id)
         plotter = None
         if window and not window.close and window.refresh:
             window.refresh = False
         else:
-            window = PyVistaWindow(window_id, None)
+            window = PyVistaWindow(window_id, None, *args, **kwargs)
             self._post_windows[window_id] = window
         return window
 
-    def _plot_notebook(self, obj: object, window_id: str) -> None:
+    def _plot_notebook(
+        self, obj: object, window_id: str, *args, **kwargs
+    ) -> None:
         window = self._open_window_notebook(window_id)
         window.post_object = obj
         plotter = window.plotter
-        window.plot()
+        window.plot(*args, **kwargs)
 
     def _get_windows_id(
         self,

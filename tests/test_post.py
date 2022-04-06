@@ -1,11 +1,15 @@
 from pathlib import Path
 import pickle
 from typing import Dict, List, Optional
-
+from pathlib import Path
 import pytest
-
-from ansys.fluent.post.matplotlib import Plots
+import pyvista as pv
 from ansys.fluent.post.pyvista import Graphics
+from ansys.fluent.post.matplotlib import Plots
+from ansys.fluent.post.pyvista.pyvista_windows_manager import (  # noqa: F401
+    pyvista_windows_manager,
+)
+from ansys.fluent.post import set_config
 
 
 @pytest.fixture(autouse=True)
@@ -152,17 +156,23 @@ def test_contour_object():
     contour1 = pyvista_graphics.Contours["contour-1"]
     field_info = contour1._data_extractor.field_info()
 
+    # Surfaces allowed values should be all surfaces.
     assert contour1.surfaces_list.allowed_values == list(
         field_info.get_surfaces_info().keys()
     )
 
+    # Invalid surface should raise exception.
     with pytest.raises(ValueError) as value_error:
         contour1.surfaces_list = "surface_does_not_exist"
 
+    # Invalid surface should raise exception.
     with pytest.raises(ValueError) as value_error:
         contour1.surfaces_list = ["surface_does_not_exist"]
+
+    # Should accept all valid surface.
     contour1.surfaces_list = contour1.surfaces_list.allowed_values
 
+    # Field allowed values should be all fields.
     assert contour1.field.allowed_values == [
         v["solver_name"] for k, v in field_info.get_fields_info().items()
     ]
@@ -170,12 +180,25 @@ def test_contour_object():
     # Important. Because there is no type checking so following passes.
     contour1.field = [contour1.field.allowed_values[0]]
 
+    # Should accept all valid fields.
     contour1.field = contour1.field.allowed_values[0]
+
+    # Invalid field should raise exception.
     with pytest.raises(ValueError) as value_error:
         contour1.field = "field_does_not_exist"
 
     # Important. Because there is no type checking so following passes.
     contour1.node_values = "value should be boolean"
+
+    # changing filled to False or setting clip_to_range should set node_value
+    # to True.
+    contour1.node_values = False
+    assert contour1.node_values() == False
+    contour1.filled = False
+    assert contour1.node_values() == True
+    contour1.node_values = False
+    assert contour1.node_values() == True
+    contour1.filled = True
 
     contour1.range.option = "auto-range-on"
     assert contour1.range.auto_range_off is None
@@ -183,6 +206,7 @@ def test_contour_object():
     contour1.range.option = "auto-range-off"
     assert contour1.range.auto_range_on is None
 
+    # Range should adjust to min/max of node field values.
     contour1.node_values = True
     contour1.field = "temperature"
     surfaces_id = [
@@ -197,6 +221,7 @@ def test_contour_object():
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
+    # Range should adjust to min/max of cell field values.
     contour1.node_values = False
     range = field_info.get_range(
         contour1.field(), contour1.node_values(), surfaces_id
@@ -204,6 +229,7 @@ def test_contour_object():
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
+    # Range should adjust to min/max of node field values
     contour1.field = "pressure"
     range = field_info.get_range(
         contour1.field(), contour1.node_values(), surfaces_id
@@ -338,3 +364,62 @@ def test_xyplot_object():
 
     with pytest.raises(ValueError) as value_error:
         p1.y_axis_function = "field_does_not_exist"
+
+
+def test_compare_graphics_images(tmp_path):
+
+    tmp_graphics_dir = tmp_path.joinpath("graphics")
+    tmp_graphics_dir.mkdir()
+    test_dir = Path("tests")
+
+    set_config(blocking=True)
+    pyvista_graphics = Graphics(session=None)
+    contour1 = pyvista_graphics.Contours["contour-1"]
+    contour1.field = "temperature"
+    contour1.surfaces_list = ["symmetry"]
+
+    def compare_image(image):
+        tmp_image_path = tmp_graphics_dir.joinpath(image).resolve()
+        saved_image_path = test_dir.joinpath(image).resolve()
+        pyvista_windows_manager.open_window("w1", off_screen=True)
+        pyvista_windows_manager.set_object_for_window(contour1, "w1")
+        pyvista_windows_manager.refresh_windows(
+            "", ["w1"], screenshot=tmp_image_path
+        )
+        im1 = pv.read(tmp_image_path)
+        im2 = pv.read(saved_image_path)
+        assert pv.compare_images(im1, im2) == pytest.approx(0.0)
+
+    # default graphics
+    image = "contour.png"
+    compare_image(image)
+
+    # Show edges
+    contour1.show_edges = True
+    image = "contour_edges.png"
+    compare_image(image)
+
+    # Node value
+    contour1.show_edges = False
+    contour1.node_values = False
+    image = "contour_node_off.png"
+    compare_image(image)
+
+    # Contour lines
+    contour1.filled = False
+    image = "contour_lines.png"
+    compare_image(image)
+
+    # auto-range-off
+    contour1.filled = True
+    contour1.range.option = "auto-range-off"
+    contour1.range.auto_range_off.minimum = 300
+    contour1.range.auto_range_off.maximum = 305
+    image = "contour_auto_range_off.png"
+    compare_image(image)
+
+    # auto-range-clip
+    contour1.filled = True
+    contour1.range.auto_range_off.clip_to_range = True
+    image = "contour_auto_range_off_clip.png"
+    compare_image(image)

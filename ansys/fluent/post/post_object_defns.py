@@ -292,15 +292,27 @@ class ContourDefn(GraphicsDefn):
     class node_values(metaclass=PyLocalPropertyMeta):
         """Show nodal data."""
 
-        value: bool = True
+        _value: bool = True
+
+        @property
+        def value(self):
+            """Node value property setter."""
+            filled = self._get_parent_by_type(ContourDefn).filled()
+            auto_range_off = self._get_parent_by_type(
+                ContourDefn
+            ).range.auto_range_off
+            if not filled or (
+                auto_range_off and auto_range_off.clip_to_range()
+            ):
+                self._value = True
+            return self._value
+
+        @value.setter
+        def value(self, value):
+            self._value = value
 
     class boundary_values(metaclass=PyLocalPropertyMeta):
         """Show boundary values."""
-
-        value: bool = False
-
-    class contour_lines(metaclass=PyLocalPropertyMeta):
-        """Show contour lines."""
 
         value: bool = False
 
