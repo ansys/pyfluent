@@ -4,8 +4,10 @@ import multiprocessing as mp
 from typing import List, Optional, Union
 
 import numpy as np
+
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
+from ansys.fluent.post import get_config
 from ansys.fluent.post.matplotlib.plotter_defns import Plotter, ProcessPlotter
 from ansys.fluent.post.post_object_defns import GraphicsDefn, PlotDefn
 from ansys.fluent.post.post_windows_manager import (
@@ -39,6 +41,9 @@ class _ProcessPlotterHandle:
 
     def set_properties(self, properties):
         self.plot_pipe.send({"properties": properties})
+
+    def save_graphic(self, name: str):
+        self.plot_pipe.send({"save_graphic": name})
 
     def is_closed(self):
         if self._closed:
@@ -82,15 +87,13 @@ class MatplotWindow(PostWindow):
         self.animate: bool = False
         self.close: bool = False
         self.refresh: bool = False
-        if in_notebook():
-            self.plotter()
 
     def plot(self):
         """Draw plot."""
         if not self.post_object:
             return
         xy_data = self._get_xy_plot_data()
-        if in_notebook():
+        if in_notebook() or get_config()["blocking"]:
             self.plotter.set_properties(self.properties)
         else:
             try:
@@ -106,7 +109,7 @@ class MatplotWindow(PostWindow):
     def _get_plotter(self):
         return (
             Plotter(self.id)
-            if in_notebook()
+            if in_notebook() or get_config()["blocking"]
             else _ProcessPlotterHandle(self.id)
         )
 
@@ -244,6 +247,31 @@ class MatplotWindowsManager(
         window.post_object = object
         window.plot()
 
+    def save_graphic(
+        self,
+        window_id: str,
+        format: str,
+    ) -> None:
+        """
+        Save graphics.
+
+        Parameters
+        ----------
+        window_id : str
+            Window id for which graphic should be saved.
+        format : str
+            Graphic format. Supported formats are eps, jpeg, jpg,
+            pdf, pgf, png, ps, raw, rgba, svg, svgz, tif and tiff.
+
+        Raises
+        ------
+        ValueError
+            If window does not support specified format.
+        """
+        window = self._post_windows.get(window_id)
+        if window:
+            window.plotter.save_graphic(f"{window_id}.{format}")
+
     def refresh_windows(
         self,
         session_id: Optional[str] = "",
@@ -332,7 +360,10 @@ class MatplotWindowsManager(
         if (
             window
             and not window.plotter.is_closed()
-            and (not in_notebook() or window.refresh)
+            and (
+                not (in_notebook() or get_config()["blocking"])
+                or window.refresh
+            )
         ):
             window.refresh = False
         else:

@@ -84,6 +84,29 @@ class PostWindowsManager(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def save_graphic(
+        self,
+        window_id: str,
+        format: str,
+    ) -> None:
+        """
+        Save graphics.
+
+        Parameters
+        ----------
+        window_id : str
+            Window id for which graphic should be saved.
+        format : str
+            Graphic format.
+
+        Raises
+        ------
+        ValueError
+            If window does not support specified format.
+        """
+        pass
+
+    @abstractmethod
     def refresh_windows(
         self,
         session_id: Optional[str] = "",

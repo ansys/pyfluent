@@ -50,6 +50,7 @@ class Plotter:
         self._max_x = None
         self._data = {}
         self._closed = False
+        self._visible = False
         if not remote_process:
             self.fig = plt.figure(num=self._window_id)
             self.ax = self.fig.add_subplot(111)
@@ -98,6 +99,9 @@ class Plotter:
         self.ax.set_ylim(
             self._min_y - y_range * 0.2, self._max_y + y_range * 0.2
         )
+        if not self._visible:
+            self._visible = True
+            plt.show()
 
     def close(self):
         """Close window."""
@@ -107,6 +111,17 @@ class Plotter:
     def is_closed(self):
         """Check if window is closed."""
         return self._closed
+
+    def save_graphic(self, file_name: str):
+        """
+        Save graphics.
+
+        Parameters
+        ----------
+        file_name : str
+            File name to save graphic.
+        """
+        plt.savefig(file_name)
 
     def set_properties(self, properties: dict):
         """
@@ -131,6 +146,7 @@ class Plotter:
     def __call__(self):
         """Reset and show plot."""
         self._reset()
+        self._visible = True
         plt.show()
 
     # private methods
@@ -193,6 +209,9 @@ class ProcessPlotter(Plotter):
                     if "properties" in data:
                         properties = data["properties"]
                         self.set_properties(properties)
+                    elif "save_graphic" in data:
+                        name = data["save_graphic"]
+                        self.save_graphic(name)
                     else:
                         self.plot(data)
             self.fig.canvas.draw()
@@ -209,4 +228,5 @@ class ProcessPlotter(Plotter):
         timer = self.fig.canvas.new_timer(interval=10)
         timer.add_callback(self._call_back)
         timer.start()
+        self._visible = True
         plt.show()

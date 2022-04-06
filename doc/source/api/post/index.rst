@@ -70,8 +70,8 @@ environment and PyVista is used to visualze the extracted data.
       print(name)
 
   # iso surface
-  surface1.surface_type.iso_surface.field= "velocity-magnitude"
-  surface1.surface_type.iso_surface.rendering= "contour"
+  surface1.surface.iso_surface.field= "velocity-magnitude"
+  surface1.surface.iso_surface.rendering= "contour"
 
   # display 
   contour1.display()
@@ -90,13 +90,13 @@ environment and data is plotted in MatplotLib.
 .. code:: python
 
   # import module
-  from ansys.fluent.post.matplotlib import XYPlots
+  from ansys.fluent.post.matplotlib import Plots
 
-  # get the xyplots object for the session
-  xyplots_session1 = XYPlots(session)
+  # get the plots object for the session
+  plots_session1 = Plots(session)
   
-  #get plot object
-  plot1=xyplots_session1["plot-1"]
+  #get xyplot object
+  plot1=plots_session1.XYPlots["plot-1"]
   
   #set properties
   plot1.surfaces_list = ["symmetry"]

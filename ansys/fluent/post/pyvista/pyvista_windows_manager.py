@@ -9,6 +9,7 @@ import pyvista as pv
 
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
+from ansys.fluent.post import get_config
 from ansys.fluent.post.post_object_defns import GraphicsDefn, PlotDefn
 from ansys.fluent.post.post_windows_manager import (
     PostWindow,
@@ -33,16 +34,16 @@ class PyVistaWindow(PostWindow):
         self.post_object: Union[GraphicsDefn, PlotDefn] = post_object
         self.id: str = id
         self.plotter: Union[BackgroundPlotter, pv.Plotter] = (
-            pv.Plotter()
-            if in_notebook()
+            pv.Plotter(title=f"PyFluent ({self.id})")
+            if in_notebook() or get_config()["blocking"]
             else BackgroundPlotter(title=f"PyFluent ({self.id})")
         )
         self.animate: bool = False
         self.close: bool = False
         self.refresh: bool = False
         self.update: bool = False
+        self._visible: bool = False
         self._init_properties()
-        self.plotter.show()
 
     def plot(self):
         """Plot graphics."""
@@ -64,6 +65,9 @@ class PyVistaWindow(PostWindow):
         if self.animate:
             plotter.write_frame()
         plotter.camera = camera.copy()
+        if not self._visible:
+            plotter.show()
+            self._visible = True
 
     # private methods
 
@@ -415,7 +419,7 @@ class PyVistaWindowsManager(
         with self._condition:
             if not window_id:
                 window_id = self._get_unique_window_id()
-            if in_notebook():
+            if in_notebook() or get_config()["blocking"]:
                 self._open_window_notebook(window_id)
             else:
                 self._open_and_plot_console(None, window_id)
@@ -473,10 +477,35 @@ class PyVistaWindowsManager(
         with self._condition:
             if not window_id:
                 window_id = self._get_unique_window_id()
-            if in_notebook():
+            if in_notebook() or get_config()["blocking"]:
                 self._plot_notebook(object, window_id)
             else:
                 self._open_and_plot_console(object, window_id)
+
+    def save_graphic(
+        self,
+        window_id: str,
+        format: str,
+    ) -> None:
+        """
+        Save graphics.
+
+        Parameters
+        ----------
+        window_id : str
+            Window id for which graphic should be saved.
+        format : str
+            Graphic format. Supported formats are svg, eps, ps, pdf and tex.
+
+        Raises
+        ------
+        ValueError
+            If window does not support specified format.
+        """
+        with self._condition:
+            window = self._post_windows.get(window_id)
+            if window:
+                window.plotter.save_graphic(f"{window_id}.{format}")
 
     def refresh_windows(
         self,
@@ -561,7 +590,7 @@ class PyVistaWindowsManager(
             for window_id in windows_id:
                 window = self._post_windows.get(window_id)
                 if window:
-                    if in_notebook():
+                    if in_notebook() or get_config()["blocking"]:
                         window.plotter.close()
                     window.close = True
 

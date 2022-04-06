@@ -84,5 +84,4 @@ if installed_libraries:
 
 if import_errors:
     raise ImportError("\n".join(import_errors))
-
-import ansys.fluent.post.pyvista as pyvista  # noqa: F401
+from ansys.fluent.post._config import get_config, set_config  # noqa: F401
