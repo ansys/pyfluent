@@ -49,17 +49,17 @@ repos:
       --skip, "ansys/api/fluent/v0/*,ansys/fluent/core/meshing/tui.py,ansys/fluent/core/solver/tui.py,ansys/fluent/core/solver/settings.py",
     ]
 
-- repo: https://github.com/pycqa/pydocstyle
-  rev: 6.1.1
-  hooks:
-  - id: pydocstyle
-    additional_dependencies: [toml]
-    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py)
-    args: [
-      # Error codes: http://www.pydocstyle.org/en/stable/error_codes.html
-      --ignore, "D107,D105,D4",
-      --count,
-    ]
+#- repo: https://github.com/pycqa/pydocstyle
+#  rev: 6.1.1
+#  hooks:
+#  - id: pydocstyle
+#    additional_dependencies: [toml]
+#    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py)
+#    args: [
+#      # Error codes: http://www.pydocstyle.org/en/stable/error_codes.html
+#      --ignore, "D107,D105,D4",
+#      --count,
+#    ]
 
 - repo: https://github.com/myint/docformatter
   rev: v1.3.1
