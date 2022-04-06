@@ -75,11 +75,16 @@ session.part_management.InputFileChanged(
 session.PMFileManagement.FileManager.LoadFiles()
 session.part_management.Node["Meshing Model"].Copy(
     Paths=[
-        "/dirty_manifold-for-wrapper,1/dirty_manifold-for-wrapper,1/main,1",
-        "/dirty_manifold-for-wrapper,1/dirty_manifold-for-wrapper,1/flow-pipe,1",
-        "/dirty_manifold-for-wrapper,1/dirty_manifold-for-wrapper,1/outpipe3,1",
-        "/dirty_manifold-for-wrapper,1/dirty_manifold-for-wrapper,1/object2,1",
-        "/dirty_manifold-for-wrapper,1/dirty_manifold-for-wrapper,1/object1,1",
+        "/dirty_manifold-for-wrapper,1/
+        dirty_manifold-for-wrapper,1/main,1",
+        "/dirty_manifold-for-wrapper,1/
+        dirty_manifold-for-wrapper,1/flow-pipe,1",
+        "/dirty_manifold-for-wrapper,1/
+        dirty_manifold-for-wrapper,1/outpipe3,1",
+        "/dirty_manifold-for-wrapper,1/
+        dirty_manifold-for-wrapper,1/object2,1",
+        "/dirty_manifold-for-wrapper,1/
+        dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
 session.part_management.ObjectSetting[
