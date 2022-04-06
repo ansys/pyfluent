@@ -71,16 +71,16 @@ session.part_management.InputFileChanged(
 session.PMFileManagement.FileManager.LoadFiles()
 session.part_management.Node["Meshing Model"].Copy(
     Paths=[
-        "/dirty_manifold-for-wrapper,1/
-        dirty_manifold-for-wrapper,1/main,1",
-        "/dirty_manifold-for-wrapper,1/
-        dirty_manifold-for-wrapper,1/flow-pipe,1",
-        "/dirty_manifold-for-wrapper,1/
-        dirty_manifold-for-wrapper,1/outpipe3,1",
-        "/dirty_manifold-for-wrapper,1/
-        dirty_manifold-for-wrapper,1/object2,1",
-        "/dirty_manifold-for-wrapper,1/
-        dirty_manifold-for-wrapper,1/object1,1",
+        "/dirty_manifold-for-wrapper," +
+        "1/dirty_manifold-for-wrapper,1/main,1",
+        "/dirty_manifold-for-wrapper," +
+        "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
+        "/dirty_manifold-for-wrapper," +
+        "1/dirty_manifold-for-wrapper,1/outpipe3,1",
+        "/dirty_manifold-for-wrapper," +
+        "1/dirty_manifold-for-wrapper,1/object2,1",
+        "/dirty_manifold-for-wrapper," +
+        "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
 session.part_management.ObjectSetting[
@@ -430,42 +430,10 @@ session.workflow.TaskObject["leakage-1"].Execute()
 
 session.workflow.TaskObject["Update Region Settings"].Arguments.setState(
     {
-        "AllRegionFilterCategories": [
-            "2",
-            "2",
-            "2",
-            "2",
-            "2",
-            "1",
-            "1",
-        ],
-        "AllRegionLeakageSizeList": [
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "6.4",
-            "none",
-        ],
-        "AllRegionLinkedConstructionSurfaceList": [
-            "n/a",
-            "n/a",
-            "n/a",
-            "n/a",
-            "n/a",
-            "n/a",
-            "no",
-        ],
-        "AllRegionMeshMethodList": [
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "wrap",
-        ],
+        "AllRegionFilterCategories": ["2"] * 5 + ["1"] * 2,
+        "AllRegionLeakageSizeList": ["none"] * 6 + ["6.4"],
+        "AllRegionLinkedConstructionSurfaceList": ["n/a"] * 6 + ["no"],
+        "AllRegionMeshMethodList": ["none"] * 6 + ["wrap"],
         "AllRegionNameList": [
             "main",
             "flow_pipe",
@@ -475,42 +443,10 @@ session.workflow.TaskObject["Update Region Settings"].Arguments.setState(
             "void-region-1",
             "fluid-region-1",
         ],
-        "AllRegionOversetComponenList": [
-            "no",
-            "no",
-            "no",
-            "no",
-            "no",
-            "no",
-            "no",
-        ],
-        "AllRegionSourceList": [
-            "object",
-            "object",
-            "object",
-            "object",
-            "object",
-            "mpt",
-            "mpt",
-        ],
-        "AllRegionTypeList": [
-            "void",
-            "void",
-            "void",
-            "void",
-            "void",
-            "void",
-            "fluid",
-        ],
-        "AllRegionVolumeFillList": [
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "tet",
-        ],
+        "AllRegionOversetComponenList": ["no"] * 7,
+        "AllRegionSourceList": ["object"] * 5 + ["mpt"] * 2,
+        "AllRegionTypeList": ["void"] * 6 + ["fluid"],
+        "AllRegionVolumeFillList": ["none"] * 6 + ["tet"],
         "FilterCategory": "Identified Regions",
         "OldRegionLeakageSizeList": [""],
         "OldRegionMeshMethodList": ["wrap"],
@@ -574,24 +510,8 @@ session.workflow.TaskObject["Generate the Volume Mesh"].Arguments.setState(
             "void-region-1",
             "fluid-region-1",
         ],
-        "AllRegionSizeList": [
-            "11.33375",
-            "11.33375",
-            "11.33375",
-            "11.33375",
-            "11.33375",
-            "11.33375",
-            "11.33375",
-        ],
-        "AllRegionVolumeFillList": [
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "none",
-            "tet",
-        ],
+        "AllRegionSizeList": ["11.33375"] * 7,
+        "AllRegionVolumeFillList": ["none"] * 6 + ["tet"],
         "EnableParallel": True,
     }
 )
