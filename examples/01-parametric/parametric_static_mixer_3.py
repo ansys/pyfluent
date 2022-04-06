@@ -1,5 +1,4 @@
-"""
-.. _ref_parametric_static_mixer_3:
+""".. _ref_parametric_static_mixer_3:
 
 Parametric Session Workflow
 ----------------------------------------------
@@ -11,21 +10,20 @@ This example for executing a parametric session workflow performs these steps:
 - Creates a new study in a parametric session
 - Renames this newly created study
 - Creates a new parametric session using the flprj saved earlier
-
-
 """
 
 #########################################################################
 # Parametric session workflow
 # Import the parametric session workflow
 
+from pathlib import Path
+
+import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricSession
 
 ############################################################################
 # Import the pyfluent module and path
 
-import ansys.fluent.core as pyfluent
-from pathlib import Path
 
 #########################################################################
 # Launch parametric session using the hopper/mixer case File

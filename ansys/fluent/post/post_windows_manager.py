@@ -86,8 +86,7 @@ class PostWindowsManager(metaclass=ABCMeta):
         window_id: str,
         format: str,
     ) -> None:
-        """
-        Save graphics.
+        """Save graphics.
 
         Parameters
         ----------

@@ -112,8 +112,7 @@ class Plotter:
         return self._closed
 
     def save_graphic(self, file_name: str):
-        """
-        Save graphics.
+        """Save graphics.
 
         Parameters
         ----------
