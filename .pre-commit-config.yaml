@@ -5,7 +5,8 @@ repos:
   hooks:
   - id: black
     args: [
-      --line-length, "100",
+      --line-length, "79",
+      --force-exclude, ansys/api/fluent/v0/|ansys/fluent/core/meshing/tui.py|ansys/fluent/core/solver/tui.py|ansys/fluent/core/solver/settings.py,
       ansys, codegen, doc, examples, tests
     ]
 
@@ -13,21 +14,29 @@ repos:
   rev: 5.10.1
   hooks:
   - id: isort
-    exclude: ^src/ansys/templates/pypkg/
     args: [
       --profile, black,
+      --skip, ansys/fluent/core/meshing/tui.py,
+      --skip, ansys/fluent/core/solver/tui.py,
+      --skip, ansys/fluent/core/solver/settings.py,
+      --skip-glob, ansys/api/fluent/v0/*,
       --force-sort-within-sections,
-      --line-length, "100",
+      --line-length, "79",
       --section-default, THIRDPARTY, 
       --filter-files,
       ansys, codegen, doc, examples, tests
     ]
 
-- repo: https://gitlab.com/PyCQA/flake8
+- repo: https://github.com/PyCQA/flake8
   rev: 4.0.1
   hooks:
   - id: flake8
     args: [
+      --exclude, ansys/api/fluent/v0/* ansys/fluent/core/meshing/tui.py ansys/fluent/core/solver/tui.py ansys/fluent/core/solver/settings.py,
+      --select, W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 E501 F401 F403 N801 N802 N803 N804 N805 N806,
+      --count,
+      --statistics,
+      --max-complexity, "10",
       ansys, codegen, doc, examples, tests
     ]
 
@@ -35,9 +44,23 @@ repos:
   rev: v2.1.0
   hooks:
   - id: codespell
+    args: [
+      --skip, "ansys/api/fluent/v0/*,ansys/fluent/core/meshing/tui.py,ansys/fluent/core/solver/tui.py,ansys/fluent/core/solver/settings.py",
+    ]
 
 - repo: https://github.com/pycqa/pydocstyle
   rev: 6.1.1
   hooks:
   - id: pydocstyle
     additional_dependencies: [toml]
+    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py)
+    args: [
+      --ignore, D105,
+    ]
+
+- repo: https://github.com/myint/docformatter
+  rev: v1.3.1
+  hooks:
+  - id: docformatter
+    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py)
+    args: [--in-place]
