@@ -67,3 +67,11 @@ repos:
 #      --ignore, "D107,D105,D4",
 #      --count,
 #    ]
+
+- repo: local
+  hooks:
+    - id: last-commit-info
+      name: last-commit-info
+      entry: bash -c '$GITHUB_LASTSHA > .last-commit-info'
+      language: script
+      types: [manual]
