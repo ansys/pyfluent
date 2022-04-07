@@ -74,4 +74,4 @@ repos:
       name: last-commit-info
       entry: bash -c '$GITHUB_LASTSHA > .last-commit-info'
       language: script
-      types: [manual]
+      stages: [manual]
