@@ -10,7 +10,6 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
-from ansys.fluent.core.utils.async_execution import asynchronous
 
 Path = List[Tuple[str, str]]
 
@@ -550,7 +549,6 @@ class PyCommand:
         else:
             self.path = path
 
-    @asynchronous
     def __call__(self, *args, **kwds) -> Any:
         """Executes the command.
 

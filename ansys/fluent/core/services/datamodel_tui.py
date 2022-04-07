@@ -9,7 +9,6 @@ from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
-from ansys.fluent.core.utils.async_execution import asynchronous
 
 Path = List[Tuple[str, str]]
 
@@ -220,7 +219,6 @@ class PyMenu:
         _convert_value_to_gvalue(value, request.state)
         self._service.set_state(request)
 
-    @asynchronous
     def _execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> Any:
