@@ -68,8 +68,7 @@ class MatplotWindow(PostWindow):
     """Class for MatplotWindow."""
 
     def __init__(self, id: str, post_object: Union[GraphicsDefn, PlotDefn]):
-        """
-        Instantiate a MatplotWindow.
+        """Instantiate a MatplotWindow.
 
         Parameters
         ----------
@@ -175,8 +174,7 @@ class MatplotWindowsManager(
         self._post_windows: Dict[str, MatplotWindow] = {}
 
     def open_window(self, window_id: Optional[str] = None) -> str:
-        """
-        Open new window.
+        """Open new window.
 
         Parameters
         ----------
@@ -196,8 +194,7 @@ class MatplotWindowsManager(
     def set_object_for_window(
         self, object: Union[PlotDefn, GraphicsDefn], window_id: str
     ) -> None:
-        """
-        Associate post object with running window instance.
+        """Associate post object with running window instance.
 
         Parameters
         ----------
@@ -223,8 +220,7 @@ class MatplotWindowsManager(
         object: Union[PlotDefn, GraphicsDefn],
         window_id: Optional[str] = None,
     ) -> None:
-        """
-        Draw plot.
+        """Draw plot.
 
         Parameters
         ----------
@@ -252,8 +248,7 @@ class MatplotWindowsManager(
         window_id: str,
         format: str,
     ) -> None:
-        """
-        Save graphics.
+        """Save graphics.
 
         Parameters
         ----------
@@ -277,8 +272,7 @@ class MatplotWindowsManager(
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Refresh windows.
+        """Refresh windows.
 
         Parameters
         ----------
@@ -303,8 +297,7 @@ class MatplotWindowsManager(
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Animate windows.
+        """Animate windows.
 
         Parameters
         ----------
@@ -329,8 +322,7 @@ class MatplotWindowsManager(
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Close windows.
+        """Close windows.
 
         Parameters
         ----------

@@ -1,5 +1,4 @@
-"""
-.. _ref_parametric_static_mixer_1:
+""".. _ref_parametric_static_mixer_1:
 
 Parametric Study Workflow
 ------------------------------
@@ -15,16 +14,15 @@ performs these steps:
 - Accesses output parameters of the base DP
 - Creates, updates, and deletes more DPs
 - Creates, renames, and deletes parametric studies
-
 """
-
-############################################################################
-# Import the pyfluent module
-import ansys.fluent.core as pyfluent
 
 ############################################################################
 # Import the path module
 from pathlib import Path
+
+############################################################################
+# Import the pyfluent module
+import ansys.fluent.core as pyfluent
 
 ############################################################################
 # Launch Fluent in 3D and double precision

@@ -22,8 +22,7 @@ class Graphics:
     _sessions_state = {}
 
     def __init__(self, session, local_surfaces_provider=None):
-        """
-        Instantiate Graphics, containter of graphics objects.
+        """Instantiate Graphics, container of graphics objects.
 
         Parameters
         ----------
@@ -65,8 +64,7 @@ class Mesh(MeshDefn):
     """Mesh graphics."""
 
     def display(self, window_id: Optional[str] = None):
-        """
-        Display mesh graphics.
+        """Display mesh graphics.
 
         Parameters
         ----------
@@ -82,8 +80,7 @@ class Surface(SurfaceDefn):
     """Surface graphics."""
 
     def display(self, window_id: Optional[str] = None):
-        """
-        Display surface graphics.
+        """Display surface graphics.
 
         Parameters
         ----------
@@ -97,8 +94,7 @@ class Contour(ContourDefn):
     """Contour graphics."""
 
     def display(self, window_id: Optional[str] = None):
-        """
-        Display contour graphics.
+        """Display contour graphics.
 
         Parameters
         ----------
@@ -114,8 +110,7 @@ class Vector(VectorDefn):
     """Vector graphics."""
 
     def display(self, window_id: Optional[str] = None):
-        """
-        Display vector graphics.
+        """Display vector graphics.
 
         Parameters
         ----------

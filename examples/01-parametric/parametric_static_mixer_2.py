@@ -1,5 +1,4 @@
-"""
-.. _ref_parametric_static_mixer_2:
+""".. _ref_parametric_static_mixer_2:
 
 Parametric Project-Based Workflow
 ----------------------------------------------------
@@ -13,8 +12,6 @@ performs these steps:
 - Exports the current project
 - Archives the current project
 - Exits the parametric project-based workflow
-
-
 """
 
 #########################################################################
@@ -23,13 +20,14 @@ performs these steps:
 #########################################################################
 # Import the parametric project module and the parametric study module
 
+from pathlib import Path
+
+import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricProject
 
 ############################################################################
 # Import the pyfluent module and path
 
-import ansys.fluent.core as pyfluent
-from pathlib import Path
 
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)

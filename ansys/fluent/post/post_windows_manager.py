@@ -1,10 +1,10 @@
-"""
-Module providing PostWindow and PostWindowManager abstract classes.
+"""Module providing PostWindow and PostWindowManager abstract classes.
 
-PostWindowManager is containter for PostWindow.
+PostWindowManager is container for PostWindow.
 """
-from abc import abstractmethod, ABCMeta
+from abc import ABCMeta, abstractmethod
 from typing import List, Optional, Union
+
 from ansys.fluent.post.post_object_defns import GraphicsDefn, PlotDefn
 
 
@@ -22,8 +22,7 @@ class PostWindowsManager(metaclass=ABCMeta):
 
     @abstractmethod
     def open_window(self, window_id: Optional[str] = None) -> str:
-        """
-        Open new window.
+        """Open new window.
 
         Parameters
         ----------
@@ -41,8 +40,7 @@ class PostWindowsManager(metaclass=ABCMeta):
     def set_object_for_window(
         self, object: Union[GraphicsDefn, PlotDefn], window_id: str
     ) -> None:
-        """
-        Associate post object with running window instance.
+        """Associate post object with running window instance.
 
         Parameters
         ----------
@@ -65,8 +63,7 @@ class PostWindowsManager(metaclass=ABCMeta):
         object: Union[GraphicsDefn, PlotDefn],
         window_id: Optional[str] = None,
     ) -> None:
-        """
-        Draw plot.
+        """Draw plot.
 
         Parameters
         ----------
@@ -89,8 +86,7 @@ class PostWindowsManager(metaclass=ABCMeta):
         window_id: str,
         format: str,
     ) -> None:
-        """
-        Save graphics.
+        """Save graphics.
 
         Parameters
         ----------
@@ -112,8 +108,7 @@ class PostWindowsManager(metaclass=ABCMeta):
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Refresh windows.
+        """Refresh windows.
 
         Parameters
         ----------
@@ -134,8 +129,7 @@ class PostWindowsManager(metaclass=ABCMeta):
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Animate windows.
+        """Animate windows.
 
         Parameters
         ----------
@@ -161,8 +155,7 @@ class PostWindowsManager(metaclass=ABCMeta):
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Close windows.
+        """Close windows.
 
         Parameters
         ----------

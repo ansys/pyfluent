@@ -1,4 +1,4 @@
-"""Setup file for ansys-fluent-solver"""
+"""Setup file for ansys-fluent-solver."""
 import os
 
 from setuptools import find_namespace_packages, setup
@@ -17,7 +17,7 @@ install_requires = [
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
     "protobuf>=3.12.2",
-    "appdirs>=1.4.0"
+    "appdirs>=1.4.0",
 ]
 
 install_requires_post = [

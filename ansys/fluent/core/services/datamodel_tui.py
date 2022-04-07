@@ -7,16 +7,16 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.utils.async_execution import asynchronous
 
 Path = List[Tuple[str, str]]
 
 
 class DatamodelService:
-    """
-    Class wrapping the TUI-based datamodel grpc service of Fluent.
+    """Class wrapping the TUI-based datamodel grpc service of Fluent.
+
     It is suggested to use the methods from PyMenu class.
     """
 
@@ -50,10 +50,8 @@ class DatamodelService:
 
 
 def _convert_value_to_gvalue(val, gval):
-    """
-    Convert Python datatype to Value type of
-    google/protobuf/struct.proto
-    """
+    """Convert Python datatype to Value type of
+    google/protobuf/struct.proto."""
     if isinstance(val, bool):
         gval.bool_value = val
     elif isinstance(val, int) or isinstance(val, float):
@@ -73,10 +71,8 @@ def _convert_value_to_gvalue(val, gval):
 
 
 def _convert_gvalue_to_value(gval):
-    """
-    Convert Value type of google/protobuf/struct.proto to Python
-    datatype
-    """
+    """Convert Value type of google/protobuf/struct.proto to Python
+    datatype."""
     if gval.HasField("bool_value"):
         return gval.bool_value
     elif gval.HasField("number_value"):
@@ -96,8 +92,7 @@ def _convert_gvalue_to_value(gval):
 
 
 class PyMenu:
-    """
-    Pythonic wrapper of TUI-based DatamodelService class. Use this class
+    """Pythonic wrapper of TUI-based DatamodelService class. Use this class
     instead of directly calling DatamodelService's method.
 
     Methods
@@ -125,7 +120,6 @@ class PyMenu:
         Create or set state of child object within contanier at menu
     del_item()
         Delete the child object at menu
-
     """
 
     def __init__(self, service: DatamodelService, path: Union[Path, str]):
@@ -134,10 +128,8 @@ class PyMenu:
             path if isinstance(path, str) else convert_path_to_grpc_path(path)
         )
 
-    def is_extended_tui(
-        self, include_unavailable: bool = False
-    ) -> bool:
-        """Check if menu is in extended TUI
+    def is_extended_tui(self, include_unavailable: bool = False) -> bool:
+        """Check if menu is in extended TUI.
 
         Parameters
         ----------
@@ -158,10 +150,8 @@ class PyMenu:
         response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
 
-    def is_container(
-        self, include_unavailable: bool = False
-    ) -> bool:
-        """Check if menu is a container
+    def is_container(self, include_unavailable: bool = False) -> bool:
+        """Check if menu is a container.
 
         Parameters
         ----------
@@ -183,10 +173,8 @@ class PyMenu:
             _convert_gvalue_to_value(response.value) == "NamedObjectContainer"
         )
 
-    def get_child_names(
-        self, include_unavailable: bool = False
-    ) -> List[str]:
-        """Get child menu names
+    def get_child_names(self, include_unavailable: bool = False) -> List[str]:
+        """Get child menu names.
 
         Parameters
         ----------
@@ -207,7 +195,7 @@ class PyMenu:
         return _convert_gvalue_to_value(response.value)
 
     def get_state(self) -> Any:
-        """Get state of the object at menu
+        """Get state of the object at menu.
 
         Returns
         -------
@@ -220,7 +208,7 @@ class PyMenu:
         return _convert_gvalue_to_value(response.state)
 
     def set_state(self, value: Any) -> None:
-        """Set state of the object at menu
+        """Set state of the object at menu.
 
         Parameters
         ----------
@@ -246,8 +234,7 @@ class PyMenu:
         return _convert_gvalue_to_value(ret.result)
 
     def execute(self, *args, **kwargs) -> Any:
-        """Execute command/query at path with positional or keyword
-        arguments
+        """Execute command/query at path with positional or keyword arguments.
 
         Parameters
         ----------
@@ -270,10 +257,8 @@ class PyMenu:
         else:
             return self._execute_command(request)
 
-    def get_doc_string(
-        self, include_unavailable: bool = False
-    ) -> str:
-        """Get docstring for menu
+    def get_doc_string(self, include_unavailable: bool = False) -> str:
+        """Get docstring for menu.
 
         Parameters
         ----------
@@ -294,7 +279,7 @@ class PyMenu:
         return _convert_gvalue_to_value(response.value)
 
     def rename(self, new_name: str) -> None:
-        """Rename the object at menu
+        """Rename the object at menu.
 
         Parameters
         ----------
@@ -308,7 +293,7 @@ class PyMenu:
         self._service.set_state(request)
 
     def get_child_object_names(self) -> List[str]:
-        """Get child object names of the container at menu
+        """Get child object names of the container at menu.
 
         Returns
         -------
@@ -321,7 +306,7 @@ class PyMenu:
         return _convert_gvalue_to_value(response.value)
 
     def set_item(self, name: str, value: Any) -> None:
-        """Create or set state of child object within contanier at menu
+        """Create or set state of child object within contanier at menu.
 
         Parameters
         ----------
@@ -336,15 +321,14 @@ class PyMenu:
         self._service.set_state(request)
 
     def del_item(self) -> None:
-        """Delete the child object at path"""
+        """Delete the child object at path."""
         request = DataModelProtoModule.SetStateRequest()
         request.path = self._path
         self._service.set_state(request)
 
 
 def convert_func_name_to_tui_menu(func_name: str) -> str:
-    """
-    Convert Python function name to TUI menu string.
+    """Convert Python function name to TUI menu string.
 
     Parameters
     ----------
@@ -360,8 +344,7 @@ def convert_func_name_to_tui_menu(func_name: str) -> str:
 
 
 def convert_tui_menu_to_func_name(menu: str) -> str:
-    """
-    Convert TUI menu string to Python function name.
+    """Convert TUI menu string to Python function name.
 
     Parameters
     ----------
@@ -379,9 +362,8 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
 
 
 def convert_path_to_grpc_path(path: Path) -> str:
-    """
-    Convert path structure to a string which can be passed to
-    datamodel grpc service
+    """Convert path structure to a string which can be passed to datamodel grpc
+    service.
 
     Parameters
     ----------

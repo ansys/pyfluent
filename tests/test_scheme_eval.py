@@ -1,5 +1,5 @@
-import pytest
 from google.protobuf.json_format import MessageToDict, ParseDict
+import pytest
 
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.scheme_eval import (

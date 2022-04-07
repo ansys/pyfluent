@@ -1,9 +1,9 @@
 """Module providing generic functionality."""
 
-import asyncio
-import time
 from abc import ABCMeta
+import asyncio
 from functools import partial
+import time
 
 loop = asyncio.get_event_loop()
 

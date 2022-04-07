@@ -1,5 +1,4 @@
-"""
-Provide a module to generate explicit Fluent TUI menu classes.
+"""Provide a module to generate explicit Fluent TUI menu classes.
 
 This module starts up Fluent and calls the underlying gRPC APIs to generate the
 following TUI Python modules:
@@ -11,25 +10,29 @@ Usage
 -----
 
 `python codegen/tuigen.py`
-
 """
 
 import os
 from pathlib import Path
 
+from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
-from ansys.fluent.core.launcher.launcher import launch_fluent
 
 _THIS_DIRNAME = os.path.dirname(__file__)
-_MESHING_TUI_FILE = os.path.normpath(os.path.join(
-    _THIS_DIRNAME, "..", "ansys", "fluent", "core", "meshing", "tui.py")
+_MESHING_TUI_FILE = os.path.normpath(
+    os.path.join(
+        _THIS_DIRNAME, "..", "ansys", "fluent", "core", "meshing", "tui.py"
+    )
 )
-_SOLVER_TUI_FILE = os.path.normpath(os.path.join(
-    _THIS_DIRNAME, "..", "ansys", "fluent", "core", "solver", "tui.py"))
+_SOLVER_TUI_FILE = os.path.normpath(
+    os.path.join(
+        _THIS_DIRNAME, "..", "ansys", "fluent", "core", "solver", "tui.py"
+    )
+)
 _INDENT_STEP = 4
 
 
@@ -75,7 +78,7 @@ class TUIGenerator:
         self,
         meshing_tui_file=_MESHING_TUI_FILE,
         solver_tui_file=_SOLVER_TUI_FILE,
-        meshing=False
+        meshing=False,
     ):
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
@@ -153,7 +156,7 @@ class TUIGenerator:
             if self._tui_file == _SOLVER_TUI_FILE:
                 self._write_code_to_tui_file(
                     '"""Fluent Solver TUI Commands"""\n'
-                    )
+                )
             else:
                 self._write_code_to_tui_file(
                     '"""Fluent Meshing TUI Commands"""\n'
@@ -169,6 +172,7 @@ class TUIGenerator:
                 "import PyMenu\n\n\n"
             )
             self._write_menu_to_tui_file(self._main_menu)
+
 
 if __name__ == "__main__":
     TUIGenerator(meshing=True).generate()

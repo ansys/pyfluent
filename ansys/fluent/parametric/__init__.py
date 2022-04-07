@@ -1,5 +1,4 @@
-"""
-Classes for running a parametric study in Fluent.
+"""Classes for running a parametric study in Fluent.
 
 Example
 -------
@@ -54,11 +53,10 @@ Using parametric session
 >>> session1.studies['elbow_params_2-Solve'].design_points['Base DP'].input_parameters  # noqa: E501
 >>> study2 = session1.new_study()
 >>> session2 = ParametricSession(project_filepath="nozzle_para_named.flprj")
-
 """
 
-import tempfile
 from pathlib import Path
+import tempfile
 from typing import Dict, List
 
 import ansys.fluent.core as pyfluent
@@ -68,8 +66,7 @@ BASE_DP_NAME = "Base DP"
 
 
 class DesignPoint:
-    """
-    Design point in a parametric study.
+    """Design point in a parametric study.
 
     Attributes
     ----------
@@ -83,7 +80,6 @@ class DesignPoint:
         Whether to write data for the design point.
     capture_simulation_report_data_enabled : bool
         Whether to capture simulation report data for the design point.
-
     """
 
     def __init__(self, name: str, dp_settings):
@@ -182,7 +178,6 @@ class ParametricStudy:
         Update all design points.
     update_selected_design_points(design_points)
         Update a list of design points.
-
     """
 
     _all_studies: Dict[int, "ParametricStudy"] = {}
@@ -199,8 +194,7 @@ class ParametricStudy:
 
     @classmethod
     def get_all_studies(cls) -> Dict[str, "ParametricStudy"]:
-        """
-        Get all currently active studies.
+        """Get all currently active studies.
 
         Returns
         -------
@@ -241,8 +235,7 @@ class ParametricStudy:
             LOG.error("initialize is not available")
 
     def rename(self, new_name: str) -> None:
-        """
-        Rename the parametric study.
+        """Rename the parametric study.
 
         Parameters
         ----------
@@ -270,8 +263,7 @@ class ParametricStudy:
             ParametricStudy.current_study_name = self.name
 
     def duplicate(self, copy_design_points: bool = True) -> "ParametricStudy":
-        """
-        Duplicate the current study.
+        """Duplicate the current study.
 
         Parameters
         ----------
@@ -329,8 +321,7 @@ class ParametricStudy:
         self.__parametric_studies.use_base_data()
 
     def import_design_table(self, filepath: str) -> None:
-        """
-        Import the design table for the parametric study.
+        """Import the design table for the parametric study.
 
         Parameters
         ----------
@@ -340,8 +331,7 @@ class ParametricStudy:
         self.__parametric_studies.import_design_table(filepath=filepath)
 
     def export_design_table(self, filepath: str) -> None:
-        """
-        Export the design table for the parametric study.
+        """Export the design table for the parametric study.
 
         Parameters
         ----------
@@ -354,8 +344,8 @@ class ParametricStudy:
     def current_design_point(self) -> DesignPoint:
         """Return the current design point.
 
-        Current design point within the design points under the parametric
-        study.
+        Current design point within the design points under the
+        parametric study.
         """
         dp_name = self.__parametric_studies[self.name].current_design_point()
         return self.design_points[dp_name]
@@ -365,8 +355,7 @@ class ParametricStudy:
         write_data: bool = False,
         capture_simulation_report_data: bool = True,
     ) -> DesignPoint:
-        """
-        Add a new design point under the parametric study.
+        """Add a new design point under the parametric study.
 
         Parameters
         ----------
@@ -399,8 +388,7 @@ class ParametricStudy:
         return design_point
 
     def delete_design_points(self, design_points: List[DesignPoint]) -> None:
-        """
-        Delete a list of design points.
+        """Delete a list of design points.
 
         Parameters
         ----------
@@ -422,8 +410,7 @@ class ParametricStudy:
             del design_point
 
     def duplicate_design_point(self, design_point: DesignPoint) -> DesignPoint:
-        """
-        Duplicate the design point.
+        """Duplicate the design point.
 
         Parameters
         ----------
@@ -448,8 +435,7 @@ class ParametricStudy:
         return new_dp
 
     def save_journals(self, separate_journals: bool) -> None:
-        """
-        Save journals.
+        """Save journals.
 
         Parameters
         ----------
@@ -460,8 +446,7 @@ class ParametricStudy:
         dp_settings.save_journals(separate_journals=separate_journals)
 
     def clear_generated_data(self, design_points: List[DesignPoint]) -> None:
-        """
-        Clear generated data for a list of design points.
+        """Clear generated data for a list of design points.
 
         Parameters
         ----------
@@ -491,8 +476,7 @@ class ParametricStudy:
     def update_selected_design_points(
         self, design_points: List[DesignPoint]
     ) -> None:
-        """
-        Update a list of design points.
+        """Update a list of design points.
 
         Parameters
         ----------
@@ -506,8 +490,7 @@ class ParametricStudy:
 
 
 class ParametricProject:
-    """
-    Parametric project workflow.
+    """Parametric project workflow.
 
     Attributes
     ----------
@@ -526,7 +509,6 @@ class ParametricProject:
         Save project as a copy.
     archive(archive_name)
         Archive project.
-
     """
 
     def __init__(
@@ -545,8 +527,7 @@ class ParametricProject:
     def open(
         self, project_filepath: str = "default.flprj", load_case: bool = True
     ) -> None:
-        """
-        Open a project.
+        """Open a project.
 
         Parameters
         ----------
@@ -557,7 +538,7 @@ class ParametricProject:
         """
         self.__parametric_project.open(
             project_filename=str(Path(project_filepath).resolve()),
-            load_case=load_case
+            load_case=load_case,
         )
         self.project_filepath = project_filepath
         for study_name in self.__parametric_studies.get_object_names():
@@ -573,8 +554,7 @@ class ParametricProject:
         self.__parametric_project.save()
 
     def save_as(self, project_filepath: str) -> None:
-        """
-        Save as project.
+        """Save as project.
 
         Parameters
         ----------
@@ -586,8 +566,7 @@ class ParametricProject:
     def export(
         self, project_filepath: str, convert_to_managed: bool = False
     ) -> None:
-        """
-        Save project as a copy.
+        """Save project as a copy.
 
         Parameters
         ----------
@@ -602,8 +581,7 @@ class ParametricProject:
         )
 
     def archive(self, archive_path: str = None) -> None:
-        """
-        Archive project.
+        """Archive project.
 
         Parameters
         ----------
@@ -618,14 +596,12 @@ class ParametricProject:
 
 
 class ParametricSessionLauncher:
-    """
-    Launches fluent for parametric sessions.
+    """Launches fluent for parametric sessions.
 
     Methods
     -------
     __call__(*args, **kwargs)
         Launch a session.
-
     """
 
     def __init__(self, *args, **kwargs):
@@ -637,8 +613,7 @@ class ParametricSessionLauncher:
 
 
 class ParametricSession:
-    """
-    ParametricSession class which encapsulates studies and project.
+    """ParametricSession class which encapsulates studies and project.
 
     Attributes
     ----------
@@ -666,10 +641,9 @@ class ParametricSession:
         case_filepath: str = None,
         project_filepath: str = None,
         launcher=ParametricSessionLauncher(),
-        start_transcript: bool = False
+        start_transcript: bool = False,
     ):
-        """
-        Instantiate a ParametricSession.
+        """Instantiate a ParametricSession.
 
         Parameters
         ----------
@@ -699,7 +673,7 @@ class ParametricSession:
                 parametric_project=self.__root.file.parametric_project,
                 parametric_studies=self.__root.parametric_studies,
                 project_filepath=str(study.project_filepath),
-                open_project=False
+                open_project=False,
             )
         elif project_filepath is not None:
             self.project = ParametricProject(
@@ -721,8 +695,7 @@ class ParametricSession:
             )
 
     def new_study(self) -> ParametricStudy:
-        """
-        Create new study.
+        """Create new study.
 
         Returns
         -------
@@ -734,8 +707,7 @@ class ParametricSession:
         return study
 
     def delete_study(self, study_name: str) -> None:
-        """
-        Delete study.
+        """Delete study.
 
         Parameters
         ----------
@@ -750,8 +722,7 @@ class ParametricSession:
             self.studies.pop(study_name)
 
     def rename_study(self, new_name: str, old_name: str) -> None:
-        """
-        Rename study.
+        """Rename study.
 
         Parameters
         ----------

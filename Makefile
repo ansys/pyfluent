@@ -1,6 +1,6 @@
-flake8:
-	@echo "Running flake8"
-	@flake8 .
+style:
+	@echo "Running code style"
+	@pre-commit run --all-files --show-diff-on-failure
 
 install:
 	@pip install -r requirements_build.txt

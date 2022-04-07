@@ -1,12 +1,13 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
-import appdirs
 import os
 
+import appdirs
+
+from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import launch_fluent  # noqa: F401
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.logging import LOG
-from ansys.fluent.core._version import __version__  # noqa: F401
 
 try:
     from ansys.fluent.core.meshing import tui as meshing_tui
@@ -19,8 +20,7 @@ except ImportError:
 
 
 def set_log_level(level):
-    """
-    Set logging level.
+    """Set logging level.
 
     Parameters
     ----------
@@ -42,8 +42,7 @@ def disable_logging_to_stdout():
 
 
 def enable_logging_to_file(filepath: str = None):
-    """
-    Enable logging to file.
+    """Enable logging to file.
 
     Parameters
     ----------

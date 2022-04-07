@@ -1,8 +1,9 @@
 """Module providing matplotlib plotter functionality."""
 
-import numpy as np
-from typing import Optional, List
+from typing import List, Optional
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Plotter:
@@ -17,8 +18,7 @@ class Plotter:
         ylabel: Optional[str] = "",
         remote_process: Optional[bool] = False,
     ):
-        """
-        Instantiate a matplotlib plotter.
+        """Instantiate a matplotlib plotter.
 
         Parameters
         ----------
@@ -56,8 +56,7 @@ class Plotter:
             self.ax = self.fig.add_subplot(111)
 
     def plot(self, data: dict) -> None:
-        """
-        Draw plot in window.
+        """Draw plot in window.
 
         Parameters
         ----------
@@ -113,8 +112,7 @@ class Plotter:
         return self._closed
 
     def save_graphic(self, file_name: str):
-        """
-        Save graphics.
+        """Save graphics.
 
         Parameters
         ----------
@@ -124,8 +122,7 @@ class Plotter:
         plt.savefig(file_name)
 
     def set_properties(self, properties: dict):
-        """
-        Set plot properties.
+        """Set plot properties.
 
         Parameters
         ----------
@@ -166,10 +163,9 @@ class Plotter:
 
 
 class ProcessPlotter(Plotter):
-    """
-    Class for matplotlib process plotter.
+    """Class for matplotlib process plotter.
 
-    Opens matplotlib window in a seprate process.
+    Opens matplotlib window in a separate process.
     """
 
     def __init__(
@@ -180,8 +176,7 @@ class ProcessPlotter(Plotter):
         xlabel="position",
         ylabel="",
     ):
-        """
-        Instantiate a matplotlib process plotter.
+        """Instantiate a matplotlib process plotter.
 
         Parameters
         ----------

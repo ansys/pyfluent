@@ -1,18 +1,16 @@
-"""
-Logging module.
+"""Logging module.
 
 This module supplies a general framework for logging in PyFluent.
 """
 
 import logging
 import os
-import tempfile
 from pathlib import Path
+import tempfile
 
 
 class Logger:
-    """
-    Logger class.
+    """Logger class.
 
     Methods
     -------
@@ -48,8 +46,7 @@ class Logger:
         self.log = self.logger.log
 
     def set_level(self, level):
-        """
-        Set logging level.
+        """Set logging level.
 
         Parameters
         ----------
@@ -80,8 +77,7 @@ class Logger:
         self.logger.removeHandler(self.stream_handler)
 
     def enable_logging_to_file(self, filepath=None):
-        """
-        Enable logging to file.
+        """Enable logging to file.
 
         Parameters
         ----------

@@ -32,7 +32,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "sphinx_gallery.gen_gallery",
-    'sphinxemoji.sphinxemoji',
+    "sphinxemoji.sphinxemoji",
 ]
 
 # Intersphinx mapping
@@ -109,12 +109,16 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
     start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
     if not start_instance:
         if when == "before":
-            if fname in ["mixing_elbow_settings_api.py",
-                         "mixing_elbow_tui_api.py"]:
+            if fname in [
+                "mixing_elbow_settings_api.py",
+                "mixing_elbow_tui_api.py",
+            ]:
                 args = ["3ddp", "-t4", "-meshing"]
-            elif fname in ["parametric_static_mixer_1.py",
-                       "parametric_static_mixer_2.py",
-                       "parametric_static_mixer_3.py"]:
+            elif fname in [
+                "parametric_static_mixer_1.py",
+                "parametric_static_mixer_2.py",
+                "parametric_static_mixer_3.py",
+            ]:
                 args = ["3ddp", "-t4"]
             subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
         elif when == "after":
@@ -124,7 +128,7 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
 # -- Sphinx Gallery Options ---------------------------------------------------
 sphinx_gallery_conf = {
     # convert rst to md for ipynb
-    #"pypandoc": True,
+    # "pypandoc": True,
     # path to your examples scripts
     "examples_dirs": ["../../examples/"],
     # path where to save gallery generated examples
@@ -141,8 +145,8 @@ sphinx_gallery_conf = {
     "doc_module": "ansys-fluent-core",
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
-    'reset_modules_order': 'both',
-    'reset_modules': (_start_or_stop_fluent_container),
+    "reset_modules_order": "both",
+    "reset_modules": (_start_or_stop_fluent_container),
 }
 
 
@@ -187,8 +191,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "ansys.fluent.core",
-     "ansys.fluent.core Documentation", [author], 1)
+    (
+        master_doc,
+        "ansys.fluent.core",
+        "ansys.fluent.core Documentation",
+        [author],
+        1,
+    )
 ]
 
 

@@ -78,7 +78,7 @@ environment and PyVista is used to visualze the extracted data.
   mesh1.display()
   surface1.display()
   
-  # To display in specifc window e.g. window-2
+  # To display in specific window e.g. window-2
   contour1.display("window-2")
   
 MatplotLib Example (XYPlots)
