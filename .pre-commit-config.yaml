@@ -67,11 +67,3 @@ repos:
 #      --ignore, "D107,D105,D4",
 #      --count,
 #    ]
-
-- repo: local
-  hooks:
-    - id: last-commit-info
-      name: last-commit-info
-      entry: .ci/update_last_commit_info.sh
-      language: script
-      stages: [manual]

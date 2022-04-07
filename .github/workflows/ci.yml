@@ -36,19 +36,25 @@ jobs:
         run: |
           pre-commit run --all-files --show-diff-on-failure
 
-      - name: Run pre-commit with last commit-info only
-        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        env:
-          GITHUB_LASTSHA: ${{ github.sha }}
-        run: |
-          pre-commit run --all-files --hook-stage manual last-commit-info 
-
       - name: Run protolint
         uses: plexsystems/protolint-action@v0.6.0
         if: always()
         with:
           configDirectory: protos
-        
+
+      - name: Generate updated last commit info
+        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: |
+          echo "$GITHUB_SHA" > .last-commit-info
+      - name: Update last commit info in repository
+        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: .last-commit-info
+          commit-msg: Update .last-commit-info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+
   test-import:
     name: Smoke Tests
     runs-on: ${{ matrix.os }}
