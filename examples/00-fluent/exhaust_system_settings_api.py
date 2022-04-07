@@ -583,11 +583,13 @@ session.tui.solver.solve.initialize.hyb_initialization()
 session.tui.solver.solve.set.number_of_iterations(100)
 session.tui.solver.solve.iterate()
 
+###############################################################################
+# Monitor the total mass flow rate through the entire domain
+
 root.solution.report_definitions.volume["report-volume-int"] = {}
 root.solution.report_definitions.volume["report-volume-int"].report_type = 'volume-integral'
 root.solution.report_definitions.volume["report-volume-int"].zone_names = ["fluid-region-1"]
 root.solution.report_definitions.compute(report_defs=["report-volume-int"])
-
 
 ###############################################################################
 # Display path lines highlighting the flow field
