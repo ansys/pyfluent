@@ -42,6 +42,18 @@ jobs:
         with:
           configDirectory: protos
 
+      - name: Generate updated last commit info
+        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: |
+          echo "$GITHUB_SHA" > .last-commit-info
+
+      - name: Update last commit info in repository
+        # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        uses: test-room-7/action-update-file@v1
+          file-path: .last-commit-info
+          commit-msg: Update .last-commit-info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
   test-import:
     name: Smoke Tests
     runs-on: ${{ matrix.os }}
