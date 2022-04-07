@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_LASTSHA: ${{ github.sha }}
         run: |
-          pre-commit run --hook-stage manual last-commit-info
+          pre-commit run --all-files --hook-stage manual last-commit-info 
 
       - name: Run protolint
         uses: plexsystems/protolint-action@v0.6.0
