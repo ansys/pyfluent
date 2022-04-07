@@ -19,6 +19,7 @@ service DataModel {
   rpc getAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse) {}
   rpc executeCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse) {}
   rpc getSpecs(GetSpecsRequest) returns (GetSpecsResponse) {}
+  rpc getStaticInfo(GetStaticInfoRequest) returns (GetStaticInfoResponse) {}
 }
 
 message DataModelRequest {
@@ -203,4 +204,31 @@ message MemberSpecs {
 
 message GetSpecsResponse {
   MemberSpecs member = 1;
+}
+
+message CommandArg {
+  string type = 1;
+  string name = 2;
+}
+
+message CommandInfo {
+  string returntype = 1;
+  repeated CommandArg args = 2;
+}
+
+message StaticInfo {
+  map<string, StaticInfo> namedobjects = 1;
+  map<string, StaticInfo> singletons = 2;
+  map<string, StaticInfo> parameters = 3;
+  map<string, StaticInfo> commands = 4;
+  string type = 5;
+  CommandInfo commandinfo = 6;
+}
+
+message GetStaticInfoRequest {
+  string rules = 1;
+}
+
+message GetStaticInfoResponse {
+  StaticInfo info = 1;
 }

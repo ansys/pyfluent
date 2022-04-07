@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12\x64\x61tamodel_se.proto\x12\x0cgrpcRemoting\x1a\rvariant.proto\"=\n\x10\x44\x61taModelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"X\n\x11\x44\x61taModelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\x12\x0e\n\x06\x65vents\x18\x03 \x03(\t\"A\n\x14InitDatamodelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"L\n\x15InitDatamodelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\".\n\x0fGetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"1\n\x10GetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"[\n\x0fSetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x1d\n\x05state\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"G\n\x10SetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"c\n\x11UpdateDictRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12#\n\x0b\x64icttomerge\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"I\n\x12UpdateDictResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"@\n\x13\x44\x65leteObjectRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04wait\x18\x03 \x01(\x08\"K\n\x14\x44\x65leteObjectResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"J\n\x18GetAttributeValueRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x11\n\tattribute\x18\x03 \x01(\t\";\n\x19GetAttributeValueResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"q\n\x15\x45xecuteCommandRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x03 \x01(\t\x12\x0c\n\x04wait\x18\x04 \x01(\x08\x12\x1c\n\x04\x61rgs\x18\x05 \x01(\x0b\x32\x0e.utils.Variant\"m\n\x16\x45xecuteCommandResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x1d\n\x05state\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x03 \x03(\t\"G\n\x0fGetSpecsRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x17\n\x0fincludeChildren\x18\x03 \x01(\x08\"\xb5\x01\n\x0b\x43ommonSpecs\x12\x10\n\x08readonly\x18\x01 \x01(\x08\x12\x1f\n\x07\x64\x65\x66\x61ult\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x13\n\x0b\x64isplaytext\x18\x03 \x01(\t\x12\x10\n\x08isactive\x18\x04 \x01(\x08\x12\x15\n\rreferencepath\x18\x05 \x01(\t\x12!\n\x19hasDeveloperExposureLevel\x18\x06 \x01(\x08\x12\x12\n\nhelpstring\x18\x07 \x01(\t\"?\n\x12\x42oolParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"v\n\x11IntParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x05H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x05H\x01\x42\x04\n\x02ilB\x04\n\x02iu\"w\n\x12RealParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x01H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x01H\x01\x42\x04\n\x02rlB\x04\n\x02ru\"\\\n\x14StringParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\"B\n\x15IntListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"`\n\x18StringListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\".\n\x0c\x43ommandSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08isactive\x18\x02 \x01(\x08\"\x92\x01\n\x0eSingletonSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x94\x01\n\x10NamedObjectSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x86\x04\n\x0bMemberSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x30\n\x04\x62ool\x18\x03 \x01(\x0b\x32 .grpcRemoting.BoolParameterSpecsH\x00\x12.\n\x03int\x18\x04 \x01(\x0b\x32\x1f.grpcRemoting.IntParameterSpecsH\x00\x12\x30\n\x04real\x18\x05 \x01(\x0b\x32 .grpcRemoting.RealParameterSpecsH\x00\x12\x34\n\x06string\x18\x06 \x01(\x0b\x32\".grpcRemoting.StringParameterSpecsH\x00\x12\x36\n\x07intlist\x18\x07 \x01(\x0b\x32#.grpcRemoting.IntListParameterSpecsH\x00\x12<\n\nstringlist\x18\x08 \x01(\x0b\x32&.grpcRemoting.StringListParameterSpecsH\x00\x12\x31\n\tsingleton\x18\t \x01(\x0b\x32\x1c.grpcRemoting.SingletonSpecsH\x00\x12\x35\n\x0bnamedobject\x18\n \x01(\x0b\x32\x1e.grpcRemoting.NamedObjectSpecsH\x00\x12+\n\x08\x63hildren\x18\x0b \x03(\x0b\x32\x19.grpcRemoting.MemberSpecsB\x04\n\x02\x61s\"=\n\x10GetSpecsResponse\x12)\n\x06member\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.MemberSpecs2\x98\x06\n\tDataModel\x12U\n\x0e\x42\x65ginStreaming\x12\x1e.grpcRemoting.DataModelRequest\x1a\x1f.grpcRemoting.DataModelResponse\"\x00\x30\x01\x12Z\n\rinitDatamodel\x12\".grpcRemoting.InitDatamodelRequest\x1a#.grpcRemoting.InitDatamodelResponse\"\x00\x12K\n\x08getState\x12\x1d.grpcRemoting.GetStateRequest\x1a\x1e.grpcRemoting.GetStateResponse\"\x00\x12K\n\x08setState\x12\x1d.grpcRemoting.SetStateRequest\x1a\x1e.grpcRemoting.SetStateResponse\"\x00\x12Q\n\nupdateDict\x12\x1f.grpcRemoting.UpdateDictRequest\x1a .grpcRemoting.UpdateDictResponse\"\x00\x12W\n\x0c\x64\x65leteObject\x12!.grpcRemoting.DeleteObjectRequest\x1a\".grpcRemoting.DeleteObjectResponse\"\x00\x12\x66\n\x11getAttributeValue\x12&.grpcRemoting.GetAttributeValueRequest\x1a\'.grpcRemoting.GetAttributeValueResponse\"\x00\x12]\n\x0e\x65xecuteCommand\x12#.grpcRemoting.ExecuteCommandRequest\x1a$.grpcRemoting.ExecuteCommandResponse\"\x00\x12K\n\x08getSpecs\x12\x1d.grpcRemoting.GetSpecsRequest\x1a\x1e.grpcRemoting.GetSpecsResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x12\x64\x61tamodel_se.proto\x12\x0cgrpcRemoting\x1a\rvariant.proto\"=\n\x10\x44\x61taModelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"X\n\x11\x44\x61taModelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\x12\x0e\n\x06\x65vents\x18\x03 \x03(\t\"A\n\x14InitDatamodelRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x1a\n\x12returnstatechanges\x18\x02 \x01(\x08\"L\n\x15InitDatamodelResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\".\n\x0fGetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\"1\n\x10GetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"[\n\x0fSetStateRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x1d\n\x05state\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"G\n\x10SetStateResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"c\n\x11UpdateDictRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12#\n\x0b\x64icttomerge\x18\x03 \x01(\x0b\x32\x0e.utils.Variant\x12\x0c\n\x04wait\x18\x04 \x01(\x08\"I\n\x12UpdateDictResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"@\n\x13\x44\x65leteObjectRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0c\n\x04wait\x18\x03 \x01(\x08\"K\n\x14\x44\x65leteObjectResponse\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x02 \x03(\t\"J\n\x18GetAttributeValueRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x11\n\tattribute\x18\x03 \x01(\t\";\n\x19GetAttributeValueResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\"q\n\x15\x45xecuteCommandRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0f\n\x07\x63ommand\x18\x03 \x01(\t\x12\x0c\n\x04wait\x18\x04 \x01(\x08\x12\x1c\n\x04\x61rgs\x18\x05 \x01(\x0b\x32\x0e.utils.Variant\"m\n\x16\x45xecuteCommandResponse\x12\x1e\n\x06result\x18\x01 \x01(\x0b\x32\x0e.utils.Variant\x12\x1d\n\x05state\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x14\n\x0c\x64\x65letedpaths\x18\x03 \x03(\t\"G\n\x0fGetSpecsRequest\x12\r\n\x05rules\x18\x01 \x01(\t\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x17\n\x0fincludeChildren\x18\x03 \x01(\x08\"\xb5\x01\n\x0b\x43ommonSpecs\x12\x10\n\x08readonly\x18\x01 \x01(\x08\x12\x1f\n\x07\x64\x65\x66\x61ult\x18\x02 \x01(\x0b\x32\x0e.utils.Variant\x12\x13\n\x0b\x64isplaytext\x18\x03 \x01(\t\x12\x10\n\x08isactive\x18\x04 \x01(\x08\x12\x15\n\rreferencepath\x18\x05 \x01(\t\x12!\n\x19hasDeveloperExposureLevel\x18\x06 \x01(\x08\x12\x12\n\nhelpstring\x18\x07 \x01(\t\"?\n\x12\x42oolParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"v\n\x11IntParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x05H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x05H\x01\x42\x04\n\x02ilB\x04\n\x02iu\"w\n\x12RealParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x14\n\nlowerbound\x18\x02 \x01(\x01H\x00\x12\x14\n\nupperbound\x18\x03 \x01(\x01H\x01\x42\x04\n\x02rlB\x04\n\x02ru\"\\\n\x14StringParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\"B\n\x15IntListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\"`\n\x18StringListParameterSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x19\n\x11\x61llowedstringlist\x18\x02 \x03(\t\".\n\x0c\x43ommandSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08isactive\x18\x02 \x01(\x08\"\x92\x01\n\x0eSingletonSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x94\x01\n\x10NamedObjectSpecs\x12)\n\x06\x63ommon\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.CommonSpecs\x12\x0f\n\x07members\x18\x02 \x03(\t\x12,\n\x08\x63ommands\x18\x03 \x03(\x0b\x32\x1a.grpcRemoting.CommandSpecs\x12\x16\n\x0e\x63reatabletypes\x18\x04 \x03(\t\"\x86\x04\n\x0bMemberSpecs\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x30\n\x04\x62ool\x18\x03 \x01(\x0b\x32 .grpcRemoting.BoolParameterSpecsH\x00\x12.\n\x03int\x18\x04 \x01(\x0b\x32\x1f.grpcRemoting.IntParameterSpecsH\x00\x12\x30\n\x04real\x18\x05 \x01(\x0b\x32 .grpcRemoting.RealParameterSpecsH\x00\x12\x34\n\x06string\x18\x06 \x01(\x0b\x32\".grpcRemoting.StringParameterSpecsH\x00\x12\x36\n\x07intlist\x18\x07 \x01(\x0b\x32#.grpcRemoting.IntListParameterSpecsH\x00\x12<\n\nstringlist\x18\x08 \x01(\x0b\x32&.grpcRemoting.StringListParameterSpecsH\x00\x12\x31\n\tsingleton\x18\t \x01(\x0b\x32\x1c.grpcRemoting.SingletonSpecsH\x00\x12\x35\n\x0bnamedobject\x18\n \x01(\x0b\x32\x1e.grpcRemoting.NamedObjectSpecsH\x00\x12+\n\x08\x63hildren\x18\x0b \x03(\x0b\x32\x19.grpcRemoting.MemberSpecsB\x04\n\x02\x61s\"=\n\x10GetSpecsResponse\x12)\n\x06member\x18\x01 \x01(\x0b\x32\x19.grpcRemoting.MemberSpecs\"(\n\nCommandArg\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"I\n\x0b\x43ommandInfo\x12\x12\n\nreturntype\x18\x01 \x01(\t\x12&\n\x04\x61rgs\x18\x02 \x03(\x0b\x32\x18.grpcRemoting.CommandArg\"\xf6\x04\n\nStaticInfo\x12@\n\x0cnamedobjects\x18\x01 \x03(\x0b\x32*.grpcRemoting.StaticInfo.NamedobjectsEntry\x12<\n\nsingletons\x18\x02 \x03(\x0b\x32(.grpcRemoting.StaticInfo.SingletonsEntry\x12<\n\nparameters\x18\x03 \x03(\x0b\x32(.grpcRemoting.StaticInfo.ParametersEntry\x12\x38\n\x08\x63ommands\x18\x04 \x03(\x0b\x32&.grpcRemoting.StaticInfo.CommandsEntry\x12\x0c\n\x04type\x18\x05 \x01(\t\x12.\n\x0b\x63ommandinfo\x18\x06 \x01(\x0b\x32\x19.grpcRemoting.CommandInfo\x1aM\n\x11NamedobjectsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0b\x32\x18.grpcRemoting.StaticInfo:\x02\x38\x01\x1aK\n\x0fSingletonsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0b\x32\x18.grpcRemoting.StaticInfo:\x02\x38\x01\x1aK\n\x0fParametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0b\x32\x18.grpcRemoting.StaticInfo:\x02\x38\x01\x1aI\n\rCommandsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\'\n\x05value\x18\x02 \x01(\x0b\x32\x18.grpcRemoting.StaticInfo:\x02\x38\x01\"%\n\x14GetStaticInfoRequest\x12\r\n\x05rules\x18\x01 \x01(\t\"?\n\x15GetStaticInfoResponse\x12&\n\x04info\x18\x01 \x01(\x0b\x32\x18.grpcRemoting.StaticInfo2\xf4\x06\n\tDataModel\x12U\n\x0e\x42\x65ginStreaming\x12\x1e.grpcRemoting.DataModelRequest\x1a\x1f.grpcRemoting.DataModelResponse\"\x00\x30\x01\x12Z\n\rinitDatamodel\x12\".grpcRemoting.InitDatamodelRequest\x1a#.grpcRemoting.InitDatamodelResponse\"\x00\x12K\n\x08getState\x12\x1d.grpcRemoting.GetStateRequest\x1a\x1e.grpcRemoting.GetStateResponse\"\x00\x12K\n\x08setState\x12\x1d.grpcRemoting.SetStateRequest\x1a\x1e.grpcRemoting.SetStateResponse\"\x00\x12Q\n\nupdateDict\x12\x1f.grpcRemoting.UpdateDictRequest\x1a .grpcRemoting.UpdateDictResponse\"\x00\x12W\n\x0c\x64\x65leteObject\x12!.grpcRemoting.DeleteObjectRequest\x1a\".grpcRemoting.DeleteObjectResponse\"\x00\x12\x66\n\x11getAttributeValue\x12&.grpcRemoting.GetAttributeValueRequest\x1a\'.grpcRemoting.GetAttributeValueResponse\"\x00\x12]\n\x0e\x65xecuteCommand\x12#.grpcRemoting.ExecuteCommandRequest\x1a$.grpcRemoting.ExecuteCommandResponse\"\x00\x12K\n\x08getSpecs\x12\x1d.grpcRemoting.GetSpecsRequest\x1a\x1e.grpcRemoting.GetSpecsResponse\"\x00\x12Z\n\rgetStaticInfo\x12\".grpcRemoting.GetStaticInfoRequest\x1a#.grpcRemoting.GetStaticInfoResponse\"\x00\x62\x06proto3'
   ,
   dependencies=[variant__pb2.DESCRIPTOR,])
 
@@ -1371,6 +1371,367 @@ _GETSPECSRESPONSE = _descriptor.Descriptor(
   serialized_end=3049,
 )
 
+
+_COMMANDARG = _descriptor.Descriptor(
+  name='CommandArg',
+  full_name='grpcRemoting.CommandArg',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='type', full_name='grpcRemoting.CommandArg.type', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='name', full_name='grpcRemoting.CommandArg.name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3051,
+  serialized_end=3091,
+)
+
+
+_COMMANDINFO = _descriptor.Descriptor(
+  name='CommandInfo',
+  full_name='grpcRemoting.CommandInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='returntype', full_name='grpcRemoting.CommandInfo.returntype', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='args', full_name='grpcRemoting.CommandInfo.args', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3093,
+  serialized_end=3166,
+)
+
+
+_STATICINFO_NAMEDOBJECTSENTRY = _descriptor.Descriptor(
+  name='NamedobjectsEntry',
+  full_name='grpcRemoting.StaticInfo.NamedobjectsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='grpcRemoting.StaticInfo.NamedobjectsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='grpcRemoting.StaticInfo.NamedobjectsEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3493,
+  serialized_end=3570,
+)
+
+_STATICINFO_SINGLETONSENTRY = _descriptor.Descriptor(
+  name='SingletonsEntry',
+  full_name='grpcRemoting.StaticInfo.SingletonsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='grpcRemoting.StaticInfo.SingletonsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='grpcRemoting.StaticInfo.SingletonsEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3572,
+  serialized_end=3647,
+)
+
+_STATICINFO_PARAMETERSENTRY = _descriptor.Descriptor(
+  name='ParametersEntry',
+  full_name='grpcRemoting.StaticInfo.ParametersEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='grpcRemoting.StaticInfo.ParametersEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='grpcRemoting.StaticInfo.ParametersEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3649,
+  serialized_end=3724,
+)
+
+_STATICINFO_COMMANDSENTRY = _descriptor.Descriptor(
+  name='CommandsEntry',
+  full_name='grpcRemoting.StaticInfo.CommandsEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='grpcRemoting.StaticInfo.CommandsEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='grpcRemoting.StaticInfo.CommandsEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3726,
+  serialized_end=3799,
+)
+
+_STATICINFO = _descriptor.Descriptor(
+  name='StaticInfo',
+  full_name='grpcRemoting.StaticInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='namedobjects', full_name='grpcRemoting.StaticInfo.namedobjects', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='singletons', full_name='grpcRemoting.StaticInfo.singletons', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='parameters', full_name='grpcRemoting.StaticInfo.parameters', index=2,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='commands', full_name='grpcRemoting.StaticInfo.commands', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='grpcRemoting.StaticInfo.type', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='commandinfo', full_name='grpcRemoting.StaticInfo.commandinfo', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_STATICINFO_NAMEDOBJECTSENTRY, _STATICINFO_SINGLETONSENTRY, _STATICINFO_PARAMETERSENTRY, _STATICINFO_COMMANDSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3169,
+  serialized_end=3799,
+)
+
+
+_GETSTATICINFOREQUEST = _descriptor.Descriptor(
+  name='GetStaticInfoRequest',
+  full_name='grpcRemoting.GetStaticInfoRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='rules', full_name='grpcRemoting.GetStaticInfoRequest.rules', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3801,
+  serialized_end=3838,
+)
+
+
+_GETSTATICINFORESPONSE = _descriptor.Descriptor(
+  name='GetStaticInfoResponse',
+  full_name='grpcRemoting.GetStaticInfoResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='info', full_name='grpcRemoting.GetStaticInfoResponse.info', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3840,
+  serialized_end=3903,
+)
+
 _DATAMODELRESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
 _INITDATAMODELRESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
 _GETSTATERESPONSE.fields_by_name['state'].message_type = variant__pb2._VARIANT
@@ -1440,6 +1801,21 @@ _MEMBERSPECS.oneofs_by_name['as'].fields.append(
   _MEMBERSPECS.fields_by_name['namedobject'])
 _MEMBERSPECS.fields_by_name['namedobject'].containing_oneof = _MEMBERSPECS.oneofs_by_name['as']
 _GETSPECSRESPONSE.fields_by_name['member'].message_type = _MEMBERSPECS
+_COMMANDINFO.fields_by_name['args'].message_type = _COMMANDARG
+_STATICINFO_NAMEDOBJECTSENTRY.fields_by_name['value'].message_type = _STATICINFO
+_STATICINFO_NAMEDOBJECTSENTRY.containing_type = _STATICINFO
+_STATICINFO_SINGLETONSENTRY.fields_by_name['value'].message_type = _STATICINFO
+_STATICINFO_SINGLETONSENTRY.containing_type = _STATICINFO
+_STATICINFO_PARAMETERSENTRY.fields_by_name['value'].message_type = _STATICINFO
+_STATICINFO_PARAMETERSENTRY.containing_type = _STATICINFO
+_STATICINFO_COMMANDSENTRY.fields_by_name['value'].message_type = _STATICINFO
+_STATICINFO_COMMANDSENTRY.containing_type = _STATICINFO
+_STATICINFO.fields_by_name['namedobjects'].message_type = _STATICINFO_NAMEDOBJECTSENTRY
+_STATICINFO.fields_by_name['singletons'].message_type = _STATICINFO_SINGLETONSENTRY
+_STATICINFO.fields_by_name['parameters'].message_type = _STATICINFO_PARAMETERSENTRY
+_STATICINFO.fields_by_name['commands'].message_type = _STATICINFO_COMMANDSENTRY
+_STATICINFO.fields_by_name['commandinfo'].message_type = _COMMANDINFO
+_GETSTATICINFORESPONSE.fields_by_name['info'].message_type = _STATICINFO
 DESCRIPTOR.message_types_by_name['DataModelRequest'] = _DATAMODELREQUEST
 DESCRIPTOR.message_types_by_name['DataModelResponse'] = _DATAMODELRESPONSE
 DESCRIPTOR.message_types_by_name['InitDatamodelRequest'] = _INITDATAMODELREQUEST
@@ -1469,6 +1845,11 @@ DESCRIPTOR.message_types_by_name['SingletonSpecs'] = _SINGLETONSPECS
 DESCRIPTOR.message_types_by_name['NamedObjectSpecs'] = _NAMEDOBJECTSPECS
 DESCRIPTOR.message_types_by_name['MemberSpecs'] = _MEMBERSPECS
 DESCRIPTOR.message_types_by_name['GetSpecsResponse'] = _GETSPECSRESPONSE
+DESCRIPTOR.message_types_by_name['CommandArg'] = _COMMANDARG
+DESCRIPTOR.message_types_by_name['CommandInfo'] = _COMMANDINFO
+DESCRIPTOR.message_types_by_name['StaticInfo'] = _STATICINFO
+DESCRIPTOR.message_types_by_name['GetStaticInfoRequest'] = _GETSTATICINFOREQUEST
+DESCRIPTOR.message_types_by_name['GetStaticInfoResponse'] = _GETSTATICINFORESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 DataModelRequest = _reflection.GeneratedProtocolMessageType('DataModelRequest', (_message.Message,), {
@@ -1674,7 +2055,78 @@ GetSpecsResponse = _reflection.GeneratedProtocolMessageType('GetSpecsResponse', 
   })
 _sym_db.RegisterMessage(GetSpecsResponse)
 
+CommandArg = _reflection.GeneratedProtocolMessageType('CommandArg', (_message.Message,), {
+  'DESCRIPTOR' : _COMMANDARG,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.CommandArg)
+  })
+_sym_db.RegisterMessage(CommandArg)
 
+CommandInfo = _reflection.GeneratedProtocolMessageType('CommandInfo', (_message.Message,), {
+  'DESCRIPTOR' : _COMMANDINFO,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.CommandInfo)
+  })
+_sym_db.RegisterMessage(CommandInfo)
+
+StaticInfo = _reflection.GeneratedProtocolMessageType('StaticInfo', (_message.Message,), {
+
+  'NamedobjectsEntry' : _reflection.GeneratedProtocolMessageType('NamedobjectsEntry', (_message.Message,), {
+    'DESCRIPTOR' : _STATICINFO_NAMEDOBJECTSENTRY,
+    '__module__' : 'datamodel_se_pb2'
+    # @@protoc_insertion_point(class_scope:grpcRemoting.StaticInfo.NamedobjectsEntry)
+    })
+  ,
+
+  'SingletonsEntry' : _reflection.GeneratedProtocolMessageType('SingletonsEntry', (_message.Message,), {
+    'DESCRIPTOR' : _STATICINFO_SINGLETONSENTRY,
+    '__module__' : 'datamodel_se_pb2'
+    # @@protoc_insertion_point(class_scope:grpcRemoting.StaticInfo.SingletonsEntry)
+    })
+  ,
+
+  'ParametersEntry' : _reflection.GeneratedProtocolMessageType('ParametersEntry', (_message.Message,), {
+    'DESCRIPTOR' : _STATICINFO_PARAMETERSENTRY,
+    '__module__' : 'datamodel_se_pb2'
+    # @@protoc_insertion_point(class_scope:grpcRemoting.StaticInfo.ParametersEntry)
+    })
+  ,
+
+  'CommandsEntry' : _reflection.GeneratedProtocolMessageType('CommandsEntry', (_message.Message,), {
+    'DESCRIPTOR' : _STATICINFO_COMMANDSENTRY,
+    '__module__' : 'datamodel_se_pb2'
+    # @@protoc_insertion_point(class_scope:grpcRemoting.StaticInfo.CommandsEntry)
+    })
+  ,
+  'DESCRIPTOR' : _STATICINFO,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.StaticInfo)
+  })
+_sym_db.RegisterMessage(StaticInfo)
+_sym_db.RegisterMessage(StaticInfo.NamedobjectsEntry)
+_sym_db.RegisterMessage(StaticInfo.SingletonsEntry)
+_sym_db.RegisterMessage(StaticInfo.ParametersEntry)
+_sym_db.RegisterMessage(StaticInfo.CommandsEntry)
+
+GetStaticInfoRequest = _reflection.GeneratedProtocolMessageType('GetStaticInfoRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETSTATICINFOREQUEST,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.GetStaticInfoRequest)
+  })
+_sym_db.RegisterMessage(GetStaticInfoRequest)
+
+GetStaticInfoResponse = _reflection.GeneratedProtocolMessageType('GetStaticInfoResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETSTATICINFORESPONSE,
+  '__module__' : 'datamodel_se_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.GetStaticInfoResponse)
+  })
+_sym_db.RegisterMessage(GetStaticInfoResponse)
+
+
+_STATICINFO_NAMEDOBJECTSENTRY._options = None
+_STATICINFO_SINGLETONSENTRY._options = None
+_STATICINFO_PARAMETERSENTRY._options = None
+_STATICINFO_COMMANDSENTRY._options = None
 
 _DATAMODEL = _descriptor.ServiceDescriptor(
   name='DataModel',
@@ -1683,8 +2135,8 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=3052,
-  serialized_end=3844,
+  serialized_start=3906,
+  serialized_end=4790,
   methods=[
   _descriptor.MethodDescriptor(
     name='BeginStreaming',
@@ -1773,6 +2225,16 @@ _DATAMODEL = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETSPECSREQUEST,
     output_type=_GETSPECSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='getStaticInfo',
+    full_name='grpcRemoting.DataModel.getStaticInfo',
+    index=9,
+    containing_service=None,
+    input_type=_GETSTATICINFOREQUEST,
+    output_type=_GETSTATICINFORESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
