@@ -72,6 +72,6 @@ repos:
   hooks:
     - id: last-commit-info
       name: last-commit-info
-      entry: echo $GITHUB_LASTSHA > .last-commit-info
+      entry: .ci/update_last_commit_info.sh
       language: script
       stages: [manual]
