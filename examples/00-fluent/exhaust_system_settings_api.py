@@ -71,16 +71,16 @@ session.part_management.InputFileChanged(
 session.PMFileManagement.FileManager.LoadFiles()
 session.part_management.Node["Meshing Model"].Copy(
     Paths=[
-        "/dirty_manifold-for-wrapper," +
-        "1/dirty_manifold-for-wrapper,1/main,1",
-        "/dirty_manifold-for-wrapper," +
-        "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
-        "/dirty_manifold-for-wrapper," +
-        "1/dirty_manifold-for-wrapper,1/outpipe3,1",
-        "/dirty_manifold-for-wrapper," +
-        "1/dirty_manifold-for-wrapper,1/object2,1",
-        "/dirty_manifold-for-wrapper," +
-        "1/dirty_manifold-for-wrapper,1/object1,1",
+        "/dirty_manifold-for-wrapper,"
+        + "1/dirty_manifold-for-wrapper,1/main,1",
+        "/dirty_manifold-for-wrapper,"
+        + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
+        "/dirty_manifold-for-wrapper,"
+        + "1/dirty_manifold-for-wrapper,1/outpipe3,1",
+        "/dirty_manifold-for-wrapper,"
+        + "1/dirty_manifold-for-wrapper,1/object2,1",
+        "/dirty_manifold-for-wrapper,"
+        + "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
 session.part_management.ObjectSetting[
@@ -544,7 +544,7 @@ root = session.get_settings_root()
 ###############################################################################
 # Select kw sst turbulence model
 
-root.setup.models.viscous.k_omega_model = 'sst'
+root.setup.models.viscous.k_omega_model = "sst"
 
 ###############################################################################
 # Set the velocity and turbulence boundary conditions for the first inlet
@@ -566,7 +566,8 @@ session.tui.solver.define.boundary_conditions.copy_bc(
 # Set the boundary conditions at the outlet (outlet-1).
 
 root.setup.boundary_conditions.pressure_outlet[
-    "outlet-1"].turb_intensity = 0.05
+    "outlet-1"
+].turb_intensity = 0.05
 
 ###############################################################################
 # Enable the plotting of residuals during the calculation.
@@ -587,8 +588,12 @@ session.tui.solver.solve.iterate()
 # Monitor the total mass flow rate through the entire domain
 
 root.solution.report_definitions.volume["report-volume-int"] = {}
-root.solution.report_definitions.volume["report-volume-int"].report_type = 'volume-integral'
-root.solution.report_definitions.volume["report-volume-int"].zone_names = ["fluid-region-1"]
+root.solution.report_definitions.volume[
+    "report-volume-int"
+].report_type = "volume-integral"
+root.solution.report_definitions.volume["report-volume-int"].zone_names = [
+    "fluid-region-1"
+]
 root.solution.report_definitions.compute(report_defs=["report-volume-int"])
 
 ###############################################################################
@@ -596,12 +601,12 @@ root.solution.report_definitions.compute(report_defs=["report-volume-int"])
 
 root.results.graphics.pathlines["pathlines-1"] = {}
 root.results.graphics.pathlines["pathlines-1"].print_state()
-root.results.graphics.pathlines["pathlines-1"].field = 'time'
+root.results.graphics.pathlines["pathlines-1"].field = "time"
 root.results.graphics.pathlines["pathlines-1"].skip = 5
 root.results.graphics.pathlines["pathlines-1"].surfaces_list = [
     "inlet-1",
     "inlet-2",
-    "inlet-3"
+    "inlet-3",
 ]
 
 root.results.graphics.pathlines["pathlines-1"].display()
@@ -632,11 +637,15 @@ root.results.graphics.contour["contour-velocity"].surfaces_list = [
     "surf-x-coordinate"
 ]
 root.results.graphics.contour["contour-velocity"].node_values = False
-root.results.graphics.contour["contour-velocity"].range_option.auto_range_on.global_range = False
+root.results.graphics.contour[
+    "contour-velocity"
+].range_option.auto_range_on.global_range = False
 root.results.graphics.contour["contour-velocity"].display()
 
 root.results.graphics.mesh["mesh-1"] = {}
-surface_list = root.results.graphics.mesh["mesh-1"].surfaces_list.get_attr('allowed-values')
+surface_list = root.results.graphics.mesh["mesh-1"].surfaces_list.get_attr(
+    "allowed-values"
+)
 root.results.graphics.mesh["mesh-1"].surfaces_list = surface_list
 root.results.graphics.mesh["mesh-1"].display()
 
