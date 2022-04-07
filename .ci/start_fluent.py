@@ -17,14 +17,30 @@ def start_fluent_container(args):
     port = os.environ["PYFLUENT_FLUENT_PORT"]
 
     try:
-        subprocess.run(["docker", "run", "--name", "fluent_server", "-d",
-                        "--rm", "-p", f"{port}:{port}",
-                        "-v", f"{EXAMPLES_PATH}:{EXAMPLES_PATH}",
-                        "-e", f"ANSYSLMD_LICENSE_FILE={license_server}",
-                        "-e", f"REMOTING_PORTS={port}/portspan=2",
-                        "-e", "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
-                        "ghcr.io/pyansys/pyfluent",
-                        "-g", f"-sifile={sifile}"] + args)
+        subprocess.run(
+            [
+                "docker",
+                "run",
+                "--name",
+                "fluent_server",
+                "-d",
+                "--rm",
+                "-p",
+                f"{port}:{port}",
+                "-v",
+                f"{EXAMPLES_PATH}:{EXAMPLES_PATH}",
+                "-e",
+                f"ANSYSLMD_LICENSE_FILE={license_server}",
+                "-e",
+                f"REMOTING_PORTS={port}/portspan=2",
+                "-e",
+                "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
+                "ghcr.io/pyansys/pyfluent",
+                "-g",
+                f"-sifile={sifile}",
+            ]
+            + args
+        )
 
         sifile_last_mtime = os.stat(sifile).st_mtime
         while True:

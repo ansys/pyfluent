@@ -1,25 +1,24 @@
 """Wrappers over StateEngine based datamodel grpc service of Fluent."""
 
-import itertools
 from enum import Enum
+import itertools
 from typing import Any, Iterator, List, Tuple
 
 import grpc
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
-from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.utils.async_execution import asynchronous
 
 Path = List[Tuple[str, str]]
 
 
 class Attribute(Enum):
-    """
-    Class containing the standard names of data model attributes
-    associated with the datamodel service
-    """
+    """Class containing the standard names of data model attributes associated
+    with the datamodel service."""
+
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
     IS_READ_ONLY = "isReadOnly"
@@ -52,9 +51,9 @@ class Attribute(Enum):
 
 
 class DatamodelService:
-    """
-    Class wrapping the StateEngine based datamodel grpc service of
-    Fluent. It is suggested to use the methods from PyMenu class.
+    """Class wrapping the StateEngine based datamodel grpc service of Fluent.
+
+    It is suggested to use the methods from PyMenu class.
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
@@ -99,7 +98,7 @@ class DatamodelService:
 
 
 def _convert_value_to_variant(val, var):
-    """Convert Python datatype to Fluent's Variant type"""
+    """Convert Python datatype to Fluent's Variant type."""
 
     if isinstance(val, bool):
         var.bool_state = val
@@ -122,7 +121,7 @@ def _convert_value_to_variant(val, var):
 
 
 def _convert_variant_to_value(var):
-    """Convert Fluent's Variant to Python datatype"""
+    """Convert Fluent's Variant to Python datatype."""
 
     if var.HasField("bool_state"):
         return var.bool_state
@@ -153,8 +152,7 @@ def _convert_variant_to_value(var):
 
 
 def _convert_path_to_se_path(path: Path) -> str:
-    """
-    Convert path structure to a StateEngine path
+    """Convert path structure to a StateEngine path.
 
     Parameters
     ----------
@@ -175,10 +173,8 @@ def _convert_path_to_se_path(path: Path) -> str:
 
 
 class PyMenu:
-    """
-    Object class using StateEngine based DatamodelService as backend.
-    Use this class instead of directly calling DatamodelService's
-    method.
+    """Object class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -280,7 +276,7 @@ class PyMenu:
 
     setState = set_state
 
-    def update_dict(self, dict_state : dict):
+    def update_dict(self, dict_state: dict):
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
@@ -290,7 +286,7 @@ class PyMenu:
     updateDict = update_dict
 
     def __dir__(self) -> List[str]:
-        """Returns list of child object names
+        """Returns list of child object names.
 
         Returns
         -------
@@ -300,7 +296,7 @@ class PyMenu:
         return list(itertools.chain(*self.__get_child_names()))
 
     def __getattr__(self, name: str) -> Any:
-        """Returns the child object
+        """Returns the child object.
 
         Parameters
         ----------
@@ -318,7 +314,7 @@ class PyMenu:
             return self.__get_child(name)
 
     def __setattr__(self, name: str, value: Any):
-        """Set state of the child object
+        """Set state of the child object.
 
         Parameters
         ----------
@@ -333,7 +329,7 @@ class PyMenu:
             self.__get_child(name).set_state(value)
 
     def __call__(self, *args, **kwds) -> Any:
-        """Get state of the current object
+        """Get state of the current object.
 
         Returns
         -------
@@ -343,7 +339,7 @@ class PyMenu:
         return self.get_state()
 
     def get_attrib_value(self, attrib: str) -> Any:
-        """Get attribute value of the current object
+        """Get attribute value of the current object.
 
         Parameters
         ----------
@@ -378,15 +374,13 @@ class PyMenu:
     getDocstring = get_docstring
 
     def help(self):
-        """Prints command help string"""
+        """Prints command help string."""
         print(self.get_docstring())
 
 
 class PyNamedObjectContainer:
-    """
-    Container class using StateEngine based DatamodelService as backend.
-    Use this class instead of directly calling DatamodelService's
-    method.
+    """Container class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -400,7 +394,6 @@ class PyNamedObjectContainer:
         Set state of the child object by name
     __delitem__(key)
         Deletes the child object by name
-
     """
 
     def __init__(
@@ -443,7 +436,7 @@ class PyNamedObjectContainer:
         return child_object_display_names
 
     def __len__(self) -> int:
-        """Returns count of child objects
+        """Returns count of child objects.
 
         Returns
         -------
@@ -453,7 +446,7 @@ class PyNamedObjectContainer:
         return len(self.__get_child_object_display_names())
 
     def __iter__(self) -> Iterator[PyMenu]:
-        """Returns the next child object
+        """Returns the next child object.
 
         Yields
         -------
@@ -491,7 +484,7 @@ class PyNamedObjectContainer:
             )
 
     def __getitem__(self, key: str) -> PyMenu:
-        """Returns the child object by key
+        """Returns the child object by key.
 
         Parameters
         ----------
@@ -506,7 +499,7 @@ class PyNamedObjectContainer:
         return self.__get_item(key)
 
     def __setitem__(self, key: str, value: Any):
-        """Set state of the child object by name
+        """Set state of the child object by name.
 
         Parameters
         ----------
@@ -518,7 +511,7 @@ class PyNamedObjectContainer:
         self.__get_item(key).set_state(value)
 
     def __delitem__(self, key: str):
-        """Deletes the child object by name
+        """Deletes the child object by name.
 
         Parameters
         ----------
@@ -529,10 +522,8 @@ class PyNamedObjectContainer:
 
 
 class PyCommand:
-    """
-    Command class using StateEngine based DatamodelService as backend.
-    Use this class instead of directly calling DatamodelService's
-    method.
+    """Command class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
 
     Methods
     -------
@@ -540,7 +531,6 @@ class PyCommand:
         Executes the command
     help()
         Prints command help string
-
     """
 
     docstring = None
@@ -562,7 +552,7 @@ class PyCommand:
 
     @asynchronous
     def __call__(self, *args, **kwds) -> Any:
-        """Executes the command
+        """Executes the command.
 
         Returns
         -------
@@ -594,5 +584,5 @@ class PyCommand:
     getDocstring = get_docstring
 
     def help(self):
-        """Prints command help string"""
+        """Prints command help string."""
         print(self.get_docstring())

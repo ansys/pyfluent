@@ -1,9 +1,11 @@
-from typing import Dict, List, Optional
-import pickle
-import pytest
 from pathlib import Path
-from ansys.fluent.post.pyvista import Graphics
+import pickle
+from typing import Dict, List, Optional
+
+import pytest
+
 from ansys.fluent.post.matplotlib import Plots
+from ansys.fluent.post.pyvista import Graphics
 
 
 @pytest.fixture(autouse=True)

@@ -35,7 +35,7 @@ directory of the repository:
     cd doc
     make html
 
-After the build completes the html documentaion is located in the
+After the build completes the html documentation is located in the
 ``_builds/html`` directory and you can load the ``index.html`` into a web
 browser.  To clean the documentation you can execute this command:
 
@@ -51,7 +51,24 @@ submit questions, report bugs, and request new features.
 
 Code Style
 ----------
-PyFluent follows PEP8 standard as outlined in the `PyAnsys Development Guide
-<https://dev.docs.pyansys.com>`_ and implements style checking using `flake8
-<https://flake8.pycqa.org/>`_.
+PyFluent is compliant with `PyAnsys Development Code Style Guide
+<https://dev.docs.pyansys.com/coding_style/index.html>`_.  Code style is checked
+by making use of `pre-commit <https://pre-commit.com/>`_. Install this tool and
+activate it executing the following commands:
 
+.. code:: bash
+
+   python -m pip install pre-commit
+   pre-commit install
+
+Then, you can use the ``style`` rule defined in the ``Makefile``:
+
+.. code:: bash
+
+   make style
+
+Or directly execute `pre-commit <https://pre-commit.com/>`_:
+
+.. code:: bash
+
+    pre-commit run --all-files --show-diff-on-failure

@@ -123,9 +123,7 @@ class PyLocalBaseMeta(type):
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs[
-            "_get_parent_by_type"
-        ] = cls.__create_get_parent_by_type()
+        attrs["_get_parent_by_type"] = cls.__create_get_parent_by_type()
         attrs["_get_top_most_parent"] = cls.__create_get_top_most_parent()
         return super(PyLocalBaseMeta, cls).__new__(cls, name, bases, attrs)
 

@@ -1,5 +1,4 @@
-"""
-Functions to download sample datasets from the pyansys data repository.
+"""Functions to download sample datasets from the pyansys data repository.
 
 Example
 -------
@@ -8,7 +7,6 @@ Example
 >>> filename = examples.download_file("bracket.iges", "geometry")
 >>> filename
 '/home/user/.local/share/ansys_fluent_core/examples/bracket.iges'
-
 """
 import os
 import shutil
@@ -19,13 +17,13 @@ import ansys.fluent.core as pyfluent
 
 
 def get_ext(filename):
-    """Extract the extension of the filename"""
+    """Extract the extension of the filename."""
     ext = os.path.splitext(filename)[1].lower()
     return ext
 
 
 def delete_downloads():
-    """Delete all downloaded examples to free space or update the files"""
+    """Delete all downloaded examples to free space or update the files."""
     shutil.rmtree(pyfluent.EXAMPLES_PATH)
     os.makedirs(pyfluent.EXAMPLES_PATH)
     return True

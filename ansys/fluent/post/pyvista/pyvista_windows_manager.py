@@ -4,8 +4,8 @@ import threading
 from typing import List, Optional, Union
 
 import numpy as np
-from pyvistaqt import BackgroundPlotter
 import pyvista as pv
+from pyvistaqt import BackgroundPlotter
 
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
@@ -21,8 +21,7 @@ class PyVistaWindow(PostWindow):
     """Class for PyVista window."""
 
     def __init__(self, id: str, post_object: Union[GraphicsDefn, PlotDefn]):
-        """
-        Instantiate a PyVistaWindow.
+        """Instantiate a PyVistaWindow.
 
         Parameters
         ----------
@@ -403,8 +402,7 @@ class PyVistaWindowsManager(
         self._app = None
 
     def open_window(self, window_id: Optional[str] = None) -> str:
-        """
-        Open new window.
+        """Open new window.
 
         Parameters
         ----------
@@ -428,8 +426,7 @@ class PyVistaWindowsManager(
     def set_object_for_window(
         self, object: Union[GraphicsDefn, PlotDefn], window_id: str
     ) -> None:
-        """
-        Associate post object with running window instance.
+        """Associate post object with running window instance.
 
         Parameters
         ----------
@@ -456,8 +453,7 @@ class PyVistaWindowsManager(
         object: Union[GraphicsDefn, PlotDefn],
         window_id: Optional[str] = None,
     ) -> None:
-        """
-        Draw plot.
+        """Draw plot.
 
         Parameters
         ----------
@@ -487,8 +483,7 @@ class PyVistaWindowsManager(
         window_id: str,
         format: str,
     ) -> None:
-        """
-        Save graphics.
+        """Save graphics.
 
         Parameters
         ----------
@@ -512,8 +507,7 @@ class PyVistaWindowsManager(
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Refresh windows.
+        """Refresh windows.
 
         Parameters
         ----------
@@ -539,8 +533,7 @@ class PyVistaWindowsManager(
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Animate windows.
+        """Animate windows.
 
         Parameters
         ----------
@@ -571,8 +564,7 @@ class PyVistaWindowsManager(
         session_id: Optional[str] = "",
         windows_id: Optional[List[str]] = [],
     ) -> None:
-        """
-        Close windows.
+        """Close windows.
 
         Parameters
         ----------

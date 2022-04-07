@@ -5,8 +5,7 @@ import pickle
 def dump_session_data(
     session, file_path: str, fields: list = [], surfaces: list = []
 ):
-    """
-    Dump session data.
+    """Dump session data.
 
     Parameters
     ----------

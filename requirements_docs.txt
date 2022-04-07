@@ -11,3 +11,4 @@ sphinx-gallery==0.10.1
 sphinx-notfound-page==0.8
 sphinxcontrib-websupport==1.2.4
 sphinxemoji==0.2.0
+pandas==1.4.1

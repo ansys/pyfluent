@@ -27,14 +27,14 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install Style Requirements
+      - name: Install pre-commit
         run: |
-          pip install -r requirements_style.txt --disable-pip-version-check
+          python -m pip install pre-commit
 
-      - name: Run flake8
+      - name: Run pre-commit
         if: always()
         run: |
-          make flake8
+          pre-commit run --all-files --show-diff-on-failure
 
       - name: Run protolint
         uses: plexsystems/protolint-action@v0.6.0

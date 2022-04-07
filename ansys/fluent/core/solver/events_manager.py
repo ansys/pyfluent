@@ -1,15 +1,14 @@
 """Module for events management."""
+from functools import partial
 import itertools
 import threading
-from functools import partial
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 
 
 class EventsManager:
-    """
-    Manages the server side events.
+    """Manages the server side events.
 
     Allows client to register/unregister callbacks with server events.
 
@@ -65,8 +64,7 @@ class EventsManager:
     def register_callback(
         self, event_name: str, call_back: Callable, *args, **kwargs
     ) -> str:
-        """
-        Register Callback.
+        """Register Callback.
 
         Parameters
         ----------
@@ -85,7 +83,6 @@ class EventsManager:
         -------
         str
             Registered callback Id.
-
         """
         if not event_name in self.events_list:
             raise RuntimeError(f"{event_name} is not a valid event.")
@@ -102,13 +99,12 @@ class EventsManager:
             return id
 
     def unregister_callback(self, callback_id: str):
-        """
-        Unregister Callback.
+        """Unregister Callback.
 
         Parameters
         ----------
         callback_id : str
-            Registered callbak Id.
+            Registered callback Id.
         """
         with self.__lock:
             for callbacks_map in self.__events_to_callbacks_map.values():

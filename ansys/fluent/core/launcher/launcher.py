@@ -1,21 +1,20 @@
-"""
-Provide a module for launching Fluent.
+"""Provide a module for launching Fluent.
 
-This module supports both starting Fluent locally or connecting to a remote
-instance with gRPC.
+This module supports both starting Fluent locally or connecting to a
+remote instance with gRPC.
 """
 
 import json
 import os
+from pathlib import Path
 import platform
 import subprocess
 import tempfile
 import time
-from pathlib import Path
 from typing import Any, Dict
 
-from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.session import Session
+from ansys.fluent.core.utils.logging import LOG
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")

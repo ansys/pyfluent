@@ -1,5 +1,4 @@
-"""
-Wrappers over SchemeEval grpc service of Fluent.
+"""Wrappers over SchemeEval grpc service of Fluent.
 
 Example
 -------
@@ -18,7 +17,6 @@ Example
 5
 >>> session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
 0.7
-
 """
 
 from typing import Any, List, Sequence, Tuple
@@ -31,9 +29,9 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 
 
 class SchemeEvalService:
-    """
-    Class wrapping the SchemeEval grpc service of Fluent. It is
-    suggested to use the methods from SchemeEval class.
+    """Class wrapping the SchemeEval grpc service of Fluent.
+
+    It is suggested to use the methods from SchemeEval class.
     """
 
     def __init__(self, channel: grpc.Channel, metadata):
@@ -51,8 +49,7 @@ class SchemeEvalService:
 
 
 class Symbol:
-    """
-    Class to represent symbol datatype in scheme
+    """Class to represent symbol datatype in scheme.
 
     Attributes
     ----------
@@ -78,7 +75,7 @@ def _convert_list_of_pairs_to_scheme_pointer(
 
 
 def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer):
-    """Convert Python datatype to Scheme pointer"""
+    """Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
         p.b = val
     elif isinstance(val, int):
@@ -130,7 +127,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer):
 
 
 def _convert_scheme_pointer_to_py_value(p: SchemePointer):
-    """Convert Scheme pointer to Python datatype"""
+    """Convert Scheme pointer to Python datatype."""
     if p.HasField("b"):
         return p.b
     elif p.HasField("fixednum"):
@@ -159,8 +156,7 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer):
 
 
 class SchemeEval:
-    """
-    Class on which Fluent's scheme code can be executed
+    """Class on which Fluent's scheme code can be executed.
 
     Methods
     -------
@@ -180,8 +176,7 @@ class SchemeEval:
         self.service = service
 
     def eval(self, val: Any) -> Any:
-        """
-        Evaluates a scheme expression
+        """Evaluates a scheme expression.
 
         Parameters
         ----------
@@ -201,8 +196,7 @@ class SchemeEval:
     def exec(
         self, commands: Sequence[str], wait: bool = True, silent: bool = True
     ) -> str:
-        """
-        Executes a sequence of scheme commands
+        """Executes a sequence of scheme commands.
 
         Parameters
         ----------
@@ -227,8 +221,7 @@ class SchemeEval:
         return response.output
 
     def string_eval(self, input_: str) -> str:
-        """
-        Evaluates a scheme expression in string format
+        """Evaluates a scheme expression in string format.
 
         Parameters
         ----------
@@ -246,8 +239,7 @@ class SchemeEval:
         return response.output
 
     def scheme_eval(self, input_: str) -> Any:
-        """
-        Evaluates a scheme expression in string format
+        """Evaluates a scheme expression in string format.
 
         Parameters
         ----------
@@ -264,7 +256,7 @@ class SchemeEval:
         val = (
             S("eval"),
             (S("with-input-from-string"), input_, S("read")),
-            S("user-initial-environment")
+            S("user-initial-environment"),
         )
         _convert_py_value_to_scheme_pointer(val, request)
         response = self.service.eval(request)

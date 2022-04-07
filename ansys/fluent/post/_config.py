@@ -14,8 +14,7 @@ def _get_threadlocal_config():
 
 
 def get_config() -> dict:
-    """
-    Retrieve post configuration.
+    """Retrieve post configuration.
 
     Returns
     -------
@@ -26,8 +25,7 @@ def get_config() -> dict:
 
 
 def set_config(blocking: bool = False):
-    """
-    Set post configuration.
+    """Set post configuration.
 
     Parameters
     ----------
