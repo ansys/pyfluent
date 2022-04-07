@@ -397,17 +397,17 @@ s.tui.solver.solve.convergence_conditions(
     "3",
     "quit",
 )
-s.tui.solver.solve.convergence_conditions("frequency", "3", "quit").result()
+s.tui.solver.solve.convergence_conditions("frequency", "3", "quit")
 
 ###############################################################################
 
 # Initialize the flow field using the Hybrid Initialization
-s.tui.solver.solve.initialize.hyb_initialization().result()
+s.tui.solver.solve.initialize.hyb_initialization()
 
 ###############################################################################
 
 # Solve for 150 Iterations.
-s.tui.solver.solve.iterate(150).result()
+s.tui.solver.solve.iterate(150)
 
 ###############################################################################
 
@@ -479,7 +479,7 @@ root.results.graphics.vector["vector-vel"].style = "arrow"
 # surface outlet. Name: z=0_outlet
 s.tui.solver.surface.iso_surface(
     "z-coordinate", "z=0_outlet", "outlet", "()", "()", "0", "()"
-).result()
+)
 
 # Create Contour on the iso-surface
 root.results.graphics.contour["contour-z_0_outlet"] = {}
@@ -491,7 +491,7 @@ root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = [
 # root.results.graphics.contour["contour-z_0_outlet"].display()
 
 ###############################################################################
-# s.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5").result()
+# s.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5")
 
 # Display and save an XY plot of the temperature profile across the centerline
 # of the outlet for the initial solution
@@ -505,8 +505,8 @@ s.tui.solver.display.objects.create(
     "z=0_outlet",
     "()",
     "quit",
-).result()
-# s.tui.solver.display.objects.display("xy-outlet-temp").result()
+)
+# s.tui.solver.display.objects.display("xy-outlet-temp")
 # s.tui.solver.plot.plot(
 #    "yes",
 #    "temp-1.xy",
@@ -520,11 +520,11 @@ s.tui.solver.display.objects.create(
 #    "0",
 #    "z=0_outlet",
 #    "()",
-# ).result()
+# )
 
 ###############################################################################
 
 # Write final case and data.
-# s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5').result()
+# s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5')
 
 ###############################################################################
