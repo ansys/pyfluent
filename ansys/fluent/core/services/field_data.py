@@ -121,8 +121,15 @@ class FieldData:
 
     Methods
     -------
-    get_surfaces(surface_ids: List[int], overset_mesh: bool) -> Dict[int, Dict]
-        Get surfaces data i.e. coordinates and connectivity.
+    def get_surfaces(
+        surface_ids: List[int],
+        overset_mesh: bool = False,
+        provide_vertices=True,
+        provide_faces=True,
+        provide_faces_centroid=False,
+        provide_faces_normal=False,
+    ) -> Dict[int, Dict]
+        Get surfaces data i.e. vertices, faces connectivity, centroids and normals.
 
     get_scalar_field(
         surface_ids: List[int],
@@ -207,7 +214,13 @@ class FieldData:
         return fields_data
 
     def get_surfaces(
-        self, surface_ids: List[int], overset_mesh: bool = False
+        self,
+        surface_ids: List[int],
+        overset_mesh: bool = False,
+        provide_vertices=True,
+        provide_faces=True,
+        provide_faces_centroid=False,
+        provide_faces_normal=False,
     ) -> Dict[int, Dict]:
         request = FieldDataProtoModule.GetFieldsRequest(
             provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
@@ -217,7 +230,10 @@ class FieldData:
                 FieldDataProtoModule.SurfaceRequest(
                     surfaceId=surface_id,
                     oversetMesh=overset_mesh,
-                    provideFaces=True,
+                    provideFaces=provide_faces,
+                    provideVertices=provide_vertices,
+                    provideFacesCentroid=provide_faces_centroid,
+                    provideFacesNormal=provide_faces_normal,
                 )
                 for surface_id in surface_ids
             ]
@@ -240,6 +256,9 @@ class FieldData:
                     surfaceId=surface_id,
                     oversetMesh=False,
                     provideFaces=True,
+                    provideVertices=True,
+                    provideFacesCentroid=False,
+                    provideFacesNormal=False,
                 )
                 for surface_id in surface_ids
             ]
@@ -275,6 +294,9 @@ class FieldData:
                     surfaceId=surface_id,
                     oversetMesh=False,
                     provideFaces=True,
+                    provideVertices=True,
+                    provideFacesCentroid=False,
+                    provideFacesNormal=False,
                 )
                 for surface_id in surface_ids
             ]
@@ -298,8 +320,6 @@ class FieldData:
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
                     vectorFieldName=vector_field,
-                    provideFacesCentroid=False,
-                    provideFacesAreaNormal=False,
                 )
                 for surface_id in surface_ids
             ]
