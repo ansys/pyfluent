@@ -160,7 +160,7 @@ jobs:
   build_test:
     name: Build and Unit Testing
     needs: test-import
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -168,7 +168,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7
+          python-version: 3.9
 
       - name: Cache pip
         uses: actions/cache@v2
@@ -178,6 +178,8 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
+      - name: Install pyvistaqt requirements
+        run: make install-pyvistaqt-requirements
 
       - name: Install pyfluent with post requirements
         run: make install-post
