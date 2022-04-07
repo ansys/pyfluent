@@ -50,6 +50,7 @@ jobs:
       - name: Update last commit info in repository
         # if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: test-room-7/action-update-file@v1
+        with:
           file-path: .last-commit-info
           commit-msg: Update .last-commit-info
           github-token: ${{ secrets.GITHUB_TOKEN }}
