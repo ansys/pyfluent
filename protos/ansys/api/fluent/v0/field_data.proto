@@ -98,13 +98,15 @@ message GetFieldsResponse {
 
 /**
  * Request for surface data.
- * Surface data consists of information about vertices and their connectivity.
- * Connectivity information is provided only if provideFaces is True.
+ * Surface data consists of information about vertices and faces.
  */
 message SurfaceRequest {
-  uint64 surfaceId = 1;   // Surface id.
-  bool oversetMesh = 2;   // Provide overset mesh.
-  bool provideFaces = 3;  // Provide faces information i.e. vertices connectivity.
+  uint64 surfaceId = 1;      // Surface id.
+  bool oversetMesh = 2;      // Provide overset mesh.
+  bool provideVertices = 3;  // Provide vectices.
+  bool provideFaces = 4;     // Provide face to vertex connectivity.
+  bool provideFacesCentroid = 5;  // Provide face centroids.
+  bool provideFacesNormal = 6;    // Provide face normals.
 }
 
 enum DataLocation {
@@ -128,8 +130,6 @@ message ScalarFieldRequest {
 message VectorFieldRequest {
   uint64 surfaceId = 1;             // Surface id for vector field.
   string vectorFieldName = 2;       // Vector field name.
-  bool provideFacesCentroid = 3;    // Provide faces centroid.
-  bool provideFacesAreaNormal = 4;  // Provide faces area normal.
 }
 
 /**
