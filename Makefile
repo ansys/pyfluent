@@ -8,6 +8,12 @@ install:
 	@python setup.py bdist_wheel
 	@pip install dist/*.whl
 
+last-commit-info:
+	@bash -c "echo '' >> README.rst"
+	@bash -c "echo 'Last commit info' >> README.rst"
+	@bash -c "echo '----------------' >> README.rst"
+	@bash -c "git log -n 1 --format='%an <%ae> - %ad - %H' >> README.rst"
+
 install-post:
 	@pip install -r requirements_build.txt
 	@python setup.py sdist

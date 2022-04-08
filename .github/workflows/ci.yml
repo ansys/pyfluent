@@ -42,20 +42,6 @@ jobs:
         with:
           configDirectory: protos
 
-      - name: Generate updated .last-commit-info
-        if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/main' }}
-        run: |
-          echo "$GITHUB_SHA" > .last-commit-info
-      - name: Update .last-commit-info in repository
-        if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/main' }}
-        uses: test-room-7/action-update-file@v1
-        with:
-          branch: ${{ github.ref }}
-          file-path: .last-commit-info
-          commit-msg: [skip ci] Update .last-commit-info
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-
   test-import:
     name: Smoke Tests
     runs-on: ${{ matrix.os }}
@@ -194,6 +180,9 @@ jobs:
 
       - name: Install pyvistaqt requirements
         run: make install-pyvistaqt-requirements
+
+      - name: Add last commit information
+        run: make last-commit-info
 
       - name: Install pyfluent with post requirements
         run: make install-post
