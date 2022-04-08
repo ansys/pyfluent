@@ -18,8 +18,21 @@ try:
 except ImportError:
     pass
 
-"""Global variable indicating the last commit information for the PyFluent package - Empty by default"""
-LAST_COMMIT = ""
+"""Global variable indicating the version of the PyFluent package - Empty by default"""
+__VERSION_INFO = ""
+
+
+def version_info():
+    """Method returning the version of PyFluent being used.
+
+    NB: Only available in packaged versions.
+
+    Returns
+    -------
+    str
+        The PyFluent version being used.
+    """
+    return __VERSION_INFO
 
 
 def set_log_level(level):
