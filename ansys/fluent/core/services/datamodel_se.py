@@ -1,7 +1,6 @@
 """Wrappers over StateEngine based datamodel grpc service of Fluent."""
 
 from enum import Enum
-import itertools
 from typing import Any, Iterator, List, Tuple
 
 import grpc
@@ -95,6 +94,10 @@ class DatamodelService:
     def get_specs(self, request):
         return self.__stub.getSpecs(request, metadata=self.__metadata)
 
+    @catch_grpc_error
+    def get_static_info(self, request):
+        return self.__stub.getStaticInfo(request, metadata=self.__metadata)
+
 
 def _convert_value_to_variant(val, var):
     """Convert Python datatype to Fluent's Variant type."""
@@ -177,10 +180,6 @@ class PyMenu:
 
     Methods
     -------
-    __dir__()
-        Returns list of child object names
-    __getattr__(name)
-        Returns the child object
     __setattr__(name, value)
         Set state of the child object
     __call__()
@@ -210,7 +209,6 @@ class PyMenu:
         to dict.update semantics (same as update_dict(dict_state))
     """
 
-    __slots__ = ("service", "rules", "path")
     docstring = None
 
     def __init__(
@@ -222,40 +220,6 @@ class PyMenu:
             self.path = []
         else:
             self.path = path
-
-    def __get_child_names(self) -> Tuple[List[str], List[str]]:
-        request = DataModelProtoModule.GetSpecsRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        response = self.service.get_specs(request)
-        singleton_names = []
-        creatable_type_names = []
-        command_names = []
-        for struct_type in ("singleton", "namedobject"):
-            if response.member.HasField(struct_type):
-                struct_field = getattr(response.member, struct_type)
-                for member in struct_field.members:
-                    if ":" not in member:
-                        singleton_names.append(member)
-                creatable_type_names = struct_field.creatabletypes
-                command_names = [x.name for x in struct_field.commands]
-        return singleton_names, creatable_type_names, command_names
-
-    def __get_child(self, name: str):
-        singletons, creatable_types, commands = self.__get_child_names()
-        if name in singletons:
-            child_path = self.path + [(name, "")]
-            return PyMenu(self.service, self.rules, child_path)
-        elif name in creatable_types:
-            child_path = self.path + [(name, "")]
-            return PyNamedObjectContainer(self.service, self.rules, child_path)
-        elif name in commands:
-            return PyCommand(self.service, self.rules, name, self.path)
-        else:
-            raise LookupError(
-                f"{name} is not found at path "
-                f"{_convert_path_to_se_path(self.path)}"
-            )
 
     def get_state(self):
         request = DataModelProtoModule.GetStateRequest()
@@ -284,34 +248,6 @@ class PyMenu:
 
     updateDict = update_dict
 
-    def __dir__(self) -> List[str]:
-        """Returns list of child object names.
-
-        Returns
-        -------
-        List[str]
-            child object names
-        """
-        return list(itertools.chain(*self.__get_child_names()))
-
-    def __getattr__(self, name: str) -> Any:
-        """Returns the child object.
-
-        Parameters
-        ----------
-        name : str
-            child object name
-
-        Returns
-        -------
-        Any
-            child object
-        """
-        if name in PyMenu.__slots__:
-            return super().__getattr__(name)
-        else:
-            return self.__get_child(name)
-
     def __setattr__(self, name: str, value: Any):
         """Set state of the child object.
 
@@ -322,10 +258,10 @@ class PyMenu:
         value : Any
             state
         """
-        if name in PyMenu.__slots__:
-            super().__setattr__(name, value)
+        if hasattr(self, name) and isinstance(getattr(self, name), PyMenu):
+            getattr(self, name).set_state(value)
         else:
-            self.__get_child(name).set_state(value)
+            super().__setattr__(name, value)
 
     def __call__(self, *args, **kwds) -> Any:
         """Get state of the current object.
@@ -359,22 +295,31 @@ class PyMenu:
 
     getAttribValue = get_attrib_value
 
-    def get_docstring(self):
-        if self.__class__.docstring is None:
-            request = DataModelProtoModule.GetSpecsRequest()
-            request.rules = self.rules
-            request.path = _convert_path_to_se_path(self.path)
-            response = self.service.get_specs(request)
-            self.__class__.docstring = getattr(
-                response.member, response.member.WhichOneof("as")
-            ).common.helpstring
-        return self.__class__.docstring
-
-    getDocstring = get_docstring
-
     def help(self):
-        """Prints command help string."""
-        print(self.get_docstring())
+        """Prints help string."""
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        help_string = getattr(
+            response.member, response.member.WhichOneof("as")
+        ).common.helpstring
+        print(help_string)
+
+    def rename(self, new_name: str):
+        """Rename the named object.
+
+        Parameters
+        ----------
+        new_name : str
+            new name
+        """
+        try:
+            self._name_.set_state(new_name)
+        except AttributeError:
+            raise RuntimeError(
+                f"{self.__class__.__name__} is not a named object class."
+            )
 
 
 class PyNamedObjectContainer:
@@ -453,15 +398,19 @@ class PyNamedObjectContainer:
             iterator of child objects
         """
         for name in self.__get_child_object_display_names():
-            child_path = self.path[0:-1]
+            child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
-            yield PyMenu(self.service, self.rules, child_path)
+            yield getattr(self.__class__, f"_{self.__class__.__name__}")(
+                self.service, self.rules, child_path
+            )
 
     def __get_item(self, key: str):
         if key in self.__get_child_object_display_names():
-            child_path = self.path[0:-1]
+            child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
-            return PyMenu(self.service, self.rules, child_path)
+            return getattr(self.__class__, f"_{self.__class__.__name__}")(
+                self.service, self.rules, child_path
+            )
         else:
             raise LookupError(
                 f"{key} is not found at path "
@@ -470,7 +419,7 @@ class PyNamedObjectContainer:
 
     def __del_item(self, key: str):
         if key in self.__get_child_object_display_names():
-            child_path = self.path[0:-1]
+            child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             request = DataModelProtoModule.DeleteObjectRequest()
             request.rules = self.rules
@@ -507,7 +456,12 @@ class PyNamedObjectContainer:
         value : Any
             state
         """
-        self.__get_item(key).set_state(value)
+        if isinstance(value, dict) and not value:
+            value["_name_"] = key
+        parent_state = {f"{self.__class__.__name__}:{key}": value}
+        PyMenu(self.service, self.rules, self.path[:-1]).set_state(
+            parent_state
+        )
 
     def __delitem__(self, key: str):
         """Deletes the child object by name.
@@ -566,21 +520,13 @@ class PyCommand:
         response = self.service.execute_command(request)
         return _convert_variant_to_value(response.result)
 
-    def get_docstring(self):
-        if self.__class__.docstring is None:
-            request = DataModelProtoModule.GetSpecsRequest()
-            request.rules = self.rules
-            request.path = _convert_path_to_se_path(
-                self.path + [(self.command, "")]
-            )
-            response = self.service.get_specs(request)
-            self.__class__.docstring = getattr(
-                response.member, response.member.WhichOneof("as")
-            ).common.helpstring
-        return self.__class__.docstring
-
-    getDocstring = get_docstring
-
     def help(self):
-        """Prints command help string."""
-        print(self.get_docstring())
+        """Prints help string."""
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        help_string = getattr(
+            response.member, response.member.WhichOneof("as")
+        ).common.helpstring
+        print(help_string)

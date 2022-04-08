@@ -11,7 +11,19 @@ import grpc
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
-from ansys.fluent.core.services.datamodel_se import PyMenu as PyMenu_SE
+
+try:
+    from ansys.fluent.core.datamodel.PMFileManagement import (
+        Root as PMFileManagement_root,
+    )
+    from ansys.fluent.core.datamodel.PartManagement import (
+        Root as PartManagement_root,
+    )
+    from ansys.fluent.core.datamodel.meshing import Root as meshing_root
+    from ansys.fluent.core.datamodel.workflow import Root as workflow_root
+except ImportError:
+    pass
+
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
@@ -186,16 +198,24 @@ class Session:
         self._datamodel_service_se = DatamodelService_SE(
             self._channel, self._metadata
         )
-        self.meshing = PyMenu_SE(self._datamodel_service_se, "meshing")
-        self.workflow = PyMenu_SE(self._datamodel_service_se, "workflow")
-        self.part_management = PyMenu_SE(
-            self._datamodel_service_se, "PartManagement"
-        )
-        self.PartManagement = self.part_management
-        self.pm_file_management = PyMenu_SE(
-            self._datamodel_service_se, "PMFileManagement"
-        )
-        self.PMFileManagement = self.pm_file_management
+        if "meshing_root" in globals():
+            self.meshing = meshing_root(
+                self._datamodel_service_se, "meshing", []
+            )
+        if "workflow_root" in globals():
+            self.workflow = workflow_root(
+                self._datamodel_service_se, "workflow", []
+            )
+        if "PartManagement_root" in globals():
+            self.part_management = PartManagement_root(
+                self._datamodel_service_se, "PartManagement", []
+            )
+            self.PartManagement = self.part_management
+        if "PMFileManagement_root" in globals():
+            self.pm_file_management = PMFileManagement_root(
+                self._datamodel_service_se, "PMFileManagement", []
+            )
+            self.PMFileManagement = self.pm_file_management
 
         self._health_check_service = HealthCheckService(
             self._channel, self._metadata

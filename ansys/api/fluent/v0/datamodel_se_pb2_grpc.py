@@ -59,6 +59,11 @@ class DataModelStub(object):
                 request_serializer=datamodel__se__pb2.GetSpecsRequest.SerializeToString,
                 response_deserializer=datamodel__se__pb2.GetSpecsResponse.FromString,
                 )
+        self.getStaticInfo = channel.unary_unary(
+                '/grpcRemoting.DataModel/getStaticInfo',
+                request_serializer=datamodel__se__pb2.GetStaticInfoRequest.SerializeToString,
+                response_deserializer=datamodel__se__pb2.GetStaticInfoResponse.FromString,
+                )
 
 
 class DataModelServicer(object):
@@ -118,6 +123,12 @@ class DataModelServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def getStaticInfo(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DataModelServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -165,6 +176,11 @@ def add_DataModelServicer_to_server(servicer, server):
                     servicer.getSpecs,
                     request_deserializer=datamodel__se__pb2.GetSpecsRequest.FromString,
                     response_serializer=datamodel__se__pb2.GetSpecsResponse.SerializeToString,
+            ),
+            'getStaticInfo': grpc.unary_unary_rpc_method_handler(
+                    servicer.getStaticInfo,
+                    request_deserializer=datamodel__se__pb2.GetStaticInfoRequest.FromString,
+                    response_serializer=datamodel__se__pb2.GetStaticInfoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -317,5 +333,21 @@ class DataModel(object):
         return grpc.experimental.unary_unary(request, target, '/grpcRemoting.DataModel/getSpecs',
             datamodel__se__pb2.GetSpecsRequest.SerializeToString,
             datamodel__se__pb2.GetSpecsResponse.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def getStaticInfo(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpcRemoting.DataModel/getStaticInfo',
+            datamodel__se__pb2.GetStaticInfoRequest.SerializeToString,
+            datamodel__se__pb2.GetStaticInfoResponse.FromString,
             options, channel_credentials,
             call_credentials, compression, wait_for_ready, timeout, metadata)
