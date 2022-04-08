@@ -181,7 +181,7 @@ jobs:
       - name: Install pyvistaqt requirements
         run: make install-pyvistaqt-requirements
 
-      - name: Add last commit information
+      - name: Add version information
         run: make version-info
 
       - name: Install pyfluent with post requirements
