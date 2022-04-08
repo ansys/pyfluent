@@ -27,4 +27,4 @@ test-import:
 unittest:
 	@echo "Running unittest"
 	@pip install -r requirements_test.txt
-	@pytest -v --cov=ansys.fluent --cov-report=term
+	@pytest -v --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc

@@ -187,6 +187,13 @@ jobs:
       - name: Unit Testing
         run: make unittest
 
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML-Coverage
+          path: cov_html
+          retention-days: 7
+
       - name: Check package
         run: |
           pip install twine
