@@ -19,20 +19,20 @@ except ImportError:
     pass
 
 """Global variable indicating the version of the PyFluent package - Empty by default"""
-__VERSION_INFO = ""
+_VERSION_INFO = ""
 
 
 def version_info():
     """Method returning the version of PyFluent being used.
 
-    NB: Only available in packaged versions.
+    NB: Only available in packaged versions. Otherwise it will return __version__
 
     Returns
     -------
     str
         The PyFluent version being used.
     """
-    return __VERSION_INFO
+    return _VERSION_INFO if _VERSION_INFO != "" else __version__
 
 
 def set_log_level(level):
