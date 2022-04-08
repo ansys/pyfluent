@@ -8,7 +8,7 @@ install:
 	@python setup.py bdist_wheel
 	@pip install dist/*.whl
 
-last-commit-info:
+version-info:
 	@bash -c "date -u +'Build date: %B %d, %Y %H:%M UTC ShaID: <id>' | xargs -I date sed -i 's/__VERSION_INFO = .*/__VERSION_INFO = \"date\"/g' ansys/fluent/core/__init__.py"
 	@bash -c "git --no-pager log -n 1 --format='%h' | xargs -I hash sed -i 's/<id>/hash/g' ansys/fluent/core/__init__.py"
 
