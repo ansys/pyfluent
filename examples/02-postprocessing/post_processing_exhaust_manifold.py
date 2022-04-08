@@ -16,7 +16,7 @@ This example demonstrates how to do the following:
 - Plot quantitative results using Matplotlib
 """
 ###############################################################################
-# Import the PyFluent module, the examples module and 
+# Import the PyFluent module, the examples module and
 # the PyVista based graphics Module
 
 import ansys.fluent.core as pyfluent
