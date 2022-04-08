@@ -1,5 +1,4 @@
-"""
-.. _ref_exhaust_system_settings_api:
+""".. _ref_exhaust_system_settings_api:
 
 Exhaust System: Fault-tolerant Meshing
 ----------------------------------------------
@@ -35,8 +34,6 @@ exits through the outlet. A small pipe is placed in the main portion of the
 manifold where edge extraction will be considered. There is also a known small
 leakage included that will be addressed in the meshing portion of the tutorial
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
-
-
 """
 
 ###############################################################################
