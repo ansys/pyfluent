@@ -20,16 +20,8 @@ class BasePostObjectDefn:
         for surf_name in self.surfaces_list():
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
-                if surf_obj.surface.type() == "iso-surface":
-                    surf_api = surf_obj._data_extractor.surface_api()
-                    surf_api.iso_surface(
-                        surf_obj.surface.iso_surface.field(),
-                        surf_name,
-                        (),
-                        (),
-                        surf_obj.surface.iso_surface.iso_value(),
-                        (),
-                    )
+                surf_api = surf_obj._data_extractor.surface_api
+                surf_api.create_surface_on_server()
 
     def _post_display(self):
         local_surfaces_provider = (
@@ -38,8 +30,8 @@ class BasePostObjectDefn:
         for surf_name in self.surfaces_list():
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
-                surf_api = surf_obj._data_extractor.surface_api()
-                surf_api.delete_surface(surf_name)
+                surf_api = surf_obj._data_extractor.surface_api
+                surf_api.delete_surface_on_server()
 
 
 class GraphicsDefn(
@@ -196,6 +188,70 @@ class SurfaceDefn(GraphicsDefn):
         class plane_surface(metaclass=PyLocalObjectMeta):
             """Plane surface data."""
 
+            def _availability(self, name):
+                if name == "xy_plane":
+                    return self.creation_method() == "xy-plane"
+                if name == "yz_plane":
+                    return self.creation_method() == "yz-plane"
+                if name == "zx_plane":
+                    return self.creation_method() == "zx-plane"
+                return True
+
+            class creation_method(metaclass=PyLocalPropertyMeta):
+                """Creation Method."""
+
+                value: str = "xy-plane"
+
+                @Attribute
+                def allowed_values(self):
+                    """Surface type allowed values."""
+                    return ["xy-plane", "yz-plane", "zx-plane"]
+
+            class xy_plane(metaclass=PyLocalObjectMeta):
+                """XY Plane."""
+
+                class z(metaclass=PyLocalPropertyMeta):
+                    """Z value."""
+
+                    value: float = 0
+
+                    @Attribute
+                    def range(self):
+                        """Z value range."""
+                        return self._data_extractor.field_info().get_range(
+                            "z-coordinate", True
+                        )
+
+            class yz_plane(metaclass=PyLocalObjectMeta):
+                """YZ Plane."""
+
+                class x(metaclass=PyLocalPropertyMeta):
+                    """X value."""
+
+                    value: float = 0
+
+                    @Attribute
+                    def range(self):
+                        """X value range."""
+                        return self._data_extractor.field_info().get_range(
+                            "x-coordinate", True
+                        )
+
+            class zx_plane(metaclass=PyLocalObjectMeta):
+                """ZX Plane."""
+
+                class y(metaclass=PyLocalPropertyMeta):
+                    """Y value."""
+
+                    value: float = 0
+
+                    @Attribute
+                    def range(self):
+                        """Y value range."""
+                        return self._data_extractor.field_info().get_range(
+                            "y-coordinate", True
+                        )
+
         class iso_surface(metaclass=PyLocalObjectMeta):
             """Iso surface data."""
 
@@ -292,7 +348,24 @@ class ContourDefn(GraphicsDefn):
     class node_values(metaclass=PyLocalPropertyMeta):
         """Show nodal data."""
 
-        value: bool = True
+        _value: bool = True
+
+        @property
+        def value(self):
+            """Node value property setter."""
+            filled = self._get_parent_by_type(ContourDefn).filled()
+            auto_range_off = self._get_parent_by_type(
+                ContourDefn
+            ).range.auto_range_off
+            if not filled or (
+                auto_range_off and auto_range_off.clip_to_range()
+            ):
+                self._value = True
+            return self._value
+
+        @value.setter
+        def value(self, value):
+            self._value = value
 
     class boundary_values(metaclass=PyLocalPropertyMeta):
         """Show boundary values."""

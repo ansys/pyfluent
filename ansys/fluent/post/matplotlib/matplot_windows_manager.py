@@ -130,7 +130,9 @@ class MatplotWindow(PostWindow):
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
-            for surf in obj.surfaces_list()
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
             for id in surfaces_info[surf]["surface_id"]
         ]
         # get scalar field data

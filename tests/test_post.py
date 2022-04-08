@@ -152,17 +152,23 @@ def test_contour_object():
     contour1 = pyvista_graphics.Contours["contour-1"]
     field_info = contour1._data_extractor.field_info()
 
+    # Surfaces allowed values should be all surfaces.
     assert contour1.surfaces_list.allowed_values == list(
         field_info.get_surfaces_info().keys()
     )
 
+    # Invalid surface should raise exception.
     with pytest.raises(ValueError) as value_error:
         contour1.surfaces_list = "surface_does_not_exist"
 
+    # Invalid surface should raise exception.
     with pytest.raises(ValueError) as value_error:
         contour1.surfaces_list = ["surface_does_not_exist"]
+
+    # Should accept all valid surface.
     contour1.surfaces_list = contour1.surfaces_list.allowed_values
 
+    # Field allowed values should be all fields.
     assert contour1.field.allowed_values == [
         v["solver_name"] for k, v in field_info.get_fields_info().items()
     ]
@@ -170,12 +176,32 @@ def test_contour_object():
     # Important. Because there is no type checking so following passes.
     contour1.field = [contour1.field.allowed_values[0]]
 
+    # Should accept all valid fields.
     contour1.field = contour1.field.allowed_values[0]
+
+    # Invalid field should raise exception.
     with pytest.raises(ValueError) as value_error:
         contour1.field = "field_does_not_exist"
 
     # Important. Because there is no type checking so following passes.
     contour1.node_values = "value should be boolean"
+
+    # changing filled to False or setting clip_to_range should set node_value
+    # to True.
+    contour1.node_values = False
+    assert contour1.node_values() == False
+    contour1.filled = False
+    assert contour1.node_values() == True
+    # node value can not be set to False because Filled is False
+    contour1.node_values = False
+    assert contour1.node_values() == True
+
+    contour1.filled = True
+    contour1.node_values = False
+    assert contour1.node_values() == False
+    contour1.range.option = "auto-range-off"
+    contour1.range.auto_range_off.clip_to_range = True
+    assert contour1.node_values() == True
 
     contour1.range.option = "auto-range-on"
     assert contour1.range.auto_range_off is None
@@ -183,6 +209,7 @@ def test_contour_object():
     contour1.range.option = "auto-range-off"
     assert contour1.range.auto_range_on is None
 
+    # Range should adjust to min/max of node field values.
     contour1.node_values = True
     contour1.field = "temperature"
     surfaces_id = [
@@ -197,6 +224,7 @@ def test_contour_object():
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
+    # Range should adjust to min/max of cell field values.
     contour1.node_values = False
     range = field_info.get_range(
         contour1.field(), contour1.node_values(), surfaces_id
@@ -204,6 +232,7 @@ def test_contour_object():
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
+    # Range should adjust to min/max of node field values
     contour1.field = "pressure"
     range = field_info.get_range(
         contour1.field(), contour1.node_values(), surfaces_id
@@ -256,6 +285,15 @@ def test_surface_object():
     pyvista_graphics = Graphics(session=None)
     surf1 = pyvista_graphics.Surfaces["surf-1"]
     field_info = surf1._data_extractor.field_info()
+
+    surf1.surface.type = "iso-surface"
+    assert surf1.surface.plane_surface is None
+    surf1.surface.type = "plane-surface"
+    assert surf1.surface.iso_surface is None
+
+    surf1.surface.plane_surface.creation_method = "xy-plane"
+    assert surf1.surface.plane_surface.yz_plane is None
+    assert surf1.surface.plane_surface.zx_plane is None
 
     surf1.surface.type = "iso-surface"
     iso_surf = surf1.surface.iso_surface
