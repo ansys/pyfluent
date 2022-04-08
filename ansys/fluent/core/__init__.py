@@ -18,9 +18,8 @@ try:
 except ImportError:
     pass
 
+_VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
-_VERSION_INFO = ""
-
 
 def version_info():
     """Method returning the version of PyFluent being used.
@@ -32,7 +31,7 @@ def version_info():
     str
         The PyFluent version being used.
     """
-    return _VERSION_INFO if _VERSION_INFO != "" else __version__
+    return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
 def set_log_level(level):
