@@ -18,6 +18,7 @@ try:
 except ImportError:
     pass
 
+"""Global variable indicating the last commit information for the PyFluent package - Empty by default"""
 LAST_COMMIT = ""
 
 
