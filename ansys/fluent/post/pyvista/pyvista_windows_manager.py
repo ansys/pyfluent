@@ -52,7 +52,10 @@ class PyVistaWindow(PostWindow):
         obj = self.post_object
         plotter = self.plotter
         camera = plotter.camera.copy()
-        plotter.clear()
+        if in_notebook() and self.plotter.theme._jupyter_backend == 'pythreejs':
+            plotter.remove_actor(plotter.renderer.actors.copy())
+        else:
+            plotter.clear()
         if obj.__class__.__name__ == "Mesh":
             self._display_mesh(obj, plotter)
         elif obj.__class__.__name__ == "Surface":
