@@ -18,6 +18,8 @@ try:
 except ImportError:
     pass
 
+LAST_COMMIT = ""
+
 
 def set_log_level(level):
     """Set logging level.
