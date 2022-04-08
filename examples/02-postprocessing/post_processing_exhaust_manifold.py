@@ -11,33 +11,22 @@ involves conjugate heat transfer.
 This example demonstrates how to do the following:
 
 - Create surfaces for the display of 3D data.
-
 - Display filled contours of temperature on several surfaces.
-
 - Display velocity vectors.
-
 - Plot quantitative results using Matplotlib
-
 """
 ###############################################################################
-# Import the PyFluent Module
+# Import the PyFluent module, the examples module and 
+# the PyVista based graphics Module
 
 import ansys.fluent.core as pyfluent
-
-###############################################################################
-# Import the PyVista-based graphics module
-
+from ansys.fluent.core import examples
 from ansys.fluent.post.pyvista import Graphics
 
 ###############################################################################
 # Import matplotlib plotting module
 # Unable to import as affected by Issue 290
 # from ansys.fluent.post.matplotlib import Plots
-
-###############################################################################
-# Import the examples module needed for case
-
-from ansys.fluent.core import examples
 
 ###############################################################################
 # First, download the case and data file and start Fluent as a service with
