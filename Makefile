@@ -9,10 +9,7 @@ install:
 	@pip install dist/*.whl
 
 last-commit-info:
-	@bash -c "echo '' >> README.rst"
-	@bash -c "echo 'Last commit info' >> README.rst"
-	@bash -c "echo '----------------' >> README.rst"
-	@bash -c "git log -n 1 --format='%an <%ae> - %ad - %H' >> README.rst"
+	@bash -c "git --no-pager log -n 1 --format='%an <%ae> - %ad - %h' | xargs -I hash sed -i 's/LAST_COMMIT.*/LAST_COMMIT = \"hash\"/g' ansys/fluent/core/__init__.py"
 
 install-post:
 	@pip install -r requirements_build.txt
