@@ -21,10 +21,12 @@ This example demonstrates how to do the following:
 """
 ###############################################################################
 # Import the PyFluent Module
+
 import ansys.fluent.core as pyfluent
 
 ###############################################################################
 # Import the PyVista-based graphics module
+
 from ansys.fluent.post.pyvista import Graphics
 
 ###############################################################################
@@ -34,6 +36,7 @@ from ansys.fluent.post.pyvista import Graphics
 
 ###############################################################################
 # Import the examples module needed for case
+
 from ansys.fluent.core import examples
 
 ###############################################################################
@@ -55,19 +58,23 @@ session.tui.solver.file.read_data(case_file_name=import_data)
 
 ###############################################################################
 # Get the graphics object for mesh display
+
 gs_1 = Graphics(session)
 
 ###############################################################################
 # Create a graphics object for mesh display
+
 mesh1 = gs_1.Meshes["mesh-1"]
 
 ###############################################################################
 # Show edges and faces
+
 mesh1.show_edges = True
 mesh1.show_faces = True
 
 ###############################################################################
 # Get the surfaces list
+
 mesh1.surfaces_list = [
     "in1",
     "in2",
@@ -81,6 +88,7 @@ mesh1.display("window-1")
 
 ###############################################################################
 # Disable edges and display again
+
 mesh1.show_edges = False
 mesh1.display("window-2")
 
@@ -96,6 +104,7 @@ surf_outlet_plane.display("window-3")
 
 ###############################################################################
 # Create iso-surface on the mid-plane (Issue # 276)
+
 surf_mid_plane_x = gs_1.Surfaces["mid-plane-x"]
 surf_mid_plane_x.surface.type = "iso-surface"
 iso_surf2 = surf_mid_plane_x.surface.iso_surface
@@ -114,6 +123,7 @@ contour_temp.display("window-4")
 
 ###############################################################################
 # Contour plot of temperature on the manifold
+
 contour_temp_manifold = gs_1.Contours["contour-temperature-manifold"]
 contour_temp_manifold.field = "temperature"
 contour_temp_manifold.surfaces_list = [
@@ -129,6 +139,7 @@ contour_temp_manifold.display("window-5")
 ###############################################################################
 # Vector on the mid-plane
 # Currently using outlet-plane since mid-plane is affected by Issue # 276
+
 velocity_vector = gs_1.Vectors["velocity-vector"]
 velocity_vector.surfaces_list = ["outlet-plane"]
 velocity_vector.scale = 1
