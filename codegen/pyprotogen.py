@@ -50,7 +50,7 @@ def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
     Path.mkdir(Path(out_path), parents=True, exist_ok=True)
     os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "cpp"
 
-    cmd = f"{sys.executable} -m grpc_tools.protoc -I{protos_path} "
+    cmd = f'"{sys.executable}" -m grpc_tools.protoc -I{protos_path} '
     cmd += f"--python_out={out_path} --grpc_python_out={out_path} {proto_glob}"
 
     if os.system(cmd):

@@ -84,39 +84,39 @@ class DesignPoint:
 
     def __init__(self, name: str, dp_settings):
         self.name = name
-        self.__dp_settings = dp_settings
+        self._dp_settings = dp_settings
 
     @property
     def input_parameters(self) -> Dict[str, float]:
         """Input parameters values by name."""
-        return self.__dp_settings.input_parameters()
+        return self._dp_settings.input_parameters()
 
     @input_parameters.setter
     def input_parameters(self, value: Dict[str, float]) -> None:
-        self.__dp_settings.input_parameters = value
+        self._dp_settings.input_parameters = value
 
     @property
     def output_parameters(self) -> Dict[str, float]:
         """Output parameters values by name."""
-        return self.__dp_settings.output_parameters()
+        return self._dp_settings.output_parameters()
 
     @property
     def write_data_enabled(self) -> bool:
         """Whether to write data for the design point."""
-        return self.__dp_settings.write_data()
+        return self._dp_settings.write_data()
 
     @write_data_enabled.setter
     def write_data_enabled(self, value: bool) -> None:
-        self.__dp_settings.write_data = value
+        self._dp_settings.write_data = value
 
     @property
     def capture_simulation_report_data_enabled(self) -> bool:
         """Whether to capture simulation report data for the design point."""
-        return self.__dp_settings.capture_simulation_report_data()
+        return self._dp_settings.capture_simulation_report_data()
 
     @capture_simulation_report_data_enabled.setter
     def capture_simulation_report_data_enabled(self, value: bool):
-        self.__dp_settings.capture_simulation_report_data = value
+        self._dp_settings.capture_simulation_report_data = value
 
 
 class ParametricStudy:
@@ -184,7 +184,7 @@ class ParametricStudy:
     current_study_name = None
 
     def __init__(self, parametric_studies, name=None, design_points=None):
-        self.__parametric_studies = parametric_studies
+        self._parametric_studies = parametric_studies
         self.name = name
         self.design_points = {}
         if design_points is not None:
@@ -205,7 +205,7 @@ class ParametricStudy:
 
     def initialize(self):
         """Initialize parametric study."""
-        if self.__parametric_studies.initialize.is_active():
+        if self._parametric_studies.initialize.is_active():
             self.project_filepath = Path(
                 tempfile.mkdtemp(
                     prefix="project-",
@@ -214,17 +214,17 @@ class ParametricStudy:
                 )
             )
             self.project_filepath.rmdir()
-            old_study_names = self.__parametric_studies.get_object_names()
-            self.__parametric_studies.initialize(
+            old_study_names = self._parametric_studies.get_object_names()
+            self._parametric_studies.initialize(
                 project_filename=self.project_filepath.stem
             )
-            new_study_names = self.__parametric_studies.get_object_names()
+            new_study_names = self._parametric_studies.get_object_names()
             self.name = (
                 set(new_study_names).difference(set(old_study_names)).pop()
             )
             base_design_point = DesignPoint(
                 BASE_DP_NAME,
-                self.__parametric_studies[self.name].design_points[
+                self._parametric_studies[self.name].design_points[
                     BASE_DP_NAME
                 ],
             )
@@ -242,11 +242,11 @@ class ParametricStudy:
         new_name : str
             new name
         """
-        self.__parametric_studies.rename(new_name, self.name)
+        self._parametric_studies.rename(new_name, self.name)
         self.name = new_name
         self.design_points = {
             k: DesignPoint(
-                k, self.__parametric_studies[self.name].design_points[k]
+                k, self._parametric_studies[self.name].design_points[k]
             )
             for k, _ in self.design_points.items()
         }
@@ -259,7 +259,7 @@ class ParametricStudy:
     def set_as_current(self) -> None:
         """Set the parametric study as the current parametric study."""
         if not self.is_current:
-            self.__parametric_studies.set_as_current(self.name)
+            self._parametric_studies.set_as_current(self.name)
             ParametricStudy.current_study_name = self.name
 
     def duplicate(self, copy_design_points: bool = True) -> "ParametricStudy":
@@ -275,11 +275,11 @@ class ParametricStudy:
         ParametricStudy
             New parametric study instance.
         """
-        old_study_names = self.__parametric_studies.get_object_names()
-        self.__parametric_studies.duplicate(
+        old_study_names = self._parametric_studies.get_object_names()
+        self._parametric_studies.duplicate(
             copy_design_points=copy_design_points
         )
-        new_study_names = self.__parametric_studies.get_object_names()
+        new_study_names = self._parametric_studies.get_object_names()
         clone_name = (
             set(new_study_names).difference(set(old_study_names)).pop()
         )
@@ -289,20 +289,20 @@ class ParametricStudy:
         if copy_design_points:
             clone_design_points = {
                 k: DesignPoint(
-                    k, self.__parametric_studies[clone_name].design_points[k]
+                    k, self._parametric_studies[clone_name].design_points[k]
                 )
                 for k, _ in current_study.design_points.items()
             }
         else:
             base_design_point = DesignPoint(
                 BASE_DP_NAME,
-                self.__parametric_studies[clone_name].design_points[
+                self._parametric_studies[clone_name].design_points[
                     BASE_DP_NAME
                 ],
             )
             clone_design_points = {BASE_DP_NAME: base_design_point}
         clone = ParametricStudy(
-            self.__parametric_studies, clone_name, clone_design_points
+            self._parametric_studies, clone_name, clone_design_points
         )
         ParametricStudy.current_study_name = clone.name
         return clone
@@ -312,13 +312,13 @@ class ParametricStudy:
         if self.is_current:
             LOG.error("Cannot delete the current study %s", self.name)
         else:
-            del self.__parametric_studies[self.name]
+            del self._parametric_studies[self.name]
             ParametricStudy._all_studies.pop(id(self))
             del self
 
     def use_base_data(self) -> None:
         """Use base data for the parametric study."""
-        self.__parametric_studies.use_base_data()
+        self._parametric_studies.use_base_data()
 
     def import_design_table(self, filepath: str) -> None:
         """Import the design table for the parametric study.
@@ -328,7 +328,7 @@ class ParametricStudy:
         filepath : str
             Input filepath.
         """
-        self.__parametric_studies.import_design_table(filepath=filepath)
+        self._parametric_studies.import_design_table(filepath=filepath)
 
     def export_design_table(self, filepath: str) -> None:
         """Export the design table for the parametric study.
@@ -338,7 +338,7 @@ class ParametricStudy:
         filepath : str
             Output filepath.
         """
-        self.__parametric_studies.export_design_table(filepath=filepath)
+        self._parametric_studies.export_design_table(filepath=filepath)
 
     @property
     def current_design_point(self) -> DesignPoint:
@@ -347,7 +347,7 @@ class ParametricStudy:
         Current design point within the design points under the
         parametric study.
         """
-        dp_name = self.__parametric_studies[self.name].current_design_point()
+        dp_name = self._parametric_studies[self.name].current_design_point()
         return self.design_points[dp_name]
 
     def add_design_point(
@@ -372,7 +372,7 @@ class ParametricStudy:
             The new design point.
         """
         self.set_as_current()
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dps_before = dp_settings.get_object_names()
         dp_settings.create(
             write_data=write_data,
@@ -382,7 +382,7 @@ class ParametricStudy:
         dp_name = set(dps_after).difference(set(dps_before)).pop()
         design_point = DesignPoint(
             dp_name,
-            self.__parametric_studies[self.name].design_points[dp_name],
+            self._parametric_studies[self.name].design_points[dp_name],
         )
         self.design_points[dp_name] = design_point
         return design_point
@@ -401,7 +401,7 @@ class ParametricStudy:
                 self.current_design_point.name,
             )
             design_points.remove(self.current_design_point)
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.delete_design_points(
             design_points=[dp.name for dp in design_points]
         )
@@ -422,14 +422,14 @@ class ParametricStudy:
         DesignPoint
             The new design point.
         """
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dps_before = dp_settings.get_object_names()
         dp_settings.duplicate(design_point=design_point.name)
         dps_after = dp_settings.get_object_names()
         new_dp_name = set(dps_after).difference(set(dps_before)).pop()
         new_dp = DesignPoint(
             new_dp_name,
-            self.__parametric_studies[self.name].design_points[new_dp_name],
+            self._parametric_studies[self.name].design_points[new_dp_name],
         )
         self.design_points[new_dp_name] = new_dp
         return new_dp
@@ -442,7 +442,7 @@ class ParametricStudy:
         separate_journals : bool
             Whether to save separate journal per design point.
         """
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.save_journals(separate_journals=separate_journals)
 
     def clear_generated_data(self, design_points: List[DesignPoint]) -> None:
@@ -453,24 +453,24 @@ class ParametricStudy:
         design_points : List[DesignPoint]
             List of design points.
         """
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.clear_generated_data(
             design_points=[dp.name for dp in design_points]
         )
 
     def load_current_design_point_case_data(self) -> None:
         """Load case-data of the current design point."""
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.load_case_data()
 
     def update_current_design_point(self) -> None:
         """Update the current design point."""
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.update_current()
 
     def update_all_design_points(self) -> None:
         """Update all design points."""
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.update_all()
 
     def update_selected_design_points(
@@ -483,7 +483,7 @@ class ParametricStudy:
         design_points : List[str]
             List of design points to update.
         """
-        dp_settings = self.__parametric_studies[self.name].design_points
+        dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.update_selected(
             design_points=[dp.name for dp in design_points]
         )
@@ -518,8 +518,8 @@ class ParametricProject:
         project_filepath: str,
         open_project: bool = True,
     ):
-        self.__parametric_project = parametric_project
-        self.__parametric_studies = parametric_studies
+        self._parametric_project = parametric_project
+        self._parametric_studies = parametric_studies
         self.project_filepath = project_filepath
         if open_project:
             self.open(project_filepath=project_filepath)
@@ -536,14 +536,14 @@ class ParametricProject:
         load_case : bool, optional
             Specifies whether to load the current case, by default True.
         """
-        self.__parametric_project.open(
+        self._parametric_project.open(
             project_filename=str(Path(project_filepath).resolve()),
             load_case=load_case,
         )
         self.project_filepath = project_filepath
-        for study_name in self.__parametric_studies.get_object_names():
-            study = ParametricStudy(self.__parametric_studies, study_name)
-            dps_settings = self.__parametric_studies[study_name].design_points
+        for study_name in self._parametric_studies.get_object_names():
+            study = ParametricStudy(self._parametric_studies, study_name)
+            dps_settings = self._parametric_studies[study_name].design_points
             for dp_name in dps_settings.get_object_names():
                 study.design_points[dp_name] = DesignPoint(
                     dp_name, dps_settings[dp_name]
@@ -551,7 +551,7 @@ class ParametricProject:
 
     def save(self) -> None:
         """Save project."""
-        self.__parametric_project.save()
+        self._parametric_project.save()
 
     def save_as(self, project_filepath: str) -> None:
         """Save as project.
@@ -561,7 +561,7 @@ class ParametricProject:
         project_filepath : str
             Project filename.
         """
-        self.__parametric_project.save_as(project_filename=project_filepath)
+        self._parametric_project.save_as(project_filename=project_filepath)
 
     def export(
         self, project_filepath: str, convert_to_managed: bool = False
@@ -575,7 +575,7 @@ class ParametricProject:
         convert_to_managed : bool
             Specifies whether to convert to managed project.
         """
-        self.__parametric_project.save_as_copy(
+        self._parametric_project.save_as_copy(
             project_filename=project_filepath,
             convert_to_managed=convert_to_managed,
         )
@@ -592,7 +592,7 @@ class ParametricProject:
             archive_path = str(
                 Path(self.project_filepath).with_suffix(".flprz")
             )
-        self.__parametric_project.archive(archive_name=archive_path)
+        self._parametric_project.archive(archive_name=archive_path)
 
 
 class ParametricSessionLauncher:
@@ -605,11 +605,11 @@ class ParametricSessionLauncher:
     """
 
     def __init__(self, *args, **kwargs):
-        self.__args = args
-        self.__kwargs = kwargs
+        self._args = args
+        self._kwargs = kwargs
 
     def __call__(self):
-        return pyfluent.launch_fluent(*self.__args, **self.__kwargs)
+        return pyfluent.launch_fluent(*self._args, **self._kwargs)
 
 
 class ParametricSession:
@@ -659,29 +659,32 @@ class ParametricSession:
         """
         self.studies = {}
         self.project = None
-        self.__session = launcher()
+        self._session = launcher()
+        self.scheme_eval = self._session.scheme_eval.scheme_eval
+        self.scheme_eval(
+            "(set parametric-study-dependents-manager "
+            "save-project-at-exit? #f)"
+        )
         if start_transcript:
             self.start_transcript()
-        self.__root = self.__session.get_settings_root()
+        self._root = self._session.get_settings_root()
         if case_filepath is not None:
-            self.__root.file.read(file_name=case_filepath, file_type="case")
-            study = ParametricStudy(
-                self.__root.parametric_studies
-            ).initialize()
+            self._root.file.read(file_name=case_filepath, file_type="case")
+            study = ParametricStudy(self._root.parametric_studies).initialize()
             self.studies[study.name] = study
             self.project = ParametricProject(
-                parametric_project=self.__root.file.parametric_project,
-                parametric_studies=self.__root.parametric_studies,
+                parametric_project=self._root.file.parametric_project,
+                parametric_studies=self._root.parametric_studies,
                 project_filepath=str(study.project_filepath),
                 open_project=False,
             )
         elif project_filepath is not None:
             self.project = ParametricProject(
-                parametric_project=self.__root.file.parametric_project,
-                parametric_studies=self.__root.parametric_studies,
+                parametric_project=self._root.file.parametric_project,
+                parametric_studies=self._root.parametric_studies,
                 project_filepath=project_filepath,
             )
-            studies_settings = self.__root.parametric_studies
+            studies_settings = self._root.parametric_studies
             for study_name in studies_settings.get_object_names():
                 study = ParametricStudy(studies_settings, study_name)
                 dps_settings = studies_settings[study_name].design_points
@@ -691,7 +694,7 @@ class ParametricSession:
                     )
                 self.studies[study_name] = study
             ParametricStudy.current_study_name = (
-                self.__root.current_parametric_study()
+                self._root.current_parametric_study()
             )
 
     def new_study(self) -> ParametricStudy:
@@ -735,19 +738,19 @@ class ParametricSession:
         study.rename(new_name)
         self.studies[new_name] = study
 
-    def __del__(self) -> None:
-        self.__session.exit()
+    def exit(self) -> None:
+        self._session.exit()
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.__session.exit()
+        self._session.exit()
 
     def start_transcript(self):
         """Start streaming of Fluent transcript."""
-        self.__session.start_transcript()
+        self._session.start_transcript()
 
     def stop_transcript(self):
         """Stop streaming of Fluent transcript."""
-        self.__session.stop_transcript()
+        self._session.stop_transcript()
