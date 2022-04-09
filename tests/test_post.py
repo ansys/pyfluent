@@ -19,40 +19,71 @@ def patch_mock_data_extractor(mocker) -> None:
 class MockFieldData:
     def __init__(self, solver_data):
         self._session_data = solver_data
+        self._request_to_serve = {"surf": [], "scalar": [], "vector": []}
 
-    def get_scalar_field(
+    def add_get_surfaces_request(
         self,
         surface_ids: List[int],
-        scalar_field: str,
+        overset_mesh: bool = False,
+        provide_vertices=True,
+        provide_faces=True,
+        provide_faces_centroid=False,
+        provide_faces_normal=False,
+    ) -> None:
+        self._request_to_serve["surf"].append(
+            (
+                surface_ids,
+                overset_mesh,
+                provide_vertices,
+                provide_faces,
+                provide_faces_centroid,
+                provide_faces_normal,
+            )
+        )
+
+    def add_get_scalar_fields_request(
+        self,
+        surface_ids: List[int],
+        field_name: str,
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        return {
-            surface_id: self._session_data["scalar-field"][scalar_field][
-                surface_id
-            ]["node_value" if node_value else "cell_value"]
-            for surface_id in surface_ids
-        }
+    ) -> None:
+        self._request_to_serve["scalar"].append(
+            (surface_ids, field_name, node_value, boundary_value)
+        )
 
-    def get_vector_field(
+    def add_get_vector_fields_request(
         self,
         surface_ids: List[int],
         vector_field: Optional[str] = "velocity",
-        scalar_field: Optional[str] = "",
-        node_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        return {
-            surface_id: self._session_data["vector-field"][surface_id]
-            for surface_id in surface_ids
-        }
+    ) -> None:
+        self._request_to_serve["vector"].append((surface_ids, vector_field))
 
-    def get_surfaces(
-        self, surface_ids: List[int], overset_mesh: bool = False
-    ) -> Dict[int, Dict]:
-        return {
-            surface_id: self._session_data["surfaces"][surface_id]
-            for surface_id in surface_ids
-        }
+    def get_fields(self) -> Dict[int, Dict]:
+        fields = {}
+        for request_type, requests in self._request_to_serve.items():
+            for request in requests:
+                if request_type == "surf":
+                    tag_id = 0
+                if request_type == "scalar":
+                    location_tag = 4 if request[2] else 2
+                    boundary_tag = 8 if request[3] else 0
+                    tag_id = location_tag | boundary_tag
+                if request_type == "vector":
+                    tag_id = 0
+
+                field_requests = fields.get(tag_id)
+                if not field_requests:
+                    field_requests = fields[tag_id] = {}
+                surf_ids = request[0]
+                for surf_id in surf_ids:
+                    surface_requests = field_requests.get(surf_id)
+                    if not surface_requests:
+                        surface_requests = field_requests[surf_id] = {}
+                    surface_requests.update(
+                        self._session_data["fields"][tag_id][surf_id]
+                    )
+        return fields
 
 
 class MockFieldInfo:
@@ -108,6 +139,43 @@ class MockLocalObjectDataExtractor:
             MockLocalObjectDataExtractor._session_data
         )
         self.id = lambda: 1
+
+
+def test_field_api():
+    pyvista_graphics = Graphics(session=None)
+    contour1 = pyvista_graphics.Contours["contour-1"]
+    field_info = contour1._data_extractor.field_info()
+    field_data = contour1._data_extractor.field_data()
+
+    surfaces_id = [
+        v["surface_id"][0] for k, v in field_info.get_surfaces_info().items()
+    ]
+
+    field_data.add_get_surfaces_request(
+        surfaces_id[:1],
+        provide_vertices=True,
+        provide_faces_centroid=True,
+        provide_faces=False,
+    )
+    field_data.add_get_scalar_fields_request(
+        surfaces_id[:1], "temperature", True
+    )
+    field_data.add_get_scalar_fields_request(
+        surfaces_id[:1], "temperature", False
+    )
+    fields = field_data.get_fields()
+
+    surface_tag = 0
+    vertices = fields[surface_tag][surfaces_id[0]]["vertices"]
+    centroid = fields[surface_tag][surfaces_id[0]]["centroid"]
+
+    node_location_tag = 4
+    node_data = fields[node_location_tag][surfaces_id[0]]["temperature"]
+    element_location_tag = 2
+    element_data = fields[element_location_tag][surfaces_id[0]]["temperature"]
+
+    assert len(vertices) == len(node_data) * 3
+    assert len(centroid) == len(element_data) * 3
 
 
 def test_graphics_operations():
@@ -183,7 +251,7 @@ def test_contour_object():
     with pytest.raises(ValueError) as value_error:
         contour1.field = "field_does_not_exist"
 
-    # Important. Because there is no type checking so following passes.
+    # Important. Because there is no type checking so following test passes.
     contour1.node_values = "value should be boolean"
 
     # changing filled to False or setting clip_to_range should set node_value
@@ -302,33 +370,40 @@ def test_surface_object():
         v["solver_name"] for k, v in field_info.get_fields_info().items()
     ]
 
-    # Important. Because there is no type checking so following passes.
+    # Important. Because there is no type checking so following test passes.
     iso_surf.field = [iso_surf.field.allowed_values[0]]
 
+    # Incorrect field should throw exception
     with pytest.raises(ValueError) as value_error:
         iso_surf.field = "field_does_not_exist"
 
+    # Iso surface value should automatically update upon change in field.
     iso_surf.field = "temperature"
     range = field_info.get_range(iso_surf.field(), True)
     assert range[0] == pytest.approx(iso_surf.iso_value())
 
+    # Setting out of range should throw exception
     with pytest.raises(ValueError) as value_error:
         iso_surf.iso_value = range[1] + 0.001
 
     with pytest.raises(ValueError) as value_error:
         iso_surf.iso_value = range[0] - 0.001
 
+    # Iso surface value should automatically update upon change in field.
     iso_surf.field = "pressure"
     range = field_info.get_range(iso_surf.field(), True)
     assert range[0] == pytest.approx(iso_surf.iso_value())
 
+    # New surface should be in allowed values for graphics.
     cont1 = pyvista_graphics.Contours["surf-1"]
     assert "surf-1" in cont1.surfaces_list.allowed_values
 
+    # New surface is not available in allowed values for plots.
     matplotlib_plots = Plots(session=None)
     p1 = matplotlib_plots.XYPlots["p-1"]
     assert "surf-1" not in p1.surfaces_list.allowed_values
 
+    # With local surface provider it becomes available.
     local_surfaces_provider = Graphics(session=None).Surfaces
     matplotlib_plots = Plots(
         session=None, local_surfaces_provider=local_surfaces_provider

@@ -7,6 +7,7 @@ import numpy as np
 import pyvista as pv
 from pyvistaqt import BackgroundPlotter
 
+from ansys.api.fluent.v0.field_data_pb2 import PayloadTag
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
 from ansys.fluent.post import get_config
@@ -112,13 +113,16 @@ class PyVistaWindow(PostWindow):
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
 
-        # get vector field data
-        vector_field_data = field_data.get_vector_field(
-            surface_ids, obj.vectors_of()
-        )
+        field_data.add_get_surfaces_request(surface_ids)
+        field_data.add_get_vector_fields_request(surface_ids, obj.vectors_of())
+        vector_field_tag = 0
+        vector_field_data = field_data.get_fields()[vector_field_tag]
         for surface_id, mesh_data in vector_field_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
-            mesh_data["vector"].shape = mesh_data["vector"].size // 3, 3
+            mesh_data[obj.vectors_of()].shape = (
+                mesh_data[obj.vectors_of()].size // 3,
+                3,
+            )
             vector_scale = mesh_data["vector-scale"][0]
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
@@ -131,8 +135,10 @@ class PyVistaWindow(PostWindow):
                     mesh_data["vertices"],
                     faces=mesh_data["faces"],
                 )
-            mesh.cell_data["vectors"] = mesh_data["vector"]
-            velocity_magnitude = np.linalg.norm(mesh_data["vector"], axis=1)
+            mesh.cell_data["vectors"] = mesh_data[obj.vectors_of()]
+            velocity_magnitude = np.linalg.norm(
+                mesh_data[obj.vectors_of()], axis=1
+            )
             if obj.range.option() == "auto-range-off":
                 auto_range_off = obj.range.auto_range_off
                 range = [auto_range_off.minimum(), auto_range_off.maximum()]
@@ -196,14 +202,33 @@ class PyVistaWindow(PostWindow):
             for id in surfaces_info[surf]["surface_id"]
         ]
         # get scalar field data
-        scalar_field_data = field_data.get_scalar_field(
+        field_data.add_get_surfaces_request(surface_ids)
+        field_data.add_get_scalar_fields_request(
             surface_ids,
             field,
             node_values,
             boundary_values,
         )
+
+        location_tag = (
+            field_data._payloadTags[PayloadTag.NODE_LOCATION]
+            if node_values
+            else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
+        )
+        boundary_value_tag = (
+            field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
+            if boundary_values
+            else 0
+        )
+        surface_tag = 0
+
+        scalar_field_payload_data = field_data.get_fields()
+        data_tag = location_tag | boundary_value_tag
+        scalar_field_data = scalar_field_payload_data[data_tag]
+        surface_data = scalar_field_payload_data[surface_tag]
+
         # loop over all meshes
-        for surface_id, mesh_data in scalar_field_data.items():
+        for surface_id, mesh_data in surface_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
@@ -217,9 +242,9 @@ class PyVistaWindow(PostWindow):
                     faces=mesh_data["faces"],
                 )
             if node_values:
-                mesh.point_data[field] = mesh_data[field]
+                mesh.point_data[field] = scalar_field_data[surface_id][field]
             else:
-                mesh.cell_data[field] = mesh_data[field]
+                mesh.cell_data[field] = scalar_field_data[surface_id][field]
             if range_option == "auto-range-off":
                 auto_range_off = obj.range.auto_range_off
                 if auto_range_off.clip_to_range():
@@ -338,7 +363,11 @@ class PyVistaWindow(PostWindow):
             )
             for id in surfaces_info[surf]["surface_id"]
         ]
-        surfaces_data = field_data.get_surfaces(surface_ids)
+
+        field_data.add_get_surfaces_request(surface_ids)
+        surface_tag = 0
+
+        surfaces_data = field_data.get_fields()[surface_tag]
         for surface_id, mesh_data in surfaces_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
