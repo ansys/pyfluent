@@ -24,15 +24,15 @@ _VERSION_INFO = None
 
 def version_info():
     """Method returning the version of PyFluent being used.
-
-    Notes
-    -------
-    Only available in packaged versions. Otherwise it will return __version__.
-
+ 
     Returns
     -------
     str
         The PyFluent version being used.
+        
+    Notes
+    -------
+    Only available in packaged versions. Otherwise it will return __version__.
     """
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
