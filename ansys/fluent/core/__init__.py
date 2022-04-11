@@ -21,6 +21,7 @@ except ImportError:
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
 
+
 def version_info():
     """Method returning the version of PyFluent being used.
 
