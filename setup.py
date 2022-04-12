@@ -39,7 +39,6 @@ setup(
     name="ansys-fluent-solver",
     packages=packages,
     include_package_data=True,
-    package_dir={"": "ansys"},
     version=__version__,
     description="Pythonic interface to Ansys Fluent",
     long_description=open("README.rst", encoding="utf8").read(),
