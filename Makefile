@@ -16,7 +16,7 @@ install-post:
 	@pip install -r requirements_build.txt
 	@python setup.py sdist
 	@python setup.py bdist_wheel
-	@pip install dist/ansys_fluent_solver-0.2.dev0-py3-none-any.whl[post]
+	@find dist -name "*.whl" -exec pip install {}[post] \;
 
 install-pyvistaqt-requirements:
 	@sudo apt update
