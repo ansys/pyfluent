@@ -125,7 +125,14 @@ if __name__ == "__main__":
     dirname = os.path.dirname(__file__)
     filepath = os.path.normpath(
         os.path.join(
-            dirname, "..", "src", "ansys", "fluent", "core", "solver", "settings.py"
+            dirname,
+            "..",
+            "src",
+            "ansys",
+            "fluent",
+            "core",
+            "solver",
+            "settings.py",
         )
     )
     session = launch_fluent()
