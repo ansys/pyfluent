@@ -37,17 +37,17 @@ class main_menu(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/beta_feature_access").execute(*args, **kwargs)
     def close_fluent(self, *args, **kwargs):
         """
-        Exit Fluent Meshing.
+        (ANSYS Fluent in Workbench only) Exits program.
         """
         return PyMenu(self.service, "/close_fluent").execute(*args, **kwargs)
     def exit(self, *args, **kwargs):
         """
-        Exit Fluent Meshing.
+        Exits the program.
         """
         return PyMenu(self.service, "/exit").execute(*args, **kwargs)
     def switch_to_solution_mode(self, *args, **kwargs):
         """
-        Switch to solution mode.
+        Enables you to transfer the mesh data from meshing mode to solution mode in ANSYS Fluent. When you use the switch-to-solution-mode command, you will be asked to confirm that you want to switch to solution mode.
         """
         return PyMenu(self.service, "/switch_to_solution_mode").execute(*args, **kwargs)
     def print_license_usage(self, *args, **kwargs):
@@ -66,30 +66,30 @@ class main_menu(metaclass=PyMenuMeta):
             self.export = self.__class__.export(path + [("export", None)], service)
             self.import_ = self.__class__.import_(path + [("import", None)], service)
             self.checkpoint = self.__class__.checkpoint(path + [("checkpoint", None)], service)
-            self.project_beta = self.__class__.project_beta(path + [("project[beta]", None)], service)
+            self.project = self.__class__.project(path + [("project[beta]", None)], service)
         def append_mesh(self, *args, **kwargs):
             """
-            Append a new mesh to the existing mesh.
+            Enables you to append the mesh files. This command is available only after a mesh file has been read in.
             """
             return PyMenu(self.service, "/file/append_mesh").execute(*args, **kwargs)
         def append_meshes_by_tmerge(self, *args, **kwargs):
             """
-            Append mesh files, or the meshes from case files.
+            Enables you to append the mesh files using the tmerge utility. This command is available only after a mesh file has been read in.
             """
             return PyMenu(self.service, "/file/append_meshes_by_tmerge").execute(*args, **kwargs)
         def file_format(self, *args, **kwargs):
             """
-            Indicate whether to write formatted or unformatted files.
+            Enables/disables the writing of binary files. 
             """
             return PyMenu(self.service, "/file/file_format").execute(*args, **kwargs)
         def filter_list(self, *args, **kwargs):
             """
-            List all filter names.
+            Lists the names of the converters that are used to change foreign mesh (while importing mesh files from third-party packages) files. 
             """
             return PyMenu(self.service, "/file/filter_list").execute(*args, **kwargs)
         def filter_options(self, *args, **kwargs):
             """
-            Change filter extension and/or its arguments.
+            Enables you to change the extension (such as .cas, .msh, .neu) and arguments used with a specified filter.   For example, if you saved the PATRAN files with a .NEU extension instead of .neu, you can substitute or add .NEU to the extension list. For some filters, one of the arguments will be the dimensionality of the grid.   When you use the filter-options command for such a filter, you will see a default dimensionality argument of -d a. The dimension will automatically be determined, so you need not substitute 2 or 3 for a. 
             """
             return PyMenu(self.service, "/file/filter_options").execute(*args, **kwargs)
         def hdf_files(self, *args, **kwargs):
@@ -99,56 +99,52 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/hdf_files").execute(*args, **kwargs)
         def cff_files(self, *args, **kwargs):
             """
-            Indicate whether to write Ansys common fluids format (CFF) files or legacy case files.
+            Answering yes will set the Common Fluids Format (CFF) as the default file format for reading and writing case/data files.
             """
             return PyMenu(self.service, "/file/cff_files").execute(*args, **kwargs)
         def read_boundary_mesh(self, *args, **kwargs):
             """
-            Read the boundary mesh from either a mesh or case file.
+            Enables you to read a boundary mesh. If the boundary mesh is contained in two or more separate files, you can read them in together and assemble the complete boundary mesh.   This option is also convenient if you want to reuse the boundary mesh from a file containing a large volume mesh.   The naming of face zones can be controlled by Named Selections defined in Ansys Workbench. For details on exporting faceted geometry from Ansys Workbench, refer to the Ansys Workbench Help. 
             """
             return PyMenu(self.service, "/file/read_boundary_mesh").execute(*args, **kwargs)
         def read_mesh(self, *args, **kwargs):
             """
-            Read a mesh file, or the mesh from a case file.
+            Enables you to read a mesh file. You can also use this command to read a Fluent mesh file created with GAMBIT, or to read the mesh available in a Fluent case file.   Reading a case file as a mesh file will result in loss of boundary condition data as the mesh file does not contain any information on boundary conditions.  Case files containing polyhedral cells can also be read in the meshing mode of Fluent. You can display the polyhedral mesh, perform certain mesh manipulation operations, check the mesh quality, and so on. Important:  You cannot read meshes from solvers that have been adapted using hanging nodes. To read one of these meshes in the meshing mode in Fluent, coarsen the mesh within the solver until you have recovered the original unadapted grid.   The naming of face zones can be controlled by Named Selections defined in Ansys Workbench. For details on exporting faceted geometry from Ansys Workbench, refer to the Ansys Workbench Help. 
             """
             return PyMenu(self.service, "/file/read_mesh").execute(*args, **kwargs)
         def read_meshes_by_tmerge(self, *args, **kwargs):
             """
-            Read mesh files, or the meshes from case files.
+            Uses the tmerge utility to read the mesh contained in two or more separate files. It enables you to read the mesh files together and helps assemble the complete mesh. 
             """
             return PyMenu(self.service, "/file/read_meshes_by_tmerge").execute(*args, **kwargs)
         def read_multi_bound_mesh(self, *args, **kwargs):
             """
-            Read multiple boundary meshes.
+            Enables you to read multiple boundary mesh files into the meshing mode. 
             """
             return PyMenu(self.service, "/file/read_multi_bound_mesh").execute(*args, **kwargs)
         def read_case(self, *args, **kwargs):
             """
-            Read a case file.
-            
-            Parameters
-            ----------
-            case_file_name : str
+            Enables you to read the mesh contained in a case file.   Cell hierarchy in case files adapted in the solution mode will be lost when they are read in the meshing mode.  Case files containing polyhedral cells can also be read in the meshing mode of Fluent. You can display the polyhedral mesh, perform certain mesh manipulation operations, check the mesh quality, and so on.
             """
             return PyMenu(self.service, "/file/read_case").execute(*args, **kwargs)
         def read_domains(self, *args, **kwargs):
             """
-            Read TGrid domains from a file.
+            Enables you to read domain files.   Each mesh file written by Fluent has a domain section. A domain file is the domain section of the mesh file and is written as a separate file. It contains a list of node, face, and cell zone IDs that make up each domain in the mesh.   If a domain that is being read already exists in the mesh, a warning message is displayed. Fluent verifies if the zones defining the domains exist in the mesh. If not, it will display a warning message. 
             """
             return PyMenu(self.service, "/file/read_domains").execute(*args, **kwargs)
         def read_size_field(self, *args, **kwargs):
             """
-            Read TGrid Size-field from a file.
+            Enables you to read in a size field file.  If you read a size-field file after scaling the model, ensure that the size-field file is appropriate for the scaled model (size-field vertices should match the scaled model).
             """
             return PyMenu(self.service, "/file/read_size_field").execute(*args, **kwargs)
         def write_size_field(self, *args, **kwargs):
             """
-            Write TGrid Size-field into a file.
+            Enables you to write a size field file.
             """
             return PyMenu(self.service, "/file/write_size_field").execute(*args, **kwargs)
         def read_journal(self, *args, **kwargs):
             """
-            Start a main-menu that takes its input from a file.
+            Enables you to read a journal file into the program.   The read-journal command always loads the file in the main (that is, top-level) menu, regardless of where you are in the menu hierarchy when you invoke it. 
             """
             return PyMenu(self.service, "/file/read_journal").execute(*args, **kwargs)
         def read_mesh_vars(self, *args, **kwargs):
@@ -158,62 +154,69 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/read_mesh_vars").execute(*args, **kwargs)
         def read_multiple_mesh(self, *args, **kwargs):
             """
-            Read multiple mesh files, or the meshes from multiple case files.
+            Enables you to read in two or more files together and have the complete mesh assembled for you, if the mesh files are contained in two or more separate files.   For example, if you are going to create a hybrid mesh by reading in a triangular boundary mesh and a volume mesh consisting of hexahedral cells, you can read both files at the same time using this command. 
             """
             return PyMenu(self.service, "/file/read_multiple_mesh").execute(*args, **kwargs)
         def read_options(self, *args, **kwargs):
             """
-            Set read options.
+            Enables you to set the following options for reading mesh files: 
             """
             return PyMenu(self.service, "/file/read_options").execute(*args, **kwargs)
         def show_configuration(self, *args, **kwargs):
             """
-            Display current release and version information.
+            Displays the current release and version information. 
             """
             return PyMenu(self.service, "/file/show_configuration").execute(*args, **kwargs)
         def start_journal(self, *args, **kwargs):
             """
-            Start recording all input in a file.
+            Starts recording all input and writes it to a file. The current Fluent version is automatically recorded in the journal file. Note that commands entered using paths from older versions of Fluent will be upgraded to their current path in the journal file. See .
             """
             return PyMenu(self.service, "/file/start_journal").execute(*args, **kwargs)
         def start_transcript(self, *args, **kwargs):
             """
-            Start recording input and output in a file.
+            Starts recording input and output in a file.   A transcript file contains a complete record of all standard input to and output from Fluent (usually all keyboard and user interface input and all screen output).Start the transcription process with the file/start-transcript command, and end it with the file/stop-
+                           transcript command (or by exiting the program). 
+                              file/start-transcript
+                           
+                           
+                              file/stop-transcript
+                           
+                        
             """
             return PyMenu(self.service, "/file/start_transcript").execute(*args, **kwargs)
         def stop_journal(self, *args, **kwargs):
             """
-            Stop recording input and close journal file.
+            Stops recording input and closes the journal file. 
             """
             return PyMenu(self.service, "/file/stop_journal").execute(*args, **kwargs)
         def stop_transcript(self, *args, **kwargs):
             """
-            Stop recording input and output and close transcript file.
+            Stops recording input and output, and closes the transcript file. 
             """
             return PyMenu(self.service, "/file/stop_transcript").execute(*args, **kwargs)
         def confirm_overwrite(self, *args, **kwargs):
             """
-            Indicate whether or not to confirm attempts to overwrite existing files.
+            Controls whether attempts to overwrite existing files require confirmation.  If you do not want ANSYS Fluent to ask you for confirmation before it overwrites existing files, you can enter the file/confirm-overwrite? text command and answer no.
             """
             return PyMenu(self.service, "/file/confirm_overwrite").execute(*args, **kwargs)
         def write_boundaries(self, *args, **kwargs):
             """
-            Write the mesh file of selected boundary face zones.
+            Enables you to write the specified boundaries into a mesh file.   This is useful for large cases where you may want to mesh different parts of the mesh separately and then merge them together. This enables you to avoid frequent switching between domains for such cases. You can write out selected boundaries to a mesh file and then create the volume mesh for the part in a separate session. You can then read the saved mesh into the previous session and merge the part with the rest of the mesh. 
             """
             return PyMenu(self.service, "/file/write_boundaries").execute(*args, **kwargs)
         def write_case(self, *args, **kwargs):
             """
-            Write the mesh to a case file.
+            Enables you to write a case file that can be read by Fluent.   You should delete dead zones in the mesh before writing the mesh or case file for Fluent.
             """
             return PyMenu(self.service, "/file/write_case").execute(*args, **kwargs)
         def write_domains(self, *args, **kwargs):
             """
-            Write all (except global) domains of the mesh into a file.
+            Enables you to write all the mesh domains (except global) into a file that can be read. 
             """
             return PyMenu(self.service, "/file/write_domains").execute(*args, **kwargs)
         def write_mesh(self, *args, **kwargs):
             """
-            Write a mesh file.
+            Enables you to write a mesh file.   You should delete dead zones in the mesh before writing the mesh or case file for Fluent.
             """
             return PyMenu(self.service, "/file/write_mesh").execute(*args, **kwargs)
         def write_mesh_vars(self, *args, **kwargs):
@@ -223,28 +226,28 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/write_mesh_vars").execute(*args, **kwargs)
         def write_options(self, *args, **kwargs):
             """
-            Set write options.
+            Allows you to enable or disable the enforce mesh topology option for writing mesh/case files.   This option is enabled by default; where it will orient the face zones consistently when the mesh file is written. If necessary, the zones will be separated, such that each boundary face zone has at most two cell zones as neighbors, one on either side. Also, internal face zones will be inserted between neighboring cell zones that are connected by interior faces. 
             """
             return PyMenu(self.service, "/file/write_options").execute(*args, **kwargs)
         def set_idle_timeout(self, *args, **kwargs):
             """
-            Set the idle timeout.
+            Allows you to set an idle timeout so that an idle ANSYS Fluent session will automatically save and close after the specified time.
             """
             return PyMenu(self.service, "/file/set_idle_timeout").execute(*args, **kwargs)
         def load_act_tool(self, *args, **kwargs):
             """
-            Load ACT Start Page.
+            Loads the Ansys ACT tool.
             """
             return PyMenu(self.service, "/file/load_act_tool").execute(*args, **kwargs)
         def set_tui_version(self, *args, **kwargs):
             """
-            Set the version of the TUI commands.
+            Allows you to improve backwards compatibility for journal files. This command hides any new TUI prompts that are added at a future release of ANSYS Fluent and reverts to the arguments of the release that you specify using the command (within two full releases of the current release). The command is automatically added to a journal file as soon as you start the recording. See  for details.
             """
             return PyMenu(self.service, "/file/set_tui_version").execute(*args, **kwargs)
 
         class export(metaclass=PyMenuMeta):
             """
-            Export surface and volume meshes to non-native formats.
+            Exports case and data information.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -261,7 +264,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/export/hypermesh").execute(*args, **kwargs)
             def nastran(self, *args, **kwargs):
                 """
-                Write a NASTRAN mesh file.
+                Writes a NASTRAN file.
                 """
                 return PyMenu(self.service, "/file/export/nastran").execute(*args, **kwargs)
             def patran(self, *args, **kwargs):
@@ -277,7 +280,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class import_(metaclass=PyMenuMeta):
             """
-            Import surface and volume meshes from non-native formats.
+            Enables you to import mesh information generated by some CAD packages (Ansys, I-deas, NASTRAN, PATRAN, and HYPERMESH), as well as mesh information in the CGNS (CFD general notation system) format. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -285,42 +288,42 @@ class main_menu(metaclass=PyMenuMeta):
                 self.cad_options = self.__class__.cad_options(path + [("cad_options", None)], service)
             def ansys_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from an Ansys prep7 or cdb file.
+                Enables you to read a Ansys surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/ansys_surf_mesh").execute(*args, **kwargs)
             def ansys_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from an Ansys prep7 or cdb file.
+                Enables you to read a Ansys volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/ansys_vol_mesh").execute(*args, **kwargs)
             def cgns_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from an CGNS format file.
+                Enables you to read a CGNS volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/cgns_vol_mesh").execute(*args, **kwargs)
             def cgns_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from a CGNS format file.
+                Enables you to read a CGNS surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/cgns_surf_mesh").execute(*args, **kwargs)
             def fidap_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from a FIDAP neutral file.
+                Enables you to read a FIDAP surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/fidap_surf_mesh").execute(*args, **kwargs)
             def fidap_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from a FIDAP neutral file.
+                Enables you to read a FIDAP volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/fidap_vol_mesh").execute(*args, **kwargs)
             def fl_uns2_mesh(self, *args, **kwargs):
                 """
-                Read a mesh from a Fluent UNS V2 case file.
+                Enables you to read a Fluent UNS V2 case file. 
                 """
                 return PyMenu(self.service, "/file/import/fl_uns2_mesh").execute(*args, **kwargs)
             def fluent_2d_mesh(self, *args, **kwargs):
                 """
-                Read a 2D mesh.
+                Enables you to read a 2D mesh into the 3D version. 
                 """
                 return PyMenu(self.service, "/file/import/fluent_2d_mesh").execute(*args, **kwargs)
             def fluent_3d_mesh(self, *args, **kwargs):
@@ -330,94 +333,62 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/import/fluent_3d_mesh").execute(*args, **kwargs)
             def gambit_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from a GAMBIT neutral file.
+                Enables you to read a GAMBIT surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/gambit_surf_mesh").execute(*args, **kwargs)
             def gambit_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from a GAMBIT neutral file.
+                Enables you to read a GAMBIT volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/gambit_vol_mesh").execute(*args, **kwargs)
             def hypermesh_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from a HYPERMESH ascii file.
+                Enables you to read a HYPERMESH surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/hypermesh_surf_mesh").execute(*args, **kwargs)
             def hypermesh_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from a HYPERMESH ascii file.
+                Enables you to read a HYPERMESH volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/hypermesh_vol_mesh").execute(*args, **kwargs)
             def ideas_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from an IDEAS universal file.
+                Enables you to read an I-deas surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/ideas_surf_mesh").execute(*args, **kwargs)
             def ideas_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from an IDEAS universal file.
+                Enables you to read an I-deas volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/ideas_vol_mesh").execute(*args, **kwargs)
             def nastran_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from a NASTRAN file.
+                Enables you to read a NASTRAN surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/nastran_surf_mesh").execute(*args, **kwargs)
             def nastran_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from a NASTRAN file.
+                Enables you to read a NASTRAN volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/nastran_vol_mesh").execute(*args, **kwargs)
             def patran_surf_mesh(self, *args, **kwargs):
                 """
-                Read a surface mesh from a PATRAN neutral file.
+                Enables you to read a PATRAN surface mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/patran_surf_mesh").execute(*args, **kwargs)
             def patran_vol_mesh(self, *args, **kwargs):
                 """
-                Read a volume mesh from a PATRAN neutral file.
+                Enables you to read a PATRAN volume mesh file. 
                 """
                 return PyMenu(self.service, "/file/import/patran_vol_mesh").execute(*args, **kwargs)
             def cad(self, *args, **kwargs):
                 """
-                Reads the following CAD formats:
-                    ACIS  \*.sat, \*.sab
-                    Ansys DesignModeler  \*.agdb
-                    Ansys ICEM CFD  \*.tin
-                    Ansys Workbench  \*.meshdat, \*.mechdat
-                    Autodesk Inventor  \*.ipt, \*.iam
-                    CATIA V4  \*.model, \*.exp, \*.session, \*.dlv
-                    CATIA V5  \*.CATPart, \*.CATProduct
-                    Creo Parametric  \*.prt, \*.asm
-                    GAMBIT  \*.dbs
-                    IGES  \*.igs, \*.iges
-                    JTOpen  \*.jt
-                    NX  \*.prt
-                    Parasolid  \*.x_t, \*.xmt_txt, \*.x_b, \*.xmt_bin
-                    SolidWorks  \*.sldprt, \*.sldasm
-                    STEP  \*.stp, \*.step
-                    STL  \*.stl.
+                Enables you to import CAD files based on the options set.
                 """
                 return PyMenu(self.service, "/file/import/cad").execute(*args, **kwargs)
             def cad_geometry(self, *args, **kwargs):
                 """
-                Reads the following CAD formats:
-                    ACIS  \*.sat, \*.sab
-                    Ansys DesignModeler  \*.agdb
-                    Ansys ICEM CFD  \*.tin
-                    Ansys Workbench  \*.meshdat, \*.mechdat
-                    Autodesk Inventor  \*.ipt, \*.iam
-                    CATIA V4  \*.model, \*.exp, \*.session, \*.dlv
-                    CATIA V5  \*.CATPart, \*.CATProduct
-                    Creo Parametric  \*.prt, \*.asm
-                    GAMBIT  \*.dbs
-                    IGES  \*.igs, \*.iges
-                    JTOpen  \*.jt
-                    NX  \*.prt
-                    Parasolid  \*.x_t, \*.xmt_txt, \*.x_b, \*.xmt_bin
-                    SolidWorks  \*.sldprt, \*.sldasm
-                    STEP  \*.stp, \*.step
-                    STL  \*.stl.
+                Enables you to import CAD files based on the options set.
                 """
                 return PyMenu(self.service, "/file/import/cad_geometry").execute(*args, **kwargs)
             def stl(self, *args, **kwargs):
@@ -433,39 +404,39 @@ class main_menu(metaclass=PyMenuMeta):
 
             class cad_options(metaclass=PyMenuMeta):
                 """
-                Make settings for cad import.
+                Contains additional options for importing CAD files.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def read_all_cad_in_subdirectories(self, *args, **kwargs):
                     """
-                    Recursive search for CAD files in sub-directories.
+                    When enabled, all files in the specified directory as well as in its subdirectories will be imported. This option is disabled by default.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/read_all_cad_in_subdirectories").execute(*args, **kwargs)
                 def continue_on_error(self, *args, **kwargs):
                     """
-                    Continue on error during cad import.
+                    Enables you to continue the import of the CAD file(s), despite errors or problems creating the faceting on certain surfaces, or other issues. This option is disabled by default.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/continue_on_error").execute(*args, **kwargs)
                 def save_PMDB(self, *args, **kwargs):
                     """
-                    Saves PMDB file in the directory containing the CAD files imported.
+                    Saves a PMDB (*.pmdb) file in the directory containing the CAD files imported. You can use this file to import the same CAD file(s) again with different options set, for a quicker import than the full import. This option is disabled by default.  Some options will not be available any more once the model is imported from a PMDB file (for example, enclosure-symm-processing?), since they are processed before the PMDB file is created.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/save_PMDB").execute(*args, **kwargs)
                 def tessellation(self, *args, **kwargs):
                     """
-                    Set tessellation controls for cad import.
+                    Enables you to control the tessellation (faceting) during file import. You can select either cad-faceting or cfd-surface-mesh.   CAD faceting enables you to control the tessellation based on the CAD faceting tolerance and maximum facet size specified.   CFD Surface Mesh enables you to use a size field file, (Use size field file?). If you enter yes, specify the size field file to be read. If you do not want to use a size field file, you can obtain conformal faceting based on the underlying curve and surface curvature (using the minimum and maximum facet sizes, and the facet curvature normal angle specified) and edge proximity (using the cells per gap specified). You can also save a size field in a file (size field is computed based on the specified parameters; that is, Min Size, Max Size, Curvature Normal Angle, Cells Per Gap).
                     """
                     return PyMenu(self.service, "/file/import/cad_options/tessellation").execute(*args, **kwargs)
                 def named_selections(self, *args, **kwargs):
                     """
-                    Allows to import Named Selections from the CAD file.
+                    Enables you to import Named Selections from the CAD file(s), including Named Selections from Ansys DesignModeler, publications from CATIA, and so on. You can additionally choose to ignore import of certain Named Selections based on the pattern specified (for example, Layer* to ignore layer Named Selections from CATIA), or by specifying multiple wild cards (for example, ^(Color|Layer|Material).* to remove color, layer, and material Named Selections from CATIA).
                     """
                     return PyMenu(self.service, "/file/import/cad_options/named_selections").execute(*args, **kwargs)
                 def enclosure_symm_processing(self, *args, **kwargs):
                     """
-                    Processing of enclosure and symmetry named selections during import.
+                    Enables processing of enclosure and symmetry named selections during import. This option is disabled by default. This option is applicable only to Ansys DesignModeler (*.agdb) files.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/enclosure_symm_processing").execute(*args, **kwargs)
                 def reconstruct_topology(self, *args, **kwargs):
@@ -475,57 +446,57 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/file/import/cad_options/reconstruct_topology").execute(*args, **kwargs)
                 def import_part_names(self, *args, **kwargs):
                     """
-                    Import Part names from the CAD files.
+                    Enables import of Part names from the CAD file(s). This option is enabled by default.  Any renaming of Part names in Ansys Mechanical/Ansys Meshing prior to the export of the mechdat/meshdat files is ignored during import. Only original Part names will be imported.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/import_part_names").execute(*args, **kwargs)
                 def import_body_names(self, *args, **kwargs):
                     """
-                    Import Body names from the CAD files.
+                    Enables import of Body names from the CAD files. This option is enabled by default.  Any renaming of Body names in Ansys Mechanical/Ansys Meshing prior to the export of the mechdat/meshdat files is ignored during import. Only original Body names will be imported.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/import_body_names").execute(*args, **kwargs)
                 def separate_features_by_type(self, *args, **kwargs):
                     """
-                    Separate features by type.
+                    Enables separation of feature edges based on angle, connectivity, and named selections on import. Edge zone names will have suitable suffixes depending on separation criteria, order of zones, existing zone names and other import options selected.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/separate_features_by_type").execute(*args, **kwargs)
                 def single_connected_edge_label(self, *args, **kwargs):
                     """
-                    Single connected edge label for CAD files.
+                    Adds the specified label to the name of single-connected edge zones (edge zones referenced by a single face).
                     """
                     return PyMenu(self.service, "/file/import/cad_options/single_connected_edge_label").execute(*args, **kwargs)
                 def double_connected_face_label(self, *args, **kwargs):
                     """
-                    Double connected face label for CAD files.
+                    Adds the specified label to the name of double-connected face zones (face zones shared by two bodies).
                     """
                     return PyMenu(self.service, "/file/import/cad_options/double_connected_face_label").execute(*args, **kwargs)
                 def use_collection_names(self, *args, **kwargs):
                     """
-                    Use collection names for CAD files.
+                    Enables you to use the Named Selections for the object/zone names on import. Select auto, no, or yes. The default selection is auto where the Named Selection will be used as the object/zone name, except when the object creation granularity is set to one object per file.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/use_collection_names").execute(*args, **kwargs)
                 def use_component_names(self, *args, **kwargs):
                     """
-                    Use component names for CAD files.
+                    Enables you to add the component (part or assembly) names to the object/zone names on import. Select auto, no, or yes. The default selection is auto where the component name will be added to the object/zone name.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/use_component_names").execute(*args, **kwargs)
                 def name_separator_character(self, *args, **kwargs):
                     """
-                    Character to be used as a separator in all names.
+                    :
                     """
                     return PyMenu(self.service, "/file/import/cad_options/name_separator_character").execute(*args, **kwargs)
                 def object_type(self, *args, **kwargs):
                     """
-                    Object type for CAD files.
+                    Enables the setting of object type on import. The options available are auto, geometry, and mesh. The default setting is auto based on the tessellation method selected: geometry objects will be created when the cad-faceting  method is used, while mesh objects will be created when the cfd-surface-mesh method is used.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/object_type").execute(*args, **kwargs)
                 def one_object_per(self, *args, **kwargs):
                     """
-                    Set one object per body, part or file.
+                    Enables you to create one object per body/part/file/selection to be imported. The default program-controlled option allows the software to make the appropriate choice. This option makes a choice between per body and per part based on whether shared topology is off or on, respectively.  For Ansys ICEM CFD files (*.tin), set the object granularity to one object per selection.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/one_object_per").execute(*args, **kwargs)
                 def one_face_zone_per(self, *args, **kwargs):
                     """
-                    Set one object per body, face or object.
+                    Enables you to create one face zone per body/face/object to be imported.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/one_face_zone_per").execute(*args, **kwargs)
                 def named_selection_tessellation_failure(self, *args, **kwargs):
@@ -540,7 +511,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/file/import/cad_options/use_body_names").execute(*args, **kwargs)
                 def use_part_names(self, *args, **kwargs):
                     """
-                    Use part names for CAD files.
+                    Enables you to choose whether to add the part names from the CAD file to the object and zone names on import. The default setting is auto which adds the part names to both object and zone names when object creation granularity is set to body. When the object creation granularity is set to part or file, the part names are not added to the zone names, face zone labels, or the region names, by default. You can also explicitly select yes or no.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/use_part_names").execute(*args, **kwargs)
                 def replacement_character(self, *args, **kwargs):
@@ -550,22 +521,23 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/file/import/cad_options/replacement_character").execute(*args, **kwargs)
                 def derive_zone_name_from_object_scope(self, *args, **kwargs):
                     """
-                    Derive zone names from object scope.
+                    Enables zones without Named Selections to inherit the object name on import. This option is disabled by default.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/derive_zone_name_from_object_scope").execute(*args, **kwargs)
                 def merge_nodes(self, *args, **kwargs):
                     """
-                    Merge Nodes for CAD import.
+                    Enables the merging of geometry object nodes during CAD import. This option is enabled by default.  This option can be optionally enabled/disabled only when geometry objects are imported using the CAD Faceting option for CAD import. Mesh object nodes will always be merged when the CFD Surface Mesh is selected for CAD import.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/merge_nodes").execute(*args, **kwargs)
                 def create_cad_assemblies(self, *args, **kwargs):
                     """
-                    Import CAD Assemblies.
+                    Enables creating the CAD Assemblies tree on CAD import. The CAD Assemblies tree represents the CAD tree as it is presented in the CAD package in which it was created. All sub-assembly levels from the CAD are maintained on import in Fluent Meshing.  For commands specific to the CAD assemblies, refer to cad-assemblies/
+                                
                     """
                     return PyMenu(self.service, "/file/import/cad_options/create_cad_assemblies").execute(*args, **kwargs)
                 def modify_all_duplicate_names(self, *args, **kwargs):
                     """
-                    Modify all duplicate names by suffixing it with incremental integers.
+                    Enables you to modify all duplicate object/zone names by adding incremental integers as suffix. This option is disabled by default.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/modify_all_duplicate_names").execute(*args, **kwargs)
                 def use_part_or_body_names_as_suffix_to_named_selections(self, *args, **kwargs):
@@ -575,7 +547,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/file/import/cad_options/use_part_or_body_names_as_suffix_to_named_selections").execute(*args, **kwargs)
                 def strip_file_name_extension_from_naming(self, *args, **kwargs):
                     """
-                    Strip file name extension from naming.
+                    Removes the extension of the CAD files from the object/face zone names on import. This option is disabled by default.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/strip_file_name_extension_from_naming").execute(*args, **kwargs)
                 def import_label_for_body_named_selection(self, *args, **kwargs):
@@ -585,7 +557,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/file/import/cad_options/import_label_for_body_named_selection").execute(*args, **kwargs)
                 def strip_path_prefix_from_names(self, *args, **kwargs):
                     """
-                    Strip path prefixes from naming.
+                    Enables you to remove the path prefix from the object/face zone names on import. The default setting is auto which removes the path prefix from object/face zone names when the object creation granularity is set to one object per file. You can also explicitly select yes or no.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/strip_path_prefix_from_names").execute(*args, **kwargs)
                 def merge_objects_per_body_named_selection(self, *args, **kwargs):
@@ -595,12 +567,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/file/import/cad_options/merge_objects_per_body_named_selection").execute(*args, **kwargs)
                 def extract_features(self, *args, **kwargs):
                     """
-                    Set the feature angle.
+                    Enables feature extraction from the CAD model on import. You can choose to disable this, if desired. Specify an appropriate value for feature angle. The default value is 40.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/extract_features").execute(*args, **kwargs)
                 def import_curvature_data_from_CAD(self, *args, **kwargs):
                     """
-                    Import Curvature Data from CAD.
+                    Enables importing of the curvature data from the nodes of the CAD facets. You can choose to disable this, if desired.
                     """
                     return PyMenu(self.service, "/file/import/cad_options/import_curvature_data_from_CAD").execute(*args, **kwargs)
                 def create_label_per_body_during_cad_faceting(self, *args, **kwargs):
@@ -637,7 +609,7 @@ class main_menu(metaclass=PyMenuMeta):
                 """
                 return PyMenu(self.service, "/file/checkpoint/delete_checkpoint").execute(*args, **kwargs)
 
-        class project_beta(metaclass=PyMenuMeta):
+        class project(metaclass=PyMenuMeta):
             """
             Enter to create new project, open project, save and archive project.
             """
@@ -693,33 +665,32 @@ class main_menu(metaclass=PyMenuMeta):
             self.boundary_conditions = self.__class__.boundary_conditions(path + [("boundary_conditions", None)], service)
         def auto_slit_faces(self, *args, **kwargs):
             """
-            Automatically slits all embedded boundary face zones.
-            .
+            Slits all boundary faces with cells on both sides (these cells must be in the same cell zone). A displacement can be specified to provide thickness to the boundary. 
             """
             return PyMenu(self.service, "/boundary/auto_slit_faces").execute(*args, **kwargs)
         def orient_faces_by_point(self, *args, **kwargs):
             """
-            Orient Region based on Material Point.
+            Orients the normals based on the specified material point. 
             """
             return PyMenu(self.service, "/boundary/orient_faces_by_point").execute(*args, **kwargs)
         def check_boundary_mesh(self, *args, **kwargs):
             """
-            Report number of Delaunay violations on surface mesh and unused nodes.
+            Reports the number of Delaunay violations on the triangular surface mesh and the number of isolated nodes. 
             """
             return PyMenu(self.service, "/boundary/check_boundary_mesh").execute(*args, **kwargs)
         def check_duplicate_geom(self, *args, **kwargs):
             """
-            Check duplicated face threads in the geometry.
+            Displays the names of the duplicate surfaces and prints maximum and average distance between them. 
             """
             return PyMenu(self.service, "/boundary/check_duplicate_geom").execute(*args, **kwargs)
         def clear_marked_faces(self, *args, **kwargs):
             """
-            Clear previously marked faces.
+            Clears marked faces. 
             """
             return PyMenu(self.service, "/boundary/clear_marked_faces").execute(*args, **kwargs)
         def clear_marked_nodes(self, *args, **kwargs):
             """
-            Clear previously marked nodes.
+            Clears nodes that were marked using the mark-duplicate-nodes command. 
             """
             return PyMenu(self.service, "/boundary/clear_marked_nodes").execute(*args, **kwargs)
         def coarsen_boundary_faces(self, *args, **kwargs):
@@ -729,92 +700,92 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/boundary/coarsen_boundary_faces").execute(*args, **kwargs)
         def count_marked_faces(self, *args, **kwargs):
             """
-            Count marked faces.
+            Reports the number of marked faces. 
             """
             return PyMenu(self.service, "/boundary/count_marked_faces").execute(*args, **kwargs)
         def count_free_nodes(self, *args, **kwargs):
             """
-            Count number of free nodes.
+            Reports the number of boundary nodes associated with edges having only one attached face. 
             """
             return PyMenu(self.service, "/boundary/count_free_nodes").execute(*args, **kwargs)
         def count_unused_nodes(self, *args, **kwargs):
             """
-            Count number of unused nodes.
+            Lists the number of boundary nodes that are not used by any cell. 
             """
             return PyMenu(self.service, "/boundary/count_unused_nodes").execute(*args, **kwargs)
         def count_unused_bound_node(self, *args, **kwargs):
             """
-            Count number of unused boundary nodes.
+            Counts the unused boundary nodes in the domain. 
             """
             return PyMenu(self.service, "/boundary/count_unused_bound_node").execute(*args, **kwargs)
         def count_unused_faces(self, *args, **kwargs):
             """
-            Count number of unused faces.
+            Lists the number of boundary faces that are not used by any cell. 
             """
             return PyMenu(self.service, "/boundary/count_unused_faces").execute(*args, **kwargs)
         def compute_bounding_box(self, *args, **kwargs):
             """
-            Computes bounding box for given zones.
+            Computes the bounding box for the zones specified. 
             """
             return PyMenu(self.service, "/boundary/compute_bounding_box").execute(*args, **kwargs)
         def create_bounding_box(self, *args, **kwargs):
             """
-            Create bounding box for given zones.
+            Creates the bounding box for the specified zones. You can specify the zone type, name, edge length, and the extents of the box, as required. You can also optionally create a geometry object from the bounding box created.
             """
             return PyMenu(self.service, "/boundary/create_bounding_box").execute(*args, **kwargs)
         def create_cylinder(self, *args, **kwargs):
             """
-            Create cylinder using two axis end nodes/positions or, three points on the arc defining the cylinder.
+            Creates a cylinder by specifying the axis, radius, and edge length or three arc nodes, the axial delta, the radial gap, and the edge length. You can also specify the prefix for the zone being created, as required. You can also optionally create a geometry object from the cylinder created.
             """
             return PyMenu(self.service, "/boundary/create_cylinder").execute(*args, **kwargs)
         def create_plane_surface(self, *args, **kwargs):
             """
-            Create plane surface.
+            Creates a plane surface by specifying either the axis direction, axial location, and the extents of the surface or three points defining the plane. You can also optionally create a geometry object from the plane surface created.
             """
             return PyMenu(self.service, "/boundary/create_plane_surface").execute(*args, **kwargs)
         def create_swept_surface(self, *args, **kwargs):
             """
-            Create surface by sweeping the edge along the vector.
+            Creates a surface by sweeping the specified edge in the direction specified. You need to specify the distance to sweep through and the number of offsets, as required. You can also optionally create a geometry object from the swept surface created.
             """
             return PyMenu(self.service, "/boundary/create_swept_surface").execute(*args, **kwargs)
         def create_revolved_surface(self, *args, **kwargs):
             """
-            Create surface by revolving the edge along the vector.
+            Creates a revolved surface by rotating the specified edge through the angle specified. Specify the number of segments, scale factor, and the pivot point and axis of rotation. You can also optionally create a geometry object from the revolved surface created.
             """
             return PyMenu(self.service, "/boundary/create_revolved_surface").execute(*args, **kwargs)
         def delete_duplicate_faces(self, *args, **kwargs):
             """
-            Delete duplicate faces on specified zones.
+            Searches for faces on a specified zone that have the same nodes and deletes the duplicates.   Duplicate faces may be present if you generated the boundary mesh using a third-party grid generator, or if you have used the slit-boundary-face command to modify the boundary mesh and then merged the nodes. 
             """
             return PyMenu(self.service, "/boundary/delete_duplicate_faces").execute(*args, **kwargs)
         def delete_all_dup_faces(self, *args, **kwargs):
             """
-            Delete all duplicate faces on all boundary zones.
+            Searches for faces on all boundary zones that have the same nodes and deletes the duplicates. 
             """
             return PyMenu(self.service, "/boundary/delete_all_dup_faces").execute(*args, **kwargs)
         def delete_island_faces(self, *args, **kwargs):
             """
-            Delete island faces or cavity.
+            Enables you to delete faces in a non-contiguous region of a face zone. 
             """
             return PyMenu(self.service, "/boundary/delete_island_faces").execute(*args, **kwargs)
         def delete_unused_nodes(self, *args, **kwargs):
             """
-            Delete nodes not belonging to any boundary faces.
+            Deletes the boundary nodes that are not used by any boundary faces. 
             """
             return PyMenu(self.service, "/boundary/delete_unused_nodes").execute(*args, **kwargs)
         def delete_unused_faces(self, *args, **kwargs):
             """
-            Delete unused boundary faces.
+            Deletes all the boundary faces that are not used by any cell. 
             """
             return PyMenu(self.service, "/boundary/delete_unused_faces").execute(*args, **kwargs)
         def delete_unconnected_faces(self, *args, **kwargs):
             """
-            Delete unconnected face zones.
+            Enables you to delete the unconnected face-zones. 
             """
             return PyMenu(self.service, "/boundary/delete_unconnected_faces").execute(*args, **kwargs)
         def edge_limits(self, *args, **kwargs):
             """
-            Print shortest and largest edges on boundary mesh.
+            Prints the length of the shortest and longest edges on the boundary. This information is useful for setting initial mesh parameters and refinement controls. 
             """
             return PyMenu(self.service, "/boundary/edge_limits").execute(*args, **kwargs)
         def expand_marked_faces_by_rings(self, *args, **kwargs):
@@ -824,17 +795,17 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/boundary/expand_marked_faces_by_rings").execute(*args, **kwargs)
         def face_distribution(self, *args, **kwargs):
             """
-            Show face quality distribution.
+            Reports the distribution of face quality in the text window. 
             """
             return PyMenu(self.service, "/boundary/face_distribution").execute(*args, **kwargs)
         def face_skewness(self, *args, **kwargs):
             """
-            Show worse face skewness.
+            Lists the worst face skewness. 
             """
             return PyMenu(self.service, "/boundary/face_skewness").execute(*args, **kwargs)
         def jiggle_boundary_nodes(self, *args, **kwargs):
             """
-            Perturb randomly nodal position.
+            Randomly perturbs all boundary nodes based on an input tolerance. Some nodes will be perturbed less than the tolerance value, while others will be perturbed by half of the tolerance value in all three coordinate directions. 
             """
             return PyMenu(self.service, "/boundary/jiggle_boundary_nodes").execute(*args, **kwargs)
         def improve_surface_mesh(self, *args, **kwargs):
@@ -845,17 +816,17 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/boundary/improve_surface_mesh").execute(*args, **kwargs)
         def make_periodic(self, *args, **kwargs):
             """
-            Make periodic zone pair.
+            Enables you to make the specified boundaries periodic. You can specify the type of periodicity (rotational or translational), the angle, pivot, and axis of rotation, for rotational periodicity or the translational shift for translational periodicity.   For each of the zones specified, a corresponding periodic shadow boundary zone will be created. 
             """
             return PyMenu(self.service, "/boundary/make_periodic").execute(*args, **kwargs)
         def recover_periodic_surfaces(self, *args, **kwargs):
             """
-            Recover periodic surfaces.
+            Restores the periodic relationship between face zones. You will be prompted for the type (rotational or translational), method (semi-automatic, automatic, or manual, depending on the periodicity type) and for face zones. Periodicity information (angle, pivot point, axis of rotation, or translational shift) are read in with the mesh file. 
             """
             return PyMenu(self.service, "/boundary/recover_periodic_surfaces").execute(*args, **kwargs)
         def set_periodicity(self, *args, **kwargs):
             """
-            Set size field periodicity.
+            Defines the periodicity parameters. You will be prompted for the type of periodicity (rotational or translational). For rotational periodicity, you will be prompted for the angle and axis of rotation parameters. For translational periodicity, you will be prompted for the shift vector components.
             """
             return PyMenu(self.service, "/boundary/set_periodicity").execute(*args, **kwargs)
         def mark_bad_quality_faces(self, *args, **kwargs):
@@ -865,80 +836,77 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/boundary/mark_bad_quality_faces").execute(*args, **kwargs)
         def mark_faces_in_region(self, *args, **kwargs):
             """
-            Mark faces in local region.
+            Marks the faces that are contained in a specified local refinement region. 
             """
             return PyMenu(self.service, "/boundary/mark_faces_in_region").execute(*args, **kwargs)
         def mark_face_intersection(self, *args, **kwargs):
             """
-            Mark face intersection in face zones.
+            Marks intersecting faces. Intersection is detected if the line defined by any two consecutive nodes on a face intersects any face in the current domain. The marked faces will appear in the grid display when faces are displayed. For a list of intersecting faces, set the /report/verbosity level to 2 before using the mark-face-intersection command. 
             """
             return PyMenu(self.service, "/boundary/mark_face_intersection").execute(*args, **kwargs)
         def resolve_face_intersection(self, *args, **kwargs):
             """
-            Resolve face intersection in tri-face zones.
+            Resolves self intersection on manifold surface meshes.
             """
             return PyMenu(self.service, "/boundary/resolve_face_intersection").execute(*args, **kwargs)
         def mark_face_proximity(self, *args, **kwargs):
             """
-            Mark faces that are in proximity.
+            Marks faces that are in proximity to each other.   Face A is considered to be in proximity to face B if any of the nodes on face A are within the calculated proximity distance from face B. The proximity distance is calculated based on the specified relative distance and the sphere radius. The sphere radius is determined by the maximum distance from the centroid of the face to its nodes. The marked faces will appear in the grid display when faces are displayed.   For a list of faces in proximity to each other, set the /report/verbosity level to 2 before using the mark-face-proximity command. 
             """
             return PyMenu(self.service, "/boundary/mark_face_proximity").execute(*args, **kwargs)
         def mark_duplicate_nodes(self, *args, **kwargs):
             """
-            Mark duplicate nodes.
+            Marks duplicate nodes. The marked nodes will appear in the grid display when nodes are displayed. For a list of duplicate nodes, set the /report/verbosity level to 2 before using the mark-duplicate-nodes command. 
             """
             return PyMenu(self.service, "/boundary/mark_duplicate_nodes").execute(*args, **kwargs)
         def merge_nodes(self, *args, **kwargs):
             """
-            Merge duplicate nodes.  If a face has two of
-            its nodes merged, then it is deleted.
+            Merges duplicate nodes. 
             """
             return PyMenu(self.service, "/boundary/merge_nodes").execute(*args, **kwargs)
         def merge_small_face_zones(self, *args, **kwargs):
             """
-            Merge face zones having area less than min area with largest zone in its neighbor.
+            Merges the face zones having area less than the minimum area. 
             """
             return PyMenu(self.service, "/boundary/merge_small_face_zones").execute(*args, **kwargs)
         def print_info(self, *args, **kwargs):
             """
-            Print node/face/cell info.
+            Prints information about the grid in the text window. 
             """
             return PyMenu(self.service, "/boundary/print_info").execute(*args, **kwargs)
         def project_face_zone(self, *args, **kwargs):
             """
-            Project face zone to a background mesh.
+            Projects nodes on a selected face zone onto a target face zone. Projection can be performed based on normal direction, closest point, or specified direction. 
             """
             return PyMenu(self.service, "/boundary/project_face_zone").execute(*args, **kwargs)
         def reset_element_type(self, *args, **kwargs):
             """
-            Reset the element type (mixed, linear, tri or quad) of a boundary zone.
+            Resets the element type (mixed, tri, or quad) of a boundary zone. If you have separated a mixed (tri and quad) face zone into one tri face zone and one quad face zone, for example, each of these will be identified as a “mixed" zone. Resetting the element type for each of these new zones will identify them as, respectively, a triangular zone and a quadrilateral zone. 
             """
             return PyMenu(self.service, "/boundary/reset_element_type").execute(*args, **kwargs)
         def scale_nodes(self, *args, **kwargs):
             """
-            Scale all nodes by the scale factor.
+            Applies a scaling factor to all node coordinates. You can use this command to change the units of the grid. 
             """
             return PyMenu(self.service, "/boundary/scale_nodes").execute(*args, **kwargs)
         def slit_boundary_face(self, *args, **kwargs):
             """
-            Make slit in mesh at boundary face.
-            All faces must have normals oriented in the same direction.
-            .
+            Slits a boundary face zone by duplicating all faces and nodes, except those nodes that are located at the edges of the boundary zone. A displacement can be specified to provide thickness to the boundary. The slit command only works when it is possible to move from face to face using the connectivity provided by the cells.   You should slit the boundary face after you generate the volume mesh so that cells will not be placed inside the gap. There may be some inaccuracies when you graphically display solution data for a mesh with a slit boundary in ANSYS Fluent. 
             """
             return PyMenu(self.service, "/boundary/slit_boundary_face").execute(*args, **kwargs)
         def unmark_selected_faces(self, *args, **kwargs):
             """
-            Clear mark on selected faces.
+            Unmarks the marked selected faces. 
             """
             return PyMenu(self.service, "/boundary/unmark_selected_faces").execute(*args, **kwargs)
         def smooth_marked_faces(self, *args, **kwargs):
             """
-            Smooth Marked faces on threads.
+            Smooths the marked faces. 
             """
             return PyMenu(self.service, "/boundary/smooth_marked_faces").execute(*args, **kwargs)
         def wrapper(self, *args, **kwargs):
             """
-            Enter surface wrapper menu.
+            Enters the surface wrapper menu.  This menu is no longer supported, and will be removed in a future release.
             """
             return PyMenu(self.service, "/boundary/wrapper").execute(*args, **kwargs)
         def unmark_faces_in_zones(self, *args, **kwargs):
@@ -948,116 +916,116 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/boundary/unmark_faces_in_zones").execute(*args, **kwargs)
         def delete_free_edge_faces(self, *args, **kwargs):
             """
-            Remove faces with specified number of free edges.
+            Enables you to remove faces with the specified number of free edges from the specified boundary zones. 
             """
             return PyMenu(self.service, "/boundary/delete_free_edge_faces").execute(*args, **kwargs)
         def fix_mconnected_edges(self, *args, **kwargs):
             """
-            Fix multi connected edges.
+            Resolves multi-connected edges/non-manifold configurations in the boundary mesh by deleting fringes and overlaps based on threshold values specified.
             """
             return PyMenu(self.service, "/boundary/fix_mconnected_edges").execute(*args, **kwargs)
 
         class feature(metaclass=PyMenuMeta):
             """
-            Enter bounday feature menu.
+            Enables you to create and modify features. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def copy_edge_zones(self, *args, **kwargs):
                 """
-                Copy edge zones.
+                Copies the specified edge zone(s) to new edge zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/feature/copy_edge_zones").execute(*args, **kwargs)
             def create_edge_zones(self, *args, **kwargs):
                 """
-                Create edge loops of thread based on feature angle.
+                Extracts edge loops for the specified face zone(s) based on the feature method specified. You also need to specify an appropriate value for feature angle when using the fixed-angle method.   The Face Seed approach cannot be used when creating edge loops using text commands.
                 """
                 return PyMenu(self.service, "/boundary/feature/create_edge_zones").execute(*args, **kwargs)
             def delete_edge_zones(self, *args, **kwargs):
                 """
-                Delete edge zones.
+                Deletes the specified edge zone(s) 
                 """
                 return PyMenu(self.service, "/boundary/feature/delete_edge_zones").execute(*args, **kwargs)
             def delete_degenerated_edges(self, *args, **kwargs):
                 """
-                Delete from Edge Zones, Edges whose two end nodes are the same.
+                Deletes degenerated edges (edges where the two end nodes are the same) for the edge zone(s) specified.
                 """
                 return PyMenu(self.service, "/boundary/feature/delete_degenerated_edges").execute(*args, **kwargs)
             def edge_size_limits(self, *args, **kwargs):
                 """
-                Report edge size limits.
+                Reports the minimum, maximum, and average edge length for the specified edge zone(s) in the console. 
                 """
                 return PyMenu(self.service, "/boundary/feature/edge_size_limits").execute(*args, **kwargs)
             def intersect_edge_zones(self, *args, **kwargs):
                 """
-                Intersect edge zones.
+                Intersects the specified edge loops to create a new edge loop comprising the common edges. You can enable automatic deleting of overlapped edges and specify an appropriate intersection tolerance. 
                 """
                 return PyMenu(self.service, "/boundary/feature/intersect_edge_zones").execute(*args, **kwargs)
             def group(self, *args, **kwargs):
                 """
-                Group face and edge zones together.
+                Associates the specified edge zone(s) with the specified face zone. 
                 """
                 return PyMenu(self.service, "/boundary/feature/group").execute(*args, **kwargs)
             def list_edge_zones(self, *args, **kwargs):
                 """
-                List edge zones.
+                Lists the name, ID, type, and count for the specified edge zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/feature/list_edge_zones").execute(*args, **kwargs)
             def merge_edge_zones(self, *args, **kwargs):
                 """
-                Merge edge zones.
+                Merges multiple edge loops of the same type into a single loop. 
                 """
                 return PyMenu(self.service, "/boundary/feature/merge_edge_zones").execute(*args, **kwargs)
             def orient_edge_direction(self, *args, **kwargs):
                 """
-                Orient edge zone directions.
+                Orients the edges on the loop to point in the same direction. 
                 """
                 return PyMenu(self.service, "/boundary/feature/orient_edge_direction").execute(*args, **kwargs)
             def project_edge_zones(self, *args, **kwargs):
                 """
-                Project edge zones on specified face zone.
+                Projects the edges of the specified loop onto the specified face zone using the specified projection method. 
                 """
                 return PyMenu(self.service, "/boundary/feature/project_edge_zones").execute(*args, **kwargs)
             def remesh_edge_zones(self, *args, **kwargs):
                 """
-                Remesh edge zones.
+                Remeshes the specified edge loop(s), modifying the node distribution according to the specified remeshing method, spacing values, and feature angle. You can also enable quadratic reconstruction, if required. 
                 """
                 return PyMenu(self.service, "/boundary/feature/remesh_edge_zones").execute(*args, **kwargs)
             def reverse_edge_direction(self, *args, **kwargs):
                 """
-                Reverse direction of edge loops.
+                Reverses the direction of the edge loop. 
                 """
                 return PyMenu(self.service, "/boundary/feature/reverse_edge_direction").execute(*args, **kwargs)
             def separate_edge_zones(self, *args, **kwargs):
                 """
-                Separate edge zones based on connectivity and feature angle.
+                Separates the specified edge loop based on connectivity and the specified feature angle. 
                 """
                 return PyMenu(self.service, "/boundary/feature/separate_edge_zones").execute(*args, **kwargs)
             def separate_edge_zones_by_seed(self, *args, **kwargs):
                 """
-                Separate edge zones by seed.
+                Separates the edge loop based on the seed edge specified. The edge zone separation angle is used to separate the edge zone (default 40).
                 """
                 return PyMenu(self.service, "/boundary/feature/separate_edge_zones_by_seed").execute(*args, **kwargs)
             def toggle_edge_type(self, *args, **kwargs):
                 """
-                Toggle edge type between boundary and interior.
+                Toggles the edge type between boundary and interior. 
                 """
                 return PyMenu(self.service, "/boundary/feature/toggle_edge_type").execute(*args, **kwargs)
             def ungroup(self, *args, **kwargs):
                 """
-                Ungroup previously grouped face and edge zones.
+                Ungroups previously grouped edge zones. 
                 """
                 return PyMenu(self.service, "/boundary/feature/ungroup").execute(*args, **kwargs)
             def separate_delete_small_edges(self, *args, **kwargs):
                 """
-                Separates and deletes small edges.
+                Separates the edge zones based on the feature angle specified, and then deletes the edges having a count smaller than the minimum count specified.
                 """
                 return PyMenu(self.service, "/boundary/feature/separate_delete_small_edges").execute(*args, **kwargs)
 
         class modify(metaclass=PyMenuMeta):
             """
-            Enter boundary modify menu.
+            Contains commands used to modify the boundary mesh. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -1065,17 +1033,17 @@ class main_menu(metaclass=PyMenuMeta):
                 self.patch_options = self.__class__.patch_options(path + [("patch_options", None)], service)
             def analyze_bnd_connectvty(self, *args, **kwargs):
                 """
-                Find and mark free edges/nodes and mutliple-connected edges/nodes.
+                Finds and marks free edges and nodes and multiply-connected edges and nodes. This process is necessary if the boundary mesh has been changed with Scheme functions. 
                 """
                 return PyMenu(self.service, "/boundary/modify/analyze_bnd_connectvty").execute(*args, **kwargs)
             def clear_selections(self, *args, **kwargs):
                 """
-                Clear all selections.
+                Clears all selections. 
                 """
                 return PyMenu(self.service, "/boundary/modify/clear_selections").execute(*args, **kwargs)
             def create(self, *args, **kwargs):
                 """
-                Create either nodes or faces.
+                Creates a boundary face if the selection list contains 3 nodes and an optional zone. If the selection list contains positions, then nodes are created. 
                 """
                 return PyMenu(self.service, "/boundary/modify/create").execute(*args, **kwargs)
             def auto_patch_holes(self, *args, **kwargs):
@@ -1085,142 +1053,142 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/boundary/modify/auto_patch_holes").execute(*args, **kwargs)
             def create_mid_node(self, *args, **kwargs):
                 """
-                Create a node at the midpoint between two selected nodes.
+                Creates a node at the midpoint between two selected nodes. 
                 """
                 return PyMenu(self.service, "/boundary/modify/create_mid_node").execute(*args, **kwargs)
             def collapse(self, *args, **kwargs):
                 """
-                Collapse pairs of nodes or edges or faces.
+                Collapses pairs of nodes, edge(s), or face(s). If a pair of nodes is selected, both the nodes are deleted and a new node is created at the midpoint of the two nodes. If a triangular face is selected, the complete face is collapsed into a single node at the centroid of the face. 
                 """
                 return PyMenu(self.service, "/boundary/modify/collapse").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete either nodes, faces or zones.
+                Deletes all selected faces and nodes. 
                 """
                 return PyMenu(self.service, "/boundary/modify/delete").execute(*args, **kwargs)
             def deselect_last(self, *args, **kwargs):
                 """
-                Deselect last selection.
+                Removes the last selection from the selection list. 
                 """
                 return PyMenu(self.service, "/boundary/modify/deselect_last").execute(*args, **kwargs)
             def clear_skew_faces(self, *args, **kwargs):
                 """
-                Clear faces previously marked as skewed.
+                Clears faces that were marked using the mark-skew-face command. 
                 """
                 return PyMenu(self.service, "/boundary/modify/clear_skew_faces").execute(*args, **kwargs)
             def list_selections(self, *args, **kwargs):
                 """
-                List selections.
+                Lists all of the selected objects. 
                 """
                 return PyMenu(self.service, "/boundary/modify/list_selections").execute(*args, **kwargs)
             def mark_skew_face(self, *args, **kwargs):
                 """
-                Mark face to skip when reporting worst skew face.
+                Marks faces that should be skipped when the worst skewed face is reported using the Modify Boundary dialog box. This enables you to search for the next skewed face. 
                 """
                 return PyMenu(self.service, "/boundary/modify/mark_skew_face").execute(*args, **kwargs)
             def merge(self, *args, **kwargs):
                 """
-                Merge nodes.
+                Merges pairs of nodes. The first node selected is retained, and the second is the duplicate that is merged. 
                 """
                 return PyMenu(self.service, "/boundary/modify/merge").execute(*args, **kwargs)
             def move(self, *args, **kwargs):
                 """
-                Move nodes to new positions.
+                Moves the selected node to the selected position if the selection list contains a node and a position. 
                 """
                 return PyMenu(self.service, "/boundary/modify/move").execute(*args, **kwargs)
             def delta_move(self, *args, **kwargs):
                 """
-                Move nodes to new positions.
+                Moves the selected node by specified magnitude. 
                 """
                 return PyMenu(self.service, "/boundary/modify/delta_move").execute(*args, **kwargs)
             def rezone(self, *args, **kwargs):
                 """
-                Change the zone faces belong to.
+                Moves the selected faces from their current zone into the selected zone, if the selection list contains a zone and one or more faces. 
                 """
                 return PyMenu(self.service, "/boundary/modify/rezone").execute(*args, **kwargs)
             def select_entity(self, *args, **kwargs):
                 """
-                Select a entity.
+                Adds a cell, face, or node to the selection list by entering the name of the entity. 
                 """
                 return PyMenu(self.service, "/boundary/modify/select_entity").execute(*args, **kwargs)
             def select_filter(self, *args, **kwargs):
                 """
-                Select probe filter.
+                Selects a filter. The possible filters are off, cell, face, edge, node, zone, position, object, and size. If off is chosen, then when a selection is made, it is first checked to see if it is a cell, then a face, an edge, and so on. When the node filter is used, and if a cell or face is selected, the node closest to the selection point is picked. Thus, the nodes do not have to be displayed, to be picked. 
                 """
                 return PyMenu(self.service, "/boundary/modify/select_filter").execute(*args, **kwargs)
             def select_probe(self, *args, **kwargs):
                 """
-                Select probe function.
+                Selects the probe function. The possible functions are: 
                 """
                 return PyMenu(self.service, "/boundary/modify/select_probe").execute(*args, **kwargs)
             def select_position(self, *args, **kwargs):
                 """
-                Select a position.
+                Adds a position to the selection list by entering the coordinates of the position. 
                 """
                 return PyMenu(self.service, "/boundary/modify/select_position").execute(*args, **kwargs)
             def select_zone(self, *args, **kwargs):
                 """
-                Select a zone.
+                Adds a zone to the selection list by entering the zone name or ID. 
                 """
                 return PyMenu(self.service, "/boundary/modify/select_zone").execute(*args, **kwargs)
             def show_filter(self, *args, **kwargs):
                 """
-                Show current probe filter.
+                Shows the current filter. 
                 """
                 return PyMenu(self.service, "/boundary/modify/show_filter").execute(*args, **kwargs)
             def show_probe(self, *args, **kwargs):
                 """
-                Show current probe function.
+                Shows the current probe function. 
                 """
                 return PyMenu(self.service, "/boundary/modify/show_probe").execute(*args, **kwargs)
             def skew(self, *args, **kwargs):
                 """
-                Display the highest skewed boundary face.
+                Finds the face with the highest (worst) skewness, selects it in the graphics window, and reports its skewness and zone ID in the console window. 
                 """
                 return PyMenu(self.service, "/boundary/modify/skew").execute(*args, **kwargs)
             def smooth(self, *args, **kwargs):
                 """
-                Smooth selected nodes.
+                Uses Laplace smoothing to modify the position of the nodes in the selection list. It moves the selected node to a position computed from an average of its node neighbors. The new position is an average of the neighboring node coordinates and is not reprojected to the discrete surface. 
                 """
                 return PyMenu(self.service, "/boundary/modify/smooth").execute(*args, **kwargs)
             def split_face(self, *args, **kwargs):
                 """
-                Split two selected faces into four.
+                Splits two selected faces into four faces. 
                 """
                 return PyMenu(self.service, "/boundary/modify/split_face").execute(*args, **kwargs)
             def swap(self, *args, **kwargs):
                 """
-                Swap edges.
+                Swaps boundary edges (of triangular faces) if the selection list contains edges. 
                 """
                 return PyMenu(self.service, "/boundary/modify/swap").execute(*args, **kwargs)
             def hole_feature_angle(self, *args, **kwargs):
                 """
-                Angle defining boundary of hole.
+                Specifies the feature angle for consideration of holes in the geometry. 
                 """
                 return PyMenu(self.service, "/boundary/modify/hole_feature_angle").execute(*args, **kwargs)
             def undo(self, *args, **kwargs):
                 """
-                Undo last modification.
+                Undoes the previous operation. When an operation is performed, the reverse operation is stored on the undo stack. For example, a create operation places a delete on the stack, and a delete adds a create operation.   The undo operation requires that the name of the object exist when the action is undone. If the name does not exist, then the undo will fail. You can undo the last few operations, but if many operations are being performed it is recommended that you also save the mesh periodically. 
                 """
                 return PyMenu(self.service, "/boundary/modify/undo").execute(*args, **kwargs)
             def next_skew(self, *args, **kwargs):
                 """
-                Display the next highest skewed boundary face.
+                Finds the triangular face of nearest lower skewness value than that of the worst skewed face. The face ID, its skewness, the longest edge ID, and the node ID opposite to the longest edge are displayed in the console. 
                 """
                 return PyMenu(self.service, "/boundary/modify/next_skew").execute(*args, **kwargs)
             def skew_report_zone(self, *args, **kwargs):
                 """
-                Face zone for which skewness has to be reported.
+                Enables you to select the zone for which you want to report the skewness. You can either specify zone name or zone ID. 
                 """
                 return PyMenu(self.service, "/boundary/modify/skew_report_zone").execute(*args, **kwargs)
             def local_remesh(self, *args, **kwargs):
                 """
-                Remesh locally starting from face seeds.
+                Remeshes marked faces or faces based on selections in the graphics window. Select the faces to be remeshed and specify the sizing source (constant-size, geometry, or size-field), the number of radial layers of faces to be remeshed (rings), the feature angle to be preserved while remeshing the selected faces, and the size for constant size remeshing (if applicable).
                 """
                 return PyMenu(self.service, "/boundary/modify/local_remesh").execute(*args, **kwargs)
             def select_visible_entities(self, *args, **kwargs):
                 """
-                Set visual selection mode of entities.
+                Enables you to select only visible entities (nodes, edges, faces, zones, objects) when the box select or polygon select options are used. Ensure that the model is zoomed to an appropriate level for correct selection.
                 """
                 return PyMenu(self.service, "/boundary/modify/select_visible_entities").execute(*args, **kwargs)
 
@@ -1244,7 +1212,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class refine(metaclass=PyMenuMeta):
             """
-            Enter refine boundary face menu.
+            Discusses the commands used to refine the boundary mesh. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -1252,66 +1220,66 @@ class main_menu(metaclass=PyMenuMeta):
                 self.local_regions = self.__class__.local_regions(path + [("local_regions", None)], service)
             def auto_refine(self, *args, **kwargs):
                 """
-                Automatically refine faces based on proximity with other faces.
+                Automatically refines a face zone based on proximity. The original face zone is treated as a background mesh. Faces are refined by multiple face splitting passes, so that no face is in close proximity to any face in the current domain. 
                 """
                 return PyMenu(self.service, "/boundary/refine/auto_refine").execute(*args, **kwargs)
             def clear(self, *args, **kwargs):
                 """
-                Clear the refine flag at the faces.
+                Clears all refinement marks from all boundary faces. 
                 """
                 return PyMenu(self.service, "/boundary/refine/clear").execute(*args, **kwargs)
             def count(self, *args, **kwargs):
                 """
-                Count the number of faces flagged on thread(s).
+                Counts the number of faces marked on each boundary zone. 
                 """
                 return PyMenu(self.service, "/boundary/refine/count").execute(*args, **kwargs)
             def mark(self, *args, **kwargs):
                 """
-                Mark faces in region for refinement.
+                Marks the faces for refinement. 
                 """
                 return PyMenu(self.service, "/boundary/refine/mark").execute(*args, **kwargs)
             def limits(self, *args, **kwargs):
                 """
-                List face zone information on number of faces flagged and range of face size.
+                Prints a report of the minimum and maximum size of each specified zone. This report will also tell you how many faces on each zone have been marked for refinement. 
                 """
                 return PyMenu(self.service, "/boundary/refine/limits").execute(*args, **kwargs)
             def refine(self, *args, **kwargs):
                 """
-                Refine the flagged faces.
+                Refines the marked faces. 
                 """
                 return PyMenu(self.service, "/boundary/refine/refine").execute(*args, **kwargs)
 
             class local_regions(metaclass=PyMenuMeta):
                 """
-                Enter the refine-local menu.
+                Enters the local refinement menu. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def define(self, *args, **kwargs):
                     """
-                    Define a refinement region's parameters.
+                    Defines the refinement region according to the specified parameters. 
                     """
                     return PyMenu(self.service, "/boundary/refine/local_regions/define").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Deletes the specified region. 
                     """
                     return PyMenu(self.service, "/boundary/refine/local_regions/delete").execute(*args, **kwargs)
                 def init(self, *args, **kwargs):
                     """
-                    Delete all current regions and add the default refinement region.
+                    Creates a region encompassing the entire geometry. 
                     """
                     return PyMenu(self.service, "/boundary/refine/local_regions/init").execute(*args, **kwargs)
                 def list_all_regions(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists all the refinement regions in the console. 
                     """
                     return PyMenu(self.service, "/boundary/refine/local_regions/list_all_regions").execute(*args, **kwargs)
 
         class remesh(metaclass=PyMenuMeta):
             """
-            Enter remeshing boundary face zone menu.
+            Has a set of commands for remeshing the face zones. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -1320,47 +1288,51 @@ class main_menu(metaclass=PyMenuMeta):
                 self.size_functions = self.__class__.size_functions(path + [("size_functions", None)], service)
             def create_edge_loops(self, *args, **kwargs):
                 """
-                Create edge loops of thread based on feature angle.
+                Creates edge loops for a specified face zone, based on feature angle. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/create_edge_loops").execute(*args, **kwargs)
             def create_intersect_loop(self, *args, **kwargs):
                 """
-                Create edge loop of intersection.
+                Creates an interior edge loop at the intersection between two adjacent face zones. Edges created in this way will not be remeshed by default. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/create_intersect_loop").execute(*args, **kwargs)
             def create_all_intrst_loops(self, *args, **kwargs):
                 """
-                Create edge loop of intersection for all boundary zones in current domain.
+                Creates edge loop of intersection for all boundary zones in current domain. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/create_all_intrst_loops").execute(*args, **kwargs)
             def create_join_loop(self, *args, **kwargs):
                 """
-                Create edge loop of overlap region.
+                Creates edge loop on boundary of the region of overlap of two surfaces. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/create_join_loop").execute(*args, **kwargs)
             def create_stitch_loop(self, *args, **kwargs):
                 """
-                Create edge loop of stitch edges.
+                Creates edge loops for connecting two surfaces along their free edges. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/create_stitch_loop").execute(*args, **kwargs)
             def delete_overlapped_edges(self, *args, **kwargs):
                 """
-                Delete edges that overlapped selected loops.
+                Deletes edges that overlap selected edge loops. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/delete_overlapped_edges").execute(*args, **kwargs)
             def intersect_face_zones(self, *args, **kwargs):
                 """
-                Intersection face zones.
+                Remeshes two intersecting face zones so that they become conformal.   After the intersect operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no
+                            
                 """
                 return PyMenu(self.service, "/boundary/remesh/intersect_face_zones").execute(*args, **kwargs)
             def intersect_all_face_zones(self, *args, **kwargs):
                 """
-                Intersect all face zones.
+                Remeshes all the intersecting face zones.   After the intersect operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no
+                            
                 """
                 return PyMenu(self.service, "/boundary/remesh/intersect_all_face_zones").execute(*args, **kwargs)
             def remesh_face_zone(self, *args, **kwargs):
                 """
-                Retriangulate a face zone.
+                Remeshes a specified face zone by automatically extracting edge loops. If edge loops are present in the current domain (for example, if they were created using the create-edge-loops command), they are used to remesh the specified face zone. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/remesh_face_zone").execute(*args, **kwargs)
             def remesh_marked_faces(self, *args, **kwargs):
@@ -1370,88 +1342,122 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/boundary/remesh/remesh_marked_faces").execute(*args, **kwargs)
             def mark_intersecting_faces(self, *args, **kwargs):
                 """
-                Mark faces on zones.
+                Highlights the triangles in the neighborhood of the line of intersection. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/mark_intersecting_faces").execute(*args, **kwargs)
             def remesh_face_zones_conformally(self, *args, **kwargs):
                 """
-                Retriangulate face zones while maintaining conformity.
+                Remeshes face zones using the current size function and keeping a conformal interface between them. If no size function is defined, an error message will be generated.  This command will prompt for:
+                                  
+                                     
+                                        
+                                           Boundary Face Zones
+                                        
+                                     
+                                     
+                                        
+                                           Boundary Edge Zones
+                                        
+                                     
+                                     
+                                        
+                                           feature angle – used to determine the minimum angle between features that will be preserved during remeshing 
+                                     
+                                     
+                                        
+                                           corner angle – used to specify the minimum angle between feature edges that will be preserved 
+                                     
+                                     
+                                        
+                                           Replace Face Zone? – (default is Yes) the remeshed face zone(s) will take the name and -id of the original zones, and the original face zone(s) will have “orig” appended to their name. If No, the remeshed face zone(s) will have “retri” added postfix. 
+                                     
+                                  
+                                 Periodic face zones cannot be remeshed using this command.
                 """
                 return PyMenu(self.service, "/boundary/remesh/remesh_face_zones_conformally").execute(*args, **kwargs)
             def remesh_constant_size(self, *args, **kwargs):
                 """
-                Retriangulate face zones to constant triangle size while maintaining conformity.
+                Remeshes the specified face zones to a constant triangle size while maintaining conformity with adjacent zones. Specify the boundary face zones to be remeshed, the boundary edge zones, feature angle, corner angle, and the constant size. Additionally, specify whether the current boundary face zones should be replaced by the remeshed face zones after the operation is complete.
                 """
                 return PyMenu(self.service, "/boundary/remesh/remesh_constant_size").execute(*args, **kwargs)
             def coarsen_and_refine(self, *args, **kwargs):
                 """
-                Coarsen and refine face zones according to size function.
+                Remeshes (coarsens/refines) the boundary face zones based on the computed size field. Specify the boundary face zones to be remeshed, the boundary edge zones, feature angle, and corner angle. Additionally, specify whether the current boundary face zones should be replaced by the remeshed face zones after the operation is complete.
                 """
                 return PyMenu(self.service, "/boundary/remesh/coarsen_and_refine").execute(*args, **kwargs)
             def remesh_overlapping_zones(self, *args, **kwargs):
                 """
-                Remeshing overlapping face zones.
+                Remeshes overlapping face zones. The non-overlapping region is remeshed using the edge loops created from the overlapping face zones. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/remesh_overlapping_zones").execute(*args, **kwargs)
             def join_face_zones(self, *args, **kwargs):
                 """
-                Join face zones.
+                Connects two overlapping faces.   After the join operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no
+                            
                 """
                 return PyMenu(self.service, "/boundary/remesh/join_face_zones").execute(*args, **kwargs)
             def join_all_face_zones(self, *args, **kwargs):
                 """
-                Intersect all face zones.
+                Connects all overlapping face zones using the join operation.   After the join operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no
+                            
                 """
                 return PyMenu(self.service, "/boundary/remesh/join_all_face_zones").execute(*args, **kwargs)
             def mark_join_faces(self, *args, **kwargs):
                 """
-                Mark faces on zones.
+                Highlights the triangles in the neighborhood of the join edge loop. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/mark_join_faces").execute(*args, **kwargs)
             def stitch_face_zones(self, *args, **kwargs):
                 """
-                Stitch edges on zones.
+                Connects two surfaces along their free edges.   After the stitch operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no
+                            
                 """
                 return PyMenu(self.service, "/boundary/remesh/stitch_face_zones").execute(*args, **kwargs)
             def stitch_all_face_zones(self, *args, **kwargs):
                 """
-                Intersect all face zones.
+                Connects (stitches) all the face zones along the free edges.   After the stitch operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no
+                            
                 """
                 return PyMenu(self.service, "/boundary/remesh/stitch_all_face_zones").execute(*args, **kwargs)
             def triangulate(self, *args, **kwargs):
                 """
-                Create triangulation from existing quad face zone.
+                Triangulates quad zones. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/triangulate").execute(*args, **kwargs)
             def mark_stitch_faces(self, *args, **kwargs):
                 """
-                Mark faces on zones.
+                Highlights the triangles in the neighborhood of the stitch edge loop. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/mark_stitch_faces").execute(*args, **kwargs)
             def faceted_stitch_zones(self, *args, **kwargs):
                 """
-                Stitch free edges on zones.
+                Performs the faceted stitching of zones. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/faceted_stitch_zones").execute(*args, **kwargs)
             def insert_edge_zone(self, *args, **kwargs):
                 """
-                Insert edge into face zonoe.
+                Inserts an edge zone into a triangulated boundary face zone. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/insert_edge_zone").execute(*args, **kwargs)
             def clear_marked_faces(self, *args, **kwargs):
                 """
-                Clear previously marked faces.
+                Clears the highlighting of the triangles that are marked. 
                 """
                 return PyMenu(self.service, "/boundary/remesh/clear_marked_faces").execute(*args, **kwargs)
             def stitch_with_preserve_boundary(self, *args, **kwargs):
                 """
-                Stitch volume to boundary zone at free faces.
+                Connects (stitches) a zone to another which is connected to an existing volume mesh, while preserving the boundary of the zones connected to the volume mesh. Specify a list of boundary zones to be preserved, a list of the boundary zones to be connected to each of these zones, and the tolerance value.   After the stitch operation, remesh is called automatically. To disable the post-remesh operation, use the text command:  /boundary/remesh/controls/intersect/remesh-post-intersection?
+                               no  This command will not work for overlapping or partially overlapping face zones.
                 """
                 return PyMenu(self.service, "/boundary/remesh/stitch_with_preserve_boundary").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Edge loop tools text menu.
+                Enters the edge loop tools text menu. 
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -1459,121 +1465,121 @@ class main_menu(metaclass=PyMenuMeta):
                     self.intersect = self.__class__.intersect(path + [("intersect", None)], service)
                 def remesh_method(self, *args, **kwargs):
                     """
-                    Available methods: 1-constant 2-arithmetic 3-geometric.
+                    Specifies the method to be used for the node distribution on the edge loop. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/remesh_method").execute(*args, **kwargs)
                 def quadratic_recon(self, *args, **kwargs):
                     """
-                    Turn on/off quadratic reconstruction of edge loops.
+                    Enables/disables quadratic reconstruction of edge loops. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/quadratic_recon").execute(*args, **kwargs)
                 def spacing(self, *args, **kwargs):
                     """
-                    Set first and last edge spacing.
+                    Sets the node spacing for the edge loop. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/spacing").execute(*args, **kwargs)
                 def delete_overlapped(self, *args, **kwargs):
                     """
-                    Turn on/off deletion of overlapped edges.
+                    Toggles the deletion of region of overlap of the two surfaces. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/delete_overlapped").execute(*args, **kwargs)
                 def tolerance(self, *args, **kwargs):
                     """
-                    Set intersection tolerance (absolute unit).
+                    Sets the tolerance for determining if two edges intersect. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/tolerance").execute(*args, **kwargs)
                 def project_method(self, *args, **kwargs):
                     """
-                    Available methods: 0-closest 1-direction.
+                    Specifies the method for projecting edge loops. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/project_method").execute(*args, **kwargs)
                 def direction(self, *args, **kwargs):
                     """
-                    Set direction of edge loop projection.
+                    Specifies the direction of the edge loop projection. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/direction").execute(*args, **kwargs)
                 def proximity_local_search(self, *args, **kwargs):
                     """
-                    Include selected face for proximity calculation.
+                    Includes the selected face for proximity calculation. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/controls/proximity_local_search").execute(*args, **kwargs)
 
                 class intersect(metaclass=PyMenuMeta):
                     """
-                    Enter the intersect control menu.
+                    Enters the intersect control menu. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def within_tolerance(self, *args, **kwargs):
                         """
-                        Turn on/off tolerant intersection.
+                        Performs the intersection operation only within the specified tolerance value. It is useful only for the Intersect option. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/within_tolerance").execute(*args, **kwargs)
                     def delete_overlap(self, *args, **kwargs):
                         """
-                        Turn on/off deletion of overlapped region.
+                        Enables/disables the deletion of overlapped edges. It toggles the automatic deletion of region of overlap of the two surfaces. This option is used by while remeshing overlapping zones and retriangulating prisms. By default, this option is enabled. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/delete_overlap").execute(*args, **kwargs)
                     def ignore_parallel_faces(self, *args, **kwargs):
                         """
-                        Turn on/off ignore parallel faces.
+                        Default is yes. If there are close-to-parallel faces, set to no to separate the zones and avoid creating an intersection loop.
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/ignore_parallel_faces").execute(*args, **kwargs)
                     def refine_region(self, *args, **kwargs):
                         """
-                        Turn on/off refinement of intersection region.
+                        Enables you to refine the regions that are modified during the intersect operations. It toggles the refinement of the intersecting regions after performing any of the intersection operation.   This operation improves the quality of the resulting mesh, however, this option is disabled by default. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/refine_region").execute(*args, **kwargs)
                     def separate(self, *args, **kwargs):
                         """
-                        Turn on/off separation of intersection region.
+                        Enables the automatic separation of intersected zones. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/separate").execute(*args, **kwargs)
                     def absolute_tolerance(self, *args, **kwargs):
                         """
-                        Turn on/off absolute tolerance.
+                        Enables you to switch between the use of absolute and relative tolerance. By default, the relative tolerance value is used. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/absolute_tolerance").execute(*args, **kwargs)
                     def retri_improve(self, *args, **kwargs):
                         """
-                        Turn on/off mesh improvement.
+                        Enables you to improve the mesh. After performing any intersection operation, the slivers are removed along the curve of intersection, Laplace smoothing is performed, and followed by the edge swapping. Laplace smoothing is also performed for insert-edge-zone, remesh-overlapped-zones, and prism-retriangulation options. Smoothing is performed again. The smooth-swap operations can be controlled by changing the various defaults such as swapping iterations, smoothing iterations, etc. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/retri_improve").execute(*args, **kwargs)
                     def stitch_preserve(self, *args, **kwargs):
                         """
-                        Turn on/off stitch preserve first zone shape.
+                        Indicates that shape of the first zone specified is to be preserved. This option is enabled by default. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/stitch_preserve").execute(*args, **kwargs)
                     def tolerance(self, *args, **kwargs):
                         """
-                        Intersection tolerance.
+                        Specifies the tolerance value for the intersect operations. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/tolerance").execute(*args, **kwargs)
                     def join_match_angle(self, *args, **kwargs):
                         """
-                        Max allowable angle between normals of faces to join.
+                        Specifies the allowed maximum angle between the normals of the two overlapping surfaces to be joined. This parameter is used to control the size of the join region. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/join_match_angle").execute(*args, **kwargs)
                     def feature_angle(self, *args, **kwargs):
                         """
-                        Angle used to determine angle feature edges.
+                        Specifies the minimum feature angle that should be considered while retriangulating the boundary zones. All the edges in the zone having feature angle greater than the specified feature angle are retained. This option is useful for preserving the shape of the intersecting boundary zones. The default value of feature angle is 40, however, a value in the range of 10–50 degrees is recommended. A large value may distort the shape of the intersecting boundary zones.
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/feature_angle").execute(*args, **kwargs)
                     def join_project_angle(self, *args, **kwargs):
                         """
-                        Max allowable angle between face normal and project direction for join.
+                        Specifies the allowed maximum angle between the face normal and the project direction for the overlapping surfaces to be joined. This parameter is used to control the size of the join region. 
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/join_project_angle").execute(*args, **kwargs)
                     def remesh_post_intersection(self, *args, **kwargs):
                         """
-                        Remesh after intersection.
+                        Used to enable or disable automatic post-remesh operation after any connect operation (join, intersect, or stitch).
                         """
                         return PyMenu(self.service, "/boundary/remesh/controls/intersect/remesh_post_intersection").execute(*args, **kwargs)
 
             class size_functions(metaclass=PyMenuMeta):
                 """
-                Enable specification of size functions.
+                Enters the size functions menu where you can define size functions for controlling mesh size distribution. 
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -1582,37 +1588,37 @@ class main_menu(metaclass=PyMenuMeta):
                     self.controls = self.__class__.controls(path + [("controls", None)], service)
                 def create(self, *args, **kwargs):
                     """
-                    Add size function.
+                    Defines the size function based on the specified parameters. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/create").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete Size Functions.
+                    Deletes the specified size function or the current size field. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/delete").execute(*args, **kwargs)
                 def delete_all(self, *args, **kwargs):
                     """
-                    Delete All Size Functions.
+                    Deletes all the defined size functions. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/delete_all").execute(*args, **kwargs)
                 def compute(self, *args, **kwargs):
                     """
-                    Compute Size-functions.
+                    Computes the size field based on the defined parameters.
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/compute").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List all Size function parameters.
+                    Lists all the defined size functions and the parameter values defined. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/list").execute(*args, **kwargs)
                 def create_defaults(self, *args, **kwargs):
                     """
-                    Creates default curvature & proximty size functions acting on all faces and edges.
+                    Creates default size functions based on face and edge curvature and proximity.
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/create_defaults").execute(*args, **kwargs)
                 def set_global_controls(self, *args, **kwargs):
                     """
-                    Set controls for global controls.
+                    Sets the values for the global minimum and maximum size, and the growth rate. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/set_global_controls").execute(*args, **kwargs)
                 def enable_periodicity_filter(self, *args, **kwargs):
@@ -1622,7 +1628,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/boundary/remesh/size_functions/enable_periodicity_filter").execute(*args, **kwargs)
                 def disable_periodicity_filter(self, *args, **kwargs):
                     """
-                    Disable size field periodicity.
+                    Removes periodicity from the size field.
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/disable_periodicity_filter").execute(*args, **kwargs)
                 def list_periodicity_filter(self, *args, **kwargs):
@@ -1632,33 +1638,33 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/boundary/remesh/size_functions/list_periodicity_filter").execute(*args, **kwargs)
                 def set_scaling_filter(self, *args, **kwargs):
                     """
-                    Set scaling filter on size field.
+                    Specifies the scale factor, and minimum and maximum size values to filter the size output from the size field. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/set_scaling_filter").execute(*args, **kwargs)
                 def reset_global_controls(self, *args, **kwargs):
                     """
-                    Reset controls for global controls.
+                    Resets the global controls to their default values. 
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/reset_global_controls").execute(*args, **kwargs)
                 def set_prox_gap_tolerance(self, *args, **kwargs):
                     """
-                    Set proximity min gap tolerance relative to global min-size.
+                    Sets the tolerance relative to minimum size to take gaps into account. Gaps whose thickness is less than the global minimum size multiplied by this factor will not be regarded as a proximity gap.
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/set_prox_gap_tolerance").execute(*args, **kwargs)
                 def triangulate_quad_faces(self, *args, **kwargs):
                     """
-                    Replace non-triangular face zones with triangulated face zones during size field computation.
+                    Identifies the zones comprising non-triangular elements and uses a triangulated copy of these zones for computing the size functions.
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/triangulate_quad_faces").execute(*args, **kwargs)
                 def use_cad_imported_curvature(self, *args, **kwargs):
                     """
-                    Use curvature data imported from CAD.
+                    Enables/disables curvature data from the nodes of the CAD facets.
                     """
                     return PyMenu(self.service, "/boundary/remesh/size_functions/use_cad_imported_curvature").execute(*args, **kwargs)
 
                 class contours(metaclass=PyMenuMeta):
                     """
-                    Menu to contour of size field.
+                    Contains options for displaying contours of size functions.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -1666,7 +1672,7 @@ class main_menu(metaclass=PyMenuMeta):
                         self.set = self.__class__.set(path + [("set", None)], service)
                     def draw(self, *args, **kwargs):
                         """
-                        Draw size field contour on face zones.
+                        Displays contours in the graphics window. Compute the size field using /size-functions/compute or read in a size field file prior to displaying the contours of size.
                         """
                         return PyMenu(self.service, "/boundary/remesh/size_functions/contours/draw").execute(*args, **kwargs)
 
@@ -1679,7 +1685,7 @@ class main_menu(metaclass=PyMenuMeta):
                             self.service = service
                         def refine_facets(self, *args, **kwargs):
                             """
-                            Option to refine facets virtually? for better contour resolution.
+                            Enables you to specify smaller facets if the original are too large. Default is no.
                             """
                             return PyMenu(self.service, "/boundary/remesh/size_functions/contours/set/refine_facets").execute(*args, **kwargs)
 
@@ -1703,42 +1709,40 @@ class main_menu(metaclass=PyMenuMeta):
 
         class improve(metaclass=PyMenuMeta):
             """
-            Enter Imporve  boundary face zone menu.
+            Enables you to improve boundary surfaces. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def collapse_bad_faces(self, *args, **kwargs):
                 """
-                Collapse short edge of faces with high aspect ratio.
+                Enables you to collapse the short edge of faces having a high aspect ratio or skewness in the specified face zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/improve/collapse_bad_faces").execute(*args, **kwargs)
             def improve(self, *args, **kwargs):
                 """
-                Improve skewness of tri boundary face zones.
+                Enables you to improve the boundary surface quality using skewness, size change, aspect ratio, or area as the quality measure. 
                 """
                 return PyMenu(self.service, "/boundary/improve/improve").execute(*args, **kwargs)
             def smooth(self, *args, **kwargs):
                 """
-                Smooth  face zones using laplace smoothing.
-                .
+                Enables you to improve the boundary surface using smoothing. 
                 """
                 return PyMenu(self.service, "/boundary/improve/smooth").execute(*args, **kwargs)
             def swap(self, *args, **kwargs):
                 """
-                Improve surface mesh by swapping face edges
-                where Delaunay violations occur.
+                Enables you to improve the boundary surface using edge swapping. 
                 """
                 return PyMenu(self.service, "/boundary/improve/swap").execute(*args, **kwargs)
             def degree_swap(self, *args, **kwargs):
                 """
-                Perform swap on boundary mesh based on node degree.
+                Enables you to improve the boundary mesh by swapping edges based on a node degree value other than 6. The node degree is defined as the number of edges connected to the node.
                 """
                 return PyMenu(self.service, "/boundary/improve/degree_swap").execute(*args, **kwargs)
 
         class separate(metaclass=PyMenuMeta):
             """
-            Enter separate boundary face menu.
+            Contains options for separating face zones. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -1746,76 +1750,76 @@ class main_menu(metaclass=PyMenuMeta):
                 self.local_regions = self.__class__.local_regions(path + [("local_regions", None)], service)
             def mark_faces_in_region(self, *args, **kwargs):
                 """
-                Mark faces in local region.
+                Marks the faces that are contained in a specified local refinement region. 
                 """
                 return PyMenu(self.service, "/boundary/separate/mark_faces_in_region").execute(*args, **kwargs)
             def sep_face_zone_by_angle(self, *args, **kwargs):
                 """
-                Move faces to a new zone based on significant angle.
+                Separates a boundary face zone based on significant angle. 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_angle").execute(*args, **kwargs)
             def sep_face_zone_by_cnbor(self, *args, **kwargs):
                 """
-                Move faces to a new zone based on cell neighbors.
+                Separates a boundary/interior face zone based on its cell neighbors. 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_cnbor").execute(*args, **kwargs)
             def sep_face_zone_by_mark(self, *args, **kwargs):
                 """
-                Move faces marked to new zone.
+                Separates a boundary face zone by moving marked faces to a new zone. 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_mark").execute(*args, **kwargs)
             def sep_face_zone_by_region(self, *args, **kwargs):
                 """
-                Move non-contiguous faces or faces separated by an intersecting wall to a new zone.
+                Separates a boundary face zone based on contiguous regions. 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_region").execute(*args, **kwargs)
             def sep_face_zone_by_seed(self, *args, **kwargs):
                 """
-                Move faces connected to seed whose angle satisfies given angle constraint.
+                Separates a boundary face zone by defining a seed face on the surface. 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_seed").execute(*args, **kwargs)
             def sep_face_zone_by_seed_angle(self, *args, **kwargs):
                 """
-                Move faces connected to seed whose normal fall within the specified cone.
+                Separates faces connected to the seed face, whose normal fall within the specified cone. 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_seed_angle").execute(*args, **kwargs)
             def sep_face_zone_by_shape(self, *args, **kwargs):
                 """
-                Move faces based on face shape.
+                Separates a boundary face zone based on the shape of the faces (triangular or quadrilateral). 
                 """
                 return PyMenu(self.service, "/boundary/separate/sep_face_zone_by_shape").execute(*args, **kwargs)
 
             class local_regions(metaclass=PyMenuMeta):
                 """
-                Enter the separate-local menu.
+                Enters the local refinement menu. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def define(self, *args, **kwargs):
                     """
-                    Define a refinement region's parameters.
+                    Enables you to define the local region. 
                     """
                     return PyMenu(self.service, "/boundary/separate/local_regions/define").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Deletes the specified local region. 
                     """
                     return PyMenu(self.service, "/boundary/separate/local_regions/delete").execute(*args, **kwargs)
                 def init(self, *args, **kwargs):
                     """
-                    Delete all current regions and add the default refinement region.
+                    Creates a region encompassing the entire geometry. 
                     """
                     return PyMenu(self.service, "/boundary/separate/local_regions/init").execute(*args, **kwargs)
                 def list_all_regions(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists all the local regions defined. 
                     """
                     return PyMenu(self.service, "/boundary/separate/local_regions/list_all_regions").execute(*args, **kwargs)
 
         class manage(metaclass=PyMenuMeta):
             """
-            Enter face zone menu.
+            Contains options for manipulating the boundary zones.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -1823,17 +1827,17 @@ class main_menu(metaclass=PyMenuMeta):
                 self.user_defined_groups = self.__class__.user_defined_groups(path + [("user_defined_groups", None)], service)
             def auto_delete_nodes(self, *args, **kwargs):
                 """
-                Automatically delete unused nodes after deleting faces.
+                Specifies whether or not unused nodes should be deleted when their face zone is deleted. 
                 """
                 return PyMenu(self.service, "/boundary/manage/auto_delete_nodes").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
                 """
-                Copy all nodes and faces of specified face zones.
+                Copies all nodes and faces of the specified face zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/manage/copy").execute(*args, **kwargs)
             def change_prefix(self, *args, **kwargs):
                 """
-                Change the prefix for specified face zones.
+                Enables you to change the prefix for the specified face zones. 
                 """
                 return PyMenu(self.service, "/boundary/manage/change_prefix").execute(*args, **kwargs)
             def change_suffix(self, *args, **kwargs):
@@ -1843,120 +1847,120 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/boundary/manage/change_suffix").execute(*args, **kwargs)
             def create(self, *args, **kwargs):
                 """
-                Create new face zone.
+                Creates a new face zone. 
                 """
                 return PyMenu(self.service, "/boundary/manage/create").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete face zone, leaving nodes.
+                Deletes the face zone. 
                 """
                 return PyMenu(self.service, "/boundary/manage/delete").execute(*args, **kwargs)
             def flip(self, *args, **kwargs):
                 """
-                Flip the orientation of all face normals on the face zone.
+                Reverses the normal direction of the specified boundary zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/manage/flip").execute(*args, **kwargs)
             def id(self, *args, **kwargs):
                 """
-                Give zone a new id number.
+                Specifies a new boundary zone ID. If there is a conflict, the change will be ignored. 
                 """
                 return PyMenu(self.service, "/boundary/manage/id").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List boundary face zones.
+                Prints information about all boundary zones. 
                 """
                 return PyMenu(self.service, "/boundary/manage/list").execute(*args, **kwargs)
             def merge(self, *args, **kwargs):
                 """
-                Merge two or more face zones.
+                Merges face zones. 
                 """
                 return PyMenu(self.service, "/boundary/manage/merge").execute(*args, **kwargs)
             def name(self, *args, **kwargs):
                 """
-                Give zone a new name.
+                Gives a face zone a new name. 
                 """
                 return PyMenu(self.service, "/boundary/manage/name").execute(*args, **kwargs)
             def remove_suffix(self, *args, **kwargs):
                 """
-                Remove the leftmost ':' and the characters after it in the face zone names.
+                Removes the suffix (characters including and after the leftmost ":") in the face zone names.
                 """
                 return PyMenu(self.service, "/boundary/manage/remove_suffix").execute(*args, **kwargs)
             def orient(self, *args, **kwargs):
                 """
-                Consistently orient zones.
+                Consistently orients the faces in the specified zones. 
                 """
                 return PyMenu(self.service, "/boundary/manage/orient").execute(*args, **kwargs)
             def origin(self, *args, **kwargs):
                 """
-                Set the origin of the mesh coordinates.
+                Specifies a new origin for the mesh, to be used for face zone rotation and for periodic zone creation. The default origin is (0,0,0). 
                 """
                 return PyMenu(self.service, "/boundary/manage/origin").execute(*args, **kwargs)
             def rotate(self, *args, **kwargs):
                 """
-                Rotate all nodes of specified face zones.
+                Rotates all nodes of the specified face zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/manage/rotate").execute(*args, **kwargs)
             def rotate_model(self, *args, **kwargs):
                 """
-                Rotate all nodes.
+                Rotates all nodes of the model through the specified angle, based on the specified point and axis of rotation.
                 """
                 return PyMenu(self.service, "/boundary/manage/rotate_model").execute(*args, **kwargs)
             def scale(self, *args, **kwargs):
                 """
-                Scale all nodes of specified face zones.
+                Scales all nodes of the specified face zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/manage/scale").execute(*args, **kwargs)
             def scale_model(self, *args, **kwargs):
                 """
-                Scale all nodes.
+                Scales all nodes of the model by multiplying the node coordinates by the specified scale factors (x, y, z). 
                 """
                 return PyMenu(self.service, "/boundary/manage/scale_model").execute(*args, **kwargs)
             def translate(self, *args, **kwargs):
                 """
-                Translate all nodes of specified face zones.
+                Translates all nodes of the specified face zone(s). 
                 """
                 return PyMenu(self.service, "/boundary/manage/translate").execute(*args, **kwargs)
             def translate_model(self, *args, **kwargs):
                 """
-                Translate all nodes.
+                Translates all nodes of the model by the specified translation offsets (x, y, z).   The translation offsets are interpreted as absolute numbers in meshing mode. In solution mode, however, the translation offsets are assumed to be distances in the length unit set. This may lead to differences in domain extents reported after translating the mesh in the respective modes.
                 """
                 return PyMenu(self.service, "/boundary/manage/translate_model").execute(*args, **kwargs)
             def type(self, *args, **kwargs):
                 """
-                Change face zone type.
+                Changes the boundary type of the face zone.   When changing the boundary type of any zone to type interior, ensure that there is a single cell zone across the interior boundary. Retaining multiple cell zones across an interior boundary can cause undesirable results with further tet meshing or smoothing operations.  Also, face zones having no/one neighboring cell zone should not be changed to type interior.  The mesh check will issue a warning if multiple cell zones are maintained across an interior boundary. The boundary type in such cases should be set to internal instead.
                 """
                 return PyMenu(self.service, "/boundary/manage/type").execute(*args, **kwargs)
 
             class user_defined_groups(metaclass=PyMenuMeta):
                 """
-                Collect boundary zones to form logical groups.
+                Enables you to manipulate user-defined groups. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def create(self, *args, **kwargs):
                     """
-                    Create a new User Defined Group.
+                    Creates the user-defined group comprising the specified zones. 
                     """
                     return PyMenu(self.service, "/boundary/manage/user_defined_groups/create").execute(*args, **kwargs)
                 def activate(self, *args, **kwargs):
                     """
-                    Activate a User Defined Group.
+                    Activates the specified user-defined groups. 
                     """
                     return PyMenu(self.service, "/boundary/manage/user_defined_groups/activate").execute(*args, **kwargs)
                 def update(self, *args, **kwargs):
                     """
-                    Update a User Defined Group.
+                    Enables you to modify an existing group. 
                     """
                     return PyMenu(self.service, "/boundary/manage/user_defined_groups/update").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a User Defined Group.
+                    Deletes the specified user-defined group. 
                     """
                     return PyMenu(self.service, "/boundary/manage/user_defined_groups/delete").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List User Defined Groups.
+                    Lists the groups in the console. 
                     """
                     return PyMenu(self.service, "/boundary/manage/user_defined_groups/list").execute(*args, **kwargs)
 
@@ -2003,24 +2007,24 @@ class main_menu(metaclass=PyMenuMeta):
 
         class boundary_conditions(metaclass=PyMenuMeta):
             """
-            Enter manage boundary conditions menu.
+            Contains options for copying or clearing boundary conditions when a case file is read.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def copy(self, *args, **kwargs):
                 """
-                Copy boundary conditions.
+                Enables you to copy the boundary conditions from the face zone selected to the face zones specified.
                 """
                 return PyMenu(self.service, "/boundary/boundary_conditions/copy").execute(*args, **kwargs)
             def clear(self, *args, **kwargs):
                 """
-                Clear boundary conditions.
+                Clears the boundary conditions assigned to the specified face zones.
                 """
                 return PyMenu(self.service, "/boundary/boundary_conditions/clear").execute(*args, **kwargs)
             def clear_all(self, *args, **kwargs):
                 """
-                Clear all boundary conditions.
+                Clears the boundary conditions assigned to all the face zones.
                 """
                 return PyMenu(self.service, "/boundary/boundary_conditions/clear_all").execute(*args, **kwargs)
 
@@ -2037,22 +2041,22 @@ class main_menu(metaclass=PyMenuMeta):
             self.update_options = self.__class__.update_options(path + [("update_options", None)], service)
         def draw(self, *args, **kwargs):
             """
-            Draw CAD assemblies.
+            Displays the selected CAD entities.
             """
             return PyMenu(self.service, "/cad_assemblies/draw").execute(*args, **kwargs)
         def create_objects(self, *args, **kwargs):
             """
-            Create Objects from CAD assemblies.
+            Enables you to create new geometry/mesh objects for the selected entities. Specify the path for the entities and if required, choose to create one object per CAD entity selected and/or retain the CAD zone granularity for object creation. By default, a single object will be created for all entities selected and the CAD zone granularity will not be retained. Specify the object name (if applicable), object type (geom or mesh), and cell zone type (dead, fluid, or solid).
             """
             return PyMenu(self.service, "/cad_assemblies/create_objects").execute(*args, **kwargs)
         def add_to_object(self, *args, **kwargs):
             """
-            Add CAD assemblies to existing object.
+            Enables you to add the selected CAD entities to an existing object. Specify the path for the entities to be added and select the object to be modified.
             """
             return PyMenu(self.service, "/cad_assemblies/add_to_object").execute(*args, **kwargs)
         def replace_object(self, *args, **kwargs):
             """
-            Replace CAD assemblies in existing object.
+            Enables you to replace an object with the selected CAD entities. Specify the path for the entities to be added and select the object to be modified.
             """
             return PyMenu(self.service, "/cad_assemblies/replace_object").execute(*args, **kwargs)
         def extract_edges_zones(self, *args, **kwargs):
@@ -2062,129 +2066,129 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/cad_assemblies/extract_edges_zones").execute(*args, **kwargs)
         def update_cad_assemblies(self, *args, **kwargs):
             """
-            Update CAD assemblies.
+            Reimports the selected CAD entities using new parameters specified in the update-options/ menu. 
             """
             return PyMenu(self.service, "/cad_assemblies/update_cad_assemblies").execute(*args, **kwargs)
         def rename(self, *args, **kwargs):
             """
-            Rename CAD entity.
+            Enables you to rename the selected entities. Specify the path for the entities and the new name. For multiple entities, the specified name will be used, with a suitable index as suffix. For example, specifying a new name wall will result in entities wall.1, wall.2, etc.
             """
             return PyMenu(self.service, "/cad_assemblies/rename").execute(*args, **kwargs)
         def add_prefix(self, *args, **kwargs):
             """
-            Add Prefix to CAD entity.
+            Enables you to add a prefix to the selected entities. Specify the path for the entities and the prefix to be added.
             """
             return PyMenu(self.service, "/cad_assemblies/add_prefix").execute(*args, **kwargs)
         def delete_cad_assemblies(self, *args, **kwargs):
             """
-            Delete CAD Assemblies.
+            Deletes all the CAD assemblies data.
             """
             return PyMenu(self.service, "/cad_assemblies/delete_cad_assemblies").execute(*args, **kwargs)
 
         class draw_options(metaclass=PyMenuMeta):
             """
-            CAD draw options.
+            Contains additional options for displaying CAD entities.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add_to_graphics(self, *args, **kwargs):
                 """
-                Add CAD entity to graphics.
+                Adds the selected entities to the display in the graphics window.
                 """
                 return PyMenu(self.service, "/cad_assemblies/draw_options/add_to_graphics").execute(*args, **kwargs)
             def remove_from_graphics(self, *args, **kwargs):
                 """
-                Set one object per body, face or object.
+                Removes the selected entities from the display in the graphics window.
                 """
                 return PyMenu(self.service, "/cad_assemblies/draw_options/remove_from_graphics").execute(*args, **kwargs)
             def draw_unlabelled_zones(self, *args, **kwargs):
                 """
-                Import edge zones for update.
+                Displays the unlabeled zones for the selected entities in the graphics window.
                 """
                 return PyMenu(self.service, "/cad_assemblies/draw_options/draw_unlabelled_zones").execute(*args, **kwargs)
 
         class manage_state(metaclass=PyMenuMeta):
             """
-            States for CAD assemblies.
+            Contains options for setting the CAD entity state.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def unlock(self, *args, **kwargs):
                 """
-                Unlock CAD assemblies.
+                Unlocks the selected CAD entities.
                 """
                 return PyMenu(self.service, "/cad_assemblies/manage_state/unlock").execute(*args, **kwargs)
             def suppress(self, *args, **kwargs):
                 """
-                Suppress CAD assemblies.
+                Suppresses the selected CAD entities.
                 """
                 return PyMenu(self.service, "/cad_assemblies/manage_state/suppress").execute(*args, **kwargs)
             def unsuppress(self, *args, **kwargs):
                 """
-                Unsuppress CAD assemblies.
+                Unsuppresses the selected CAD entities.
                 """
                 return PyMenu(self.service, "/cad_assemblies/manage_state/unsuppress").execute(*args, **kwargs)
 
         class labels(metaclass=PyMenuMeta):
             """
-            CAD label options.
+            Contains options for displaying and managing labels.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def draw(self, *args, **kwargs):
                 """
-                Draw Labels.
+                Displays the selected labels.
                 """
                 return PyMenu(self.service, "/cad_assemblies/labels/draw").execute(*args, **kwargs)
             def add_to_graphics(self, *args, **kwargs):
                 """
-                Add Labels to graphics.
+                Adds the selected labels to the display in the graphics window.
                 """
                 return PyMenu(self.service, "/cad_assemblies/labels/add_to_graphics").execute(*args, **kwargs)
             def remove_from_graphics(self, *args, **kwargs):
                 """
-                Remove Labels from graphics.
+                Removes the selected labels from the display in the graphics window.
                 """
                 return PyMenu(self.service, "/cad_assemblies/labels/remove_from_graphics").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete Labels.
+                Deletes the selected labels.
                 """
                 return PyMenu(self.service, "/cad_assemblies/labels/delete").execute(*args, **kwargs)
             def rename(self, *args, **kwargs):
                 """
-                Rename Labels.
+                Enables you to rename the selected labels. Specify the path for the labels and the new name. For multiple selections, the specified name will be used, with a suitable index as suffix. For example, specifying a new label name wall will result in entities wall.1, wall.2, etc.
                 """
                 return PyMenu(self.service, "/cad_assemblies/labels/rename").execute(*args, **kwargs)
 
         class update_options(metaclass=PyMenuMeta):
             """
-            Settings for CAD update.
+            Contains options for updating the CAD entities on reimport.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def tessellation(self, *args, **kwargs):
                 """
-                Set tessellation controls for cad import.
+                Enables you to control the tessellation (faceting) during reimport. You can select either cad-faceting or cfd-surface-mesh.   CAD faceting enables you to control the tessellation based on the CAD faceting tolerance and maximum facet size specified.   CFD Surface Mesh enables you to use a size field file during reimport. If you enter yes, specify the size field file to be read. If you do not want to use a size field file, you can obtain conformal faceting based on the underlying curve and surface curvature (using the minimum and maximum facet sizes, and the facet curvature normal angle specified) and edge proximity (using the cells per gap specified). You can also save the size field in a file (size field is computed based on the specified parameters; that is, Min Size, Max Size, Curvature Normal Angle, Cells Per Gap).
                 """
                 return PyMenu(self.service, "/cad_assemblies/update_options/tessellation").execute(*args, **kwargs)
             def one_zone_per(self, *args, **kwargs):
                 """
-                Set one object per body, face or object.
+                Enables you to change the CAD zone granularity on reimport.
                 """
                 return PyMenu(self.service, "/cad_assemblies/update_options/one_zone_per").execute(*args, **kwargs)
             def one_object_per(self, *args, **kwargs):
                 """
-                Set one leaf entity per body, part or file.
+                Enables you to change the CAD object granularity on reimport.
                 """
                 return PyMenu(self.service, "/cad_assemblies/update_options/one_object_per").execute(*args, **kwargs)
             def import_edge_zones(self, *args, **kwargs):
                 """
-                Import edge zones for update.
+                Enables you to import edge zones from the CAD entities on reimport. Specify an appropriate value for feature angle.
                 """
                 return PyMenu(self.service, "/cad_assemblies/update_options/import_edge_zones").execute(*args, **kwargs)
 
@@ -2208,7 +2212,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class appearance(metaclass=PyMenuMeta):
             """
-            .
+            Enter the menu for preferences covering appearance.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -2223,17 +2227,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/application_font_size").execute(*args, **kwargs)
             def axis_triad(self, *args, **kwargs):
                 """
-                .
+                Enable or disable the visibility of the axis triad in the graphics window.
                 """
                 return PyMenu(self.service, "/preferences/appearance/axis_triad").execute(*args, **kwargs)
             def color_theme(self, *args, **kwargs):
                 """
-                .
+                Specify a color theme for the appearance of ANSYS Fluent.
                 """
                 return PyMenu(self.service, "/preferences/appearance/color_theme").execute(*args, **kwargs)
             def completer(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the console automatic-completer, which suggests available commands as you type in the console.
                 """
                 return PyMenu(self.service, "/preferences/appearance/completer").execute(*args, **kwargs)
             def custom_title_bar(self, *args, **kwargs):
@@ -2248,17 +2252,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/default_view").execute(*args, **kwargs)
             def graphics_background_color1(self, *args, **kwargs):
                 """
-                .
+                Controls the primary background color of the graphics window.
                 """
                 return PyMenu(self.service, "/preferences/appearance/graphics_background_color1").execute(*args, **kwargs)
             def graphics_background_color2(self, *args, **kwargs):
                 """
-                .
+                Controls the secondary background color when the style is set as a gradient.
                 """
                 return PyMenu(self.service, "/preferences/appearance/graphics_background_color2").execute(*args, **kwargs)
             def graphics_background_style(self, *args, **kwargs):
                 """
-                .
+                Specify whether the background color is uniform or if there is a gradient.
                 """
                 return PyMenu(self.service, "/preferences/appearance/graphics_background_style").execute(*args, **kwargs)
             def graphics_color_theme(self, *args, **kwargs):
@@ -2283,7 +2287,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/graphics_edge_color").execute(*args, **kwargs)
             def graphics_foreground_color(self, *args, **kwargs):
                 """
-                .
+                Specify the color of graphics window text.
                 """
                 return PyMenu(self.service, "/preferences/appearance/graphics_foreground_color").execute(*args, **kwargs)
             def graphics_partition_boundary_color(self, *args, **kwargs):
@@ -2303,17 +2307,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/graphics_title_window_framecolor").execute(*args, **kwargs)
             def graphics_view(self, *args, **kwargs):
                 """
-                .
+                Specify whether the default view is orthographic or perspective.
                 """
                 return PyMenu(self.service, "/preferences/appearance/graphics_view").execute(*args, **kwargs)
             def graphics_wall_face_color(self, *args, **kwargs):
                 """
-                .
+                Set the default face color for when the mesh is displayed.
                 """
                 return PyMenu(self.service, "/preferences/appearance/graphics_wall_face_color").execute(*args, **kwargs)
             def group_by_tree_view(self, *args, **kwargs):
                 """
-                .
+                Specify how boundary conditions are grouped in the tree.
                 """
                 return PyMenu(self.service, "/preferences/appearance/group_by_tree_view").execute(*args, **kwargs)
             def model_color_scheme(self, *args, **kwargs):
@@ -2323,7 +2327,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/model_color_scheme").execute(*args, **kwargs)
             def number_of_files_recently_used(self, *args, **kwargs):
                 """
-                .
+                Controls how many recently-used files are listed in the File ribbon tab and the Fluent Launcher.
                 """
                 return PyMenu(self.service, "/preferences/appearance/number_of_files_recently_used").execute(*args, **kwargs)
             def number_of_pastel_colors(self, *args, **kwargs):
@@ -2343,12 +2347,13 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/pastel_color_value").execute(*args, **kwargs)
             def quick_property_view(self, *args, **kwargs):
                 """
-                .
+                Enables/Disables the "quick-edit" properties panels that appear when you select a boundary in the graphics windows.
                 """
                 return PyMenu(self.service, "/preferences/appearance/quick_property_view").execute(*args, **kwargs)
             def ruler(self, *args, **kwargs):
                 """
-                .
+                Adds or removes the ruler from the graphics window. Note that you must be in orthographic view for the ruler to be visible in the graphics  window.
+                            
                 """
                 return PyMenu(self.service, "/preferences/appearance/ruler").execute(*args, **kwargs)
             def show_enabled_models(self, *args, **kwargs):
@@ -2358,12 +2363,12 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/show_enabled_models").execute(*args, **kwargs)
             def show_interface_children_zone(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the showing of the non-overlapping zones and interior zones associated with one-to-one mesh interfaces under Setup / Boundary Conditions (under their zone types) in the outline view tree.
                 """
                 return PyMenu(self.service, "/preferences/appearance/show_interface_children_zone").execute(*args, **kwargs)
             def show_model_edges(self, *args, **kwargs):
                 """
-                .
+                Enable/disable whether mesh edges are shown in a mesh display.
                 """
                 return PyMenu(self.service, "/preferences/appearance/show_model_edges").execute(*args, **kwargs)
             def solution_mode_edge_color_in_meshing_mode(self, *args, **kwargs):
@@ -2373,7 +2378,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/solution_mode_edge_color_in_meshing_mode").execute(*args, **kwargs)
             def startup_page(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the display of the startup page when ANSYS Fluent is started without loading a mesh or case file.
                 """
                 return PyMenu(self.service, "/preferences/appearance/startup_page").execute(*args, **kwargs)
             def surface_emissivity(self, *args, **kwargs):
@@ -2383,7 +2388,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/surface_emissivity").execute(*args, **kwargs)
             def surface_specularity(self, *args, **kwargs):
                 """
-                .
+                Specify the specularity of all surfaces except those included in contour plots. Sepecularity is the reflectiveness of a surface; higher values (closer to 1) equate to a more reflective surface.
                 """
                 return PyMenu(self.service, "/preferences/appearance/surface_specularity").execute(*args, **kwargs)
             def surface_specularity_for_contours(self, *args, **kwargs):
@@ -2393,7 +2398,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/appearance/surface_specularity_for_contours").execute(*args, **kwargs)
             def titles(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the display of solver information in the graphics window.
                 """
                 return PyMenu(self.service, "/preferences/appearance/titles").execute(*args, **kwargs)
             def titles_border_offset(self, *args, **kwargs):
@@ -2404,25 +2409,25 @@ class main_menu(metaclass=PyMenuMeta):
 
             class ansys_logo(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for controlling Ansys logo visibility.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def color(self, *args, **kwargs):
                     """
-                    .
+                    Specify whether the Ansys logo is white or black.
                     """
                     return PyMenu(self.service, "/preferences/appearance/ansys_logo/color").execute(*args, **kwargs)
                 def visible(self, *args, **kwargs):
                     """
-                    .
+                    Enable or disable the visibility of the Ansys logo in the graphics window.
                     """
                     return PyMenu(self.service, "/preferences/appearance/ansys_logo/visible").execute(*args, **kwargs)
 
             class charts(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for controlling the display of 2D charts/plots.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -2431,7 +2436,8 @@ class main_menu(metaclass=PyMenuMeta):
                     self.text_color = self.__class__.text_color(path + [("text_color", None)], service)
                 def curve_colors(self, *args, **kwargs):
                     """
-                    .
+                    Specify the initial set of default colors for the rendering of curves. Note that changing this setting requires any plots to be replotted before you see the effect of the new setting.
+                                
                     """
                     return PyMenu(self.service, "/preferences/appearance/charts/curve_colors").execute(*args, **kwargs)
                 def enable_open_glfor_modern_plots(self, *args, **kwargs):
@@ -2451,7 +2457,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/appearance/charts/legend_visibility").execute(*args, **kwargs)
                 def modern_plots_enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enables enhanced plots, which is a beta feature. Enabling this feature exposes new fields (all beta functionality).
                     """
                     return PyMenu(self.service, "/preferences/appearance/charts/modern_plots_enabled").execute(*args, **kwargs)
                 def modern_plots_points_threshold(self, *args, **kwargs):
@@ -2538,7 +2544,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class selections(metaclass=PyMenuMeta):
                 """
-                .
+                Enters the menu for controlling selections in the graphics window.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -2550,17 +2556,17 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/appearance/selections/general_displacement").execute(*args, **kwargs)
                 def highlight_edge_color(self, *args, **kwargs):
                     """
-                    .
+                    Specifies the color used to highlight edges when the Hover-Over Highlight feature is enabled (mouse-over-highlight-enabled).
                     """
                     return PyMenu(self.service, "/preferences/appearance/selections/highlight_edge_color").execute(*args, **kwargs)
                 def highlight_edge_weight(self, *args, **kwargs):
                     """
-                    .
+                    Specifies the thickness of the edge highlights when the Hover-Over Highlight feature is enabled (mouse-over-highlight-enabled).
                     """
                     return PyMenu(self.service, "/preferences/appearance/selections/highlight_edge_weight").execute(*args, **kwargs)
                 def highlight_face_color(self, *args, **kwargs):
                     """
-                    .
+                    Specify which color indicates that a face is selected.
                     """
                     return PyMenu(self.service, "/preferences/appearance/selections/highlight_face_color").execute(*args, **kwargs)
                 def highlight_gloss(self, *args, **kwargs):
@@ -2575,7 +2581,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/appearance/selections/highlight_specular_component").execute(*args, **kwargs)
                 def highlight_transparency(self, *args, **kwargs):
                     """
-                    .
+                    Specify the transparency of the coloring on a selected surface. 0.1 is fully opaque and 1 is fully transparent.
                     """
                     return PyMenu(self.service, "/preferences/appearance/selections/highlight_transparency").execute(*args, **kwargs)
                 def mouse_hover_probe_values_enabled(self, *args, **kwargs):
@@ -2585,7 +2591,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/appearance/selections/mouse_hover_probe_values_enabled").execute(*args, **kwargs)
                 def mouse_over_highlight_enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the highlighted outline of a surface when hovered-over. Note that objects must be redisplayed after changing this setting before the new setting is visible.
                     """
                     return PyMenu(self.service, "/preferences/appearance/selections/mouse_over_highlight_enabled").execute(*args, **kwargs)
                 def probe_tooltip_hide_delay_timer(self, *args, **kwargs):
@@ -2601,7 +2607,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class general(metaclass=PyMenuMeta):
             """
-            .
+            Enter the menu for general preferences.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -2613,7 +2619,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/general/advanced_partition").execute(*args, **kwargs)
             def automatic_transcript(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the automatic creation of a transcript file for each ANSYS Fluent session.
                 """
                 return PyMenu(self.service, "/preferences/general/automatic_transcript").execute(*args, **kwargs)
             def default_ioformat(self, *args, **kwargs):
@@ -2638,7 +2644,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/general/flow_model").execute(*args, **kwargs)
             def idle_timeout(self, *args, **kwargs):
                 """
-                .
+                Specify the default file format for saving case and data files.
                 """
                 return PyMenu(self.service, "/preferences/general/idle_timeout").execute(*args, **kwargs)
             def key_behavioral_changes_message(self, *args, **kwargs):
@@ -2677,7 +2683,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class graphics(metaclass=PyMenuMeta):
             """
-            .
+            Enter the menu for preferences covering appearance.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -2697,12 +2703,12 @@ class main_menu(metaclass=PyMenuMeta):
                 self.vector_settings = self.__class__.vector_settings(path + [("vector_settings", None)], service)
             def animation_option(self, *args, **kwargs):
                 """
-                .
+                Specify whether the entire model or just a wireframe is shown during manipulations in the graphics window.
                 """
                 return PyMenu(self.service, "/preferences/graphics/animation_option").execute(*args, **kwargs)
             def double_buffering(self, *args, **kwargs):
                 """
-                .
+                Enable/disable double-buffering, which reduces screen flicker, but may use more memory on some machines.
                 """
                 return PyMenu(self.service, "/preferences/graphics/double_buffering").execute(*args, **kwargs)
             def enable_non_object_based_workflow(self, *args, **kwargs):
@@ -2727,17 +2733,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/graphics/force_key_frame_animation_markers_to_off").execute(*args, **kwargs)
             def graphics_window_line_width(self, *args, **kwargs):
                 """
-                .
+                Specify the thickness of lines that appear in the graphics window.
                 """
                 return PyMenu(self.service, "/preferences/graphics/graphics_window_line_width").execute(*args, **kwargs)
             def graphics_window_point_symbol(self, *args, **kwargs):
                 """
-                .
+                Specify the symbol used for indicating points in the graphics window (like the points in an XY plot).
                 """
                 return PyMenu(self.service, "/preferences/graphics/graphics_window_point_symbol").execute(*args, **kwargs)
             def hidden_surface_removal_method(self, *args, **kwargs):
                 """
-                .
+                Specify the method for removing hidden surfaces. These methods vary in speed and quality, depending on your machine.
                 """
                 return PyMenu(self.service, "/preferences/graphics/hidden_surface_removal_method").execute(*args, **kwargs)
             def higher_resolution_graphics_window_line_width(self, *args, **kwargs):
@@ -2765,6 +2771,11 @@ class main_menu(metaclass=PyMenuMeta):
                 .
                 """
                 return PyMenu(self.service, "/preferences/graphics/min_graphics_text_size").execute(*args, **kwargs)
+            def new_material_infra(self, *args, **kwargs):
+                """
+                .
+                """
+                return PyMenu(self.service, "/preferences/graphics/new_material_infra").execute(*args, **kwargs)
             def plot_legend_margin(self, *args, **kwargs):
                 """
                 .
@@ -2772,7 +2783,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/graphics/plot_legend_margin").execute(*args, **kwargs)
             def point_tool_size(self, *args, **kwargs):
                 """
-                .
+                Specify the size of the point tool (10-100).
                 """
                 return PyMenu(self.service, "/preferences/graphics/point_tool_size").execute(*args, **kwargs)
             def remove_partition_lines(self, *args, **kwargs):
@@ -2807,7 +2818,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/graphics/show_hidden_lines").execute(*args, **kwargs)
             def show_hidden_surfaces(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the display of hidden surfaces.
                 """
                 return PyMenu(self.service, "/preferences/graphics/show_hidden_surfaces").execute(*args, **kwargs)
             def switch_to_open_glfor_remote_visualization(self, *args, **kwargs):
@@ -2828,19 +2839,19 @@ class main_menu(metaclass=PyMenuMeta):
 
             class boundary_markers(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the boundary markers menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def color_option(self, *args, **kwargs):
                     """
-                    .
+                    Specify whether boundary markers are a fixed color or if they match the color of the surface they are identifying.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/color_option").execute(*args, **kwargs)
                 def enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable boundary marker display.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/enabled").execute(*args, **kwargs)
                 def exclude_from_bounding(self, *args, **kwargs):
@@ -2850,12 +2861,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/exclude_from_bounding").execute(*args, **kwargs)
                 def inlet_color(self, *args, **kwargs):
                     """
-                    .
+                    Specify the color of the inlet boundary markers.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/inlet_color").execute(*args, **kwargs)
                 def marker_fraction(self, *args, **kwargs):
                     """
-                    .
+                    Specify marker density factor (0.1-1).
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/marker_fraction").execute(*args, **kwargs)
                 def marker_size_limiting_scale_multiplier(self, *args, **kwargs):
@@ -2870,35 +2881,35 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/markers_limit").execute(*args, **kwargs)
                 def outlet_color(self, *args, **kwargs):
                     """
-                    .
+                    Specify the color of the outlet boundary markers.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/outlet_color").execute(*args, **kwargs)
                 def scale_marker(self, *args, **kwargs):
                     """
-                    .
+                    Specify the scale factor for the boundary markers (0.1-10), which controls the overall size of the markers.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/scale_marker").execute(*args, **kwargs)
                 def show_inlet_markers(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the display of boundary markers for inlets.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/show_inlet_markers").execute(*args, **kwargs)
                 def show_outlet_markers(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the display of boundary markers for outlets.
                     """
                     return PyMenu(self.service, "/preferences/graphics/boundary_markers/show_outlet_markers").execute(*args, **kwargs)
 
             class colormap_settings(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the colormap settings menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def alignment(self, *args, **kwargs):
                     """
-                    .
+                    Specify the default colormap location.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/alignment").execute(*args, **kwargs)
                 def aspect_ratio_when_horizontal(self, *args, **kwargs):
@@ -2908,7 +2919,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/aspect_ratio_when_horizontal").execute(*args, **kwargs)
                 def aspect_ratio_when_vertical(self, *args, **kwargs):
                     """
-                    .
+                    Specify the length vs. width ratio for a vertical colormap, which controls the thickness of the colormap; smaller values mean a thicker colormap.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/aspect_ratio_when_vertical").execute(*args, **kwargs)
                 def auto_refit_on_resize(self, *args, **kwargs):
@@ -2923,12 +2934,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/automatic_resize").execute(*args, **kwargs)
                 def border_style(self, *args, **kwargs):
                     """
-                    .
+                    Specify how/when the colormap border appears.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/border_style").execute(*args, **kwargs)
                 def colormap(self, *args, **kwargs):
                     """
-                    .
+                    Choose the default colormap.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/colormap").execute(*args, **kwargs)
                 def isolines_position_offset(self, *args, **kwargs):
@@ -2938,17 +2949,17 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/isolines_position_offset").execute(*args, **kwargs)
                 def labels(self, *args, **kwargs):
                     """
-                    .
+                    Specify whether there is a label for every colormap value or if some are skipped.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/labels").execute(*args, **kwargs)
                 def levels(self, *args, **kwargs):
                     """
-                    .
+                    Specify the default colormap size.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/levels").execute(*args, **kwargs)
                 def log_scale(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the use of a logarithmic scale for the colormap.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/log_scale").execute(*args, **kwargs)
                 def major_length_to_screen_ratio_when_horizontal(self, *args, **kwargs):
@@ -2958,7 +2969,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/major_length_to_screen_ratio_when_horizontal").execute(*args, **kwargs)
                 def major_length_to_screen_ratio_when_vertical(self, *args, **kwargs):
                     """
-                    .
+                    Choose the length of the colormap as a fraction of graphics window height, when the colormap is vertical.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/major_length_to_screen_ratio_when_vertical").execute(*args, **kwargs)
                 def margin_from_edge_to_screen_ratio(self, *args, **kwargs):
@@ -2978,27 +2989,27 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/min_size_scale_factor").execute(*args, **kwargs)
                 def number_format_precision(self, *args, **kwargs):
                     """
-                    .
+                    Specify the colormap number label precision.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/number_format_precision").execute(*args, **kwargs)
                 def number_format_type(self, *args, **kwargs):
                     """
-                    .
+                    Specify how colormap numbers are displayed.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/number_format_type").execute(*args, **kwargs)
                 def show_colormap(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the display of colormaps.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/show_colormap").execute(*args, **kwargs)
                 def skip_value(self, *args, **kwargs):
                     """
-                    .
+                    Specify how many number labels are skipped in the colormap.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/skip_value").execute(*args, **kwargs)
                 def text_behavior(self, *args, **kwargs):
                     """
-                    .
+                    Specify whether colormap label text automatically scales with the colormap size.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/text_behavior").execute(*args, **kwargs)
                 def text_font_automatic_horizontal_size(self, *args, **kwargs):
@@ -3018,7 +3029,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/text_font_automatic_units").execute(*args, **kwargs)
                 def text_font_automatic_vertical_size(self, *args, **kwargs):
                     """
-                    .
+                    Specify the initial font size as a ratio of the colormap overall size, for vertically aligned colormaps.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/text_font_automatic_vertical_size").execute(*args, **kwargs)
                 def text_font_fixed_horizontal_size(self, *args, **kwargs):
@@ -3028,7 +3039,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/text_font_fixed_horizontal_size").execute(*args, **kwargs)
                 def text_font_fixed_size(self, *args, **kwargs):
                     """
-                    .
+                    Set the font size for colormap labels.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/text_font_fixed_size").execute(*args, **kwargs)
                 def text_font_fixed_units(self, *args, **kwargs):
@@ -3058,7 +3069,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/text_truncation_limit_for_vertical_colormaps").execute(*args, **kwargs)
                 def type(self, *args, **kwargs):
                     """
-                    .
+                    Specify whether the colormap appearance is smooth or banded.
                     """
                     return PyMenu(self.service, "/preferences/graphics/colormap_settings/type").execute(*args, **kwargs)
                 def use_no_sub_windows(self, *args, **kwargs):
@@ -3179,7 +3190,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class graphics_effects(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the graphics effects menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -3201,7 +3212,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/ambient_occlusion_strength").execute(*args, **kwargs)
                 def anti_aliasing(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the smoothing of lines and text.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/anti_aliasing").execute(*args, **kwargs)
                 def bloom_blur(self, *args, **kwargs):
@@ -3221,7 +3232,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/bloom_strength").execute(*args, **kwargs)
                 def grid_color(self, *args, **kwargs):
                     """
-                    .
+                    Specify the color of the grid lines when the ground plane grid is shown.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/grid_color").execute(*args, **kwargs)
                 def grid_plane_count(self, *args, **kwargs):
@@ -3231,12 +3242,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/grid_plane_count").execute(*args, **kwargs)
                 def grid_plane_enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the display of the ground plane grid.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/grid_plane_enabled").execute(*args, **kwargs)
                 def grid_plane_offset(self, *args, **kwargs):
                     """
-                    .
+                    Set the grid plane offset from the model as a percentage of the model size.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/grid_plane_offset").execute(*args, **kwargs)
                 def grid_plane_size_factor(self, *args, **kwargs):
@@ -3246,22 +3257,22 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/grid_plane_size_factor").execute(*args, **kwargs)
                 def plane_direction(self, *args, **kwargs):
                     """
-                    .
+                    Specify the direction of the plane for the ground plane grid and reflections.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/plane_direction").execute(*args, **kwargs)
                 def reflections_enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable model reflections (mirror-type reflections).
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/reflections_enabled").execute(*args, **kwargs)
                 def shadow_map_enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable dynamic shadows, which show shadows of geometric entities on other objects based on lighting and object orientation.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/shadow_map_enabled").execute(*args, **kwargs)
                 def show_edge_reflections(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the display of model edges in reflections. Note that this can negatively affect performance.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/show_edge_reflections").execute(*args, **kwargs)
                 def show_marker_reflections(self, *args, **kwargs):
@@ -3271,18 +3282,18 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/show_marker_reflections").execute(*args, **kwargs)
                 def simple_shadows_enabled(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the display of static shadows on the ground plane.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/simple_shadows_enabled").execute(*args, **kwargs)
                 def update_after_mouse_release(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the updating of graphics effects as a model is being manipulated in the graphics window.
                     """
                     return PyMenu(self.service, "/preferences/graphics/graphics_effects/update_after_mouse_release").execute(*args, **kwargs)
 
             class hardcopy_settings(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for saving picture settings.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -3294,12 +3305,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/hardcopy_settings/export_edges_for_avz").execute(*args, **kwargs)
                 def hardcopy_driver(self, *args, **kwargs):
                     """
-                    .
+                    Specify the default format for saving pictures.
                     """
                     return PyMenu(self.service, "/preferences/graphics/hardcopy_settings/hardcopy_driver").execute(*args, **kwargs)
                 def hardcopy_line_width(self, *args, **kwargs):
                     """
-                    .
+                    Specify the thinkness of lines for saved pictures.
                     """
                     return PyMenu(self.service, "/preferences/graphics/hardcopy_settings/hardcopy_line_width").execute(*args, **kwargs)
                 def hardware_image_accel(self, *args, **kwargs):
@@ -3330,7 +3341,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class lighting(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the lighting menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -3342,17 +3353,17 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/preferences/graphics/lighting/ambient_light_intensity").execute(*args, **kwargs)
                 def headlight(self, *args, **kwargs):
                     """
-                    .
+                    Turn the headlight on or off or set it as automatic.
                     """
                     return PyMenu(self.service, "/preferences/graphics/lighting/headlight").execute(*args, **kwargs)
                 def headlight_intensity(self, *args, **kwargs):
                     """
-                    .
+                    Specify the intensity of the headlight.
                     """
                     return PyMenu(self.service, "/preferences/graphics/lighting/headlight_intensity").execute(*args, **kwargs)
                 def lighting_method(self, *args, **kwargs):
                     """
-                    .
+                    Specify the default lighting method.
                     """
                     return PyMenu(self.service, "/preferences/graphics/lighting/lighting_method").execute(*args, **kwargs)
 
@@ -3399,25 +3410,25 @@ class main_menu(metaclass=PyMenuMeta):
 
             class meshing_mode(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for meshing-specific graphics settings.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def graphics_window_display_timeout(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable graphics window display timeout.
                     """
                     return PyMenu(self.service, "/preferences/graphics/meshing_mode/graphics_window_display_timeout").execute(*args, **kwargs)
                 def graphics_window_display_timeout_value(self, *args, **kwargs):
                     """
-                    .
+                    Specify the graphics window display timeout value.
                     """
                     return PyMenu(self.service, "/preferences/graphics/meshing_mode/graphics_window_display_timeout_value").execute(*args, **kwargs)
 
             class performance(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for selecting the predefined graphics effects settings.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -3426,7 +3437,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.minimum_frame_rate = self.__class__.minimum_frame_rate(path + [("minimum_frame_rate", None)], service)
                 def optimize_for(self, *args, **kwargs):
                     """
-                    .
+                    Choose a preset selection for how graphics are displayed.
                     """
                     return PyMenu(self.service, "/preferences/graphics/performance/optimize_for").execute(*args, **kwargs)
                 def ratio_of_target_frame_rate_to_classify_heavy_geometry(self, *args, **kwargs):
@@ -3490,19 +3501,19 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class minimum_frame_rate(metaclass=PyMenuMeta):
                     """
-                    .
+                    Enter the menu for minimum frame-rate settings.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def dynamic_adjustment(self, *args, **kwargs):
                         """
-                        .
+                        Enable/disable dynamic adjustment of quality loss per frame to get to the desired frame rate.
                         """
                         return PyMenu(self.service, "/preferences/graphics/performance/minimum_frame_rate/dynamic_adjustment").execute(*args, **kwargs)
                     def enabled(self, *args, **kwargs):
                         """
-                        .
+                        Enable/disable minimum frame rate.
                         """
                         return PyMenu(self.service, "/preferences/graphics/performance/minimum_frame_rate/enabled").execute(*args, **kwargs)
                     def fixed_culling_value(self, *args, **kwargs):
@@ -3512,17 +3523,17 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/preferences/graphics/performance/minimum_frame_rate/fixed_culling_value").execute(*args, **kwargs)
                     def maximum_culling_threshold(self, *args, **kwargs):
                         """
-                        .
+                        With minimum frame rate enabled, Fluent will not cull beyond this number of pixels.
                         """
                         return PyMenu(self.service, "/preferences/graphics/performance/minimum_frame_rate/maximum_culling_threshold").execute(*args, **kwargs)
                     def minimum_culling_threshold(self, *args, **kwargs):
                         """
-                        .
+                        With minimum frame rate enabled, Fluent will cull at least this number of pixels.
                         """
                         return PyMenu(self.service, "/preferences/graphics/performance/minimum_frame_rate/minimum_culling_threshold").execute(*args, **kwargs)
                     def target_fps(self, *args, **kwargs):
                         """
-                        .
+                        Specify the target frames-per-second.
                         """
                         return PyMenu(self.service, "/preferences/graphics/performance/minimum_frame_rate/target_fps").execute(*args, **kwargs)
 
@@ -3612,7 +3623,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class meshing_workflow(metaclass=PyMenuMeta):
             """
-            .
+            Enter the menu for preferences covering the Fluent Meshing workflows.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -3620,17 +3631,17 @@ class main_menu(metaclass=PyMenuMeta):
                 self.draw_settings = self.__class__.draw_settings(path + [("draw_settings", None)], service)
             def checkpointing_option(self, *args, **kwargs):
                 """
-                .
+                Specify how Fluent Meshing will save data when you edit a task.
                 """
                 return PyMenu(self.service, "/preferences/meshing_workflow/checkpointing_option").execute(*args, **kwargs)
             def save_checkpoint_files(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the saving of task editing data when writing a mesh file.
                 """
                 return PyMenu(self.service, "/preferences/meshing_workflow/save_checkpoint_files").execute(*args, **kwargs)
             def temp_folder(self, *args, **kwargs):
                 """
-                .
+                Specify a temporary location to hold generated mesh files. If nothing is specified, Fluent Meshing will write to percentageTEMPpercentage on Windows and to  /tmp on Linux.
                 """
                 return PyMenu(self.service, "/preferences/meshing_workflow/temp_folder").execute(*args, **kwargs)
             def templates_folder(self, *args, **kwargs):
@@ -3640,36 +3651,36 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/preferences/meshing_workflow/templates_folder").execute(*args, **kwargs)
             def verbosity(self, *args, **kwargs):
                 """
-                .
+                Enable/disable the printing of additional information and messages in the Console.
                 """
                 return PyMenu(self.service, "/preferences/meshing_workflow/verbosity").execute(*args, **kwargs)
 
             class draw_settings(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for specifying drawing settings.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def auto_draw(self, *args, **kwargs):
                     """
-                    .
+                    Enable/disable the automatic display of changes in the graphics window based on the current task.
                     """
                     return PyMenu(self.service, "/preferences/meshing_workflow/draw_settings/auto_draw").execute(*args, **kwargs)
                 def face_zone_limit(self, *args, **kwargs):
                     """
-                    .
+                    Specify the cutoff number of face zones, beyond which, Fluent Meshing will not automatically display changes.
                     """
                     return PyMenu(self.service, "/preferences/meshing_workflow/draw_settings/face_zone_limit").execute(*args, **kwargs)
                 def facet_limit(self, *args, **kwargs):
                     """
-                    .
+                    Specify the cutoff number facets, beyond which, Fluent Meshing will not automatically display changes.
                     """
                     return PyMenu(self.service, "/preferences/meshing_workflow/draw_settings/facet_limit").execute(*args, **kwargs)
 
         class navigation(metaclass=PyMenuMeta):
             """
-            .
+            Enter the menu for controlling navigation in ANSYS Fluent.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -3678,7 +3689,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class mouse_mapping(metaclass=PyMenuMeta):
                 """
-                .
+                Enable/disable the printing of additional information and messages in the Console.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -3693,89 +3704,89 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class additional(metaclass=PyMenuMeta):
                     """
-                    .
+                    Enter the menu for controlling mouse mappings that include a modifier button such as Ctrl and Shift.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def ctrllmbclick(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavoir for Ctrl + left-mouse-button + click.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/ctrllmbclick").execute(*args, **kwargs)
                     def ctrllmbdrag(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Ctrl + left-mouse-button + drag.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/ctrllmbdrag").execute(*args, **kwargs)
                     def ctrlmmbclick(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Ctrl + middle-mouse-button + click.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/ctrlmmbclick").execute(*args, **kwargs)
                     def ctrlmmbdrag(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Ctrl + middle-mouse-button + drag.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/ctrlmmbdrag").execute(*args, **kwargs)
                     def ctrlrmbclick(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Ctrl + right-mouse-button + click.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/ctrlrmbclick").execute(*args, **kwargs)
                     def ctrlrmbdrag(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Ctrl + right-mouse-button + drag.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/ctrlrmbdrag").execute(*args, **kwargs)
                     def mouseprobe(self, *args, **kwargs):
                         """
-                        .
+                        Specify whether the probe action provides a long description or a short description.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/mouseprobe").execute(*args, **kwargs)
                     def mousewheel(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior of the mouse-wheel.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/mousewheel").execute(*args, **kwargs)
                     def mousewheelsensitivity(self, *args, **kwargs):
                         """
-                        .
+                        Specify the sensitivity of the mouse-wheel (0 is least sensitive, 1 is most sensitive).
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/mousewheelsensitivity").execute(*args, **kwargs)
                     def reversewheeldirection(self, *args, **kwargs):
                         """
-                        .
+                        Reverse the behavior of the mouse-wheel.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/reversewheeldirection").execute(*args, **kwargs)
                     def shiftlmbclick(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Shift + left-mouse-button + click.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/shiftlmbclick").execute(*args, **kwargs)
                     def shiftlmbdrag(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Shift + left-mouse-button + drag.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/shiftlmbdrag").execute(*args, **kwargs)
                     def shiftmmbclick(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Shift + middle-mouse-button + click.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/shiftmmbclick").execute(*args, **kwargs)
                     def shiftmmbdrag(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Shift + middle-mouse-button + drag.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/shiftmmbdrag").execute(*args, **kwargs)
                     def shiftrmbclick(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Shift + right-mouse-button + click.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/shiftrmbclick").execute(*args, **kwargs)
                     def shiftrmbdrag(self, *args, **kwargs):
                         """
-                        .
+                        Specify the action/behavior for Shift + right-mouse-button + drag.
                         """
                         return PyMenu(self.service, "/preferences/navigation/mouse_mapping/additional/shiftrmbdrag").execute(*args, **kwargs)
 
@@ -3906,19 +3917,19 @@ class main_menu(metaclass=PyMenuMeta):
 
             class report_definitions(metaclass=PyMenuMeta):
                 """
-                .
+                Enter the menu for report definition preferences.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def automatic_plot_file(self, *args, **kwargs):
                     """
-                    .
+                    New report definitions will automatically create associated report files and plots.
                     """
                     return PyMenu(self.service, "/preferences/simulation/report_definitions/automatic_plot_file").execute(*args, **kwargs)
                 def report_plot_history_data_size(self, *args, **kwargs):
                     """
-                    .
+                    Specify how many data points are read from the associated report file and plotted in the graphics window. If the case/data files are already open, read the case and data again, after changing this setting, and re-plot to see the updated report plot.
                     """
                     return PyMenu(self.service, "/preferences/simulation/report_definitions/report_plot_history_data_size").execute(*args, **kwargs)
 
@@ -4058,47 +4069,47 @@ class main_menu(metaclass=PyMenuMeta):
             self.controls = self.__class__.controls(path + [("controls", None)], service)
         def create(self, *args, **kwargs):
             """
-            Add size function.
+            Defines the size function based on the specified parameters. 
             """
             return PyMenu(self.service, "/size_functions/create").execute(*args, **kwargs)
         def delete(self, *args, **kwargs):
             """
-            Delete Size Functions.
+            Deletes the specified size function or the current size field. 
             """
             return PyMenu(self.service, "/size_functions/delete").execute(*args, **kwargs)
         def delete_all(self, *args, **kwargs):
             """
-            Delete All Size Functions.
+            Deletes all the defined size functions. 
             """
             return PyMenu(self.service, "/size_functions/delete_all").execute(*args, **kwargs)
         def compute(self, *args, **kwargs):
             """
-            Compute Size-functions.
+            Computes the size function based on the defined parameters.
             """
             return PyMenu(self.service, "/size_functions/compute").execute(*args, **kwargs)
         def list(self, *args, **kwargs):
             """
-            List all Size function parameters.
+            Lists all the defined size functions and the corresponding parameter values defined. 
             """
             return PyMenu(self.service, "/size_functions/list").execute(*args, **kwargs)
         def create_defaults(self, *args, **kwargs):
             """
-            Creates default curvature & proximty size functions acting on all faces and edges.
+            Creates default size functions based on face and edge curvature and proximity.
             """
             return PyMenu(self.service, "/size_functions/create_defaults").execute(*args, **kwargs)
         def set_global_controls(self, *args, **kwargs):
             """
-            Set controls for global controls.
+            Sets the values for the global minimum and maximum size, and the growth rate.   If you set the global minimum size to a value greater than the local minimum size defined for existing proximity, curvature, or hard size functions, a warning will appear, indicating that the global minimum size cannot be greater than the specified local minimum size. 
             """
             return PyMenu(self.service, "/size_functions/set_global_controls").execute(*args, **kwargs)
         def enable_periodicity_filter(self, *args, **kwargs):
             """
-            Enable size field periodicity.
+            Applies periodicity to the size field.  Specify the angle, pivot, and axis of rotation to set up periodicity.  If periodicity has been previously defined, the existing settings will be applied.  Only rotational periodicity is supported, translational periodicity is not supported currently.
             """
             return PyMenu(self.service, "/size_functions/enable_periodicity_filter").execute(*args, **kwargs)
         def disable_periodicity_filter(self, *args, **kwargs):
             """
-            Disable size field periodicity.
+            Removes periodicity from the size field.
             """
             return PyMenu(self.service, "/size_functions/disable_periodicity_filter").execute(*args, **kwargs)
         def list_periodicity_filter(self, *args, **kwargs):
@@ -4108,33 +4119,33 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/size_functions/list_periodicity_filter").execute(*args, **kwargs)
         def set_scaling_filter(self, *args, **kwargs):
             """
-            Set scaling filter on size field.
+            Allows you specify the scale factor, and minimum and maximum size values to filter the size output from the size field. 
             """
             return PyMenu(self.service, "/size_functions/set_scaling_filter").execute(*args, **kwargs)
         def reset_global_controls(self, *args, **kwargs):
             """
-            Reset controls for global controls.
+            Resets the global controls to their default values. 
             """
             return PyMenu(self.service, "/size_functions/reset_global_controls").execute(*args, **kwargs)
         def set_prox_gap_tolerance(self, *args, **kwargs):
             """
-            Set proximity min gap tolerance relative to global min-size.
+            Sets the tolerance relative to minimum size to take gaps into account. Gaps whose thickness is less than the global minimum size multiplied by this factor will not be regarded as a proximity gap.
             """
             return PyMenu(self.service, "/size_functions/set_prox_gap_tolerance").execute(*args, **kwargs)
         def triangulate_quad_faces(self, *args, **kwargs):
             """
-            Replace non-triangular face zones with triangulated face zones during size field computation.
+            Identifies the zones comprising non-triangular elements and uses a triangulated copy of these zones for computing the size functions.
             """
             return PyMenu(self.service, "/size_functions/triangulate_quad_faces").execute(*args, **kwargs)
         def use_cad_imported_curvature(self, *args, **kwargs):
             """
-            Use curvature data imported from CAD.
+            Allows you to disable curvature data from the nodes of the CAD facets.
             """
             return PyMenu(self.service, "/size_functions/use_cad_imported_curvature").execute(*args, **kwargs)
 
         class contours(metaclass=PyMenuMeta):
             """
-            Menu to contour of size field.
+            Contains options for managing contours.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -4142,20 +4153,20 @@ class main_menu(metaclass=PyMenuMeta):
                 self.set = self.__class__.set(path + [("set", None)], service)
             def draw(self, *args, **kwargs):
                 """
-                Draw size field contour on face zones.
+                Displays contours in the graphics window. Run compute prior to contours/draw.
                 """
                 return PyMenu(self.service, "/size_functions/contours/draw").execute(*args, **kwargs)
 
             class set(metaclass=PyMenuMeta):
                 """
-                Set contour options.
+                Contains options to manage the contour size.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def refine_facets(self, *args, **kwargs):
                     """
-                    Option to refine facets virtually? for better contour resolution.
+                    Allows you to specify smaller facets if the original are too large. Default is no.
                     """
                     return PyMenu(self.service, "/size_functions/contours/set/refine_facets").execute(*args, **kwargs)
 
@@ -4186,57 +4197,57 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def create(self, *args, **kwargs):
             """
-            Create new scoped sizing.
+            Defines the scoped size based on the specified parameters.
             """
             return PyMenu(self.service, "/scoped_sizing/create").execute(*args, **kwargs)
         def modify(self, *args, **kwargs):
             """
-            Modify scoped sizing.
+            Modifies the scoped size control definition.
             """
             return PyMenu(self.service, "/scoped_sizing/modify").execute(*args, **kwargs)
         def delete(self, *args, **kwargs):
             """
-            Delete scoped sizing.
+            Deletes the specified scoped size controls.
             """
             return PyMenu(self.service, "/scoped_sizing/delete").execute(*args, **kwargs)
         def delete_all(self, *args, **kwargs):
             """
-            Delete all scoped sizing.
+            Deletes all the defined scoped size controls.
             """
             return PyMenu(self.service, "/scoped_sizing/delete_all").execute(*args, **kwargs)
         def compute(self, *args, **kwargs):
             """
-            Compute scoped sizing/functions.
+            Computes the size field based on the defined size functions and/or scoped size controls.
             """
             return PyMenu(self.service, "/scoped_sizing/compute").execute(*args, **kwargs)
         def list(self, *args, **kwargs):
             """
-            List all scoped sizing  parameters.
+            Lists all the defined scoped size controls and the corresponding parameter values defined.
             """
             return PyMenu(self.service, "/scoped_sizing/list").execute(*args, **kwargs)
         def list_zones_uncovered_by_controls(self, *args, **kwargs):
             """
-            List all Zones not covered by scoepd sizing.
+            Lists the zones for which no scoped sizing controls have been defined.
             """
             return PyMenu(self.service, "/scoped_sizing/list_zones_uncovered_by_controls").execute(*args, **kwargs)
         def delete_size_field(self, *args, **kwargs):
             """
-            Reset all the processed sizing functions/scoped sizing.
+            Deletes the current size field.
             """
             return PyMenu(self.service, "/scoped_sizing/delete_size_field").execute(*args, **kwargs)
         def read(self, *args, **kwargs):
             """
-            Read scoped sizing from a file.
+            Enables you to read in a scoped sizing file (*.szcontrol).
             """
             return PyMenu(self.service, "/scoped_sizing/read").execute(*args, **kwargs)
         def write(self, *args, **kwargs):
             """
-            Write scoped sizing to a file.
+            Enables you to write a scoped sizing file (*.szcontrol).
             """
             return PyMenu(self.service, "/scoped_sizing/write").execute(*args, **kwargs)
         def validate(self, *args, **kwargs):
             """
-            Validate scoped sizing.
+            Validates the scoped sizing controls defined. An error will be reported if the scoped sizing controls do not exist or the scope for one (or more) controls is invalid.
             """
             return PyMenu(self.service, "/scoped_sizing/validate").execute(*args, **kwargs)
 
@@ -4259,162 +4270,162 @@ class main_menu(metaclass=PyMenuMeta):
             self.volumetric_regions = self.__class__.volumetric_regions(path + [("volumetric_regions", None)], service)
         def create(self, *args, **kwargs):
             """
-            Create an object with closed face zones.
+            Creates the object based on the priority, cell zone type, face zone(s), edge zone(s), and object type specified. You can specify the object name or retain the default blank entry to have the object name generated automatically. 
             """
             return PyMenu(self.service, "/objects/create").execute(*args, **kwargs)
         def create_multiple(self, *args, **kwargs):
             """
-            Create multiple objects one for each face zone passed.
+            Creates multiple objects by creating an object per face zone specified. The objects will be named automatically based on the prefix and priority specified. 
             """
             return PyMenu(self.service, "/objects/create_multiple").execute(*args, **kwargs)
         def delete(self, *args, **kwargs):
             """
-            Delete Objects.
+            Deletes the specified object(s). 
             """
             return PyMenu(self.service, "/objects/delete").execute(*args, **kwargs)
         def delete_all(self, *args, **kwargs):
             """
-            Delete all objects.
+            Deletes all the defined objects. 
             """
             return PyMenu(self.service, "/objects/delete_all").execute(*args, **kwargs)
         def delete_all_geom(self, *args, **kwargs):
             """
-            Delete all objects of type geom.
+            Deletes all the defined geom objects. 
             """
             return PyMenu(self.service, "/objects/delete_all_geom").execute(*args, **kwargs)
         def merge(self, *args, **kwargs):
             """
-            Merge volume objects.
+            Merges the specified objects into a single object. 
             """
             return PyMenu(self.service, "/objects/merge").execute(*args, **kwargs)
         def list(self, *args, **kwargs):
             """
-            Print existing objects.
+            Lists details such as cell zone type, priority, object type, comprising face and edge zones, and object reference point for all the defined objects.
             """
             return PyMenu(self.service, "/objects/list").execute(*args, **kwargs)
         def extract_edges(self, *args, **kwargs):
             """
-            Extract edges for the Objects.
+            Extracts the edge zone(s) from the face zone(s) included in the specified object(s), based on the edge-feature-angle value specified (/objects/set/set-edge-feature-angle).
             """
             return PyMenu(self.service, "/objects/extract_edges").execute(*args, **kwargs)
         def update(self, *args, **kwargs):
             """
-            Remove invalid/deleted zones from object's face/edge list.
+            Allows you to update the objects defined when the face and/or edge zone(s) comprising the object have been deleted. 
             """
             return PyMenu(self.service, "/objects/update").execute(*args, **kwargs)
         def merge_walls(self, *args, **kwargs):
             """
-            Merge walls of Objects.
+            Merges all the face zones of type wall in an object into a single face zone.
             """
             return PyMenu(self.service, "/objects/merge_walls").execute(*args, **kwargs)
         def merge_edges(self, *args, **kwargs):
             """
-            Merge edges of Objects.
+            Merges all the edge zones in an object into a single edge zone.  If the object is composed of edge zones of different types (boundary and interior), the edge zones of the same type (boundary or interior) will be merged into a single edge zone.
             """
             return PyMenu(self.service, "/objects/merge_edges").execute(*args, **kwargs)
         def separate_faces_by_angle(self, *args, **kwargs):
             """
-            Separate faces of object.
+            Separates the face zone(s) comprising the object based on the angle specified.
             """
             return PyMenu(self.service, "/objects/separate_faces_by_angle").execute(*args, **kwargs)
         def separate_faces_by_seed(self, *args, **kwargs):
             """
-            Separate faces of all object based on given face seed and angle.
+            Separates the face zone(s) comprising the object based on the seed face specified.
             """
             return PyMenu(self.service, "/objects/separate_faces_by_seed").execute(*args, **kwargs)
         def create_and_activate_domain(self, *args, **kwargs):
             """
-            Create and activate domain with all face zones of Objects.
+            Creates and activates the domain comprising the face zone(s) from the object(s) specified.
             """
             return PyMenu(self.service, "/objects/create_and_activate_domain").execute(*args, **kwargs)
         def create_groups(self, *args, **kwargs):
             """
-            Create a face and edge zone group from Objects.
+            Creates a face group and an edge group comprising the face zone(s) and edge zone(s) included in the specified object(s), respectively.
             """
             return PyMenu(self.service, "/objects/create_groups").execute(*args, **kwargs)
         def delete_unreferenced_faces_and_edges(self, *args, **kwargs):
             """
-            Delete unreferenced faces and edges.
+            Deletes all the faces and edges that are not included in any defined objects. 
             """
             return PyMenu(self.service, "/objects/delete_unreferenced_faces_and_edges").execute(*args, **kwargs)
         def improve_object_quality(self, *args, **kwargs):
             """
-            Improve mesh objects quality.
+            Enables you to improve the surface mesh quality for mesh objects. Select the mesh objects and the method for improving the surface mesh. The smooth-and-improve method improves the mesh by a combination of smoothing, swapping, and surface mesh improvement operations. Object normals are correctly oriented and island faces are also deleted. You can optionally coarsen the surface mesh by specifying a suitable coarsening factor. Additional imprinting operations can be done to improve feature capture on the surface mesh. The surface-remesh method improves the mesh by remeshing based on the current size field. Object normals are correctly oriented and island faces are also deleted.
             """
             return PyMenu(self.service, "/objects/improve_object_quality").execute(*args, **kwargs)
         def merge_voids(self, *args, **kwargs):
             """
-            Merge voids/packets.
+            Allows you to merge voids in the mesh object after the sewing operation.
             """
             return PyMenu(self.service, "/objects/merge_voids").execute(*args, **kwargs)
         def create_intersection_loops(self, *args, **kwargs):
             """
-            Create intersection loops for face zones of objects.
+            Allows you to create intersection loops for objects.
             """
             return PyMenu(self.service, "/objects/create_intersection_loops").execute(*args, **kwargs)
         def change_object_type(self, *args, **kwargs):
             """
-            Change object type.
+            Allows you to change the object type (geom, or mesh).
             """
             return PyMenu(self.service, "/objects/change_object_type").execute(*args, **kwargs)
         def improve_feature_capture(self, *args, **kwargs):
             """
-            Imprint edges of object on to faces of object.
+            Enables you to imprint the edges comprising the object on to the object face zones to improve feature capture for mesh objects. You can specify the number of imprinting iterations to be performed.  The geometry objects used to create the mesh objects should be available when the improve-feature-capture command is invoked. Additionally, the face zones comprising the objects should be of type other than geometry.
             """
             return PyMenu(self.service, "/objects/improve_feature_capture").execute(*args, **kwargs)
         def sew(self, *args, **kwargs):
             """
-            Enter the sew operation menu.
+            Contains options related to the object sewing operation. This menu is no longer supported, and will be removed in a future release.
             """
             return PyMenu(self.service, "/objects/sew").execute(*args, **kwargs)
         def merge_nodes(self, *args, **kwargs):
             """
-            Merge nodes of an object.
+            Merges the free nodes at the object level based on the specified tolerance or using a tolerance that is a specified percentage of shortest connected edge length.
             """
             return PyMenu(self.service, "/objects/merge_nodes").execute(*args, **kwargs)
         def translate(self, *args, **kwargs):
             """
-            Translate objects.
+            Translates the object(s) based on the translation offsets specified.
             """
             return PyMenu(self.service, "/objects/translate").execute(*args, **kwargs)
         def rotate(self, *args, **kwargs):
             """
-            Rotate objects.
+            Rotates the object(s) based on the angle of rotation, pivot point, and axis of rotation specified.
             """
             return PyMenu(self.service, "/objects/rotate").execute(*args, **kwargs)
         def scale(self, *args, **kwargs):
             """
-            Scale objects.
+            Scales the object(s) based on the scale factors specified.
             """
             return PyMenu(self.service, "/objects/scale").execute(*args, **kwargs)
         def rename_object_zones(self, *args, **kwargs):
             """
-            Rename zones of the objects based on the object name.
+            Renames the face and edge zones comprising the object based on the object name. You can also specify the separator to be used.
             """
             return PyMenu(self.service, "/objects/rename_object_zones").execute(*args, **kwargs)
         def rename_object(self, *args, **kwargs):
             """
-            Rename object name.
+            Allows you to rename a specified geometry or mesh object with another specified name.
             """
             return PyMenu(self.service, "/objects/rename_object").execute(*args, **kwargs)
         def check_mesh(self, *args, **kwargs):
             """
-            Check mesh.
+            Checks the mesh on the specified objects for connectivity and orientation of faces. The domain extents, volume statistics, and face area statistics will be reported along with the results of other checks on the mesh.
             """
             return PyMenu(self.service, "/objects/check_mesh").execute(*args, **kwargs)
         def rename_cell_zone_boundaries_using_labels(self, *args, **kwargs):
             """
-            Rename cell zone boundaries using the label names.
+            Renames the boundaries of the cell zones based on the existing face zone labels. This allows for the cell zone boundaries in solution mode to have names corresponding to the face zone labels in meshing mode.   This command will not work if you read in a volume mesh generated in a version prior to release 16.2. In such cases, regenerate the volume mesh before using the command.
             """
             return PyMenu(self.service, "/objects/rename_cell_zone_boundaries_using_labels").execute(*args, **kwargs)
         def summary(self, *args, **kwargs):
             """
-            List summary by object name or geom/mesh group.
+            Allows you to obtain a summary of a specified geometry or mesh object, or obtain a summary of all geometry or mesh objects.
             """
             return PyMenu(self.service, "/objects/summary").execute(*args, **kwargs)
         def restore_faces(self, *args, **kwargs):
             """
-            Restore object boundaries.
+            Restores the mesh object surface mesh from the backup created. The current mesh object face zones and cell zones will be deleted.  If the object backup is disabled (/mesh/auto-mesh-controls/backup-object no), you will not be able to restore the surface mesh using this command.  There may be a difference in the initial volume mesh generated for an object and that generated after restoring the object surface mesh due to differences in the order of zones/entities processed during volume meshing. 
             """
             return PyMenu(self.service, "/objects/restore_faces").execute(*args, **kwargs)
         def clear_backup(self, *args, **kwargs):
@@ -4435,72 +4446,72 @@ class main_menu(metaclass=PyMenuMeta):
 
         class cad_association(metaclass=PyMenuMeta):
             """
-            Objects association with CAD entities.
+            Contains options for modifying the selected objects based on the associated CAD entities and attaching/detaching the CAD entities from the objects. This menu is available when the CAD Assemblies tree is created during CAD import.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def attach_cad(self, *args, **kwargs):
                 """
-                Attach Object association.
+                Attaches CAD entities to the selected geometry/mesh objects. Select the geometry/mesh objects and specify the path for the CAD entities to be associated with the objects. The selected geometry/mesh objects will be associated with the CAD entities which will then be locked.
                 """
                 return PyMenu(self.service, "/objects/cad_association/attach_cad").execute(*args, **kwargs)
             def update_all_objects(self, *args, **kwargs):
                 """
-                Update all Objects from CAD association.
+                Updates all geometry/mesh objects based on changes to the associated CAD objects. Specify the type of objects (geom or mesh) to be updated.
                 """
                 return PyMenu(self.service, "/objects/cad_association/update_all_objects").execute(*args, **kwargs)
             def detach_all_objects(self, *args, **kwargs):
                 """
-                Detach all Objects from CAD association.
+                Detaches all the CAD objects associated with the geometry/mesh objects. Specify the type of objects (geom or mesh) to be detached. All association will be removed and the geometry/mesh objects will be independent of changes to the CAD entities.
                 """
                 return PyMenu(self.service, "/objects/cad_association/detach_all_objects").execute(*args, **kwargs)
             def update_objects(self, *args, **kwargs):
                 """
-                Update Objects from CAD association.
+                Updates the specified geometry/mesh objects based on changes to the associated CAD objects.
                 """
                 return PyMenu(self.service, "/objects/cad_association/update_objects").execute(*args, **kwargs)
             def detach_objects(self, *args, **kwargs):
                 """
-                Detach Objects from CAD association.
+                Detaches the CAD objects associated with the specified geometry/mesh objects. All association will be removed and the selected geometry/mesh objects will be independent of changes to the CAD entities.
                 """
                 return PyMenu(self.service, "/objects/cad_association/detach_objects").execute(*args, **kwargs)
             def query_object_association(self, *args, **kwargs):
                 """
-                Query Object associations.
+                Returns a list of the CAD entities associated with the objects selected.
                 """
                 return PyMenu(self.service, "/objects/cad_association/query_object_association").execute(*args, **kwargs)
             def unlock_cad(self, *args, **kwargs):
                 """
-                Unlock Object associations.
+                Unlocks the CAD objects associated with the selected geometry/mesh objects.
                 """
                 return PyMenu(self.service, "/objects/cad_association/unlock_cad").execute(*args, **kwargs)
             def restore_cad(self, *args, **kwargs):
                 """
-                Restore Object associations.
+                Restores the geometry/mesh objects from the associated CAD objects.
                 """
                 return PyMenu(self.service, "/objects/cad_association/restore_cad").execute(*args, **kwargs)
 
         class set(metaclass=PyMenuMeta):
             """
-            Set object parameters.
+            Contains options for setting additional object-related settings.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def set_edge_feature_angle(self, *args, **kwargs):
                 """
-                Set edge feature angle for edge extraction.
+                Sets the edge feature angle to be used for extracting edge zone(s) from the face zone(s) included in the object(s).
                 """
                 return PyMenu(self.service, "/objects/set/set_edge_feature_angle").execute(*args, **kwargs)
             def show_face_zones(self, *args, **kwargs):
                 """
-                Show object faces on display.
+                Displays the face zone(s) comprising the object(s) drawn in the graphics window.
                 """
                 return PyMenu(self.service, "/objects/set/show_face_zones").execute(*args, **kwargs)
             def show_edge_zones(self, *args, **kwargs):
                 """
-                Show object edges on display.
+                Displays the edge zone(s) comprising the object(s) drawn in the graphics window.
                 """
                 return PyMenu(self.service, "/objects/set/show_edge_zones").execute(*args, **kwargs)
 
@@ -4519,7 +4530,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class wrap(metaclass=PyMenuMeta):
             """
-            Enter the wrapping operation menu.
+            Contains options related to the object wrapping operation.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -4527,12 +4538,12 @@ class main_menu(metaclass=PyMenuMeta):
                 self.set = self.__class__.set(path + [("set", None)], service)
             def wrap(self, *args, **kwargs):
                 """
-                Wrap the object.
+                Creates the mesh objects based on the geometry objects selected and other object wrapping parameters specified. 
                 """
                 return PyMenu(self.service, "/objects/wrap/wrap").execute(*args, **kwargs)
             def check_holes(self, *args, **kwargs):
                 """
-                Check for holes on wrapped objects.
+                Allows you to check for holes in the objects. The number of hole faces marked will be reported.
                 """
                 return PyMenu(self.service, "/objects/wrap/check_holes").execute(*args, **kwargs)
             def object_zone_separate(self, *args, **kwargs):
@@ -4548,7 +4559,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class set(metaclass=PyMenuMeta):
                 """
-                Set wrap options.
+                Contains additional options related to the object wrapping operation.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -4570,96 +4581,96 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/objects/wrap/set/use_smooth_folded_faces").execute(*args, **kwargs)
                 def include_thin_cut_edges_and_faces(self, *args, **kwargs):
                     """
-                    Include thin cut Face zones and Edge zones.
+                    Allows better recovery of thin region configurations during the object wrapping operation.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/include_thin_cut_edges_and_faces").execute(*args, **kwargs)
                 def shrink_wrap_rezone_parameters(self, *args, **kwargs):
                     """
-                    Set wrapper rezone parameters.
+                    Allows you to set the parameters for improving the mesh object surface quality using rezoning. The geometry object zones will be separated based on the separation angle specified to improve the feature imprinting on the mesh object.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/shrink_wrap_rezone_parameters").execute(*args, **kwargs)
                 def zone_name_prefix(self, *args, **kwargs):
                     """
-                    Prefix to be used for names of wrap face zones created.
+                    Allows you to specify a prefix for the zones included in the mesh object created using the object wrapping operation.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/zone_name_prefix").execute(*args, **kwargs)
                 def relative_feature_tolerance(self, *args, **kwargs):
                     """
-                    Relative Feature Tolerance.
+                    Specifies the relative feature tolerance for shrink wrapping.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/relative_feature_tolerance").execute(*args, **kwargs)
                 def minimum_topo_area(self, *args, **kwargs):
                     """
-                    Minimum Topo Area.
+                    Specifies the minimum topological area for shrink wrapping.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/minimum_topo_area").execute(*args, **kwargs)
                 def minimum_relative_topo_area(self, *args, **kwargs):
                     """
-                    Minimum Relative Topo Area.
+                    Specifies the minimum relative topological area for shrink wrapping.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/minimum_relative_topo_area").execute(*args, **kwargs)
                 def minimum_topo_count(self, *args, **kwargs):
                     """
-                    Minimum Topo Face Count.
+                    Specifies the minimum topological count for shrink wrapping.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/minimum_topo_count").execute(*args, **kwargs)
                 def minimum_relative_topo_count(self, *args, **kwargs):
                     """
-                    Minimum Relative Topo Face Count.
+                    Specifies the minimum relative topological count for shrink wrapping.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/minimum_relative_topo_count").execute(*args, **kwargs)
                 def resolution_factor(self, *args, **kwargs):
                     """
-                    Resolution Factor.
+                    Sets the resolution factor for shrink wrapping. This option can be used to set sampling coarser or finer than the final surface mesh.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/resolution_factor").execute(*args, **kwargs)
                 def report_holes(self, *args, **kwargs):
                     """
-                    Detect holes in wrapped objects.
+                    Allows you to check for holes in the mesh object created. Holes, if any will be reported at the end of the object wrapping operation.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/report_holes").execute(*args, **kwargs)
                 def max_free_edges_for_hole_patching(self, *args, **kwargs):
                     """
-                    Maximum length of free edge loop for filling holes.
+                    Allows you to set the maximum number of free edges in a loop to fill the holes.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/max_free_edges_for_hole_patching").execute(*args, **kwargs)
                 def add_geometry_recovery_level_to_zones(self, *args, **kwargs):
                     """
-                    Update zones with geometry recovery level attributes.
+                    Enables you to set the geometry recovery level (high or low) for the specified face zones.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/add_geometry_recovery_level_to_zones").execute(*args, **kwargs)
                 def list_zones_geometry_recovery_levels(self, *args, **kwargs):
                     """
-                    List zones with medium and high geometry recovery levels.
+                    Lists the zones based on geometry recovery level specified.
                     """
                     return PyMenu(self.service, "/objects/wrap/set/list_zones_geometry_recovery_levels").execute(*args, **kwargs)
 
         class remove_gaps(metaclass=PyMenuMeta):
             """
-            Enter the gap removal operation menu.
+            Contains options for removing gaps between the mesh objects specified or removing the thickness in the mesh objects specified. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def remove_gaps(self, *args, **kwargs):
                 """
-                Remove gaps between objects or remove thickness in objects.
+                Allows you to remove gaps between the mesh objects specified or remove the thickness in the mesh objects specified. Select the appropriate repair option and specify the other parameters required.
                 """
                 return PyMenu(self.service, "/objects/remove_gaps/remove_gaps").execute(*args, **kwargs)
             def show_gaps(self, *args, **kwargs):
                 """
-                Mark faces at gaps.
+                Marks the faces at the gap between mesh objects based on the gap distance and percentage margin specified.
                 """
                 return PyMenu(self.service, "/objects/remove_gaps/show_gaps").execute(*args, **kwargs)
             def ignore_orientation(self, *args, **kwargs):
                 """
-                Set if gaps should be identified considering orientation.
+                Allows you to set whether the orientation of the normals should be taken into account while identifying the gap to be removed.
                 """
                 return PyMenu(self.service, "/objects/remove_gaps/ignore_orientation").execute(*args, **kwargs)
 
         class join_intersect(metaclass=PyMenuMeta):
             """
-            Join, intersect and build regions in a mesh object.
+            Contains options for connecting overlapping and intersecting face zones.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -4667,52 +4678,52 @@ class main_menu(metaclass=PyMenuMeta):
                 self.controls = self.__class__.controls(path + [("controls", None)], service)
             def create_mesh_object(self, *args, **kwargs):
                 """
-                Create mesh object from wrap objects.
+                Allows you to specify one or more mesh objects to be connected in one mesh object.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/create_mesh_object").execute(*args, **kwargs)
             def add_objects_to_mesh_object(self, *args, **kwargs):
                 """
-                Add mesh and wrap objects to a mesh object.
+                Allows you to specify one or more mesh objects to be added to an existing mesh object.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/add_objects_to_mesh_object").execute(*args, **kwargs)
             def join(self, *args, **kwargs):
                 """
-                Join all face zones in mesh object.
+                Connects two overlapping face zones within specified angle and tolerance.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/join").execute(*args, **kwargs)
             def intersect(self, *args, **kwargs):
                 """
-                Intersect all face zones in mesh object.
+                Connects two intersecting face zones within specified angle and tolerance.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/intersect").execute(*args, **kwargs)
             def compute_regions(self, *args, **kwargs):
                 """
-                Recompute mesh object topo regions.
+                Closed cell zone regions are computed from the specified mesh object. You may include a material point, if desired.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/compute_regions").execute(*args, **kwargs)
             def rename_region(self, *args, **kwargs):
                 """
-                Rename a region in mesh object.
+                Enables you to specify a new name for a specified region.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/rename_region").execute(*args, **kwargs)
             def delete_region(self, *args, **kwargs):
                 """
-                Delete regions in the object.
+                Removes a closed cell zone region and all of its face zones, except those which are shared by other regions, from the specified mesh object.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/delete_region").execute(*args, **kwargs)
             def merge_regions(self, *args, **kwargs):
                 """
-                Merge regions in the object.
+                Specified regions are joined into a single region.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/merge_regions").execute(*args, **kwargs)
             def change_region_type(self, *args, **kwargs):
                 """
-                Change type of region.
+                Allows you to select a cell zone type (solid, fluid or dead) for a specific region.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/change_region_type").execute(*args, **kwargs)
             def list_regions(self, *args, **kwargs):
                 """
-                List regions of mesh object.
+                Lists details of region type, volume, material point, and comprising face zones for the topological regions computed for the specified mesh object.
                 """
                 return PyMenu(self.service, "/objects/join_intersect/list_regions").execute(*args, **kwargs)
 
@@ -4725,7 +4736,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.service = service
                 def remesh_post_intersection(self, *args, **kwargs):
                     """
-                    Remesh after intersection.
+                    Used to enable or disable automatic post-remesh operation after join or intersect.
                     """
                     return PyMenu(self.service, "/objects/join_intersect/controls/remesh_post_intersection").execute(*args, **kwargs)
 
@@ -4818,25 +4829,25 @@ class main_menu(metaclass=PyMenuMeta):
 
         class create_new_mesh_object(metaclass=PyMenuMeta):
             """
-            Create new mesh objects br wrap or remesh.
+            Contains options for creating a new mesh object by wrapping or remeshing existing objects.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def wrap(self, *args, **kwargs):
                 """
-                Wrap objects.
+                Creates a new mesh object by wrapping the specified objects individually or collectively.
                 """
                 return PyMenu(self.service, "/objects/create_new_mesh_object/wrap").execute(*args, **kwargs)
             def remesh(self, *args, **kwargs):
                 """
-                Remesh objects.
+                Creates a new mesh object by remeshing geometry objects individually or collectively.
                 """
                 return PyMenu(self.service, "/objects/create_new_mesh_object/remesh").execute(*args, **kwargs)
 
         class labels(metaclass=PyMenuMeta):
             """
-            Manage Face Zones Labels of an object.
+            Contains options for creating and managing face zone labels.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -4844,52 +4855,52 @@ class main_menu(metaclass=PyMenuMeta):
                 self.cavity = self.__class__.cavity(path + [("cavity", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create a new label with face zones.
+                Creates a new face zone label for the specified face zones.
                 """
                 return PyMenu(self.service, "/objects/labels/create").execute(*args, **kwargs)
             def create_label_per_object(self, *args, **kwargs):
                 """
-                Create label per object.
+                Creates a new face zone label for all the face zones in every object.
                 """
                 return PyMenu(self.service, "/objects/labels/create_label_per_object").execute(*args, **kwargs)
             def rename(self, *args, **kwargs):
                 """
-                Rename an existing label of an object.
+                Renames the specified face zone label.
                 """
                 return PyMenu(self.service, "/objects/labels/rename").execute(*args, **kwargs)
             def merge(self, *args, **kwargs):
                 """
-                Merge multiple labels of an object.
+                Merges the specified face zone labels to a single label with the name specified.
                 """
                 return PyMenu(self.service, "/objects/labels/merge").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete labels of an object.
+                Deletes the specified face zone labels.
                 """
                 return PyMenu(self.service, "/objects/labels/delete").execute(*args, **kwargs)
             def add_zones(self, *args, **kwargs):
                 """
-                Add face zones to existing label.
+                Adds the specified face zones to the existing face zone label for an object.
                 """
                 return PyMenu(self.service, "/objects/labels/add_zones").execute(*args, **kwargs)
             def label_unlabeled_zones(self, *args, **kwargs):
                 """
-                Label unlabeled zones.
+                Creates labels for unlabeled face zones within the specified object. You can either use the object name as the label or provide your own label.
                 """
                 return PyMenu(self.service, "/objects/labels/label_unlabeled_zones").execute(*args, **kwargs)
             def remove_zones(self, *args, **kwargs):
                 """
-                Remove face zones from existing label.
+                Removes the specified face zones from the existing face zone label for an object.
                 """
                 return PyMenu(self.service, "/objects/labels/remove_zones").execute(*args, **kwargs)
             def remove_all_labels_on_zones(self, *args, **kwargs):
                 """
-                Clear all labels on selected zones.
+                Removes all the face zone labels for the specified face zones. This command is applicable to geometry objects only.
                 """
                 return PyMenu(self.service, "/objects/labels/remove_all_labels_on_zones").execute(*args, **kwargs)
             def create_label_per_zone(self, *args, **kwargs):
                 """
-                Create a label for zone with it's name.
+                Creates a new face zone label for each face zone in the object.
                 """
                 return PyMenu(self.service, "/objects/labels/create_label_per_zone").execute(*args, **kwargs)
 
@@ -4928,42 +4939,42 @@ class main_menu(metaclass=PyMenuMeta):
                 self.hexcore = self.__class__.hexcore(path + [("hexcore", None)], service)
             def compute(self, *args, **kwargs):
                 """
-                Recompute mesh object topo regions using face zone labels.
+                Computes the volumetric regions based on the face zone labels. You can choose to use existing material points for computing the regions.  When regions are computed, region names and types will be based on the face zone labels of the mesh object selected. If regions are recomputed, all previous region names and types will be over written.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/compute").execute(*args, **kwargs)
             def update(self, *args, **kwargs):
                 """
-                Update mesh object topo regions.
+                Recomputes the selected volumetric region(s) while preserving the region name(s) and type(s).
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/update").execute(*args, **kwargs)
             def rename(self, *args, **kwargs):
                 """
-                Rename a region in mesh object.
+                Renames the region.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/rename").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete regions in the object.
+                Deletes the specified volumetric regions.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/delete").execute(*args, **kwargs)
             def merge(self, *args, **kwargs):
                 """
-                Merge regions in the object.
+                Merges specified regions in to a single region.  If there are shared face zones, merging regions will delete the shared face zones. However, if there are cell zones associated with the regions, then merging the regions will not delete the shared face zones. In this case, the shared face zones will be deleted when the cell zones are deleted.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/merge").execute(*args, **kwargs)
             def change_type(self, *args, **kwargs):
                 """
-                Change type of region.
+                Enables you to change the region type.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/change_type").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List regions of mesh object.
+                Prints region information to the console, including type, volume, material point and face zones.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/list").execute(*args, **kwargs)
             def auto_fill_volume(self, *args, **kwargs):
                 """
-                Auto mesh selected regions.
+                Creates the volume mesh for the selected volumetric regions based on the meshing parameters set.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/auto_fill_volume").execute(*args, **kwargs)
             def fill_empty_volume(self, *args, **kwargs):
@@ -4978,13 +4989,13 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/objects/volumetric_regions/merge_cells").execute(*args, **kwargs)
             def delete_cells(self, *args, **kwargs):
                 """
-                Delete all cell zones assocaited to selected regions.
+                Deletes the cell zones of the specified regions.
                 """
                 return PyMenu(self.service, "/objects/volumetric_regions/delete_cells").execute(*args, **kwargs)
 
             class scoped_prism(metaclass=PyMenuMeta):
                 """
-                Enter the scoped prisms menu.
+                Contains options for setting scoped prism controls.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -5056,7 +5067,8 @@ class main_menu(metaclass=PyMenuMeta):
 
             class tet(metaclass=PyMenuMeta):
                 """
-                Enter the tetrahedral menu.
+                Contains options for setting tetrahedral mesh controls. See mesh/
+                            
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -5313,7 +5325,8 @@ class main_menu(metaclass=PyMenuMeta):
 
             class hexcore(metaclass=PyMenuMeta):
                 """
-                Enter the hexcore menu.
+                Contains options for setting hexcore mesh controls. See mesh/
+                            
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -5489,89 +5502,69 @@ class main_menu(metaclass=PyMenuMeta):
 
         class face_connectivity(metaclass=PyMenuMeta):
             """
-            Diagnose-face-connectivity.
+            Contains options for fixing problems with face connectivity on the specified object face zones or boundary face zones.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def fix_free_faces(self, *args, **kwargs):
                 """
-                Fix free faces using
-                merge-nodes - Individually on each object or on given face zone list
-                stitch - Individually on each object or on given face zone list
-                delete-free-edge-faces - Of given face zone list or all face zones of given objects
-                delete-fringes - Of given face zone list or all face zones of given objects
-                delete-skewed-faces - Of given face zone list or all face zones of given objects.
+                Removes free faces by the method selected. The methods available are:
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_free_faces").execute(*args, **kwargs)
             def fix_multi_faces(self, *args, **kwargs):
                 """
-                Fix milti faces using
-                delete-fringes - Of given face zone list or all face zones of given objects
-                delete-overlaps - Of given face zone list or all face zones of given objects
-                disconnect - Given face zone list or all face zones of given objects
-                all-above - on given face zone list or all face zones of given objects.
+                Fixes multiply connected faces by a combination of deleting face fringes, overlapping faces, and disconnected faces. Specify the maximum number of fringe faces, overlapping faces, and multiply connected edges, respectively.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_multi_faces").execute(*args, **kwargs)
             def fix_self_intersections(self, *args, **kwargs):
                 """
-                Fix self intersections
-                fix-self-intersections - Of given face zone list or all face zones of given objects
-                fix-folded-faces - Smooth folded faces of given face zone list or all face zones of given objects.
+                Fixes self intersecting or folded faces. For fixing folded faces by smoothing, specify whether features should be imprinted.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_self_intersections").execute(*args, **kwargs)
             def fix_duplicate_faces(self, *args, **kwargs):
                 """
-                Fix duplicate faces
-                by deleting duplicate faces of given face zone list or all face zones of given objects.
+                Removes duplicate faces.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_duplicate_faces").execute(*args, **kwargs)
             def fix_spikes(self, *args, **kwargs):
                 """
-                Fix spikes
-                by smoothing spikes from given face zone list or all face zones of given objects.
+                Fixes spiked faces based on the spike angle specified.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_spikes").execute(*args, **kwargs)
             def fix_islands(self, *args, **kwargs):
                 """
-                Fix spikes
-                by removing islands from given face zone list or all face zones of given objects.
+                Deletes groups of island faces based on the absolute face count specified.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_islands").execute(*args, **kwargs)
             def fix_steps(self, *args, **kwargs):
                 """
-                Fix steps
-                smooth - Steps from given face zone list or all face zones of given objects
-                collapse - Steps from given face zone list or all face zones of given objects.
+                Fixes step configurations by smoothing or collapsing faces based on the angle and step width specified.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_steps").execute(*args, **kwargs)
             def fix_slivers(self, *args, **kwargs):
                 """
-                Fix Slivers
-                by collapsing slivers from given face zone list or all face zones of given objects.
+                Fixes faces based on skewness and height criteria. Height is the perpendicular distance between the longest edge of the triangle and the opposite node.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_slivers").execute(*args, **kwargs)
             def fix_deviations(self, *args, **kwargs):
                 """
-                Fix deviations
-                by imprinting edges for given set of face and edge zones or zones of each object individually.
+                Fixes deviations in the wrapped surface mesh by imprinting edges on the wrapped face zones. Specify the number of imprint iterations and aggressive imprint iterations to be performed.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_deviations").execute(*args, **kwargs)
             def fix_point_contacts(self, *args, **kwargs):
                 """
-                Fix point contacts
-                by removing point contacts from given face zone list or all face zones of given objects.
+                Fixes non-manifold configurations by removing point contacts.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_point_contacts").execute(*args, **kwargs)
             def fix_invalid_normals(self, *args, **kwargs):
                 """
-                Fix invalid normals
-                by smoothing invalid normals from given face zone list or all face zones of given objects.
+                Fixes invalid normals by smoothing.  Zone-specific or scoped prism settings should be applied prior to using this command.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/fix_invalid_normals").execute(*args, **kwargs)
             def add_label_to_small_neighbors(self, *args, **kwargs):
                 """
-                Change small connected islands label to input.
+                Separates island object face zones from all connected neighbors and merges them to the connected neighboring face zone label based on minimum face count specified.
                 """
                 return PyMenu(self.service, "/diagnostics/face_connectivity/add_label_to_small_neighbors").execute(*args, **kwargs)
             def remove_label_from_small_islands(self, *args, **kwargs):
@@ -5582,30 +5575,29 @@ class main_menu(metaclass=PyMenuMeta):
 
         class quality(metaclass=PyMenuMeta):
             """
-            Diagnose-face-quality.
+            Contains options for fixing problems related to surface mesh quality on the specified object face zones or boundary face zones.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def general_improve(self, *args, **kwargs):
                 """
-                General Improve
-                on  given face zone list or all face zones of given objects.
+                Improves the surface mesh based on aspect ratio, size change, or skewness. Specify the minimum quality value, feature angle, number of iterations, and whether the boundary should be preserved.
                 """
                 return PyMenu(self.service, "/diagnostics/quality/general_improve").execute(*args, **kwargs)
             def smooth(self, *args, **kwargs):
                 """
-                Smooth individually on each object or on given face zone list.
+                Improves the surface mesh by smoothing. Specify the number of smoothing iterations and whether the boundary should be preserved.
                 """
                 return PyMenu(self.service, "/diagnostics/quality/smooth").execute(*args, **kwargs)
             def collapse(self, *args, **kwargs):
                 """
-                Collapse faces from given face zone list or all face zones of given objects.
+                Collapses bad quality faces based on area or skewness. For collapsing based on face area, specify the maximum face area and relative maximum area. For collapsing based on face skewness, specify the minimum skewness and feature angle. Additionally, specify the number of iterations and whether the boundary should be preserved.
                 """
                 return PyMenu(self.service, "/diagnostics/quality/collapse").execute(*args, **kwargs)
             def delaunay_swap(self, *args, **kwargs):
                 """
-                Delaunay swap the faces given face zone list or all face zones of given objects.
+                Improves the surface mesh by swapping based on the minimum skewness value and feature angle specified. Additionally, specify the number of iterations and whether the boundary should be preserved.
                 """
                 return PyMenu(self.service, "/diagnostics/quality/delaunay_swap").execute(*args, **kwargs)
 
@@ -5618,22 +5610,22 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def create_material_point(self, *args, **kwargs):
             """
-            Add a material point.
+            Enables the definition of a material point. Specify the fluid zone name and the location to define the material point.
             """
             return PyMenu(self.service, "/material_point/create_material_point").execute(*args, **kwargs)
         def delete_material_point(self, *args, **kwargs):
             """
-            Delete a material point.
+            Deletes the specified material point.
             """
             return PyMenu(self.service, "/material_point/delete_material_point").execute(*args, **kwargs)
         def delete_all_material_points(self, *args, **kwargs):
             """
-            Delete all material points.
+            Enables the deletion of all defined material points.
             """
             return PyMenu(self.service, "/material_point/delete_all_material_points").execute(*args, **kwargs)
         def list_material_points(self, *args, **kwargs):
             """
-            List material points.
+            Lists all the defined material points.
             """
             return PyMenu(self.service, "/material_point/list_material_points").execute(*args, **kwargs)
 
@@ -5674,7 +5666,7 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/mesh/deactivate_lean_datastructures").execute(*args, **kwargs)
         def auto_mesh(self, *args, **kwargs):
             """
-            Automatically executes initialization and refinement of mesh.
+            Enables you to generate the volume mesh automatically. Specify a mesh object name for object-based auto mesh; if no name is given, face zone based auto mesh is performed. Specify the mesh elements to be used when prompted. Specify whether to merge the cells into a single zone or keep the cell zones separate. For face zone based meshing, specify whether automatically identify the domain to be meshed based on the topology information.
             """
             return PyMenu(self.service, "/mesh/auto_mesh").execute(*args, **kwargs)
         def auto_mesh_multiple_objects(self, *args, **kwargs):
@@ -5684,27 +5676,27 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/mesh/auto_mesh_multiple_objects").execute(*args, **kwargs)
         def check_mesh(self, *args, **kwargs):
             """
-            Check mesh for topological errors.
+            Checks the mesh for topological errors.
             """
             return PyMenu(self.service, "/mesh/check_mesh").execute(*args, **kwargs)
         def selective_mesh_check(self, *args, **kwargs):
             """
-            Selective mesh check.
+            Performs a customized mesh check on specific zones rather than all zones.
             """
             return PyMenu(self.service, "/mesh/selective_mesh_check").execute(*args, **kwargs)
         def check_quality(self, *args, **kwargs):
             """
-            Check mesh quality.
+            Enables you to ensure that the mesh quality is appropriate before transferring the mesh to the solution mode.
             """
             return PyMenu(self.service, "/mesh/check_quality").execute(*args, **kwargs)
         def check_quality_level(self, *args, **kwargs):
             """
-            Check mesh quality level.
+            Enables you to report additional quality metrics when set to 1.  In addition to the orthogonal quality and Fluent aspect ratio, additional metrics such as cell squish and skewness will be reported when the check-quality-level is set to 1.
             """
             return PyMenu(self.service, "/mesh/check_quality_level").execute(*args, **kwargs)
         def clear_mesh(self, *args, **kwargs):
             """
-            Clear internal mesh, leaving boundary faces.
+            Enables you to generate a new mesh by deleting the internal mesh and leaving only the boundary faces and nodes.
             """
             return PyMenu(self.service, "/mesh/clear_mesh").execute(*args, **kwargs)
         def clear_undo_stack(self, *args, **kwargs):
@@ -5714,7 +5706,7 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/mesh/clear_undo_stack").execute(*args, **kwargs)
         def create_heat_exchanger(self, *args, **kwargs):
             """
-            Create heat exchanger zones using four points and 3 intervals.
+            Creates the heat exchanger mesh. You need to specify the method for selecting the Location coordinates (by Position or Nodes), the location coordinates, the parameters for setting up mesh density (by Interval or Size), and the number of intervals (sizes) between points (nodes) 1–2, 1–3, 1–4. Also specify the object/zone name prefix and enable creating the mesh object, if required. 
             """
             return PyMenu(self.service, "/mesh/create_heat_exchanger").execute(*args, **kwargs)
         def create_frustrum(self, *args, **kwargs):
@@ -5724,54 +5716,47 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/mesh/create_frustrum").execute(*args, **kwargs)
         def list_mesh_parameter(self, *args, **kwargs):
             """
-            Show all mesh parameters.
+            Shows all mesh parameters.
             """
             return PyMenu(self.service, "/mesh/list_mesh_parameter").execute(*args, **kwargs)
         def repair_face_handedness(self, *args, **kwargs):
             """
-            Reverse face node orientation.
+            Reverses face node orientation.
             """
             return PyMenu(self.service, "/mesh/repair_face_handedness").execute(*args, **kwargs)
         def laplace_smooth_nodes(self, *args, **kwargs):
             """
-            Laplace smooth nodes.
+            Applies a Laplacian smoothing operator to the mesh nodes. This command can be used for smoothing of all cell types, including prismatic cells.
             """
             return PyMenu(self.service, "/mesh/laplace_smooth_nodes").execute(*args, **kwargs)
         def reset_mesh(self, *args, **kwargs):
             """
-            Clear entire mesh.
+            Clears the entire mesh.
             """
             return PyMenu(self.service, "/mesh/reset_mesh").execute(*args, **kwargs)
         def reset_mesh_parameter(self, *args, **kwargs):
             """
-            Reset all parameters to their default values.
+            Resets all parameters to their default value.
             """
             return PyMenu(self.service, "/mesh/reset_mesh_parameter").execute(*args, **kwargs)
         def auto_prefix_cell_zones(self, *args, **kwargs):
             """
-            Prefix cell zones with user defined name.
+            Enables you to specify a prefix for cell zones created during the auto mesh procedure.   The auto-prefix-cell-zones command is not relevant for object-based meshing, where the cell zone names are generated based on the material points and the objects used to generate the mesh object.
             """
             return PyMenu(self.service, "/mesh/auto_prefix_cell_zones").execute(*args, **kwargs)
         def cutcell(self, *args, **kwargs):
             """
-            Enter the CutCell meshing menu.
+            Enters the cutcell menu. This menu is no longer supported, and will be removed in a future release.
             """
             return PyMenu(self.service, "/mesh/cutcell").execute(*args, **kwargs)
         def prepare_for_solve(self, *args, **kwargs):
             """
-            Performs the following cleanup operations.
-            
-                - Delete dead zones.
-                - Delete geom and wrap objects.
-                - Delete all edge zones.
-                - Delete unused faces.
-                - Delete unused nodes.
-            .
+            Prepares the mesh for solving in solution mode by performing a cleanup operation after the volume mesh has been generated. Operations such as deleting dead zones, deleting geometry objects, deleting edge zones, deleting unused faces and nodes are performed during this operation.
             """
             return PyMenu(self.service, "/mesh/prepare_for_solve").execute(*args, **kwargs)
         def zone_names_clean_up(self, *args, **kwargs):
             """
-            Cleanup face and cell zone names.
+            S
             """
             return PyMenu(self.service, "/mesh/zone_names_clean_up").execute(*args, **kwargs)
 
@@ -5790,44 +5775,44 @@ class main_menu(metaclass=PyMenuMeta):
 
         class cavity(metaclass=PyMenuMeta):
             """
-            Enter cavity menu.
+            Enters the cavity menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def replace_zones(self, *args, **kwargs):
                 """
-                Create a cavity for remeshing.
+                Enables you to create a cavity for removing a set of zones from an existing volume mesh and replacing them with new set of zones.
                 """
                 return PyMenu(self.service, "/mesh/cavity/replace_zones").execute(*args, **kwargs)
             def add_zones(self, *args, **kwargs):
                 """
-                Create a cavity for remeshing.
+                Enables you to create a cavity for adding new zones to the existing volume mesh.
                 """
                 return PyMenu(self.service, "/mesh/cavity/add_zones").execute(*args, **kwargs)
             def remove_zones(self, *args, **kwargs):
                 """
-                Create a cavity for remeshing.
+                Enables you to create a cavity for removing zones from the existing volume mesh.
                 """
                 return PyMenu(self.service, "/mesh/cavity/remove_zones").execute(*args, **kwargs)
             def region(self, *args, **kwargs):
                 """
-                Create a cavity for remeshing.
+                Enables you to create a cavity to modify the existing volume mesh in the specified region.
                 """
                 return PyMenu(self.service, "/mesh/cavity/region").execute(*args, **kwargs)
             def merge_cavity(self, *args, **kwargs):
                 """
-                Merge a cavity domain with a domain.
+                Enables you to merge the specified cavity domain with the parent domain.  During the merging operation, the cavity cell zones merges with the zones in the parent domain. The wall boundaries extracted from the interior zones will be converted to  interior type and merged with the corresponding zones in the parent domain.
                 """
                 return PyMenu(self.service, "/mesh/cavity/merge_cavity").execute(*args, **kwargs)
             def create_hexcore_cavity_by_region(self, *args, **kwargs):
                 """
-                Create a cavity in hexcore mesh for remeshing.
+                Creates the cavity in the hexcore mesh based on the zones and bounding box extents specified. The create-hexcore-cavity-by-region option is no longer supported and will be removed at a future release. 
                 """
                 return PyMenu(self.service, "/mesh/cavity/create_hexcore_cavity_by_region").execute(*args, **kwargs)
             def create_hexcore_cavity_by_scale(self, *args, **kwargs):
                 """
-                Create a cavity in hexcore mesh for remeshing by scale.
+                Creates the cavity in the hexcore mesh based on the zones and scale specified. The create-hexcore-cavity-by-scale option is no longer supported and will be removed at a future release. 
                 """
                 return PyMenu(self.service, "/mesh/cavity/create_hexcore_cavity_by_scale").execute(*args, **kwargs)
             def remesh_hexcore_cavity(self, *args, **kwargs):
@@ -5838,57 +5823,50 @@ class main_menu(metaclass=PyMenuMeta):
 
         class domains(metaclass=PyMenuMeta):
             """
-            Enter domains menu.
+            Enters the domain menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def activate(self, *args, **kwargs):
                 """
-                Activate the domain for subsequent meshing operations.
-                .
+                Activates the specified domain for meshing or reporting operations.
                 """
                 return PyMenu(self.service, "/mesh/domains/activate").execute(*args, **kwargs)
             def create_by_cell_zone(self, *args, **kwargs):
                 """
-                Create new domain using cell zones.
-                .
+                Creates a new domain based on the specified cell zone.
                 """
                 return PyMenu(self.service, "/mesh/domains/create_by_cell_zone").execute(*args, **kwargs)
             def create_by_point(self, *args, **kwargs):
                 """
-                Create new domain using material point.
-                .
+                Creates a new domain based on the specified   The create-by-point option works only for cases with no overlapping face zones.
                 """
                 return PyMenu(self.service, "/mesh/domains/create_by_point").execute(*args, **kwargs)
             def draw(self, *args, **kwargs):
                 """
-                Draw the boundary face zones of the domain.
-                .
+                Displays the boundary face zones of the specified domain.
                 """
                 return PyMenu(self.service, "/mesh/domains/draw").execute(*args, **kwargs)
             def create(self, *args, **kwargs):
                 """
-                Create a new domain by specifying the boundary face zones.
-                .
+                Creates a new domain based on the specified boundary face zones. Ensure valid boundary zones are specified; specifying invalid zones will generate an error.
                 """
                 return PyMenu(self.service, "/mesh/domains/create").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete the specified domain.
-                .
+                Deletes the specified domain.
                 """
                 return PyMenu(self.service, "/mesh/domains/delete").execute(*args, **kwargs)
             def print(self, *args, **kwargs):
                 """
-                Print domain content.
-                .
+                Prints the information for the specified domain.
                 """
                 return PyMenu(self.service, "/mesh/domains/print").execute(*args, **kwargs)
 
         class hexcore(metaclass=PyMenuMeta):
             """
-            Enter the hexcore menu.
+            Enters the hexcore menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -5897,18 +5875,18 @@ class main_menu(metaclass=PyMenuMeta):
                 self.local_regions = self.__class__.local_regions(path + [("local_regions", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create hexcore mesh from boundary zone list.
+                Enables you to create the hexcore mesh according to the specified parameters.
                 """
                 return PyMenu(self.service, "/mesh/hexcore/create").execute(*args, **kwargs)
             def merge_tets_to_pyramids(self, *args, **kwargs):
                 """
-                Merge tets into pyramids.
+                Enables the merge-tets-to-pyramids command to reduce the total cell count.  If skip-tet-refinement is enabled, pairs of tets will be merged into pyramids. Hexcore count is unaffected.
                 """
                 return PyMenu(self.service, "/mesh/hexcore/merge_tets_to_pyramids").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Enter hexcore controls menu.
+                Enters the hexcore controls menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -5916,47 +5894,48 @@ class main_menu(metaclass=PyMenuMeta):
                     self.outer_domain_params = self.__class__.outer_domain_params(path + [("outer_domain_params", None)], service)
                 def define_hexcore_extents(self, *args, **kwargs):
                     """
-                    Enables sspecificaton of hexcore outer domain parameters.
+                    Enables you to extend the hexcore mesh to specified domain extents and/or selected planar boundaries. When enabled, the outer-domain-params sub-menu will be available.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/define_hexcore_extents").execute(*args, **kwargs)
                 def buffer_layers(self, *args, **kwargs):
                     """
-                    Number of addition cells to mark for subdivision.
+                    Sets the number of addition cells to mark for subdivision.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/buffer_layers").execute(*args, **kwargs)
                 def delete_dead_zones(self, *args, **kwargs):
                     """
-                    Delete dead zones after hexcore creation.
+                    Toggles the automatic deleting of the dead zones.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/delete_dead_zones").execute(*args, **kwargs)
                 def maximum_cell_length(self, *args, **kwargs):
                     """
-                    Maximum cell length.
+                    Sets the maximum cell length for the hex cells in the domain.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/maximum_cell_length").execute(*args, **kwargs)
                 def compute_max_cell_length(self, *args, **kwargs):
                     """
-                    Compute maximum cell length.
+                    Computes the maximum cell length for the hexcore mesh.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/compute_max_cell_length").execute(*args, **kwargs)
                 def maximum_initial_cells(self, *args, **kwargs):
                     """
-                    Maximum number of initial Cartesian cells.
+                    Specifies the maximum number of cells in the initial Cartesian mesh.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/maximum_initial_cells").execute(*args, **kwargs)
                 def non_fluid_type(self, *args, **kwargs):
                     """
-                    Set non fluid type for cell zones.
+                    Selects the default non-fluid cell zone type. After the mesh is initialized, any non-fluid zones will be set to this type. If the mesh includes multiple regions (for example, the problem for which you are creating the mesh includes a fluid zone and one or more solid zones), and you plan to refine all of them using the same refinement parameters, modify the Non-Fluid Type
+                                   before generating the hexcore mesh.  For zone-based meshing, if any cell zone has at least one boundary zone type as inlet, it will automatically be set to fluid type. For object based meshing, volume region type is used to determine the cell zone type.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/non_fluid_type").execute(*args, **kwargs)
                 def peel_layers(self, *args, **kwargs):
                     """
-                    Number of hexcore cells to peel back from boundary.
+                    Specifies the distance for the hexcore interface to peel-back from the boundary. The default value is 0. The higher the value of peel layer, the bigger the distance between the hexcore interface and the boundary.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/peel_layers").execute(*args, **kwargs)
                 def skip_tet_refinement(self, *args, **kwargs):
                     """
-                    Skip tethedral refinement in transition cell generation.
+                    Enables you to omit the tetrahedral refinement phase for reducing total cell count (default is no). Hex cell count is unaffected.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/skip_tet_refinement").execute(*args, **kwargs)
                 def merge_tets_to_pyramids(self, *args, **kwargs):
@@ -5966,7 +5945,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/hexcore/controls/merge_tets_to_pyramids").execute(*args, **kwargs)
                 def octree_hexcore(self, *args, **kwargs):
                     """
-                    Create hexcore using size-function driven octree.
+                    Speeds up hexahedral core generation by enabling the octree technique for hexcore mesh generation. This option is disabled by default.   Body-of-influence sizing may be used for refinement.  This option does not support hexcore generation up to boundaries. 
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/octree_hexcore").execute(*args, **kwargs)
                 def avoid_1_by_8_cell_jump_in_hexcore(self, *args, **kwargs):
@@ -5976,108 +5955,108 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/hexcore/controls/avoid_1_by_8_cell_jump_in_hexcore").execute(*args, **kwargs)
                 def set_region_based_sizing(self, *args, **kwargs):
                     """
-                    Set region based sizings.
+                    Allows you to specify local sizing settings (max cell length and growth rate) for specified region(s).
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/set_region_based_sizing").execute(*args, **kwargs)
                 def print_region_based_sizing(self, *args, **kwargs):
                     """
-                    Print region based sizings.
+                    Displays local sizing settings (max cell length and growth rate) for specified region(s).
                     """
                     return PyMenu(self.service, "/mesh/hexcore/controls/print_region_based_sizing").execute(*args, **kwargs)
 
                 class outer_domain_params(metaclass=PyMenuMeta):
                     """
-                    Define outer domain parameters.
+                    Contains options for defining the outer domain parameters. This sub-menu is available only when define-hexcore-extents? is enabled.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def specify_coordinates(self, *args, **kwargs):
                         """
-                        Enables specification of coordinates of hexcore outer box.
+                        Enables you to specify the extents of the hexcore outer box using the coordinates command.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/specify_coordinates").execute(*args, **kwargs)
                     def coordinates(self, *args, **kwargs):
                         """
-                        Secifiy coordinates of outer box.
+                        Specifies the extents (min and max coordinates) of the hexcore outer box. This command is available when the specify-coordinates? option is enabled.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/coordinates").execute(*args, **kwargs)
                     def specify_boundaries(self, *args, **kwargs):
                         """
-                        Set parameters to get hex mesh to boundary(s).
+                        Enables you to specify selected boundaries to which the hexcore mesh is to be generated using the boundaries command.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/specify_boundaries").execute(*args, **kwargs)
                     def boundaries(self, *args, **kwargs):
                         """
-                        Set box-aligned zones which  have to be removed from hexcore meshing.
+                        Specifies the boundaries to which the hexcore mesh is to be generated when the specify-boundaries? option is enabled. After specifying the boundaries, the auto-align?, delete-old-face-zones?, and list options will also be available.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/boundaries").execute(*args, **kwargs)
                     def auto_align(self, *args, **kwargs):
                         """
-                        Enable auto-align?.
+                        Enables you to axis-align non-aligned planar boundaries to which hexcore mesh is to be generated. This option is available only when the specify-boundaries? option is enabled and the boundaries are specified.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/auto_align").execute(*args, **kwargs)
                     def auto_align_tolerance(self, *args, **kwargs):
                         """
-                        Set auto-align-tolerance.
+                        Specifies the tolerance for aligning boundary zones when auto-align? is enabled.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/auto_align_tolerance").execute(*args, **kwargs)
                     def auto_align_boundaries(self, *args, **kwargs):
                         """
-                        Auto-align selected boundaries.
+                        Aligns the boundary zones specified (using the boundaries command) with the tolerance specified \ (using the auto-align-tolerance command) when auto-align? is enabled.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/auto_align_boundaries").execute(*args, **kwargs)
                     def delete_old_face_zones(self, *args, **kwargs):
                         """
-                        Delete replaced old tri face zones.
+                        Enables you to delete the original tri face zones that have been replaced during the hexcore meshing process. This option is available only when the specify-boundaries? option is enabled and the boundaries are specified.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/delete_old_face_zones").execute(*args, **kwargs)
                     def list(self, *args, **kwargs):
                         """
-                        List the face zones selected for hexcore up to boundaries.
+                        Lists the boundaries to which the hexcore mesh is to be generated. This option is available only when the specify-boundaries? option is enabled and the boundaries are specified.
                         """
                         return PyMenu(self.service, "/mesh/hexcore/controls/outer_domain_params/list").execute(*args, **kwargs)
 
             class local_regions(metaclass=PyMenuMeta):
                 """
-                Enter the hexcore refine-local menu.
+                Enters the hexcore local refinement region sub-menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def activate(self, *args, **kwargs):
                     """
-                    Activate regions for hexcore refinement.
+                    Enables you to activate the specified local regions for refinement.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/activate").execute(*args, **kwargs)
                 def deactivate(self, *args, **kwargs):
                     """
-                    Activate regions for hexcore refinement.
+                    Enables you to deactivate the specified local regions for refinement.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/deactivate").execute(*args, **kwargs)
                 def define(self, *args, **kwargs):
                     """
-                    Define a refinement region's parameters.
+                    Defines the local region according to the specified parameters.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/define").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Deletes the specified refinement region.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/delete").execute(*args, **kwargs)
                 def init(self, *args, **kwargs):
                     """
-                    Delete all current regions and add the default refinement region.
+                    Creates a default region encompassing the entire geometry.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/init").execute(*args, **kwargs)
                 def list_all_regions(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists the defined and active regions in the console.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/list_all_regions").execute(*args, **kwargs)
                 def ideal_hex_vol(self, *args, **kwargs):
                     """
-                    Ideal hex volume for given edge length.
+                    Reports the ideal hex volume for the given edge length.
                     """
                     return PyMenu(self.service, "/mesh/hexcore/local_regions/ideal_hex_vol").execute(*args, **kwargs)
                 def ideal_quad_area(self, *args, **kwargs):
@@ -6088,85 +6067,85 @@ class main_menu(metaclass=PyMenuMeta):
 
         class modify(metaclass=PyMenuMeta):
             """
-            Enter the mesh modify menu.
+            Enters the mesh modify menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def clear_selections(self, *args, **kwargs):
                 """
-                Clear all selections.
+                Clears all items from the selection list.
                 """
                 return PyMenu(self.service, "/mesh/modify/clear_selections").execute(*args, **kwargs)
             def extract_unused_nodes(self, *args, **kwargs):
                 """
-                Extract all unused nodes into a separate interior node zone.
+                Places all unused nodes in a separate interior node zone.
                 """
                 return PyMenu(self.service, "/mesh/modify/extract_unused_nodes").execute(*args, **kwargs)
             def smooth_node(self, *args, **kwargs):
                 """
-                Laplace smooth nodes in probe list.
+                Applies Laplace smoothing to the nodes in the selection list.
                 """
                 return PyMenu(self.service, "/mesh/modify/smooth_node").execute(*args, **kwargs)
             def list_selections(self, *args, **kwargs):
                 """
-                List selections.
+                Lists all items in the selection list.
                 """
                 return PyMenu(self.service, "/mesh/modify/list_selections").execute(*args, **kwargs)
             def list_skewed_cells(self, *args, **kwargs):
                 """
-                List cells between skewness limits.
+                Lists cells with skewness in a specified range.
                 """
                 return PyMenu(self.service, "/mesh/modify/list_skewed_cells").execute(*args, **kwargs)
             def mesh_node(self, *args, **kwargs):
                 """
-                Introduce new node into existing mesh.
+                Attempts to introduce a new node into the existing mesh.
                 """
                 return PyMenu(self.service, "/mesh/modify/mesh_node").execute(*args, **kwargs)
             def mesh_nodes_on_zone(self, *args, **kwargs):
                 """
-                Insert nodes associated with node or face thread into volume mesh.  If a face thread is specified, the faces are deleted before the nodes are introduced into the mesh.
+                Inserts nodes associated with node or face zone into the volume mesh. 
                 """
                 return PyMenu(self.service, "/mesh/modify/mesh_nodes_on_zone").execute(*args, **kwargs)
             def neighborhood_skew(self, *args, **kwargs):
                 """
-                Report max skew of all cells using node.
+                Reports the maximum skewness of cells using the specified node.
                 """
                 return PyMenu(self.service, "/mesh/modify/neighborhood_skew").execute(*args, **kwargs)
             def refine_cell(self, *args, **kwargs):
                 """
-                Refine cells in probe list with node near centroid.
+                Attempts to refine the cells in the probe list by introducing a node nears its centroid. This technique is useful for removing very flat cells near the boundary when boundary sliver removal is not possible. After refining the cell, you should smooth the mesh.
                 """
                 return PyMenu(self.service, "/mesh/modify/refine_cell").execute(*args, **kwargs)
             def deselect_last(self, *args, **kwargs):
                 """
-                Deselect last selection.
+                Deselects the last item you selected using the select-entity command.
                 """
                 return PyMenu(self.service, "/mesh/modify/deselect_last").execute(*args, **kwargs)
             def select_entity(self, *args, **kwargs):
                 """
-                Select a entity.
+                Adds an entity (face, node, cell, etc.) to the selection list.
                 """
                 return PyMenu(self.service, "/mesh/modify/select_entity").execute(*args, **kwargs)
             def auto_node_move(self, *args, **kwargs):
                 """
-                Improve the quality of the mesh by node movement.
+                Enables you to improve the mesh quality by node movement. Specify the appropriate cell zones and boundary zones, the quality limit based on the quality measure selected, dihedral angle, the number of iterations per node to be moved and the number of iterations of the automatic node movement procedure (default, 1). You can also choose to restrict the movement of boundary nodes along the surface.
                 """
                 return PyMenu(self.service, "/mesh/modify/auto_node_move").execute(*args, **kwargs)
             def repair_negative_volume_cells(self, *args, **kwargs):
                 """
-                Improves negative volume cells by node movement.
+                Repairs negative volume cells by moving nodes. Specify the appropriate boundary zones, the number of iterations per node to be moved, dihedral angle, whether to restrict the movement of boundary nodes along the surface, and the number of iterations of the automatic node movement procedure (default, 1).
                 """
                 return PyMenu(self.service, "/mesh/modify/repair_negative_volume_cells").execute(*args, **kwargs)
             def auto_improve_warp(self, *args, **kwargs):
                 """
-                Improve the warp of the faces by node movement.
+                Enables you to improve face warp by node movement. Specify the appropriate cell zones and boundary zones, the maximum warp, the number of iterations per face to be improved, and the number of iterations of the automatic node movement procedure (default, 4).
                 """
                 return PyMenu(self.service, "/mesh/modify/auto_improve_warp").execute(*args, **kwargs)
 
         class non_conformals(metaclass=PyMenuMeta):
             """
-            Enter the non conformals controls menu.
+            Enters the non-conformals menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -6174,36 +6153,36 @@ class main_menu(metaclass=PyMenuMeta):
                 self.controls = self.__class__.controls(path + [("controls", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create layer of non conformals on one or more face zones.
+                Creates the non-conformal interface on the specified face zones using the specified retriangulation method.
                 """
                 return PyMenu(self.service, "/mesh/non_conformals/create").execute(*args, **kwargs)
             def separate(self, *args, **kwargs):
                 """
-                Separate non-conformal interfaces between cell zones.
+                Enables you to separate the face zones comprising the non-conformal interface between the cell zones specified. Specify the cell zones where the interface is non-conformal, an appropriate gap distance, and the critical angle to be used for separating the face zones. You can also choose to orient the boundary face zones after separation and additionally write a journal file for the separation operation.   If you choose to write a journal file when using the /mesh/non-conformals/separate command to separate the mesh  interface zones, you can read the journal file to create the mesh interface automatically  in solution mode.
                 """
                 return PyMenu(self.service, "/mesh/non_conformals/separate").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Enter the non conformals controls menu.
+                Enters the non-conformals controls menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Enable creation of non conformal interface. The quads will be split into tris.
+                    Toggles the creation of a non-conformal interface.
                     """
                     return PyMenu(self.service, "/mesh/non_conformals/controls/enable").execute(*args, **kwargs)
                 def retri_method(self, *args, **kwargs):
                     """
-                    Enable triangulation of non-conformal interfaces instead of quad splitting.
+                    Specifies the method to be used for retriangulating the quad faces on the non-conformal zones. 
                     """
                     return PyMenu(self.service, "/mesh/non_conformals/controls/retri_method").execute(*args, **kwargs)
 
         class rapid_octree(metaclass=PyMenuMeta):
             """
-            Enter the octree menu.
+            Enters the rapid octree menu, which provides text commands for using the Rapid Octree mesher.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -6213,7 +6192,7 @@ class main_menu(metaclass=PyMenuMeta):
                 self.advanced_meshing_options = self.__class__.advanced_meshing_options(path + [("advanced_meshing_options", None)], service)
             def verbosity(self, *args, **kwargs):
                 """
-                Set rapid octree verbosity.
+                Sets the verbosity of the messages printed by the Rapid Octree mesher.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/verbosity").execute(*args, **kwargs)
             def estimate_cell_count(self, *args, **kwargs):
@@ -6223,7 +6202,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/rapid_octree/estimate_cell_count").execute(*args, **kwargs)
             def distribute_geometry(self, *args, **kwargs):
                 """
-                Distributes input geometry across partitions to reduce memory requirements.
+                Enables/disables the distribution of the input geometry across partitions / compute nodes, so that it is not copied to each process. This reduces the memory requirements of the mesh generation significantly, especially for geometries with a high number of triangles. Note that this geometric distribution is enabled by default and is automatically deactivated if the geometry is not fully enclosed by the defined bounding box.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/distribute_geometry").execute(*args, **kwargs)
             def improve_geometry_resolution(self, *args, **kwargs):
@@ -6238,37 +6217,37 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/rapid_octree/dry_run").execute(*args, **kwargs)
             def undo_last_meshing_operation(self, *args, **kwargs):
                 """
-                Attempt to undo the last meshing operation.
+                Attempts to restore the object state (including its surfaces) as it was prior to the meshing operation performed by the Rapid Octree mesher.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/undo_last_meshing_operation").execute(*args, **kwargs)
             def boundary_treatment(self, *args, **kwargs):
                 """
-                Choose the boundary treatment option (0: Projection , 1: Snapping).
+                Selects the boundary treatment option. Enter 0 for the Boundary Projection treatment or 1 for the Cartesian Snapping treatment.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/boundary_treatment").execute(*args, **kwargs)
             def bounding_box(self, *args, **kwargs):
                 """
-                Define/Modify the bounding box around the geometry.
+                Defines/modifies the bounding box around the geometry.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/bounding_box").execute(*args, **kwargs)
             def reset_bounding_box(self, *args, **kwargs):
                 """
-                Redefine the bounding box extends to encompass the currently selected geoemtry.
+                Redefines the bounding box extents to encompass all of the surfaces of the currently selected geometry, and updates the base length scale used in the mesh generation process.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/reset_bounding_box").execute(*args, **kwargs)
             def geometry(self, *args, **kwargs):
                 """
-                Specify the boundary geometry for the Rapid Octree mesher.
+                Allows you to apply the Rapid Octree mesher to a defined mesh object or geometry object rather than all available surface zones. Note that using a mesh object with multiple volumetric regions allows you to generate multiple disconnected cell zones that can be coupled by a non-conformal mesh interface in the solution mode; all other input objects result in the creation of a single volume / cell zone.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/geometry").execute(*args, **kwargs)
             def flow_volume(self, *args, **kwargs):
                 """
-                Specify the volume to be filled by the mesh.
+                Specifies the volume to be filled by the mesh.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/flow_volume").execute(*args, **kwargs)
             def create(self, *args, **kwargs):
                 """
-                Create rapid octree mesh.
+                Creates a mesh using the Rapid Octree mesher.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/create").execute(*args, **kwargs)
             def create_stair_step_mesh(self, *args, **kwargs):
@@ -6286,45 +6265,50 @@ class main_menu(metaclass=PyMenuMeta):
                 Set optimization for projection mesh. 0 to deactivate.
                 """
                 return PyMenu(self.service, "/mesh/rapid_octree/projection_mesh_optimization").execute(*args, **kwargs)
+            def delete_poor_quality_cells(self, *args, **kwargs):
+                """
+                Delete all cells with orthogonal-quality less than 0.01.
+                """
+                return PyMenu(self.service, "/mesh/rapid_octree/delete_poor_quality_cells").execute(*args, **kwargs)
 
             class refinement_regions(metaclass=PyMenuMeta):
                 """
-                Enter the rapid octree refinement region menu.
+                Enters the rapid octree refinement region menu, which allows you to manage the refinement regions.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def add(self, *args, **kwargs):
                     """
-                    Add a refinement region to the domain.
+                    Adds a refinement region to the domain.
                     """
                     return PyMenu(self.service, "/mesh/rapid_octree/refinement_regions/add").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Deletes a refinement region.
                     """
                     return PyMenu(self.service, "/mesh/rapid_octree/refinement_regions/delete").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists all of the refinement regions.
                     """
                     return PyMenu(self.service, "/mesh/rapid_octree/refinement_regions/list").execute(*args, **kwargs)
 
             class mesh_sizing(metaclass=PyMenuMeta):
                 """
-                Define cell sizes.
+                Enters the mesh sizing menu, which allows you to define the cell sizes.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def max_cell_size(self, *args, **kwargs):
                     """
-                    Set maximum cell size in octree mesh.
+                    Sets the maximum cell size in the octree mesh.
                     """
                     return PyMenu(self.service, "/mesh/rapid_octree/mesh_sizing/max_cell_size").execute(*args, **kwargs)
                 def boundary_cell_size(self, *args, **kwargs):
                     """
-                    Set the default cell size on the geometry.
+                    Sets the default cell size for the geometry.
                     """
                     return PyMenu(self.service, "/mesh/rapid_octree/mesh_sizing/boundary_cell_size").execute(*args, **kwargs)
                 def prism_layers(self, *args, **kwargs):
@@ -6359,7 +6343,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/rapid_octree/mesh_sizing/mesh_coarsening_exponent").execute(*args, **kwargs)
                 def feature_angle_refinement(self, *args, **kwargs):
                     """
-                    Define angular threshold and number of refinement levels for features.
+                    Defines the angular threshold and number of refinement levels for features. This text command is only available when the Boundary Projection treatment is selected through the /mesh/rapid-octree/boundary-treatment text command.
                     """
                     return PyMenu(self.service, "/mesh/rapid_octree/mesh_sizing/feature_angle_refinement").execute(*args, **kwargs)
                 def add_surface_sizing(self, *args, **kwargs):
@@ -6428,7 +6412,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class prism(metaclass=PyMenuMeta):
             """
-            Enter the scoped prisms menu.
+            Enters the prism menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -6439,17 +6423,17 @@ class main_menu(metaclass=PyMenuMeta):
                 self.controls = self.__class__.controls(path + [("controls", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create prism layers on one or more face zones.
+                Creates prism layers on one or more boundary face zones based on the offset method, growth method, number of layers, and rate specified.
                 """
                 return PyMenu(self.service, "/mesh/prism/create").execute(*args, **kwargs)
             def mark_ignore_faces(self, *args, **kwargs):
                 """
-                Mark prism base faces which will be ignored.
+                Enables you to mark the faces to be ignored during prism meshing.
                 """
                 return PyMenu(self.service, "/mesh/prism/mark_ignore_faces").execute(*args, **kwargs)
             def mark_nonmanifold_nodes(self, *args, **kwargs):
                 """
-                Mark prism base nodes which have invalid manifold around them.
+                Enables you to mark the non-manifold prism base nodes. A list of the non-manifold nodes will be printed in the console. The faces connected to the non-manifold nodes will also be marked. You can use this command after specifying zone-specific prism settings, prior to generating the prisms to verify that non-manifold configurations do not exist.
                 """
                 return PyMenu(self.service, "/mesh/prism/mark_nonmanifold_nodes").execute(*args, **kwargs)
             def mark_proximity_faces(self, *args, **kwargs):
@@ -6459,102 +6443,102 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/prism/mark_proximity_faces").execute(*args, **kwargs)
             def list_parameters(self, *args, **kwargs):
                 """
-                Show all prism mesh parameters.
+                Shows all prism mesh parameters.
                 """
                 return PyMenu(self.service, "/mesh/prism/list_parameters").execute(*args, **kwargs)
             def reset_parameters(self, *args, **kwargs):
                 """
-                Reset Prism Parameters.
+                Resets all prism parameters.
                 """
                 return PyMenu(self.service, "/mesh/prism/reset_parameters").execute(*args, **kwargs)
             def quality_method(self, *args, **kwargs):
                 """
-                Set prism quality method.
+                Specifies the quality method used during prism generation.
                 """
                 return PyMenu(self.service, "/mesh/prism/quality_method").execute(*args, **kwargs)
 
             class improve(metaclass=PyMenuMeta):
                 """
-                Prism Improve Menu.
+                Enters the prism improve menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def smooth_prism_cells(self, *args, **kwargs):
                     """
-                    Optimization based smoothing.
+                    Enables optimization based smoothing of prism cells. The nodes of cells with quality worse than the specified threshold value will be moved to improve quality. The cell aspect ratio will also be maintained based on the value specified for max-aspect-ratio.
                     """
                     return PyMenu(self.service, "/mesh/prism/improve/smooth_prism_cells").execute(*args, **kwargs)
                 def improve_prism_cells(self, *args, **kwargs):
                     """
-                    Smoothing cells by collecting rings of cells around them.
+                    Collects and smooths cells in layers around poor quality cells. Cells with quality worse than the specified threshold value will be identified, and the nodes of the cells surrounding the poor quality cells will be moved to improve quality.
                     """
                     return PyMenu(self.service, "/mesh/prism/improve/improve_prism_cells").execute(*args, **kwargs)
                 def smooth_improve_prism_cells(self, *args, **kwargs):
                     """
-                    Combination of smooth and improve prism cells.
+                    Uses a combination of node movement and optimized smoothing to improve the quality. This command is a combination of the smooth-prism-cells and improve-prism-cells commands. The cell aspect ratio will also be maintained based on the value specified for max-aspect-ratio.
                     """
                     return PyMenu(self.service, "/mesh/prism/improve/smooth_improve_prism_cells").execute(*args, **kwargs)
                 def smooth_sliver_skew(self, *args, **kwargs):
                     """
-                    Prism Cells above this skewness will be smoothed.
+                    Specifies the skewness above which prism cells will be smoothed.
                     """
                     return PyMenu(self.service, "/mesh/prism/improve/smooth_sliver_skew").execute(*args, **kwargs)
                 def smooth_brute_force(self, *args, **kwargs):
                     """
-                    Brute Force smooth cell if cell skewness is still higher after regular smoothing.
+                    Forcibly smooths cells if cell skewness is still high after regular smoothing.
                     """
                     return PyMenu(self.service, "/mesh/prism/improve/smooth_brute_force").execute(*args, **kwargs)
                 def smooth_cell_rings(self, *args, **kwargs):
                     """
-                    No. of Cell rings around the skewed cell used by improve-prism-cells.
+                    Specifies the number of cell rings around the skewed cell used by improve-prism-cells.
                     """
                     return PyMenu(self.service, "/mesh/prism/improve/smooth_cell_rings").execute(*args, **kwargs)
 
             class post_ignore(metaclass=PyMenuMeta):
                 """
-                Prism Post-Ignore Menu.
+                Contains the following options for ignoring prism cells:
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def mark_prism_cap(self, *args, **kwargs):
                     """
-                    Post mark cell quality ignore cap.
+                    Marks the prism cap faces for ignoring prism cells in regions of poor quality cells and sharp corners. Specify the prism cell zone and the basis for ignoring prism cells and the relevant parameters. The prism cells can be ignored based on quality, intersection, (both enabled by default), warp, and features (both disabled by default). Specify the quality measure and threshold value to be used for ignoring cells based on quality and (if applicable) the feature edges for ignoring cells based on features. Additionally, specify whether cells are to be marked in regions of high aspect ratio and based on feature angle, and the additional number of cell rings based on which prism cells will be removed.
                     """
                     return PyMenu(self.service, "/mesh/prism/post_ignore/mark_prism_cap").execute(*args, **kwargs)
                 def post_remove_cells(self, *args, **kwargs):
                     """
-                    Post cell quality ignore.
+                    Enables you to remove prism cells in layers around poor quality cells and sharp corners. Specify the prism cell zone, the basis for ignoring prism cells (quality, intersection, warp, features) and the relevant parameters. Specify the number of cell rings to be removed around the marked cells. Cells will be marked for removal in regions of sharp corners based on quality, intersection, warp, and features (as applicable) and then extended based on the number of cell rings specified. Additional cells will be marked for removal in regions of high aspect ratio and based on feature angle (if applicable) around the exposed prism side. The boundary will be smoothed at feature corners after the prism cells have been removed. The prism-side faces exposed by the removal of the prism cells will be collected in a zone named prism-side-#, while for a zone wall-n, the faces corresponding to the ignored prism cells will be collected in a zone named wall-n:ignore. You can also optionally smooth the prism side nodes from the base node to the cap node to create better triangles for the non-conformal interface.
                     """
                     return PyMenu(self.service, "/mesh/prism/post_ignore/post_remove_cells").execute(*args, **kwargs)
                 def create_cavity(self, *args, **kwargs):
                     """
-                    Post tet cell quality ignore.
+                    Creates a cavity in regions where prism quality is adequate, but the quality of adjacent tetrahedra is poor. The cavity is created based on the tetrahedral cell zone, the quality measure and the corresponding threshold value, and the additional number of cell rings specified. You can create a cavity comprising only tetrahedral cells or optionally include prism cells in the cavity created. When prism cells are also included in the cavity, you can specify whether the non-conformal interface is to be created.
                     """
                     return PyMenu(self.service, "/mesh/prism/post_ignore/create_cavity").execute(*args, **kwargs)
                 def mark_cavity_prism_cap(self, *args, **kwargs):
                     """
-                    Mark post-ignore tet cell cavity prism cap faces.
+                    Marks the prism cap faces and tetrahedral cell faces bounding the cavity to be created in regions where prism quality is adequate, but the quality of adjacent tetrahedra is poor. Specify the tetrahedral cell zone, the quality measure and the corresponding threshold value to be used, and the additional number of cell rings based on which the cavity will be created.
                     """
                     return PyMenu(self.service, "/mesh/prism/post_ignore/mark_cavity_prism_cap").execute(*args, **kwargs)
 
             class split(metaclass=PyMenuMeta):
                 """
-                Prism Post-Split Menu.
+                Contains options for splitting the prism layers after the initial prism layers are generated, to generate the total number of layers required.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def split(self, *args, **kwargs):
                     """
-                    Split prism layer cells.
+                    Enables you to split the prism layers after the initial prism layers are generated, to generate the total number of layers required. Specify the prism cell zones to be split and the number of divisions per layer. You can also choose to use the existing growth rate (default) or specify the growth rate to be used while splitting the prism layers.
                     """
                     return PyMenu(self.service, "/mesh/prism/split/split").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Prism Controls.
+                Enters the prism controls menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -6569,28 +6553,27 @@ class main_menu(metaclass=PyMenuMeta):
                     self.zone_specific_growth = self.__class__.zone_specific_growth(path + [("zone_specific_growth", None)], service)
                 def merge_ignored_threads(self, *args, **kwargs):
                     """
-                    Automatically merge all ignored zones related to a base thread into one thread?.
+                    Enables you to automatically merge all ignored zones related to a base thread into a single thread. This option is enabled by default. When this option is disabled, more than one ignored thread will be generated per base thread. However, various zones can be created by ignoring this option. They are: 
                     """
                     return PyMenu(self.service, "/mesh/prism/controls/merge_ignored_threads").execute(*args, **kwargs)
                 def check_quality(self, *args, **kwargs):
                     """
-                    Check the volume, skewness, and handedness
-                    of each new cell and face?.
+                    Enables/disables the checking of volume, skewness, and handedness of each new cell and face.
                     """
                     return PyMenu(self.service, "/mesh/prism/controls/check_quality").execute(*args, **kwargs)
                 def remove_invalid_layer(self, *args, **kwargs):
                     """
-                    Remove the last layer if it fails in the quality check.
+                    Removes the last prism layer if it fails in the quality check.
                     """
                     return PyMenu(self.service, "/mesh/prism/controls/remove_invalid_layer").execute(*args, **kwargs)
                 def set_post_mesh_controls(self, *args, **kwargs):
                     """
-                    Set controls specific to growing prisms post volume mesh.
+                    Sets controls specific to growing prisms post volume mesh generation.
                     """
                     return PyMenu(self.service, "/mesh/prism/controls/set_post_mesh_controls").execute(*args, **kwargs)
                 def split(self, *args, **kwargs):
                     """
-                    Split prism cells after prism mesh is done.
+                    Enables you to set parameters for splitting the prism layers after the initial prism layers are generated, to generate the total number of layers required. Specify the number of divisions per layer.
                     """
                     return PyMenu(self.service, "/mesh/prism/controls/split").execute(*args, **kwargs)
                 def set_overset_prism_controls(self, *args, **kwargs):
@@ -6601,171 +6584,166 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class morph(metaclass=PyMenuMeta):
                     """
-                    Morpher Controls.
+                    Enters the prism morphing controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def improve_threshold(self, *args, **kwargs):
                         """
-                        Quality threshold used during the morpher improve operation.
+                        Specifies the quality threshold used for improving the quality during the morphing operation.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/morph/improve_threshold").execute(*args, **kwargs)
                     def morphing_frequency(self, *args, **kwargs):
                         """
-                        Number of layers created between each morphing call.
+                        Specifies the frequency of the morphing operation. The number specified denotes the number of prism layers after which the morpher is applied to the remainder of the mesh (for example, a value of 5 indicates that the morpher is applied to the mesh after every 5 prism layers grown).
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/morph/morphing_frequency").execute(*args, **kwargs)
                     def morphing_convergence_limit(self, *args, **kwargs):
                         """
-                        Relative convergence criterion of the iterative linear solver .
+                        Specifies the convergence limit for the morphing operation. The morpher uses an iterative solver. It is assumed to have converged when the relative residual is less than this number.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/morph/morphing_convergence_limit").execute(*args, **kwargs)
 
                 class offset(metaclass=PyMenuMeta):
                     """
-                    Prism Offset Controls.
+                    Enters the prism offset controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def min_aspect_ratio(self, *args, **kwargs):
                         """
-                        Minimum base-length-over-height for prism cells.
+                        Specifies the minimum aspect ratio (ratio of prism base length to prism layer height) for the prism cells.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/offset/min_aspect_ratio").execute(*args, **kwargs)
                     def first_aspect_ratio_min(self, *args, **kwargs):
                         """
-                        Minimum base-length-over-height for prism cells.
+                        Specifies the minimum first aspect ratio (ratio of prism base length to prism layer height) for the prism cells. 
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/offset/first_aspect_ratio_min").execute(*args, **kwargs)
 
                 class proximity(metaclass=PyMenuMeta):
                     """
-                    Prism Proximity Controls.
+                    Enters the prism proximity controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def gap_factor(self, *args, **kwargs):
                         """
-                        Gap rate to determine the space in proximity region.
+                        Controls the gap between the intersecting prisms layers in the proximity region with respect to the cell size of the prisms.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/proximity/gap_factor").execute(*args, **kwargs)
                     def allow_ignore(self, *args, **kwargs):
                         """
-                        Ignore nodes where shrink factor can't be maintained.
+                        Enables you to ignore nodes where the specified maximum shrink factor cannot be maintained.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/proximity/allow_ignore").execute(*args, **kwargs)
                     def max_shrink_factor(self, *args, **kwargs):
                         """
-                        Shrink factor to determine the maximum shrinkage of prism layer.
+                        Specifies the shrink factor determining the maximum shrinkage of the prism layers. This option is available only when the allow-ignore? option is enabled.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/proximity/max_shrink_factor").execute(*args, **kwargs)
                     def max_aspect_ratio(self, *args, **kwargs):
                         """
-                        Minimum offset to fall back to avoid degenerate cells.
+                        Specifies the maximum allowable cell aspect ratio to determine the limit for the shrinkage of prism layers. This option is available only when the allow-ignore? option is disabled.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/proximity/max_aspect_ratio").execute(*args, **kwargs)
                     def allow_shrinkage(self, *args, **kwargs):
                         """
-                        Allow shrinkage while growing each layer.
+                        Enables shrinkage while growing prism layers.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/proximity/allow_shrinkage").execute(*args, **kwargs)
                     def keep_first_layer_offsets(self, *args, **kwargs):
                         """
-                        Fix first layer offsets while performing proximity detection?.
+                        Enables you to retain first layer offsets while performing proximity detection.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/proximity/keep_first_layer_offsets").execute(*args, **kwargs)
 
                 class normal(metaclass=PyMenuMeta):
                     """
-                    Prism Normal Controls.
+                    Enters the prism normal controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def ignore_invalid_normals(self, *args, **kwargs):
                         """
-                        Ignore nodes which have very poor normals.
+                        Enables you to ignore nodes that have poor normals.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/ignore_invalid_normals").execute(*args, **kwargs)
                     def direction_method(self, *args, **kwargs):
                         """
-                        Grow layers normal to surfaces or along a specified direction vector?.
+                        Specifies whether the prism layers should be grown normal to surfaces or along a specified direction vector.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/direction_method").execute(*args, **kwargs)
                     def orient_mesh_object_face_normals(self, *args, **kwargs):
                         """
-                        Orient Face Normals Of Mesh Object.
+                        Enables you to orient the face normals for mesh object boundary zones. Specify the mesh object, region or material point as appropriate, and specify whether walls, baffles or both comprising the prism base zones are to be separated and oriented.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/orient_mesh_object_face_normals").execute(*args, **kwargs)
                     def compute_normal(self, *args, **kwargs):
                         """
-                        Compute normal for the given face zone.
+                        Computes the normal for the specified face zone.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/compute_normal").execute(*args, **kwargs)
                     def direction_vector(self, *args, **kwargs):
                         """
-                        Direction vector for prism extrusion.
+                        Specifies the direction vector for prism extrusion when the uniform method is selected for direction-method.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/direction_vector").execute(*args, **kwargs)
                     def bisect_angle(self, *args, **kwargs):
                         """
-                        Advancement vectors are forced onto bisecting planes
-                        in sharp corners with angles less than this.
+                        Is required for growing prisms out of sharp interior corners. When the value of this angle is set, the normals are automatically projected onto the plane bisecting the angle between faces having an interior angle less than this angle.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/bisect_angle").execute(*args, **kwargs)
                     def max_angle_change(self, *args, **kwargs):
                         """
-                        Smoothing changes in advancement vectors are constrained by this angle.
+                        Specifies the maximum angle by which the normal direction at a node can change during smoothing.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/max_angle_change").execute(*args, **kwargs)
                     def orthogonal_layers(self, *args, **kwargs):
                         """
-                        Number of layers to preserve orthogonality.
-                        All smoothing is deferred until after these layers.
+                        Specifies the number of layers to preserve orthogonality. All smoothing is deferred until after these layers.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/normal/orthogonal_layers").execute(*args, **kwargs)
 
                 class improve(metaclass=PyMenuMeta):
                     """
-                    Prism Smoothing Controls.
+                    Enters the prism smoothing controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def edge_swap_base_angle(self, *args, **kwargs):
                         """
-                        Skewness-driven edge swapping is only allowed between base faces whose normals
-                        are within this angle.
+                        Specifies the maximum allowable angle between the normals of the base faces for skewness-driven edge swapping.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/edge_swap_base_angle").execute(*args, **kwargs)
                     def edge_swap_cap_angle(self, *args, **kwargs):
                         """
-                        Skewness-driven edge swapping is only allowed between cap faces whose normals
-                        are within this angle.
+                        Specifies the maximum allowable angle between the normals of the cap faces for skewness-driven edge swapping.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/edge_swap_cap_angle").execute(*args, **kwargs)
                     def max_allowable_cap_skew(self, *args, **kwargs):
                         """
-                        Layer growth is stopped if any cap face has
-                        skewness > this value (after all smoothing).
+                        Specifies the maximum skewness allowed for a prism cap face. If the skewness of a cap face exceeds this value, the meshing process will stop and a warning indicates that the skewness for that layer is too high.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/max_allowable_cap_skew").execute(*args, **kwargs)
                     def max_allowable_cell_skew(self, *args, **kwargs):
                         """
-                        Cell quality criteria for smoothing and quality checking.
+                        Specifies the cell quality criteria for smoothing and quality checking.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/max_allowable_cell_skew").execute(*args, **kwargs)
                     def corner_height_weight(self, *args, **kwargs):
                         """
-                        Improve cell quality/shape by adjusting heights at large corners?.
+                        When enabled, the offset height at corners with large angles (for example, 270º) is reduced to give a smoother prism cap.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/corner_height_weight").execute(*args, **kwargs)
                     def improve_warp(self, *args, **kwargs):
                         """
-                        Perform node movement to improve warp of quad face?.
+                        Enables or disables improving of face warp during prism generation. This option is disabled by default.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/improve_warp").execute(*args, **kwargs)
                     def face_smooth_skew(self, *args, **kwargs):
@@ -6775,80 +6753,77 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/mesh/prism/controls/improve/face_smooth_skew").execute(*args, **kwargs)
                     def check_allowable_skew(self, *args, **kwargs):
                         """
-                        Check skewness for cap every layer?.
+                        Enables you to check the skewness of the prism cap for every layer.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/check_allowable_skew").execute(*args, **kwargs)
                     def left_hand_check(self, *args, **kwargs):
                         """
-                        Check for left handedness of faces
-                        (0 - no check, 1 - only cap faces, 2 - faces of all cells in current layer).
+                        Controls checking for left-handedness of faces. The default setting of 0 implies face handedness will not be checked. A value of 1 implies only cap faces will be checked, while 2 implies faces of all cells in current layer will be checked.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/left_hand_check").execute(*args, **kwargs)
                     def smooth_improve_prism_cells(self, *args, **kwargs):
                         """
-                        Smooth and improve prism cells.
+                        Enables you to set the parameters for improving the prism cells after the required prism layers are created. You can select optimized smoothing (smooth), node movement (improve), or a combination of both to improve the quality. Specify the quality measure to be used, the cell quality threshold, the number of improvement iterations, and the minimum improvement required.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/improve/smooth_improve_prism_cells").execute(*args, **kwargs)
 
                 class post_ignore(metaclass=PyMenuMeta):
                     """
-                    Prism Post Ignore Controls.
+                    Contains options for setting the parameters for removing poor quality prism cells after the required prism layers are created.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def post_remove_cells(self, *args, **kwargs):
                         """
-                        Post remove bad prism cells.
+                        Enables you to set the parameters for removing poor quality prism cells after the required prism layers are created. You can remove cells based on quality, intersection, interior warp, and feature edges. Specify options for removing additional cells in regions of high aspect ratio and feature angle, the number of cell rings to be removed around the marked cells, and options for smoothing the prism boundary and prism side height.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/post_ignore/post_remove_cells").execute(*args, **kwargs)
 
                 class adjacent_zone(metaclass=PyMenuMeta):
                     """
-                    Prism Adjacent Zone Controls.
+                    Enters the prism adjacent zone controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def side_feature_angle(self, *args, **kwargs):
                         """
-                        This angle (degrees) is used for computing feature normals (more flexible than retriangulation-feature-angle).
+                        Specifies the angle used for computing the feature normals.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/adjacent_zone/side_feature_angle").execute(*args, **kwargs)
                     def project_adjacent_angle(self, *args, **kwargs):
                         """
-                        Outer edges of advancing layers are projected to
-                        adjacent planar zones whose angles relative to the growth direction are
-                        less than or equal to this angle.
+                        Determines whether or not to project to an adjacent zone. If a zone shares outer nodes with any of the zones from which the layers are being grown (the “base zones”), its angle with respect to the growth direction is compared with this value. If the angle is less than or equal to this value, then the zone will be projected to. The default value is 75 degrees. See  for details.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/adjacent_zone/project_adjacent_angle").execute(*args, **kwargs)
 
                 class zone_specific_growth(metaclass=PyMenuMeta):
                     """
-                    Prism Growth Controls.
+                    Enters the prism growth controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def apply_growth(self, *args, **kwargs):
                         """
-                        Apply prism growth on individual zones.
+                        Applies the zone-specific growth parameters specified.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/zone_specific_growth/apply_growth").execute(*args, **kwargs)
                     def clear_growth(self, *args, **kwargs):
                         """
-                        Clear zone specific growth on individual zones.
+                        Clears the zone-specific growth specified.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/zone_specific_growth/clear_growth").execute(*args, **kwargs)
                     def list_growth(self, *args, **kwargs):
                         """
-                        List zone specific growth on applied zones.
+                        Lists the zone-specific growth parameters specified for individual zones in the console.
                         """
                         return PyMenu(self.service, "/mesh/prism/controls/zone_specific_growth/list_growth").execute(*args, **kwargs)
 
         class pyramid(metaclass=PyMenuMeta):
             """
-            Enter the pyramid controls menu.
+            Enters the pyramid menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -6856,54 +6831,54 @@ class main_menu(metaclass=PyMenuMeta):
                 self.controls = self.__class__.controls(path + [("controls", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create layer of pyramids on quad face zone.
+                Creates a layer of pyramids on the quad face zone.
                 """
                 return PyMenu(self.service, "/mesh/pyramid/create").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Enter the pyramid controls menu.
+                Enters the pyramid controls menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def neighbor_angle(self, *args, **kwargs):
                     """
-                    Dihedral angle threshold used to limit which neighboring faces are considered in the creation of pyramids.
+                    Sets the threshold dihedral angle used to limit the neighboring faces considered for pyramid creation. For example, if the value is set to 110° and the angle between a given quadrilateral face and a neighboring triangular face is greater than 110°, the resulting pyramid will not include the triangular face.
                     """
                     return PyMenu(self.service, "/mesh/pyramid/controls/neighbor_angle").execute(*args, **kwargs)
                 def offset_scaling(self, *args, **kwargs):
                     """
-                    The node created to produce a pyramid from a face is positioned along a vector emanating from the face centroid in the direction of the face's normal.  This factor scales the distance along this vector, unity represents an equilateral pyramid.
+                    Specifies the scaling, to be used to determine the height of the pyramid.
                     """
                     return PyMenu(self.service, "/mesh/pyramid/controls/offset_scaling").execute(*args, **kwargs)
                 def vertex_method(self, *args, **kwargs):
                     """
-                    Method by which offset distances are determined.
+                    Specifies the method by which the location of the new vertex of the pyramid will be determined. The skewness method is used by default.
                     """
                     return PyMenu(self.service, "/mesh/pyramid/controls/vertex_method").execute(*args, **kwargs)
                 def offset_factor(self, *args, **kwargs):
                     """
-                    Factor of pyramid height used to randomly adjust the height of the pyramids during pyramid creation. Default is 0.
+                    Specifies the fraction of the computed pyramid height (offset) by which the pyramid heights will be randomly adjusted. The default value is 0, indicating that all pyramids will have the exact height computed. A value of 0.1, for example, will limit each adjustment to ±10percentage of the computed height.
                     """
                     return PyMenu(self.service, "/mesh/pyramid/controls/offset_factor").execute(*args, **kwargs)
 
         class thin_volume_mesh(metaclass=PyMenuMeta):
             """
-            Enter the thin volume mesh controls menu.
+            Creates a sweep-like mesh for a body occupying a thin gap. You define source and target boundary faces zones (the source face normal should point to the target). The source face mesh may be triangles or quads.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def create(self, *args, **kwargs):
                 """
-                Create thin volume mesh on one or more face zones.
+                Initiates the dialog box to specify source and target faces and specify the following parameters
                 """
                 return PyMenu(self.service, "/mesh/thin_volume_mesh/create").execute(*args, **kwargs)
 
         class separate(metaclass=PyMenuMeta):
             """
-            Separate cells by various user defined methods.
+            Separates cells by various user-defined methods.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -6911,71 +6886,71 @@ class main_menu(metaclass=PyMenuMeta):
                 self.local_regions = self.__class__.local_regions(path + [("local_regions", None)], service)
             def separate_cell_by_face(self, *args, **kwargs):
                 """
-                Separate prism cell with source faces.
+                Separates cells that are connected to a specified face zone into another cell zone. This separation method applies only to prism cells.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_cell_by_face").execute(*args, **kwargs)
             def separate_cell_by_mark(self, *args, **kwargs):
                 """
-                Separate cell by marks.
+                Separates cells within a specified local region into another cell zone.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_cell_by_mark").execute(*args, **kwargs)
             def separate_prisms_from_poly(self, *args, **kwargs):
                 """
-                Separate poly-prism cells from poly.
+                Separates the poly-prism cells from the poly cells within your mesh. Available only when the report/enhanced-orthogonal-quality? flag is set to  yes, and is only supported for the .h5 format.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_prisms_from_poly").execute(*args, **kwargs)
             def separate_cell_by_region(self, *args, **kwargs):
                 """
-                Separate cell by region.
+                Separates contiguous regions within a cell zone into separate cell zones.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_cell_by_region").execute(*args, **kwargs)
             def separate_cell_by_shape(self, *args, **kwargs):
                 """
-                Separate cell thread by cell shape.
+                Separates cells with different shapes (pyramids, tetrahedra, etc.) into separate cell zones.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_cell_by_shape").execute(*args, **kwargs)
             def separate_cell_by_skew(self, *args, **kwargs):
                 """
-                Separate cell thread by cell skewness.
+                Separates cells based on the specified cell skewness.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_cell_by_skew").execute(*args, **kwargs)
             def separate_cell_by_size(self, *args, **kwargs):
                 """
-                Separate cell thread by cell size.
+                Separates cells based on the specified minimum and maximum cell sizes.
                 """
                 return PyMenu(self.service, "/mesh/separate/separate_cell_by_size").execute(*args, **kwargs)
 
             class local_regions(metaclass=PyMenuMeta):
                 """
-                Enter the refine-local menu.
+                Enters the local refinement menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def define(self, *args, **kwargs):
                     """
-                    Define a refinement region's parameters.
+                    Enables you to define the parameters for the refinement region.
                     """
                     return PyMenu(self.service, "/mesh/separate/local_regions/define").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Enables you to delete a refinement region.
                     """
                     return PyMenu(self.service, "/mesh/separate/local_regions/delete").execute(*args, **kwargs)
                 def init(self, *args, **kwargs):
                     """
-                    Delete all current regions and add the default refinement region.
+                    Deletes all current regions and adds the default refinement region.
                     """
                     return PyMenu(self.service, "/mesh/separate/local_regions/init").execute(*args, **kwargs)
                 def list_all_regions(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists all the refinement regions.
                     """
                     return PyMenu(self.service, "/mesh/separate/local_regions/list_all_regions").execute(*args, **kwargs)
 
         class tet(metaclass=PyMenuMeta):
             """
-            Enter the triangulation menu.
+            Enters the tetrahedral mesh menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -6985,17 +6960,17 @@ class main_menu(metaclass=PyMenuMeta):
                 self.local_regions = self.__class__.local_regions(path + [("local_regions", None)], service)
             def delete_virtual_cells(self, *args, **kwargs):
                 """
-                Delete virtual face/dead cells left by activating keep-virtual-entities?.
+                Deletes virtual cells created due to the use of the  keep-virtual-entities? option.
                 """
                 return PyMenu(self.service, "/mesh/tet/delete_virtual_cells").execute(*args, **kwargs)
             def init(self, *args, **kwargs):
                 """
-                Tet mesh initialization.
+                Generates the initial Delaunay mesh by meshing the boundary nodes.
                 """
                 return PyMenu(self.service, "/mesh/tet/init").execute(*args, **kwargs)
             def init_refine(self, *args, **kwargs):
                 """
-                Tet initialization and refinement of mesh.
+                Generates the tetrahedral mesh.
                 """
                 return PyMenu(self.service, "/mesh/tet/init_refine").execute(*args, **kwargs)
             def mesh_object(self, *args, **kwargs):
@@ -7005,7 +6980,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/tet/mesh_object").execute(*args, **kwargs)
             def preserve_cell_zone(self, *args, **kwargs):
                 """
-                Preserve cell zone.
+                Allows you to specify the cell zones to be preserved during the meshing process.
                 """
                 return PyMenu(self.service, "/mesh/tet/preserve_cell_zone").execute(*args, **kwargs)
             def un_preserve_cell_zone(self, *args, **kwargs):
@@ -7015,18 +6990,18 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/tet/un_preserve_cell_zone").execute(*args, **kwargs)
             def refine(self, *args, **kwargs):
                 """
-                Tet mesh refinement.
+                Refines the initialized mesh.
                 """
                 return PyMenu(self.service, "/mesh/tet/refine").execute(*args, **kwargs)
             def trace_path_between_cells(self, *args, **kwargs):
                 """
-                Trace path between two cell.
+                Detects holes in the geometry by tracing the path between the two specified cells 
                 """
                 return PyMenu(self.service, "/mesh/tet/trace_path_between_cells").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Tet controls.
+                Enters the tet controls menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -7037,7 +7012,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.tet_improve = self.__class__.tet_improve(path + [("tet_improve", None)], service)
                 def cell_sizing(self, *args, **kwargs):
                     """
-                    Allow cell volume distribution to be determined based on boundary.
+                    Specifies the cell sizing function for refinement. You can select geometric, linear, none, or size-field as appropriate.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/cell_sizing").execute(*args, **kwargs)
                 def set_zone_growth_rate(self, *args, **kwargs):
@@ -7052,86 +7027,86 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/tet/controls/clear_zone_growth_rate").execute(*args, **kwargs)
                 def compute_max_cell_volume(self, *args, **kwargs):
                     """
-                    Computes max cell size.
+                    Computes the maximum cell volume for the current mesh.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/compute_max_cell_volume").execute(*args, **kwargs)
                 def delete_dead_zones(self, *args, **kwargs):
                     """
-                    Automatically delete dead face and cell zones?.
+                    Specifies the maximum allowable cell volume.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/delete_dead_zones").execute(*args, **kwargs)
                 def max_cell_length(self, *args, **kwargs):
                     """
-                    Set max-cell-length.
+                    Specifies the maximum allowable cell length.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/max_cell_length").execute(*args, **kwargs)
                 def max_cell_volume(self, *args, **kwargs):
                     """
-                    Set max-cell-volume.
+                    Specifies the maximum allowable cell volume.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/max_cell_volume").execute(*args, **kwargs)
                 def use_max_cell_size(self, *args, **kwargs):
                     """
-                    Use max cell size for objects in auto-mesh and do not recompute it based on the object being meshed.
+                    Enables you to use the maximum cell size specified instead of recomputing the value based on the objects, when the volume mesh is generated. This option is disabled by default.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/use_max_cell_size").execute(*args, **kwargs)
                 def non_fluid_type(self, *args, **kwargs):
                     """
-                    Select the default non-fluid cell zone type.
+                    Selects the non-fluid cell zone type. After the mesh is initialized, any non-fluid zones will be set to this type. If the mesh includes multiple regions (for example, the problem for which you are creating the mesh includes a fluid zone and one or more solid zones), and you plan to refine all of them using the same refinement parameters, modify the non-fluid type before generating the mesh.  For zone-based meshing, if any cell zone has at least one boundary zone type as inlet, it will automatically be set to fluid type. For object based meshing, volume region type is used to determine the cell zone type.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/non_fluid_type").execute(*args, **kwargs)
                 def refine_method(self, *args, **kwargs):
                     """
-                    Define refinement method.
+                    Enables you to select the refinement method. You can select either skewness-based refinement or the advancing front method.  The skewness-based refinement option is no longer supported and will be removed at a future release. 
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/refine_method").execute(*args, **kwargs)
                 def set_region_based_sizing(self, *args, **kwargs):
                     """
-                    Set region based sizings.
+                    Allows you to specify local sizing settings (max cell length) for specified region(s)
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/set_region_based_sizing").execute(*args, **kwargs)
                 def print_region_based_sizing(self, *args, **kwargs):
                     """
-                    Print region based sizings.
+                    Displays local sizing settings (max cell length) for specified region(s).
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/print_region_based_sizing").execute(*args, **kwargs)
                 def skewness_method(self, *args, **kwargs):
                     """
-                    Skewness refinement controls.
+                    Enters the skewness refinement controls menu.
                     """
                     return PyMenu(self.service, "/mesh/tet/controls/skewness_method").execute(*args, **kwargs)
 
                 class improve_mesh(metaclass=PyMenuMeta):
                     """
-                    Improve mesh controls.
+                    Enters the improve mesh controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def improve(self, *args, **kwargs):
                         """
-                        Automatically improve mesh.
+                        Automatically improves the mesh.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/improve_mesh/improve").execute(*args, **kwargs)
                     def swap(self, *args, **kwargs):
                         """
-                        Face swap parameters.
+                        Enables you to specify the face swap parameters.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/improve_mesh/swap").execute(*args, **kwargs)
                     def skewness_smooth(self, *args, **kwargs):
                         """
-                        Skewness smooth parametersx.
+                        Enables you to specify the skewness smooth parameters.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/improve_mesh/skewness_smooth").execute(*args, **kwargs)
                     def laplace_smooth(self, *args, **kwargs):
                         """
-                        Laplace smooth parameters.
+                        Enables you to specify the Laplace smoothing parameters.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/improve_mesh/laplace_smooth").execute(*args, **kwargs)
 
                 class adv_front_method(metaclass=PyMenuMeta):
                     """
-                    Advancing front refinement controls.
+                    Enters the advancing front refinement controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -7139,103 +7114,103 @@ class main_menu(metaclass=PyMenuMeta):
                         self.skew_improve = self.__class__.skew_improve(path + [("skew_improve", None)], service)
                     def refine_parameters(self, *args, **kwargs):
                         """
-                        Define refine parameters.
+                        Defines the cell zone improvement parameters for the advancing front method.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/refine_parameters").execute(*args, **kwargs)
                     def first_improve_params(self, *args, **kwargs):
                         """
-                        Define refine front improve parameters.
+                        Defines the refining front improvement parameters for the advancing front method.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/first_improve_params").execute(*args, **kwargs)
                     def second_improve_params(self, *args, **kwargs):
                         """
-                        Define cell zone improve parameters.
+                        Defines the cell zone improvement parameters for the advancing front method.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/second_improve_params").execute(*args, **kwargs)
 
                     class skew_improve(metaclass=PyMenuMeta):
                         """
-                        Refine improve controls.
+                        Enters the refine improve controls menu.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def boundary_sliver_skew(self, *args, **kwargs):
                             """
-                            Refine improve boundary sliver skew.
+                            Specifies the boundary sliver skewness for the advancing front method. This  parameter is used for removing sliver cells along the boundary.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/boundary_sliver_skew").execute(*args, **kwargs)
                         def sliver_skew(self, *args, **kwargs):
                             """
-                            Refine improve sliver skew.
+                            Specifies the sliver skewness for the advancing front method. This parameter  is used for removing sliver cells in the interior.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/sliver_skew").execute(*args, **kwargs)
                         def target(self, *args, **kwargs):
                             """
-                            Activate target skew refinement.
+                            Enables you to enable targeted skewness-based refinement for the advancing  front method. This option enables you to improve the mesh until the targeted  skewness value is achieved.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/target").execute(*args, **kwargs)
                         def target_skew(self, *args, **kwargs):
                             """
-                            Refine improve target skew.
+                            Specifies the targeted skewness during improvement for the advancing front  method.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/target_skew").execute(*args, **kwargs)
                         def target_low_skew(self, *args, **kwargs):
                             """
-                            Refine improve target low skew.
+                            Specifies the targeted skewness threshold above which cells will be improved.  The improve operation will attempt to improve cells with skewness above the target-low-skew value specified, but there will be no  attempt to reduce the skewness below the specified value. A limited set of improve  operations will be used as compared to the operations required for the target-skew value-based improvement. The value specified  could be approximately 0.1 lower than the target-skew  value.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/target_low_skew").execute(*args, **kwargs)
                         def attempts(self, *args, **kwargs):
                             """
-                            Refine improve attempts.
+                            Specifies the number of overall improvement attempts for the advancing front  method.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/attempts").execute(*args, **kwargs)
                         def iterations(self, *args, **kwargs):
                             """
-                            Refine improve iterations.
+                            Specifies the number of improvement iterations in each attempt for the  advancing front method.
                             """
                             return PyMenu(self.service, "/mesh/tet/controls/adv_front_method/skew_improve/iterations").execute(*args, **kwargs)
 
                 class remove_slivers(metaclass=PyMenuMeta):
                     """
-                    Sliver remove controls.
+                    Enters the sliver remove controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def remove(self, *args, **kwargs):
                         """
-                        Automatically remove slivers.
+                        Enables/disables the automatic removal of slivers.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/remove").execute(*args, **kwargs)
                     def skew(self, *args, **kwargs):
                         """
-                        Remove sliver skew.
+                        Specifies the skewness threshold for sliver removal.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/skew").execute(*args, **kwargs)
                     def low_skew(self, *args, **kwargs):
                         """
-                        Remove sliver low skew.
+                        Specifies the targeted skewness threshold above which cells will be improved. The improve operation will attempt to improve cells with skewness above the low-skew value specified, but there will be no attempt to reduce the skewness below the specified value. A limited set of improve operations will be used as compared to the operations required for the skew value-based improvement.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/low_skew").execute(*args, **kwargs)
                     def angle(self, *args, **kwargs):
                         """
-                        Max dihedral angle defining a valid boundary sliver.
+                        Specifies the maximum dihedral angle for considering the cell to be a sliver 
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/angle").execute(*args, **kwargs)
                     def attempts(self, *args, **kwargs):
                         """
-                        Sliver remove attempts.
+                        Specifies the number of attempts overall to remove slivers.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/attempts").execute(*args, **kwargs)
                     def iterations(self, *args, **kwargs):
                         """
-                        Sliver remove iterations.
+                        Specifies the number of iterations to be performed for the specific sliver removal operation.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/iterations").execute(*args, **kwargs)
                     def method(self, *args, **kwargs):
                         """
-                        Sliver remove method.
+                        Enables you to select the method for sliver removal. The default method used is the fast method. The fast and the aggressive methods use the same controls and give similar results for good quality surface meshes. In case of poor surface meshes, the aggressive method will typically succeed in improving the mesh to a greater extent, but it may be slower than the fast method.
                         """
                         return PyMenu(self.service, "/mesh/tet/controls/remove_slivers/method").execute(*args, **kwargs)
 
@@ -7269,109 +7244,107 @@ class main_menu(metaclass=PyMenuMeta):
 
             class improve(metaclass=PyMenuMeta):
                 """
-                Enter the Tet improve menu.
+                Enters the tet improve menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def swap_faces(self, *args, **kwargs):
                     """
-                    Perform interior face swapping to improve cell skewness.
+                    Performs interior face swapping to improve cell skewness.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/swap_faces").execute(*args, **kwargs)
                 def refine_slivers(self, *args, **kwargs):
                     """
-                    Refine sliver cells by introducing
-                    node near centroid.
+                    Attempts to remove the sliver by placing a node at or near the centroid of the sliver cell. Swapping and smoothing are performed to improve the skewness. You can also specify whether boundary cells are to be refined. Refining the boundary cells may enable you to carry out further improvement options such as smoothing, swapping, and collapsing slivers.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/refine_slivers").execute(*args, **kwargs)
                 def sliver_boundary_swap(self, *args, **kwargs):
                     """
-                    Remove boundary slivers by moving the boundary
-                    to exclude the cells from the zone.
+                    Removes boundary slivers by moving the boundary to exclude the cells from the zone.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/sliver_boundary_swap").execute(*args, **kwargs)
                 def refine_boundary_slivers(self, *args, **kwargs):
                     """
-                    Refine boundary slivers by edge-split.
+                    Attempts to increase the volume of boundary slivers to create a valid tet cell. Tetrahedra having one or two faces on the boundary are identified and then the appropriate edge split. The split node is then smoothed such that the volume of the tetrahedron increases, thereby creating a valid tet cell.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/refine_boundary_slivers").execute(*args, **kwargs)
                 def collapse_slivers(self, *args, **kwargs):
                     """
-                    Remove skewed cells by edge collapse.
+                    Attempts to collapse the nodes of a skewed sliver cell on any one of its neighbors.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/collapse_slivers").execute(*args, **kwargs)
                 def improve_cells(self, *args, **kwargs):
                     """
-                    Improve skewed cells.
+                    Improves skewed tetrahedral cells.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/improve_cells").execute(*args, **kwargs)
                 def smooth_boundary_sliver(self, *args, **kwargs):
                     """
-                    Smooth skewed cells with all nodes on the boundary.
+                    Smooths nodes on sliver cells having all four nodes on the boundary until the skewness value is less than the specified value. The default values for the skewness threshold, minimum dihedral angle between boundary faces, and feature angle are 0.985, 10, and 30, respectively.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/smooth_boundary_sliver").execute(*args, **kwargs)
                 def smooth_interior_sliver(self, *args, **kwargs):
                     """
-                    Smooth skewed cells with some interior node.
+                    Smooths non-boundary nodes on sliver cells having skewness greater than the specified threshold value. The default value for the skewness threshold is 0.985.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/smooth_interior_sliver").execute(*args, **kwargs)
                 def smooth_nodes(self, *args, **kwargs):
                     """
-                    Smooth node locations.
+                    Enables you to apply either Laplacian or variational smoothing to nodes on the tetrahedral cell zones to improve the mesh quality.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/smooth_nodes").execute(*args, **kwargs)
                 def skew_smooth_nodes(self, *args, **kwargs):
                     """
-                    Smooth node locations.
+                    Applies skewness-based smoothing to nodes on the tetrahedral cell zones to improve the mesh quality.
                     """
                     return PyMenu(self.service, "/mesh/tet/improve/skew_smooth_nodes").execute(*args, **kwargs)
 
             class local_regions(metaclass=PyMenuMeta):
                 """
-                Enter the refine-local menu.
+                Enters the local refinement menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def activate(self, *args, **kwargs):
                     """
-                    Activate regions for tet refinement.
+                    Activates the specified regions for refinement.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/activate").execute(*args, **kwargs)
                 def deactivate(self, *args, **kwargs):
                     """
-                    Activate regions for tet refinement.
+                    Deactivates the specified regions for refinement.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/deactivate").execute(*args, **kwargs)
                 def define(self, *args, **kwargs):
                     """
-                    Define a refinement region's parameters.
+                    Defines the refinement region according to the specified parameters.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/define").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Deletes the specified refinement region.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/delete").execute(*args, **kwargs)
                 def init(self, *args, **kwargs):
                     """
-                    Delete all current regions and add the default refinement region.
+                    Defines the default refinement region encompassing the entire geometry.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/init").execute(*args, **kwargs)
                 def list_all_regions(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists all refinement region parameters and the activated regions in the console.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/list_all_regions").execute(*args, **kwargs)
                 def refine(self, *args, **kwargs):
                     """
-                    Refine live cells inside region based on refinement parameters.
+                    Refines the active cells inside the selected region based on the specified refinement parameters.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/refine").execute(*args, **kwargs)
                 def ideal_vol(self, *args, **kwargs):
                     """
-                    Ideal tet volume for given edge length.
+                    Reports the volume of an ideal tetrahedron for the edge length specified.
                     """
                     return PyMenu(self.service, "/mesh/tet/local_regions/ideal_vol").execute(*args, **kwargs)
                 def ideal_area(self, *args, **kwargs):
@@ -7382,34 +7355,34 @@ class main_menu(metaclass=PyMenuMeta):
 
         class manage(metaclass=PyMenuMeta):
             """
-            Enter cell zone menu.
+            Enters the manage cell zones menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def adjacent_face_zones(self, *args, **kwargs):
                 """
-                List all face zones referring the specified cell zone.
+                Lists all face zones that refer to the specified cell zone.
                 """
                 return PyMenu(self.service, "/mesh/manage/adjacent_face_zones").execute(*args, **kwargs)
             def auto_set_active(self, *args, **kwargs):
                 """
-                Set active zones based on prescribed points.
+                Sets the active zones based on points that are defined in an external file. For each zone you want to activate, you need to specify the coordinates of a point in the zone, the zone type (for example, fluid), and (optionally) a new name. A sample file is shown below: 
                 """
                 return PyMenu(self.service, "/mesh/manage/auto_set_active").execute(*args, **kwargs)
             def active_list(self, *args, **kwargs):
                 """
-                List active cell zones.
+                Lists all active zones.
                 """
                 return PyMenu(self.service, "/mesh/manage/active_list").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
                 """
-                Copy the zone.
+                Copies all nodes and faces of specified cell zones.
                 """
                 return PyMenu(self.service, "/mesh/manage/copy").execute(*args, **kwargs)
             def change_prefix(self, *args, **kwargs):
                 """
-                Change the prefix for specified face zones.
+                Enables you to change the prefix for the cell zone.
                 """
                 return PyMenu(self.service, "/mesh/manage/change_prefix").execute(*args, **kwargs)
             def change_suffix(self, *args, **kwargs):
@@ -7419,116 +7392,116 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/manage/change_suffix").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete cell zone.
+                Deletes a cell zone, along with its associated nodes and faces. When deleting cell zones that contain poly cells, you will be warned that the original mesh needs to be deleted and the original faces restored prior to remeshing the volumetric region.
                 """
                 return PyMenu(self.service, "/mesh/manage/delete").execute(*args, **kwargs)
             def id(self, *args, **kwargs):
                 """
-                Give zone a new id number.
+                Specifies a new cell zone ID. If a conflict is detected, the change will be ignored.
                 """
                 return PyMenu(self.service, "/mesh/manage/id").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List all cell zones.
+                Prints information on all cell zones.
                 """
                 return PyMenu(self.service, "/mesh/manage/list").execute(*args, **kwargs)
             def merge(self, *args, **kwargs):
                 """
-                Merge two or more cell zones.
+                Merges two or more cell zones.  For object-based merge, the selected zones must be in the same volumetric region. If  not, you will have to merge the volumetric regions first using /objects/volumetric-regions/merge. If the volumetric regions  cannot be merged because they are not contiguous, you will have to delete the object(s)  only before merging the cell zones.
                 """
                 return PyMenu(self.service, "/mesh/manage/merge").execute(*args, **kwargs)
             def name(self, *args, **kwargs):
                 """
-                Give zone a new name.
+                Enables you to rename a cell zone.
                 """
                 return PyMenu(self.service, "/mesh/manage/name").execute(*args, **kwargs)
             def origin(self, *args, **kwargs):
                 """
-                Set the origin of the mesh coordinates.
+                Specifies a new origin for the mesh, to be used for cell zone rotation. The default origin is (0,0,0).
                 """
                 return PyMenu(self.service, "/mesh/manage/origin").execute(*args, **kwargs)
             def rotate(self, *args, **kwargs):
                 """
-                Rotate all nodes of specified cell zones.
+                Rotates all nodes of specified cell zones by a specified angle.
                 """
                 return PyMenu(self.service, "/mesh/manage/rotate").execute(*args, **kwargs)
             def rotate_model(self, *args, **kwargs):
                 """
-                Rotate all nodes.
+                Rotates all nodes of the model by a specified angle.
                 """
                 return PyMenu(self.service, "/mesh/manage/rotate_model").execute(*args, **kwargs)
             def revolve_face_zone(self, *args, **kwargs):
                 """
-                Generate cells by revolving a face thread.
+                Generates cells by revolving a face thread.
                 """
                 return PyMenu(self.service, "/mesh/manage/revolve_face_zone").execute(*args, **kwargs)
             def scale(self, *args, **kwargs):
                 """
-                Scale all nodes of specified cell zones.
+                Scales all nodes of specified cell zones by a specified factor.
                 """
                 return PyMenu(self.service, "/mesh/manage/scale").execute(*args, **kwargs)
             def scale_model(self, *args, **kwargs):
                 """
-                Scale all nodes.
+                Scales all nodes of the model by a specified factor.
                 """
                 return PyMenu(self.service, "/mesh/manage/scale_model").execute(*args, **kwargs)
             def set_active(self, *args, **kwargs):
                 """
-                Refine/swap/display only cells in these cell zones.
+                Sets the specified cell zones to be active.
                 """
                 return PyMenu(self.service, "/mesh/manage/set_active").execute(*args, **kwargs)
             def translate(self, *args, **kwargs):
                 """
-                Translate all nodes of specified cell zones.
+                Translates all nodes of specified cell zones by a specified vector.
                 """
                 return PyMenu(self.service, "/mesh/manage/translate").execute(*args, **kwargs)
             def translate_model(self, *args, **kwargs):
                 """
-                Translate all nodes.
+                Translates all nodes of the model by a specified vector.
                 """
                 return PyMenu(self.service, "/mesh/manage/translate_model").execute(*args, **kwargs)
             def type(self, *args, **kwargs):
                 """
-                Change cell zone type.
+                Changes the type and name of a cell zone.
                 """
                 return PyMenu(self.service, "/mesh/manage/type").execute(*args, **kwargs)
             def merge_dead_zones(self, *args, **kwargs):
                 """
-                Merge dead zones.
+                Enables you to merge dead zones having a cell count lower than the specified threshold value, with the adjacent cell zone. The result of the merge operation is determined by the type of the adjacent cell zone and the shared face area. The priority for merging with the adjacent cell zone based on type is fluid > solid > dead (that is, merging with an adjacent fluid zone takes priority over merging with an adjacent solid zone, which in turn takes priority over merging with a dead zone). Also, if the adjacent zones are of the same type (for example, fluid), the zone will be merged with the zone having the largest shared face area.
                 """
                 return PyMenu(self.service, "/mesh/manage/merge_dead_zones").execute(*args, **kwargs)
             def get_material_point(self, *args, **kwargs):
                 """
-                Returns material point coordinates for all regions of a cell zone.
+                Prints the coordinates of the material point for the specified cell zone.  If the cell zone is non-contiguous, the get-material-point  command will print a list of material points, one for each contiguous region.
                 """
                 return PyMenu(self.service, "/mesh/manage/get_material_point").execute(*args, **kwargs)
 
         class cell_zone_conditions(metaclass=PyMenuMeta):
             """
-            Enter manage cell zone conditions menu.
+            Contains options for copying or clearing cell zone conditions when a case file is read.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def copy(self, *args, **kwargs):
                 """
-                Copy cell zone conditions.
+                Enables you to copy the cell zone conditions from the zone selected to the zones specified.
                 """
                 return PyMenu(self.service, "/mesh/cell_zone_conditions/copy").execute(*args, **kwargs)
             def clear(self, *args, **kwargs):
                 """
-                Clear cell zone conditions.
+                Clears the cell zone conditions assigned to the specified zones.
                 """
                 return PyMenu(self.service, "/mesh/cell_zone_conditions/clear").execute(*args, **kwargs)
             def clear_all(self, *args, **kwargs):
                 """
-                Clear all cell zone conditions.
+                Clears the cell conditions assigned to all the zones.
                 """
                 return PyMenu(self.service, "/mesh/cell_zone_conditions/clear_all").execute(*args, **kwargs)
 
         class poly(metaclass=PyMenuMeta):
             """
-            Enter the poly menu.
+            Enters the polyhedral mesh generation menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -7537,28 +7510,29 @@ class main_menu(metaclass=PyMenuMeta):
                 self.local_regions = self.__class__.local_regions(path + [("local_regions", None)], service)
             def improve(self, *args, **kwargs):
                 """
-                Smooth poly mesh.
+                Allows you to improve the polyhedral mesh quality based on the  quality-method.
                 """
                 return PyMenu(self.service, "/mesh/poly/improve").execute(*args, **kwargs)
             def collapse(self, *args, **kwargs):
                 """
-                Collapse short edges and small faces.
+                Merge nodes to remove short edges and small faces. The decision threshold uses  edge size ratio, face size ratio, and (face)  area fraction.
+                            
                 """
                 return PyMenu(self.service, "/mesh/poly/collapse").execute(*args, **kwargs)
             def remesh(self, *args, **kwargs):
                 """
-                Remesh local region.
+                Improves the quality in a local region based on the minimum skewness threshold.
                 """
                 return PyMenu(self.service, "/mesh/poly/remesh").execute(*args, **kwargs)
             def quality_method(self, *args, **kwargs):
                 """
-                Set poly quality method.
+                Asks you to choose from internal-default,  orthoskew or squish quality measure for mesh improvement.
                 """
                 return PyMenu(self.service, "/mesh/poly/quality_method").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Poly controls.
+                Enters the controls menu for setting poly parameters.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -7567,95 +7541,95 @@ class main_menu(metaclass=PyMenuMeta):
                     self.prism = self.__class__.prism(path + [("prism", None)], service)
                 def cell_sizing(self, *args, **kwargs):
                     """
-                    Allow cell volume distribution to be determined based on boundary.
+                    Sets cell volume distribution function as geometric, linear, or size-field.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/cell_sizing").execute(*args, **kwargs)
                 def non_fluid_type(self, *args, **kwargs):
                     """
-                    Select the default non-fluid cell zone type.
+                    Selects the default type for non-fluid zones.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/non_fluid_type").execute(*args, **kwargs)
                 def improve(self, *args, **kwargs):
                     """
-                    Improve the poly mesh by smoothing?.
+                    Enables poly mesh improvement by smoothing based on the smooth-controls.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/improve").execute(*args, **kwargs)
                 def feature_angle(self, *args, **kwargs):
                     """
-                    Feature angle.
+                    Sets the minimum threshold that should be preserved as a feature.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/feature_angle").execute(*args, **kwargs)
                 def edge_size_ratio(self, *args, **kwargs):
                     """
-                    Size ratio tolerance of two connected edges.
+                    Sets the threshold for the size ratio of two connected edges. Recommended range is 20 to 200.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/edge_size_ratio").execute(*args, **kwargs)
                 def face_size_ratio(self, *args, **kwargs):
                     """
-                    Size ratio tolerance of two faces in one cell.
+                    Sets the threshold for the size ratio of two faces on one cell. Recommended range is 100 to 300.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/face_size_ratio").execute(*args, **kwargs)
                 def sliver_cell_area_fraction(self, *args, **kwargs):
                     """
-                    Fraction tolerance between face area and cell surface area.
+                    Sets the threshold for the area of a single face to the cell surface area. Recommended range is 0.00001 to 0.001.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/sliver_cell_area_fraction").execute(*args, **kwargs)
                 def merge_skew(self, *args, **kwargs):
                     """
-                    Merge minimum skewness.
+                    Sets the minimum skewness threshold for cell merge.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/merge_skew").execute(*args, **kwargs)
                 def remesh_skew(self, *args, **kwargs):
                     """
-                    Remesh target skewness.
+                    Sets the target skewness when remeshing.
                     """
                     return PyMenu(self.service, "/mesh/poly/controls/remesh_skew").execute(*args, **kwargs)
 
                 class smooth_controls(metaclass=PyMenuMeta):
                     """
-                    Poly smooth controls.
+                    Enters the menu for setting smoothing parameters for poly mesh.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def laplace_smooth_iterations(self, *args, **kwargs):
                         """
-                        Laplace smoothing iterations.
+                        Sets the number of passes for tet-cell Laplace smoothing during the poly mesh generation phase.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/laplace_smooth_iterations").execute(*args, **kwargs)
                     def edge_smooth_iterations(self, *args, **kwargs):
                         """
-                        Edge smoothing iterations.
+                        Sets the number of passes for tet-cell edge smoothing during the poly mesh generation phase.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/edge_smooth_iterations").execute(*args, **kwargs)
                     def centroid_smooth_iterations(self, *args, **kwargs):
                         """
-                        Centroid smoothing iterations.
+                        Sets the number of passes for tet-cell centroid smoothing during the poly mesh generation phase.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/centroid_smooth_iterations").execute(*args, **kwargs)
                     def smooth_iterations(self, *args, **kwargs):
                         """
-                        Smooth iterations.
+                        Sets the number of improvement passes over the full poly mesh.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/smooth_iterations").execute(*args, **kwargs)
                     def smooth_attempts(self, *args, **kwargs):
                         """
-                        Smooth attempts.
+                        Sets the maximum number of movements for a single node during poly mesh smoothing.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/smooth_attempts").execute(*args, **kwargs)
                     def smooth_boundary(self, *args, **kwargs):
                         """
-                        Smooth boundary as part of cell smoothing.
+                        Enables boundary smoothing as part of poly cell smoothing. Default is no.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/smooth_boundary").execute(*args, **kwargs)
                     def smooth_on_layer(self, *args, **kwargs):
                         """
-                        Smooth poly-prism nodes on layer.
+                        Constrains movement of nodes to maintain layering during poly mesh smoothing.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/smooth_on_layer").execute(*args, **kwargs)
                     def smooth_skew(self, *args, **kwargs):
                         """
-                        Smooth minimum skewness.
+                        Sets the minimum skewness threshold for poly mesh smoothing.
                         """
                         return PyMenu(self.service, "/mesh/poly/controls/smooth_controls/smooth_skew").execute(*args, **kwargs)
 
@@ -7684,49 +7658,49 @@ class main_menu(metaclass=PyMenuMeta):
 
             class local_regions(metaclass=PyMenuMeta):
                 """
-                Enter the refine-local menu.
+                Enters the local refinement menu.  Poly meshing follows tet meshing. These commands behave like the equivalent commands under /mesh/tet/local-regions/.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def activate(self, *args, **kwargs):
                     """
-                    Activate regions for tet refinement.
+                    Activates the specified regions for refinement.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/activate").execute(*args, **kwargs)
                 def deactivate(self, *args, **kwargs):
                     """
-                    Activate regions for tet refinement.
+                    Deactivates the specified regions for refinement.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/deactivate").execute(*args, **kwargs)
                 def define(self, *args, **kwargs):
                     """
-                    Define a refinement region's parameters.
+                    Defines the refinement region according to the specified parameters.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/define").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a refinement region.
+                    Deletes the specified refinement region.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/delete").execute(*args, **kwargs)
                 def init(self, *args, **kwargs):
                     """
-                    Delete all current regions and add the default refinement region.
+                    Defines the default refinement region encompassing the entire geometry.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/init").execute(*args, **kwargs)
                 def list_all_regions(self, *args, **kwargs):
                     """
-                    List all refinement regions.
+                    Lists all refinement region parameters and the activated regions in the console.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/list_all_regions").execute(*args, **kwargs)
                 def refine(self, *args, **kwargs):
                     """
-                    Refine live cells inside region based on refinement parameters.
+                    Refines the active cells inside the selected region based on the specified refinement parameters.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/refine").execute(*args, **kwargs)
                 def ideal_vol(self, *args, **kwargs):
                     """
-                    Ideal tet volume for given edge length.
+                    Reports the volume of an ideal tetrahedron for the edge length specified.
                     """
                     return PyMenu(self.service, "/mesh/poly/local_regions/ideal_vol").execute(*args, **kwargs)
                 def ideal_area(self, *args, **kwargs):
@@ -7737,7 +7711,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class poly_hexcore(metaclass=PyMenuMeta):
             """
-            Enter the poly-hexcore menu.
+            Enters the menu for poly-hexcore mesh.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -7746,14 +7720,14 @@ class main_menu(metaclass=PyMenuMeta):
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Enter poly-hexcore controls menu.
+                Enters the menu for setting parameters for poly-hexcore mesh.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def mark_core_region_cell_type_as_hex(self, *args, **kwargs):
                     """
-                    Mark-core-region-cell-type-as-hex?.
+                    Determines whether or not to apply hexahedra cells in the core region of the mesh. The default value is yes. 
                     """
                     return PyMenu(self.service, "/mesh/poly_hexcore/controls/mark_core_region_cell_type_as_hex").execute(*args, **kwargs)
                 def avoid_1_by_8_cell_jump_in_hexcore(self, *args, **kwargs):
@@ -7763,68 +7737,68 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/poly_hexcore/controls/avoid_1_by_8_cell_jump_in_hexcore").execute(*args, **kwargs)
                 def only_polyhedra_for_selected_regions(self, *args, **kwargs):
                     """
-                    Only-polyhedra-for-selected-regions.
+                    Determines if polyhedra cells are to be applied to the selected regions. 
                     """
                     return PyMenu(self.service, "/mesh/poly_hexcore/controls/only_polyhedra_for_selected_regions").execute(*args, **kwargs)
 
         class auto_mesh_controls(metaclass=PyMenuMeta):
             """
-            Automesh controls.
+            Enters the auto-mesh-controls submenu
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def backup_object(self, *args, **kwargs):
                 """
-                Option to create a back up for object.
+                Enables creation of a backup of the surface mesh before volume meshing starts. This option is enabled by default.
                 """
                 return PyMenu(self.service, "/mesh/auto_mesh_controls/backup_object").execute(*args, **kwargs)
 
         class scoped_prisms(metaclass=PyMenuMeta):
             """
-            Manage scoped prisms.
+            Contains options for creating scoped prism controls for mesh objects.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def create(self, *args, **kwargs):
                 """
-                Create new scoped prism.
+                Creates a new scoped prism control based on the parameters and scope specified. Specify the name, offset method, first height or aspect ratio, number of layers, and rate or last percent. Select the mesh object and set the scope  (fluid-regions, named-regions, or  solid-regions). Specify the zones to grow prisms  (all-zones, only-walls,  selected-face-zones, or selected-labels, or solid-fluid-interface). When  named-regions and/or selected-face-zones or selected-labels are selected, specify the volume and/or boundary scope. If interior baffle zones are selected, retain the option to grow prisms on both sides of the baffles or disable it to grow prisms on one side.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/create").execute(*args, **kwargs)
             def modify(self, *args, **kwargs):
                 """
-                Modify scoped prisms.
+                Modifies the specified control based on the parameters specified.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/modify").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete scoped prisms.
+                Deletes the specified scoped prism control.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List all scoped prisms parameters.
+                Lists all the defined scoped prism controls.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/list").execute(*args, **kwargs)
             def read(self, *args, **kwargs):
                 """
-                Read scoped prisms from a file.
+                Reads in the specified scoped prism control file (*.pzmcontrol).
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/read").execute(*args, **kwargs)
             def set_no_imprint_zones(self, *args, **kwargs):
                 """
-                Set zones which should not be imprinted during prism generation.
+                Used to specify face zones that should not be imprinted during prism generation.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/set_no_imprint_zones").execute(*args, **kwargs)
             def write(self, *args, **kwargs):
                 """
-                Write scoped prisms to a file.
+                Writes the scoped prism controls to a prism control file (*.pzmcontrol). Specify the scoped prism file name.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/write").execute(*args, **kwargs)
             def growth_options(self, *args, **kwargs):
                 """
-                Set scoped prisms growth options.
+                Enables you to specify scoped prism growth options. Select Fix First  Height if required, and specify the gap factor, maximum aspect ratio, prism quality method, and the threshold quality value for stair stepping.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/growth_options").execute(*args, **kwargs)
             def set_overset_prism_controls(self, *args, **kwargs):
@@ -7834,7 +7808,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/scoped_prisms/set_overset_prism_controls").execute(*args, **kwargs)
             def set_advanced_controls(self, *args, **kwargs):
                 """
-                Set scoped boundary layer controls.
+                Used to specify various controls for scoped prisms. Prompts include setting iterations for normal based prisms, smoothing, prism improvement, automatic node movement, and warp improvement. Prompts also include checks for stair-step interactions, as well as proximity, quality, and the exposure of quad quality. Automatic stair-stepping occurs during prism generation based on the proximity and quality limits. You can intentionally avoid stair-stepping by setting the last three prompts (proximity, quality, and the exposure of quad quality) to no, although you may also retain some poor quality cells.
                 """
                 return PyMenu(self.service, "/mesh/scoped_prisms/set_advanced_controls").execute(*args, **kwargs)
 
@@ -7856,77 +7830,77 @@ class main_menu(metaclass=PyMenuMeta):
             self.advanced_rendering = self.__class__.advanced_rendering(path + [("advanced_rendering", None)], service)
         def annotate(self, *args, **kwargs):
             """
-            Add a text annotation string to the active graphics window.
+            Adds annotation text to a graphics window. It will prompt you for a string to use as the annotation text, and then a dialog box will prompt you to select a screen location using the mouse-probe button on your mouse. 
             """
             return PyMenu(self.service, "/display/annotate").execute(*args, **kwargs)
         def boundary_cells(self, *args, **kwargs):
             """
-            Display boundary cells on the specified face zones.
+            Displays boundary cells attached to the specified face zones. 
             """
             return PyMenu(self.service, "/display/boundary_cells").execute(*args, **kwargs)
         def boundary_grid(self, *args, **kwargs):
             """
-            Display boundary zones on the specified face zones.
+            Displays only boundary zones according to the currently set parameters. 
             """
             return PyMenu(self.service, "/display/boundary_grid").execute(*args, **kwargs)
         def center_view_on(self, *args, **kwargs):
             """
-            Set camera target to be center (centroid) of grid node/face/cell.
+            Sets the camera target to be the center (centroid) of an entity. 
             """
             return PyMenu(self.service, "/display/center_view_on").execute(*args, **kwargs)
         def clear(self, *args, **kwargs):
             """
-            Clear active graphics window.
+            Clears the active graphics window. This option is useful when you redo an overlay. 
             """
             return PyMenu(self.service, "/display/clear").execute(*args, **kwargs)
         def clear_annotation(self, *args, **kwargs):
             """
-            Delete annotation text.
+            Removes all annotations and attachment lines from the active graphics window. 
             """
             return PyMenu(self.service, "/display/clear_annotation").execute(*args, **kwargs)
         def draw_zones(self, *args, **kwargs):
             """
-            Draw the specified zones using the default grid parameters.
+            Draws the boundary/cell zones using the zone ID specified as input. 
             """
             return PyMenu(self.service, "/display/draw_zones").execute(*args, **kwargs)
         def draw_cells_using_faces(self, *args, **kwargs):
             """
-            Draw cells using selected faces.
+            Draws cells that are neighbors for the selected faces. 
             """
             return PyMenu(self.service, "/display/draw_cells_using_faces").execute(*args, **kwargs)
         def draw_cells_using_nodes(self, *args, **kwargs):
             """
-            Draw cells using selected nodes.
+            Draws cells that are connected to the selected nodes. 
             """
             return PyMenu(self.service, "/display/draw_cells_using_nodes").execute(*args, **kwargs)
         def draw_face_zones_using_entities(self, *args, **kwargs):
             """
-            Draw face zone connected to node.
+            Draws cells that are connected to the selected entities. 
             """
             return PyMenu(self.service, "/display/draw_face_zones_using_entities").execute(*args, **kwargs)
         def all_grid(self, *args, **kwargs):
             """
-            Display grid zones according to parameters in set-grid.
+            Displays the grid according to the currently set parameters. 
             """
             return PyMenu(self.service, "/display/all_grid").execute(*args, **kwargs)
         def save_picture(self, *args, **kwargs):
             """
-            Generate a "hardcopy" of the active window.
+            Saves a picture file of the active graphics window. 
             """
             return PyMenu(self.service, "/display/save_picture").execute(*args, **kwargs)
         def redisplay(self, *args, **kwargs):
             """
-            Re-display grid.
+            Redraws the grid in the graphics window. 
             """
             return PyMenu(self.service, "/display/redisplay").execute(*args, **kwargs)
         def show_hide_clipping_plane_triad(self, *args, **kwargs):
             """
-            Show/Hide clipping plane triad.
+            S
             """
             return PyMenu(self.service, "/display/show_hide_clipping_plane_triad").execute(*args, **kwargs)
         def set_list_tree_separator(self, *args, **kwargs):
             """
-            Set the separator character for list tree.
+            Sets the separator character to be used to determine the common prefix for items listed in the selection lists, when the tree view is used.
             """
             return PyMenu(self.service, "/display/set_list_tree_separator").execute(*args, **kwargs)
         def update_layout(self, *args, **kwargs):
@@ -7937,7 +7911,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class set(metaclass=PyMenuMeta):
             """
-            Menu to set display parameters.
+            Enables you to enter the set menu to set the display parameters. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -7955,22 +7929,22 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/set/highlight_tree_selection").execute(*args, **kwargs)
             def remote_display_defaults(self, *args, **kwargs):
                 """
-                Apply display settings recommended for remote display.
+                Adjusts graphics window parameters to optimal settings for a remote display.   Restore parameters for local display using native-display-defaults.
                 """
                 return PyMenu(self.service, "/display/set/remote_display_defaults").execute(*args, **kwargs)
             def native_display_defaults(self, *args, **kwargs):
                 """
-                Apply display settings recommended for native display.
+                Resets graphics window parameters to optimal settings for a local display.   Used after setting parameters for a remote display with remote-display-defaults.
                 """
                 return PyMenu(self.service, "/display/set/native_display_defaults").execute(*args, **kwargs)
             def edges(self, *args, **kwargs):
                 """
-                Turn on/off display of face/cell edges.
+                Enables/disables the display of face/cell edges. 
                 """
                 return PyMenu(self.service, "/display/set/edges").execute(*args, **kwargs)
             def filled_grid(self, *args, **kwargs):
                 """
-                Turn on/off filled grid option.
+                Enables/disables the filled grid option. When a grid is not filled, only its outline is drawn. 
                 """
                 return PyMenu(self.service, "/display/set/filled_grid").execute(*args, **kwargs)
             def quick_moves_algorithm(self, *args, **kwargs):
@@ -7980,38 +7954,38 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/set/quick_moves_algorithm").execute(*args, **kwargs)
             def line_weight(self, *args, **kwargs):
                 """
-                Set the window's line-weight factor.
+                Sets the line width factor for the window. 
                 """
                 return PyMenu(self.service, "/display/set/line_weight").execute(*args, **kwargs)
             def overlays(self, *args, **kwargs):
                 """
-                Turn on/off overlays.
+                Turns overlays on and off. 
                 """
                 return PyMenu(self.service, "/display/set/overlays").execute(*args, **kwargs)
             def re_render(self, *args, **kwargs):
                 """
-                Re-render current window after modifying variables in set menu.
+                Re-renders the current window after modifying the variables in the set menu. 
                 """
                 return PyMenu(self.service, "/display/set/re_render").execute(*args, **kwargs)
             def reset_graphics(self, *args, **kwargs):
                 """
-                Reset the graphics system.
+                Resets the graphics system. 
                 """
                 return PyMenu(self.service, "/display/set/reset_graphics").execute(*args, **kwargs)
             def shrink_factor(self, *args, **kwargs):
                 """
-                Set grid shrink factor.
+                Sets shrinkage of both faces and cells. A value of zero indicates no shrinkage, while a value of one would shrink the face or cell to a point. 
                 """
                 return PyMenu(self.service, "/display/set/shrink_factor").execute(*args, **kwargs)
             def title(self, *args, **kwargs):
                 """
-                Set problem title.
+                Sets the problem title. 
                 """
                 return PyMenu(self.service, "/display/set/title").execute(*args, **kwargs)
 
             class colors(metaclass=PyMenuMeta):
                 """
-                Color options menu.
+                Enables you to enter the colors options menu. 
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8020,132 +7994,132 @@ class main_menu(metaclass=PyMenuMeta):
                     self.by_surface = self.__class__.by_surface(path + [("by_surface", None)], service)
                 def background(self, *args, **kwargs):
                     """
-                    Set the background (window) color.
+                    Sets the background (window) color. 
                     """
                     return PyMenu(self.service, "/display/set/colors/background").execute(*args, **kwargs)
                 def color_by_type(self, *args, **kwargs):
                     """
-                    Determine whether to color meshes by type or by surface (ID).
+                    Enables you to specify that the entities should be colored by their type or ID. 
                     """
                     return PyMenu(self.service, "/display/set/colors/color_by_type").execute(*args, **kwargs)
                 def foreground(self, *args, **kwargs):
                     """
-                    Set the foreground (text and window frame) color.
+                    Sets the foreground (text and window frame) color. 
                     """
                     return PyMenu(self.service, "/display/set/colors/foreground").execute(*args, **kwargs)
                 def far_field_faces(self, *args, **kwargs):
                     """
-                    Set the color of far field faces.
+                    Sets the color of far field faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/far_field_faces").execute(*args, **kwargs)
                 def inlet_faces(self, *args, **kwargs):
                     """
-                    Set the color of inlet faces.
+                    Sets the color of the inlet faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/inlet_faces").execute(*args, **kwargs)
                 def interior_faces(self, *args, **kwargs):
                     """
-                    Set the color of interior faces.
+                    Sets the color of the interior faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/interior_faces").execute(*args, **kwargs)
                 def internal_faces(self, *args, **kwargs):
                     """
-                    Set the color of internal interface faces.
+                    Sets the color of the internal interface faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/internal_faces").execute(*args, **kwargs)
                 def outlet_faces(self, *args, **kwargs):
                     """
-                    Set the color of outlet faces.
+                    Sets the color of the outlet faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/outlet_faces").execute(*args, **kwargs)
                 def overset_faces(self, *args, **kwargs):
                     """
-                    Set the color of overset faces.
+                    Sets the color of the overset faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/overset_faces").execute(*args, **kwargs)
                 def periodic_faces(self, *args, **kwargs):
                     """
-                    Set the color of periodic faces.
+                    Sets the color of periodic faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/periodic_faces").execute(*args, **kwargs)
                 def rans_les_interface_faces(self, *args, **kwargs):
                     """
-                    Set the color of RANS/LES interface faces.
+                    Sets the color of RANS/LES interface faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/rans_les_interface_faces").execute(*args, **kwargs)
                 def reset_user_colors(self, *args, **kwargs):
                     """
-                    Reset all user colors.
+                    Resets individual grid surface colors to the defaults. 
                     """
                     return PyMenu(self.service, "/display/set/colors/reset_user_colors").execute(*args, **kwargs)
                 def show_user_colors(self, *args, **kwargs):
                     """
-                    List currently defined user colors.
+                    Lists the current defined user colors. 
                     """
                     return PyMenu(self.service, "/display/set/colors/show_user_colors").execute(*args, **kwargs)
                 def symmetry_faces(self, *args, **kwargs):
                     """
-                    Set the color of symmetric faces.
+                    Sets the color of symmetric faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/symmetry_faces").execute(*args, **kwargs)
                 def axis_faces(self, *args, **kwargs):
                     """
-                    Set the color of axisymmetric faces.
+                    Sets the color of axisymmetric faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/axis_faces").execute(*args, **kwargs)
                 def free_surface_faces(self, *args, **kwargs):
                     """
-                    Set the color of free-surface faces.
+                    Sets the color of free surface faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/free_surface_faces").execute(*args, **kwargs)
                 def traction_faces(self, *args, **kwargs):
                     """
-                    Set the color of traction faces.
+                    Sets the color for traction faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/traction_faces").execute(*args, **kwargs)
                 def user_color(self, *args, **kwargs):
                     """
-                    Explicitly set color of display zone.
+                    Enables you to change the color for the specified zone. 
                     """
                     return PyMenu(self.service, "/display/set/colors/user_color").execute(*args, **kwargs)
                 def wall_faces(self, *args, **kwargs):
                     """
-                    Set the color of wall faces.
+                    Sets color for wall faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/wall_faces").execute(*args, **kwargs)
                 def interface_faces(self, *args, **kwargs):
                     """
-                    Set the color of mesh Interfaces.
+                    Sets the color of grid interface faces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/interface_faces").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List available colors.
+                    Lists the colors available for the selected zone type. 
                     """
                     return PyMenu(self.service, "/display/set/colors/list").execute(*args, **kwargs)
                 def reset_colors(self, *args, **kwargs):
                     """
-                    Reset individual mesh surface colors to the defaults.
+                    Resets the individual grid surface colors to the defaults. 
                     """
                     return PyMenu(self.service, "/display/set/colors/reset_colors").execute(*args, **kwargs)
                 def surface(self, *args, **kwargs):
                     """
-                    Set the color of surfaces.
+                    Sets the color of surfaces. 
                     """
                     return PyMenu(self.service, "/display/set/colors/surface").execute(*args, **kwargs)
                 def skip_label(self, *args, **kwargs):
                     """
-                    Set the number of labels to be skipped in the colopmap scale.
+                    Sets the number of labels to be skipped in the colormap scale. 
                     """
                     return PyMenu(self.service, "/display/set/colors/skip_label").execute(*args, **kwargs)
                 def automatic_skip(self, *args, **kwargs):
                     """
-                    Determine whether to skip labels in the colopmap scale automatically.
+                    Specify whether the number of colormap labels is determined automatically. The default is yes.
                     """
                     return PyMenu(self.service, "/display/set/colors/automatic_skip").execute(*args, **kwargs)
                 def graphics_color_theme(self, *args, **kwargs):
                     """
-                    Enter the graphics color theme menu.
+                    Sets the color theme for the graphics window. The color options (black, white, gray-gradient, or workbench) are for the background display, but changing the theme also changes the default colors for items that display in the graphics windows, like faces and edges. 
                     """
                     return PyMenu(self.service, "/display/set/colors/graphics_color_theme").execute(*args, **kwargs)
 
@@ -8501,7 +8475,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class picture(metaclass=PyMenuMeta):
                 """
-                Hardcopy options menu.
+                Saves a hardcopy file of the active graphics window. 
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8510,37 +8484,37 @@ class main_menu(metaclass=PyMenuMeta):
                     self.driver = self.__class__.driver(path + [("driver", None)], service)
                 def invert_background(self, *args, **kwargs):
                     """
-                    Use a white background when the picture is saved.
+                    Enables/disables the exchange of foreground/background colors for hardcopy files. 
                     """
                     return PyMenu(self.service, "/display/set/picture/invert_background").execute(*args, **kwargs)
                 def landscape(self, *args, **kwargs):
                     """
-                    Plot hardcopies in landscape or portrait orientation.
+                    Toggles between landscape or portrait orientation. 
                     """
                     return PyMenu(self.service, "/display/set/picture/landscape").execute(*args, **kwargs)
                 def preview(self, *args, **kwargs):
                     """
-                    Display a preview image of a hardcopy.
+                    Applies the settings of the color-mode, invert-background, and landscape options to the currently active graphics window to preview the appearance of printed hardcopies. 
                     """
                     return PyMenu(self.service, "/display/set/picture/preview").execute(*args, **kwargs)
                 def x_resolution(self, *args, **kwargs):
                     """
-                    Set the width of raster-formatted images in pixels (0 implies current window size).
+                    Sets the width of the raster format images in pixels (0 implies that the hardcopy should use the same resolution as the active graphics window). 
                     """
                     return PyMenu(self.service, "/display/set/picture/x_resolution").execute(*args, **kwargs)
                 def y_resolution(self, *args, **kwargs):
                     """
-                    Set the height of raster-formatted images in pixels (0 implies current window size).
+                    Sets the height of the raster format images in pixels (0 implies that the hardcopy should use the same resolution as the active graphics window). 
                     """
                     return PyMenu(self.service, "/display/set/picture/y_resolution").execute(*args, **kwargs)
                 def dpi(self, *args, **kwargs):
                     """
-                    Set the DPI for EPS and Postscript files, specifies the resolution in dots per inch (DPI) instead of setting the width and height.
+                    Specifies the resolution in dots per inch for EPS and PostScript files. 
                     """
                     return PyMenu(self.service, "/display/set/picture/dpi").execute(*args, **kwargs)
                 def use_window_resolution(self, *args, **kwargs):
                     """
-                    Use the currently active window's resolution for hardcopy (ignores the x-resolution and y-resolution in this case).
+                    Disables/enables the use of the current graphics window resolution when saving an image of the graphics window. If disabled, the resolution will be as specified for x-resolution and y-resolution.
                     """
                     return PyMenu(self.service, "/display/set/picture/use_window_resolution").execute(*args, **kwargs)
                 def set_standard_resolution(self, *args, **kwargs):
@@ -8550,41 +8524,41 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/display/set/picture/set_standard_resolution").execute(*args, **kwargs)
                 def jpeg_hardcopy_quality(self, *args, **kwargs):
                     """
-                    To set jpeg hardcopy quality.
+                    Controls the size and quality of how JPEG files are saved based on a scale of 0-100, with zero being low quality small files and 100 being high quality larger files.
                     """
                     return PyMenu(self.service, "/display/set/picture/jpeg_hardcopy_quality").execute(*args, **kwargs)
 
                 class color_mode(metaclass=PyMenuMeta):
                     """
-                    Enter the hardcopy color mode menu.
+                    Contains the available color modes. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def color(self, *args, **kwargs):
                         """
-                        Plot hardcopies in color.
+                        Selects full color and plots the hardcopy in color. 
                         """
                         return PyMenu(self.service, "/display/set/picture/color_mode/color").execute(*args, **kwargs)
                     def gray_scale(self, *args, **kwargs):
                         """
-                        Convert color to grayscale for hardcopy.
+                        Selects gray scale (that is, various shades of gray) and converts color to gray-scale for hardcopy. 
                         """
                         return PyMenu(self.service, "/display/set/picture/color_mode/gray_scale").execute(*args, **kwargs)
                     def mono_chrome(self, *args, **kwargs):
                         """
-                        Convert color to monochrome (black and white) for hardcopy.
+                        Selects color to monochrome (black and white) for hardcopy. 
                         """
                         return PyMenu(self.service, "/display/set/picture/color_mode/mono_chrome").execute(*args, **kwargs)
                     def list(self, *args, **kwargs):
                         """
-                        Display the current hardcopy color mode.
+                        Displays the current hardcopy color mode. 
                         """
                         return PyMenu(self.service, "/display/set/picture/color_mode/list").execute(*args, **kwargs)
 
                 class driver(metaclass=PyMenuMeta):
                     """
-                    Enter the set hardcopy driver menu.
+                    Contains the available hardcopy formats. 
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -8592,42 +8566,42 @@ class main_menu(metaclass=PyMenuMeta):
                         self.post_format = self.__class__.post_format(path + [("post_format", None)], service)
                     def dump_window(self, *args, **kwargs):
                         """
-                        Set the command used to dump the graphics window to a file.
+                        Sets the command to dump a graphics window to a file. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/dump_window").execute(*args, **kwargs)
                     def eps(self, *args, **kwargs):
                         """
-                        Produce encapsulated PostScript (EPS) output for hardcopies.
+                        Sets the Encapsulated PostScript format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/eps").execute(*args, **kwargs)
                     def jpeg(self, *args, **kwargs):
                         """
-                        Produce JPEG output for hardcopies.
+                        Sets the JPEG image format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/jpeg").execute(*args, **kwargs)
                     def post_script(self, *args, **kwargs):
                         """
-                        Produce PostScript output for hardcopies.
+                        Sets the PostScript format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/post_script").execute(*args, **kwargs)
                     def ppm(self, *args, **kwargs):
                         """
-                        Produce PPM output for hardcopies.
+                        Sets the PPM format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/ppm").execute(*args, **kwargs)
                     def tiff(self, *args, **kwargs):
                         """
-                        Use TIFF output for hardcopies.
+                        Sets the TIFF format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/tiff").execute(*args, **kwargs)
                     def png(self, *args, **kwargs):
                         """
-                        Use PNG output for hardcopies.
+                        Sets the PNG image format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/png").execute(*args, **kwargs)
                     def hsf(self, *args, **kwargs):
                         """
-                        Use HSF output for hardcopies.
+                        Produces HOOPS Visualize Stream Format (HSF) output for  hardcopies.
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/hsf").execute(*args, **kwargs)
                     def avz(self, *args, **kwargs):
@@ -8637,65 +8611,56 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/display/set/picture/driver/avz").execute(*args, **kwargs)
                     def glb(self, *args, **kwargs):
                         """
-                        Use GLB output for hardcopies.
+                        Produces GLB output for hardcopies.
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/glb").execute(*args, **kwargs)
                     def vrml(self, *args, **kwargs):
                         """
-                        Use VRML output for hardcopies.
+                        Sets the VRML format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/vrml").execute(*args, **kwargs)
                     def list(self, *args, **kwargs):
                         """
-                        List the current hardcopy driver.
+                        Displays the current hardcopy format. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/list").execute(*args, **kwargs)
                     def options(self, *args, **kwargs):
                         """
-                        Set the hardcopy options. Available options are:
-                        \\n               	"no gamma correction", disables gamma correction of colors,
-                        \\n               	"physical size = (width,height)", where width and height
-                                  are the actual measurements of the printable area of the page
-                                  in centimeters.
-                        \\n               	"subscreen = (left,right,bottom,top)", where left,right,
-                                  bottom, and top are numbers in [-1,1] describing a subwindow on
-                                  the page in which to place the hardcopy.
-                        
-                        \\n          The options may be combined by separating them with commas.
+                        Enables you to set hardcopy options, such as landscape orientation, pen speed, and physical size. The options may be entered on one line if you separate them with commas. 
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/options").execute(*args, **kwargs)
 
                     class post_format(metaclass=PyMenuMeta):
                         """
-                        Enter the PostScript driver format menu.
+                        Contains commands for setting the PostScript driver format and save files in PS files that can be printed quickly. 
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def fast_raster(self, *args, **kwargs):
                             """
-                            Use the new raster format.
+                            Enables a raster file that may be larger than the standard raster file, but will print much more quickly. 
                             """
                             return PyMenu(self.service, "/display/set/picture/driver/post_format/fast_raster").execute(*args, **kwargs)
                         def raster(self, *args, **kwargs):
                             """
-                            Use the original raster format.
+                            Enables the standard raster file. 
                             """
                             return PyMenu(self.service, "/display/set/picture/driver/post_format/raster").execute(*args, **kwargs)
                         def rle_raster(self, *args, **kwargs):
                             """
-                            Use the run-length encoded raster format.
+                            Enables a run-length encoded raster file that will be about the same size as the standard raster file, but will print slightly more quickly. This is the default file type. 
                             """
                             return PyMenu(self.service, "/display/set/picture/driver/post_format/rle_raster").execute(*args, **kwargs)
                         def vector(self, *args, **kwargs):
                             """
-                            Use vector format.
+                            Enables the standard vector file. 
                             """
                             return PyMenu(self.service, "/display/set/picture/driver/post_format/vector").execute(*args, **kwargs)
 
             class lights(metaclass=PyMenuMeta):
                 """
-                Lights menu.
+                Enters the lights menu. 
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8703,123 +8668,123 @@ class main_menu(metaclass=PyMenuMeta):
                     self.lighting_interpolation = self.__class__.lighting_interpolation(path + [("lighting_interpolation", None)], service)
                 def lights_on(self, *args, **kwargs):
                     """
-                    Turn all active lighting on/off.
+                    Enables/disables the display of all lights. 
                     """
                     return PyMenu(self.service, "/display/set/lights/lights_on").execute(*args, **kwargs)
                 def set_ambient_color(self, *args, **kwargs):
                     """
-                    Set the ambient light color for the scene.
+                    Sets the ambient color for the scene. The ambient color is the background light color in scene. 
                     """
                     return PyMenu(self.service, "/display/set/lights/set_ambient_color").execute(*args, **kwargs)
                 def set_light(self, *args, **kwargs):
                     """
-                    Add or modify a directional, colored light.
+                    Adds or modifies a directional, colored light. 
                     """
                     return PyMenu(self.service, "/display/set/lights/set_light").execute(*args, **kwargs)
                 def headlight_on(self, *args, **kwargs):
                     """
-                    Turn the light that moves with the camera on or off.
+                    Turns the light that moves with the camera on or off. This is controlled automatically by default.
                     """
                     return PyMenu(self.service, "/display/set/lights/headlight_on").execute(*args, **kwargs)
 
                 class lighting_interpolation(metaclass=PyMenuMeta):
                     """
-                    Set lighting interpolation method.
+                    Sets the lighting interpolation method to be used. You can choose automatic, flat, gouraud, or phong. "Automatic" automatically picks the best lighting method for the display in the graphics window. Flat is the most basic method, and the others are more sophisticated and provide smoother gradations of color. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def automatic(self, *args, **kwargs):
                         """
-                        Choose Automatic to automatically select the best lighting method for a given graphics object.
+                        Fluent automatically picks the best lighting method for the display in the graphics window.
                         """
                         return PyMenu(self.service, "/display/set/lights/lighting_interpolation/automatic").execute(*args, **kwargs)
                     def flat(self, *args, **kwargs):
                         """
-                        Use flat shading for meshes and polygons.
+                        Uses flat shading for meshes and polygons.
                         """
                         return PyMenu(self.service, "/display/set/lights/lighting_interpolation/flat").execute(*args, **kwargs)
                     def gouraud(self, *args, **kwargs):
                         """
-                        Use Gouraud shading to calculate the color at each vertex of a polygon and interpolate it in the interior.
+                        Uses Gouraud shading to calculate the color at each vertex of a polygon and interpolates it in the interior.
                         """
                         return PyMenu(self.service, "/display/set/lights/lighting_interpolation/gouraud").execute(*args, **kwargs)
                     def phong(self, *args, **kwargs):
                         """
-                        Use Phong shading to interpolate the normals for each pixel of a polygon and compute a color at every pixel.
+                        Uses Phong shading to interpolate the normals for each pixel of a polygon and computes a color at every pixel.
                         """
                         return PyMenu(self.service, "/display/set/lights/lighting_interpolation/phong").execute(*args, **kwargs)
 
             class rendering_options(metaclass=PyMenuMeta):
                 """
-                Rendering options menu.
+                Contains the commands that enable you to set options that determine how the scene is rendered. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def auto_spin(self, *args, **kwargs):
                     """
-                    Enable/disable mouse view rotations to continue to spin the display after the button is released.
+                    Enables mouse view rotations to continue to spin the display after the button is released. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/auto_spin").execute(*args, **kwargs)
                 def device_info(self, *args, **kwargs):
                     """
-                    List information for the graphics device.
+                    Prints out information about your graphics driver. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/device_info").execute(*args, **kwargs)
                 def double_buffering(self, *args, **kwargs):
                     """
-                    Enable/disable double-buffering.
+                    Enables or disables double buffering. Double buffering dramatically reduces screen flicker during graphics updates. If your display hardware does not support double buffering and you turn this option on, double buffering will be done in software. Software double buffering uses extra memory. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/double_buffering").execute(*args, **kwargs)
                 def driver(self, *args, **kwargs):
                     """
-                    Change the current graphics driver.
+                    Changes the current graphics driver. When enabling graphics display, you have various options: for Linux, the available drivers include opengl and x11; for Windows, the available drivers include opengl, dx11 (for DirectX 11), and msw (for Microsoft Windows). You can also disable the graphics display window by entering null. For a comprehensive list of the drivers available to you, press the Enter key at the driver> prompt.  For any session that displays graphics in a graphics window and/or saves picture files, having the driver set to x11, msw, or null will cause the rendering / saving speed to be significantly slower.
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/driver").execute(*args, **kwargs)
                 def hidden_surfaces(self, *args, **kwargs):
                     """
-                    Enable/disable hidden surface removal.
+                    Enables/disables the display of hidden surfaces. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/hidden_surfaces").execute(*args, **kwargs)
                 def hidden_surface_method(self, *args, **kwargs):
                     """
-                    Specify the method to perform hidden line and hidden surface rendering.
+                    Enables you to choose from among the hidden surface removal methods that are supported. These options (listed below) are display hardware dependent. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/hidden_surface_method").execute(*args, **kwargs)
                 def outer_face_cull(self, *args, **kwargs):
                     """
-                    Enable/disable discarding outer faces during display.
+                    Enables/disables the display of outer faces. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/outer_face_cull").execute(*args, **kwargs)
                 def surface_edge_visibility(self, *args, **kwargs):
                     """
-                    Set edge visibility flags for surfaces.
+                    Controls whether or not the mesh edges are drawn. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/surface_edge_visibility").execute(*args, **kwargs)
                 def animation_option(self, *args, **kwargs):
                     """
-                    Using Wireframe / All option during animation.
+                    Enables you to specify the animation option as appropriate. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/animation_option").execute(*args, **kwargs)
                 def color_map_alignment(self, *args, **kwargs):
                     """
-                    Set the color bar alignment.
+                    Sets the color bar alignment. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/color_map_alignment").execute(*args, **kwargs)
                 def help_text_color(self, *args, **kwargs):
                     """
-                    Set the color of screen help text.
+                    Sets the color of the help text on the screen. You can select black, default, or white.
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/help_text_color").execute(*args, **kwargs)
                 def face_displacement(self, *args, **kwargs):
                     """
-                    Set face displacement value in Z-buffer units along the Camera Z-axis.
+                    Sets the face displacement (in Z-buffer units along the camera Z-axis) for the displayed geometry when both faces and edges are displayed simultaneously. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/face_displacement").execute(*args, **kwargs)
                 def set_rendering_options(self, *args, **kwargs):
                     """
-                    Set the rendering options.
+                    Sets the rendering options. 
                     """
                     return PyMenu(self.service, "/display/set/rendering_options/set_rendering_options").execute(*args, **kwargs)
                 def show_colormap(self, *args, **kwargs):
@@ -8830,19 +8795,19 @@ class main_menu(metaclass=PyMenuMeta):
 
             class styles(metaclass=PyMenuMeta):
                 """
-                Display style menu.
+                Contains commands for setting the display style for the different types of nodes and faces that can be displayed. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def cell_quality(self, *args, **kwargs):
                     """
-                    Set the display attributes of the cell-quality style.
+                    Indicates cells within the specified cell quality range. 
                     """
                     return PyMenu(self.service, "/display/set/styles/cell_quality").execute(*args, **kwargs)
                 def cell_size(self, *args, **kwargs):
                     """
-                    Set the display attributes of the cell-size style.
+                    Indicates cells within the specified cell size range. 
                     """
                     return PyMenu(self.service, "/display/set/styles/cell_size").execute(*args, **kwargs)
                 def dummy(self, *args, **kwargs):
@@ -8852,58 +8817,58 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/display/set/styles/dummy").execute(*args, **kwargs)
                 def face_quality(self, *args, **kwargs):
                     """
-                    Set the display attributes of the face-quality style.
+                    Indicates faces within the specified face quality range. 
                     """
                     return PyMenu(self.service, "/display/set/styles/face_quality").execute(*args, **kwargs)
                 def face_size(self, *args, **kwargs):
                     """
-                    Set the display attributes of the face-size style.
+                    Indicates faces within the specified face size range. 
                     """
                     return PyMenu(self.service, "/display/set/styles/face_size").execute(*args, **kwargs)
                 def free(self, *args, **kwargs):
                     """
-                    Set the display attributes of the free style.
+                    Indicates free nodes or faces. 
                     """
                     return PyMenu(self.service, "/display/set/styles/free").execute(*args, **kwargs)
                 def left_handed(self, *args, **kwargs):
                     """
-                    Set the display attributes of the left-handed style.
+                    Indicates faces that do not follow the right-hand rule with respect to their cell neighbors. 
                     """
                     return PyMenu(self.service, "/display/set/styles/left_handed").execute(*args, **kwargs)
                 def mark(self, *args, **kwargs):
                     """
-                    Set the display attributes of the mark style.
+                    Indicates marked objects (for expert users). 
                     """
                     return PyMenu(self.service, "/display/set/styles/mark").execute(*args, **kwargs)
                 def multi(self, *args, **kwargs):
                     """
-                    Set the display attributes of the multi style.
+                    Indicates multiply-connected nodes or faces. 
                     """
                     return PyMenu(self.service, "/display/set/styles/multi").execute(*args, **kwargs)
                 def refine(self, *args, **kwargs):
                     """
-                    Set the display attributes of the refine style.
+                    Indicates boundary faces to be refined. 
                     """
                     return PyMenu(self.service, "/display/set/styles/refine").execute(*args, **kwargs)
                 def tag(self, *args, **kwargs):
                     """
-                    Set the display attributes of the tag style.
+                    Indicates tagged objects (for expert users). 
                     """
                     return PyMenu(self.service, "/display/set/styles/tag").execute(*args, **kwargs)
                 def unmeshed(self, *args, **kwargs):
                     """
-                    Set the display attributes of the unmeshed style.
+                    Indicates unmeshed nodes or faces. 
                     """
                     return PyMenu(self.service, "/display/set/styles/unmeshed").execute(*args, **kwargs)
                 def unused(self, *args, **kwargs):
                     """
-                    Set the display attributes of the unused style.
+                    Indicates unused nodes or faces. 
                     """
                     return PyMenu(self.service, "/display/set/styles/unused").execute(*args, **kwargs)
 
             class windows(metaclass=PyMenuMeta):
                 """
-                Window options menu.
+                Enters the windows options menu, which contains commands that enable you to customize the relative positions of sub-windows inside the active graphics window. 
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8916,7 +8881,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.xy = self.__class__.xy(path + [("xy", None)], service)
                 def aspect_ratio(self, *args, **kwargs):
                     """
-                    Set the aspect ratio of the active window.
+                    Sets the aspect ratio of the active window. 
                     """
                     return PyMenu(self.service, "/display/set/windows/aspect_ratio").execute(*args, **kwargs)
                 def logo(self, *args, **kwargs):
@@ -8926,7 +8891,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/display/set/windows/logo").execute(*args, **kwargs)
                 def ruler(self, *args, **kwargs):
                     """
-                    Enable/disable ruler visibility.
+                    Turns the ruler on/off. Note that if you are running Fluent in 3D, then the view must be set toorthographic.
                     """
                     return PyMenu(self.service, "/display/set/windows/ruler").execute(*args, **kwargs)
                 def logo_color(self, *args, **kwargs):
@@ -8937,413 +8902,413 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class axes(metaclass=PyMenuMeta):
                     """
-                    Enter the axes window options menu.
+                    Enters the axes window options menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def border(self, *args, **kwargs):
                         """
-                        Enable/disable drawing of a border around the axes window.
+                        Sets whether or not to draw a border around the axes window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/axes/border").execute(*args, **kwargs)
                     def bottom(self, *args, **kwargs):
                         """
-                        Set the bottom boundary of the axes window.
+                        Sets the bottom boundary of the axes window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/axes/bottom").execute(*args, **kwargs)
                     def clear(self, *args, **kwargs):
                         """
-                        Set the transparency of the axes window.
+                        Sets the transparency of the axes window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/axes/clear").execute(*args, **kwargs)
                     def right(self, *args, **kwargs):
                         """
-                        Set the right boundary of the axes window.
+                        Sets the right boundary of the axes window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/axes/right").execute(*args, **kwargs)
                     def visible(self, *args, **kwargs):
                         """
-                        Enable/disable axes visibility.
+                        Controls the visibility of the axes window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/axes/visible").execute(*args, **kwargs)
 
                 class main(metaclass=PyMenuMeta):
                     """
-                    Enter the main view window options menu.
+                    Enters the main view window options menu. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def border(self, *args, **kwargs):
                         """
-                        Enable/disable drawing of borders around the main viewing window.
+                        Sets whether or not to draw a border around the main viewing window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/main/border").execute(*args, **kwargs)
                     def bottom(self, *args, **kwargs):
                         """
-                        Set the bottom boundary of the main viewing window.
+                        Sets the bottom boundary of the main viewing window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/main/bottom").execute(*args, **kwargs)
                     def left(self, *args, **kwargs):
                         """
-                        Set the left boundary of the main viewing window.
+                        Sets the left boundary of the main viewing window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/main/left").execute(*args, **kwargs)
                     def right(self, *args, **kwargs):
                         """
-                        Set the right boundary of the main viewing window.
+                        Sets the right boundary of the main viewing window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/main/right").execute(*args, **kwargs)
                     def top(self, *args, **kwargs):
                         """
-                        Set the top boundary of the main viewing window.
+                        Sets the top boundary of the main viewing window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/main/top").execute(*args, **kwargs)
                     def visible(self, *args, **kwargs):
                         """
-                        Enable/disable visibility of the main viewing window.
+                        Controls the visibility of the main viewing window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/main/visible").execute(*args, **kwargs)
 
                 class scale(metaclass=PyMenuMeta):
                     """
-                    Enter the color scale window options menu.
+                    Enters the color scale window options menu. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def border(self, *args, **kwargs):
                         """
-                        Enable/disable drawing of borders around the color scale window.
+                        Sets whether or not to draw a border around the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/border").execute(*args, **kwargs)
                     def bottom(self, *args, **kwargs):
                         """
-                        Set the bottom boundary of the color scale window.
+                        Sets the bottom boundary of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/bottom").execute(*args, **kwargs)
                     def clear(self, *args, **kwargs):
                         """
-                        Set the transparency of the scale window.
+                        Sets the transparency of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/clear").execute(*args, **kwargs)
                     def format(self, *args, **kwargs):
                         """
-                        Set the number format of the color scale window (e.g. %0.2e).
+                        Sets the number format of the color scale window (for example, percentage0.2e). 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/format").execute(*args, **kwargs)
                     def font_size(self, *args, **kwargs):
                         """
-                        Set the font size of the color scale window.
+                        Sets the font size of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/font_size").execute(*args, **kwargs)
                     def left(self, *args, **kwargs):
                         """
-                        Set the left boundary of the color scale window.
+                        Sets the left boundary of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/left").execute(*args, **kwargs)
                     def margin(self, *args, **kwargs):
                         """
-                        Set the margin of the color scale window.
+                        Sets the margin of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/margin").execute(*args, **kwargs)
                     def right(self, *args, **kwargs):
                         """
-                        Set the right boundary of the color scale window.
+                        Sets the right boundary of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/right").execute(*args, **kwargs)
                     def top(self, *args, **kwargs):
                         """
-                        Set the top boundary of the color scale window.
+                        Sets the top boundary of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/top").execute(*args, **kwargs)
                     def visible(self, *args, **kwargs):
                         """
-                        Enable/disable visibility of the color scale window.
+                        Controls the visibility of the color scale window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/visible").execute(*args, **kwargs)
                     def alignment(self, *args, **kwargs):
                         """
-                        Set colormap to bottom/left/top/right.
+                        Sets the colormap position to the bottom, left, top, or right.
                         """
                         return PyMenu(self.service, "/display/set/windows/scale/alignment").execute(*args, **kwargs)
 
                 class text(metaclass=PyMenuMeta):
                     """
-                    Enter the text window options menu.
+                    Enters the text window options menu. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def application(self, *args, **kwargs):
                         """
-                        Enable/disable the application name in the picture.
+                        Shows or hides the application name in the picture. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/application").execute(*args, **kwargs)
                     def border(self, *args, **kwargs):
                         """
-                        Enable/disable drawing of borders around the text window.
+                        Sets whether or not to draw a border around the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/border").execute(*args, **kwargs)
                     def bottom(self, *args, **kwargs):
                         """
-                        Set the bottom boundary of the text window.
+                        Sets the bottom boundary of the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/bottom").execute(*args, **kwargs)
                     def clear(self, *args, **kwargs):
                         """
-                        Enable/disable text window transparency.
+                        Enables/disables the transparency of the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/clear").execute(*args, **kwargs)
                     def company(self, *args, **kwargs):
                         """
-                        Enable/disable the company name in the picture.
+                        Shows or hides the company name in the picture. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/company").execute(*args, **kwargs)
                     def date(self, *args, **kwargs):
                         """
-                        Enable/disable the date in the picture.
+                        Shows or hides the date in the picture. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/date").execute(*args, **kwargs)
                     def left(self, *args, **kwargs):
                         """
-                        Set the left boundary of the text window.
+                        Sets the left boundary of the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/left").execute(*args, **kwargs)
                     def right(self, *args, **kwargs):
                         """
-                        Set the right boundary of the text window.
+                        Sets the right boundary of the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/right").execute(*args, **kwargs)
                     def top(self, *args, **kwargs):
                         """
-                        Set the top boundary of the text window.
+                        Sets the top boundary of the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/top").execute(*args, **kwargs)
                     def visible(self, *args, **kwargs):
                         """
-                        Enable/disable text window transparency.
+                        Controls the visibility of the text window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/text/visible").execute(*args, **kwargs)
 
                 class video(metaclass=PyMenuMeta):
                     """
-                    Enter the video window options menu.
+                    Contains options for modifying a video. This menu is not relevant for the meshing mode. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def background(self, *args, **kwargs):
                         """
-                        Set the background color in the video picture.
+                        Sets the background color of the graphics window. The color is specified as a string of three comma-separated numbers between 0 and 1, representing red, green, and blue. For example, to change the background from black (default) to gray, you would enter ".5,.5,.5" after selecting the background command. 
                         """
                         return PyMenu(self.service, "/display/set/windows/video/background").execute(*args, **kwargs)
                     def color_filter(self, *args, **kwargs):
                         """
-                        Set the color filter options for the picture.
+                        Sets the video color filter. For example, to change the color filter from its default setting  to PAL video with a saturation of 80percentage and a brightness of 90percentage, you would  enter "video=pal,sat=.8,gain=.9" after selecting the color-filter command. 
                         """
                         return PyMenu(self.service, "/display/set/windows/video/color_filter").execute(*args, **kwargs)
                     def foreground(self, *args, **kwargs):
                         """
-                        Set the foreground color in the video picture.
+                        Sets the foreground (text) color of the graphics window. The color is specified as a string of three comma-separated numbers between 0 and 1, representing red, green, and blue. For example, to change the foreground from white (default) to gray, you would enter ".5,.5,.5" after selecting the foreground command. 
                         """
                         return PyMenu(self.service, "/display/set/windows/video/foreground").execute(*args, **kwargs)
                     def on(self, *args, **kwargs):
                         """
-                        Enable/disable video picture settings.
+                        Enables or disables the video picture settings. 
                         """
                         return PyMenu(self.service, "/display/set/windows/video/on").execute(*args, **kwargs)
                     def pixel_size(self, *args, **kwargs):
                         """
-                        Set the window size in pixels.
+                        Sets the window size in pixels. 
                         """
                         return PyMenu(self.service, "/display/set/windows/video/pixel_size").execute(*args, **kwargs)
 
                 class xy(metaclass=PyMenuMeta):
                     """
-                    Enter the X-Y plot window options menu.
+                    Enters the XY plot window options menu. 
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def border(self, *args, **kwargs):
                         """
-                        Enable/disable drawing of a border around the X-Y plotter window.
+                        Sets whether or not to draw a border around the XY plot window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/xy/border").execute(*args, **kwargs)
                     def bottom(self, *args, **kwargs):
                         """
-                        Set the bottom boundary of the X-Y plotter window.
+                        Sets the bottom boundary of the XY plot window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/xy/bottom").execute(*args, **kwargs)
                     def left(self, *args, **kwargs):
                         """
-                        Set the left boundary of the X-Y plotter window.
+                        Sets the left boundary of the XY plot window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/xy/left").execute(*args, **kwargs)
                     def right(self, *args, **kwargs):
                         """
-                        Set the right boundary of the X-Y plotter window.
+                        Sets the right boundary of the XY plot window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/xy/right").execute(*args, **kwargs)
                     def top(self, *args, **kwargs):
                         """
-                        Set the top boundary of the X-Y plotter window.
+                        Sets the top boundary of the XY plot window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/xy/top").execute(*args, **kwargs)
                     def visible(self, *args, **kwargs):
                         """
-                        Enable/disable X-Y plotter window visibility.
+                        Controls the visibility of the XY plot window. 
                         """
                         return PyMenu(self.service, "/display/set/windows/xy/visible").execute(*args, **kwargs)
 
         class set_grid(metaclass=PyMenuMeta):
             """
-            Enter the set-grid menu.
+            Contains options controlling the display of the grid. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def all_cells(self, *args, **kwargs):
                 """
-                Draw all elements in cell zones.
+                Enables/disables the display of all cells. 
                 """
                 return PyMenu(self.service, "/display/set_grid/all_cells").execute(*args, **kwargs)
             def all_faces(self, *args, **kwargs):
                 """
-                Draw all elements in face zones.
+                Enables/disables the display of all faces. 
                 """
                 return PyMenu(self.service, "/display/set_grid/all_faces").execute(*args, **kwargs)
             def all_nodes(self, *args, **kwargs):
                 """
-                Draw all elements in node zones.
+                Enables/disables the display of all nodes. 
                 """
                 return PyMenu(self.service, "/display/set_grid/all_nodes").execute(*args, **kwargs)
             def free(self, *args, **kwargs):
                 """
-                Draw free elements.
+                Enables/disables the drawing of faces/nodes that have no neighboring face on at least one edge. 
                 """
                 return PyMenu(self.service, "/display/set_grid/free").execute(*args, **kwargs)
             def left_handed(self, *args, **kwargs):
                 """
-                Draw left-handed elements.
+                Enables/disables the display of left-handed faces. 
                 """
                 return PyMenu(self.service, "/display/set_grid/left_handed").execute(*args, **kwargs)
             def multi(self, *args, **kwargs):
                 """
-                Draw multiply-connected elements.
+                Enables/disables the display of those faces/nodes that have more than one neighboring face on an edge. 
                 """
                 return PyMenu(self.service, "/display/set_grid/multi").execute(*args, **kwargs)
             def refine(self, *args, **kwargs):
                 """
-                Draw refine marked elements.
+                Enables/disables the display of those faces that have been marked for refinement. 
                 """
                 return PyMenu(self.service, "/display/set_grid/refine").execute(*args, **kwargs)
             def unmeshed(self, *args, **kwargs):
                 """
-                Draw unmeshed elements.
+                Enables/disables the display of nodes and faces that have not been meshed. 
                 """
                 return PyMenu(self.service, "/display/set_grid/unmeshed").execute(*args, **kwargs)
             def unused(self, *args, **kwargs):
                 """
-                Draw unused nodes.
+                Enables/disables the display of unused nodes. 
                 """
                 return PyMenu(self.service, "/display/set_grid/unused").execute(*args, **kwargs)
             def marked(self, *args, **kwargs):
                 """
-                Draw marked elements.
+                Enables/disables the display of marked nodes. 
                 """
                 return PyMenu(self.service, "/display/set_grid/marked").execute(*args, **kwargs)
             def tagged(self, *args, **kwargs):
                 """
-                Draw tagged elements.
+                Enables/disables the display of tagged nodes. 
                 """
                 return PyMenu(self.service, "/display/set_grid/tagged").execute(*args, **kwargs)
             def face_quality(self, *args, **kwargs):
                 """
-                Draw faces only in specified quality range.
+                Sets the lower and upper bounds of quality for faces to be displayed. Only faces with a quality measure value (for example, skewness) within the specified range will be displayed. 
                 """
                 return PyMenu(self.service, "/display/set_grid/face_quality").execute(*args, **kwargs)
             def cell_quality(self, *args, **kwargs):
                 """
-                Draw cells only in specified quality range.
+                Sets the lower and upper bounds of quality for cells to be displayed. Only cells with a quality measure value (for example, skewness) within the specified range will be displayed. 
                 """
                 return PyMenu(self.service, "/display/set_grid/cell_quality").execute(*args, **kwargs)
             def neighborhood(self, *args, **kwargs):
                 """
-                Set display bounds to draw entities in the neighborhood of a entity.
+                Sets the x, y, and z range to be within a specified neighborhood of a specified grid object. 
                 """
                 return PyMenu(self.service, "/display/set_grid/neighborhood").execute(*args, **kwargs)
             def x_range(self, *args, **kwargs):
                 """
-                Draw only entities with x coordinates in specified range.
+                Limits the display of grid objects to the specified x-range. 
                 """
                 return PyMenu(self.service, "/display/set_grid/x_range").execute(*args, **kwargs)
             def y_range(self, *args, **kwargs):
                 """
-                Draw only entities with y coordinates in specified range.
+                Limits the display of grid objects to the specified y-range. 
                 """
                 return PyMenu(self.service, "/display/set_grid/y_range").execute(*args, **kwargs)
             def z_range(self, *args, **kwargs):
                 """
-                Draw only entities with z coordinates in specified range.
+                Limits the display of grid objects to the specified z-range. 
                 """
                 return PyMenu(self.service, "/display/set_grid/z_range").execute(*args, **kwargs)
             def normals(self, *args, **kwargs):
                 """
-                Turn on/off face normals.
+                Enables/disables the display of face normals. 
                 """
                 return PyMenu(self.service, "/display/set_grid/normals").execute(*args, **kwargs)
             def normal_scale(self, *args, **kwargs):
                 """
-                Face normal scale.
+                Sets the scale factor for face normals. 
                 """
                 return PyMenu(self.service, "/display/set_grid/normal_scale").execute(*args, **kwargs)
             def labels(self, *args, **kwargs):
                 """
-                Turn on/off labeling.
+                Enables/disables the display of labels. 
                 """
                 return PyMenu(self.service, "/display/set_grid/labels").execute(*args, **kwargs)
             def label_alignment(self, *args, **kwargs):
                 """
-                Set label alignment; chose from "^v<>\*".
+                Sets the alignment of labels that appear in the graphics window. By default, the label is centered on the node, cell, and so on, to which the label refers. You can specify *,ˆ, v, <, > for center, top, bottom, left, or right. You can also combine symbols—for example, "*v" for bottom center. 
                 """
                 return PyMenu(self.service, "/display/set_grid/label_alignment").execute(*args, **kwargs)
             def label_font(self, *args, **kwargs):
                 """
-                Set label font.
+                Sets the label font. By default, all labels appear in “sans serif" font. Some other choices are roman, typewriter, and stroked. 
                 """
                 return PyMenu(self.service, "/display/set_grid/label_font").execute(*args, **kwargs)
             def label_scale(self, *args, **kwargs):
                 """
-                Set label scale.
+                Scales the size of the label. 
                 """
                 return PyMenu(self.service, "/display/set_grid/label_scale").execute(*args, **kwargs)
             def node_size(self, *args, **kwargs):
                 """
-                Set node symbol scaling factor.
+                Sets the node symbol scaling factor. 
                 """
                 return PyMenu(self.service, "/display/set_grid/node_size").execute(*args, **kwargs)
             def node_symbol(self, *args, **kwargs):
                 """
-                Set node symbol.
+                Specifies the node symbol. 
                 """
                 return PyMenu(self.service, "/display/set_grid/node_symbol").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List display variables.
+                Lists all the grid display settings. 
                 """
                 return PyMenu(self.service, "/display/set_grid/list").execute(*args, **kwargs)
             def default(self, *args, **kwargs):
                 """
-                Reset all display variables to their default value.
+                Resets the grid display parameters to their default values. 
                 """
                 return PyMenu(self.service, "/display/set_grid/default").execute(*args, **kwargs)
 
         class views(metaclass=PyMenuMeta):
             """
-            Enter the view menu.
+            Enters the view window options menu. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -9351,22 +9316,22 @@ class main_menu(metaclass=PyMenuMeta):
                 self.camera = self.__class__.camera(path + [("camera", None)], service)
             def auto_scale(self, *args, **kwargs):
                 """
-                Scale and center the current scene.
+                Scales and centers the current scene without changing its orientation. 
                 """
                 return PyMenu(self.service, "/display/views/auto_scale").execute(*args, **kwargs)
             def default_view(self, *args, **kwargs):
                 """
-                Reset view to front and center.
+                Resets the view to front and center. 
                 """
                 return PyMenu(self.service, "/display/views/default_view").execute(*args, **kwargs)
             def delete_view(self, *args, **kwargs):
                 """
-                Remove a view from the list.
+                Deletes a particular view from the list of stored views. 
                 """
                 return PyMenu(self.service, "/display/views/delete_view").execute(*args, **kwargs)
             def last_view(self, *args, **kwargs):
                 """
-                Return to the camera position before the last manipulation.
+                Returns to the camera position before the last manipulation. 
                 """
                 return PyMenu(self.service, "/display/views/last_view").execute(*args, **kwargs)
             def next_view(self, *args, **kwargs):
@@ -9376,103 +9341,103 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/views/next_view").execute(*args, **kwargs)
             def list_views(self, *args, **kwargs):
                 """
-                List predefined and saved views.
+                Lists all predefined and saved views. 
                 """
                 return PyMenu(self.service, "/display/views/list_views").execute(*args, **kwargs)
             def restore_view(self, *args, **kwargs):
                 """
-                Use a saved view.
+                Sets the current view to one of the stored views. 
                 """
                 return PyMenu(self.service, "/display/views/restore_view").execute(*args, **kwargs)
             def read_views(self, *args, **kwargs):
                 """
-                Read views from a view file.
+                Reads views from an external view file. 
                 """
                 return PyMenu(self.service, "/display/views/read_views").execute(*args, **kwargs)
             def save_view(self, *args, **kwargs):
                 """
-                Save the current view to the view list.
+                Saves the currently displayed view into the list of stored views. 
                 """
                 return PyMenu(self.service, "/display/views/save_view").execute(*args, **kwargs)
             def write_views(self, *args, **kwargs):
                 """
-                Write selected views to a view file.
+                Writes views to an external view file. 
                 """
                 return PyMenu(self.service, "/display/views/write_views").execute(*args, **kwargs)
 
             class camera(metaclass=PyMenuMeta):
                 """
-                Enter the camera menu to modify the current viewing parameters.
+                Contains commands to set the camera options. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def dolly_camera(self, *args, **kwargs):
                     """
-                    Adjust the camera position and target.
+                    Enables you to move the camera left, right, up, down, in, and out. 
                     """
                     return PyMenu(self.service, "/display/views/camera/dolly_camera").execute(*args, **kwargs)
                 def field(self, *args, **kwargs):
                     """
-                    Set the field of view (width and height).
+                    Enables you to set the field of view (width and height) of the scene. 
                     """
                     return PyMenu(self.service, "/display/views/camera/field").execute(*args, **kwargs)
                 def orbit_camera(self, *args, **kwargs):
                     """
-                    Adjust the camera position without modifying the target.
+                    Enables you to move the camera around the target. Gives the effect of circling around the target. 
                     """
                     return PyMenu(self.service, "/display/views/camera/orbit_camera").execute(*args, **kwargs)
                 def pan_camera(self, *args, **kwargs):
                     """
-                    Adjust the camera target without modifying the position.
+                    Gives you the effect of sweeping the camera across the scene. The camera remains at its position but its target changes. 
                     """
                     return PyMenu(self.service, "/display/views/camera/pan_camera").execute(*args, **kwargs)
                 def position(self, *args, **kwargs):
                     """
-                    Set the camera position.
+                    Sets the camera position. 
                     """
                     return PyMenu(self.service, "/display/views/camera/position").execute(*args, **kwargs)
                 def projection(self, *args, **kwargs):
                     """
-                    Set the camera projection type.
+                    Lets you switch between perspective and orthographic views. 
                     """
                     return PyMenu(self.service, "/display/views/camera/projection").execute(*args, **kwargs)
                 def roll_camera(self, *args, **kwargs):
                     """
-                    Adjust the camera up-vector.
+                    Lets you adjust the camera up-vector. 
                     """
                     return PyMenu(self.service, "/display/views/camera/roll_camera").execute(*args, **kwargs)
                 def target(self, *args, **kwargs):
                     """
-                    Set the point to be the center of the camera view.
+                    Sets the point the camera will look at. 
                     """
                     return PyMenu(self.service, "/display/views/camera/target").execute(*args, **kwargs)
                 def up_vector(self, *args, **kwargs):
                     """
-                    Set the camera up-vector.
+                    Sets the camera up-vector. 
                     """
                     return PyMenu(self.service, "/display/views/camera/up_vector").execute(*args, **kwargs)
                 def zoom_camera(self, *args, **kwargs):
                     """
-                    Adjust the camera field of view.
+                    Adjusts the camera’s field of view. This operation is similar to dollying the camera in or out of the scene. Dollying causes objects in front to move past you. Zooming changes the perspective effect in the scene (and can be disconcerting). 
                     """
                     return PyMenu(self.service, "/display/views/camera/zoom_camera").execute(*args, **kwargs)
 
         class display_states(metaclass=PyMenuMeta):
             """
-            Enter the display state menu.
+            Enter the display states menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def list(self, *args, **kwargs):
                 """
-                Print the names of the available display states to the console.
+                Print the names of the existing display states to the console.
                 """
                 return PyMenu(self.service, "/display/display_states/list").execute(*args, **kwargs)
             def apply(self, *args, **kwargs):
                 """
-                Apply a display state to the active window.
+                Apply a display state to the active graphics window.
                 """
                 return PyMenu(self.service, "/display/display_states/apply").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
@@ -9482,27 +9447,28 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/display_states/delete").execute(*args, **kwargs)
             def use_active(self, *args, **kwargs):
                 """
-                Update an existing display state's settings to match those of the active graphics window.
+                Save the display state settings of the active graphics window to an existing display state. This command is not available when the active window is displaying a 2D plot.
+                            
                 """
                 return PyMenu(self.service, "/display/display_states/use_active").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
                 """
-                Create a new display state with settings copied from an existing display state.
+                Copy the settings of an existing display state to another existing display state.
                 """
                 return PyMenu(self.service, "/display/display_states/copy").execute(*args, **kwargs)
             def read(self, *args, **kwargs):
                 """
-                Read display states from a file.
+                Read in display states from a file.
                 """
                 return PyMenu(self.service, "/display/display_states/read").execute(*args, **kwargs)
             def write(self, *args, **kwargs):
                 """
-                Write display states to a file.
+                Write one or more of the saved display states to a file.
                 """
                 return PyMenu(self.service, "/display/display_states/write").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit a particular display state setting.
+                Edit a display state. Enter quit (or a substring, such as q or qui) to exit the editing loop.
                 """
                 return PyMenu(self.service, "/display/display_states/edit").execute(*args, **kwargs)
             def create(self, *args, **kwargs):
@@ -9513,93 +9479,93 @@ class main_menu(metaclass=PyMenuMeta):
 
         class xy_plot(metaclass=PyMenuMeta):
             """
-            Enter X-Y plot menu.
+            Enters the XY plot menu. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def file(self, *args, **kwargs):
                 """
-                Over-plot data from file.
+                Enables you to choose a file from which to create an xy plot. 
                 """
                 return PyMenu(self.service, "/display/xy_plot/file").execute(*args, **kwargs)
             def cell_distribution(self, *args, **kwargs):
                 """
-                Display chart of distribution of cell quality.
+                Plots a histogram of cell quality. 
                 """
                 return PyMenu(self.service, "/display/xy_plot/cell_distribution").execute(*args, **kwargs)
             def face_distribution(self, *args, **kwargs):
                 """
-                Display chart of distribution of face quality.
+                Plots a histogram of face quality. 
                 """
                 return PyMenu(self.service, "/display/xy_plot/face_distribution").execute(*args, **kwargs)
             def set(self, *args, **kwargs):
                 """
-                Set histogram plot parameters.
+                Enters the set window options menu. 
                 """
                 return PyMenu(self.service, "/display/xy_plot/set").execute(*args, **kwargs)
 
         class update_scene(metaclass=PyMenuMeta):
             """
-            Enter the scene options menu.
+            Contains commands that enable you to update the scene description. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def select_geometry(self, *args, **kwargs):
                 """
-                Select geometry to be updated.
+                Enables you to select the geometry to be updated. 
                 """
                 return PyMenu(self.service, "/display/update_scene/select_geometry").execute(*args, **kwargs)
             def overlays(self, *args, **kwargs):
                 """
-                Enable/disable the overlays option.
+                Enables/disables the overlays option. 
                 """
                 return PyMenu(self.service, "/display/update_scene/overlays").execute(*args, **kwargs)
             def draw_frame(self, *args, **kwargs):
                 """
-                Enable/disable drawing of the bounding frame.
+                Enables/disables the drawing of the bounding frame. 
                 """
                 return PyMenu(self.service, "/display/update_scene/draw_frame").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete selected geometries.
+                Deletes the geometry selected using the select-geometry command. 
                 """
                 return PyMenu(self.service, "/display/update_scene/delete").execute(*args, **kwargs)
             def display(self, *args, **kwargs):
                 """
-                Display selected geometries.
+                Displays the geometry selected using the select-geometry command. 
                 """
                 return PyMenu(self.service, "/display/update_scene/display").execute(*args, **kwargs)
             def transform(self, *args, **kwargs):
                 """
-                Apply transformation matrix on selected geometries.
+                Enables you to apply the transformation matrix to the geometry selected using the select-geometry command. 
                 """
                 return PyMenu(self.service, "/display/update_scene/transform").execute(*args, **kwargs)
             def pathline(self, *args, **kwargs):
                 """
-                Change pathline attributes.
+                Changes pathline attributes.
                 """
                 return PyMenu(self.service, "/display/update_scene/pathline").execute(*args, **kwargs)
             def iso_sweep(self, *args, **kwargs):
                 """
-                Change iso-sweep values.
+                Changes iso-sweep values.
                 """
                 return PyMenu(self.service, "/display/update_scene/iso_sweep").execute(*args, **kwargs)
             def time(self, *args, **kwargs):
                 """
-                Change time-step value.
+                Changes time-step value.
                 """
                 return PyMenu(self.service, "/display/update_scene/time").execute(*args, **kwargs)
             def set_frame(self, *args, **kwargs):
                 """
-                Change frame options.
+                Enables you to change the frame options. 
                 """
                 return PyMenu(self.service, "/display/update_scene/set_frame").execute(*args, **kwargs)
 
         class objects(metaclass=PyMenuMeta):
             """
-            Enter the objects menu.
+            Contains commands for displaying objects.
             """
             is_extended_tui = True
             def __init__(self, path, service):
@@ -9614,57 +9580,57 @@ class main_menu(metaclass=PyMenuMeta):
                 self.scene = self.__class__.scene(path + [("scene", None)], None, service)
             def show_all(self, *args, **kwargs):
                 """
-                Show all displayed objects.
+                Unhides all the objects in the geometry and displays them.
                 """
                 return PyMenu(self.service, "/display/objects/show_all").execute(*args, **kwargs)
             def explode(self, *args, **kwargs):
                 """
-                Explode all displayed objects.
+                Explodes the objects in the geometry. (This command is valid only when the geometry is an assembled mode.)
                 """
                 return PyMenu(self.service, "/display/objects/explode").execute(*args, **kwargs)
             def toggle_color_palette(self, *args, **kwargs):
                 """
-                Toggle between default and classic color palettes.
+                Toggles the color palette of the geometry.
                 """
                 return PyMenu(self.service, "/display/objects/toggle_color_palette").execute(*args, **kwargs)
             def implode(self, *args, **kwargs):
                 """
-                Implode all displayed objects.
+                Implodes or assembles the objects in the geometry. (This command is available only when the geometry is an exploded mode.)
                 """
                 return PyMenu(self.service, "/display/objects/implode").execute(*args, **kwargs)
             def display_similar_area(self, *args, **kwargs):
                 """
-                Shows all similar surface area objects.
+                Displays the objects with similar area to the selected object area.
                 """
                 return PyMenu(self.service, "/display/objects/display_similar_area").execute(*args, **kwargs)
             def toggle_color_mode(self, *args, **kwargs):
                 """
-                Toggles color mode between color by objects/threads.
+                Toggles the colors of the geometry. In one mode geometry is colored object-wise while in the other mode it is colored zone-wise.
                 """
                 return PyMenu(self.service, "/display/objects/toggle_color_mode").execute(*args, **kwargs)
             def make_transparent(self, *args, **kwargs):
                 """
-                Toggle Transparent view based on object selection.
+                Makes the geometry transparent so that internal objects are visible. This command works as a toggle undoing the transparency of the previously selected objects.
                 """
                 return PyMenu(self.service, "/display/objects/make_transparent").execute(*args, **kwargs)
             def select_all_visible(self, *args, **kwargs):
                 """
-                Probe select all visible objects.
+                Selects all the visible objects in the graphics window.
                 """
                 return PyMenu(self.service, "/display/objects/select_all_visible").execute(*args, **kwargs)
             def display_neighborhood(self, *args, **kwargs):
                 """
-                Displays neighboring objects also.
+                Displays the objects that are in the neighborhood of the selected object. The neighboring objects have to be in contact, or intersecting the selected object.
                 """
                 return PyMenu(self.service, "/display/objects/display_neighborhood").execute(*args, **kwargs)
             def hide_objects(self, *args, **kwargs):
                 """
-                Hide selected objects from view.
+                Hides the selected objects in the display.
                 """
                 return PyMenu(self.service, "/display/objects/hide_objects").execute(*args, **kwargs)
             def isolate_objects(self, *args, **kwargs):
                 """
-                Hide selected objects from view.
+                Displays only the selected objects.
                 """
                 return PyMenu(self.service, "/display/objects/isolate_objects").execute(*args, **kwargs)
 
@@ -12201,54 +12167,54 @@ class main_menu(metaclass=PyMenuMeta):
 
         class zones(metaclass=PyMenuMeta):
             """
-            Enter the zones menu.
+            Contains commands for displaying zones.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def show_all(self, *args, **kwargs):
                 """
-                Show all displayed objects.
+                Unhides all the zones in the geometry and displays them.
                 """
                 return PyMenu(self.service, "/display/zones/show_all").execute(*args, **kwargs)
             def toggle_color_palette(self, *args, **kwargs):
                 """
-                Toggle between default and classic color palettes.
+                Toggles the color palette of the geometry.
                 """
                 return PyMenu(self.service, "/display/zones/toggle_color_palette").execute(*args, **kwargs)
             def display_similar_area(self, *args, **kwargs):
                 """
-                Shows all similar surface area objects.
+                Displays the zones with similar area to the selected zone area.
                 """
                 return PyMenu(self.service, "/display/zones/display_similar_area").execute(*args, **kwargs)
             def toggle_color_mode(self, *args, **kwargs):
                 """
-                Toggles color mode between color by objects/threads.
+                Toggles the colors of the geometry. In one mode geometry is colored object-wise while in the other mode it is colored zone-wise.
                 """
                 return PyMenu(self.service, "/display/zones/toggle_color_mode").execute(*args, **kwargs)
             def make_transparent(self, *args, **kwargs):
                 """
-                Toggle Transparent view based on object selection.
+                Makes the geometry transparent so that internal zones are visible. This command works as a toggle undoing the transparency of the previously selected zones.
                 """
                 return PyMenu(self.service, "/display/zones/make_transparent").execute(*args, **kwargs)
             def select_all_visible(self, *args, **kwargs):
                 """
-                Probe select all visible objects.
+                Selects all the visible zones in the graphics window.
                 """
                 return PyMenu(self.service, "/display/zones/select_all_visible").execute(*args, **kwargs)
             def display_neighborhood(self, *args, **kwargs):
                 """
-                Displays neighboring objects also.
+                Displays the zones that are in the neighborhood of the selected zones. The neighboring zones have to be in contact, or intersecting the selected zone.
                 """
                 return PyMenu(self.service, "/display/zones/display_neighborhood").execute(*args, **kwargs)
             def hide_zones(self, *args, **kwargs):
                 """
-                Hide selected objects from view.
+                Hides the selected zones in the display.
                 """
                 return PyMenu(self.service, "/display/zones/hide_zones").execute(*args, **kwargs)
             def isolate_zones(self, *args, **kwargs):
                 """
-                Hide selected objects from view.
+                Displays only the selected zones.
                 """
                 return PyMenu(self.service, "/display/zones/isolate_zones").execute(*args, **kwargs)
 
@@ -12294,57 +12260,57 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def face_node_degree_distribution(self, *args, **kwargs):
             """
-            Report face node degree of boundary faces.
+            Reports the distribution of boundary faces based on face node degree. The node degree is the number of faces connected to the node. Specify the list of boundary face zones and the minimum and maximum face node degree to be reported. You can also consider only internal nodes, if required.
             """
             return PyMenu(self.service, "/report/face_node_degree_distribution").execute(*args, **kwargs)
         def boundary_cell_quality(self, *args, **kwargs):
             """
-            Report quality of boundary cells.
+            Reports the number and quality limits of boundary cells containing the specified number of boundary faces. If you specify zero for number of boundary faces, you will be prompted for number of boundary nodes. 
             """
             return PyMenu(self.service, "/report/boundary_cell_quality").execute(*args, **kwargs)
         def cell_distribution(self, *args, **kwargs):
             """
-            Report distribution of cell quality.
+            Reports the distribution of cell quality or size based on the bounding limits and number of partitions specified. 
             """
             return PyMenu(self.service, "/report/cell_distribution").execute(*args, **kwargs)
         def face_distribution(self, *args, **kwargs):
             """
-            Reports the distribution of face quality.
+            Reports the distribution of face quality or size based on the bounding limits and number of partitions specified. 
             """
             return PyMenu(self.service, "/report/face_distribution").execute(*args, **kwargs)
         def cell_zone_volume(self, *args, **kwargs):
             """
-            Report volume of a cell zone.
+            Reports the volume of the specified cell zone. 
             """
             return PyMenu(self.service, "/report/cell_zone_volume").execute(*args, **kwargs)
         def cell_zone_at_location(self, *args, **kwargs):
             """
-            Report cell zone at given location.
+            Returns the cell zone at or closest to the specified location. 
             """
             return PyMenu(self.service, "/report/cell_zone_at_location").execute(*args, **kwargs)
         def face_zone_at_location(self, *args, **kwargs):
             """
-            Report face zone at given location.
+            Reports the face zone at the given location. 
             """
             return PyMenu(self.service, "/report/face_zone_at_location").execute(*args, **kwargs)
         def number_meshed(self, *args, **kwargs):
             """
-            Report number of nodes and faces that have been meshed.
+            Reports the number of elements that have been meshed. 
             """
             return PyMenu(self.service, "/report/number_meshed").execute(*args, **kwargs)
         def list_cell_quality(self, *args, **kwargs):
             """
-            List cells between quality limits.
+            Reports a list of cells with the specified quality measure within a specified range. The valid prefixes are bn (boundary node), n (node), bf (boundary face), f (face), and c (cell). 
             """
             return PyMenu(self.service, "/report/list_cell_quality").execute(*args, **kwargs)
         def mesh_size(self, *args, **kwargs):
             """
-            Report number of each type of grid object.
+            Reports the number of nodes, faces, and cells in the mesh. 
             """
             return PyMenu(self.service, "/report/mesh_size").execute(*args, **kwargs)
         def mesh_statistics(self, *args, **kwargs):
             """
-            Write vital mesh statistics to file.
+            Writes mesh statistics (such as zone information, number of cells, faces, and nodes, range of quality and size) to an external file. 
             """
             return PyMenu(self.service, "/report/mesh_statistics").execute(*args, **kwargs)
         def meshing_time(self, *args, **kwargs):
@@ -12354,72 +12320,73 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/report/meshing_time").execute(*args, **kwargs)
         def memory_usage(self, *args, **kwargs):
             """
-            Report memory usage.
+            Reports the amount of memory used for all nodes, faces, and cells, and the total memory allocated. 
             """
             return PyMenu(self.service, "/report/memory_usage").execute(*args, **kwargs)
         def print_info(self, *args, **kwargs):
             """
-            Print node/face/cell info.
+            Prints information about individual components of the mesh. This command also appears in the boundary menu. When you use this command, you will be prompted for an “entity” (that is, a node, face, or cell). An entity name consists of a prefix and an index. For a description of the displayed information see 
+                        
             """
             return PyMenu(self.service, "/report/print_info").execute(*args, **kwargs)
         def edge_size_limits(self, *args, **kwargs):
             """
-            Report edge size limits.
+            Reports the edge size limits. 
             """
             return PyMenu(self.service, "/report/edge_size_limits").execute(*args, **kwargs)
         def face_size_limits(self, *args, **kwargs):
             """
-            Report face size limits.
+            Reports the face size limits. 
             """
             return PyMenu(self.service, "/report/face_size_limits").execute(*args, **kwargs)
         def face_quality_limits(self, *args, **kwargs):
             """
-            Report face quality limits.
+            Reports the face quality limits. 
             """
             return PyMenu(self.service, "/report/face_quality_limits").execute(*args, **kwargs)
         def face_zone_area(self, *args, **kwargs):
             """
-            Report area of a face zone.
+            Reports the area of the specified face zone. 
             """
             return PyMenu(self.service, "/report/face_zone_area").execute(*args, **kwargs)
         def cell_size_limits(self, *args, **kwargs):
             """
-            Report cell size limits.
+            Reports the cell size limits. 
             """
             return PyMenu(self.service, "/report/cell_size_limits").execute(*args, **kwargs)
         def cell_quality_limits(self, *args, **kwargs):
             """
-            Report cell quality limits.
+            Reports the cell quality limits. 
             """
             return PyMenu(self.service, "/report/cell_quality_limits").execute(*args, **kwargs)
         def neighborhood_quality(self, *args, **kwargs):
             """
-            Report max quality measure of all cells using node.
+            Reports the maximum skewness, aspect ratio, or size change of all cells using a specified node. 
             """
             return PyMenu(self.service, "/report/neighborhood_quality").execute(*args, **kwargs)
         def quality_method(self, *args, **kwargs):
             """
-            Method to use for measuring face and cell quality.
+            Specifies the method to be used for reporting face and cell quality. 
             """
             return PyMenu(self.service, "/report/quality_method").execute(*args, **kwargs)
         def enhanced_orthogonal_quality(self, *args, **kwargs):
             """
-            Enable enhanced orthogonal quality method.
+            Employs an enhanced definition of the orthogonal quality measure that combines a variety of quality measures, including: the orthogonality of a face relative to a vector between the face and cell centroids; a metric that detects poor cell shape at a local edge (such as twisting and/or concavity); and the variation of normals between the faces that can be constructed from the cell face. This definition is optimal for evaluating thin prism cells.
             """
             return PyMenu(self.service, "/report/enhanced_orthogonal_quality").execute(*args, **kwargs)
         def unrefined_cells(self, *args, **kwargs):
             """
-            Report number of cells not refined.
+            Reports the number of cells that have not been refined. 
             """
             return PyMenu(self.service, "/report/unrefined_cells").execute(*args, **kwargs)
         def update_bounding_box(self, *args, **kwargs):
             """
-            Updates bounding box.
+            Updates the bounding box. 
             """
             return PyMenu(self.service, "/report/update_bounding_box").execute(*args, **kwargs)
         def verbosity_level(self, *args, **kwargs):
             """
-            Verbosity level control.
+            Specifies how much information should be displayed during mesh initialization, refinement and other operations. Changing the value to 2 from the default value of 1 will produce more messages, while changing it to 0 will disable all messages. 
             """
             return PyMenu(self.service, "/report/verbosity_level").execute(*args, **kwargs)
         def spy_level(self, *args, **kwargs):
@@ -12437,27 +12404,27 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def spawn_solver_processes(self, *args, **kwargs):
             """
-            Spawn additional solver processes.
+            Specifies the number of solver processes. Additional processes will be spawned as necessary when switching to solution mode in Linux with the default MPI. You will also be prompted for (Linux and mixed Windows/Linux) interconnect type, machine list or host file, and (Linux and mixed Windows/Linux) option to be used.
             """
             return PyMenu(self.service, "/parallel/spawn_solver_processes").execute(*args, **kwargs)
         def auto_partition(self, *args, **kwargs):
             """
-            Auto Partition Prism Base Zones?.
+            Automatically partitions face-zones for parallel meshing.
             """
             return PyMenu(self.service, "/parallel/auto_partition").execute(*args, **kwargs)
         def agglomerate(self, *args, **kwargs):
             """
-            Agglomerate mesh into compute node 0.
+            Recombines distributed mesh data into a single partition on compute node 0.
             """
             return PyMenu(self.service, "/parallel/agglomerate").execute(*args, **kwargs)
         def print_partition_info(self, *args, **kwargs):
             """
-            Prints Partition Info to console.
+            Displays computed partition data to the console.
             """
             return PyMenu(self.service, "/parallel/print_partition_info").execute(*args, **kwargs)
         def thread_number_control(self, *args, **kwargs):
             """
-            Thread number control.
+            Controls the maximum number of threads on each machine.
             """
             return PyMenu(self.service, "/parallel/thread_number_control").execute(*args, **kwargs)
 

@@ -14,8 +14,10 @@ Usage
 
 import os
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
-from ansys.fluent.core.launcher.launcher import launch_fluent
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import LOG
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
@@ -34,6 +36,29 @@ _SOLVER_TUI_FILE = os.path.normpath(
     )
 )
 _INDENT_STEP = 4
+
+_XML_HELP_FILE = os.path.normpath(
+    os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
+)
+_XML_HELPSTRINGS = {}
+
+
+def _populate_xml_helpstrings():
+    tree = ET.parse(_XML_HELP_FILE)
+    root = tree.getroot()
+    help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
+    field_help_node = help_contents_node.find(
+        ".//*[@id='fluent_tui_field_help']"
+    )
+
+    for node in field_help_node.findall("sect2"):
+        k = node.find("h3").text
+        k = k.strip().strip("/")
+        path = k.split("/")
+        path = [c.rstrip("?").replace("-", "_") for c in path]
+        k = "/" + "/".join(path)
+        v = "".join(node.find("p").itertext())
+        _XML_HELPSTRINGS[k] = v
 
 
 class _TUIMenuGenerator:
@@ -62,7 +87,10 @@ class _TUIMenu:
         self.path = path
         self.tui_name = path[-1][0] if path else ""
         self.name = convert_tui_menu_to_func_name(self.tui_name)
-        self.doc = ""
+        tui_path = convert_path_to_grpc_path(path)
+        self.doc = _XML_HELPSTRINGS.get(tui_path, None)
+        if self.doc:
+            del _XML_HELPSTRINGS[tui_path]
         self.children = {}
         self.is_command = False
         self.is_extended_tui = False
@@ -84,13 +112,14 @@ class TUIGenerator:
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
-        self._session = launch_fluent(meshing_mode=meshing)
+        self._session = pyfluent.launch_fluent(meshing_mode=meshing)
         self._service = self._session._datamodel_service_tui
         self._main_menu = _TUIMenu([])
 
     def _populate_menu(self, menu: _TUIMenu):
         menugen = _TUIMenuGenerator(menu.path, self._service)
-        menu.doc = menugen.get_doc_string()
+        if not menu.doc:
+            menu.doc = menugen.get_doc_string()
         menu.is_extended_tui = menugen.is_extended_tui()
         menu.is_container = menugen.is_container()
         child_names = menugen.get_child_names()
@@ -201,5 +230,13 @@ class TUIGenerator:
 
 
 if __name__ == "__main__":
+    # pyfluent.set_log_level("WARNING")
+    _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
     TUIGenerator(meshing=False).generate()
+    LOG.warning(
+        "XML help is available but not picked for the following %i paths:",
+        len(_XML_HELPSTRINGS),
+    )
+    for k, _ in _XML_HELPSTRINGS.items():
+        LOG.warning(k)

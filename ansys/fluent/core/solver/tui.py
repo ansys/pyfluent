@@ -49,7 +49,7 @@ class main_menu(metaclass=PyMenuMeta):
         return PyMenu(self.service, "/exit").execute(*args, **kwargs)
     def switch_to_meshing_mode(self, *args, **kwargs):
         """
-        Switch to meshing mode.
+        Switches from the solution mode to the meshing mode. This text command is only available if you have not yet read a mesh or a case file.
         """
         return PyMenu(self.service, "/switch_to_meshing_mode").execute(*args, **kwargs)
     def print_license_usage(self, *args, **kwargs):
@@ -67,37 +67,37 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def observable(self, *args, **kwargs):
             """
-            Observable menu.
+            Menu to create and configure observables of interest.
             """
             return PyMenu(self.service, "/adjoint/observable").execute(*args, **kwargs)
         def methods(self, *args, **kwargs):
             """
-            Methods menu.
+            Menu to configure adjoint solver settings.
             """
             return PyMenu(self.service, "/adjoint/methods").execute(*args, **kwargs)
         def controls(self, *args, **kwargs):
             """
-            Controls menu.
+            Menu to configure adjoint solver controls.
             """
             return PyMenu(self.service, "/adjoint/controls").execute(*args, **kwargs)
         def monitors(self, *args, **kwargs):
             """
-            Monitors menu.
+            Menu to configure monitors for the adjoint solver.
             """
             return PyMenu(self.service, "/adjoint/monitors").execute(*args, **kwargs)
         def expert(self, *args, **kwargs):
             """
-            Expert menu.
+            Provides text commands that allow you to undo enhancements to the default adjoint solver behavior.
             """
             return PyMenu(self.service, "/adjoint/expert").execute(*args, **kwargs)
         def run(self, *args, **kwargs):
             """
-            Run menu.
+            Menu to initialize and compute the adjoint solution.
             """
             return PyMenu(self.service, "/adjoint/run").execute(*args, **kwargs)
         def reporting(self, *args, **kwargs):
             """
-            Reporting.
+            Menu to report sensitivity data from the adjoint solution.
             """
             return PyMenu(self.service, "/adjoint/reporting").execute(*args, **kwargs)
         def postprocess_options(self, *args, **kwargs):
@@ -117,17 +117,17 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/adjoint/multi_objective").execute(*args, **kwargs)
         def design_tool(self, *args, **kwargs):
             """
-            Design tool menu.
+            Enters the design-tool menu.
             """
             return PyMenu(self.service, "/adjoint/design_tool").execute(*args, **kwargs)
         def optimizer(self, *args, **kwargs):
             """
-            Optimizer menu.
+            Enters the optimizer menu, where you can use a gradient-based optimizer to optimize the geometry to meet multiple goals for multiple observables at multiple operating conditions.
             """
             return PyMenu(self.service, "/adjoint/optimizer").execute(*args, **kwargs)
         def utilities(self, *args, **kwargs):
             """
-            Utilities menu.
+            Enters the utilities menu.
             """
             return PyMenu(self.service, "/adjoint/utilities").execute(*args, **kwargs)
 
@@ -153,7 +153,7 @@ class main_menu(metaclass=PyMenuMeta):
             self.inverse_dft = self.__class__.inverse_dft(path + [("inverse_dft", None)], service)
         def add_custom_vector(self, *args, **kwargs):
             """
-            Add new custom vector definition.
+            Adds new custom vector definition.
             """
             return PyMenu(self.service, "/display/add_custom_vector").execute(*args, **kwargs)
         def annotate(self, *args, **kwargs):
@@ -163,47 +163,47 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/display/annotate").execute(*args, **kwargs)
         def clear_annotations(self, *args, **kwargs):
             """
-            Delete all annotation text.
+            Removes all annotations and attachment lines from the active graphics window.
             """
             return PyMenu(self.service, "/display/clear_annotations").execute(*args, **kwargs)
         def close_window(self, *args, **kwargs):
             """
-            Close a user graphics window.
+            Close a "user" graphics window. User windows are specified by number (1-50), with the associated number corresponding to the order, left-to-right, that the windows were created in.
             """
             return PyMenu(self.service, "/display/close_window").execute(*args, **kwargs)
         def close_window_by_name(self, *args, **kwargs):
             """
-            Close a reserved graphics window by its name.
+            Close a reserved graphics window (windows used for residuals, report plots, and animation definitions).
             """
             return PyMenu(self.service, "/display/close_window_by_name").execute(*args, **kwargs)
         def contour(self, *args, **kwargs):
             """
-            Display contours of a flow variable.
+            Prompts for a scalar field and minimum and maximum values, and then displays a contour plot.
             """
             return PyMenu(self.service, "/display/contour").execute(*args, **kwargs)
         def display_custom_vector(self, *args, **kwargs):
             """
-            Display custom vector.
+            Displays custom vector.
             """
             return PyMenu(self.service, "/display/display_custom_vector").execute(*args, **kwargs)
         def mesh(self, *args, **kwargs):
             """
-            Display the mesh.
+            Displays the entire mesh. For 3D, you will be asked to confirm that you really want to draw the entire mesh (not just themesh-outline).
             """
             return PyMenu(self.service, "/display/mesh").execute(*args, **kwargs)
         def mesh_outline(self, *args, **kwargs):
             """
-            Display the mesh boundaries.
+            Displays the mesh boundaries.
             """
             return PyMenu(self.service, "/display/mesh_outline").execute(*args, **kwargs)
         def hsf_file(self, *args, **kwargs):
             """
-            Display hoops stream file data to active graphics window.
+            Loads an HSF file for viewing.
             """
             return PyMenu(self.service, "/display/hsf_file").execute(*args, **kwargs)
         def mesh_partition_boundary(self, *args, **kwargs):
             """
-            Display mesh partition boundaries.
+            Displays mesh partition boundaries.
             """
             return PyMenu(self.service, "/display/mesh_partition_boundary").execute(*args, **kwargs)
         def save_picture(self, *args, **kwargs):
@@ -213,76 +213,72 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/display/save_picture").execute(*args, **kwargs)
         def multigrid_coarsening(self, *args, **kwargs):
             """
-            Display a coarse mesh level from the last multigrid coarsening.
+            Displays a coarse mesh level from the last multigrid coarsening.
             """
             return PyMenu(self.service, "/display/multigrid_coarsening").execute(*args, **kwargs)
         def open_window(self, *args, **kwargs):
             """
-            Open a user graphics window.
+            Opens a graphics window.
             """
             return PyMenu(self.service, "/display/open_window").execute(*args, **kwargs)
         def graphics_window_layout(self, *args, **kwargs):
             """
-            Arrange the graphics window layout.
+            Arranges the graphics window layout.
             """
             return PyMenu(self.service, "/display/graphics_window_layout").execute(*args, **kwargs)
         def reacting_channel_curves(self, *args, **kwargs):
             """
-            Plot/Report the reacting channel variables.
+            Plots the reacting channel variables.
             """
             return PyMenu(self.service, "/display/reacting_channel_curves").execute(*args, **kwargs)
         def profile(self, *args, **kwargs):
             """
-            Display profiles of a flow variable.
+            Displays profiles of a flow variable.
             """
             return PyMenu(self.service, "/display/profile").execute(*args, **kwargs)
         def re_render(self, *args, **kwargs):
             """
-            Re-render the last contour, profile, or velocity vector plot
-            with updated surfaces, meshes, lights, colormap, rendering options, etc.,
-            without recalculating the contour data.
+            Re-renders the last contour, profile, or vector plot with updated surfaces, meshed, lights, colormap, rendering options, and so on, without recalculating the contour data.
             """
             return PyMenu(self.service, "/display/re_render").execute(*args, **kwargs)
         def re_scale(self, *args, **kwargs):
             """
-            Re-render the last contour, profile, or velocity vector plot
-            with updated scale, surfaces, meshes, lights, colormap, rendering options, etc.,
-            without recalculating the field data.
+            Re-renders the last contour, profile, or vector plot with updated scale, surfaces, meshes, lights, colormap, rendering options, and so on, but without recalculating the field data.
             """
             return PyMenu(self.service, "/display/re_scale").execute(*args, **kwargs)
         def set_window(self, *args, **kwargs):
             """
-            Set a user graphics window to be the active window.
+            Sets a "user" graphics window to be the active window. User windows are specified by number (1-50), with the associated number corresponding to the order, left-to-right, that the windows were created in.
             """
             return PyMenu(self.service, "/display/set_window").execute(*args, **kwargs)
         def set_window_by_name(self, *args, **kwargs):
             """
-            Set a reserved graphics window to be the active window by its name.
+            Sets the specified graphics window as active. The graphics windows specified using this command are "reserved" windows, that is, residual monitors, report plots, and animation definitions. The name will match the name you provided when creating the object (report plots and animation definitions).
             """
             return PyMenu(self.service, "/display/set_window_by_name").execute(*args, **kwargs)
         def surface_cells(self, *args, **kwargs):
             """
-            Draw the cells on the specified surfaces.
+            Draws the cells on the specified surfaces. You can include a wildcard (*) within the surface names.
             """
             return PyMenu(self.service, "/display/surface_cells").execute(*args, **kwargs)
         def surface_mesh(self, *args, **kwargs):
             """
-            Draw the mesh defined by the specified surfaces.
+            Draws the mesh defined by the specified surfaces. You can include a wildcard (*) within the surface names.
             """
             return PyMenu(self.service, "/display/surface_mesh").execute(*args, **kwargs)
         def vector(self, *args, **kwargs):
             """
-            Display space vectors.
+            Displays vectors of a space vector variable.
             """
             return PyMenu(self.service, "/display/vector").execute(*args, **kwargs)
         def velocity_vector(self, *args, **kwargs):
             """
-            Display velocity vectors.
+            Prompts for a scalar field by which to color the vectors, the minimum and maximum values, and the scale factor, and then draws the velocity vectors.
             """
             return PyMenu(self.service, "/display/velocity_vector").execute(*args, **kwargs)
         def zone_mesh(self, *args, **kwargs):
             """
-            Draw the mesh defined by specified face zones.
+            Draws the mesh defined by specified face zones. Zone names can be indicated using wildcards (*).
             """
             return PyMenu(self.service, "/display/zone_mesh").execute(*args, **kwargs)
         def set_list_tree_separator(self, *args, **kwargs):
@@ -308,7 +304,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class embedded_windows(metaclass=PyMenuMeta):
             """
-            Enter to embed, close, move-out embedded windows.
+            Enter the embedded window menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -320,22 +316,22 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/embedded_windows/close").execute(*args, **kwargs)
             def close_all(self, *args, **kwargs):
                 """
-                Close all embedded windows for given parent window.
+                Close all the embedded windows within the specified parent window.
                 """
                 return PyMenu(self.service, "/display/embedded_windows/close_all").execute(*args, **kwargs)
             def embed_in(self, *args, **kwargs):
                 """
-                Embed Window into another window.
+                Specify a window to embed and a parent window to receive the embedded window.
                 """
                 return PyMenu(self.service, "/display/embedded_windows/embed_in").execute(*args, **kwargs)
             def move_out(self, *args, **kwargs):
                 """
-                Move out an embedded window.
+                Move an embedded window out of the parent window, returning the embedded window to a non-embedded state.
                 """
                 return PyMenu(self.service, "/display/embedded_windows/move_out").execute(*args, **kwargs)
             def move_out_all(self, *args, **kwargs):
                 """
-                Move out all embedded windows for given parent window.
+                Move all the embedded windows out of the specified parent window.
                 """
                 return PyMenu(self.service, "/display/embedded_windows/move_out_all").execute(*args, **kwargs)
 
@@ -2918,98 +2914,98 @@ class main_menu(metaclass=PyMenuMeta):
 
         class flamelet_data(metaclass=PyMenuMeta):
             """
-            Display flamelet data.
+            Displays flamelet data.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def draw_number_box(self, *args, **kwargs):
                 """
-                Enable/disable display of the numbers box.
+                Enables/disables display of the numbers box.
                 """
                 return PyMenu(self.service, "/display/flamelet_data/draw_number_box").execute(*args, **kwargs)
             def plot_1d_slice(self, *args, **kwargs):
                 """
-                Enable/disable plot of the 1D-slice.
+                Enables/disables plot of the 1D-slice.
                 """
                 return PyMenu(self.service, "/display/flamelet_data/plot_1d_slice").execute(*args, **kwargs)
             def write_to_file(self, *args, **kwargs):
                 """
-                Enable/disable writing the 1D-slice to file instead of plot.
+                Enables/disables writing the 1D-slice to file instead of plot.
                 """
                 return PyMenu(self.service, "/display/flamelet_data/write_to_file").execute(*args, **kwargs)
             def carpet_plot(self, *args, **kwargs):
                 """
-                Enable/disable display of carpet plot of a property.
+                Enables/disables display of carpet plot of a property.
                 """
                 return PyMenu(self.service, "/display/flamelet_data/carpet_plot").execute(*args, **kwargs)
 
         class particle_tracks(metaclass=PyMenuMeta):
             """
-            Enter the particle tracks menu.
+            Enters the particle tracks menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def particle_tracks(self, *args, **kwargs):
                 """
-                Calculate and display particle tracks from defined injections.
+                Calculates and displays particle tracks from defined injections.
                 """
                 return PyMenu(self.service, "/display/particle_tracks/particle_tracks").execute(*args, **kwargs)
             def plot_write_xy_plot(self, *args, **kwargs):
                 """
-                Plot or write XY plot of particle tracks.
+                Plots or writes an XY plot of particle tracks.
                 """
                 return PyMenu(self.service, "/display/particle_tracks/plot_write_xy_plot").execute(*args, **kwargs)
 
         class path_lines(metaclass=PyMenuMeta):
             """
-            Enter the pathlines menu.
+            Enters the pathlines menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def path_lines(self, *args, **kwargs):
                 """
-                Display pathlines from a surface.
+                Displays pathlines from a surface.
                 """
                 return PyMenu(self.service, "/display/path_lines/path_lines").execute(*args, **kwargs)
             def plot_write_xy_plot(self, *args, **kwargs):
                 """
-                Plot or write XY plot of pathline.
+                Plots or writes an XY plot of pathlines.
                 """
                 return PyMenu(self.service, "/display/path_lines/plot_write_xy_plot").execute(*args, **kwargs)
             def write_to_files(self, *args, **kwargs):
                 """
-                Write Pathlines to a File.
+                Writes pathlines to a file.
                 """
                 return PyMenu(self.service, "/display/path_lines/write_to_files").execute(*args, **kwargs)
 
         class pdf_data(metaclass=PyMenuMeta):
             """
-            Enter the PDF data menu.
+            Enters the PDF data menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def draw_number_box(self, *args, **kwargs):
                 """
-                Enable/disable the display of the numbers box.
+                Enables/disables the display of the numbers box.
                 """
                 return PyMenu(self.service, "/display/pdf_data/draw_number_box").execute(*args, **kwargs)
             def plot_1d_slice(self, *args, **kwargs):
                 """
-                Enable/disable a plot of the 1D-slice.
+                Enables/disables a plot of the 1D-slice.
                 """
                 return PyMenu(self.service, "/display/pdf_data/plot_1d_slice").execute(*args, **kwargs)
             def write_to_file(self, *args, **kwargs):
                 """
-                Enable/disable writing the 1D-slice to file instead of plot.
+                Enables/disables writing the 1D-slice to file instead of plot.
                 """
                 return PyMenu(self.service, "/display/pdf_data/write_to_file").execute(*args, **kwargs)
             def carpet_plot(self, *args, **kwargs):
                 """
-                Enable/disable the display of a carpet plot of a property.
+                Enables/disables the display of a carpet plot of a property.
                 """
                 return PyMenu(self.service, "/display/pdf_data/carpet_plot").execute(*args, **kwargs)
 
@@ -3032,37 +3028,37 @@ class main_menu(metaclass=PyMenuMeta):
                 self.windows = self.__class__.windows(path + [("windows", None)], service)
             def color_map(self, *args, **kwargs):
                 """
-                Enter the color-map menu.
+                Enters the color map menu, which contains names of predefined and user-defined (in the Colormap Editor panel) colormaps that can be selected. It prompts you for the name of the colormap to be used.
                 """
                 return PyMenu(self.service, "/display/set/color_map").execute(*args, **kwargs)
             def element_shrink(self, *args, **kwargs):
                 """
-                Set percentage to shrink elements.
+                Sets shrinkage of both faces and cells. A value of zero indicates no shrinkage, while a value of one will shrink each face or cell to a point.
                 """
                 return PyMenu(self.service, "/display/set/element_shrink").execute(*args, **kwargs)
             def filled_mesh(self, *args, **kwargs):
                 """
-                Enable/disable the filled mesh option.
+                Determines whether the meshes are drawn as wireframe or solid.
                 """
                 return PyMenu(self.service, "/display/set/filled_mesh").execute(*args, **kwargs)
             def mesh_level(self, *args, **kwargs):
                 """
-                Set coarse mesh level to be drawn.
+                Sets coarse mesh level to be drawn.
                 """
                 return PyMenu(self.service, "/display/set/mesh_level").execute(*args, **kwargs)
             def mesh_partitions(self, *args, **kwargs):
                 """
-                Enable/disable drawing of the mesh partition boundaries.
+                Enables/disables option to draw mesh partition boundaries.
                 """
                 return PyMenu(self.service, "/display/set/mesh_partitions").execute(*args, **kwargs)
             def mesh_surfaces(self, *args, **kwargs):
                 """
-                Set surface IDs to be drawn as mesh.
+                Sets surface IDs to be drawn as meshes. You can include a wildcard  (*) within the surface names.
                 """
                 return PyMenu(self.service, "/display/set/mesh_surfaces").execute(*args, **kwargs)
             def mesh_zones(self, *args, **kwargs):
                 """
-                Set zone IDs to be drawn as mesh.
+                Sets zone IDs to be drawn as meshes.
                 """
                 return PyMenu(self.service, "/display/set/mesh_zones").execute(*args, **kwargs)
             def line_weight(self, *args, **kwargs):
@@ -3072,32 +3068,32 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/set/line_weight").execute(*args, **kwargs)
             def marker_size(self, *args, **kwargs):
                 """
-                Set the size of markers used to represent points.
+                Sets the size of markers used to represent points.
                 """
                 return PyMenu(self.service, "/display/set/marker_size").execute(*args, **kwargs)
             def marker_symbol(self, *args, **kwargs):
                 """
-                Set the type of markers used to represent points.
+                Sets the type of markers used to represent points.
                 """
                 return PyMenu(self.service, "/display/set/marker_symbol").execute(*args, **kwargs)
             def mesh_display_configuration(self, *args, **kwargs):
                 """
-                Set mesh display configuration.
+                Changes the default mesh display. If set tomeshing, it draws the mesh on edges and faces of the outline surfaces, colored by their zone ID with lighting enabled. If set tosolution, it draws the mesh on edges and faces of the outline surfaces, colored by their zone type with lighting enabled. If set to post-processing, it draws the object outline with lighting disabled. If set toclassic, it draws the mesh on all edges of the outline surfaces.  This only applies for 3D cases.
                 """
                 return PyMenu(self.service, "/display/set/mesh_display_configuration").execute(*args, **kwargs)
             def mirror_zones(self, *args, **kwargs):
                 """
-                Set zones to mirror the domain about.
+                Sets the zones about which the domain is mirrored (symmetry planes).
                 """
                 return PyMenu(self.service, "/display/set/mirror_zones").execute(*args, **kwargs)
             def n_stream_func(self, *args, **kwargs):
                 """
-                Set the number of iterations used in computing stream function.
+                Sets number of iterations used in computing stream function.
                 """
                 return PyMenu(self.service, "/display/set/n_stream_func").execute(*args, **kwargs)
             def nodewt_based_interp(self, *args, **kwargs):
                 """
-                Use more accurate node-weight based interpolation for postprocessing.
+                Disables/enables the use of node weights for node-based gradients in postprocessing.
                 """
                 return PyMenu(self.service, "/display/set/nodewt_based_interp").execute(*args, **kwargs)
             def overlays(self, *args, **kwargs):
@@ -3107,17 +3103,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/set/overlays").execute(*args, **kwargs)
             def periodic_instancing(self, *args, **kwargs):
                 """
-                Set periodic instancing.
+                Sets the number of periodic repetitions.
                 """
                 return PyMenu(self.service, "/display/set/periodic_instancing").execute(*args, **kwargs)
             def proximity_zones(self, *args, **kwargs):
                 """
-                Set zones to be used for boundary cell distance and boundary proximity.
+                Sets zones to be used for boundary cell distance and boundary proximity.
                 """
                 return PyMenu(self.service, "/display/set/proximity_zones").execute(*args, **kwargs)
             def render_mesh(self, *args, **kwargs):
                 """
-                Enable/disable rendering the mesh on top of contours, vectors, etc.
+                Enables/disables rendering the mesh on top of contours, vectors, and so on.
                 """
                 return PyMenu(self.service, "/display/set/render_mesh").execute(*args, **kwargs)
             def reset_graphics(self, *args, **kwargs):
@@ -3127,7 +3123,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/display/set/reset_graphics").execute(*args, **kwargs)
             def zero_angle_dir(self, *args, **kwargs):
                 """
-                Set the vector having zero angular coordinates.
+                Sets the vector having zero angular coordinates.
                 """
                 return PyMenu(self.service, "/display/set/zero_angle_dir").execute(*args, **kwargs)
             def duplicate_node_display(self, *args, **kwargs):
@@ -3628,64 +3624,64 @@ class main_menu(metaclass=PyMenuMeta):
 
             class contours(metaclass=PyMenuMeta):
                 """
-                Enter the contour options menu.
+                Enters the contour options menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def auto_range(self, *args, **kwargs):
                     """
-                    Enable/disable auto-computation of range for contours.
+                    Enables/disables auto-computation of the contour range.
                     """
                     return PyMenu(self.service, "/display/set/contours/auto_range").execute(*args, **kwargs)
                 def clip_to_range(self, *args, **kwargs):
                     """
-                    Enable/disable the clip to range option for filled contours.
+                    Turns the clip to range option for filled contours on/off.
                     """
                     return PyMenu(self.service, "/display/set/contours/clip_to_range").execute(*args, **kwargs)
                 def surfaces(self, *args, **kwargs):
                     """
-                    Set surfaces to be contoured.
+                    Sets the surfaces on which contours are drawn. You can include a wildcard (*) within the surface names.
                     """
                     return PyMenu(self.service, "/display/set/contours/surfaces").execute(*args, **kwargs)
                 def filled_contours(self, *args, **kwargs):
                     """
-                    Enable/disable the filled contour option.
+                    Turns the filled contours option on/off (deselects line-contours?).
                     """
                     return PyMenu(self.service, "/display/set/contours/filled_contours").execute(*args, **kwargs)
                 def global_range(self, *args, **kwargs):
                     """
-                    Enable/disable the global range for contours option.
+                    Turns the global range for contours on/off.
                     """
                     return PyMenu(self.service, "/display/set/contours/global_range").execute(*args, **kwargs)
                 def line_contours(self, *args, **kwargs):
                     """
-                    Enable/disable the filled contour option.
+                    Turns the line contours option on/off (deselects filled-contours?).
                     """
                     return PyMenu(self.service, "/display/set/contours/line_contours").execute(*args, **kwargs)
                 def log_scale(self, *args, **kwargs):
                     """
-                    Enable/disable the use of a log scale.
+                    Specifies a decimal or logarithmic color scale for contours.
                     """
                     return PyMenu(self.service, "/display/set/contours/log_scale").execute(*args, **kwargs)
                 def n_contour(self, *args, **kwargs):
                     """
-                    Set the number of contour levels.
+                    Sets the number of contour levels.
                     """
                     return PyMenu(self.service, "/display/set/contours/n_contour").execute(*args, **kwargs)
                 def node_values(self, *args, **kwargs):
                     """
-                    Enable/disable the plot of node values.
+                    Sets the option to use scalar field at nodes when computing the contours.
                     """
                     return PyMenu(self.service, "/display/set/contours/node_values").execute(*args, **kwargs)
                 def render_mesh(self, *args, **kwargs):
                     """
-                    Determine whether or not to render the mesh on top of contours, vectors, etc.
+                    Determines whether or not to render the mesh on top of contours, vectors, and so on.
                     """
                     return PyMenu(self.service, "/display/set/contours/render_mesh").execute(*args, **kwargs)
                 def coloring(self, *args, **kwargs):
                     """
-                    Select coloring option.
+                    Specifies whether contours are displayed in bands or with smooth transitions. Note that you can only display smooth contours if node-values are enabled.
                     """
                     return PyMenu(self.service, "/display/set/contours/coloring").execute(*args, **kwargs)
 
@@ -3942,7 +3938,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class particle_tracks(metaclass=PyMenuMeta):
                 """
-                Enter the particle-tracks menu to set parameters for display of particle tracks.
+                Enters the particle-tracks menu to set parameters for display of particle tracks.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -3952,87 +3948,87 @@ class main_menu(metaclass=PyMenuMeta):
                     self.filter_settings = self.__class__.filter_settings(path + [("filter_settings", None)], service)
                 def display(self, *args, **kwargs):
                     """
-                    Determine whether particle tracks will be displayed or only tracked.
+                    Determines whether particle tracks shall be displayed or only tracked.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/display").execute(*args, **kwargs)
                 def history_filename(self, *args, **kwargs):
                     """
-                    Specify the name of the particle history file.
+                    Specifies the name of the particle history file.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/history_filename").execute(*args, **kwargs)
                 def report_to(self, *args, **kwargs):
                     """
-                    Specify the destination for the report (console, file, none).
+                    Specifies the destination for the report (console, file, none).
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/report_to").execute(*args, **kwargs)
                 def report_type(self, *args, **kwargs):
                     """
-                    Set the report type for particle tracks.
+                    Sets the report type for particle tracks.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/report_type").execute(*args, **kwargs)
                 def report_variables(self, *args, **kwargs):
                     """
-                    Set the report variables.
+                    Sets the report variables.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/report_variables").execute(*args, **kwargs)
                 def report_default_variables(self, *args, **kwargs):
                     """
-                    Set the report variables to default.
+                    Sets the report variables to default.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/report_default_variables").execute(*args, **kwargs)
                 def track_single_particle_stream(self, *args, **kwargs):
                     """
-                    Specify the stream ID to be tracked.
+                    Specifies the stream ID to be tracked.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/track_single_particle_stream").execute(*args, **kwargs)
                 def arrow_scale(self, *args, **kwargs):
                     """
-                    Set the scale factor for arrows drawn on particle tracks.
+                    Sets the scale factor for arrows drawn on particle tracks.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/arrow_scale").execute(*args, **kwargs)
                 def arrow_space(self, *args, **kwargs):
                     """
-                    Set the spacing factor for arrows drawn on particle tracks.
+                    Sets the spacing factor for arrows drawn on particle tracks.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/arrow_space").execute(*args, **kwargs)
                 def coarsen_factor(self, *args, **kwargs):
                     """
-                    Set the particle tracks coarsening factor.
+                    Sets the coarsening factor for particle tracks.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/coarsen_factor").execute(*args, **kwargs)
                 def line_width(self, *args, **kwargs):
                     """
-                    Set the width for particle track.
+                    Sets the width for particle track.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/line_width").execute(*args, **kwargs)
                 def marker_size(self, *args, **kwargs):
                     """
-                    Set the marker size for particle drawing.
+                    Sets the size of markers used to represent particle tracks.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/marker_size").execute(*args, **kwargs)
                 def radius(self, *args, **kwargs):
                     """
-                    Set the radius for particle track (ribbons/cylinder only) cross-section.
+                    Sets the radius for particle track (ribbon/cylinder only) cross-section.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/radius").execute(*args, **kwargs)
                 def style(self, *args, **kwargs):
                     """
-                    Set the display style for particle track (line/ribbon/cylinder/sphere).
+                    Sets the display style for particle track (line/ribbon/cylinder/sphere).
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/style").execute(*args, **kwargs)
                 def twist_factor(self, *args, **kwargs):
                     """
-                    Set the scale factor for twisting (ribbons only).
+                    Sets the scale factor for twisting (ribbons only).
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/twist_factor").execute(*args, **kwargs)
                 def sphere_attrib(self, *args, **kwargs):
                     """
-                    Specify size and number of slices to be used in drawing spheres.
+                    Specifies the size and number of slices to be used in drawing spheres.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/sphere_attrib").execute(*args, **kwargs)
                 def particle_skip(self, *args, **kwargs):
                     """
-                    Specify how many particle tracks should be displayed.
+                    Specifies how many particle tracks should be displayed.
                     """
                     return PyMenu(self.service, "/display/set/particle_tracks/particle_skip").execute(*args, **kwargs)
 
@@ -4045,42 +4041,42 @@ class main_menu(metaclass=PyMenuMeta):
                         self.service = service
                     def vary_diameter(self, *args, **kwargs):
                         """
-                        Specify whether the spheres can vary with another variable.
+                        Specifies whether the spheres can vary with another variable.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/vary_diameter").execute(*args, **kwargs)
                     def diameter(self, *args, **kwargs):
                         """
-                        Diameter of the spheres when vary-diameter? is disabled.
+                        Diameter of the spheres whenvary-diameter is disabled.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/diameter").execute(*args, **kwargs)
                     def auto_range(self, *args, **kwargs):
                         """
-                        Specify whether displayed spheres should include auto range of variable to size spheres.
+                        Specifies whether displayed spheres should include auto range of variable to size spheres.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/auto_range").execute(*args, **kwargs)
                     def minimum(self, *args, **kwargs):
                         """
-                        Set the minimum value of the sphere to be displayed.
+                        Sets the minimum value of the sphere to be displayed.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/minimum").execute(*args, **kwargs)
                     def maximum(self, *args, **kwargs):
                         """
-                        Set the maximum value of the sphere to be displayed.
+                        Sets the maximum value of the sphere to be displayed.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/maximum").execute(*args, **kwargs)
                     def smooth_parameter(self, *args, **kwargs):
                         """
-                        Specify number of slices to be used in drawing spheres.
+                        Specifies number of slices to be used in drawing spheres.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/smooth_parameter").execute(*args, **kwargs)
                     def scale_factor(self, *args, **kwargs):
                         """
-                        Specify a scale factor to enlarge/reduce the size of spheres.
+                        Specifies a scale factor to enlarge/reduce the size of spheres.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/scale_factor").execute(*args, **kwargs)
                     def size_variable(self, *args, **kwargs):
                         """
-                        Select a particle variable to size the spheres.
+                        Selects a particle variable to size the spheres.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/sphere_settings/size_variable").execute(*args, **kwargs)
 
@@ -4093,47 +4089,47 @@ class main_menu(metaclass=PyMenuMeta):
                         self.service = service
                     def style(self, *args, **kwargs):
                         """
-                        Enable and set the display style for particle vectors (none/vector/centered-vector/centered-cylinder).
+                        Enables and sets the display style for particle vectors (none/vector/centered-vector/centered-cylinder).
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/style").execute(*args, **kwargs)
                     def vector_length(self, *args, **kwargs):
                         """
-                        Specify the length of constant vectors.
+                        Specifies the length of constant vectors.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/vector_length").execute(*args, **kwargs)
                     def vector_length_variable(self, *args, **kwargs):
                         """
-                        Select a particle variable to specify the length of vectors.
+                        Selects a particle variable to specify the length of vectors.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/vector_length_variable").execute(*args, **kwargs)
                     def scale_factor(self, *args, **kwargs):
                         """
-                        Specify a scale factor to enlarge/reduce the length of vectors.
+                        Specifies a scale factor to enlarge/reduce the length of vectors.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/scale_factor").execute(*args, **kwargs)
                     def length_variable(self, *args, **kwargs):
                         """
-                        Specify whether the displayed vectors have length varying with another variable.
+                        Specifies whether the displayed vectors have length varying with another variable.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/length_variable").execute(*args, **kwargs)
                     def length_to_head_ratio(self, *args, **kwargs):
                         """
-                        Specify ratio of length to head for vectors and length to diameter for cylinders.
+                        Specifies ratio of length to head for vectors and length to diameter for cylinders.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/length_to_head_ratio").execute(*args, **kwargs)
                     def constant_color(self, *args, **kwargs):
                         """
-                        Specify a constant color for the vectors.
+                        Specifies a constant color for the vectors.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/constant_color").execute(*args, **kwargs)
                     def color_variable(self, *args, **kwargs):
                         """
-                        Specify whether the vectors should be colored by variable specified in /display/particle-track/particle-track (if false use a constant color).
+                        Specifies whether the vectors should be colored by variable specified in /display/particle-track/particle-track (if false use a constant color).
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/color_variable").execute(*args, **kwargs)
                     def vector_variable(self, *args, **kwargs):
                         """
-                        Select a particle vector function to specify vector direction.
+                        Selects a particle vector function to specify vector direction.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/vector_settings/vector_variable").execute(*args, **kwargs)
 
@@ -4146,115 +4142,115 @@ class main_menu(metaclass=PyMenuMeta):
                         self.service = service
                     def enable_filtering(self, *args, **kwargs):
                         """
-                        Specify whether particle display is filtered.
+                        Specifies whether particle display is filtered.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/filter_settings/enable_filtering").execute(*args, **kwargs)
                     def inside(self, *args, **kwargs):
                         """
-                        Specify whether filter variable needs to be inside min/max to be displayed (else outside min/max).
+                        Specifies whether filter variable must be inside min/max to be displayed (else outside min/max).
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/filter_settings/inside").execute(*args, **kwargs)
                     def filter_variable(self, *args, **kwargs):
                         """
-                        Select a variable used for filtering of particles.
+                        Selects a variable used for filtering of particles.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/filter_settings/filter_variable").execute(*args, **kwargs)
                     def minimum(self, *args, **kwargs):
                         """
-                        Specify the lower bound for the filter variable.
+                        Specifies the lower bound for the filter variable.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/filter_settings/minimum").execute(*args, **kwargs)
                     def maximum(self, *args, **kwargs):
                         """
-                        Specify the upper bound for the filter variable.
+                        Specifies the upper bound for the filter variable.
                         """
                         return PyMenu(self.service, "/display/set/particle_tracks/filter_settings/maximum").execute(*args, **kwargs)
 
             class path_lines(metaclass=PyMenuMeta):
                 """
-                Enter the path-lines menu to set parameters for the display of pathlines.
+                Sets parameters for display of pathlines.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def arrow_scale(self, *args, **kwargs):
                     """
-                    Set the scale factor for arrows drawn on pathlines.
+                    Sets the scale factor for arrows drawn on pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/arrow_scale").execute(*args, **kwargs)
                 def arrow_space(self, *args, **kwargs):
                     """
-                    Set the spacing factor for arrows drawn on pathlines.
+                    Sets the spacing factor for arrows drawn on pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/arrow_space").execute(*args, **kwargs)
                 def display_steps(self, *args, **kwargs):
                     """
-                    Set the display stepping for pathlines.
+                    Sets the display stepping for pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/display_steps").execute(*args, **kwargs)
                 def error_control(self, *args, **kwargs):
                     """
-                    Set error control during pathline computation.
+                    Sets error control during pathline computation.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/error_control").execute(*args, **kwargs)
                 def line_width(self, *args, **kwargs):
                     """
-                    Set the width for pathlines.
+                    Sets the width for pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/line_width").execute(*args, **kwargs)
                 def marker_size(self, *args, **kwargs):
                     """
-                    Set the marker size for particle drawing.
+                    Sets the marker size for particle drawing.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/marker_size").execute(*args, **kwargs)
                 def maximum_steps(self, *args, **kwargs):
                     """
-                    Set the maximum number of steps to take for pathlines.
+                    Sets the maximum number of steps to take for pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/maximum_steps").execute(*args, **kwargs)
                 def maximum_error(self, *args, **kwargs):
                     """
-                    Set the maximum error allowed while computing the pathlines.
+                    Sets the maximum error allowed while computing the pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/maximum_error").execute(*args, **kwargs)
                 def radius(self, *args, **kwargs):
                     """
-                    Set the radius for pathline (ribbons/cylinder only) cross-section.
+                    Sets the radius for pathline (ribbons/cylinder only) cross-section.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/radius").execute(*args, **kwargs)
                 def relative_pathlines(self, *args, **kwargs):
                     """
-                    Enable/disable the tracking of pathlines in a relative coordinate system.
+                    Enables/disables the tracking of pathlines in a relative coordinate system.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/relative_pathlines").execute(*args, **kwargs)
                 def style(self, *args, **kwargs):
                     """
-                    Set display style for pathlines (line/ribbon/cylinder).
+                    Selects the pathline style (line, point, ribbon, triangle, cylinder).
                     """
                     return PyMenu(self.service, "/display/set/path_lines/style").execute(*args, **kwargs)
                 def twist_factor(self, *args, **kwargs):
                     """
-                    Set the scale factor for twisting (ribbons only).
+                    Sets the scale factor for twisting (ribbons only).
                     """
                     return PyMenu(self.service, "/display/set/path_lines/twist_factor").execute(*args, **kwargs)
                 def step_size(self, *args, **kwargs):
                     """
-                    Set the step length between particle positions for path-lines.
+                    Sets the step length between particle positions for pathlines.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/step_size").execute(*args, **kwargs)
                 def reverse(self, *args, **kwargs):
                     """
-                    Enable/disable the direction of path tracking.
+                    Sets direction of path tracking.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/reverse").execute(*args, **kwargs)
                 def sphere_attrib(self, *args, **kwargs):
                     """
-                    Specify size and no. of slices to be used in drawing sphere for sphere-style.
+                    Specifies the size and number of slices to be used in drawing spheres.
                     """
                     return PyMenu(self.service, "/display/set/path_lines/sphere_attrib").execute(*args, **kwargs)
                 def track_in_phase(self, *args, **kwargs):
                     """
-                    Assign phase to display pathlines in.
+                    Selects the phase in which particle pathlines will be computed (Multiphase Eulerian Model only).
                     """
                     return PyMenu(self.service, "/display/set/path_lines/track_in_phase").execute(*args, **kwargs)
 
@@ -4371,94 +4367,94 @@ class main_menu(metaclass=PyMenuMeta):
 
             class velocity_vectors(metaclass=PyMenuMeta):
                 """
-                Enter the menu to set parameters for display of velocity vectors.
+                Enters the menu to set parameters for display of velocity vectors.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def auto_scale(self, *args, **kwargs):
                     """
-                    Enable/disable auto-scale of all vectors so that vector overlap is minimal.
+                    Auto-scales all vectors so that vector overlap is minimal.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/auto_scale").execute(*args, **kwargs)
                 def color(self, *args, **kwargs):
                     """
-                    Set the color used for all vectors. Set color to the null string to use the color map.
+                    Sets the color of all velocity vectors to the color specified. The color scale is ignored. This is useful when overlaying a vector plot over a contour plot.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/color").execute(*args, **kwargs)
                 def component_x(self, *args, **kwargs):
                     """
-                    Enable/disable use of x-component of vectors.
+                    Sets the option to use only the  component of the velocity vectors during display.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/component_x").execute(*args, **kwargs)
                 def component_y(self, *args, **kwargs):
                     """
-                    Enable/disable use of y-component of vectors.
+                    Sets the option to use only the  component of the velocity vectors during display.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/component_y").execute(*args, **kwargs)
                 def component_z(self, *args, **kwargs):
                     """
-                    Enable/disable use of z-component of vectors.
+                    Sets the option to use only the  component of the velocity vectors during display.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/component_z").execute(*args, **kwargs)
                 def constant_length(self, *args, **kwargs):
                     """
-                    Enable/disable setting all vectors to have the same length.
+                    Sets the option to draw velocity vectors of constant length. This shows only the direction of the velocity vectors.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/constant_length").execute(*args, **kwargs)
                 def color_levels(self, *args, **kwargs):
                     """
-                    Set the number of colors used from the color map.
+                    Sets the number of colors used from the colormap.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/color_levels").execute(*args, **kwargs)
                 def global_range(self, *args, **kwargs):
                     """
-                    Enable/disable the global range for vectors option.
+                    Turns global range for vectors on/off.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/global_range").execute(*args, **kwargs)
                 def in_plane(self, *args, **kwargs):
                     """
-                    Toggle the display of in-plane velocity vectors.
+                    Toggles the display of velocity vector components in the plane of the surface selected for display.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/in_plane").execute(*args, **kwargs)
                 def log_scale(self, *args, **kwargs):
                     """
-                    Enable/disable the use of a log scale.
+                    Toggles whether color scale is logarithmic or linear.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/log_scale").execute(*args, **kwargs)
                 def node_values(self, *args, **kwargs):
                     """
-                    Enable/disable plotting node values. Cell values will be plotted if "no".
+                    Enables/disables the plotting of node values. Cell values will be plotted if "no".
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/node_values").execute(*args, **kwargs)
                 def relative(self, *args, **kwargs):
                     """
-                    Enable/disable the display of relative velocity vectors.
+                    Toggles the display of relative velocity vectors.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/relative").execute(*args, **kwargs)
                 def render_mesh(self, *args, **kwargs):
                     """
-                    Enable/disable rendering the mseh on top of contours, vectors, etc.
+                    Enables/disables rendering the mesh on top of contours, vectors, and so on.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/render_mesh").execute(*args, **kwargs)
                 def scale(self, *args, **kwargs):
                     """
-                    Set the value by which the vector length will be scaled.
+                    Sets the value by which the vector length will be scaled.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/scale").execute(*args, **kwargs)
                 def scale_head(self, *args, **kwargs):
                     """
-                    Set the value by which the vector head will be scaled.
+                    Sets the value by which the vector head will be scaled.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/scale_head").execute(*args, **kwargs)
                 def style(self, *args, **kwargs):
                     """
-                    Set the style with which the vectors will be drawn.
+                    Specifies the vector style that will be used when the vectors are displayed. You can choose from:3d arrow,3d arrowhead, cone,filled-arrow, arrow,harpoon, or headless.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/style").execute(*args, **kwargs)
                 def surfaces(self, *args, **kwargs):
                     """
-                    Set surfaces on which vectors are drawn.
+                    Sets surfaces on which vectors are drawn. You can include a wildcard (*) within the surface names.
                     """
                     return PyMenu(self.service, "/display/set/velocity_vectors/surfaces").execute(*args, **kwargs)
 
@@ -4761,7 +4757,8 @@ class main_menu(metaclass=PyMenuMeta):
 
         class surface(metaclass=PyMenuMeta):
             """
-            Enter the data surface manipulation menu.
+            Enters the data surface-manipulation menu. For a description of the items in this menu, see surface/
+                        
             """
             def __init__(self, path, service):
                 self.path = path
@@ -5325,28 +5322,28 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/define/physics").execute(*args, **kwargs)
         def injections(self, *args, **kwargs):
             """
-            Enter the injections menu.
+            Enters the injections menu.  For a description of the items in this menu, see define/models/dpm/injections.
             """
             return PyMenu(self.service, "/define/injections").execute(*args, **kwargs)
         def enable_mesh_morpher_optimizer(self, *args, **kwargs):
             """
-            Enable use of mesh morpher/optimizer.
+            Enables the mesh morpher/optimizer. When the mesh morpher/optimizer is enabled, the define/mesh-morpher-optimizer text command becomes available.
             """
             return PyMenu(self.service, "/define/enable_mesh_morpher_optimizer").execute(*args, **kwargs)
         def units(self, *args, **kwargs):
             """
-            Set unit conversion factors.
+            Sets unit conversion factors.
             """
             return PyMenu(self.service, "/define/units").execute(*args, **kwargs)
         def set_unit_system(self, *args, **kwargs):
             """
-            To apply standard set of units to all quantities.
+            Applies a standard set of units to all quantities. The options include default,si, british, andcgs.
             """
             return PyMenu(self.service, "/define/set_unit_system").execute(*args, **kwargs)
 
         class boundary_conditions(metaclass=PyMenuMeta):
             """
-            Enter the boundary conditions menu.
+            Enters the boundary conditions menu.
             """
             is_extended_tui = True
             def __init__(self, path, service):
@@ -5369,32 +5366,32 @@ class main_menu(metaclass=PyMenuMeta):
                 self.impedance_data_fitting = self.__class__.impedance_data_fitting(path + [("impedance_data_fitting", None)], service)
             def axis(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/axis").execute(*args, **kwargs)
             def copy_bc(self, *args, **kwargs):
                 """
-                Copy boundary conditions to another zone.
+                Copies boundary conditions to other zones.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/copy_bc").execute(*args, **kwargs)
             def degassing(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/degassing").execute(*args, **kwargs)
             def exhaust_fan(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/exhaust_fan").execute(*args, **kwargs)
             def fan(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/fan").execute(*args, **kwargs)
             def fluid(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/fluid").execute(*args, **kwargs)
             def geometry(self, *args, **kwargs):
@@ -5404,32 +5401,34 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/boundary_conditions/geometry").execute(*args, **kwargs)
             def inlet_vent(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/inlet_vent").execute(*args, **kwargs)
             def intake_fan(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/intake_fan").execute(*args, **kwargs)
             def interface(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/interface").execute(*args, **kwargs)
             def interior(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/interior").execute(*args, **kwargs)
             def list_zones(self, *args, **kwargs):
                 """
-                List zone IDs, types, kinds, and names.
+                Prints out the types and IDs of all zones in the console window. You can use your mouse to check a zone ID, following the instructions listed under Zone in the 
+                                  Boundary Conditions Task Page
+                                section of the User’s Guide.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/list_zones").execute(*args, **kwargs)
             def mass_flow_outlet(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/mass_flow_outlet").execute(*args, **kwargs)
             def network(self, *args, **kwargs):
@@ -5444,22 +5443,22 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/boundary_conditions/network_end").execute(*args, **kwargs)
             def openchannel_threads(self, *args, **kwargs):
                 """
-                List open channel group IDs, names, types, and variables.
+                Lists open channel group IDs, names, types and variables.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/openchannel_threads").execute(*args, **kwargs)
             def open_channel_wave_settings(self, *args, **kwargs):
                 """
-                Open channel wave input analysis.
+                Opens channel wave input analysis.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/open_channel_wave_settings").execute(*args, **kwargs)
             def outflow(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/outflow").execute(*args, **kwargs)
             def outlet_vent(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/outlet_vent").execute(*args, **kwargs)
             def overset(self, *args, **kwargs):
@@ -5469,62 +5468,62 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/boundary_conditions/overset").execute(*args, **kwargs)
             def porous_jump(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/porous_jump").execute(*args, **kwargs)
             def radiator(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/radiator").execute(*args, **kwargs)
             def rans_les_interface(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/rans_les_interface").execute(*args, **kwargs)
             def recirculation_inlet(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/recirculation_inlet").execute(*args, **kwargs)
             def recirculation_outlet(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/recirculation_outlet").execute(*args, **kwargs)
             def shadow(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/shadow").execute(*args, **kwargs)
             def solid(self, *args, **kwargs):
                 """
-                Set boundary conditions for a zone of this type.
+                Sets boundary conditions for a zone of this type.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/solid").execute(*args, **kwargs)
             def zone_name(self, *args, **kwargs):
                 """
-                Give a zone a new name.
+                Gives a zone a new name.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/zone_name").execute(*args, **kwargs)
             def zone_type(self, *args, **kwargs):
                 """
-                Set a zone's type.
+                Sets the type for a zone or multiple zones of the same category. You will be prompted for the name / ID of the zone to be changed and the new type for that zone. To change multiple zones, you can enter a list (separated by spaces and contained within a pair of parentheses) or use asterisks (*) as wildcards.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/zone_type").execute(*args, **kwargs)
             def target_mass_flow_rate_settings(self, *args, **kwargs):
                 """
-                Enter the targeted mass flow rate setting menu.
+                Enters the targeted mass flow rate settings menu.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/target_mass_flow_rate_settings").execute(*args, **kwargs)
             def non_overlapping_zone_name(self, *args, **kwargs):
                 """
-                Get non-overlapping zone name from the associated interface zone.
+                Displays the name of the non-overlapping zone associated with a specified interface zone. This text command is only available after a mesh interface has been created.
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/non_overlapping_zone_name").execute(*args, **kwargs)
             def knudsen_number_calculator(self, *args, **kwargs):
                 """
-                Utility to compute Kudsen number based on characteristic length and boundary information.
+                Computes the Knudsen number based on a characteristic physical length and the area-averaged flow quantities along an incoming-flow boundary. You can use this information to determine flow regime for selecting the appropriate wall boundary treatment. For details, see .
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/knudsen_number_calculator").execute(*args, **kwargs)
 
@@ -6096,199 +6095,199 @@ class main_menu(metaclass=PyMenuMeta):
 
             class modify_zones(metaclass=PyMenuMeta):
                 """
-                Enter the modify zones menu.
+                Enters the modify zones menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def activate_cell_zone(self, *args, **kwargs):
                     """
-                    Activate a cell thread.
+                    Activates cell thread.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/activate_cell_zone").execute(*args, **kwargs)
                 def append_mesh(self, *args, **kwargs):
                     """
-                    Append new mesh.
+                    Appends new mesh.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/append_mesh").execute(*args, **kwargs)
                 def append_mesh_data(self, *args, **kwargs):
                     """
-                    Append new mesh with data.
+                    Appends new mesh with data.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/append_mesh_data").execute(*args, **kwargs)
                 def copy_move_cell_zone(self, *args, **kwargs):
                     """
-                    Copy and translate or rotate a cell zone.
+                    Creates a copy of a cell zone that is offset from the original either by a translational 	distance or a rotational angle. In the copied zone, the 	bounding face zones are all converted to walls, any 	existing cell data is initialized to a constant value, 	and non-conformal interfaces and dynamic zones are not 	copied; otherwise, the model settings are the same as in 	the original zone. Note that if you want the copied zone 	to be connected to existing zones, you must either fuse 	the boundaries (see ) or set up a 	non-conformal interface (see ).
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/copy_move_cell_zone").execute(*args, **kwargs)
                 def create_all_shell_threads(self, *args, **kwargs):
                     """
-                    Mark all finite thickness wall for shell creation. Shell zones will be created at the start of iterations.
+                    Marks all finite thickness walls for shell creation. Shell zones will be created at 	the start of the iterations.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/create_all_shell_threads").execute(*args, **kwargs)
                 def deactivate_cell_zone(self, *args, **kwargs):
                     """
-                    Deactivate cell thread.
+                    Deactivates cell thread.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/deactivate_cell_zone").execute(*args, **kwargs)
                 def recreate_all_shells(self, *args, **kwargs):
                     """
-                    Create shell on all the walls where which were deleted using the command delete-all-shells.
+                    Recreates shells on all the walls that were deleted using the command delete-all-shells.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/recreate_all_shells").execute(*args, **kwargs)
                 def delete_all_shells(self, *args, **kwargs):
                     """
-                    Delete all shell zones and switch off shell conduction on all the walls. These zones can be recreated using the command recreate-all-shells.
+                    Deletes all shell zones and switches off shell conduction on all the walls. These 	zones can be recreated using the command recreate-all-shells.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/delete_all_shells").execute(*args, **kwargs)
                 def delete_cell_zone(self, *args, **kwargs):
                     """
-                    Delete a cell thread.
+                    Deletes a cell thread.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/delete_cell_zone").execute(*args, **kwargs)
                 def extrude_face_zone_delta(self, *args, **kwargs):
                     """
-                    Extrude a face thread a specified distance based on a list of deltas.
+                    Extrudes a face thread a specified distance based on a list of deltas.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/extrude_face_zone_delta").execute(*args, **kwargs)
                 def extrude_face_zone_para(self, *args, **kwargs):
                     """
-                    Extrude a face thread a specified distance based on a distance and a list of parametric locations between 0 and 1 (eg. 0 0.2 0.4 0.8 1.0).
+                    Extrudes a face thread a specified distance based on a distance and a list of 	parametric locations between 0 and 1, for example, 0 0.2 	0.4 0.8 1.0.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/extrude_face_zone_para").execute(*args, **kwargs)
                 def fuse_face_zones(self, *args, **kwargs):
                     """
-                    Attempt to fuse zones by removing duplicate faces and nodes.
+                    Attempts to fuse zones by removing duplicate faces and nodes.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/fuse_face_zones").execute(*args, **kwargs)
                 def list_zones(self, *args, **kwargs):
                     """
-                    List zone IDs, types, kinds, and names.
+                    Lists zone IDs, types, kinds, and names.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/list_zones").execute(*args, **kwargs)
                 def make_periodic(self, *args, **kwargs):
                     """
-                    Attempt to establish periodic/shadow face zone connectivity.
+                    Attempts to establish periodic/shadow face zone connectivity.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/make_periodic").execute(*args, **kwargs)
                 def create_periodic_interface(self, *args, **kwargs):
                     """
-                    Create a conformal or non-conformal periodic interface.
+                    Creates a conformal or non-conformal periodic 	interface.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/create_periodic_interface").execute(*args, **kwargs)
                 def scale_zone(self, *args, **kwargs):
                     """
-                    Scale nodal coordinates of input cell zones.
+                    Scales individual cell zones.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/scale_zone").execute(*args, **kwargs)
                 def rotate_zone(self, *args, **kwargs):
                     """
-                    Rotate nodal coordinates of input cell zones.
+                    Rotates individual cell zones.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/rotate_zone").execute(*args, **kwargs)
                 def translate_zone(self, *args, **kwargs):
                     """
-                    Translate nodal coordinates of input cell zones.
+                    Translates individual cell zones.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/translate_zone").execute(*args, **kwargs)
                 def matching_tolerance(self, *args, **kwargs):
                     """
-                    Set the normalized tolerance used for finding coincident nodes.
+                    Sets normalized tolerance used for finding coincident nodes.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/matching_tolerance").execute(*args, **kwargs)
                 def merge_zones(self, *args, **kwargs):
                     """
-                    Merge zones of the same type and condition into one.
+                    Merges zones of same type and condition into one.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/merge_zones").execute(*args, **kwargs)
                 def mrf_to_sliding_mesh(self, *args, **kwargs):
                     """
-                    Change motion specification from MRF to moving mesh.
+                    Changes the motion specification from MRF to moving mesh.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/mrf_to_sliding_mesh").execute(*args, **kwargs)
                 def convert_all_solid_mrf_to_solid_motion(self, *args, **kwargs):
                     """
-                    Change all solid zones motion specification from MRF to solid motion.
+                    Converts all solid zones using frame motion to instead 	use solid motion, copying the motion variable values for 	origin, axis, and velocities.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/convert_all_solid_mrf_to_solid_motion").execute(*args, **kwargs)
                 def orient_face_zone(self, *args, **kwargs):
                     """
-                    Orient the face zone.
+                    Orients the face zone.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/orient_face_zone").execute(*args, **kwargs)
                 def replace_zone(self, *args, **kwargs):
                     """
-                    Replace a cell zone.
+                    Replaces cell zone.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/replace_zone").execute(*args, **kwargs)
                 def sep_cell_zone_mark(self, *args, **kwargs):
                     """
-                    Separate a cell zone based on cell marking.
+                    Separates cell zone based on cell marking.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/sep_cell_zone_mark").execute(*args, **kwargs)
                 def sep_cell_zone_region(self, *args, **kwargs):
                     """
-                    Separate a cell zone based on contiguous regions.
+                    Separates cell zone based on contiguous regions.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/sep_cell_zone_region").execute(*args, **kwargs)
                 def sep_face_zone_angle(self, *args, **kwargs):
                     """
-                    Separate a face zone based on significant angle.
+                    Separates face zone based on significant angle.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/sep_face_zone_angle").execute(*args, **kwargs)
                 def sep_face_zone_face(self, *args, **kwargs):
                     """
-                    Separate each face in a zone into unique zone.
+                    Separates each face in zone into unique zone.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/sep_face_zone_face").execute(*args, **kwargs)
                 def sep_face_zone_mark(self, *args, **kwargs):
                     """
-                    Separate a face zone based on cell marking.
+                    Separates face zone based on cell marking.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/sep_face_zone_mark").execute(*args, **kwargs)
                 def sep_face_zone_region(self, *args, **kwargs):
                     """
-                    Separate a face zone based on contiguous regions.
+                    Separates face zone based on contiguous regions.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/sep_face_zone_region").execute(*args, **kwargs)
                 def slit_periodic(self, *args, **kwargs):
                     """
-                    Slit a periodic zone into two symmetry zones.
+                    Slits periodic zone into two symmetry zones.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/slit_periodic").execute(*args, **kwargs)
                 def slit_face_zone(self, *args, **kwargs):
                     """
-                    Slit a two-sided wall into two connected wall zones.
+                    Slits two-sided wall into two connected wall zones.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/slit_face_zone").execute(*args, **kwargs)
                 def slit_interior_between_diff_solids(self, *args, **kwargs):
                     """
-                    Slit interior created between different solids into coupled walls.
+                    Slits the interior zone between solid zones of differing materials to create a 	coupled wall. You will generally be prompted by Fluent 	if this is necessary.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/slit_interior_between_diff_solids").execute(*args, **kwargs)
                 def zone_name(self, *args, **kwargs):
                     """
-                    Give a zone a new name.
+                    Gives a zone a new name.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/zone_name").execute(*args, **kwargs)
                 def zone_type(self, *args, **kwargs):
                     """
-                    Set a zone's type.
+                    Sets the type for a zone or multiple zones of the same 	category. You will be prompted for the name / ID of the 	zone to be changed and the new type for that zone. To 	change multiple zones, you can enter a list (separated 	by spaces and contained within a pair of parentheses) or 	use asterisks (*) as wildcards.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/zone_type").execute(*args, **kwargs)
                 def copy_mrf_to_mesh_motion(self, *args, **kwargs):
                     """
-                    Copy motion variable values for origin, axis and velocities from Frame Motion to Mesh Motion.
+                    Copies motion variable values for origin, axis, and velocities from Frame Motion to 	Mesh Motion.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/copy_mrf_to_mesh_motion").execute(*args, **kwargs)
                 def copy_mesh_to_mrf_motion(self, *args, **kwargs):
                     """
-                    Copy motion variable values for origin, axis and velocities from Mesh Motion to Frame Motion.
+                    Copies motion variable values for origin, axis, and velocities from Mesh Motion to 	Frame Motion.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/copy_mesh_to_mrf_motion").execute(*args, **kwargs)
                 def change_zone_state(self, *args, **kwargs):
                     """
-                    Change the realgas material state for a zone.
+                    Sets the state (liquid or vapor) for a specific fluid zone.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/modify_zones/change_zone_state").execute(*args, **kwargs)
                 def change_zone_phase(self, *args, **kwargs):
@@ -8470,7 +8469,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class non_reflecting_bc(metaclass=PyMenuMeta):
                 """
-                Enter the non-reflecting b.c. menu.
+                Enters the non-reflecting boundary condition menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8480,7 +8479,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class general_nrbc(metaclass=PyMenuMeta):
                     """
-                    Enter the menu for setting general non-reflecting boundary conditions.
+                    Setting for general non-reflecting b.c.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -8489,19 +8488,19 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class set(metaclass=PyMenuMeta):
                         """
-                        Enter the general non-reflecting b.c. menu.
+                        Enters the setup menu for general non-reflecting b.c.’s.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def sigma(self, *args, **kwargs):
                             """
-                            Set nrbc sigma factor (default value 0.15).
+                            Sets NRBC sigma factor (default value 0.15).
                             """
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/general_nrbc/set/sigma").execute(*args, **kwargs)
                         def sigma2(self, *args, **kwargs):
                             """
-                            Set nrbc sigma2 factor (default value 5.0).
+                            Sets NRBC sigma2 factor (default value 5.0).
                             """
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/general_nrbc/set/sigma2").execute(*args, **kwargs)
                         def relax(self, *args, **kwargs):
@@ -8516,13 +8515,13 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/general_nrbc/set/tangential_source").execute(*args, **kwargs)
                         def verbosity(self, *args, **kwargs):
                             """
-                            Print boundary equations convergence info.
+                            Enables/disables nrbc verbosity scheme output.
                             """
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/general_nrbc/set/verbosity").execute(*args, **kwargs)
 
                 class turbo_specific_nrbc(metaclass=PyMenuMeta):
                     """
-                    Enter the turbo-specific n.r.b.c. menu.
+                    Enters the turbo specific nrbc menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -8530,76 +8529,69 @@ class main_menu(metaclass=PyMenuMeta):
                         self.set = self.__class__.set(path + [("set", None)], service)
                     def enable(self, *args, **kwargs):
                         """
-                        Enable/disable turbo-specific non-reflecting b.c.'s.
+                        Enables/disables non-reflecting b.c.’s.
                         """
                         return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/turbo_specific_nrbc/enable").execute(*args, **kwargs)
                     def initialize(self, *args, **kwargs):
                         """
-                        Initialize turbo-specific non-reflecting b.c.'s.
+                        Initializes non-reflecting b.c.’s.
                         """
                         return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/turbo_specific_nrbc/initialize").execute(*args, **kwargs)
                     def show_status(self, *args, **kwargs):
                         """
-                        Show current status of turbo-specific non-reflecting b.c.'s.
+                        Shows current status of non-reflecting b.c.’s.
                         """
                         return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/turbo_specific_nrbc/show_status").execute(*args, **kwargs)
 
                     class set(metaclass=PyMenuMeta):
                         """
-                        Enter the set menu for turbo-specific non-reflecting b.c. parameters.
+                        Enters the set menu for non-reflecting b.c. parameters.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def discretization(self, *args, **kwargs):
                             """
-                            Enable use of higher-order reconstruction at boundaries if available.
+                            Enables use of higher-order reconstruction at boundaries if available.
                             """
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/turbo_specific_nrbc/set/discretization").execute(*args, **kwargs)
                         def under_relaxation(self, *args, **kwargs):
                             """
-                            Set turbo-specific non-reflecting b.c. under-relaxation factor.
-                             specify < 0 => use P/a_ave
-                             specify = 0 => use 1/N    
-                             specify > 0 => use specified.
+                            Sets non-reflecting b.c. under-relaxation factor.
                             """
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/turbo_specific_nrbc/set/under_relaxation").execute(*args, **kwargs)
                         def verbosity(self, *args, **kwargs):
                             """
-                            Set turbo-specific non-reflecting b.c. verbosity level.
-                             0 : silent
-                             1 : basic info. default 
-                             2 : detailed info. for debugging 
-                            .
+                            Sets non-reflecting b.c. verbosity level. 0 : silent, 1 : basic information (default), 2 : detailed information for debugging.
                             """
                             return PyMenu(self.service, "/define/boundary_conditions/non_reflecting_bc/turbo_specific_nrbc/set/verbosity").execute(*args, **kwargs)
 
             class rename_zone(metaclass=PyMenuMeta):
                 """
-                Enter zone rename menu.
+                Enter the menu for renaming cell and face zones based on adjacency, adding suffixes or prefixes to names, and renaming zones based on the Fluent naming conventions.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def rename_by_adjacency(self, *args, **kwargs):
                     """
-                    Rename zone to adjacent zones.
+                    Append the name of the adjacent cell zone to the 	specified face zone. For example, if fluid is the adjacent cell 	zone, and you select a face zone named interior, the resulting name of 	the face zone would be interior-fluid.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/rename_zone/rename_by_adjacency").execute(*args, **kwargs)
                 def rename_to_default(self, *args, **kwargs):
                     """
-                    Rename zone to default name.
+                    Rename a zone to use the Fluent naming 	convention.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/rename_zone/rename_to_default").execute(*args, **kwargs)
                 def add_suffix_or_prefix(self, *args, **kwargs):
                     """
-                    Add suffix or prefix to zone name.
+                    Add a suffix or prefix to one or more zones.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/rename_zone/add_suffix_or_prefix").execute(*args, **kwargs)
 
             class bc_settings(metaclass=PyMenuMeta):
                 """
-                .
+                Enters the boundary conditions settings menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8607,54 +8599,54 @@ class main_menu(metaclass=PyMenuMeta):
                     self.pressure_far_field = self.__class__.pressure_far_field(path + [("pressure_far_field", None)], service)
                 def mass_flow(self, *args, **kwargs):
                     """
-                    Select method for setting the mass flow rate.
+                    Selects method for setting the mass flow rate.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/bc_settings/mass_flow").execute(*args, **kwargs)
                 def pressure_outlet(self, *args, **kwargs):
                     """
-                    Select pressure specification method on pressure-outlet boundaries.
+                    Sets advanced options for pressure outlet boundaries.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/bc_settings/pressure_outlet").execute(*args, **kwargs)
 
                 class pressure_far_field(metaclass=PyMenuMeta):
                     """
-                    Select presure-far-field boundary-condition options.
+                    Sets advanced options for pressure far field 	boundaries.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def riemann_invariants_tangency_correction(self, *args, **kwargs):
                         """
-                        Apply a local correction where the flow is tangential to the boundary.
+                        Enables/disables the Riemann-invariant tangency correction as described in .
                         """
                         return PyMenu(self.service, "/define/boundary_conditions/bc_settings/pressure_far_field/riemann_invariants_tangency_correction").execute(*args, **kwargs)
-                    def type_flag(self, *args, **kwargs):
+                    def type(self, *args, **kwargs):
                         """
                         Choose pressure-far-field boundary-condition type.
                         """
-                        return PyMenu(self.service, "/define/boundary_conditions/bc_settings/pressure_far_field/type_flag").execute(*args, **kwargs)
+                        return PyMenu(self.service, "/define/boundary_conditions/bc_settings/pressure_far_field/type").execute(*args, **kwargs)
 
             class perforated_walls(metaclass=PyMenuMeta):
                 """
-                Enter the perforated walls setting menu.
+                Enters the perforated walls menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def read_input_file(self, *args, **kwargs):
                     """
-                    Read an input file.
+                    Reads an input file for perforated walls.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/perforated_walls/read_input_file").execute(*args, **kwargs)
                 def model_setup(self, *args, **kwargs):
                     """
-                    Set up perforated walls.
+                    Sets up the perforated wall model for each effusion 	surface.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/perforated_walls/model_setup").execute(*args, **kwargs)
 
             class set(metaclass=PyMenuMeta):
                 """
-                Enter the set boundary conditions menu.
+                Allows you to define one or more settings at single or multiple boundaries/cell zones of a given type at once. Enter q to exit the define/boundary-conditions/set/<type> command.  For a description of the items in this menu, see corresponding define/boundary-conditions/<type>.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8817,49 +8809,49 @@ class main_menu(metaclass=PyMenuMeta):
 
             class impedance_data_fitting(metaclass=PyMenuMeta):
                 """
-                Enter the impedance data fitting menu.
+                Enters the impedance data fitting menu, which provides text commands that can be helpful when you are using the impedance boundary condition (IBC).
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def impedance_data(self, *args, **kwargs):
                     """
-                    Read experimental impedance data and output impedance parameters for a boundary condition.
+                    Reads an input file with experimental specific 	impedance data in the frequency domain and then computes 	the terms needed for an approximation of the reflection 	coefficient as a series of poles / residues in the time 	domain. The resulting terms are printed in the console, 	and can be written to a pole / residue file (which can 	be imported and the impedance parameters applied to a 	boundary condition using the define/boundary-conditions/impedance-data-fitting/import-parameters 	text command). You can also write a file with fitted 	frequency / impedance data, which can be compared to the 	input data to evaluate how well it fits.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/impedance_data").execute(*args, **kwargs)
                 def reflection_data(self, *args, **kwargs):
                     """
-                    Read experimental reflection coefficient data and output impedance parameters for a boundary condition.
+                    Reads an input file with experimental reflection coefficient data in the frequency 	domain and then computes the terms needed for an 	approximation of the reflection coefficient as a series 	of poles / residues in the time domain. The resulting 	terms are printed in the console, and can be written to 	a pole / residue file (which can be imported and the 	impedance parameters applied to a boundary condition 	using the define/boundary-conditions/impedance-data-fitting/import-parameters 	text command). You can also write a file with fitted 	frequency / impedance data, which can be compared to the 	input data to evaluate how well it fits.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/reflection_data").execute(*args, **kwargs)
                 def absorption_data(self, *args, **kwargs):
                     """
-                    Read experimental absorption coefficient data and output impedance parameters for a boundary condition.
+                    Reads an input file with experimental absorption coefficient data in the frequency 	domain and then computes the terms needed for an 	approximation of the reflection coefficient as a series 	of poles / residues in the time domain. The resulting 	terms are printed in the console, and can be written to 	a pole / residue file (which can be imported and the 	impedance parameters applied to a boundary condition 	using the define/boundary-conditions/impedance-data-fitting/import-parameters 	text command). You can also write a file with fitted 	frequency / impedance data, which can be compared to the 	input data to evaluate how well it fits.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/absorption_data").execute(*args, **kwargs)
                 def iterations(self, *args, **kwargs):
                     """
-                    Set the number of iterations for the fitting algorithm.
+                    Sets the number of internal iterations used for the calculations performed from the define/boundary-conditions/impedance-data-fitting/ 	text command menu. By default, the number of iterations 	is set to 20. 
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/iterations").execute(*args, **kwargs)
                 def convergence_tolerance(self, *args, **kwargs):
                     """
-                    Set the convergence tolerance for the fitting algorithm.
+                    Sets the convergence tolerance, which is an accuracy 	that is used for completing the iterative fitting 	procedure in the calculations performed from the define/boundary-conditions/impedance-data-fitting/ 	text command menu. By default, the tolerance is set to 	1e-6. 
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/convergence_tolerance").execute(*args, **kwargs)
                 def residue_tolerance(self, *args, **kwargs):
                     """
-                    Set the residue tolerance for the fitting algorithm.
+                    Sets the residue tolerance, which is the minimum value of residues that are kept in 	the fitting performed from the define/boundary-conditions/impedance-data-fitting/ 	text command menu. This residue check helps to eliminate 	parasitic poles. By default, the tolerance is set to 	1e-6. 
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/residue_tolerance").execute(*args, **kwargs)
                 def verbosity(self, *args, **kwargs):
                     """
-                    Set verbosity level [0, 1] for fitting algorithm.
+                    Sets the verbosity of the progress messages during the fitting performed from the define/boundary-conditions/impedance-data-fitting/ 	text command menu. Setting this to 1 results in messages being 	printed in the console as the fitting calculation 	progresses. The default value of 0 suppresses this 	output.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/verbosity").execute(*args, **kwargs)
                 def import_parameters(self, *args, **kwargs):
                     """
-                    Import impedance parameters into boundary condition.
+                    Reads a pole / residue file with impedance parameters 	in the time domain and applies them to a specified 	boundary condition.
                     """
                     return PyMenu(self.service, "/define/boundary_conditions/impedance_data_fitting/import_parameters").execute(*args, **kwargs)
 
@@ -8893,45 +8885,45 @@ class main_menu(metaclass=PyMenuMeta):
 
         class custom_field_functions(metaclass=PyMenuMeta):
             """
-            Enter the custom field functions menu.
+            Enters the custom field functions menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def define(self, *args, **kwargs):
                 """
-                Define a custom field function.
+                Defines a custom field function.
                 """
                 return PyMenu(self.service, "/define/custom_field_functions/define").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete a custom field function.
+                Deletes a custom field function.
                 """
                 return PyMenu(self.service, "/define/custom_field_functions/delete").execute(*args, **kwargs)
             def save(self, *args, **kwargs):
                 """
-                Save a custom field function.
+                Saves a custom field function.
                 """
                 return PyMenu(self.service, "/define/custom_field_functions/save").execute(*args, **kwargs)
             def load(self, *args, **kwargs):
                 """
-                Load a custom field function.
+                Loads a custom field function.
                 """
                 return PyMenu(self.service, "/define/custom_field_functions/load").execute(*args, **kwargs)
             def list_valid_cell_function_names(self, *args, **kwargs):
                 """
-                List the names of cell functions that can be used in a custom field function.
+                Lists the names of cell functions that can be used in a custom field function.
                 """
                 return PyMenu(self.service, "/define/custom_field_functions/list_valid_cell_function_names").execute(*args, **kwargs)
             def example_cff_definitions(self, *args, **kwargs):
                 """
-                List example custom field functions.
+                Lists example custom field functions.
                 """
                 return PyMenu(self.service, "/define/custom_field_functions/example_cff_definitions").execute(*args, **kwargs)
 
         class dynamic_mesh(metaclass=PyMenuMeta):
             """
-            Enter the dynamic mesh menu.
+            Enters the dynamic mesh menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -8943,13 +8935,13 @@ class main_menu(metaclass=PyMenuMeta):
                 self.transient_settings = self.__class__.transient_settings(path + [("transient_settings", None)], service)
             def dynamic_mesh(self, *args, **kwargs):
                 """
-                Enable/disable the dynamic mesh solver and options.
+                Enables/disables the dynamic mesh solver.
                 """
                 return PyMenu(self.service, "/define/dynamic_mesh/dynamic_mesh").execute(*args, **kwargs)
 
             class controls(metaclass=PyMenuMeta):
                 """
-                Enter the dynamic mesh control menu.
+                Enters the dynamic mesh controls menu. This text command is only available when the define/dynamic-mesh/dynamic-mesh? text command is enabled.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -8964,33 +8956,33 @@ class main_menu(metaclass=PyMenuMeta):
                     self.contact_parameters = self.__class__.contact_parameters(path + [("contact_parameters", None)], service)
                 def in_cylinder_output(self, *args, **kwargs):
                     """
-                    Enable/disable in-cylinder output.
+                    Enables/disables in-cylinder output.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_output").execute(*args, **kwargs)
                 def smoothing(self, *args, **kwargs):
                     """
-                    Enable/disable dynamic mesh smoothing.
+                    Enables/disables smoothing in cell zones.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing").execute(*args, **kwargs)
                 def layering(self, *args, **kwargs):
                     """
-                    Enable/disable dynamic-layering in quad/hex cell zones.
+                    Enables/disables dynamic-layering in quad/hex cell zones.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/controls/layering").execute(*args, **kwargs)
                 def remeshing(self, *args, **kwargs):
                     """
-                    Enable/disable local remeshing in tri/tet and mixed cell zones.
+                    Enables/disables local remeshing in tri/tet and mixed cell zones.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing").execute(*args, **kwargs)
                 def steady_pseudo_time_control(self, *args, **kwargs):
                     """
-                    Enable/disable pseudo time step control in user interface.
+                    Enables/disables the pseudo time step control in the 	graphical user interface.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/controls/steady_pseudo_time_control").execute(*args, **kwargs)
 
                 class smoothing_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh smoothing menu.
+                    Enters the dynamic mesh smoothing-parameters menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -9002,22 +8994,22 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/smoothing_method").execute(*args, **kwargs)
                     def constant_factor(self, *args, **kwargs):
                         """
-                        Set the spring constant relaxation factor.
+                        Sets the spring constant relaxation factor.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/constant_factor").execute(*args, **kwargs)
                     def bnd_node_relaxation(self, *args, **kwargs):
                         """
-                        Set the spring boundary node relaxation factor.
+                        The boundary node relaxation is used by spring smoothing. The boundary node relaxation allows you to relax the update of the node positions at deforming boundaries. A value of 0 prevents deforming boundary nodes from moving and a value of 1 indicates no under-relaxation.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/bnd_node_relaxation").execute(*args, **kwargs)
                     def bnd_stiffness_factor(self, *args, **kwargs):
                         """
-                        Set the stiffness factor for springs connected to boundary nodes.
+                        Sets the stiffness factor for springs connected to boundary nodes.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/bnd_stiffness_factor").execute(*args, **kwargs)
                     def convergence_tolerance(self, *args, **kwargs):
                         """
-                        Set the convergence tolerance for spring-based solver.
+                        Sets the convergence tolerance for spring-based solver.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/convergence_tolerance").execute(*args, **kwargs)
                     def max_iter(self, *args, **kwargs):
@@ -9027,7 +9019,7 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/max_iter").execute(*args, **kwargs)
                     def spring_on_all_elements(self, *args, **kwargs):
                         """
-                        Enable/disable spring-based smoothing for all cell shapes.
+                        Enables/disables spring-based smoothing for all cell shapes; if disabled, the spring-based smoothing is applied based on the setting of the define/dynamic-mesh/controls/smoothing-parameters/spring-on-simplex-shapes? text command.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/spring_on_all_elements").execute(*args, **kwargs)
                     def spring_on_simplex_elements(self, *args, **kwargs):
@@ -9037,26 +9029,22 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/spring_on_simplex_elements").execute(*args, **kwargs)
                     def skew_smooth_niter(self, *args, **kwargs):
                         """
-                        Set the number of skewness-based smoothing cycles.
+                        Sets the number of skewness-based smoothing cycles.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/skew_smooth_niter").execute(*args, **kwargs)
                     def skew_smooth_cell_skew_max(self, *args, **kwargs):
                         """
-                        Set the cell skewness threshold above which cells will be smoothed 
-                        using the skewness method.
+                        Sets the skewness threshold, above which cells will be smoothed using the skewness method.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/skew_smooth_cell_skew_max").execute(*args, **kwargs)
                     def skew_smooth_face_skew_max(self, *args, **kwargs):
                         """
-                        Set the face skewness threshold above which deforming boundary faces 
-                        will be smoothed using the skewness method.
+                        Sets the skewness threshold, above which faces will be smoothed using the skewness method.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/skew_smooth_face_skew_max").execute(*args, **kwargs)
                     def skew_smooth_all_deforming_boundaries(self, *args, **kwargs):
                         """
-                        Enable/disable skewness smoothing for all deforming 
-                        dynamic boundary zones. If disabled, only the deforming dynamic boundary zones are 
-                        smoothed which have smoothing explicitly enabled or use local face remeshing.
+                        Enables/disables skewness smoothing for all deforming dynamic boundary zones. This is enabled by default. If disabled, skewness smoothing is only applied to the deforming dynamic boundary zones that have smoothing explicitly enabled or use local face remeshing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/skew_smooth_all_deforming_boundaries").execute(*args, **kwargs)
                     def laplace_node_relaxation(self, *args, **kwargs):
@@ -9066,33 +9054,32 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/laplace_node_relaxation").execute(*args, **kwargs)
                     def diffusion_coeff_function(self, *args, **kwargs):
                         """
-                        Specify whether the diffusion coefficient is based on the 
-                        boundary distance or the cell volume.
+                        Specifies whether the diffusion coefficient for diffusion-based smoothing is based on the boundary distance or the cell volume.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/diffusion_coeff_function").execute(*args, **kwargs)
                     def diffusion_coeff_parameter(self, *args, **kwargs):
                         """
-                        Set the diffusion coefficient parameter used for diffusion-based smoothing.
+                        Sets the diffusion coefficient parameter used for diffusion-based smoothing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/diffusion_coeff_parameter").execute(*args, **kwargs)
                     def diffusion_fvm(self, *args, **kwargs):
                         """
-                        Set the numerical method used for diffusion-based smoothing.
+                        Answering yes at the prompt changes the diffusion-based smoothing method to the cell-based finite volume approach that was the default in releases prior to Fluent 15.0. Answering no at the prompt changes the diffusion-based smoothing method to the default node-based finite element method.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/diffusion_fvm").execute(*args, **kwargs)
                     def poisson_ratio(self, *args, **kwargs):
                         """
-                        Set the Poisson's ratio used by the linearly elastic solid model.
+                        Sets the Poisson’s ratio used for smoothing based on the linearly elastic solid model.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/poisson_ratio").execute(*args, **kwargs)
                     def smooth_from_reference_position(self, *args, **kwargs):
                         """
-                        Enable smoothing from reference position.
+                        Enables/disables smoothing from a reference position. Such smoothing may produce greater mesh quality consistency for stationary or moving meshes with periodic or quasi-periodic motion, and is only available when the smoothing method is based on diffusion or the linearly elastic solid model.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/smooth_from_reference_position").execute(*args, **kwargs)
                     def relative_convergence_tolerance(self, *args, **kwargs):
                         """
-                        Set the relative residual convergence tolerance for diffusion-based (FVM) smoothing.
+                        Sets the relative residual convergence tolerance for smoothing based on diffusion or the linearly elastic solid model.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/relative_convergence_tolerance").execute(*args, **kwargs)
                     def amg_stabilization(self, *args, **kwargs):
@@ -9107,37 +9094,36 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/verbosity").execute(*args, **kwargs)
                     def boundary_distance_method(self, *args, **kwargs):
                         """
-                        Set the method used to evaluate the boundary distance for the 
-                        diffusion coefficient calculation.
+                        Sets the method used to evaluate the boundary distance for the diffusion coefficient calculation, when diffusion-based smoothing is enabled.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/smoothing_parameters/boundary_distance_method").execute(*args, **kwargs)
 
                 class layering_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh layering menu.
+                    Enters the dynamic mesh layering menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def split_factor(self, *args, **kwargs):
                         """
-                        Set the factor determining when to split dynamic layers.
+                        Sets the factor determining when to split dynamic layers.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/layering_parameters/split_factor").execute(*args, **kwargs)
                     def collapse_factor(self, *args, **kwargs):
                         """
-                        Set the factor determining when to collapse dynamic layers.
+                        Sets the factor determining when to collapse dynamic layers.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/layering_parameters/collapse_factor").execute(*args, **kwargs)
                     def constant_height(self, *args, **kwargs):
                         """
-                        Enable/disable layering based on constant height, else layering based on constant ratio.
+                        Enables/disables layering based on constant height, else layering based on constant ratio.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/layering_parameters/constant_height").execute(*args, **kwargs)
 
                 class remeshing_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh remeshing menu.
+                    Enters the dynamic mesh remeshing menu to set 	parameters for all remeshing methods.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -9147,12 +9133,12 @@ class main_menu(metaclass=PyMenuMeta):
                         self.prism_layer_parameters = self.__class__.prism_layer_parameters(path + [("prism_layer_parameters", None)], service)
                     def unified_remeshing(self, *args, **kwargs):
                         """
-                        Enable/disable unified remeshing.
+                        Enables/disables unified remeshing, which specifies that an algorithm is used that combines aspects of a variety of remeshing methods. It is applied to triangular or tetrahedral cells and can produce wedge cells in 3D boundary layer meshes. Unified remeshing simplifies the remeshing setup and can provide increased robustness compared to methods-based remeshing, especially for parallel simulations.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/unified_remeshing").execute(*args, **kwargs)
                     def retain_size_distribution(self, *args, **kwargs):
                         """
-                        Enable/disable retaining of size distribution.
+                        Enables/disables the use of local size criteria when marking cells for unified remeshing (in an attempt to maintain the initial mesh size distribution even as the mesh moves), rather than marking cells based on the minimum and maximum length scale values of the cell zone in the initial mesh. Either marking can be overridden if more restrictive values are specified using the define/dynamic-mesh/controls/remeshing-parameters/length-min and define/dynamic-mesh/controls/remeshing-parameters/length-max text commands.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/retain_size_distribution").execute(*args, **kwargs)
                     def poly_remeshing(self, *args, **kwargs):
@@ -9162,302 +9148,359 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/poly_remeshing").execute(*args, **kwargs)
                     def remeshing_methods(self, *args, **kwargs):
                         """
-                        Enable/disable remeshing methods.
+                        Enables/disables individual remeshing options as part of methods-based remeshing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/remeshing_methods").execute(*args, **kwargs)
                     def zone_remeshing(self, *args, **kwargs):
                         """
-                        Enable/disable cell zone remeshing method.
+                        Enables/disables the cell zone remeshing method as part of methods-based remeshing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/zone_remeshing").execute(*args, **kwargs)
                     def length_min(self, *args, **kwargs):
                         """
-                        Set the length threshold below which cells will be remeshed.
+                        Sets the length threshold below which cells will be remeshed.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/length_min").execute(*args, **kwargs)
                     def length_max(self, *args, **kwargs):
                         """
-                        Set the length threshold above which cells will be remeshed.
+                        Sets the length threshold above which cells will be remeshed.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/length_max").execute(*args, **kwargs)
                     def cell_skew_max(self, *args, **kwargs):
                         """
-                        Set the cell skewness threshold above which cells will be remeshed.
+                        Sets the cell skewness threshold above which cells will be remeshed.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/cell_skew_max").execute(*args, **kwargs)
                     def face_skew_max(self, *args, **kwargs):
                         """
-                        Set the face skewness threshold above which faces will be remeshed.
+                        Sets the face skewness threshold above which faces will be remeshed.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/face_skew_max").execute(*args, **kwargs)
                     def size_remesh_interval(self, *args, **kwargs):
                         """
-                        Set the interval (in time steps) when remeshing based on size is done.
+                        Sets the interval (in time steps) when remeshing based on size is done for methods-based remeshing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/size_remesh_interval").execute(*args, **kwargs)
                     def sizing_function(self, *args, **kwargs):
                         """
-                        Enable/disable sizing function to control size based remeshing.
+                        Enables/disables the sizing function as part of methods-based remeshing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_function").execute(*args, **kwargs)
                     def sizing_funct_defaults(self, *args, **kwargs):
                         """
-                        Set sizing function defaults.
+                        Sets sizing function defaults.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_funct_defaults").execute(*args, **kwargs)
                     def sizing_funct_resolution(self, *args, **kwargs):
                         """
-                        Set the sizing function resolution with respect to shortest boundary.
+                        Sets the sizing function resolution with respect to shortest boundary.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_funct_resolution").execute(*args, **kwargs)
                     def sizing_funct_variation(self, *args, **kwargs):
                         """
-                        Set the maximum sizing function increase/decrease in the interior.
+                        Sets the maximum sizing function increase/decrease in the interior.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_funct_variation").execute(*args, **kwargs)
                     def sizing_funct_rate(self, *args, **kwargs):
                         """
-                        Determine how far from the boundary the increase/decrease happens.
+                        Determines how far from the boundary the increase/decrease happens.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_funct_rate").execute(*args, **kwargs)
                     def parallel_remeshing(self, *args, **kwargs):
                         """
-                        Enable/disable parallel remeshing for zone remeshing.
+                        Disables/enables parallel remeshing as part of methods-based remeshing..
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/parallel_remeshing").execute(*args, **kwargs)
                     def remeshing_after_moving(self, *args, **kwargs):
                         """
-                        Enable/disable optional remeshing after mesh motion to meet skewness threshold.
-                        Steady state dynamic mesh only.
+                        Enables a second round of remeshing based on the skewness parameters after the boundary has moved as part of methods-based remeshing.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/remeshing_after_moving").execute(*args, **kwargs)
 
                     class prism_controls(metaclass=PyMenuMeta):
                         """
-                        Specify optional prism controls.
+                        Enters the dynamic mesh prism controls menu, which provides text commands that can be useful when you want to modify the algorithm that attempts to retain the size distribution during unified remeshing. Each prism control definition is applied to one or more boundary zones, and then affects the height distribution and number of layers of the wedge cells in the adjacent boundary layers.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def add(self, *args, **kwargs):
                             """
-                            Add a new object.
+                            Adds a new prism controls definition.   After being prompted for a name, you can enter the following to complete the definition: 
+                                              
+                                                 
+                                                    
+                                                       first-height  Sets the height of the first layer of wedge cells in the boundary layer adjacent to the specified zones. 
+                                                 
+                                                 
+                                                    
+                                                       growth-method  Specifies the method used to determine the increase in height of the wedge cell layers beyond the first layer. The only available option is geometric, so that the height of each layer is the height of the previous layer multiplied by the rate. 
+                                                 
+                                                 
+                                                    
+                                                       name  Specifies the name of the prism controls definition. 
+                                                 
+                                                 
+                                                    
+                                                       nlayers  Sets the number of layers of wedge cells in the boundary layer adjacent to the specified zones. 
+                                                 
+                                                 
+                                                    
+                                                       rate  Sets the coefficient for the growth-method used to determine the increase in height of the wedge cell layers beyond the first layer. 
+                                                 
+                                                 
+                                                    
+                                                       zones  Specifies all of the boundary zones on which this prism controls definition is applied. 
+                                                 
+                                              
+                                            Enter q when the definition is complete to return to the text command menu. 
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_controls/add").execute(*args, **kwargs)
                         def edit(self, *args, **kwargs):
                             """
-                            Edit an object.
+                            Edits an existing prism controls definition. You can revise the fields listed previously for the define/dynamic-mesh/controls/remeshing-parameters/prism-controls/add text command.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_controls/edit").execute(*args, **kwargs)
                         def delete(self, *args, **kwargs):
                             """
-                            Delete an object.
+                            Deletes an existing prism controls definition.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_controls/delete").execute(*args, **kwargs)
                         def list(self, *args, **kwargs):
                             """
-                            List objects.
+                            Prints a list of the existing prism controls definitions in the console.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_controls/list").execute(*args, **kwargs)
                         def list_properties(self, *args, **kwargs):
                             """
-                            List properties of an object.
+                            Prints the properties of an existing prism controls definition of your choice in the console.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_controls/list_properties").execute(*args, **kwargs)
 
                     class sizing_controls(metaclass=PyMenuMeta):
                         """
-                        Specify optional sizing controls.
+                        Enters the dynamic mesh sizing controls menu, which provides text commands that can be useful when you want to modify the algorithm that attempts to retain the size distribution during unified remeshing. Each sizing control definition is applied to one or more boundary zones, and then affects the size of the cells throughout the mesh based on their distance from those boundary zone(s) and your settings in the definition.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def add(self, *args, **kwargs):
                             """
-                            Add a new object.
+                            Adds a new sizing controls definition.   After being prompted for a name, you can enter the following to complete the definition: 
+                                              
+                                                 
+                                                    
+                                                       growth-rate  Sets the growth rate of the sizing controls definition. 
+                                                 
+                                                 
+                                                    
+                                                       max-length  Sets a maximum length threshold that is used when the type is set to auto or soft. 
+                                                 
+                                                 
+                                                    
+                                                       min-length  Sets a maximum length threshold that is used when the type is set to auto. 
+                                                 
+                                                 
+                                                    
+                                                       motion  Determines whether the size control definition affects the remeshing based on whether the mesh undergoes motion: auto specifies that it is applied whether or not there is motion; and static specifies that it is only applied if there is no motion. 
+                                                 
+                                                 
+                                                    
+                                                       name  Specifies the name of the sizing controls definition. 
+                                                 
+                                                 
+                                                    
+                                                       type  Specifies how the sizing is affected by the selected boundary zones: auto specifies that the default size distribution (rather than the initial size distribution in your selected boundary zones) is used, along with your specified max-length and min-length values; soft specifies that the maximum length scale of your selected boundary zones is used, along with your specified min-length value; and meshed specifies that the maximum and minimum length scales of your selected boundary zones are used, in order to respect their initial size distribution. This setting is only relevant if you have more than one sizing controls definition. 
+                                                 
+                                                 
+                                                    
+                                                       zones  Specifies all of the boundary zones on which the sizing controls definition is applied. 
+                                                 
+                                              
+                                            Enter q when the definition is complete to return to the text command menu. 
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_controls/add").execute(*args, **kwargs)
                         def edit(self, *args, **kwargs):
                             """
-                            Edit an object.
+                            Edits an existing sizing controls definition. You can revise the fields listed previously for the define/dynamic-mesh/controls/remeshing-parameters/sizing-controls/add text command.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_controls/edit").execute(*args, **kwargs)
                         def delete(self, *args, **kwargs):
                             """
-                            Delete an object.
+                            Deletes an existing sizing controls definition.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_controls/delete").execute(*args, **kwargs)
                         def list(self, *args, **kwargs):
                             """
-                            List objects.
+                            Prints a list of the existing sizing controls definitions in the console.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_controls/list").execute(*args, **kwargs)
                         def list_properties(self, *args, **kwargs):
                             """
-                            List properties of an object.
+                            Prints the properties of an existing sizing controls definition of your choice in the console.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/sizing_controls/list_properties").execute(*args, **kwargs)
 
                     class prism_layer_parameters(metaclass=PyMenuMeta):
                         """
-                        Enter the dynamic mesh prism remeshing menu.
+                        Enters the dynamic mesh prism layer parameters menu, where you can define the parameters of the prism layers as part of methods-based remeshing.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def first_height(self, *args, **kwargs):
                             """
-                            Set first cell height in the prism layer.
+                            Sets the first cell height in the prism layer.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_layer_parameters/first_height").execute(*args, **kwargs)
                         def growth_rate(self, *args, **kwargs):
                             """
-                            Set the geometric growth rate of the prism layer.
+                            Sets the geometric growth rate of the prism layer.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_layer_parameters/growth_rate").execute(*args, **kwargs)
                         def number_of_layers(self, *args, **kwargs):
                             """
-                            Set the number of elements in the prism layer.
+                            Sets the number of elements in the prism layer.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/remeshing_parameters/prism_layer_parameters/number_of_layers").execute(*args, **kwargs)
 
                 class in_cylinder_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh in-cylinder menu.
+                    Enters the dynamic mesh in-cylinder menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def starting_crank_angle(self, *args, **kwargs):
                         """
-                        Specify the starting crank angle.
+                        Specifies the initial value for the crank angle.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/starting_crank_angle").execute(*args, **kwargs)
                     def crank_angle_step(self, *args, **kwargs):
                         """
-                        Specify the crank angle step size.
+                        Specifies crank angle step size.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/crank_angle_step").execute(*args, **kwargs)
                     def crank_period(self, *args, **kwargs):
                         """
-                        Specify the crank period.
+                        Specifies the crank period.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/crank_period").execute(*args, **kwargs)
                     def max_crank_angle_step(self, *args, **kwargs):
                         """
-                        Specify the maximum crank angle step size.
+                        Specifies maximum crank angle step size.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/max_crank_angle_step").execute(*args, **kwargs)
                     def piston_data(self, *args, **kwargs):
                         """
-                        Specify the crank radius, connecting rod length, and piston pin offset.
+                        Specifies the crank radius and connecting rod length.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/piston_data").execute(*args, **kwargs)
                     def piston_stroke_cutoff(self, *args, **kwargs):
                         """
-                        Specify the cut off point for in-cylinder piston.
+                        Specifies the cut off point for in-cylinder piston.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/piston_stroke_cutoff").execute(*args, **kwargs)
                     def minimum_lift(self, *args, **kwargs):
                         """
-                        Specify the minimum lift for in-cylinder valves.
+                        Specifies minimum lift for in-cylinder valves.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/minimum_lift").execute(*args, **kwargs)
                     def print_plot_lift(self, *args, **kwargs):
                         """
-                        Print or plot valve lift curve.
+                        Prints or plot valve lift curve.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/print_plot_lift").execute(*args, **kwargs)
                     def modify_lift(self, *args, **kwargs):
                         """
-                        Modify the lift curve (shift or scale).
+                        Modifies lift curve (shift or scale).
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/modify_lift").execute(*args, **kwargs)
                     def position_starting_mesh(self, *args, **kwargs):
                         """
-                        Move mesh from top dead center to starting crank angle.
+                        Moves mesh from top dead center to starting crank angle.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/in_cylinder_parameters/position_starting_mesh").execute(*args, **kwargs)
 
                 class implicit_update_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh implicit update menu.
+                    Enters the dynamic mesh implicit update menu. This text command is only available 	when you enable implicit mesh updating using the prompts 	of the define/dynamic-mesh/dynamic-mesh? 	text command.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def update_interval(self, *args, **kwargs):
                         """
-                        Specify update interval of implicit update.
+                        Specifies the update interval (that is, the frequency in iterations) at which the mesh is updated within a time step.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/implicit_update_parameters/update_interval").execute(*args, **kwargs)
                     def motion_relaxation(self, *args, **kwargs):
                         """
-                        Specify motion relaxation of implicit update.
+                        Specifies a value (within the range of 0 to 1) for the motion relaxation, which is applied during the implicit mesh update.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/implicit_update_parameters/motion_relaxation").execute(*args, **kwargs)
                     def residual_criteria(self, *args, **kwargs):
                         """
-                        Specify residual criteria of implicit update.
+                        Specifies the relative residual threshold that is used to check the motion convergence during the implicit mesh update.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/implicit_update_parameters/residual_criteria").execute(*args, **kwargs)
 
                 class six_dof_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh six-dof menu.
+                    Enters the dynamic mesh six degrees of freedom (DOF) solver menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def create_properties(self, *args, **kwargs):
                         """
-                        Create a set of Six DOF Properties.
+                        Creates/edits a set of six DOF properties for rigid body motion.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/create_properties").execute(*args, **kwargs)
                     def delete_properties(self, *args, **kwargs):
                         """
-                        Delete a set of Six DOF Properties.
+                        Deletes a set of six DOF properties for rigid body motion.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/delete_properties").execute(*args, **kwargs)
                     def list_properties(self, *args, **kwargs):
                         """
-                        List Six DOF Properties.
+                        Prints summaries of the existing sets of six DOF properties for rigid body motion.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/list_properties").execute(*args, **kwargs)
                     def x_component_of_gravity(self, *args, **kwargs):
                         """
-                        Specify x-component-of-gravity.
+                        Specifies x-component of gravity.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/x_component_of_gravity").execute(*args, **kwargs)
                     def y_component_of_gravity(self, *args, **kwargs):
                         """
-                        Specify y-component-of-gravity.
+                        Specifies y-component of gravity.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/y_component_of_gravity").execute(*args, **kwargs)
                     def z_component_of_gravity(self, *args, **kwargs):
                         """
-                        Specify z-component-of-gravity.
+                        Specifies z-component of gravity.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/z_component_of_gravity").execute(*args, **kwargs)
                     def second_order(self, *args, **kwargs):
                         """
-                        Enable/disable second order six DOF solver.
+                        Enables/disables the second order six degrees of freedom solver.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/second_order").execute(*args, **kwargs)
                     def motion_history(self, *args, **kwargs):
                         """
-                        Enable/disable writing position/orientation of six DOF zones to file.
+                        Enables/disables writing position/orientation of six DOF zones to file.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/motion_history").execute(*args, **kwargs)
                     def motion_history_file_name(self, *args, **kwargs):
                         """
-                        Location of six DOF motion history file.
+                        Specifies the name and location of the six DOF motion history file.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/six_dof_parameters/motion_history_file_name").execute(*args, **kwargs)
 
                 class periodic_displacement_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh periodic displacement menu.
+                    Enters the periodic displacement parameters 	menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -9525,7 +9568,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class contact_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the dynamic mesh contact detection menu.
+                    Enters the dynamic mesh contact-parameters menu. This text command is only available 	when you enable contact detection using the prompts of 	the define/dynamic-mesh/dynamic-mesh? 	text command.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -9533,164 +9576,163 @@ class main_menu(metaclass=PyMenuMeta):
                         self.flow_control_parameters = self.__class__.flow_control_parameters(path + [("flow_control_parameters", None)], service)
                     def contact_face_zones(self, *args, **kwargs):
                         """
-                        Select face zones involved in contact detection.
+                        Selects face zones involved in contact detection.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/contact_face_zones").execute(*args, **kwargs)
                     def contact_udf(self, *args, **kwargs):
                         """
-                        Select UDF to be invoked when contact is detected.
+                        Selects the UDF to be invoked when contact is detected.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/contact_udf").execute(*args, **kwargs)
                     def contact_threshold(self, *args, **kwargs):
                         """
-                        Specify threshold distance for contact detection.
+                        Specifies threshold distance for contact detection.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/contact_threshold").execute(*args, **kwargs)
                     def update_contact_marks(self, *args, **kwargs):
                         """
-                        Update which cells are marked in order to block flow in the contact region.
+                        Updates which cells are marked in order to block flow in the contact region as part of the contact marks method.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/update_contact_marks").execute(*args, **kwargs)
                     def flow_control(self, *args, **kwargs):
                         """
-                        Enable/disable flow control.
+                        Enables/disables flow control in the contact region.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/flow_control").execute(*args, **kwargs)
                     def contact_method(self, *args, **kwargs):
                         """
-                        Select the method used for flow control in the contact region.
+                        Selects the method used for flow control in the contact region. Enter 0 for the contact zones method (which restricts the flow using additional cell zones with porous zone properties) or 1 for the contact marks method (which blocks the flow using zero-mass-flux boundaries).
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/contact_method").execute(*args, **kwargs)
                     def render_contact_cells(self, *args, **kwargs):
                         """
-                        Set the option to include contact-cells in post-processing.
+                        Enables/disables the availability of a field variable (contact-cell-mark) that can be used to display contours of cells marked for flow blocking as part of the contact marks method, and allows you to postprocess other field variables on those cells.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/render_contact_cells").execute(*args, **kwargs)
                     def verbosity(self, *args, **kwargs):
                         """
-                        Set the verbosity for contact-detection.
+                        Sets the level of detail printed in the console regarding contact detection.
                         """
                         return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/verbosity").execute(*args, **kwargs)
 
                     class flow_control_parameters(metaclass=PyMenuMeta):
                         """
-                        Enter the flow control menu.
+                        Enters the flow control parameters menu, which provides settings related to controlling the flow in the contact region.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def solution_stabilization(self, *args, **kwargs):
                             """
-                            Enable/disable the performance of additional iterations per time step and 
-                                the application of solution controls to improve the stability of the solver.
+                            Enables/disables the performance of additional iterations per time step and the application of solution controls to improve the stability of the solver as part of the contact marks method.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/flow_control_parameters/solution_stabilization").execute(*args, **kwargs)
                         def create_flow_control_zone(self, *args, **kwargs):
                             """
-                            Create a flow control zone.
+                            Creates a flow control zone as part of the contact zones method.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/flow_control_parameters/create_flow_control_zone").execute(*args, **kwargs)
                         def delete_flow_control_zone(self, *args, **kwargs):
                             """
-                            Delete a flow control zone.
+                            Deletes a flow control zone as part of the contact zones method.
                             """
                             return PyMenu(self.service, "/define/dynamic_mesh/controls/contact_parameters/flow_control_parameters/delete_flow_control_zone").execute(*args, **kwargs)
 
             class events(metaclass=PyMenuMeta):
                 """
-                Enter the dynamic mesh events menu.
+                Enters the dynamic mesh events menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def import_event_file(self, *args, **kwargs):
                     """
-                    Import dynamic mesh event file.
+                    Imports dynamic mesh event file.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/events/import_event_file").execute(*args, **kwargs)
                 def export_event_file(self, *args, **kwargs):
                     """
-                    Export dynamic mesh events to file.
+                    Exports dynamic mesh events to file.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/events/export_event_file").execute(*args, **kwargs)
 
             class zones(metaclass=PyMenuMeta):
                 """
-                Enter the dynamic mesh zones menu.
+                Enters the dynamic mesh zones menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def create(self, *args, **kwargs):
                     """
-                    Create dynamic zone.
+                    Creates or edit a dynamic zone.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/create").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete dynamic zone.
+                    Deletes a dynamic zone.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/delete").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List dynamic zones.
+                    Lists the dynamic zones.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/list").execute(*args, **kwargs)
                 def insert_boundary_layer(self, *args, **kwargs):
                     """
-                    Insert new cell zone.
+                    Inserts a new cell zone.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/insert_boundary_layer").execute(*args, **kwargs)
                 def remove_boundary_layer(self, *args, **kwargs):
                     """
-                    Remove cell zone.
+                    Removes a cell zone.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/remove_boundary_layer").execute(*args, **kwargs)
                 def insert_interior_layer(self, *args, **kwargs):
                     """
-                    Insert new layer cell zone at specified location.
+                    Inserts a new layer cell zone at a specified location.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/insert_interior_layer").execute(*args, **kwargs)
                 def remove_interior_layer(self, *args, **kwargs):
                     """
-                    Remove interior layer cell zone.
+                    Removes an interior layer cell zone.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/zones/remove_interior_layer").execute(*args, **kwargs)
 
             class actions(metaclass=PyMenuMeta):
                 """
-                Enter the dynamic mesh actions menu.
+                Enters the dynamic mesh action menu, where you can initiate manual remeshing (that is, remeshing without running a calculation).
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def remesh_cell_zone(self, *args, **kwargs):
                     """
-                    Manually remesh cell zone with option to remesh adjacent dynamic face zones.
+                    Manually remeshes a cell zone with option to remesh adjacent dynamic face 	zones.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/actions/remesh_cell_zone").execute(*args, **kwargs)
 
             class transient_settings(metaclass=PyMenuMeta):
                 """
-                Enter the dynamic mesh transient settings menu.
+                Enters the transient dynamic mesh settings menu. This text command is only available when you enable dynamic mesh using the prompts of the define/dynamic-mesh/dynamic-mesh? text command. Solver time must also be set to Transient.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def verbosity(self, *args, **kwargs):
                     """
-                    Enable/disable transient scheme verbosity for dynamic mesh cases.
+                    Enables/disables transient scheme verbosity for dynamic mesh cases.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/transient_settings/verbosity").execute(*args, **kwargs)
                 def allow_second_order(self, *args, **kwargs):
                     """
-                    Enable/disable 2nd order transient scheme for dynamic mesh cases.
+                    Enables/disables second order transient scheme for dynamic mesh cases.
                     """
                     return PyMenu(self.service, "/define/dynamic_mesh/transient_settings/allow_second_order").execute(*args, **kwargs)
 
         class mesh_interfaces(metaclass=PyMenuMeta):
             """
-            Enter the mesh-interfaces menu.
+            Enters the mesh-interfaces menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -9700,32 +9742,32 @@ class main_menu(metaclass=PyMenuMeta):
                 self.auto_options = self.__class__.auto_options(path + [("auto_options", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create a mesh interface.
+                Creates mesh interfaces.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/create").execute(*args, **kwargs)
             def turbo_create(self, *args, **kwargs):
                 """
-                Create a general turbo interface.
+                Creates a general turbo interface. This text command is only available if the define/turbo-model/enable-turbo-model? text command is enabled.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/turbo_create").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit a mesh interface.
+                Edits attributes of existing mesh interfaces. For one-to-one interfaces, you can edit the name; for many-to-many interfaces, you can edit the interface options and (for a single interface) the name and the list of interface zones assigned to the interface. 
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete a mesh interface.
+                Deletes a mesh interface.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/delete").execute(*args, **kwargs)
             def display(self, *args, **kwargs):
                 """
-                Display specified mesh interface zone.
+                Displays the specified mesh interface zone.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/display").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List all mesh-interfaces.
+                Lists all mesh interfaces.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/list").execute(*args, **kwargs)
             def make_periodic(self, *args, **kwargs):
@@ -9745,17 +9787,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/mesh_interfaces/make_phaselag_from_periodic").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all mesh interfaces.
+                Deletes all mesh interfaces.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/delete_all").execute(*args, **kwargs)
             def enforce_continuity_after_bc(self, *args, **kwargs):
                 """
-                Across the interface, enforces continuity over boundary condition.
+                Enables/disables continuity across the boundary condition interface for contour plots in postprocessing.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/enforce_continuity_after_bc").execute(*args, **kwargs)
             def verbosity(self, *args, **kwargs):
                 """
-                Set mesh interface verbosity.
+                Sets the mesh interface verbosity.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/verbosity").execute(*args, **kwargs)
             def enable_si_with_nodes(self, *args, **kwargs):
@@ -9765,12 +9807,12 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/mesh_interfaces/enable_si_with_nodes").execute(*args, **kwargs)
             def enforce_coupled_wall_between_solids(self, *args, **kwargs):
                 """
-                Create coupled wall interface between solids.
+                Enables/disables automatic definition of solid-solid interfaces as coupled walls. By default this option is disabled and ANSYS Fluent creates interior boundaries at solid-solid interfaces.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/enforce_coupled_wall_between_solids").execute(*args, **kwargs)
             def improve_quality(self, *args, **kwargs):
                 """
-                Improve mesh interface quality.
+                Checks the quality of all mapped interfaces. If Fluent finds any mapped interfaces that require improvement it will list them and ask you if you would like to increase the tolerance to improve the interfaces.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/improve_quality").execute(*args, **kwargs)
             def one_to_one_pairing(self, *args, **kwargs):
@@ -9780,17 +9822,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/mesh_interfaces/one_to_one_pairing").execute(*args, **kwargs)
             def auto_pairing(self, *args, **kwargs):
                 """
-                Automatically pair and create mesh interfaces for some or all interface zones.
+                Automatically "pairs" some or all of the interface zones, in order to create mesh interfaces. This text command is only available when the define/mesh-interfaces/one-to-one-pairing? text command is disabled.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/auto_pairing").execute(*args, **kwargs)
             def enable_visualization_of_interfaces(self, *args, **kwargs):
                 """
-                Display facets on mesh interfaces.
+                Enables/disables the filling of node coordinates on the zones of mesh interfaces, so that they can be displayed in the graphics window.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/enable_visualization_of_interfaces").execute(*args, **kwargs)
             def transfer_motion_across_interfaces(self, *args, **kwargs):
                 """
-                Transfer motion from one side of the interface to the other when only one side undergoes user-defined or system-coupling motion.
+                Enables/disables the automatic transfer of motion across a mesh interface when only one side is moving as a result of user-defined or system coupling motion. You can specify the method by which the motion is transferred: transfer-displacements (the default) interpolates nodal displacement from the active side of the interface to the passive side, and is recommended when there are gaps and/or penetrations in the mesh interface that must be maintained; project-nodes projects the passive nodes onto the faces of active side, and is recommended when the active side includes significant tangential motion (as only the normal displacement is effectively transferred in this method).
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/transfer_motion_across_interfaces").execute(*args, **kwargs)
             def non_overlapping_zone_name(self, *args, **kwargs):
@@ -9800,7 +9842,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/mesh_interfaces/non_overlapping_zone_name").execute(*args, **kwargs)
             def remove_left_handed_interface_faces(self, *args, **kwargs):
                 """
-                Remove left-handed faces during mesh interface creation.
+                Removes left-handed faces (which can cause the mesh to be invalid) during mesh interface creation.
                 """
                 return PyMenu(self.service, "/define/mesh_interfaces/remove_left_handed_interface_faces").execute(*args, **kwargs)
 
@@ -9842,34 +9884,34 @@ class main_menu(metaclass=PyMenuMeta):
 
             class auto_options(metaclass=PyMenuMeta):
                 """
-                Enter auto-options menu.
+                Enters the auto-options menu. This menu is only available when the define/mesh-interfaces/one-to-one-pairing? text command is enabled. 
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def proximity_tolerance(self, *args, **kwargs):
                     """
-                    Specification of auto pairing tolerance.
+                    Sets the tolerance used as part 	of the automatic grouping of zones to create mesh 	interfaces when the define/mesh-interfaces/one-to-one-pairing? 	text command is disabled. The proximity tolerance is 	defined relative to the edge lengths in the interface 	zones, and can range from 0 to 1 (representing the minimum 	and maximum edge lengths, respectively). 
                     """
                     return PyMenu(self.service, "/define/mesh_interfaces/auto_options/proximity_tolerance").execute(*args, **kwargs)
                 def naming_option(self, *args, **kwargs):
                     """
-                    Specify whether or not to include an informative suffix to the mesh interface name.
+                    Specifies whether the name of each new one-to-one mesh 	interface (as well as existing mesh interfaces, if you 	so desire) has no additional suffix, or a suffix that 	includes the names of the associated boundary zones, the 	IDs of the associated boundary zones, or the names of 	the adjacent cell zones. 
                     """
                     return PyMenu(self.service, "/define/mesh_interfaces/auto_options/naming_option").execute(*args, **kwargs)
                 def set_default_name_prefix(self, *args, **kwargs):
                     """
-                    Specification of auto pairing default name prefix.
+                    Specifies the default interface 	name prefix used for one-to-one mesh interfaces.
                     """
                     return PyMenu(self.service, "/define/mesh_interfaces/auto_options/set_default_name_prefix").execute(*args, **kwargs)
                 def set_one_to_one_pairing_tolerance(self, *args, **kwargs):
                     """
-                    Enable/disable one-to-one auto pairing tolerance.
+                    Enables/disables the use of adjustable tolerances to 	determine which of the selected boundary zones can be 	paired up to make the mesh interfaces, in order to 	account for gaps, thin layers, and/or complex 	geometries.
                     """
                     return PyMenu(self.service, "/define/mesh_interfaces/auto_options/set_one_to_one_pairing_tolerance").execute(*args, **kwargs)
                 def pairing_between_different_cell_zones_only(self, *args, **kwargs):
                     """
-                    Pairing between interface zones from different cell zones only.
+                    Specifies whether the 	one-to-one mesh interfaces are only created between 	different cell zones.
                     """
                     return PyMenu(self.service, "/define/mesh_interfaces/auto_options/pairing_between_different_cell_zones_only").execute(*args, **kwargs)
                 def pairing_between_interface_zones_only(self, *args, **kwargs):
@@ -9885,7 +9927,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class gap_model(metaclass=PyMenuMeta):
             """
-            Enter the narrow-gaps menu.
+            Enters the gap model menu, where you can define one or more gap regions where the flow is blocked or decelerated when face zones move within a specified proximity threshold of each other.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -9893,42 +9935,42 @@ class main_menu(metaclass=PyMenuMeta):
                 self.advanced_options = self.__class__.advanced_options(path + [("advanced_options", None)], service)
             def enable(self, *args, **kwargs):
                 """
-                Enable/Disable gap model.
+                Enables/disables the gap model.
                 """
                 return PyMenu(self.service, "/define/gap_model/enable").execute(*args, **kwargs)
             def create(self, *args, **kwargs):
                 """
-                Create a gap object.
+                Creates a single gap region, so that when selected face zones move within a specified proximity threshold of each other, flow blockage / deceleration is applied to the cells that lie within the threshold.
                 """
                 return PyMenu(self.service, "/define/gap_model/create").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an exiting gap object.
+                Edits an existing gap region.
                 """
                 return PyMenu(self.service, "/define/gap_model/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an exiting gap object.
+                Deletes an existing gap region.
                 """
                 return PyMenu(self.service, "/define/gap_model/delete").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all of the exiting gap objects.
+                Deletes all of the existing gap regions.
                 """
                 return PyMenu(self.service, "/define/gap_model/delete_all").execute(*args, **kwargs)
             def list_gap_regions(self, *args, **kwargs):
                 """
-                List gap regions.
+                Lists the properties of the gap regions.
                 """
                 return PyMenu(self.service, "/define/gap_model/list_gap_regions").execute(*args, **kwargs)
             def list_gap_face_zones(self, *args, **kwargs):
                 """
-                List name of the gap face zones that can be used for gaps creation.
+                Lists the names of the face zones that can be used for creating gap regions.
                 """
                 return PyMenu(self.service, "/define/gap_model/list_gap_face_zones").execute(*args, **kwargs)
             def list_gap_cell_zones(self, *args, **kwargs):
                 """
-                List name of the gap cells zones that can be used as exclided cell zones in gaps creation.
+                Lists the names of the cell zones that can be excluded for individual gap regions (so that such cells are not marked for flow blockage / deceleration).
                 """
                 return PyMenu(self.service, "/define/gap_model/list_gap_cell_zones").execute(*args, **kwargs)
             def render_gap_regions(self, *args, **kwargs):
@@ -9939,14 +9981,14 @@ class main_menu(metaclass=PyMenuMeta):
 
             class advanced_options(metaclass=PyMenuMeta):
                 """
-                Show options.
+                Enters the advanced options menu for the gap model.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def expert(self, *args, **kwargs):
                     """
-                    Enable expert options for gap model.
+                    Enables/disables access to expert-level text commands 	for the gap model.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/expert").execute(*args, **kwargs)
                 def alternative_marking(self, *args, **kwargs):
@@ -9976,37 +10018,37 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/gap_model/advanced_options/clear_gap_regions").execute(*args, **kwargs)
                 def precise_gap_marking(self, *args, **kwargs):
                     """
-                    Mark cells in gap regions using more accurate search algorithm.
+                    Enables/disables the use of a more accurate search algorithm for marking cells in 	gap regions. Note that it can be costly, particularly 	for 3D cases or those with a large number of cells 	inside the gap regions. This text command is only 	available if you have enabled the 	define/gap-model/advanced-options/expert? 	text command.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/precise_gap_marking").execute(*args, **kwargs)
                 def render_flow_modeling_gaps(self, *args, **kwargs):
                     """
-                    Render solution inside flow modeling gap cells.
+                    Enables/disables the rendering of the solution in the cells of flow-modeling gap 	regions during postprocessing. This text command is only 	available if you have enabled the 	define/gap-model/advanced-options/expert? 	text command.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/render_flow_modeling_gaps").execute(*args, **kwargs)
                 def reduce_gap_regions(self, *args, **kwargs):
                     """
-                    Using a more restrictive algorithm for marking cells in gap regions.
+                    Enables/disables a more restrictive algorithm for marking cells in gap regions. This 	text command is only available if you have enabled the 	define/gap-model/advanced-options/expert? 	text command.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/reduce_gap_regions").execute(*args, **kwargs)
                 def fill_data_in_gap_regions(self, *args, **kwargs):
                     """
-                    Interpolate solution data into the whole gap regions.
+                    Enables/disables the interpolation of solution data throughout the gap regions. This 	text command is only available if you have enabled the 	define/gap-model/advanced-options/expert? 	text command.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/fill_data_in_gap_regions").execute(*args, **kwargs)
                 def enhanced_data_interpolation(self, *args, **kwargs):
                     """
-                    Use enhanced data interpolation for updating information in gap regions.
+                    Enables/disables the use of enhanced data 	interpolation when updating information in gap regions. 	This text command is only available if you have enabled 	the 	define/gap-model/advanced-options/expert? 	text command.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/enhanced_data_interpolation").execute(*args, **kwargs)
                 def sponge_layer(self, *args, **kwargs):
                     """
-                    Set advanced settings for gap sponge layer.
+                    Allows you to edit the solution stabilization settings for flow-modeling gap regions 	that have sponge-layer local stabilization 	enabled.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/sponge_layer").execute(*args, **kwargs)
                 def solution_stabilization(self, *args, **kwargs):
                     """
-                    Set solution stabilization level for gap model.
+                    Sets the global solution stabilization level for the gap 	regions.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/solution_stabilization").execute(*args, **kwargs)
                 def include_coupled_walls(self, *args, **kwargs):
@@ -10016,33 +10058,33 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/gap_model/advanced_options/include_coupled_walls").execute(*args, **kwargs)
                 def check_cfl_condition(self, *args, **kwargs):
                     """
-                    Check time step size for better convergence.
+                    Enables/disables the printing of warnings if the time 	step size is too large based on a Courant (CFL) number 	automatically determined for your specified solution 	stability level.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/check_cfl_condition").execute(*args, **kwargs)
                 def extend_gap_regions(self, *args, **kwargs):
                     """
-                    Extend gap regions for better convergence.
+                    Enables/disables the extending of the gap regions by including additional cells in 	the vicinity of the gap interfaces during marking. This 	is useful when the default shape of the marked cells is 	negatively affecting solution stability or convergence 	behavior.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/extend_gap_regions").execute(*args, **kwargs)
                 def revert_controls_to_default(self, *args, **kwargs):
                     """
-                    Revert gap stabilization and any related solver settings to default.
+                    Reverts the global gap stabilization level and any related 	solver settings to the default.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/revert_controls_to_default").execute(*args, **kwargs)
                 def verbosity(self, *args, **kwargs):
                     """
-                    Set the verbosity for gap model.
+                    Sets the verbosity for messages printed in the console 	related to the gap model.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/verbosity").execute(*args, **kwargs)
                 def render_gap_interface(self, *args, **kwargs):
                     """
-                    Render gap interface.
+                    Enables/disables the rendering of the mesh surfaces inside the gap regions when 	displaying the mesh with contours. Note that the 	solution is still not rendered inside the flow-blocking 	gap regions.
                     """
                     return PyMenu(self.service, "/define/gap_model/advanced_options/render_gap_interface").execute(*args, **kwargs)
 
         class materials(metaclass=PyMenuMeta):
             """
-            Enter the materials menu.
+            Enters the materials menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -10050,76 +10092,76 @@ class main_menu(metaclass=PyMenuMeta):
                 self.data_base = self.__class__.data_base(path + [("data_base", None)], service)
             def change_create(self, *args, **kwargs):
                 """
-                Change the properties of a locally-stored material or create a new material.
+                Changes the properties of a locally-stored material or create a new material.   Generally, the properties you enter at the prompts will be filtered according to your case and model settings. However, some of the listed properties may not match the selection choice in the Graphics User Interface. Typically, those excessive properties in the Text User Interface will not be used in your simulation.
                 """
                 return PyMenu(self.service, "/define/materials/change_create").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
                 """
-                Copy a material from the database.
+                Copies a material from the database.
                 """
                 return PyMenu(self.service, "/define/materials/copy").execute(*args, **kwargs)
             def copy_by_formula(self, *args, **kwargs):
                 """
-                Copy a material from the database by formula.
+                Copies a material from the database by formula.
                 """
                 return PyMenu(self.service, "/define/materials/copy_by_formula").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete a material from local storage.
+                Deletes a material from local storage.
                 """
                 return PyMenu(self.service, "/define/materials/delete").execute(*args, **kwargs)
             def list_materials(self, *args, **kwargs):
                 """
-                List all locally-stored materials.
+                Lists all locally-stored materials.
                 """
                 return PyMenu(self.service, "/define/materials/list_materials").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List the properties of a locally-stored material.
+                Lists the properties of a locally-stored material.
                 """
                 return PyMenu(self.service, "/define/materials/list_properties").execute(*args, **kwargs)
 
             class data_base(metaclass=PyMenuMeta):
                 """
-                Enter the database menu.
+                Enters the material database menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def database_type(self, *args, **kwargs):
                     """
-                    Set the database type.
+                    Sets the database type 	(fluent-database, 	granta-mds, or 	user-defined).
                     """
                     return PyMenu(self.service, "/define/materials/data_base/database_type").execute(*args, **kwargs)
                 def edit(self, *args, **kwargs):
                     """
-                    Edit a material.
+                    Edits material.
                     """
                     return PyMenu(self.service, "/define/materials/data_base/edit").execute(*args, **kwargs)
                 def list_materials(self, *args, **kwargs):
                     """
-                    List all materials in the database.
+                    Lists all materials in the database.
                     """
                     return PyMenu(self.service, "/define/materials/data_base/list_materials").execute(*args, **kwargs)
                 def list_properties(self, *args, **kwargs):
                     """
-                    List the properties of a material in the database.
+                    Lists the properties of a material in the database.
                     """
                     return PyMenu(self.service, "/define/materials/data_base/list_properties").execute(*args, **kwargs)
                 def new(self, *args, **kwargs):
                     """
-                    Define a new material.
+                    Defines new material.
                     """
                     return PyMenu(self.service, "/define/materials/data_base/new").execute(*args, **kwargs)
                 def save(self, *args, **kwargs):
                     """
-                    Save user-defined database.
+                    Saves user-defined database.
                     """
                     return PyMenu(self.service, "/define/materials/data_base/save").execute(*args, **kwargs)
 
         class mixing_planes(metaclass=PyMenuMeta):
             """
-            Enter the mixing planes menu.
+            Enters the mixing planes menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -10127,23 +10169,23 @@ class main_menu(metaclass=PyMenuMeta):
                 self.set = self.__class__.set(path + [("set", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create a mixing plane.
+                Creates a mixing plane.
                 """
                 return PyMenu(self.service, "/define/mixing_planes/create").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete a mixing plane.
+                Deletes a mixing plane.
                 """
                 return PyMenu(self.service, "/define/mixing_planes/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List defined mixing plane(s).
+                Lists defined mixing plane(s).
                 """
                 return PyMenu(self.service, "/define/mixing_planes/list").execute(*args, **kwargs)
 
             class set(metaclass=PyMenuMeta):
                 """
-                Enter the mixing plane set menu.
+                Sets global parameters relevant to mixing planes.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -10152,64 +10194,64 @@ class main_menu(metaclass=PyMenuMeta):
                     self.conserve_total_enthalpy = self.__class__.conserve_total_enthalpy(path + [("conserve_total_enthalpy", None)], service)
                 def under_relaxation(self, *args, **kwargs):
                     """
-                    Set mixing plane under-relaxation factor.
+                    Sets mixing plane under-relaxation factor.
                     """
                     return PyMenu(self.service, "/define/mixing_planes/set/under_relaxation").execute(*args, **kwargs)
                 def averaging_method(self, *args, **kwargs):
                     """
-                    Set mixing plane profile averaging method.
+                    Sets the mixing plane profile averaging method.
                     """
                     return PyMenu(self.service, "/define/mixing_planes/set/averaging_method").execute(*args, **kwargs)
                 def fix_pressure_level(self, *args, **kwargs):
                     """
-                    Set fix pressure level using define/reference-pressure-location.
+                    Sets fixed pressure level using value based on define/reference-pressure-location.
                     """
                     return PyMenu(self.service, "/define/mixing_planes/set/fix_pressure_level").execute(*args, **kwargs)
 
                 class conserve_swirl(metaclass=PyMenuMeta):
                     """
-                    Enter the mixing plane conserve-swirl menu.
+                    Enters the menu to set swirl conservation in mixing plane menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def enable(self, *args, **kwargs):
                         """
-                        Enable/disable swirl conservation in mixing plane.
+                        Enables/disables swirl conservation in mixing plane.
                         """
                         return PyMenu(self.service, "/define/mixing_planes/set/conserve_swirl/enable").execute(*args, **kwargs)
                     def verbosity(self, *args, **kwargs):
                         """
-                        Enable/disable verbosity in swirl conservation calculations.
+                        Enables/disables verbosity in swirl conservation calculations.
                         """
                         return PyMenu(self.service, "/define/mixing_planes/set/conserve_swirl/verbosity").execute(*args, **kwargs)
                     def report_swirl_integration(self, *args, **kwargs):
                         """
-                        Report swirl integration (torque) on inflow and outflow zones.
+                        Reports swirl integration (Torque) on inflow and outflow zones.
                         """
                         return PyMenu(self.service, "/define/mixing_planes/set/conserve_swirl/report_swirl_integration").execute(*args, **kwargs)
 
                 class conserve_total_enthalpy(metaclass=PyMenuMeta):
                     """
-                    Enter the menu to set total enthalpy conservation in mixing plane menu.
+                    Enters the menu to set total enthalpy conservation in mixing plane menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def enable(self, *args, **kwargs):
                         """
-                        Enable/disable total enthalpy conservation in mixing plane.
+                        Enables/disables total enthalpy conservation in mixing plane.
                         """
                         return PyMenu(self.service, "/define/mixing_planes/set/conserve_total_enthalpy/enable").execute(*args, **kwargs)
                     def verbosity(self, *args, **kwargs):
                         """
-                        Enable/disable verbosity in total-enthalpy conservation calculations.
+                        Enables/disables verbosity in total-enthalpy conservation calculations.
                         """
                         return PyMenu(self.service, "/define/mixing_planes/set/conserve_total_enthalpy/verbosity").execute(*args, **kwargs)
 
         class models(metaclass=PyMenuMeta):
             """
-            Enter the models menu to configure the solver.
+            Enters the models menu to configure the solver.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -10234,113 +10276,114 @@ class main_menu(metaclass=PyMenuMeta):
                 self.electrolysis_setup = self.__class__.electrolysis_setup(path + [("electrolysis_setup", None)], service)
             def addon_module(self, *args, **kwargs):
                 """
-                Load addon module.
+                Loads addon module.
                 """
                 return PyMenu(self.service, "/define/models/addon_module").execute(*args, **kwargs)
             def axisymmetric(self, *args, **kwargs):
                 """
-                Enable/disable the axisymmetric model.
+                Specifies whether or not the domain is axisymmetric.
                 """
                 return PyMenu(self.service, "/define/models/axisymmetric").execute(*args, **kwargs)
             def solidification_melting(self, *args, **kwargs):
                 """
-                Enable/disable the solidification and melting model.
+                Enables/disables the solidification and melting model.
                 """
                 return PyMenu(self.service, "/define/models/solidification_melting").execute(*args, **kwargs)
             def crevice_model(self, *args, **kwargs):
                 """
-                Enable/disable the crevice model.
+                Enables/disables the crevice model.
                 """
                 return PyMenu(self.service, "/define/models/crevice_model").execute(*args, **kwargs)
             def crevice_model_controls(self, *args, **kwargs):
                 """
-                Enter the crevice model controls menu.
+                Enters the crevice model controls menu.
                 """
                 return PyMenu(self.service, "/define/models/crevice_model_controls").execute(*args, **kwargs)
             def energy(self, *args, **kwargs):
                 """
-                Enable/disable the energy model.
+                Enables/disables the energy model.
                 """
                 return PyMenu(self.service, "/define/models/energy").execute(*args, **kwargs)
             def noniterative_time_advance(self, *args, **kwargs):
                 """
-                Enable/disable the noniterative time advancement scheme.
+                Enables/disables noniterative time advancement scheme.
                 """
                 return PyMenu(self.service, "/define/models/noniterative_time_advance").execute(*args, **kwargs)
             def nox(self, *args, **kwargs):
                 """
-                Enable/disable the NOx model.
+                Enables/disables the NOx model.
                 """
                 return PyMenu(self.service, "/define/models/nox").execute(*args, **kwargs)
             def soot(self, *args, **kwargs):
                 """
-                Enable/disable the soot model.
+                Enables/disables the soot model.
                 """
                 return PyMenu(self.service, "/define/models/soot").execute(*args, **kwargs)
             def steady(self, *args, **kwargs):
                 """
-                Enable/disable the steady solution model.
+                Enables/disables the steady solution model.
                 """
                 return PyMenu(self.service, "/define/models/steady").execute(*args, **kwargs)
             def swirl(self, *args, **kwargs):
                 """
-                Enable/disable axisymmetric swirl velocity.
+                Enables/disables axisymmetric swirl velocity.
                 """
                 return PyMenu(self.service, "/define/models/swirl").execute(*args, **kwargs)
             def unsteady_1st_order(self, *args, **kwargs):
                 """
-                Enable/disable first-order unsteady solution model.
+                Selects the first-order implicit formulation for transient simulations.
                 """
                 return PyMenu(self.service, "/define/models/unsteady_1st_order").execute(*args, **kwargs)
             def frozen_flux(self, *args, **kwargs):
                 """
-                Enable/disable frozen flux formulation for transient flows.
+                Enables/disables frozen flux formulation for transient flows.
                 """
                 return PyMenu(self.service, "/define/models/frozen_flux").execute(*args, **kwargs)
             def unsteady_2nd_order(self, *args, **kwargs):
                 """
-                Enable/disable the second-order unsteady solution model.
+                Selects the second-order implicit formulation for transient simulations.
                 """
                 return PyMenu(self.service, "/define/models/unsteady_2nd_order").execute(*args, **kwargs)
             def unsteady_2nd_order_bounded(self, *args, **kwargs):
                 """
-                Enable/disable bounded second-order unsteady formulation.
+                Selects the bounded second-order implicit formulation for transient simulations.
                 """
                 return PyMenu(self.service, "/define/models/unsteady_2nd_order_bounded").execute(*args, **kwargs)
             def unsteady_global_time(self, *args, **kwargs):
                 """
-                Enable/disable the unsteady global-time-step solution model.
+                Selects the explicit transient formulation. This text command is only available for unsteady cases that use the density-based solver with the explicit formulation.
                 """
                 return PyMenu(self.service, "/define/models/unsteady_global_time").execute(*args, **kwargs)
             def unsteady_structure_newmark(self, *args, **kwargs):
                 """
-                Enable/disable Newmark unsteady solution model.
+                Selects the Newmark method for the direct time integration of the finite element semi-discrete equation of motion. This text command is only available for transient simulations that use the structural model.
                 """
                 return PyMenu(self.service, "/define/models/unsteady_structure_newmark").execute(*args, **kwargs)
             def unsteady_structure_euler(self, *args, **kwargs):
                 """
-                Enable/disable Backward Euler unsteady solution model.
+                Selects the backward Euler method for the direct time integration of the finite element semi-discrete equation of motion. This text command is only available for transient simulations that use the structural model.
                 """
                 return PyMenu(self.service, "/define/models/unsteady_structure_euler").execute(*args, **kwargs)
             def battery_model(self, *args, **kwargs):
                 """
-                Enter battery model menu.
+                Enables the dual potential MSMD battery model. For text commands that become available when the battery model is enabled, refer to Battery Model Text Commands
+                            
                 """
                 return PyMenu(self.service, "/define/models/battery_model").execute(*args, **kwargs)
             def ablation(self, *args, **kwargs):
                 """
-                Enable/disable ablation model.
+                Enables/disables the ablation model.
                 """
                 return PyMenu(self.service, "/define/models/ablation").execute(*args, **kwargs)
             def potential_and_li_ion_battery(self, *args, **kwargs):
                 """
-                Enable/disable the electric-potential model.
+                Enables/disables the electric-potential model.
                 """
                 return PyMenu(self.service, "/define/models/potential_and_li_ion_battery").execute(*args, **kwargs)
 
             class acoustics(metaclass=PyMenuMeta):
                 """
-                Enter the acoustics model menu.
+                Enters the acoustics menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -10351,17 +10394,17 @@ class main_menu(metaclass=PyMenuMeta):
                     self.sponge_layers = self.__class__.sponge_layers(path + [("sponge_layers", None)], service)
                 def off(self, *args, **kwargs):
                     """
-                    Enable/disable the acoustics model.
+                    Enables/disables the acoustics model.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/off").execute(*args, **kwargs)
                 def ffowcs_williams(self, *args, **kwargs):
                     """
-                    Enable/disable the Ffowcs-Williams-and-Hawkings model.
+                    Enables/disables the Ffowcs-Williams-and-Hawkings model.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/ffowcs_williams").execute(*args, **kwargs)
                 def broad_band_noise(self, *args, **kwargs):
                     """
-                    Enable/disable the broadband noise model.
+                    Enables/disables the broadband noise model.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/broad_band_noise").execute(*args, **kwargs)
                 def modal_analysis(self, *args, **kwargs):
@@ -10371,47 +10414,47 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/acoustics/modal_analysis").execute(*args, **kwargs)
                 def wave_equation(self, *args, **kwargs):
                     """
-                    Enable/disable the wave equation model.
+                    Enables/disables the wave equation model.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/wave_equation").execute(*args, **kwargs)
                 def receivers(self, *args, **kwargs):
                     """
-                    Set acoustic receivers.
+                    Sets acoustic receivers.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/receivers").execute(*args, **kwargs)
                 def export_source_data(self, *args, **kwargs):
                     """
-                    Enable export acoustic source data in ASD format during the wave equation model run.
+                    Enables/disables the export of acoustic source data in 	ASD format during the wave equation model run.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/export_source_data").execute(*args, **kwargs)
                 def export_source_data_cgns(self, *args, **kwargs):
                     """
-                    Export acoustic source data in CGNS format.
+                    Enables/disables the export of acoustic source data in CGNS format.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/export_source_data_cgns").execute(*args, **kwargs)
                 def sources(self, *args, **kwargs):
                     """
-                    Set acoustic sources.
+                    Sets acoustic sources.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/sources").execute(*args, **kwargs)
                 def read_compute_write(self, *args, **kwargs):
                     """
-                    Read acoustic source data files and compute sound pressure.
+                    Reads acoustic source data files and computes sound pressure.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/read_compute_write").execute(*args, **kwargs)
                 def write_acoustic_signals(self, *args, **kwargs):
                     """
-                    Write on-the-fly sound pressure.
+                    Writes on-the-fly sound pressure.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/write_acoustic_signals").execute(*args, **kwargs)
                 def compute_write(self, *args, **kwargs):
                     """
-                    Compute sound pressure.
+                    Computes sound pressure.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/compute_write").execute(*args, **kwargs)
                 def write_centroid_info(self, *args, **kwargs):
                     """
-                    Write centroid info.
+                    Writes centroid info.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/write_centroid_info").execute(*args, **kwargs)
                 def acoustic_modal_analysis(self, *args, **kwargs):
@@ -10421,37 +10464,37 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/acoustics/acoustic_modal_analysis").execute(*args, **kwargs)
                 def export_volumetric_sources(self, *args, **kwargs):
                     """
-                    Enable/disable the export of fluid zones.
+                    Enables/disables the export of fluid zones.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/export_volumetric_sources").execute(*args, **kwargs)
                 def export_volumetric_sources_cgns(self, *args, **kwargs):
                     """
-                    Enable/disable the export of fluid zones.
+                    Enables/disables the export of fluid zones.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/export_volumetric_sources_cgns").execute(*args, **kwargs)
                 def display_flow_time(self, *args, **kwargs):
                     """
-                    Enable/disable the display of flow time during read-and-compute.
+                    Enables/disables the display of flow time during read-and-compute.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/display_flow_time").execute(*args, **kwargs)
                 def cylindrical_export(self, *args, **kwargs):
                     """
-                    Enable/disable the export data in cylindrical coordinates.
+                    Enables/disables the export of data in cylindrical coordinates.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/cylindrical_export").execute(*args, **kwargs)
                 def auto_prune(self, *args, **kwargs):
                     """
-                    Enable/disable auto prune of the receiver signal(s) during read-and-compute.
+                    Enables/disables auto prune of the receiver signal(s) during 	read-and-compute.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/auto_prune").execute(*args, **kwargs)
                 def moving_receiver(self, *args, **kwargs):
                     """
-                    Enable/disable moving receiver option.
+                    Enables/disables the moving receiver option.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/moving_receiver").execute(*args, **kwargs)
                 def convective_effects(self, *args, **kwargs):
                     """
-                    Enable/disable convective effects option.
+                    Enables/disables the convective effects option.
                     """
                     return PyMenu(self.service, "/define/models/acoustics/convective_effects").execute(*args, **kwargs)
                 def display_frequencies(self, *args, **kwargs):
@@ -10462,25 +10505,25 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class far_field_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the far field parameters menu for the wave equation model.
+                    Enters the menu to specify the far-field density and 	speed of sound. Note that this menu is currently 	available only with the acoustics wave equation model.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def far_field_density(self, *args, **kwargs):
                         """
-                        Specify far field density.
+                        Specifies the far-field density value for the acoustics wave equation model.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/far_field_parameters/far_field_density").execute(*args, **kwargs)
                     def far_field_sound_speed(self, *args, **kwargs):
                         """
-                        Specify far field speed of sound.
+                        Specifies the far-field speed of sound value for the acoustics wave equation model.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/far_field_parameters/far_field_sound_speed").execute(*args, **kwargs)
 
                 class wave_equation_options(metaclass=PyMenuMeta):
                     """
-                    Enter the options menu for the wave equation model.
+                    Enters the menu to define the acoustics wave equation 	model options.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -10489,12 +10532,12 @@ class main_menu(metaclass=PyMenuMeta):
                         self.remote_receivers_options = self.__class__.remote_receivers_options(path + [("remote_receivers_options", None)], service)
                     def time_filter_source(self, *args, **kwargs):
                         """
-                        Activate time-filtering of sound sources.
+                        Enables/disables a time filter for the sound source.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/time_filter_source").execute(*args, **kwargs)
                     def sponge_layer_factor(self, *args, **kwargs):
                         """
-                        Specify artificial viscosity factor for sponge layer.
+                        Specifies the factor of the artificial viscosity coefficient.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/sponge_layer_factor").execute(*args, **kwargs)
                     def sponge_layer_base_level(self, *args, **kwargs):
@@ -10504,85 +10547,84 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/sponge_layer_base_level").execute(*args, **kwargs)
                     def source_mask_udf(self, *args, **kwargs):
                         """
-                        Select user-defined function for sound source masking.
+                        Specifies the name of a user-defined function, which defines geometry of the source mask.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/source_mask_udf").execute(*args, **kwargs)
                     def sponge_layer_udf(self, *args, **kwargs):
                         """
-                        Select user-defined function for sponge layer.
+                        Specifies the name of a user-defined function, which defines geometry of the sponge layer.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/sponge_layer_udf").execute(*args, **kwargs)
                     def remote_receivers(self, *args, **kwargs):
                         """
-                        Activate the Kirchhoff's integral method for remote receivers.
+                        Enables/disables the Kirchhoff integral model.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/remote_receivers").execute(*args, **kwargs)
 
                     class basic_shapes(metaclass=PyMenuMeta):
                         """
-                        Enter the basic shapes menu to build source mask and sponge layer
-                        geometry shapes using cell registers.
+                        Enters the menu to define the geometry of the source mask and sponge layer using the basic shapes, represented by the cell registers of the type "Region".
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def list_region_registers(self, *args, **kwargs):
                             """
-                            List all available region registers (hex/cylinder/sphere).
+                            List all available cell registers of the type "Region".
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/list_region_registers").execute(*args, **kwargs)
                         def list_source_mask_shapes(self, *args, **kwargs):
                             """
-                            List all active source mask registers.
+                            List basic shapes, which are currently used in the definition of the source mask geometry.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/list_source_mask_shapes").execute(*args, **kwargs)
                         def list_sponge_layer_shapes(self, *args, **kwargs):
                             """
-                            List all active sponge layer registers.
+                            List basic shapes, which are currently used in the definition of the sponge layer geometry. 
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/list_sponge_layer_shapes").execute(*args, **kwargs)
                         def add_source_mask_shape(self, *args, **kwargs):
                             """
-                            Add a region register for the source mask.
+                            Adds a basic shape to the definition of the source mask geometry.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/add_source_mask_shape").execute(*args, **kwargs)
                         def add_sponge_layer_shape(self, *args, **kwargs):
                             """
-                            Add a region register for the sponge layer.
+                            Adds a basic shape to the definition of the sponge layer geometry.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/add_sponge_layer_shape").execute(*args, **kwargs)
                         def remove_source_mask_shape(self, *args, **kwargs):
                             """
-                            Remove a region register from the source mask.
+                            Remove a basic shape from the definition of the source mask geometry.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/remove_source_mask_shape").execute(*args, **kwargs)
                         def remove_sponge_layer_shape(self, *args, **kwargs):
                             """
-                            Remove a region register from the sponge layer.
+                            Remove a basic shape from the definition of the sponge layer geometry.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/basic_shapes/remove_sponge_layer_shape").execute(*args, **kwargs)
 
                     class remote_receivers_options(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set up the Kirchhoff's integral method and output its results.
+                        Enters the menu to define remote receivers for the Kirchhoff integral model.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def integration_surface(self, *args, **kwargs):
                             """
-                            Select Kirchhoff's integration surface.
+                            Selects the integration surface for the Kirchhoff model.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/remote_receivers_options/integration_surface").execute(*args, **kwargs)
                         def write_signals(self, *args, **kwargs):
                             """
-                            Write signals calculated at receiver locations.
+                            Writes the computed receiver signals to the ASCII files.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/wave_equation_options/remote_receivers_options/write_signals").execute(*args, **kwargs)
 
                 class sources_fft(metaclass=PyMenuMeta):
                     """
-                    Enter the acoustic sources FFT menu.
+                    Enters the acoustic sources fast Fourier transform (FFT) menu, to compute Fourier 	spectra from acoustic source data (ASD) files, create 	postprocessing variables for the pressure signals, and 	write CGNS files of the spectrum data.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -10590,55 +10632,55 @@ class main_menu(metaclass=PyMenuMeta):
                         self.fft_surface_variables = self.__class__.fft_surface_variables(path + [("fft_surface_variables", None)], service)
                     def read_asd_files(self, *args, **kwargs):
                         """
-                        Read ASD files.
+                        Reads ASD files to perform FFT of the pressure history field.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sources_fft/read_asd_files").execute(*args, **kwargs)
                     def compute_fft_fields(self, *args, **kwargs):
                         """
-                        Compute FFT fields.
+                        Computes FFT of the read pressure histories. The computed spectra replace the pressure histories in memory.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sources_fft/compute_fft_fields").execute(*args, **kwargs)
                     def write_cgns_files(self, *args, **kwargs):
                         """
-                        Write CGNS files.
+                        Writes surface pressure spectra in CGNS format, which can be used for one-way coupling with Ansys Mechanical in the frequency domain.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sources_fft/write_cgns_files").execute(*args, **kwargs)
                     def clean_up_storage_area(self, *args, **kwargs):
                         """
-                        Clean up storage area.
+                        De-allocates memory used to store the pressure histories and their Fourier spectra, as well as any created surface variables for the visualization.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sources_fft/clean_up_storage_area").execute(*args, **kwargs)
 
                     class fft_surface_variables(metaclass=PyMenuMeta):
                         """
-                        Enter the FFT surface variables menu.
+                        Enters the menu to create surface variables from the computed Fourier spectra for visualization.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def create_octave_bands(self, *args, **kwargs):
                             """
-                            Create octave bands.
+                            Creates either the surface pressure level (SPL) variables or the PSD of dp/dt variables for 17 technical octaves.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/sources_fft/fft_surface_variables/create_octave_bands").execute(*args, **kwargs)
                         def create_third_bands(self, *args, **kwargs):
                             """
-                            Create third bands.
+                            Creates either the surface pressure level (SPL) variables or the PSD of dp/dt variables for 54 technical thirds.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/sources_fft/fft_surface_variables/create_third_bands").execute(*args, **kwargs)
                         def create_constant_width_bands(self, *args, **kwargs):
                             """
-                            Create constant-width bands.
+                            Selects up to 20 constant width bands and creates either the surface pressures level (SPL) variables or the PSD of dp/dt variables for them.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/sources_fft/fft_surface_variables/create_constant_width_bands").execute(*args, **kwargs)
                         def create_set_of_modes(self, *args, **kwargs):
                             """
-                            Create set of modes.
+                            Selects up to 20 individual Fourier modes and create variable pairs for them, containing the real and the imaginary parts of the complex Fourier amplitudes.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/sources_fft/fft_surface_variables/create_set_of_modes").execute(*args, **kwargs)
                         def remove_variables(self, *args, **kwargs):
                             """
-                            Remove variables.
+                            Removes all variables created in this menu.
                             """
                             return PyMenu(self.service, "/define/models/acoustics/sources_fft/fft_surface_variables/remove_variables").execute(*args, **kwargs)
 
@@ -10666,17 +10708,17 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/acoustics/sponge_layers/deactivate").execute(*args, **kwargs)
                     def edit(self, *args, **kwargs):
                         """
-                        Edit a sponge layer definition.
+                        Edits an existing sponge layer. You can revise the fields listed previously for the define/models/acoustics/sponge-layers/add text command.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sponge_layers/edit").execute(*args, **kwargs)
                     def delete(self, *args, **kwargs):
                         """
-                        Delete a sponge layer definition.
+                        Deletes an existing sponge layer definition.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sponge_layers/delete").execute(*args, **kwargs)
                     def list(self, *args, **kwargs):
                         """
-                        List the names of the sponge layer definitions.
+                        Prints a list of the existing sponge layers in the console.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sponge_layers/list").execute(*args, **kwargs)
                     def list_active(self, *args, **kwargs):
@@ -10686,7 +10728,7 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/acoustics/sponge_layers/list_active").execute(*args, **kwargs)
                     def list_properties(self, *args, **kwargs):
                         """
-                        List the properties of a sponge layer definition.
+                        Prints the properties of an existing sponge layer of your choice in the console.
                         """
                         return PyMenu(self.service, "/define/models/acoustics/sponge_layers/list_properties").execute(*args, **kwargs)
 
@@ -10734,7 +10776,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class eulerian_wallfilm(metaclass=PyMenuMeta):
                 """
-                Enter the Eulerian wall film model menu.
+                Enters the Eulerian wall film model menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -10743,50 +10785,50 @@ class main_menu(metaclass=PyMenuMeta):
                     self.implicit_options = self.__class__.implicit_options(path + [("implicit_options", None)], service)
                 def enable_wallfilm_model(self, *args, **kwargs):
                     """
-                    Enable Eulerian wall film model.
+                    Enables/disables Eulerian Wall Film Model.
                     """
                     return PyMenu(self.service, "/define/models/eulerian_wallfilm/enable_wallfilm_model").execute(*args, **kwargs)
                 def initialize_wallfilm_model(self, *args, **kwargs):
                     """
-                    Initialize Eulerian wall film model.
+                    Initializes Eulerian Wall Film Model.
                     """
                     return PyMenu(self.service, "/define/models/eulerian_wallfilm/initialize_wallfilm_model").execute(*args, **kwargs)
                 def solve_wallfilm_equation(self, *args, **kwargs):
                     """
-                    Activate Eulerian wall film equations.
+                    Activates Eulerian Wall Film Equations.
                     """
                     return PyMenu(self.service, "/define/models/eulerian_wallfilm/solve_wallfilm_equation").execute(*args, **kwargs)
                 def model_options(self, *args, **kwargs):
                     """
-                    Set Eulerian wall film model options.
+                    Sets Eulerian Wall Film Model Options.
                     """
                     return PyMenu(self.service, "/define/models/eulerian_wallfilm/model_options").execute(*args, **kwargs)
                 def film_material(self, *args, **kwargs):
                     """
-                    Set film material and properties.
+                    Sets Film Material and Properties.
                     """
                     return PyMenu(self.service, "/define/models/eulerian_wallfilm/film_material").execute(*args, **kwargs)
                 def solution_options(self, *args, **kwargs):
                     """
-                    Set Eulerian wall film model solution options.
+                    Sets Eulerian Wall Film Model Solution Options.
                     """
                     return PyMenu(self.service, "/define/models/eulerian_wallfilm/solution_options").execute(*args, **kwargs)
 
                 class coupled_solution(metaclass=PyMenuMeta):
                     """
-                    Enter Eulerian wall film coupled solution menu.
+                    Enters the Coupled-Solution menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def enable_coupled_solution(self, *args, **kwargs):
                         """
-                        Enable Eulerian wall film coupled solution.
+                        Enables/disables the coupled solution method.
                         """
                         return PyMenu(self.service, "/define/models/eulerian_wallfilm/coupled_solution/enable_coupled_solution").execute(*args, **kwargs)
                     def enable_curvature_smoothing(self, *args, **kwargs):
                         """
-                        Enable Eulerian wall film curvature smoothing.
+                        Enables/disables the film curvature smoothing option and sets the smoothing parameters.
                         """
                         return PyMenu(self.service, "/define/models/eulerian_wallfilm/coupled_solution/enable_curvature_smoothing").execute(*args, **kwargs)
 
@@ -10810,7 +10852,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class dpm(metaclass=PyMenuMeta):
                 """
-                Enter the dispersed phase model menu.
+                Enters the dispersed phase model menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -10825,7 +10867,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.stripping_options = self.__class__.stripping_options(path + [("stripping_options", None)], service)
                 def clear_particles_from_domain(self, *args, **kwargs):
                     """
-                    Remove/keep all particles currently in the domain.
+                    Removes/keeps all particles currently in the domain.
                     """
                     return PyMenu(self.service, "/define/models/dpm/clear_particles_from_domain").execute(*args, **kwargs)
                 def fill_injection_material_sources(self, *args, **kwargs):
@@ -10835,28 +10877,28 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/dpm/fill_injection_material_sources").execute(*args, **kwargs)
                 def injections(self, *args, **kwargs):
                     """
-                    Enter the injections menu.
+                    Enters the injections menu.
                     """
                     return PyMenu(self.service, "/define/models/dpm/injections").execute(*args, **kwargs)
                 def unsteady_tracking(self, *args, **kwargs):
                     """
-                    Enable/disable unsteady particle tracking.
+                    Enables/disables unsteady particle tracking.
                     """
                     return PyMenu(self.service, "/define/models/dpm/unsteady_tracking").execute(*args, **kwargs)
                 def spray_model(self, *args, **kwargs):
                     """
-                    Enter the spray model menu.
+                    Enters the spray model menu. This command is available only if the breakup model 	enabled globally.
                     """
                     return PyMenu(self.service, "/define/models/dpm/spray_model").execute(*args, **kwargs)
                 def user_defined(self, *args, **kwargs):
                     """
-                    Set DPM user-defined functions.
+                    Sets DPM user-defined functions.
                     """
                     return PyMenu(self.service, "/define/models/dpm/user_defined").execute(*args, **kwargs)
 
                 class collisions(metaclass=PyMenuMeta):
                     """
-                    Enter the DEM collisions menu.
+                    Enters the DEM collisions menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -10864,7 +10906,7 @@ class main_menu(metaclass=PyMenuMeta):
                         self.collision_partners = self.__class__.collision_partners(path + [("collision_partners", None)], service)
                     def collision_pair_settings(self, *args, **kwargs):
                         """
-                        Supply settings for collisions to a pair of collision partners.
+                        Supplies settings for collisions to a pair of collision partners. You will be prompted to specify theImpact collision partner and the Target collision partner.
                         """
                         return PyMenu(self.service, "/define/models/dpm/collisions/collision_pair_settings").execute(*args, **kwargs)
                     def list_all_pair_settings(self, *args, **kwargs):
@@ -10874,7 +10916,7 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/collisions/list_all_pair_settings").execute(*args, **kwargs)
                     def dem_collisions(self, *args, **kwargs):
                         """
-                        Enable/disable the DEM collision model.
+                        Enables/disables the DEM collision model.
                         """
                         return PyMenu(self.service, "/define/models/dpm/collisions/dem_collisions").execute(*args, **kwargs)
                     def collision_mesh(self, *args, **kwargs):
@@ -10884,35 +10926,35 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/collisions/collision_mesh").execute(*args, **kwargs)
                     def max_particle_velocity(self, *args, **kwargs):
                         """
-                        Set the maximum particle velocity that may arise from collisions.
+                        Sets the maximum particle velocity that may arise from collisions.
                         """
                         return PyMenu(self.service, "/define/models/dpm/collisions/max_particle_velocity").execute(*args, **kwargs)
 
                     class collision_partners(metaclass=PyMenuMeta):
                         """
-                        Manage collision partners.
+                        Manages collision partners.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def create(self, *args, **kwargs):
                             """
-                            Create a collision partner.
+                            Creates a collision partner.
                             """
                             return PyMenu(self.service, "/define/models/dpm/collisions/collision_partners/create").execute(*args, **kwargs)
                         def delete(self, *args, **kwargs):
                             """
-                            Delete a collision partner.
+                            Deletes a collision partner.
                             """
                             return PyMenu(self.service, "/define/models/dpm/collisions/collision_partners/delete").execute(*args, **kwargs)
                         def copy(self, *args, **kwargs):
                             """
-                            Copy a collision partner.
+                            Copies a collision partner.
                             """
                             return PyMenu(self.service, "/define/models/dpm/collisions/collision_partners/copy").execute(*args, **kwargs)
                         def rename(self, *args, **kwargs):
                             """
-                            Rename a collision partner.
+                            Renames a collision partner.
                             """
                             return PyMenu(self.service, "/define/models/dpm/collisions/collision_partners/rename").execute(*args, **kwargs)
                         def list(self, *args, **kwargs):
@@ -10923,7 +10965,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class erosion_dynamic_mesh(metaclass=PyMenuMeta):
                     """
-                    Enter the erosion-dynamic mesh interactions menu.
+                    Enters the menu to enable/configure/run the erosion-dynamic mesh interaction.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -10932,74 +10974,74 @@ class main_menu(metaclass=PyMenuMeta):
                         self.run_parameters = self.__class__.run_parameters(path + [("run_parameters", None)], service)
                     def enable_erosion_dynamic_mesh_coupling(self, *args, **kwargs):
                         """
-                        Enable mesh deformation due to wall erosion.
+                        Enables mesh deformation due to wall erosion.
                         """
                         return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/enable_erosion_dynamic_mesh_coupling").execute(*args, **kwargs)
                     def run_simulation(self, *args, **kwargs):
                         """
-                        Perform coupled erosion-dynamic mesh simulation.
+                        Performs a coupled erosion-dynamic mesh simulation.
                         """
                         return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/run_simulation").execute(*args, **kwargs)
 
                     class general_parameters(metaclass=PyMenuMeta):
                         """
-                        Enter the erosion-dynamic mesh setup menu.
+                        Enters the menu for setting erosion coupling with dynamic mesh.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def erosion_settings(self, *args, **kwargs):
                             """
-                            Set erosion modelling specific settings.
+                            Sets parameters for erosion calculations.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/general_parameters/erosion_settings").execute(*args, **kwargs)
                         def dynamic_mesh_settings(self, *args, **kwargs):
                             """
-                            Perform dynamic mesh related setup.
+                            Sets parameters for dynamic mesh calculations.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/general_parameters/dynamic_mesh_settings").execute(*args, **kwargs)
                         def participating_walls(self, *args, **kwargs):
                             """
-                            Specify all participating walls.
+                            Specifies all participating walls.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/general_parameters/participating_walls").execute(*args, **kwargs)
 
                     class run_parameters(metaclass=PyMenuMeta):
                         """
-                        Enter the erosion-dynamic mesh run menu.
+                        Manages erosion-dynamic mesh run settings.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def mesh_motion_time_step(self, *args, **kwargs):
                             """
-                            Set the mesh motion time stepping parameters and method.
+                            Sets the mesh motion time stepping parameters and method.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/run_parameters/mesh_motion_time_step").execute(*args, **kwargs)
                         def simulation_termination(self, *args, **kwargs):
                             """
-                            Set total time of erosion.
+                            Sets the total time of erosion.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/run_parameters/simulation_termination").execute(*args, **kwargs)
                         def flow_simulation_control(self, *args, **kwargs):
                             """
-                            Set number of iterations per flow simulation step.
+                            Sets the number of iterations per flow simulation step.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/run_parameters/flow_simulation_control").execute(*args, **kwargs)
                         def autosave_files(self, *args, **kwargs):
                             """
-                            Set the iteration increment to save data files.
+                            Sets the iteration increment and filename to save data files.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/run_parameters/autosave_files").execute(*args, **kwargs)
                         def autosave_graphics(self, *args, **kwargs):
                             """
-                            Set the iteration increment to save graphics files.
+                            Sets the iteration increment to save graphics files.
                             """
                             return PyMenu(self.service, "/define/models/dpm/erosion_dynamic_mesh/run_parameters/autosave_graphics").execute(*args, **kwargs)
 
                 class interaction(metaclass=PyMenuMeta):
                     """
-                    Enter the interaction menu to set parameters for coupled discrete phase calculations.
+                    Sets parameters for coupled discrete phase calculations.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -11011,42 +11053,42 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/interaction/choice_of_eulerian_phase_for_interaction").execute(*args, **kwargs)
                     def coupled_calculations(self, *args, **kwargs):
                         """
-                        Enable/disable coupling of continuous and discrete phase calculations.
+                        Selects whether or not to couple continuous and discrete phase calculations.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/coupled_calculations").execute(*args, **kwargs)
                     def dpm_iteration_interval(self, *args, **kwargs):
                         """
-                        Set the number of continuous phase iterations per DPM iteration.
+                        Sets the frequency with which the particle trajectory calculations are introduced.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/dpm_iteration_interval").execute(*args, **kwargs)
                     def underrelaxation_factor(self, *args, **kwargs):
                         """
-                        Set the under-relaxation factor.
+                        Sets the under-relaxation factor for the discrete phase sources.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/underrelaxation_factor").execute(*args, **kwargs)
                     def implicit_momentum_coupling(self, *args, **kwargs):
                         """
-                        Enable/disable implicit treatment for the DPM momentum source terms.
+                        Enables/disables implicit treatment for the DPM momentum source terms.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/implicit_momentum_coupling").execute(*args, **kwargs)
                     def implicit_source_term_coupling(self, *args, **kwargs):
                         """
-                        Enable/disable implicit treatment for all DPM source terms.
+                        Enables/disables implicit treatment for all DPM source terms.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/implicit_source_term_coupling").execute(*args, **kwargs)
                     def linearized_dpm_source_terms(self, *args, **kwargs):
                         """
-                        Perform a linearization of all DPM source terms to increase numerical robustness.
+                        Enables/disables linearization of source terms for the discrete phase.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/linearized_dpm_source_terms").execute(*args, **kwargs)
                     def replace_dpm_mass_source_by_mixture_fraction(self, *args, **kwargs):
                         """
-                        Recalculate the mixture fraction source terms as function of the primary mixture fraction?.
+                        When enabled, recalculates the mixture fraction source terms as a function of the primary mixture fraction. This command is available for non- or partially-premixed combustion cases only.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/replace_dpm_mass_source_by_mixture_fraction").execute(*args, **kwargs)
                     def linearized_dpm_mixture_fraction_source_terms(self, *args, **kwargs):
                         """
-                        Perform a linearization of mixture fraction source terms.
+                        Enables/disables linearization of mixture fraction source terms. This command is available only for non- or partially-premixed combustion cases.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/linearized_dpm_mixture_fraction_source_terms").execute(*args, **kwargs)
                     def linearized_dpm_species_source_terms(self, *args, **kwargs):
@@ -11066,37 +11108,34 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/interaction/linearized_dpm_source_terms_limiter").execute(*args, **kwargs)
                     def update_dpm_sources_every_flow_iteration(self, *args, **kwargs):
                         """
-                        Enable/disable the update of DPM source terms every flow iteration. 
-                        
-                              (if not, the terms will be updated every DPM iteration).
+                        Enables/disables the update of DPM source terms every flow iteration (if this option is not enabled, the terms will be updated every DPM iteration).
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/update_dpm_sources_every_flow_iteration").execute(*args, **kwargs)
                     def linear_growth_of_dpm_source_term(self, *args, **kwargs):
                         """
-                        Enable/disable the linear growth of DPM source terms every DPM iteration. 
-                        .
+                        Enables/disables the linear ramping up of the DPM source terms at every DPM iteration.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/linear_growth_of_dpm_source_term").execute(*args, **kwargs)
-                    def reset_sources_at_timestep_flag(self, *args, **kwargs):
+                    def reset_sources_at_timestep(self, *args, **kwargs):
                         """
                         Enable/disable flush of DPM source terms at beginning of every time step.
                         """
-                        return PyMenu(self.service, "/define/models/dpm/interaction/reset_sources_at_timestep_flag").execute(*args, **kwargs)
-                    def enable_flow_blocking_by_particles_flag(self, *args, **kwargs):
+                        return PyMenu(self.service, "/define/models/dpm/interaction/reset_sources_at_timestep").execute(*args, **kwargs)
+                    def enable_flow_blocking_by_particles(self, *args, **kwargs):
                         """
                         Enable/disable inclusion of DPM volume fraction in continuous flow.
                         """
-                        return PyMenu(self.service, "/define/models/dpm/interaction/enable_flow_blocking_by_particles_flag").execute(*args, **kwargs)
-                    def enable_source_scaling_due_to_flow_blocking_flag(self, *args, **kwargs):
+                        return PyMenu(self.service, "/define/models/dpm/interaction/enable_flow_blocking_by_particles").execute(*args, **kwargs)
+                    def enable_source_scaling_due_to_flow_blocking(self, *args, **kwargs):
                         """
                         Enable/disable scaling of DPM source terms due to inclusion of DPM volume fraction in continuous flow.
                         """
-                        return PyMenu(self.service, "/define/models/dpm/interaction/enable_source_scaling_due_to_flow_blocking_flag").execute(*args, **kwargs)
-                    def enable_drag_scaling_due_to_flow_blocking_flag(self, *args, **kwargs):
+                        return PyMenu(self.service, "/define/models/dpm/interaction/enable_source_scaling_due_to_flow_blocking").execute(*args, **kwargs)
+                    def enable_drag_scaling_due_to_flow_blocking(self, *args, **kwargs):
                         """
                         Enable/disable scaling of DPM drag coefficient due to inclusion of DPM volume fraction in continuous flow.
                         """
-                        return PyMenu(self.service, "/define/models/dpm/interaction/enable_drag_scaling_due_to_flow_blocking_flag").execute(*args, **kwargs)
+                        return PyMenu(self.service, "/define/models/dpm/interaction/enable_drag_scaling_due_to_flow_blocking").execute(*args, **kwargs)
                     def max_vf_allowed_for_blocking(self, *args, **kwargs):
                         """
                         Maximum DPM volume fraction used in continuous flow.
@@ -11115,7 +11154,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class numerics(metaclass=PyMenuMeta):
                     """
-                    Enter the numerics menu to set numerical solution parameters.
+                    Enters the numerics menu to set numerical solution parameters.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -11123,37 +11162,37 @@ class main_menu(metaclass=PyMenuMeta):
                         self.high_resolution_tracking = self.__class__.high_resolution_tracking(path + [("high_resolution_tracking", None)], service)
                     def coupled_heat_mass_update(self, *args, **kwargs):
                         """
-                        Enable/disable coupled heat and mass update.
+                        Enables/disables coupled heat and mass update.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/coupled_heat_mass_update").execute(*args, **kwargs)
                     def minimum_liquid_fraction(self, *args, **kwargs):
                         """
-                        Evaporate droplet completely when the remaining mass is below this fraction of initial mass.
+                        A droplet evaporates completely when the remaining mass is below this fraction of the initial droplet mass.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/minimum_liquid_fraction").execute(*args, **kwargs)
                     def underrelax_film_height(self, *args, **kwargs):
                         """
-                        Define underrelaxation factor for film height.
+                        Sets the under-relaxation factor for the film height calculation. The recommended values range between 0.5 (default) and 0.9.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/underrelax_film_height").execute(*args, **kwargs)
                     def vaporization_limiting_factors(self, *args, **kwargs):
                         """
-                        Set Vaporization Fractional Change Limits.
+                        Sets the Vaporization Fractional Change Limits.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/vaporization_limiting_factors").execute(*args, **kwargs)
                     def tracking_parameters(self, *args, **kwargs):
                         """
-                        Set parameters for the (initial) tracking step length.
+                        Sets parameters for the (initial) tracking step length.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/tracking_parameters").execute(*args, **kwargs)
                     def tracking_scheme(self, *args, **kwargs):
                         """
-                        Specify a tracking scheme.
+                        Specifies a tracking scheme.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/tracking_scheme").execute(*args, **kwargs)
                     def tracking_statistics(self, *args, **kwargs):
                         """
-                        Control the format of the one-line tracking statistics printed after every DPM tracking pass.
+                        Controls the format of the one-line tracking statistics to be printed after every DPM tracking pass. A value of 0 (the default) prints only fates with non-zero values. A value of 1 prints all fates, including fates with zero values.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/tracking_statistics").execute(*args, **kwargs)
                     def verbosity(self, *args, **kwargs):
@@ -11163,47 +11202,47 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/numerics/verbosity").execute(*args, **kwargs)
                     def error_control(self, *args, **kwargs):
                         """
-                        Set the adapt integration step length based on a maximum error.
+                        Adapts integration step length based on a maximum error.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/error_control").execute(*args, **kwargs)
                     def automated_scheme_selection(self, *args, **kwargs):
                         """
-                        Enable/disable the adaptation of integration step length based on a maximum error.
+                        Enables/disables the adaptation of integration step length based on a maximum error.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/automated_scheme_selection").execute(*args, **kwargs)
                     def drag_law(self, *args, **kwargs):
                         """
-                        Set the drag law.
+                        Sets the drag law.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/drag_law").execute(*args, **kwargs)
                     def enable_node_based_averaging(self, *args, **kwargs):
                         """
-                        Enable node based averaging of DPM variables.
+                        Enables/disables mesh node averaging of DPM quantities.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/enable_node_based_averaging").execute(*args, **kwargs)
                     def average_source_terms(self, *args, **kwargs):
                         """
-                        Average DPM source terms on nodes.
+                        Enables/disables mesh node averaging of DPM source terms.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/average_source_terms").execute(*args, **kwargs)
                     def average_DDPM_variables(self, *args, **kwargs):
                         """
-                        Average DDPM specific variables like volume fractions and velocities on nodes.
+                        Enables/disables mesh node averaging of DDPM quantities.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/average_DDPM_variables").execute(*args, **kwargs)
                     def average_each_step(self, *args, **kwargs):
                         """
-                        Do the averaging after each integration step for higher accuracy at a higher cost.
+                        Enables/disables mesh node averaging during integration time step.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/average_each_step").execute(*args, **kwargs)
                     def average_kernel(self, *args, **kwargs):
                         """
-                        Specify a kernel for the averaging.
+                        Specifies the averaging kernel to use for mesh node averaging.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/average_kernel").execute(*args, **kwargs)
                     def gaussian_factor(self, *args, **kwargs):
                         """
-                        Set a factor for the gaussian kernel for node-based averaging.~%Large values give small size, small values give large size of kernel.
+                        Specifies the Gaussian constant when using thegaussian kernel for mesh node averaging.
                         """
                         return PyMenu(self.service, "/define/models/dpm/numerics/gaussian_factor").execute(*args, **kwargs)
                     def mppic_settings(self, *args, **kwargs):
@@ -11219,7 +11258,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class high_resolution_tracking(metaclass=PyMenuMeta):
                         """
-                        Enter the high resolution tracking menu.
+                        Enters the high resolution tracking menu. See  for more information about these options.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -11228,62 +11267,62 @@ class main_menu(metaclass=PyMenuMeta):
                             self.particle_relocation = self.__class__.particle_relocation(path + [("particle_relocation", None)], service)
                         def enable_high_resolution_tracking(self, *args, **kwargs):
                             """
-                            Enable high resolution tracking.
+                            Enables/disables high resolution tracking.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/enable_high_resolution_tracking").execute(*args, **kwargs)
                         def enable_barycentric_intersections(self, *args, **kwargs):
                             """
-                            Use barycentric coordinates for intersection calculations.
+                            Enables/disables an alternative method of calculating intersections with cell boundaries. Barycentric intersections are linear calculations and are faster than the default intersection algorithm. The default intersection algorithm is second-order for stationary meshes; therefore, using the barycentric intersection may sacrifice accuracy. You must verify that the barycentric intersections provide comparable results to the default intersection method. This option is available only for 3D stationary meshes and the double precision solver.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/enable_barycentric_intersections").execute(*args, **kwargs)
                         def use_barycentric_sampling(self, *args, **kwargs):
                             """
-                            Use barycentric coordinates when sampling at planes.
+                            When enabled, this option provides improved accuracy and parallel consistency when sampling particles at planes. This item is available only with the 3D solver. Using the double-precision solver and bounded planes is recommended.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/use_barycentric_sampling").execute(*args, **kwargs)
                         def use_velocity_based_error_control(self, *args, **kwargs):
                             """
-                            Use adaptive time stepping based upon the particle velocity.
+                            Enables/disables an alternative method of timestep adaption. By default, ANSYS Fluent uses the half-step method of timestep adaption with particle integration. This alternative method of controlling the integration timestep based upon velocity changes is faster; however, you need to ensure that the accuracy is comparable for your specific application.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/use_velocity_based_error_control").execute(*args, **kwargs)
                         def use_quad_face_centroid(self, *args, **kwargs):
                             """
-                            Use quad face centroids when creating subtets.
+                            Enables/disables using quad face centroids when creating subtets. This option changes the way hexahedral cells are decomposed to avoid creating degenerate subtets.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/use_quad_face_centroid").execute(*args, **kwargs)
                         def check_subtet_validity(self, *args, **kwargs):
                             """
-                            Test for inverted subtets due to warped cells.
+                            When enabled, checks the validity of a subtet when the particle first enters it. If the subtet is found to be degenerate, the tracking algorithm modifies to accommodate it.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/check_subtet_validity").execute(*args, **kwargs)
                         def always_use_face_centroid_with_periodics(self, *args, **kwargs):
                             """
-                            Use quad face centroids when creating subtets if the case contains periodic boundaries.
+                            When enabled, ANSYS Fluent uses quad face centroids when creating subtets in cases with periodic boundaries.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/always_use_face_centroid_with_periodics").execute(*args, **kwargs)
                         def boundary_layer_tracking(self, *args, **kwargs):
                             """
-                            Adjust the particle timestep to account for high aspect ratio cells.
+                            Enables/disables the calculation of the particle time step that considers both the cell aspect ratio and the particle trajectory. This method improves the accuracy of the predictions in boundary layer cells, particularly in layers where flow gradients are large.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/boundary_layer_tracking").execute(*args, **kwargs)
                         def sliding_interface_crossover_fraction(self, *args, **kwargs):
                             """
-                            Move the particle a fraction of the distance to the subtet center when crossing a sliding interface.
+                            Specifies the fraction of the distance to the subtet center to move the particle.  At non-conformal interfaces, the nodes used for the barycentric interpolation are different on either side of the interface. This may result in incomplete particles due to discontinuities in the variable interpolation. The number of incomplete particles may be reduced by moving the particles slightly off of the sliding interface. Recommended values range between 0 and 0.5.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/sliding_interface_crossover_fraction").execute(*args, **kwargs)
                         def project_wall_film_particles_to_film(self, *args, **kwargs):
                             """
-                            Project existing particles to film to track using high resolution tracking?.
+                            Enables/disables projecting existing particles to Lagrangian wall film to track using high-resolution tracking.  When reading in a data file that contains wall film particles previously tracked with the existing ANSYS Fluent tracking method, you need to either clear the particles from the domain or project their positions to the wall film surface using the project-wall-film-particles-to-film? text command prior to using the high-resolution tracking method. After tracking the particles for one timestep, this option can be disabled to improve performance.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/project_wall_film_particles_to_film").execute(*args, **kwargs)
                         def use_particle_timestep_for_intersection_tolerance(self, *args, **kwargs):
                             """
-                            Use the particle timestep for the axisymmetric subtet intersection tolerance.
+                            Enables/disables the use of the particle timestep for the subtet intersection tolerance with axisymmetric grids (default: enabled). If disabled, the tolerance will be calculated in the same manner as non-axisymmetric meshes (a scaled value of the tolerance which is set using the define/models/dpm/numerics/high-resolution-tracking/set-subtet-intersection-tolerance text command).
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/use_particle_timestep_for_intersection_tolerance").execute(*args, **kwargs)
                         def enable_automatic_intersection_tolerance(self, *args, **kwargs):
                             """
-                            Enable automatic scaling of subtet intersection tolerance.
+                            Enables/disables the automatic calculation of intersection tolerance. By default, the tolerance used in intersection calculations is scaled by the residence time of the particle in the cell to improve robustness. For most cases, the scaled tolerance is sufficient to identify all intersections of the particle trajectory and the subtet faces. You can set the intersection tolerance manually using the set-subtet-intersection-tolerance text command.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/enable_automatic_intersection_tolerance").execute(*args, **kwargs)
                         def set_film_spreading_parameter(self, *args, **kwargs):
@@ -11293,7 +11332,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/set_film_spreading_parameter").execute(*args, **kwargs)
                         def set_subtet_intersection_tolerance(self, *args, **kwargs):
                             """
-                            Set the tolerance for subtet intersection calculations.
+                            Specifies the tolerance used in intersection calculations. This tolerance will be scaled by the characteristic cell crossing time of the particle if the enable-automatic-intersection-tolerance? text command is enabled. If that option is disabled, the specified tolerance will be used without scaling. The default intersection tolerance is 10-5.
                             """
                             return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/set_subtet_intersection_tolerance").execute(*args, **kwargs)
 
@@ -11306,42 +11345,42 @@ class main_menu(metaclass=PyMenuMeta):
                                 self.service = service
                             def interpolate_flow_solution_gradients(self, *args, **kwargs):
                                 """
-                                Enable interpolation of flow solution gradients.
+                                When enabled, flow solution gradients are interpolated to the particle position. This can be useful when using physical models that depend on these gradients (for example, the thermophoretic force, pressure-gradient force, or virtual mass force). Interpolating the gradients also improves the accuracy and robustness of the trapezoidal numerics scheme, which is the default method for pathlines.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/interpolate_flow_solution_gradients").execute(*args, **kwargs)
                             def interpolate_temperature(self, *args, **kwargs):
                                 """
-                                Enable interpolation of temperature to the particle position.
+                                Enables/disables the barycentric interpolation of temperature to the particle position. The cell temperature is used by default in calculations of heat transfer to/from the particle.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/interpolate_temperature").execute(*args, **kwargs)
                             def interpolate_flow_density(self, *args, **kwargs):
                                 """
-                                Enable interpolation of flow density to the particle position.
+                                Enables/disables the barycentric interpolation of the flow density. This option is recommended when the density varies with position to avoid discontinuities in the interpolated variable at cell boundaries. For constant density flows, this option is unnecessary.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/interpolate_flow_density").execute(*args, **kwargs)
                             def interpolate_flow_cp(self, *args, **kwargs):
                                 """
-                                Enable interpolation of flow specific heat to the particle position.
+                                Enables/disables the barycentric interpolation of specific heat to the particle position. This option is recommended when the specific heat varies with position to avoid discontinuities in the interpolated variable at cell boundaries. For flows with constant specific heat, this option is unnecessary.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/interpolate_flow_cp").execute(*args, **kwargs)
                             def interpolate_flow_viscosity(self, *args, **kwargs):
                                 """
-                                Enable interpolation of flow viscosity to the particle position.
+                                Enables/disables the barycentric interpolation of flow viscosity to the particle position. This option is recommended when the flow viscosity varies with position to avoid discontinuities in the interpolated variable at cell boundaries. For flows with constant viscosity, this option is unnecessary.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/interpolate_flow_viscosity").execute(*args, **kwargs)
                             def interpolate_wallfilm_properties(self, *args, **kwargs):
                                 """
-                                Enable interpolation of wallfilm properties to the particle position.
+                                When enabled, the wall film properties (film height, film mass, and wall shear) are interpolated to the particle position.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/interpolate_wallfilm_properties").execute(*args, **kwargs)
                             def precompute_pdf_species(self, *args, **kwargs):
                                 """
-                                Precompute cell values of PDF species mass fractions prior to particle tracking.
+                                When this option is enabled for premixed or non-premixed combustion simulations, the species composition in each cell is precomputed prior to tracking particles. This approach may improve performance for cases with many particles and relatively few cells. By default, this option is set to no, and ANSYS Fluent calculates the species composition during particle tracking. The solution results will be identical for both methods.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/precompute_pdf_species").execute(*args, **kwargs)
                             def zero_nodal_velocity_on_walls(self, *args, **kwargs):
                                 """
-                                Set the nodal velocity on all walls to zero.
+                                When enabled, sets the velocity at wall nodes to zero. (By default, the nodal velocities on walls are first reconstructed from cell and face values and then corrected to ensure that there are no velocity components directed towards the walls). This may be useful if you want to consider particle impingement on the walls. Note that enabling this option will more likely produce incomplete particles as some particles may settle on the walls.
                                 """
                                 return PyMenu(self.service, "/define/models/dpm/numerics/high_resolution_tracking/barycentric_interpolation/zero_nodal_velocity_on_walls").execute(*args, **kwargs)
                             def enable_transient_variable_interpolation(self, *args, **kwargs):
@@ -11400,34 +11439,34 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class options(metaclass=PyMenuMeta):
                     """
-                    Enter the options menu to set optional DPM models.
+                    Enters the options menu to set optional models.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def enable_contour_plots(self, *args, **kwargs):
                         """
-                        Enable contour and vector plots of particle data.
+                        Enables computation of mean and/or RMS values of additional discrete phase variables for postprocessing.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/enable_contour_plots").execute(*args, **kwargs)
                     def ensemble_average(self, *args, **kwargs):
                         """
-                        Set ensemble average cloud properties.
+                        Ensembles average cloud properties.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/ensemble_average").execute(*args, **kwargs)
                     def particle_radiation(self, *args, **kwargs):
                         """
-                        Enable/disable particle radiation.
+                        Enables/disables particle radiation.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/particle_radiation").execute(*args, **kwargs)
                     def track_in_absolute_frame(self, *args, **kwargs):
                         """
-                        Enable/disable tracking in absolute frame.
+                        Enables/disables tracking in absolute frame.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/track_in_absolute_frame").execute(*args, **kwargs)
                     def thermophoretic_force(self, *args, **kwargs):
                         """
-                        Enable/disable thermophoretic force.
+                        Enables/disables thermophoretic force.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/thermophoretic_force").execute(*args, **kwargs)
                     def convective_film_heat_transfer(self, *args, **kwargs):
@@ -11437,97 +11476,97 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/options/convective_film_heat_transfer").execute(*args, **kwargs)
                     def saffman_lift_force(self, *args, **kwargs):
                         """
-                        Enable/disable Saffman lift force.
+                        Enables/disables Saffman lift force.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/saffman_lift_force").execute(*args, **kwargs)
                     def pressure_gradient_force(self, *args, **kwargs):
                         """
-                        Enable/disable pressure gradient force.
+                        Enables/disables inclusion of pressure gradient effects in the particle force balance.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/pressure_gradient_force").execute(*args, **kwargs)
                     def virtual_mass_force(self, *args, **kwargs):
                         """
-                        Enable/disable virtual mass force.
+                        Enables/disables inclusion of the virtual mass force in the particle force balance.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/virtual_mass_force").execute(*args, **kwargs)
                     def two_way_coupling(self, *args, **kwargs):
                         """
-                        Enable/disable calculation of DPM sources in TKE equation.
+                        Enables/disables calculation of DPM sources in TKE equation.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/two_way_coupling").execute(*args, **kwargs)
                     def remove_wall_film_temperature_limiter(self, *args, **kwargs):
                         """
-                        Remove the wall film temperature limiter.
+                        Answering yes at the prompt removes the wall temperature limiter for Lagrangian wall-film walls. If you enter no (default), two additional prompts will appear in the console allowing you to define the temperature difference above the boiling point and to enable/disable the reporting of the Leidenfrost temperature on the wall faces.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/remove_wall_film_temperature_limiter").execute(*args, **kwargs)
                     def maximum_udf_species(self, *args, **kwargs):
                         """
-                        Maximum number of species that can interact with particles in the DPM UDFs.
+                        Specifies the maximum number of species that will be accessible from discrete phase model UDFs. Only species with indices up to this value are accessible in discrete phase model UDFs.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/maximum_udf_species").execute(*args, **kwargs)
                     def brownian_motion(self, *args, **kwargs):
                         """
-                        Enable/disable Brownian motion of particles.
+                        Enables/disables Brownian motion of particles.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/brownian_motion").execute(*args, **kwargs)
                     def stagger_spatially_standard_injections(self, *args, **kwargs):
                         """
-                        Spatially stagger non-atomizer injections?.
+                        Enables/disables spatial staggering for standard (non-atomizer and non-solid-cone) injections.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/stagger_spatially_standard_injections").execute(*args, **kwargs)
                     def stagger_spatially_atomizer_injections(self, *args, **kwargs):
                         """
-                        Spatially stagger atomizer injections?.
+                        Enables/disables spatial staggering for atomizer and solid-cone injections.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/stagger_spatially_atomizer_injections").execute(*args, **kwargs)
                     def stagger_temporally(self, *args, **kwargs):
                         """
-                        Stagger transient parcels for their first time step?.
+                        Enables/disables temporal staggering.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/stagger_temporally").execute(*args, **kwargs)
                     def staggering_factor(self, *args, **kwargs):
                         """
-                        Set the staggering factor between 0 and 1 to control the amount of staggering.
+                        S
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/staggering_factor").execute(*args, **kwargs)
                     def stagger_radius(self, *args, **kwargs):
                         """
-                        Provide a stagger radius for non atomizer injections.
+                        Specifies the region over which to spatially stagger particles when particle-staggering is enabled for non-atomizer injections.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/stagger_radius").execute(*args, **kwargs)
                     def uniform_mass_distribution_for_injections(self, *args, **kwargs):
                         """
-                        A uniform mass distribution will be enabled for all solid cone and atomizer injections.
+                        Specifies a uniform distribution of mass over the cross-section of solid cone and atomizer injections. This can become important when the mesh is smaller than the diameter (or another characteristic size) of the injection.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/uniform_mass_distribution_for_injections").execute(*args, **kwargs)
                     def use_absolute_pressure_for_vaporization(self, *args, **kwargs):
                         """
-                        Enable/disable using Absolute Pressure for Vaporization.
+                        Determines whether the absolute pressure or constant operating pressure (specified in define/operating-conditions/operating-pressure) will be used in vaporization rates calculations.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/use_absolute_pressure_for_vaporization").execute(*args, **kwargs)
                     def vaporization_options(self, *args, **kwargs):
                         """
-                        Set Vaporization options.
+                        Sets Vaporization options.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/vaporization_options").execute(*args, **kwargs)
                     def vaporization_heat_transfer_averaging(self, *args, **kwargs):
                         """
-                        Enable/disable correction for Vaporization heat transfer.
+                        Enables averaging of the Spalding heat transfer term for the convection/diffusion-controlled model.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/vaporization_heat_transfer_averaging").execute(*args, **kwargs)
                     def allow_supercritical_pressure_vaporization(self, *args, **kwargs):
                         """
-                        Skip the pressure dependent boiling point calculation to allow supercritical pressure conditions for vaporization.
+                        Enforces the switching from vaporization to boiling even if the boiling point is not calculated from the vapor pressure data. If the pressure in your model is above critical you must retain the default setting (yes). This options is available only if whenPressure Dependent Boiling is enabled in the Physical Models tab of the Discrete Phase Models dialog box. For more details, see .
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/allow_supercritical_pressure_vaporization").execute(*args, **kwargs)
                     def treat_multicomponent_saturation_temperature_failure(self, *args, **kwargs):
                         """
-                        Dump multicomponent particle mass if the saturation temperature cannot be determined.
+                        Enables/disables dumping multicomponent particle mass into the continuous phase if the saturation temperature calculation fails.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/treat_multicomponent_saturation_temperature_failure").execute(*args, **kwargs)
                     def set_thermolysis_limit(self, *args, **kwargs):
                         """
-                        Set the thermolysis limit.
+                        Sets the limit for the thermolysis model.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/set_thermolysis_limit").execute(*args, **kwargs)
                     def lowest_volatiles_mass_fraction(self, *args, **kwargs):
@@ -11537,17 +11576,17 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/options/lowest_volatiles_mass_fraction").execute(*args, **kwargs)
                     def erosion_accretion(self, *args, **kwargs):
                         """
-                        Enable/disable erosion/accretion.
+                        Enables/disables erosion/accretion.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/erosion_accretion").execute(*args, **kwargs)
                     def init_erosion_accretion_rate(self, *args, **kwargs):
                         """
-                        Initialize erosion/accretion rates with Zero.
+                        Initializes the erosion/accretion rates with zero.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/init_erosion_accretion_rate").execute(*args, **kwargs)
                     def step_report_sig_figures(self, *args, **kwargs):
                         """
-                        Set significant figures in the step-by-step report.
+                        Sets significant figures in the step-by-step report.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/step_report_sig_figures").execute(*args, **kwargs)
                     def include_lwf_particles_in_dpm_concentration(self, *args, **kwargs):
@@ -11557,18 +11596,18 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/options/include_lwf_particles_in_dpm_concentration").execute(*args, **kwargs)
                     def current_positions_in_sample_file_format(self, *args, **kwargs):
                         """
-                        Write the current positions (step-by-step history report for unsteady tracking) in the sampling file format.
+                        When enabled, generates a file containing particle current positions (step-by-step history report for unsteady tracking) in the sampling file format.
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/current_positions_in_sample_file_format").execute(*args, **kwargs)
                     def scr_urea_deposition_risk_analysis(self, *args, **kwargs):
                         """
-                        Options to activate and configure the SCR urea deposition risk analysis.
+                        Enters the menu for setting up the risk for solids deposit formation for the Selective Catalytic Reduction (SCR) process. For more information, see .
                         """
                         return PyMenu(self.service, "/define/models/dpm/options/scr_urea_deposition_risk_analysis").execute(*args, **kwargs)
 
                 class parallel(metaclass=PyMenuMeta):
                     """
-                    Enter the parallel menu.
+                    Enters the parallel menu to set parameters for parallel DPM calculations.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -11576,32 +11615,32 @@ class main_menu(metaclass=PyMenuMeta):
                         self.expert = self.__class__.expert(path + [("expert", None)], service)
                     def enable_workpile(self, *args, **kwargs):
                         """
-                        Enable/disable the particle workpile algorithm.
+                        Turns on/off particle workpile algorithm. This option is only available when the define/models/dpm/parallel/use-shared-memory option is selected.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/enable_workpile").execute(*args, **kwargs)
                     def n_threads(self, *args, **kwargs):
                         """
-                        Set the number of processors to use for DPM.
+                        Sets the number of processors to use for DPM. This option is only available when the define/models/dpm/parallel/enable-workpile? option is enabled.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/n_threads").execute(*args, **kwargs)
                     def report(self, *args, **kwargs):
                         """
-                        Print particle workpile statistics.
+                        Prints particle workpile statistics. This option is only available when the define/models/dpm/parallel/enable-workpile? option is enabled.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/report").execute(*args, **kwargs)
                     def use_shared_memory(self, *args, **kwargs):
                         """
-                        Set DPM parallel-mode to shared memory.
+                        Specifies that the calculations are performed on shared-memory multiprocessor machines.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/use_shared_memory").execute(*args, **kwargs)
                     def use_message_passing(self, *args, **kwargs):
                         """
-                        Set DPM parallel-mode to message passing.
+                        Specifies that the calculations are performed using cluster computing or shared-memory machines. With this option, the compute node processes themselves perform the particle work on their local partitions and particle migration to other compute nodes is implemented using message passing primitives.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/use_message_passing").execute(*args, **kwargs)
                     def use_hybrid(self, *args, **kwargs):
                         """
-                        Set DPM parallel-mode to hybrid.
+                        Specifies that the calculations are performed using multicore cluster computing or shared-memory machines. This option works in conjunction withopenmpi for a dynamic load balancing without migration of cells.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/use_hybrid").execute(*args, **kwargs)
                     def fix_source_term_accumulation_order(self, *args, **kwargs):
@@ -11611,7 +11650,7 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/dpm/parallel/fix_source_term_accumulation_order").execute(*args, **kwargs)
                     def hybrid_2domain(self, *args, **kwargs):
                         """
-                        Use DPM domain to simulate particles.
+                        Enables/disables the use of a second domain for DPM particle tracking.
                         """
                         return PyMenu(self.service, "/define/models/dpm/parallel/hybrid_2domain").execute(*args, **kwargs)
                     def hybrid_workpile(self, *args, **kwargs):
@@ -11639,94 +11678,94 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class expert(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set expert DPM parallel options.
+                        Enters the menu for expert DPM parallel text commands.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def partition_method_hybrid_2domain(self, *args, **kwargs):
                             """
-                            Set DPM Domain partition method.
+                            Enables/disables a partitioning method that is more granular and can yield faster calculations (especially for cases that are running on a low to moderate number of processors). This partitioning method is only applied when you use the DPM domain for the hybrid parallel DPM tracking mode (that is, when you have enabled the define/models/dpm/parallel/hybrid-2domain? text command).
                             """
                             return PyMenu(self.service, "/define/models/dpm/parallel/expert/partition_method_hybrid_2domain").execute(*args, **kwargs)
 
                 class splash_options(metaclass=PyMenuMeta):
                     """
-                    Enter the splash options menu to set optional parameters.
+                    Enters the splash option menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def orourke_splash_fraction(self, *args, **kwargs):
                         """
-                        Select splash fraction method.
+                        Enables/disables the O’Rourke formulation (default for the Lagrangian Wall Film (LWF) model). If the O’Rourke formulation is disabled, the Stanton formulation (default for the Eulerian Wall Film (EWF) model) is used in a simulation.
                         """
                         return PyMenu(self.service, "/define/models/dpm/splash_options/orourke_splash_fraction").execute(*args, **kwargs)
                     def splash_pdf_limiting(self, *args, **kwargs):
                         """
-                        Select splash pdf limiting method.
+                        Sets the splash pdf limiting method. Available methods are: the splash pdf tail limiting (default for the LWF model) and the splash pdf peak limiting (default for the EWF model). For the splash pdf peak limiting, you will be prompted to specify the peak limiting value.
                         """
                         return PyMenu(self.service, "/define/models/dpm/splash_options/splash_pdf_limiting").execute(*args, **kwargs)
 
                 class stripping_options(metaclass=PyMenuMeta):
                     """
-                    Enter the stripping options menu to set optional parameters.
+                    Enters the stripping options menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def mass_coefficient(self, *args, **kwargs):
                         """
-                        Set the stripping mass coefficient.
+                        Sets the mass coefficient (  in  in the Theory Guide)
                         """
                         return PyMenu(self.service, "/define/models/dpm/stripping_options/mass_coefficient").execute(*args, **kwargs)
                     def diameter_coefficient(self, *args, **kwargs):
                         """
-                        Set the stripping diameter coefficient.
+                        Sets the diameter coefficient (  in  in the Theory Guide)
                         """
                         return PyMenu(self.service, "/define/models/dpm/stripping_options/diameter_coefficient").execute(*args, **kwargs)
 
             class shell_conduction(metaclass=PyMenuMeta):
                 """
-                Enter the shell conduction model menu.
+                Enters the shell conduction models menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def multi_layer_shell(self, *args, **kwargs):
                     """
-                    Enable/disable multi layer shell conduction model.
+                    Enables/disables the ability to define multi-layer 	shell conduction for walls. Note that the warped-face 	gradient correction (WFGC) is not supported when 	multi-layer shells are disabled.
                     """
                     return PyMenu(self.service, "/define/models/shell_conduction/multi_layer_shell").execute(*args, **kwargs)
                 def enhanced_encapsulation(self, *args, **kwargs):
                     """
-                    Enable/disable enhanced encapsulation for shell conduction and S2S models. This is not applicable if coupled sliding interface walls exists.
+                    Enables/disables an enhanced routine for the encapsulation of coupled walls during 	mesh partitioning that is enabled by default when shell 	conduction and/or the surface to surface (S2S) radiation 	model is used.
                     """
                     return PyMenu(self.service, "/define/models/shell_conduction/enhanced_encapsulation").execute(*args, **kwargs)
                 def read_csv(self, *args, **kwargs):
                     """
-                    Read shell conduction settings from a csv file.
+                    Defines the shell conduction settings by reading a CSV file.
                     """
                     return PyMenu(self.service, "/define/models/shell_conduction/read_csv").execute(*args, **kwargs)
                 def write_csv(self, *args, **kwargs):
                     """
-                    Write shell conduction settings to a csv file.
+                    Writes your saved shell conduction settings to a CSV file.
                     """
                     return PyMenu(self.service, "/define/models/shell_conduction/write_csv").execute(*args, **kwargs)
                 def settings(self, *args, **kwargs):
                     """
-                    Enter Multi-layer Shell Conduction data.
+                    Enables shell conduction and defines the settings for any wall or group of walls by 	manually entering the number and properties of the 	layers.
                     """
                     return PyMenu(self.service, "/define/models/shell_conduction/settings").execute(*args, **kwargs)
                 def save_shell_zones(self, *args, **kwargs):
                     """
-                    Enable/Disable saving shell zones to case file.
+                    Enables the saving of shell zones to case 	files.
                     """
                     return PyMenu(self.service, "/define/models/shell_conduction/save_shell_zones").execute(*args, **kwargs)
 
             class system_coupling_settings(metaclass=PyMenuMeta):
                 """
-                Enter the system coupling model menu.
+                Enters the system coupling menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -11734,7 +11773,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.htc = self.__class__.htc(path + [("htc", None)], service)
                 def use_face_or_element_based_data_transfer(self, *args, **kwargs):
                     """
-                    Enable/disable face based data transfer.
+                    Answering yes at the prompt 	enables Fluent to use element data for mapping surface 	conservative quantities such as surface forces and heat 	flows.
                     """
                     return PyMenu(self.service, "/define/models/system_coupling_settings/use_face_or_element_based_data_transfer").execute(*args, **kwargs)
                 def update_rigid_body_mesh_motion_before_mesh_transfer(self, *args, **kwargs):
@@ -11796,7 +11835,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class cht(metaclass=PyMenuMeta):
                 """
-                Enter the mapped interface model menu.
+                Enters the cht (conjugate heat transfer) menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -11814,13 +11853,13 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/cht/write_mi_type_wall").execute(*args, **kwargs)
                 def implicit_coupling(self, *args, **kwargs):
                     """
-                    Enable/disable implicit coupling for mapped interface.
+                    Enables the implicit mapping scheme for any 	fluid-solid pair with a mapped mesh interface (only 	required for cases set up in version 19.2 or 	earlier).
                     """
                     return PyMenu(self.service, "/define/models/cht/implicit_coupling").execute(*args, **kwargs)
 
                 class explicit_time_averaged_coupling(metaclass=PyMenuMeta):
                     """
-                    Enter the explcit time averaged thermal coupling menu.
+                    Enters the explicit time averaged thermal coupling 	menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -11848,19 +11887,19 @@ class main_menu(metaclass=PyMenuMeta):
 
             class two_temperature(metaclass=PyMenuMeta):
                 """
-                Define two-temperature model menu.
+                Enters the Two-Temperature model menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Enable/disable the two-temperature model.
+                    Enables/disables the Two-Temperature model.
                     """
                     return PyMenu(self.service, "/define/models/two_temperature/enable").execute(*args, **kwargs)
                 def robustness_enhancement(self, *args, **kwargs):
                     """
-                    Apply robustness enhancements in the two-temperature model.
+                    Enables/disables the robustness enhancement, which is 	on by default. 
                     """
                     return PyMenu(self.service, "/define/models/two_temperature/robustness_enhancement").execute(*args, **kwargs)
                 def nasa9_enhancement(self, *args, **kwargs):
@@ -11870,13 +11909,13 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/two_temperature/nasa9_enhancement").execute(*args, **kwargs)
                 def set_verbosity(self, *args, **kwargs):
                     """
-                    Set two-temperature model verbosity option.
+                    Specifies the level of detail printed in the console 	about the Two-Temperature model. For a verbosity of one, 	Fluent will print the number of cells that reach the 	temperature limit, have an excessive temperature change, 	or get a negative temperature.
                     """
                     return PyMenu(self.service, "/define/models/two_temperature/set_verbosity").execute(*args, **kwargs)
 
             class multiphase(metaclass=PyMenuMeta):
                 """
-                Define multiphase model menu.
+                Enters the multiphase model menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -11887,57 +11926,57 @@ class main_menu(metaclass=PyMenuMeta):
                     self.explicit_expert_options = self.__class__.explicit_expert_options(path + [("explicit_expert_options", None)], service)
                 def model(self, *args, **kwargs):
                     """
-                    Specify multiphase model.
+                    Specifies multiphase model.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/model").execute(*args, **kwargs)
                 def number_of_phases(self, *args, **kwargs):
                     """
-                    Specify the number of phases.
+                    Specifies the number of phases.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/number_of_phases").execute(*args, **kwargs)
                 def regime_transition_modeling(self, *args, **kwargs):
                     """
-                    Regime-transition-modeling-options.
+                    Enables the Algebraic Interfacial Area Density (AIAD) 	model and sets the AIAD secondary continuous phase and 	the secondary entrained phase. Entering 0 as a phase ID cancels any 	previous phase selection. Note that you must define the 	phases in your simulation using the define/phases/ text command 	prior to using the regime-transition-modeling 	text command. This option is available only with the 	Eulerian multiphase model.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/regime_transition_modeling").execute(*args, **kwargs)
                 def eulerian_parameters(self, *args, **kwargs):
                     """
-                    Eulerian parameters.
+                    Specifies Eulerian parameters.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/eulerian_parameters").execute(*args, **kwargs)
                 def volume_fraction_parameters(self, *args, **kwargs):
                     """
-                    Volume fraction parameters.
+                    Specifies volume fraction parameters.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/volume_fraction_parameters").execute(*args, **kwargs)
                 def boiling_model_options(self, *args, **kwargs):
                     """
-                    Boiling model options.
+                    Specifies the boiling model options. You can choose theRPI boiling model,Non-equilibrium boiling, orCritical heat flux.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/boiling_model_options").execute(*args, **kwargs)
                 def mixture_parameters(self, *args, **kwargs):
                     """
-                    Mixture parameters.
+                    Specifies mixture parameters.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/mixture_parameters").execute(*args, **kwargs)
                 def body_force_formulation(self, *args, **kwargs):
                     """
-                    Body force formulation.
+                    Specifies body force formulation.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/body_force_formulation").execute(*args, **kwargs)
                 def coupled_level_set(self, *args, **kwargs):
                     """
-                    Coupled level set.
+                    Enables coupled level set interface tracking method.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/coupled_level_set").execute(*args, **kwargs)
                 def vof_sub_models(self, *args, **kwargs):
                     """
-                    VOF sub-models.
+                    Enables the Open Channel sub-model and/or the Open Channel Wave Boundary Condition 	sub-model.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/vof_sub_models").execute(*args, **kwargs)
                 def interface_modeling_options(self, *args, **kwargs):
                     """
-                    Interface Modeling Options.
+                    Specifies interface modeling options.
                     """
                     return PyMenu(self.service, "/define/models/multiphase/interface_modeling_options").execute(*args, **kwargs)
                 def expert_options(self, *args, **kwargs):
@@ -15153,7 +15192,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class wet_steam(metaclass=PyMenuMeta):
                     """
-                    Enter the wet steam model menu.
+                    Enters the wet steam model menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -15161,56 +15200,56 @@ class main_menu(metaclass=PyMenuMeta):
                         self.set = self.__class__.set(path + [("set", None)], service)
                     def enable(self, *args, **kwargs):
                         """
-                        Enable/disable the wet steam model.
+                        Enables/disables the wet steam model.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/wet_steam/enable").execute(*args, **kwargs)
                     def compile_user_defined_wetsteam_functions(self, *args, **kwargs):
                         """
-                        Compile user-defined wet steam library.
+                        Compiles user-defined wet steam library.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/wet_steam/compile_user_defined_wetsteam_functions").execute(*args, **kwargs)
                     def load_unload_user_defined_wetsteam_library(self, *args, **kwargs):
                         """
-                        Load or unload user-defined wet steam library.
+                        Loads or unloads user-defined wet steam library.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/wet_steam/load_unload_user_defined_wetsteam_library").execute(*args, **kwargs)
 
                     class set(metaclass=PyMenuMeta):
                         """
-                        Enter the set menu for setting wet steam model options.
+                        Enters the set menu for setting wet steam model options.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def max_liquid_mass_fraction(self, *args, **kwargs):
                             """
-                            Set the maximum limit on the condensed liquid-phase mass-fraction to prevent divergence.
+                            Sets the maximum limit on the condensed liquid-phase mass-fraction to prevent divergence.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/wet_steam/set/max_liquid_mass_fraction").execute(*args, **kwargs)
                         def droplet_growth_rate(self, *args, **kwargs):
                             """
-                            Select the formula to model the droplet growth rate.
+                            S formulation (default) or Hill
                             """
                             return PyMenu(self.service, "/define/models/multiphase/wet_steam/set/droplet_growth_rate").execute(*args, **kwargs)
                         def virial_equation(self, *args, **kwargs):
                             """
-                            Select the formulation of the virial equation of state and associated equations for thermodynamic properties of steam.
+                            Sets the equation of state for steam to either Vukalovich formulation (default) or Young formulation.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/wet_steam/set/virial_equation").execute(*args, **kwargs)
                         def rgp_tables(self, *args, **kwargs):
                             """
-                            Select which properties to use: build-in or from RGP tables.
+                            Sets the RGP (real gas property) table to be used with the Wet Steam model.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/wet_steam/set/rgp_tables").execute(*args, **kwargs)
                         def stagnation_conditions(self, *args, **kwargs):
                             """
-                            If the gas phase is selected, zero wetness is assumed when evaluating total or static values of pressure and temperature.
+                            Computes stagnation conditions using either gas phase only, or mixture. For details, see .
                             """
                             return PyMenu(self.service, "/define/models/multiphase/wet_steam/set/stagnation_conditions").execute(*args, **kwargs)
 
                 class population_balance(metaclass=PyMenuMeta):
                     """
-                    Enter the population balance model menu.
+                    Enters the population balance models menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -15219,7 +15258,7 @@ class main_menu(metaclass=PyMenuMeta):
                         self.expert = self.__class__.expert(path + [("expert", None)], service)
                     def model(self, *args, **kwargs):
                         """
-                        Select the population balance model.
+                        Allows you to select the population balance model and set its parameters.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/population_balance/model").execute(*args, **kwargs)
                     def include_expansion(self, *args, **kwargs):
@@ -15229,50 +15268,50 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/multiphase/population_balance/include_expansion").execute(*args, **kwargs)
                     def size_calculator(self, *args, **kwargs):
                         """
-                        Calculate fluid particle diameters using different methods.
+                        Gives you recommendations for appropriate bubble sizes and/or droplet size limits.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/population_balance/size_calculator").execute(*args, **kwargs)
 
                     class phenomena(metaclass=PyMenuMeta):
                         """
-                        Enter the phenomena menu for population balance.
+                        Enters the phenomena menu for population balance.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def nucleation(self, *args, **kwargs):
                             """
-                            Set the nucleantion rate.
+                            Specifies the nucleation rate.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/nucleation").execute(*args, **kwargs)
                         def growth(self, *args, **kwargs):
                             """
-                            Set the growth rate.
+                            Specifies the growth rate.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/growth").execute(*args, **kwargs)
                         def aggregation(self, *args, **kwargs):
                             """
-                            Set the aggregation kernel.
+                            Sets the aggregation kernel.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/aggregation").execute(*args, **kwargs)
                         def breakage(self, *args, **kwargs):
                             """
-                            Set the breakage kernel.
+                            Sets the breakage kernel.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/breakage").execute(*args, **kwargs)
                         def aggregation_factor(self, *args, **kwargs):
                             """
-                            Set a factor which controls the intensity of the selected aggregation kernel.
+                            Specifies a factor that controls the intensity of the selected aggregation kernel.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/aggregation_factor").execute(*args, **kwargs)
                         def breakage_factor(self, *args, **kwargs):
                             """
-                            Set a factor which controls the intensity of the selected breakage kernel.
+                            Specifies a factor that controls the intensity of the selected breakage kernel.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/breakage_factor").execute(*args, **kwargs)
                         def breakage_aggregation_vof_cutoff(self, *args, **kwargs):
                             """
-                            Control vof cut-off for breakage and aggregation.
+                            Specifies a cutoff limit for the volume fraction values for the breakage and aggregation kernels.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/population_balance/phenomena/breakage_aggregation_vof_cutoff").execute(*args, **kwargs)
 
@@ -15315,7 +15354,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class explicit_expert_options(metaclass=PyMenuMeta):
                     """
-                    Expert options for explicit formulation.
+                    Enters the menu to set explicit VOF expert 	options.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -15323,101 +15362,101 @@ class main_menu(metaclass=PyMenuMeta):
                         self.volume_fraction_filtering = self.__class__.volume_fraction_filtering(path + [("volume_fraction_filtering", None)], service)
                     def sub_time_step_method(self, *args, **kwargs):
                         """
-                        Select sub-time step method for the time integration in explicit formulation.
+                        Selects the sub-time step method.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/sub_time_step_method").execute(*args, **kwargs)
                     def solve_vof_every_iter(self, *args, **kwargs):
                         """
-                        Solve volume fraction equation every iteration for explicit formulation.
+                        If you enter yes, the volume fraction equations will be solved every iteration. By default, the volume fraction equations will be solved only once per time step.
                         """
                         return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/solve_vof_every_iter").execute(*args, **kwargs)
 
                     class volume_fraction_filtering(metaclass=PyMenuMeta):
                         """
-                        Advanced volume fraction filtering controls for explicit formulation.
+                        Enters the volume fraction filtering menu.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def enable(self, *args, **kwargs):
                             """
-                            Enable volume fraction filtering treatment.
+                            Enables/disables the volume fraction filtering treatment.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/volume_fraction_filtering/enable").execute(*args, **kwargs)
                         def filtering_options(self, *args, **kwargs):
                             """
-                            Select volume fraction filtering method.
+                            Selects the volume fraction filtering method. This command becomes available once the define/models/multiphase/explicit-expert-options/volume-fraction-filtering/enable? text option has been set to yes.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/volume_fraction_filtering/filtering_options").execute(*args, **kwargs)
                         def vol_frac_cutoff(self, *args, **kwargs):
                             """
-                            Enter node-averaged volume fraction cutoff.
+                            Specifies a cut-off value for the volume fraction filtering. This command becomes available after you select the node averaged cutoff method using the define/models/multiphase/explicit-expert-options/volume-fraction-filtering/filtering-options text command.
                             """
                             return PyMenu(self.service, "/define/models/multiphase/explicit_expert_options/volume_fraction_filtering/vol_frac_cutoff").execute(*args, **kwargs)
 
             class nox_parameters(metaclass=PyMenuMeta):
                 """
-                Enter the NOx parameters menu.
+                Enters the NOx parameters menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def nox_chemistry(self, *args, **kwargs):
                     """
-                    Select NOx chemistry model.
+                    Selects NOx chemistry model.
                     """
                     return PyMenu(self.service, "/define/models/nox_parameters/nox_chemistry").execute(*args, **kwargs)
                 def nox_turbulence_interaction(self, *args, **kwargs):
                     """
-                    Set NOx-turbulence interaction model.
+                    Sets NOx turbulence interaction model.
                     """
                     return PyMenu(self.service, "/define/models/nox_parameters/nox_turbulence_interaction").execute(*args, **kwargs)
                 def inlet_diffusion(self, *args, **kwargs):
                     """
-                    Enable/disable inclusion of diffusion at inlets.
+                    Enables/disables inclusion of diffusion at inlets.
                     """
                     return PyMenu(self.service, "/define/models/nox_parameters/inlet_diffusion").execute(*args, **kwargs)
                 def nox_expert(self, *args, **kwargs):
                     """
-                    Select additional nox equations.
+                    Selects additional NOx equations.
                     """
                     return PyMenu(self.service, "/define/models/nox_parameters/nox_expert").execute(*args, **kwargs)
 
             class soot_parameters(metaclass=PyMenuMeta):
                 """
-                Enter the soot parameters menu.
+                Enters the soot parameters menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def soot_model_parameters(self, *args, **kwargs):
                     """
-                    Enter the soot model parameters menu.
+                    Selects soot model parameters.
                     """
                     return PyMenu(self.service, "/define/models/soot_parameters/soot_model_parameters").execute(*args, **kwargs)
                 def soot_process_parameters(self, *args, **kwargs):
                     """
-                    Set soot process parameters.
+                    Selects soot process parameters.
                     """
                     return PyMenu(self.service, "/define/models/soot_parameters/soot_process_parameters").execute(*args, **kwargs)
                 def soot_radiation_interaction(self, *args, **kwargs):
                     """
-                    Enable/disable the soot-radiation interaction model.
+                    Enables/disables the soot-radiation interaction model.
                     """
                     return PyMenu(self.service, "/define/models/soot_parameters/soot_radiation_interaction").execute(*args, **kwargs)
                 def soot_turbulence_interaction(self, *args, **kwargs):
                     """
-                    Set Soot-turbulence interaction model.
+                    Sets soot-turbulence interaction model.
                     """
                     return PyMenu(self.service, "/define/models/soot_parameters/soot_turbulence_interaction").execute(*args, **kwargs)
                 def modify_schmidt_number(self, *args, **kwargs):
                     """
-                    Change Turbulent Schmidt Number for Soot/Nuclei Equations.
+                    Changes the turbulent Schmidt number for soot/nuclei equations.
                     """
                     return PyMenu(self.service, "/define/models/soot_parameters/modify_schmidt_number").execute(*args, **kwargs)
                 def inlet_diffusion(self, *args, **kwargs):
                     """
-                    Enable/disable inclusion of diffusion at inlets.
+                    Enables/disables inclusion of diffusion at inlets.
                     """
                     return PyMenu(self.service, "/define/models/soot_parameters/inlet_diffusion").execute(*args, **kwargs)
                 def soot_model_udfs(self, *args, **kwargs):
@@ -15428,7 +15467,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class radiation(metaclass=PyMenuMeta):
                 """
-                Enter the radiation models menu.
+                Enters the radiation models menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -15438,107 +15477,107 @@ class main_menu(metaclass=PyMenuMeta):
                     self.solar_parameters = self.__class__.solar_parameters(path + [("solar_parameters", None)], service)
                 def discrete_ordinates(self, *args, **kwargs):
                     """
-                    Enable/disable the discrete ordinates radiation model.
+                    Enables/disables discrete ordinates radiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/discrete_ordinates").execute(*args, **kwargs)
                 def do_acceleration(self, *args, **kwargs):
                     """
-                    Enable/disable acceleration of computation of DO model.
+                    Enables/disables the acceleration of the discrete 	ordinates (DO) radiation model calculations. Note that 	this text command is only available when running on 	Linux in parallel.
                     """
                     return PyMenu(self.service, "/define/models/radiation/do_acceleration").execute(*args, **kwargs)
                 def non_gray_model_parameters(self, *args, **kwargs):
                     """
-                    Set parameters for non-gray model.
+                    Sets parameters for non-gray model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/non_gray_model_parameters").execute(*args, **kwargs)
                 def montecarlo(self, *args, **kwargs):
                     """
-                    Enable/disable the Monte Carlo radiation model.
+                    Enables/disables the Monte Carlo radiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/montecarlo").execute(*args, **kwargs)
                 def target_cells_per_volume_cluster(self, *args, **kwargs):
                     """
-                    Enter cells per volume cluster for Monte Carlo radiation model.
+                    Sets the amount of coarsening of the radiation mesh 	for the Monte Carlo radiation model. A number greater 	than one implies coarsening, whereas equal to one 	implies no coarsening.
                     """
                     return PyMenu(self.service, "/define/models/radiation/target_cells_per_volume_cluster").execute(*args, **kwargs)
                 def s2s(self, *args, **kwargs):
                     """
-                    Enable/disable the S2S radiation model.
+                    Enables/disables S2S radiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/s2s").execute(*args, **kwargs)
                 def discrete_transfer(self, *args, **kwargs):
                     """
-                    Enable/disable discrete the transfer radiation model.
+                    Enables/disables discrete transfer radiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/discrete_transfer").execute(*args, **kwargs)
                 def p1(self, *args, **kwargs):
                     """
-                    Enable/disable the P1 radiation model.
+                    Enables/disables P1 radiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/p1").execute(*args, **kwargs)
                 def radiation_model_parameters(self, *args, **kwargs):
                     """
-                    Set parameters for radiation models.
+                    Sets parameters for radiation models.
                     """
                     return PyMenu(self.service, "/define/models/radiation/radiation_model_parameters").execute(*args, **kwargs)
                 def radiation_iteration_parameters(self, *args, **kwargs):
                     """
-                    Set iteration parameters for radiation models.
+                    Sets iteration parameters for radiation models.
                     """
                     return PyMenu(self.service, "/define/models/radiation/radiation_iteration_parameters").execute(*args, **kwargs)
                 def mc_model_parameters(self, *args, **kwargs):
                     """
-                    Set parameters for montecarlo radiation model.
+                    Specifies Monte Carlo model parameters. This text command is available only when the 	Monte Carlo model is enabled.
                     """
                     return PyMenu(self.service, "/define/models/radiation/mc_model_parameters").execute(*args, **kwargs)
                 def mc_under_relaxation(self, *args, **kwargs):
                     """
-                    Set under-relaxation factor for montecarlo radiation sources used in the energy equation.
+                    Sets the under-relaxation factor for Monte Carlo radiation sources used in the 	energy equation.
                     """
                     return PyMenu(self.service, "/define/models/radiation/mc_under_relaxation").execute(*args, **kwargs)
                 def rosseland(self, *args, **kwargs):
                     """
-                    Enable/disable the Rosseland radiation model.
+                    Enables/disables Rosseland radiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/rosseland").execute(*args, **kwargs)
                 def solar(self, *args, **kwargs):
                     """
-                    Enable/disable the solar model.
+                    Enables/disables solar model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/solar").execute(*args, **kwargs)
                 def solar_irradiation(self, *args, **kwargs):
                     """
-                    Enable/disable the Solar irradiation model.
+                    Enables/disables the solar irradiation model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/solar_irradiation").execute(*args, **kwargs)
                 def solar_calculator(self, *args, **kwargs):
                     """
-                    Calculate sun direction and intensity.
+                    Calculates sun direction and intensity.
                     """
                     return PyMenu(self.service, "/define/models/radiation/solar_calculator").execute(*args, **kwargs)
                 def apply_full_solar_irradiation(self, *args, **kwargs):
                     """
-                    Enable/disable application of solar irradiation to first band with DO model.
+                    Enables/disables the application of the complete solar load to the first wavelength 	band only, reverting to the pre-2019 R1 behavior of the 	Solar Load and Discrete Ordinates models.
                     """
                     return PyMenu(self.service, "/define/models/radiation/apply_full_solar_irradiation").execute(*args, **kwargs)
                 def wsggm_cell_based(self, *args, **kwargs):
                     """
-                    Enable/disable WSGGM cell based method.
+                    Enables/disables WSGGM cell based method. Note that when enabled, the wsggm-cell-based option will 	become available in theAbsorption Coefficient drop-down list in the Create/Edit Materials dialog 	box.
                     """
                     return PyMenu(self.service, "/define/models/radiation/wsggm_cell_based").execute(*args, **kwargs)
                 def fast_second_order_discrete_ordinate(self, *args, **kwargs):
                     """
-                    Enable/disable the fast-second-order option for Discrete Ordinate Model.
+                    Enables/disables the fast-second-order option for Discrete Ordinate Model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/fast_second_order_discrete_ordinate").execute(*args, **kwargs)
                 def do_coupling(self, *args, **kwargs):
                     """
-                    Enabled DO Energy Coupling.
+                    Enables/disables DO/energy coupling.
                     """
                     return PyMenu(self.service, "/define/models/radiation/do_coupling").execute(*args, **kwargs)
                 def solution_method_for_do_coupling(self, *args, **kwargs):
                     """
-                    Enable the solution method for DO/Energy  Coupling.
+                    Enables/disables the solution method for DO/energy coupling.
                     """
                     return PyMenu(self.service, "/define/models/radiation/solution_method_for_do_coupling").execute(*args, **kwargs)
                 def beta_radiation_features(self, *args, **kwargs):
@@ -15548,30 +15587,30 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/radiation/beta_radiation_features").execute(*args, **kwargs)
                 def method_partially_specular_wall(self, *args, **kwargs):
                     """
-                    Set method for partially specular wall with discrete ordinate model.
+                    Sets the method for partially specular wall with discrete ordinate model.
                     """
                     return PyMenu(self.service, "/define/models/radiation/method_partially_specular_wall").execute(*args, **kwargs)
                 def blending_factor(self, *args, **kwargs):
                     """
-                    Set numeric option for Discrete Ordinate model.
+                    Sets numeric option for Discrete Ordinate model. Make sure thatSecond Order Upwind is selected for the Discrete Ordinates spatial 	discretization for the blending-factor option to 	appear in the text command list.
                     """
                     return PyMenu(self.service, "/define/models/radiation/blending_factor").execute(*args, **kwargs)
 
                 class s2s_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the S2S parameters menu.
+                    Enters the S2S parameters menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def compute_vf_only(self, *args, **kwargs):
                         """
-                        Compute/write view factors only.
+                        Computes/writes view factors only.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/compute_vf_only").execute(*args, **kwargs)
                     def compute_write_vf(self, *args, **kwargs):
                         """
-                        Compute/write surface clusters and view factors for S2S radiation model.
+                        Computes/writes surface clusters and view factors for S2S radiation model.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/compute_write_vf").execute(*args, **kwargs)
                     def compute_vf_accelerated(self, *args, **kwargs):
@@ -15586,27 +15625,27 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/compute_clusters_and_vf_accelerated").execute(*args, **kwargs)
                     def non_participating_boundary_zones_temperature(self, *args, **kwargs):
                         """
-                        Set temperature for the non-participating boundary zones.
+                        Sets temperature for the non-participating boundary zones.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/non_participating_boundary_zones_temperature").execute(*args, **kwargs)
                     def read_vf_file(self, *args, **kwargs):
                         """
-                        Read an S2S file.
+                        Reads S2S file.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/read_vf_file").execute(*args, **kwargs)
                     def set_vf_parameters(self, *args, **kwargs):
                         """
-                        Set the parameters needed for the view factor calculations.
+                        Sets the parameters needed for the viewfactor calculations.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/set_vf_parameters").execute(*args, **kwargs)
                     def split_angle(self, *args, **kwargs):
                         """
-                        Set the split angle for the clustering algorithm.
+                        Sets split angle for the clustering algorithm.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/split_angle").execute(*args, **kwargs)
                     def set_global_faces_per_surface_cluster(self, *args, **kwargs):
                         """
-                        Set global value of faces per surface cluster for all boundary zones.
+                        Sets global value of faces per surface cluster for all boundary zones.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/set_global_faces_per_surface_cluster").execute(*args, **kwargs)
                     def print_thread_clusters(self, *args, **kwargs):
@@ -15621,146 +15660,146 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/print_zonewise_radiation").execute(*args, **kwargs)
                     def use_old_cluster_algorithm(self, *args, **kwargs):
                         """
-                        Use the old surface clustering algorithm.
+                        Uses the old surface clustering algorithm.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/use_old_cluster_algorithm").execute(*args, **kwargs)
                     def use_new_cluster_algorithm(self, *args, **kwargs):
                         """
-                        Use the new surface clustering algorithm.
+                        Uses the new surface clustering algorithm.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/use_new_cluster_algorithm").execute(*args, **kwargs)
                     def compute_fpsc_values(self, *args, **kwargs):
                         """
-                        Compute only fpsc values based on current settings.
+                        Computes only fpsc values based on current settings
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/compute_fpsc_values").execute(*args, **kwargs)
                     def enable_mesh_interface_clustering(self, *args, **kwargs):
                         """
-                        Enable clustering on mesh interfaces?.
+                        Enables surface clusters on mesh interfaces.
                         """
                         return PyMenu(self.service, "/define/models/radiation/s2s_parameters/enable_mesh_interface_clustering").execute(*args, **kwargs)
 
                 class dtrm_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the DTRM parameters menu.
+                    Enters the dtrm parameters menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def controls(self, *args, **kwargs):
                         """
-                        Set DTRM solution controls.
+                        Sets dtrm solution controls.
                         """
                         return PyMenu(self.service, "/define/models/radiation/dtrm_parameters/controls").execute(*args, **kwargs)
                     def make_globs(self, *args, **kwargs):
                         """
-                        Make globs (coarser mesh) for radiation.
+                        Makes globs (coarser mesh) for radiation.
                         """
                         return PyMenu(self.service, "/define/models/radiation/dtrm_parameters/make_globs").execute(*args, **kwargs)
                     def ray_trace(self, *args, **kwargs):
                         """
-                        Create DTRM rays for radiation.
+                        Creates DTRM rays for radiation.
                         """
                         return PyMenu(self.service, "/define/models/radiation/dtrm_parameters/ray_trace").execute(*args, **kwargs)
                     def check_ray_file(self, *args, **kwargs):
                         """
-                        Read DTRM rays file.
+                        Reads DTRM rays file.
                         """
                         return PyMenu(self.service, "/define/models/radiation/dtrm_parameters/check_ray_file").execute(*args, **kwargs)
 
                 class solar_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the solar parameters menu.
+                    Enters the solar parameters menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def autosave_solar_data(self, *args, **kwargs):
                         """
-                        Set autosave solar data parameters.
+                        Sets autosave solar data parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/autosave_solar_data").execute(*args, **kwargs)
                     def autoread_solar_data(self, *args, **kwargs):
                         """
-                        Set autoread solar data parameters.
+                        Sets autoread solar data parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/autoread_solar_data").execute(*args, **kwargs)
                     def sun_direction_vector(self, *args, **kwargs):
                         """
-                        Set sun direction vector.
+                        Sets sun direction vector.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/sun_direction_vector").execute(*args, **kwargs)
                     def illumination_parameters(self, *args, **kwargs):
                         """
-                        Set illumination parameters.
+                        Sets illumination parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/illumination_parameters").execute(*args, **kwargs)
                     def iteration_parameters(self, *args, **kwargs):
                         """
-                        Set update parameters.
+                        Sets update parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/iteration_parameters").execute(*args, **kwargs)
                     def quad_tree_parameters(self, *args, **kwargs):
                         """
-                        Set quad-tree refinement parameters.
+                        Sets quad-tree refinement parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/quad_tree_parameters").execute(*args, **kwargs)
                     def ground_reflectivity(self, *args, **kwargs):
                         """
-                        Set ground reflectivity parameters.
+                        Sets ground reflectivity parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/ground_reflectivity").execute(*args, **kwargs)
                     def scattering_fraction(self, *args, **kwargs):
                         """
-                        Set scattering fraction parameters.
+                        Sets scattering fraction parameters.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/scattering_fraction").execute(*args, **kwargs)
                     def sol_on_demand(self, *args, **kwargs):
                         """
-                        Enable  solar load on demand.
+                        Sets solar load on demand.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/sol_on_demand").execute(*args, **kwargs)
                     def sol_camera_pos(self, *args, **kwargs):
                         """
-                        Set camera position based on sun direction vector.
+                        Sets camera position based on sun direction vector.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/sol_camera_pos").execute(*args, **kwargs)
                     def sol_adjacent_fluidcells(self, *args, **kwargs):
                         """
-                        Enable solar load for adjacent fluid cells.
+                        Sets solar load on for adjacent fluid cells.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/sol_adjacent_fluidcells").execute(*args, **kwargs)
                     def use_direction_from_sol_calc(self, *args, **kwargs):
                         """
-                        Set direction computed from solar calculator.
+                        Sets direction computed from solar calculator.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/use_direction_from_sol_calc").execute(*args, **kwargs)
                     def solar_thread_control(self, *args, **kwargs):
                         """
-                        Solar thread control.
+                        Sets the number of threads to run the solar flux calculation. This item appears only when running in parallel with nodes located on a separate machine from the one running the host process andSolar Ray Tracing is enabled.
                         """
                         return PyMenu(self.service, "/define/models/radiation/solar_parameters/solar_thread_control").execute(*args, **kwargs)
 
             class solver(metaclass=PyMenuMeta):
                 """
-                Enter the menu to select the solver.
+                Enters the menu to select the solver.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def pressure_based(self, *args, **kwargs):
                     """
-                    Enable/disable the segregated solver.
+                    Enables/disables the pressure-based solver.
                     """
                     return PyMenu(self.service, "/define/models/solver/pressure_based").execute(*args, **kwargs)
                 def density_based_explicit(self, *args, **kwargs):
                     """
-                    Enable/disable the coupled-explicit solver.
+                    Enables/disables the density-based-explicit solver.
                     """
                     return PyMenu(self.service, "/define/models/solver/density_based_explicit").execute(*args, **kwargs)
                 def density_based_implicit(self, *args, **kwargs):
                     """
-                    Enable/disable the coupled-implicit solver.
+                    Enables/disables the density-based-implicit solver.
                     """
                     return PyMenu(self.service, "/define/models/solver/density_based_implicit").execute(*args, **kwargs)
                 def adjust_solver_defaults_based_on_setup(self, *args, **kwargs):
@@ -15771,7 +15810,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class species(metaclass=PyMenuMeta):
                 """
-                Enter the species models menu.
+                Enters the species models menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -15779,42 +15818,42 @@ class main_menu(metaclass=PyMenuMeta):
                     self.CHEMKIN_CFD_parameters = self.__class__.CHEMKIN_CFD_parameters(path + [("CHEMKIN_CFD_parameters", None)], service)
                 def off(self, *args, **kwargs):
                     """
-                    Enable/disable solution of species models.
+                    Enables/disables solution of species models.
                     """
                     return PyMenu(self.service, "/define/models/species/off").execute(*args, **kwargs)
                 def species_transport(self, *args, **kwargs):
                     """
-                    Enable/disable the species transport model.
+                    Enables/disables the species transport model.
                     """
                     return PyMenu(self.service, "/define/models/species/species_transport").execute(*args, **kwargs)
                 def non_premixed_combustion(self, *args, **kwargs):
                     """
-                    Enable/disable the non-premixed combustion model.
+                    Enables/disables non-premixed combustion model.
                     """
                     return PyMenu(self.service, "/define/models/species/non_premixed_combustion").execute(*args, **kwargs)
                 def premixed_combustion(self, *args, **kwargs):
                     """
-                    Enable/disable the premixed combustion model.
+                    Enables/disables premixed combustion model.
                     """
                     return PyMenu(self.service, "/define/models/species/premixed_combustion").execute(*args, **kwargs)
                 def partially_premixed_combustion(self, *args, **kwargs):
                     """
-                    Enable/disable partially premixed combustion model.
+                    Enables/disables partially premixed combustion model.
                     """
                     return PyMenu(self.service, "/define/models/species/partially_premixed_combustion").execute(*args, **kwargs)
                 def premixed_model(self, *args, **kwargs):
                     """
-                    Set premixed combustion model.
+                    Sets premixed combustion model.
                     """
                     return PyMenu(self.service, "/define/models/species/premixed_model").execute(*args, **kwargs)
                 def pdf_transport(self, *args, **kwargs):
                     """
-                    Enable/disable the composition PDF transport combustion model.
+                    Enables/disables the composition PDF transport combustion model.
                     """
                     return PyMenu(self.service, "/define/models/species/pdf_transport").execute(*args, **kwargs)
                 def save_gradients(self, *args, **kwargs):
                     """
-                    Enable/disable storage of species mass fraction gradients.
+                    Enables/disables storage of species mass fraction gradients.
                     """
                     return PyMenu(self.service, "/define/models/species/save_gradients").execute(*args, **kwargs)
                 def liquid_energy_diffusion(self, *args, **kwargs):
@@ -15824,167 +15863,167 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/species/liquid_energy_diffusion").execute(*args, **kwargs)
                 def volumetric_reactions(self, *args, **kwargs):
                     """
-                    Enable/disable volumetric reactions.
+                    Enables/disables volumetric reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/volumetric_reactions").execute(*args, **kwargs)
                 def species_transport_expert(self, *args, **kwargs):
                     """
-                    Set species transport expert options.
+                    Sets the convergence acceleration expert parameters. This command is only available 	when the species transport model is enabled.
                     """
                     return PyMenu(self.service, "/define/models/species/species_transport_expert").execute(*args, **kwargs)
                 def coal_calculator(self, *args, **kwargs):
                     """
-                    Set up coal modeling inputs.
+                    Sets up coal modeling inputs.
                     """
                     return PyMenu(self.service, "/define/models/species/coal_calculator").execute(*args, **kwargs)
                 def mixing_model(self, *args, **kwargs):
                     """
-                    Set PDF transport mixing model.
+                    Sets PDF Transport mixing model.
                     """
                     return PyMenu(self.service, "/define/models/species/mixing_model").execute(*args, **kwargs)
                 def stiff_chemistry(self, *args, **kwargs):
                     """
-                    Enable/disable stiff chemistry option.
+                    Enables/disables stiff chemistry option.
                     """
                     return PyMenu(self.service, "/define/models/species/stiff_chemistry").execute(*args, **kwargs)
                 def liquid_micro_mixing(self, *args, **kwargs):
                     """
-                    Enable/disable liquid micro mixing option.
+                    Enables/disables liquid micro mixing.
                     """
                     return PyMenu(self.service, "/define/models/species/liquid_micro_mixing").execute(*args, **kwargs)
                 def epdf_energy(self, *args, **kwargs):
                     """
-                    Enable/disable EPDF energy  option.
+                    Enables/disables EPDF energy option.
                     """
                     return PyMenu(self.service, "/define/models/species/epdf_energy").execute(*args, **kwargs)
                 def integration_parameters(self, *args, **kwargs):
                     """
-                    Set ISAT parameters.
+                    Sets chemistry ODE integrator parameters. Enables/disables stiff chemistry 	acceleration methods and set their parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/integration_parameters").execute(*args, **kwargs)
                 def clear_isat_table(self, *args, **kwargs):
                     """
-                    Clear the ISAT table.
+                    Clears ISAT table.
                     """
                     return PyMenu(self.service, "/define/models/species/clear_isat_table").execute(*args, **kwargs)
                 def pdf_transport_expert(self, *args, **kwargs):
                     """
-                    Enable/disable PDF transport expert user.
+                    Enables/disables PDF Transport expert user.
                     """
                     return PyMenu(self.service, "/define/models/species/pdf_transport_expert").execute(*args, **kwargs)
                 def set_turb_chem_interaction(self, *args, **kwargs):
                     """
-                    Set Eddy-Dissipation Concept model constants.
+                    Sets EDC model constants.
                     """
                     return PyMenu(self.service, "/define/models/species/set_turb_chem_interaction").execute(*args, **kwargs)
                 def spark_model(self, *args, **kwargs):
                     """
-                    Set spark model parameters.
+                    Switches between the R15 and R14.5 spark models and sets spark model 	parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/spark_model").execute(*args, **kwargs)
                 def ignition_model(self, *args, **kwargs):
                     """
-                    Enable/disable the ignition model.
+                    Enables/disables the ignition model.
                     """
                     return PyMenu(self.service, "/define/models/species/ignition_model").execute(*args, **kwargs)
                 def ignition_model_controls(self, *args, **kwargs):
                     """
-                    Set ignition model parameters.
+                    Sets ignition model parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/ignition_model_controls").execute(*args, **kwargs)
                 def inert_transport_model(self, *args, **kwargs):
                     """
-                    Enable/disable the inert transport model.
+                    Enables/disables the inert transport model.
                     """
                     return PyMenu(self.service, "/define/models/species/inert_transport_model").execute(*args, **kwargs)
                 def inert_transport_controls(self, *args, **kwargs):
                     """
-                    Set inert transport model parameters.
+                    Sets inert transport model parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/inert_transport_controls").execute(*args, **kwargs)
                 def particle_surface_reactions(self, *args, **kwargs):
                     """
-                    Enable/disable particle surface reactions.
+                    Enables/disables particle surface reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/particle_surface_reactions").execute(*args, **kwargs)
                 def wall_surface_reactions(self, *args, **kwargs):
                     """
-                    Enable/disable wall surface reactions.
+                    Enables/disables wall surface reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/wall_surface_reactions").execute(*args, **kwargs)
                 def heat_of_surface_reactions(self, *args, **kwargs):
                     """
-                    Enable/disable heat of surface reactions.
+                    Enables/disables heat of surface reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/heat_of_surface_reactions").execute(*args, **kwargs)
                 def mass_deposition_source(self, *args, **kwargs):
                     """
-                    Enable/disable mass deposition source due to surface reactions.
+                    Enables/disables mass deposition source due to surface reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/mass_deposition_source").execute(*args, **kwargs)
                 def electro_chemical_surface_reactions(self, *args, **kwargs):
                     """
-                    Enable/disable electrochemical surface reactions.
+                    Enables/disables electrochemical surface reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/electro_chemical_surface_reactions").execute(*args, **kwargs)
                 def species_migration(self, *args, **kwargs):
                     """
-                    Enable/disable ion species migration in electric field.
+                    Includes species migration in electric field. This command is available only when 	the electrochemical surface reactions are 	enabled.
                     """
                     return PyMenu(self.service, "/define/models/species/species_migration").execute(*args, **kwargs)
                 def reaction_diffusion_balance(self, *args, **kwargs):
                     """
-                    Enable/disable reaction diffusion balance at reacting surface for surface reactions.
+                    Enables/disables reaction diffusion balance at reacting surface for surface 	reactions.
                     """
                     return PyMenu(self.service, "/define/models/species/reaction_diffusion_balance").execute(*args, **kwargs)
                 def surf_reaction_aggressiveness_factor(self, *args, **kwargs):
                     """
-                    Set the surface reaction aggressiveness factor.
+                    Sets the surface reaction aggressiveness factor.
                     """
                     return PyMenu(self.service, "/define/models/species/surf_reaction_aggressiveness_factor").execute(*args, **kwargs)
                 def surf_reaction_netm_params(self, *args, **kwargs):
                     """
-                    Set the surface reaction parameters for the Non-Equilibrium Thermal Model.
+                    Sets the surface reaction parameters for the Non-Equilibrium Thermal Model.
                     """
                     return PyMenu(self.service, "/define/models/species/surf_reaction_netm_params").execute(*args, **kwargs)
                 def inlet_diffusion(self, *args, **kwargs):
                     """
-                    Enable/disable inclusion of diffusion at inlets.
+                    Enables/disables inclusion of diffusion at inlets.
                     """
                     return PyMenu(self.service, "/define/models/species/inlet_diffusion").execute(*args, **kwargs)
                 def diffusion_energy_source(self, *args, **kwargs):
                     """
-                    Enable/disable diffusion energy source.
+                    Enables/disables diffusion energy source.
                     """
                     return PyMenu(self.service, "/define/models/species/diffusion_energy_source").execute(*args, **kwargs)
                 def multicomponent_diffusion(self, *args, **kwargs):
                     """
-                    Enable/disable multicomponent diffusion.
+                    Enables/disables multicomponent diffusion.
                     """
                     return PyMenu(self.service, "/define/models/species/multicomponent_diffusion").execute(*args, **kwargs)
                 def thermal_diffusion(self, *args, **kwargs):
                     """
-                    Enable/disable thermal diffusion.
+                    Enables/disables thermal diffusion.
                     """
                     return PyMenu(self.service, "/define/models/species/thermal_diffusion").execute(*args, **kwargs)
                 def CHEMKIN_CFD(self, *args, **kwargs):
                     """
-                    Enable/disable CHEMKIN-CFD.
+                    Enables/disables the Ansys CHEMKIN-CFD solver.
                     """
                     return PyMenu(self.service, "/define/models/species/CHEMKIN_CFD").execute(*args, **kwargs)
                 def non_premixed_combustion_parameters(self, *args, **kwargs):
                     """
-                    Set PDF parameters.
+                    Sets PDF parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/non_premixed_combustion_parameters").execute(*args, **kwargs)
                 def partially_premixed_combustion_parameters(self, *args, **kwargs):
                     """
-                    Set PDF parameters.
+                    Sets PDF parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/partially_premixed_combustion_parameters").execute(*args, **kwargs)
                 def partially_premixed_properties(self, *args, **kwargs):
                     """
-                    Set/Change partially premixed mixture properties.
+                    Sets/changes partially-premixed mixture properties. 	This command is only available when partially-premixed-combustion? 	is enabled.
                     """
                     return PyMenu(self.service, "/define/models/species/partially_premixed_properties").execute(*args, **kwargs)
                 def re_calc_par_premix_props(self, *args, **kwargs):
@@ -15994,47 +16033,47 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/species/re_calc_par_premix_props").execute(*args, **kwargs)
                 def full_tabulation(self, *args, **kwargs):
                     """
-                    Enable/disable building of a full 2 mixture fraction table.
+                    Enables/disables building of a full 2-mixture fraction table
                     """
                     return PyMenu(self.service, "/define/models/species/full_tabulation").execute(*args, **kwargs)
                 def init_unsteady_flamelet_prob(self, *args, **kwargs):
                     """
-                    Initialize Unsteady Flamelet Probability.
+                    Initializes Unsteady Flamelet Probability.
                     """
                     return PyMenu(self.service, "/define/models/species/init_unsteady_flamelet_prob").execute(*args, **kwargs)
                 def import_flamelet_for_restart(self, *args, **kwargs):
                     """
-                    Import Flamelet File for Restart.
+                    Imports Flamelet File for Restart.
                     """
                     return PyMenu(self.service, "/define/models/species/import_flamelet_for_restart").execute(*args, **kwargs)
                 def non_premixed_combustion_expert(self, *args, **kwargs):
                     """
-                    Set PDF expert parameters.
+                    Sets PDF expert parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/non_premixed_combustion_expert").execute(*args, **kwargs)
                 def partially_premixed_combustion_expert(self, *args, **kwargs):
                     """
-                    Set PDF expert parameters.
+                    Sets PDF expert parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/partially_premixed_combustion_expert").execute(*args, **kwargs)
                 def partially_premixed_combustion_grids(self, *args, **kwargs):
                     """
-                    Set user specified grid parameters for PDF and flamelet.
+                    Sets values for the grid distribution for PDF table or 	flamelet parameter. This text command is available only 	for partially premixed combustion cases with FGM.
                     """
                     return PyMenu(self.service, "/define/models/species/partially_premixed_combustion_grids").execute(*args, **kwargs)
                 def flamelet_expert(self, *args, **kwargs):
                     """
-                    Set flamelet expert parameters.
+                    Sets flamelet expert parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/flamelet_expert").execute(*args, **kwargs)
                 def combustion_expert(self, *args, **kwargs):
                     """
-                    Set combustion expert parameters.
+                    Enables import of the CHEMKIN mechanism transport 	data. When this option is enabled, you will be prompted 	for importing CHEMKIN transport property database when 	setting your combustion case.
                     """
                     return PyMenu(self.service, "/define/models/species/combustion_expert").execute(*args, **kwargs)
                 def set_premixed_combustion(self, *args, **kwargs):
                     """
-                    Set premixed combustion parameters.
+                    Sets premixed combustion parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/set_premixed_combustion").execute(*args, **kwargs)
                 def set_multi_regime_fgm(self, *args, **kwargs):
@@ -16044,76 +16083,76 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/species/set_multi_regime_fgm").execute(*args, **kwargs)
                 def relax_to_equil(self, *args, **kwargs):
                     """
-                    Enable/disable the Relaxation to Chemical Equilibrium model.
+                    Enables/disables the Relaxation to Chemical Equilibrium model.
                     """
                     return PyMenu(self.service, "/define/models/species/relax_to_equil").execute(*args, **kwargs)
                 def thickened_flame_model(self, *args, **kwargs):
                     """
-                    Enable/disable the Relaxation to Chemical Equilibrium model.
+                    Enables/disables the Relaxation to Chemical Equilibrium model
                     """
                     return PyMenu(self.service, "/define/models/species/thickened_flame_model").execute(*args, **kwargs)
                 def decoupled_detailed_chemistry(self, *args, **kwargs):
                     """
-                    Enable/disable the Decoupled Detailed Chemistry model.
+                    Enables/disables the Decoupled Detailed Chemistry model.
                     """
                     return PyMenu(self.service, "/define/models/species/decoupled_detailed_chemistry").execute(*args, **kwargs)
                 def reactor_network_model(self, *args, **kwargs):
                     """
-                    Enable/disable the Reactor Network model.
+                    Enables/disables the Reactor Network Model.
                     """
                     return PyMenu(self.service, "/define/models/species/reactor_network_model").execute(*args, **kwargs)
                 def reacting_channel_model(self, *args, **kwargs):
                     """
-                    Enable/Disable the Reacting Channel Model.
+                    Enables/disables the Reacting Channel Model.
                     """
                     return PyMenu(self.service, "/define/models/species/reacting_channel_model").execute(*args, **kwargs)
                 def reacting_channel_model_options(self, *args, **kwargs):
                     """
-                    Set Reacting Channel Model parameters.
+                    Sets Reacting Channel Model parameters.
                     """
                     return PyMenu(self.service, "/define/models/species/reacting_channel_model_options").execute(*args, **kwargs)
                 def combustion_numerics(self, *args, **kwargs):
                     """
-                    Set combustion numerics options.
+                    Applies optimal solver settings automatically to provide a faster solution time. 	This command is available only for transient 	non-premixed and partially premixed combustion 	models.
                     """
                     return PyMenu(self.service, "/define/models/species/combustion_numerics").execute(*args, **kwargs)
 
                 class CHEMKIN_CFD_parameters(metaclass=PyMenuMeta):
                     """
-                    Enter the expert CHEMKIN-CFD parameters menu.
+                    Enters the expert CHEMKIN-CFD parameters menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def basic_options(self, *args, **kwargs):
                         """
-                        Set basic parameter options.
+                        Sets basic parameter options.
                         """
                         return PyMenu(self.service, "/define/models/species/CHEMKIN_CFD_parameters/basic_options").execute(*args, **kwargs)
                     def advanced_options(self, *args, **kwargs):
                         """
-                        Set advanced parameter options.
+                        Sets advanced parameter options.
                         """
                         return PyMenu(self.service, "/define/models/species/CHEMKIN_CFD_parameters/advanced_options").execute(*args, **kwargs)
                     def add_cell_monitor(self, *args, **kwargs):
                         """
-                        Add a monitor cell for debug output.
+                        Monitors cell for debug output.
                         """
                         return PyMenu(self.service, "/define/models/species/CHEMKIN_CFD_parameters/add_cell_monitor").execute(*args, **kwargs)
                     def list_cell_monitors(self, *args, **kwargs):
                         """
-                        List cell monitors.
+                        Lists cell monitors.
                         """
                         return PyMenu(self.service, "/define/models/species/CHEMKIN_CFD_parameters/list_cell_monitors").execute(*args, **kwargs)
                     def delete_cell_monitors(self, *args, **kwargs):
                         """
-                        Delete cell monitors.
+                        Deletes cell monitors.
                         """
                         return PyMenu(self.service, "/define/models/species/CHEMKIN_CFD_parameters/delete_cell_monitors").execute(*args, **kwargs)
 
             class viscous(metaclass=PyMenuMeta):
                 """
-                Enter the viscous model menu.
+                Enters the viscous model menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -16125,32 +16164,32 @@ class main_menu(metaclass=PyMenuMeta):
                     self.transition_model_options = self.__class__.transition_model_options(path + [("transition_model_options", None)], service)
                 def inviscid(self, *args, **kwargs):
                     """
-                    Enable/disable the inviscid flow model.
+                    Enables/disables inviscid flow model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/inviscid").execute(*args, **kwargs)
                 def laminar(self, *args, **kwargs):
                     """
-                    Enable/disable the laminar flow model.
+                    Enables/disables laminar flow model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/laminar").execute(*args, **kwargs)
                 def low_pressure_boundary_slip(self, *args, **kwargs):
                     """
-                    Enable/disable the slip boundary formulation for low-pressure gas systems.
+                    Enables/disables the slip boundary formulation for 	low-pressure gas systems.
                     """
                     return PyMenu(self.service, "/define/models/viscous/low_pressure_boundary_slip").execute(*args, **kwargs)
                 def mixing_length(self, *args, **kwargs):
                     """
-                    Enable/disable the mixing-length (algebraic) turbulence model.
+                    Enables/disables mixing-length (algebraic) turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/mixing_length").execute(*args, **kwargs)
                 def zero_equation_hvac(self, *args, **kwargs):
                     """
-                    Enable/disable the zero-equation HVAC turbulence model.
+                    Enables/disables zero-equation HVAC turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/zero_equation_hvac").execute(*args, **kwargs)
                 def spalart_allmaras(self, *args, **kwargs):
                     """
-                    Enable/disable the Spalart-Allmaras turbulence model.
+                    Enables/disables Spalart-Allmaras turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/spalart_allmaras").execute(*args, **kwargs)
                 def ke1e(self, *args, **kwargs):
@@ -16160,74 +16199,72 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/viscous/ke1e").execute(*args, **kwargs)
                 def sa_enhanced_wall_treatment(self, *args, **kwargs):
                     """
-                    Enable/disable the enhanced wall treatment for the Spalart-Allmaras model.
-                    If disabled, no smooth blending between the viscous sublayer and the
-                    log-law formulation is employed, as was done in versions previous to Fluent14.
+                    Enables/disables the enhanced wall treatment for the Spalart-Allmaras model. If 	disabled, no smooth blending between the viscous 	sublayer and the log-law formulation is employed, as was 	done in versions previous to Fluent 14.
                     """
                     return PyMenu(self.service, "/define/models/viscous/sa_enhanced_wall_treatment").execute(*args, **kwargs)
                 def sa_alternate_prod(self, *args, **kwargs):
                     """
-                    Enable/disable strain/vorticity production in Spalart-Allmaras model.
+                    Enables/disables strain/vorticity production in Spalart-Allmaras model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/sa_alternate_prod").execute(*args, **kwargs)
                 def sa_damping(self, *args, **kwargs):
                     """
-                    Enable/disable the full low-Reynolds number form of Spalart-Allmaras model.
+                    Enables/disables full low-Reynolds number form of Spalart-Allmaras model. This option is only available if your response wasno to sa-enhanced-wall-treatment?. 
                     """
                     return PyMenu(self.service, "/define/models/viscous/sa_damping").execute(*args, **kwargs)
                 def ke_standard(self, *args, **kwargs):
                     """
-                    Enable/disable the standard k-epsilon turbulence model.
+                    Enables/disables the standard -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/ke_standard").execute(*args, **kwargs)
                 def ke_easm(self, *args, **kwargs):
                     """
-                    Enable/disable the EASM k-epsilon turbulence model.
+                    Enables/disables the EASM -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/ke_easm").execute(*args, **kwargs)
                 def ke_realizable(self, *args, **kwargs):
                     """
-                    Enable/disable the realizable k-epsilon turbulence model.
+                    Enables/disables the realizable -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/ke_realizable").execute(*args, **kwargs)
                 def ke_rng(self, *args, **kwargs):
                     """
-                    Enable/disable the RNG k-epsilon turbulence model.
+                    Enables/disables the RNG -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/ke_rng").execute(*args, **kwargs)
                 def rng_differential_visc(self, *args, **kwargs):
                     """
-                    Enable/disable the differential-viscosity model.
+                    Enables/disables the differential-viscosity model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rng_differential_visc").execute(*args, **kwargs)
                 def rng_swirl_model(self, *args, **kwargs):
                     """
-                    Enable/disable swirl corrections for rng-model.
+                    Enables/disables swirl corrections for rng-model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rng_swirl_model").execute(*args, **kwargs)
                 def kw_standard(self, *args, **kwargs):
                     """
-                    Enable/disable the standard k-omega turbulence model.
+                    Enables/disables the standard -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_standard").execute(*args, **kwargs)
                 def kw_easm(self, *args, **kwargs):
                     """
-                    Enable/disable the EASM k-omega turbulence model.
+                    Enables/disables the EASM -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_easm").execute(*args, **kwargs)
                 def kw_bsl(self, *args, **kwargs):
                     """
-                    Enable/disable the BSL k-omega turbulence model.
+                    Enables/disables the baseline (BSL) -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_bsl").execute(*args, **kwargs)
                 def kw_geko(self, *args, **kwargs):
                     """
-                    Enable/disable the GEKO turbulence model.
+                    Enables/disables the generalized -  (GEKO) turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_geko").execute(*args, **kwargs)
                 def kw_sst(self, *args, **kwargs):
                     """
-                    Enable/disable the SST k-omega turbulence model.
+                    Enables/disables the SST -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_sst").execute(*args, **kwargs)
                 def kw_wj_bsl_earsm(self, *args, **kwargs):
@@ -16237,107 +16274,107 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/viscous/kw_wj_bsl_earsm").execute(*args, **kwargs)
                 def kw_low_re_correction(self, *args, **kwargs):
                     """
-                    Enable/disable the k-omega low Re option.
+                    Enables/disables the -  low Re option.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_low_re_correction").execute(*args, **kwargs)
                 def kw_shear_correction(self, *args, **kwargs):
                     """
-                    Enable/disable the k-omega shear-flow correction option.
+                    Enables/disables the -  shear-flow correction option. This 	text command is only available for the standard  -  model and the stress-omega RSM 	model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/kw_shear_correction").execute(*args, **kwargs)
                 def turb_compressibility(self, *args, **kwargs):
                     """
-                    Enable/disable the compressibility correction option.
+                    Enables/disables the compressibility correction option.
                     """
                     return PyMenu(self.service, "/define/models/viscous/turb_compressibility").execute(*args, **kwargs)
                 def k_kl_w(self, *args, **kwargs):
                     """
-                    Enable/disable the k-kl-omega turbulence model.
+                    Enables/disables the k-kl-  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/k_kl_w").execute(*args, **kwargs)
                 def transition_sst(self, *args, **kwargs):
                     """
-                    Enable/disable the transition SST turbulence model.
+                    Enables/disables the transition SST turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/transition_sst").execute(*args, **kwargs)
                 def v2f(self, *args, **kwargs):
                     """
-                    Enable/disable the V2F turbulence model.
+                    Enables/disables V2F turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/v2f").execute(*args, **kwargs)
                 def reynolds_stress_model(self, *args, **kwargs):
                     """
-                    Enable/disable the RSM turbulence model.
+                    Enables/disables the Reynolds-stress turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/reynolds_stress_model").execute(*args, **kwargs)
                 def rsm_solve_tke(self, *args, **kwargs):
                     """
-                    Enable/disable the solution of T.K.E. in RSM model.
+                    Enables/disables the solution of T.K.E. in RSM model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_solve_tke").execute(*args, **kwargs)
                 def rsm_wall_echo(self, *args, **kwargs):
                     """
-                    Enable/disable wall-echo effects in RSM model.
+                    Enables/disables wall-echo effects in RSM model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_wall_echo").execute(*args, **kwargs)
                 def rsm_linear_pressure_strain(self, *args, **kwargs):
                     """
-                    Enable/disable the linear pressure-strain model in RSM.
+                    Enables/disables the linear pressure-strain model in RSM.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_linear_pressure_strain").execute(*args, **kwargs)
                 def rsm_ssg_pressure_strain(self, *args, **kwargs):
                     """
-                    Enable/disable the quadratic pressure-strain model in RSM.
+                    Enables/disables quadratic pressure-strain model in RSM.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_ssg_pressure_strain").execute(*args, **kwargs)
                 def rsm_omega_based(self, *args, **kwargs):
                     """
-                    Enable/disable the Stress-omega model.
+                    Enables/disables the stress-omega Reynolds stress model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_omega_based").execute(*args, **kwargs)
                 def rsm_bsl_based(self, *args, **kwargs):
                     """
-                    Enable/disable the Stress-BSL model.
+                    Enables/disables the stress-BSL Reynolds stress model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_bsl_based").execute(*args, **kwargs)
                 def sas(self, *args, **kwargs):
                     """
-                    Enable/disable the SAS turbulence model.
+                    Enables/disables Scale-Adaptive Simulation (SAS) in combination with the SST  -  turbulence model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/sas").execute(*args, **kwargs)
                 def detached_eddy_simulation(self, *args, **kwargs):
                     """
-                    Enable/disable detached eddy simulation.
+                    Enables/disables detached eddy simulation.
                     """
                     return PyMenu(self.service, "/define/models/viscous/detached_eddy_simulation").execute(*args, **kwargs)
                 def des_limiter_option(self, *args, **kwargs):
                     """
-                    Select DES limiter option.
+                    Selects the DES limiter option (none, F1, F2, Delayed DES, or Improved Delayed 	DES).
                     """
                     return PyMenu(self.service, "/define/models/viscous/des_limiter_option").execute(*args, **kwargs)
                 def large_eddy_simulation(self, *args, **kwargs):
                     """
-                    Enable/disable large eddy simulation.
+                    Enables/disables large eddy simulation.
                     """
                     return PyMenu(self.service, "/define/models/viscous/large_eddy_simulation").execute(*args, **kwargs)
                 def les_subgrid_smagorinsky(self, *args, **kwargs):
                     """
-                    Enable/disable the Smagorinsky-Lilly subgrid-scale model.
+                    Enables/disables the Smagorinsky-Lilly subgrid-scale model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_smagorinsky").execute(*args, **kwargs)
                 def les_dynamic_energy_flux(self, *args, **kwargs):
                     """
-                    Enable/disable the dynamic sub-grid scale turbulent Prandtl Number.
+                    Enables/disables the dynamic sub-grid scale turbulent Prandtl Number.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_dynamic_energy_flux").execute(*args, **kwargs)
                 def les_dynamic_scalar_flux(self, *args, **kwargs):
                     """
-                    Enable/disable the dynamic sub-grid scale turbulent Schmidt Number.
+                    Enables/disables the dynamic sub-grid scale turbulent Schmidt Number.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_dynamic_scalar_flux").execute(*args, **kwargs)
                 def les_subgrid_dynamic_fvar(self, *args, **kwargs):
                     """
-                    Enable/disable the dynamic subgrid-scale mixture fraction variance model.
+                    Enables/disables the dynamic subgrid-scale mixture fraction variance model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_dynamic_fvar").execute(*args, **kwargs)
                 def les_subgrid_rng(self, *args, **kwargs):
@@ -16347,143 +16384,143 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_rng").execute(*args, **kwargs)
                 def les_subgrid_wale(self, *args, **kwargs):
                     """
-                    Enable/disable the WALE subgrid-scale model.
+                    Enables/disables WALE subgrid-scale model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_wale").execute(*args, **kwargs)
                 def les_subgrid_wmles(self, *args, **kwargs):
                     """
-                    Enable/disable the WMLES subgrid-scale model.
+                    Enables/disables the WMLES subgrid-scale model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_wmles").execute(*args, **kwargs)
                 def les_subgrid_wmles_s_minus_omega(self, *args, **kwargs):
                     """
-                    Enable/disable the WMLES S-Omega subgrid-scale model.
+                    Enables/disables the WMLES -  subgrid-scale model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_wmles_s_minus_omega").execute(*args, **kwargs)
                 def les_subgrid_tke(self, *args, **kwargs):
                     """
-                    Enable/disable the kinetic energy transport subgrid-scale model.
+                    Enables/disables kinetic energy transport subgrid-scale model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/les_subgrid_tke").execute(*args, **kwargs)
                 def turb_buoyancy_effects(self, *args, **kwargs):
                     """
-                    Select buoyancy effects on turbulence.
+                    Enables/disables effects of buoyancy on 	turbulence.
                     """
                     return PyMenu(self.service, "/define/models/viscous/turb_buoyancy_effects").execute(*args, **kwargs)
                 def curvature_correction(self, *args, **kwargs):
                     """
-                    Enable/disable the curvature correction.
+                    Enables/disables the curvature correction.
                     """
                     return PyMenu(self.service, "/define/models/viscous/curvature_correction").execute(*args, **kwargs)
                 def curvature_correction_ccurv(self, *args, **kwargs):
                     """
-                    Set the curvature correction coefficient CCURV.
+                    Sets the strength of the curvature correction term. 	The default value is 1. This is available after the curvature-correction? 	option is enabled.
                     """
                     return PyMenu(self.service, "/define/models/viscous/curvature_correction_ccurv").execute(*args, **kwargs)
                 def corner_flow_correction(self, *args, **kwargs):
                     """
-                    Enable/disable the corner flow correction.
+                    Enables/disables the corner flow correction.
                     """
                     return PyMenu(self.service, "/define/models/viscous/corner_flow_correction").execute(*args, **kwargs)
                 def corner_flow_correction_ccorner(self, *args, **kwargs):
                     """
-                    Set the corner flow correction coefficient CCORNER.
+                    Sets the strength of the quadratic term of the corner flow correction. The default 	value is 1. This is available after the corner-flow-correction? 	option is enabled.
                     """
                     return PyMenu(self.service, "/define/models/viscous/corner_flow_correction_ccorner").execute(*args, **kwargs)
                 def rsm_or_earsm_geko_option(self, *args, **kwargs):
                     """
-                    Enable/disable the GEKO option for RSM or EARSM.
+                    Enables/disables the RSM version of the GEKO model.
                     """
                     return PyMenu(self.service, "/define/models/viscous/rsm_or_earsm_geko_option").execute(*args, **kwargs)
                 def add_transition_model(self, *args, **kwargs):
                     """
-                    Enable/disable a transition model to account for transitional effects.
+                    Sets Transition model to account for transitional effects. The default is none, however you can 	select gamma-algebraic or gamma-transport-eqn.  After a transition model has been enabled, you have additional options in the 	submenu transition-model-options.
                     """
                     return PyMenu(self.service, "/define/models/viscous/add_transition_model").execute(*args, **kwargs)
                 def user_defined(self, *args, **kwargs):
                     """
-                    Select user-defined functions to define the turbulent viscosity and the turbulent Prandtl and Schmidt numbers.
+                    Selects user-defined functions to define the turbulent viscosity and the turbulent 	Prandtl and Schmidt numbers.
                     """
                     return PyMenu(self.service, "/define/models/viscous/user_defined").execute(*args, **kwargs)
                 def user_defined_transition(self, *args, **kwargs):
                     """
-                    Set user-defined transition correlations.
+                    Sets user-defined transition correlations.
                     """
                     return PyMenu(self.service, "/define/models/viscous/user_defined_transition").execute(*args, **kwargs)
                 def trans_sst_roughness_correlation(self, *args, **kwargs):
                     """
-                    Enable/disable the Transition-SST roughness correlation option.
+                    Enables/disables the Transition-SST roughness correlation option.
                     """
                     return PyMenu(self.service, "/define/models/viscous/trans_sst_roughness_correlation").execute(*args, **kwargs)
 
                 class near_wall_treatment(metaclass=PyMenuMeta):
                     """
-                    Enter the near wall treatment menu.
+                    Enters the near wall treatment menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def non_equilibrium_wall_fn(self, *args, **kwargs):
                         """
-                        Enable/disable non-equilibrium wall functions.
+                        Enables/disables non-equilibrium wall functions.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/non_equilibrium_wall_fn").execute(*args, **kwargs)
                     def enhanced_wall_treatment(self, *args, **kwargs):
                         """
-                        Enable/disable enhanced wall functions.
+                        Enables/disables enhanced wall functions.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/enhanced_wall_treatment").execute(*args, **kwargs)
                     def menter_lechner(self, *args, **kwargs):
                         """
-                        Enable/disable near wall treatment Menter-Lechner.
+                        Enables/disables the Menter-Lechner near-wall treatment.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/menter_lechner").execute(*args, **kwargs)
                     def scalable_wall_functions(self, *args, **kwargs):
                         """
-                        Enable/disable scalable wall functions.
+                        Enables/disables scalable wall functions.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/scalable_wall_functions").execute(*args, **kwargs)
                     def user_defined_wall_functions(self, *args, **kwargs):
                         """
-                        Enable user defined wall functions.
+                        Enables/disables user-defined wall functions.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/user_defined_wall_functions").execute(*args, **kwargs)
                     def werner_wengle_wall_fn(self, *args, **kwargs):
                         """
-                        Enable/disable Werner-Wengle wall functions.
+                        Enables/disables Werner-Wengle wall functions.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/werner_wengle_wall_fn").execute(*args, **kwargs)
                     def wf_pressure_gradient_effects(self, *args, **kwargs):
                         """
-                        Enable/disable wall function pressure-gradient effects.
+                        Enables/disables wall function pressure- gradient effects.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/wf_pressure_gradient_effects").execute(*args, **kwargs)
                     def wf_thermal_effects(self, *args, **kwargs):
                         """
-                        Enable/disable wall function thermal effects.
+                        Enables/disables wall function thermal effects.
                         """
                         return PyMenu(self.service, "/define/models/viscous/near_wall_treatment/wf_thermal_effects").execute(*args, **kwargs)
 
                 class multiphase_turbulence(metaclass=PyMenuMeta):
                     """
-                    Enter the multiphase turbulence menu.
+                    Enters the multiphase turbulence menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def multiphase_options(self, *args, **kwargs):
                         """
-                        Enable/disable multiphase options.
+                        Enables/disables multiphase options.
                         """
                         return PyMenu(self.service, "/define/models/viscous/multiphase_turbulence/multiphase_options").execute(*args, **kwargs)
                     def turbulence_multiphase_models(self, *args, **kwargs):
                         """
-                        Select the k-epsilon multiphase model.
+                        Selects -  multiphase model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/multiphase_turbulence/turbulence_multiphase_models").execute(*args, **kwargs)
                     def rsm_multiphase_models(self, *args, **kwargs):
                         """
-                        Enable/disable the Reynolds Stress multiphase model.
+                        Selects Reynolds Stress multiphase model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/multiphase_turbulence/rsm_multiphase_models").execute(*args, **kwargs)
                     def subgrid_turbulence_contribution_aiad(self, *args, **kwargs):
@@ -16494,64 +16531,101 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class turbulence_expert(metaclass=PyMenuMeta):
                     """
-                    Enter the turbulence expert menu.
+                    Enters the turbulence expert menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def low_re_ke(self, *args, **kwargs):
                         """
-                        Enable/disable the low-Re k-epsilon turbulence model.
+                        Enables/disables the low-Re -  turbulence model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/low_re_ke").execute(*args, **kwargs)
                     def low_re_ke_index(self, *args, **kwargs):
                         """
-                        Enable/disable the low-Re k-epsilon model version.
+                        Specifies which low-Reynolds-number -  model is to be used. Six models are available: 
+                                          
+                                             
+                                             
+                                             
+                                                
+                                                    Index
+                                                    Model
+                                                
+                                             
+                                             
+                                                
+                                                    0 
+                                                     Abid 
+                                                
+                                                
+                                                    1 
+                                                    Lam-Bremhorst 
+                                                
+                                                
+                                                    2 
+                                                    Launder-Sharma 
+                                                
+                                                
+                                                    3 
+                                                    Yang-Shih 
+                                                
+                                                
+                                                    4 
+                                                    Abe-Kondoh-Nagano 
+                                                
+                                                
+                                                    5 
+                                                    Chang-Hsieh-Chen 
+                                                
+                                             
+                                          
+                                        Contact your Ansys, Inc. technical support engineer for more details.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/low_re_ke_index").execute(*args, **kwargs)
                     def kato_launder_model(self, *args, **kwargs):
                         """
-                        Enable/disable Kato-Launder modification for production.
+                        Enables/disables Kato-Launder modification.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/kato_launder_model").execute(*args, **kwargs)
                     def production_limiter(self, *args, **kwargs):
                         """
-                        Enable/disable the Production Limiter.
+                        Enables/disables Production Limiter modification.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/production_limiter").execute(*args, **kwargs)
                     def kw_vorticity_based_production(self, *args, **kwargs):
                         """
-                        Enable/disable vorticity based production.
+                        Enables/disables vorticity-based production.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/kw_vorticity_based_production").execute(*args, **kwargs)
                     def kw_add_sas(self, *args, **kwargs):
                         """
-                        Enable/disable the SAS-mode with the current turbulence model.
+                        Enables/disables Scale-Adaptive Simulation (SAS) in combination with the currently selected -based URANS turbulence model. This text command is only available for transient cases.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/kw_add_sas").execute(*args, **kwargs)
                     def kw_add_des(self, *args, **kwargs):
                         """
-                        Enable/disable DES-mode with the current turbulence model.
+                        Enables/disables Detached Eddy Simulation (DES) in combination with the currently selected BSL -  model or transition SST model. This text command is only available for transient cases.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/kw_add_des").execute(*args, **kwargs)
                     def turb_add_sbes_sdes(self, *args, **kwargs):
                         """
-                        Enable/disable SBES / SDES with the current turbulence model.
+                        Enables/disables the Stress-Blended Eddy Simulation (SBES) model or Shielded Detached Eddy Simulation (SDES) model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/turb_add_sbes_sdes").execute(*args, **kwargs)
                     def sbes_sdes_hybrid_model(self, *args, **kwargs):
                         """
-                        Select the SBES / SDES hybrid model.
+                        Selects the hybrid model, to specify whether you want to apply the Shielded Detached Eddy Simulation (SDES) model, Stress-Blended Eddy Simulation (SBES), or SBES with a user-defined function.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/sbes_sdes_hybrid_model").execute(*args, **kwargs)
                     def sbes_update_interval_k_omega(self, *args, **kwargs):
                         """
-                        Set an integer value how often the k and omega equations are updated in a transient SBES run.
+                        Sets the number of time steps between updates of the k-ω part of the SBES model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/sbes_update_interval_k_omega").execute(*args, **kwargs)
                     def sbes_sgs_option(self, *args, **kwargs):
                         """
-                        Select SBES subgrid-scale model.
+                        Selects the subgrid-scale model for the LES portion of your Stress-Blended Eddy Simulation (SBES).
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/sbes_sgs_option").execute(*args, **kwargs)
                     def sbes_les_subgrid_dynamic_fvar(self, *args, **kwargs):
@@ -16561,37 +16635,37 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/sbes_les_subgrid_dynamic_fvar").execute(*args, **kwargs)
                     def turbulence_damping(self, *args, **kwargs):
                         """
-                        Enable/disable turbulence damping and set turbulence damping parameters.
+                        Enables/disables turbulence damping and sets turbulence damping parameters.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/turbulence_damping").execute(*args, **kwargs)
                     def rke_cmu_rotation_term(self, *args, **kwargs):
                         """
-                        Enable/disable inclusion of omega in the Cmu definition.
+                        Modifies the  definition for the realizable  -  model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/rke_cmu_rotation_term").execute(*args, **kwargs)
                     def turb_non_newtonian(self, *args, **kwargs):
                         """
-                        Enable/disable turbulence for non-Newtonian fluids.
+                        Enables/disables turbulence for non-Newtonian fluids.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/turb_non_newtonian").execute(*args, **kwargs)
                     def non_newtonian_modification(self, *args, **kwargs):
                         """
-                        Enable/disable non-Newtonian modification for Lam-Bremhorst model.
+                        Enables/disables non-Newtonian modification for Lam-Bremhorst model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/non_newtonian_modification").execute(*args, **kwargs)
                     def turb_pk_compressible(self, *args, **kwargs):
                         """
-                        Enable/disable turbulent production due to compressible divergence.
+                        Enables/disables turbulent production due to compressible divergence.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/turb_pk_compressible").execute(*args, **kwargs)
                     def thermal_p_function(self, *args, **kwargs):
                         """
-                        Enable/disable the Jayatilleke P function.
+                        Enables/disables Jayatilleke P function.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/thermal_p_function").execute(*args, **kwargs)
                     def restore_sst_v61(self, *args, **kwargs):
                         """
-                        Enable/disable SST formulation of v6.1.
+                        Enables/disables SST formulation of v6.1.
                         """
                         return PyMenu(self.service, "/define/models/viscous/turbulence_expert/restore_sst_v61").execute(*args, **kwargs)
                     def stg_set_ti_and_tvr_limiters(self, *args, **kwargs):
@@ -16604,158 +16678,158 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class geko_options(metaclass=PyMenuMeta):
                     """
-                    Enter the GEKO options menu.
+                    Enters the GEKO model menu..
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def wall_distance_free(self, *args, **kwargs):
                         """
-                        Enable/disable wall-distance-free version of GEKO model.
+                        Enables/disables the wall distance free version of the GEKO model.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/wall_distance_free").execute(*args, **kwargs)
                     def csep(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CSEP.
+                        Setscsep, the parameter to optimize flow separation from smooth surfaces.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/csep").execute(*args, **kwargs)
                     def cnw(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CNW.
+                        Setscnw, the parameter to optimize flow in non-equilibrium near wall regions.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cnw").execute(*args, **kwargs)
                     def cmix(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CMIX.
+                        Setscmix, the parameter to optimize strength of mixing in free shear flows.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cmix").execute(*args, **kwargs)
                     def cjet(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CJET.
+                        Setscjet, the parameter to optimize free shear layer mixing (optimize free jets independent of mixing layer).
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cjet").execute(*args, **kwargs)
                     def blending_function(self, *args, **kwargs):
                         """
-                        Set the GEKO model blending function.
+                        Sets the blending function, which deactivatescmix and cjet inside boundary layers.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/blending_function").execute(*args, **kwargs)
                     def creal(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CREAL.
+                        Setscreal, a realizability limiter that ensures positive normal stresses in the entire domain.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/creal").execute(*args, **kwargs)
                     def cnw_sub(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CNW_SUB.
+                        Setscnw_sub, which allows the adjustment of log-layer and cf.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cnw_sub").execute(*args, **kwargs)
                     def cjet_aux(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CJET_AUX.
+                        Setscjet_aux, which allows fine-tuning of the parameter to optimize free jets.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cjet_aux").execute(*args, **kwargs)
                     def cbf_lam(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CBF_LAM.
+                        Setscbf_lam, a part of the blending function and shields the laminar boundary layer.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cbf_lam").execute(*args, **kwargs)
                     def cbf_tur(self, *args, **kwargs):
                         """
-                        Set the GEKO model coefficient CBF_TUR.
+                        Setscbf_tur, a factor for the main blending factor, controlling the thickness of the layer near walls.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/cbf_tur").execute(*args, **kwargs)
                     def geko_defaults(self, *args, **kwargs):
                         """
-                        Set GEKO options to default.
+                        Restores the defaults of all GEKO parameters.
                         """
                         return PyMenu(self.service, "/define/models/viscous/geko_options/geko_defaults").execute(*args, **kwargs)
 
                 class transition_model_options(metaclass=PyMenuMeta):
                     """
-                    Enter the transition model options menu.
+                    Enters the transition model options menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def crossflow_transition(self, *args, **kwargs):
                         """
-                        Enable/disable crossflow transition for the intermittency transition model.
+                        Enables/disables the effects of crossflow instability.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/crossflow_transition").execute(*args, **kwargs)
                     def critical_reynolds_number_correlation(self, *args, **kwargs):
                         """
-                        Set the critical Reynolds number correlation.
+                        Sets the critical Reynolds number correlation.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/critical_reynolds_number_correlation").execute(*args, **kwargs)
                     def clambda_scale(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CLAMBDA_SCALE.
+                        Sets the algebraic transition model coefficient CLAMBDA_SCALE.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/clambda_scale").execute(*args, **kwargs)
                     def capg_hightu(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CAPG_HIGHTU.
+                        Sets the algebraic transition model coefficient CAPG_HIGHTU.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/capg_hightu").execute(*args, **kwargs)
                     def cfpg_hightu(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CFPG_HIGHTU.
+                        Sets the algebraic transition model coefficient CFPG_HIGHTU.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/cfpg_hightu").execute(*args, **kwargs)
                     def capg_lowtu(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CAPG_LOWTU.
+                        Sets the algebraic transition model coefficient CAPG_LOWTU.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/capg_lowtu").execute(*args, **kwargs)
                     def cfpg_lowtu(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CFPG_LOWTU.
+                        Sets the algebraic transition model coefficient CFPG_LOWTU.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/cfpg_lowtu").execute(*args, **kwargs)
                     def ctu_hightu(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CTU_HIGHTU.
+                        Sets the algebraic transition model coefficient CTU_HIGHTU.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/ctu_hightu").execute(*args, **kwargs)
                     def ctu_lowtu(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CTU_LOWTU.
+                        Sets the algebraic transition model coefficient CTU_LOWTU.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/ctu_lowtu").execute(*args, **kwargs)
                     def rec_max(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient REC_MAX.
+                        Sets the algebraic transition model coefficient REC_MAX.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/rec_max").execute(*args, **kwargs)
                     def rec_c1(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient REC_C1.
+                        Sets the algebraic transition model coefficient REC_C1.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/rec_c1").execute(*args, **kwargs)
                     def rec_c2(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient REC_C2.
+                        Sets the algebraic transition model coefficient REC_C2.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/rec_c2").execute(*args, **kwargs)
                     def cbubble_c1(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CBUBBLE_C1.
+                        Sets the algebraic transition model coefficient CBUBBLE_C1.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/cbubble_c1").execute(*args, **kwargs)
                     def cbubble_c2(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient CBUBBLE_C2.
+                        Sets the algebraic transition model coefficient CBUBBLE_C2.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/cbubble_c2").execute(*args, **kwargs)
                     def rv1_switch(self, *args, **kwargs):
                         """
-                        Set the algebraic transition model coefficient RV1_SWITCH.
+                        Sets the algebraic transition model coefficient RV1_SWITCH.
                         """
                         return PyMenu(self.service, "/define/models/viscous/transition_model_options/rv1_switch").execute(*args, **kwargs)
 
             class structure(metaclass=PyMenuMeta):
                 """
-                Enter the structure model menu.
+                Enters the structure model menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -16764,12 +16838,12 @@ class main_menu(metaclass=PyMenuMeta):
                     self.expert = self.__class__.expert(path + [("expert", None)], service)
                 def structure_off(self, *args, **kwargs):
                     """
-                    Disable the structural model.
+                    Disables the structural model.
                     """
                     return PyMenu(self.service, "/define/models/structure/structure_off").execute(*args, **kwargs)
                 def linear_elasticity(self, *args, **kwargs):
                     """
-                    Enable the linear elasticity model.
+                    Enables the linear elasticity model.
                     """
                     return PyMenu(self.service, "/define/models/structure/linear_elasticity").execute(*args, **kwargs)
                 def nonlinear_elasticity(self, *args, **kwargs):
@@ -16785,14 +16859,14 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class controls(metaclass=PyMenuMeta):
                     """
-                    Enter the structure controls menu.
+                    Enters the structure controls menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def numerical_damping_factor(self, *args, **kwargs):
                         """
-                        Set structure damping parameters.
+                        Sets the damping factor for the structural model (that is, the amplitude decay factor  in  in the Theory Guide).
                         """
                         return PyMenu(self.service, "/define/models/structure/controls/numerical_damping_factor").execute(*args, **kwargs)
                     def enhanced_strain(self, *args, **kwargs):
@@ -16807,25 +16881,25 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/structure/controls/unsteady_damping_rayleigh").execute(*args, **kwargs)
                     def amg_stabilization(self, *args, **kwargs):
                         """
-                        Set the AMG stabilization method for structural solver.
+                        Sets the algebraic multigrid (AMG) stabilization method for the structural model calculations.
                         """
                         return PyMenu(self.service, "/define/models/structure/controls/amg_stabilization").execute(*args, **kwargs)
                     def max_iter(self, *args, **kwargs):
                         """
-                        Set the maximum number of iterations for structural solver.
+                        Sets the maximum number of iterations for the structural model calculations.
                         """
                         return PyMenu(self.service, "/define/models/structure/controls/max_iter").execute(*args, **kwargs)
 
                 class expert(metaclass=PyMenuMeta):
                     """
-                    Enter the structure expert menu.
+                    Enters the structure expert menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def include_pop_in_fsi_force(self, *args, **kwargs):
                         """
-                        Enable inclusion of operating p into fsi force.
+                        Enables/disables the inclusion of operating pressure into the fluid-structure interaction force.
                         """
                         return PyMenu(self.service, "/define/models/structure/expert/include_pop_in_fsi_force").execute(*args, **kwargs)
                     def steady_2way_fsi(self, *args, **kwargs):
@@ -16835,18 +16909,18 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/models/structure/expert/steady_2way_fsi").execute(*args, **kwargs)
                     def include_viscous_fsi_force(self, *args, **kwargs):
                         """
-                        Enable inclusion of viscous fsi force.
+                        Enables/disables the inclusion of a viscous fluid-structure interaction force.
                         """
                         return PyMenu(self.service, "/define/models/structure/expert/include_viscous_fsi_force").execute(*args, **kwargs)
                     def explicit_fsi_force(self, *args, **kwargs):
                         """
-                        Enable explicit fsi force.
+                        Enables/disables an explicit fluid-structure interaction force.
                         """
                         return PyMenu(self.service, "/define/models/structure/expert/explicit_fsi_force").execute(*args, **kwargs)
 
             class heat_exchanger(metaclass=PyMenuMeta):
                 """
-                Enter the heat exchanger menu.
+                Enters the heat exchanger menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -16856,97 +16930,97 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class macro_model(metaclass=PyMenuMeta):
                     """
-                    Enter the heat macro-model menu.
+                    Enters the heat macro-model menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def heat_exchanger(self, *args, **kwargs):
                         """
-                        Enable/disable heat-exchanger model.
+                        Enables/disables heat-exchanger model.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/heat_exchanger").execute(*args, **kwargs)
                     def heat_exchanger_model(self, *args, **kwargs):
                         """
-                        Define heat-exchanger core model.
+                        Defines heat-exchanger core model.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/heat_exchanger_model").execute(*args, **kwargs)
                     def heat_exchanger_zone(self, *args, **kwargs):
                         """
-                        Define heat-exchanger zone.
+                        Specifies the zone that represents the heat exchanger, the dimensions of the heat exchanger, the macro grid, and the coolant direction and properties.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/heat_exchanger_zone").execute(*args, **kwargs)
                     def heat_exchanger_group(self, *args, **kwargs):
                         """
-                        Define heat-exchanger group.
+                        Defines heat-exchanger group.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/heat_exchanger_group").execute(*args, **kwargs)
                     def delete_heat_exchanger_group(self, *args, **kwargs):
                         """
-                        Delete heat-exchanger group.
+                        Deletes heat-exchanger group.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/delete_heat_exchanger_group").execute(*args, **kwargs)
                     def heat_exchanger_report(self, *args, **kwargs):
                         """
-                        Report heat-exchanger information.
+                        Reports the computed values of total heat rejection, outlet temperature, and inlet temperature for a specified heat-exchanger core.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/heat_exchanger_report").execute(*args, **kwargs)
                     def heat_exchanger_macro_report(self, *args, **kwargs):
                         """
-                        Report heat-exchanger information for all the macros.
+                        Reports the computed values of heat rejection, outlet temperature, and inlet temperature for the macroscopic cells (macros) in a heat exchanger.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/heat_exchanger_macro_report").execute(*args, **kwargs)
                     def plot_NTU(self, *args, **kwargs):
                         """
-                        Plot NTU vs primary mass flow rate for each auxiliary mass flow rate.
+                        Plots NTU vs. primary mass flow rate for each auxiliary mass flow rate.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/plot_NTU").execute(*args, **kwargs)
                     def write_NTU(self, *args, **kwargs):
                         """
-                        Write NTU vs primary mass flow rate for each auxiliary mass flow rate.
+                        Writes NTU vs. primary mass flow rate for each auxiliary mass flow rate.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/macro_model/write_NTU").execute(*args, **kwargs)
 
                 class dual_cell_model(metaclass=PyMenuMeta):
                     """
-                    Enter the dual cell model menu.
+                    Enters the dual cell model menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def heat_exchanger(self, *args, **kwargs):
                         """
-                        Enable/disable the dual cell heat-exchanger model.
+                        Enables/disables the dual cell heat-exchanger model.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/heat_exchanger").execute(*args, **kwargs)
                     def add_heat_exchanger(self, *args, **kwargs):
                         """
-                        Add heat-exchanger.
+                        Adds heat-exchanger.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/add_heat_exchanger").execute(*args, **kwargs)
                     def modify_heat_exchanger(self, *args, **kwargs):
                         """
-                        Modify heat-exchanger.
+                        Modifies heat-exchanger.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/modify_heat_exchanger").execute(*args, **kwargs)
                     def delete_heat_exchanger(self, *args, **kwargs):
                         """
-                        Delete heat-exchanger.
+                        Deletes heat-exchanger.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/delete_heat_exchanger").execute(*args, **kwargs)
                     def plot_NTU(self, *args, **kwargs):
                         """
-                        Plot NTU vs primary mass flow rate for each auxiliary mass flow rate.
+                        Plots NTU vs. primary mass flow rate for each auxiliary mass flow rate.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/plot_NTU").execute(*args, **kwargs)
                     def write_NTU(self, *args, **kwargs):
                         """
-                        Write NTU vs primary mass flow rate for each auxiliary mass flow rate.
+                        Writes NTU vs. primary mass flow rate for each auxiliary mass flow rate.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/write_NTU").execute(*args, **kwargs)
                     def alternative_formulation(self, *args, **kwargs):
                         """
-                        Enable/disable alternative formulation for heat transfer calculations.
+                        Enables/disables alternative formulation for heat transfer calculations.
                         """
                         return PyMenu(self.service, "/define/models/heat_exchanger/dual_cell_model/alternative_formulation").execute(*args, **kwargs)
 
@@ -17077,7 +17151,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class overset_interfaces(metaclass=PyMenuMeta):
             """
-            Enter the overset-interfaces menu.
+            Enters the overset interfaces menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -17087,77 +17161,77 @@ class main_menu(metaclass=PyMenuMeta):
                 self.adapt = self.__class__.adapt(path + [("adapt", None)], service)
             def create(self, *args, **kwargs):
                 """
-                Create an overset interface.
+                Creates an overset interface.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/create").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an overset interface.
+                Deletes an overset interface.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/delete").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all overset interfaces.
+                Deletes all overset interfaces in the domain.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/delete_all").execute(*args, **kwargs)
             def intersect(self, *args, **kwargs):
                 """
-                Intersect an overset interface.
+                Executes the hole cutting of an overset interface and establishes the domain connectivity. This text command is only available when define/overset-interfaces/options/expert? is set to yes.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/intersect").execute(*args, **kwargs)
             def intersect_all(self, *args, **kwargs):
                 """
-                Intersect all overset interfaces.
+                Executes hole cutting for all overset interfaces in the domain. This text command is only available when define/overset-interfaces/options/expert? is set to yes.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/intersect_all").execute(*args, **kwargs)
             def clear(self, *args, **kwargs):
                 """
-                Clear an overset interface.
+                Clears the domain connectivity of an overset interface. This text command is only available when define/overset-interfaces/options/expert? is set to yes.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/clear").execute(*args, **kwargs)
             def clear_all(self, *args, **kwargs):
                 """
-                Clear all overset interfaces.
+                Clears the domain connectivity of all overset interfaces. This text command is only available when define/overset-interfaces/options/expert? is set to yes.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/clear_all").execute(*args, **kwargs)
             def grid_priorities(self, *args, **kwargs):
                 """
-                Edit grid priorities for an overset interface.
+                Allows you to specify grid priorities on background and component meshes, used in the overlap minimization of an overset interface.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/grid_priorities").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List all overset interfaces.
+                Lists information about the overset interfaces. The output depends on the overset verbosity setting.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/list").execute(*args, **kwargs)
             def mark_cells(self, *args, **kwargs):
                 """
-                Mark overset interface related cell types.
+                Marks the specified overset cells (solve, receptor, donor, orphan, or dead) and fills registers based on the markings. Display the marked cells via the text command define/overset-interfaces/display-cells.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/mark_cells").execute(*args, **kwargs)
             def display_cells(self, *args, **kwargs):
                 """
-                Display the marked overset cells.
+                Displays the overset cells marked using the text command define/overset-interfaces/mark-cells. 
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/display_cells").execute(*args, **kwargs)
             def mark_cell_change(self, *args, **kwargs):
                 """
-                Mark overset interface related cell type change.
+                Marks cells that have undergone a specified overset cell type change (from solve,receptor, or dead to any other type) in the last time step. Adaption registers are automatically filled based on these markings. This text command is only available for unsteady simulations and if define/overset-interfaces/options/expert? is set to yes.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/mark_cell_change").execute(*args, **kwargs)
             def set_mark_bounds(self, *args, **kwargs):
                 """
-                Set bounds (center, radius) for overset cell marking.
+                Allows you to set bounds so that any marking of cells is performed within a spherical region based on a specified origin and radius. This can be useful when diagnosing a local problem on a large mesh. This text command is only available if define/overset-interfaces/options/expert? is set to yes. After defining the bounds, you can then mark the cells using the define/overset-interfaces/mark-cell-change or define/overset-interfaces/mark-cells text command. To disable the bounds, enter a radius of 0.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/set_mark_bounds").execute(*args, **kwargs)
             def check(self, *args, **kwargs):
                 """
-                Check all overset interfaces.
+                Checks the integrity of the overset interfaces. Reports orphan cells and errors in the domain connectivity.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/check").execute(*args, **kwargs)
             def debug_hole_cut(self, *args, **kwargs):
                 """
-                Debugging tool for overset hole cutting.
+                Debugging tool to troubleshoot hole cutting of overset interfaces. This text command is only available when define/overset-interfaces/options/expert? is set to yes.
                 """
                 return PyMenu(self.service, "/define/overset_interfaces/debug_hole_cut").execute(*args, **kwargs)
             def fill_dci(self, *args, **kwargs):
@@ -17208,100 +17282,100 @@ class main_menu(metaclass=PyMenuMeta):
 
             class options(metaclass=PyMenuMeta):
                 """
-                Enter the overset interface options menu.
+                Enters the overset interface options menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def expert(self, *args, **kwargs):
                     """
-                    Enable additional overset options and tools.
+                    Enables / disables overset-related expert tools.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/expert").execute(*args, **kwargs)
                 def render_receptor_cells(self, *args, **kwargs):
                     """
-                    Set the option to include receptor cells in postprocessing.
+                    Allows you to enable visualization of receptor cells in contour and mesh 	displays.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/render_receptor_cells").execute(*args, **kwargs)
                 def partial_cut_faces(self, *args, **kwargs):
                     """
-                    Enable enhanced hole cutting where cut faces partially overlap.
+                    Enables/disables enhanced hole cutting, where partially overlapping cut faces are 	decomposed into overlapping and non-overlapping 	fractions, and only the non-overlapping fractions 	participate in the hole cutting. This can help avoid the 	situation where a region or cell zone is erroneously 	identified as dead because of leakage during flood 	filling, even though it has overlapping boundaries that 	match well. When this text command is disabled, the 	partially overlapping faces are entirely protected from 	cutting.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/partial_cut_faces").execute(*args, **kwargs)
                 def auto_create(self, *args, **kwargs):
                     """
-                    Enable automatic creation of default overset interface.
+                    Enables the automatic creation of a default overset interface during 	initialization or mesh motion update.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/auto_create").execute(*args, **kwargs)
                 def minimize_overlap(self, *args, **kwargs):
                     """
-                    Enable overlap minimization for overset interfaces.
+                    Allows you to disable overlap minimization during hole cutting.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/minimize_overlap").execute(*args, **kwargs)
                 def overlap_boundaries(self, *args, **kwargs):
                     """
-                    Enable overset topologies with overlap boundaries.
+                    Allows you to disable the detection of overlapping boundaries during hole cutting, 	in order to reduce the computational expense for cases 	that do not include such boundaries. When enabled, this 	text command also allows you to specify which boundary 	zones should be considered when detecting overlapping 	boundaries; this can be helpful when the default hole 	cutting process fails.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/overlap_boundaries").execute(*args, **kwargs)
                 def mesh_interfaces(self, *args, **kwargs):
                     """
-                    Allow mesh interfaces inside overset cell zones.
+                    Allows the inclusion of non-conformal mesh interfaces 	inside overset cell zones, as long as the mesh 	interfaces do not spatially overlap with the cells where 	the overset interfaces lie.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/mesh_interfaces").execute(*args, **kwargs)
                 def node_connected_donors(self, *args, **kwargs):
                     """
-                    Enable node or face connected donor cells.
+                    Allows you to switch between face or node connected donor cells. This text command is only 	available when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/node_connected_donors").execute(*args, **kwargs)
                 def donor_priority_method(self, *args, **kwargs):
                     """
-                    Set method used to evaludate the cell donor priority.
+                    Allows you to specify whether the cell donor priority used in the overlap 	minimization of an overset interface is inversely proportional to either the 	cell size or the distance to the nearest boundary.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/donor_priority_method").execute(*args, **kwargs)
                 def solve_island_removal(self, *args, **kwargs):
                     """
-                    Set method used to control the removal of isolated patches of solve cells.
+                    Sets the method used to control the removal of isolated patches of solve cells. This text 	command is only available when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/solve_island_removal").execute(*args, **kwargs)
                 def transient_caching(self, *args, **kwargs):
                     """
-                    Set options to control caching of entities in transient overset simulations.
+                    Sets the options to control caching of entities in transient overset simulations. This text 	command is only available when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/transient_caching").execute(*args, **kwargs)
                 def modified_donor_search(self, *args, **kwargs):
                     """
-                    Enable modified and more extensive donor search.
+                    Enables / disables modified donor search parameters. When enabled, these parameters result in 	a more extended donor search, which can be helpful for 	meshes with orphans. This text command is only available 	when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/modified_donor_search").execute(*args, **kwargs)
                 def modified_hole_cutting(self, *args, **kwargs):
                     """
-                    Enable modified hole cutting parameters.
+                    Enables / disables modified hole cutting parameters. When enabled, the parameters used can 	help avoid dead cell zones that result from a hole 	cutting failure. This text command is only available 	when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/modified_hole_cutting").execute(*args, **kwargs)
                 def dead_cell_update(self, *args, **kwargs):
                     """
-                    Enable dead cell update in moving or dynamic mesh simulations.
+                    Enables/disables the updating of dead cells during the solution process, which may 	be helpful for some moving and dynamic mesh simulations 	(though at the cost of solver performance). You can 	enter the number of layers of dead cells adjacent to the 	receptor cells that you want updated, or enter -1 to request that all dead 	cells are updated. This text command is only available 	for transient simulations when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/dead_cell_update").execute(*args, **kwargs)
                 def update_before_case_write(self, *args, **kwargs):
                     """
-                    Enable update of overset interfaces before writing case file (CFF format only).
+                    Enables/disables the updating of the overset interfaces before writing a case file in the 	Common Fluids Format (CFF). This text command is only 	available when define/overset-interfaces/options/expert? 	is set to yes.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/update_before_case_write").execute(*args, **kwargs)
                 def parallel(self, *args, **kwargs):
                     """
-                    Set options to control running overset in parallel.
+                    Allows you to select the algorithm used for overset parallel processing. You can 	select from the default cell exchange model or the local 	cell zone replication model; the cell exchange model 	should require less memory and may result in faster 	calculations.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/parallel").execute(*args, **kwargs)
                 def verbosity(self, *args, **kwargs):
                     """
-                    Set overset mesh reporting verbosity.
+                    Specifies the level of detail printed in the console about overset 	interfaces.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/options/verbosity").execute(*args, **kwargs)
 
             class cut_control(metaclass=PyMenuMeta):
                 """
-                Enter the overset hole cut control menu.
+                Enters the overset hole cut control menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -17309,28 +17383,28 @@ class main_menu(metaclass=PyMenuMeta):
                     self.cut_seeds = self.__class__.cut_seeds(path + [("cut_seeds", None)], service)
                 def add(self, *args, **kwargs):
                     """
-                    Add hole cut control for a boundary zone.
+                    Adds a hole cut control, so that a boundary zone does 	not cut specified cell zones.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/cut_control/add").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete hole cut control for a boundary zone.
+                    Deletes the hole cut control for a boundary 	zone.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/cut_control/delete").execute(*args, **kwargs)
                 def delete_all(self, *args, **kwargs):
                     """
-                    Delete the hole cut controls for all boundary zones.
+                    Deletes the hole cut controls for all boundary 	zones.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/cut_control/delete_all").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List the defined hole cut controls.
+                    Lists the defined hole cut controls.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/cut_control/list").execute(*args, **kwargs)
 
                 class cut_seeds(metaclass=PyMenuMeta):
                     """
-                    Enter the overset hole cut seed menu.
+                    Enters the overset hole cut seeds menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -17357,13 +17431,13 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/overset_interfaces/cut_control/cut_seeds/list").execute(*args, **kwargs)
                     def cut_seeds_for_all_component_zones(self, *args, **kwargs):
                         """
-                        Enable that all component zones get a cut seed.
+                        Specifies whether all component zones get cut seeds, which cut pilot holes into the overlapping meshes that will then be enlarged during overlap minimization.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/cut_control/cut_seeds/cut_seeds_for_all_component_zones").execute(*args, **kwargs)
 
             class adapt(metaclass=PyMenuMeta):
                 """
-                Enter the overset adaption menu.
+                Enters the overset adaption menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -17371,35 +17445,35 @@ class main_menu(metaclass=PyMenuMeta):
                     self.set = self.__class__.set(path + [("set", None)], service)
                 def mark_adaption(self, *args, **kwargs):
                     """
-                    Mark cells for overset orphan adaption and donor-receptor size differences.
+                    Marks cells to identify those that can be adapted in 	order to improve your overset mesh.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/adapt/mark_adaption").execute(*args, **kwargs)
                 def adapt_mesh(self, *args, **kwargs):
                     """
-                    Mark and adapt the mesh to remove orphan cells and large donor-receptor cell size differences.
+                    Marks and adapts the mesh to improve your overset 	mesh.
                     """
                     return PyMenu(self.service, "/define/overset_interfaces/adapt/adapt_mesh").execute(*args, **kwargs)
 
                 class set(metaclass=PyMenuMeta):
                     """
-                    Enter the overset adaption set menu.
+                    Enters the overset adaption set menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def mark_orphans(self, *args, **kwargs):
                         """
-                        Enable the option to adapt for orphan reduction.
+                        Enables/disables the option to adapt for orphan reduction.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/mark_orphans").execute(*args, **kwargs)
                     def mark_fixed_orphans(self, *args, **kwargs):
                         """
-                        Enable the option to adapt for orphans which were removed by accepting neighbor donors.
+                        Enables/disables the option to also adapt based on cells that are not actual orphans because they were fixed by accepting neighbor donors. This option is only applied if define/overset-interfaces/adapt/set/mark-orphans? is enabled.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/mark_fixed_orphans").execute(*args, **kwargs)
                     def mark_size(self, *args, **kwargs):
                         """
-                        Enable the option to adapt for donor-receptor cell size differences.
+                        Enables/disables the option to adapt based on donor-receptor cell size differences.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/mark_size").execute(*args, **kwargs)
                     def mark_gaps(self, *args, **kwargs):
@@ -17409,7 +17483,7 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/mark_gaps").execute(*args, **kwargs)
                     def mark_coarsening(self, *args, **kwargs):
                         """
-                        Enable the option to coarsen the mesh during overset adaption.
+                        Enables/disables the option to coarsen the mesh if mesh refinement is no longer needed. This option is enabled by default.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/mark_coarsening").execute(*args, **kwargs)
                     def anisotropic(self, *args, **kwargs):
@@ -17424,65 +17498,65 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/automatic").execute(*args, **kwargs)
                     def length_ratio_max(self, *args, **kwargs):
                         """
-                        Set the length scale ratio threshold used to determine which cells are marked for adaption based on donor-receptor cell size differences.
+                        Sets the length scale ratio threshold used to determine which cells are marked for adaption based on donor-receptor cell size differences.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/length_ratio_max").execute(*args, **kwargs)
                     def buffer_layers(self, *args, **kwargs):
                         """
-                        Set the number of cell layers marked in addition to the cells marked for orphan adaption.
+                        Sets the number of cell layers marked in addition to the cells marked for orphan adaption.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/buffer_layers").execute(*args, **kwargs)
                     def adaption_sweeps(self, *args, **kwargs):
                         """
-                        Set the number of adaption sweeps per overset adaption.
+                        Sets the number of rounds of adaption applied during each adaption cycle.
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/adaption_sweeps").execute(*args, **kwargs)
                     def maximum_refinement_level(self, *args, **kwargs):
                         """
-                        Set the maximum level of refinement in overset adaption.
+                        Sets the maximum level of refinement during overset adaption, in conjunction with the value set using the mesh/adapt/set/maximum-refinement-level text command (the larger of the two values is used).
                         """
                         return PyMenu(self.service, "/define/overset_interfaces/adapt/set/maximum_refinement_level").execute(*args, **kwargs)
 
         class operating_conditions(metaclass=PyMenuMeta):
             """
-            Enter the define operating conditions menu.
+            Enters the define operating conditions menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def gravity(self, *args, **kwargs):
                 """
-                Set gravitational acceleration.
+                Sets gravitational acceleration.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/gravity").execute(*args, **kwargs)
             def gravity_mrf_rotation(self, *args, **kwargs):
                 """
-                Enable/disable rotation of gravity vector in moving reference frame simulations.
+                Enables/disables rotation of gravity vector in moving reference frame simulations. If enabled, the gravity vector will rotate with respect to the moving reference frame such that the direction of gravity in global coordinates remains fixed.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/gravity_mrf_rotation").execute(*args, **kwargs)
             def set_state(self, *args, **kwargs):
                 """
-                Select state for real gas EOS subcritical condition.
+                Selects state for real gas EOS subcritical condition.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/set_state").execute(*args, **kwargs)
             def operating_pressure(self, *args, **kwargs):
                 """
-                Set the operating pressure.
+                Sets the operating pressure.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/operating_pressure").execute(*args, **kwargs)
             def reference_pressure_location(self, *args, **kwargs):
                 """
-                Set coordinates of reference pressure.
+                Sets a location that determines the reference pressure cell or cells (depending on the selected reference pressure method). The pressure value in such cells can be used to adjust the gauge pressure field after each iteration to keep it from floating.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/reference_pressure_location").execute(*args, **kwargs)
             def reference_pressure_method(self, *args, **kwargs):
                 """
-                Choosing reference pressure type.
+                Specifies the method used for adjusting the gauge pressure field after each iteration to keep it from floating: the method can assume that all of the cell zones are connected by internal boundary zones (such as interior zones), or can account for connected and disconnected cell zones. Such adjustment is only allowed for incompressible flows, and will be limited partially or entirely by the presence of a pressure boundary.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/reference_pressure_method").execute(*args, **kwargs)
             def used_ref_pressure_location(self, *args, **kwargs):
                 """
-                See the actual coordinates of reference pressure used.
+                Prints the coordinates of the reference pressure cell or cells (depending on the selected reference pressure method). The pressure value in such cells can be used to adjust the gauge pressure field after each iteration to keep it from floating.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/used_ref_pressure_location").execute(*args, **kwargs)
             def operating_density(self, *args, **kwargs):
@@ -17492,18 +17566,18 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/operating_conditions/operating_density").execute(*args, **kwargs)
             def use_inlet_temperature_for_operating_density(self, *args, **kwargs):
                 """
-                Use Inlet Temperature to calculate Opearating Density.
+                Uses inlet temperature to calculate operating density.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/use_inlet_temperature_for_operating_density").execute(*args, **kwargs)
             def operating_temperature(self, *args, **kwargs):
                 """
-                Set the operating temperature for Boussinesq.
+                Sets the operating temperature for Boussinesq.
                 """
                 return PyMenu(self.service, "/define/operating_conditions/operating_temperature").execute(*args, **kwargs)
 
         class parameters(metaclass=PyMenuMeta):
             """
-            Enter the parameters menu.
+            Enters the parameters menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -17513,13 +17587,13 @@ class main_menu(metaclass=PyMenuMeta):
                 self.list_parameters = self.__class__.list_parameters(path + [("list_parameters", None)], service)
             def enable_in_TUI(self, *args, **kwargs):
                 """
-                Enable/disable parameters in the text user interface.
+                Enables/disables parameters in the text user interface.
                 """
                 return PyMenu(self.service, "/define/parameters/enable_in_TUI").execute(*args, **kwargs)
 
             class input_parameters(metaclass=PyMenuMeta):
                 """
-                Enter the input-parameters menu.
+                Enters the input-parameters menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -17527,12 +17601,12 @@ class main_menu(metaclass=PyMenuMeta):
                     self.advance = self.__class__.advance(path + [("advance", None)], service)
                 def edit(self, *args, **kwargs):
                     """
-                    Edit an input parameter.
+                    Edits an input parameter.
                     """
                     return PyMenu(self.service, "/define/parameters/input_parameters/edit").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete an input parameter.
+                    Deletes an input parameter.
                     """
                     return PyMenu(self.service, "/define/parameters/input_parameters/delete").execute(*args, **kwargs)
 
@@ -17561,49 +17635,49 @@ class main_menu(metaclass=PyMenuMeta):
 
             class output_parameters(metaclass=PyMenuMeta):
                 """
-                Enter the output-parameters menu.
+                Enters the output-parameters menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def create(self, *args, **kwargs):
                     """
-                    Create an output parameter.
+                    Creates an output parameter.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/create").execute(*args, **kwargs)
                 def edit(self, *args, **kwargs):
                     """
-                    Edit an output parameter.
+                    Edits an output parameter.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/edit").execute(*args, **kwargs)
                 def rename(self, *args, **kwargs):
                     """
-                    Rename an output parameter.
+                    Renames an output parameter.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/rename").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete an output parameter.
+                    Deletes an output parameter.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/delete").execute(*args, **kwargs)
                 def print_to_console(self, *args, **kwargs):
                     """
-                    Print parameter value to console.
+                    Displays parameter value in the console.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/print_to_console").execute(*args, **kwargs)
                 def print_all_to_console(self, *args, **kwargs):
                     """
-                    Print all parameter values to console.
+                    Displays all parameter values in the console.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/print_all_to_console").execute(*args, **kwargs)
                 def write_to_file(self, *args, **kwargs):
                     """
-                    Write parameter value to file.
+                    Writes parameter value to file.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/write_to_file").execute(*args, **kwargs)
                 def write_all_to_file(self, *args, **kwargs):
                     """
-                    Write all parameter values to file.
+                    Writes all parameter values to file.
                     """
                     return PyMenu(self.service, "/define/parameters/output_parameters/write_all_to_file").execute(*args, **kwargs)
 
@@ -17627,25 +17701,25 @@ class main_menu(metaclass=PyMenuMeta):
 
         class periodic_conditions(metaclass=PyMenuMeta):
             """
-            Enter the periodic conditions menu.
+            Enters the periodic conditions menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def massflow_rate_specification(self, *args, **kwargs):
                 """
-                Enable/disable specification of mass flow rate at the periodic boundary.
+                Enables/disables specification of mass flow rate at the periodic boundary.
                 """
                 return PyMenu(self.service, "/define/periodic_conditions/massflow_rate_specification").execute(*args, **kwargs)
             def pressure_gradient_specification(self, *args, **kwargs):
                 """
-                Enable/disable specification of pressure gradient at the periodic boundary.
+                Enables/disables specification of pressure gradient at the periodic boundary.
                 """
                 return PyMenu(self.service, "/define/periodic_conditions/pressure_gradient_specification").execute(*args, **kwargs)
 
         class turbo_model(metaclass=PyMenuMeta):
             """
-            Turbo features menu.
+            Enters the turbo menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -17655,7 +17729,7 @@ class main_menu(metaclass=PyMenuMeta):
                 self.blade_flutter_harmonics = self.__class__.blade_flutter_harmonics(path + [("blade_flutter_harmonics", None)], service)
             def enable_turbo_model(self, *args, **kwargs):
                 """
-                Enable/disable turbo model menu.
+                Enables/disables turbo model menu.
                 """
                 return PyMenu(self.service, "/define/turbo_model/enable_turbo_model").execute(*args, **kwargs)
             def separate_nonoverlapping_interface_boundary(self, *args, **kwargs):
@@ -17665,12 +17739,12 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/turbo_model/separate_nonoverlapping_interface_boundary").execute(*args, **kwargs)
             def turbo_create(self, *args, **kwargs):
                 """
-                Create a general turbo interface.
+                Creates a general turbo interface.
                 """
                 return PyMenu(self.service, "/define/turbo_model/turbo_create").execute(*args, **kwargs)
             def number_of_blades_in_row(self, *args, **kwargs):
                 """
-                Define the total number of blades in blade flutter row.
+                Defines the number of blades in the turbo machine, used for calculating interblade phase angle.
                 """
                 return PyMenu(self.service, "/define/turbo_model/number_of_blades_in_row").execute(*args, **kwargs)
             def create_turbomachine_description(self, *args, **kwargs):
@@ -17741,40 +17815,40 @@ class main_menu(metaclass=PyMenuMeta):
 
             class turbo_topology(metaclass=PyMenuMeta):
                 """
-                Define turbo topology.
+                Enters the turbo topology menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def define_topology(self, *args, **kwargs):
                     """
-                    Define a turbo topology.
+                    Defines a turbo topology.
                     """
                     return PyMenu(self.service, "/define/turbo_model/turbo_topology/define_topology").execute(*args, **kwargs)
                 def mesh_method(self, *args, **kwargs):
                     """
-                    Set turbo structured mesh generation method.
+                    Sets turbo structured mesh generation method.
                     """
                     return PyMenu(self.service, "/define/turbo_model/turbo_topology/mesh_method").execute(*args, **kwargs)
                 def search_method(self, *args, **kwargs):
                     """
-                    Set search method for a topology.
+                    Sets search method for a topology.
                     """
                     return PyMenu(self.service, "/define/turbo_model/turbo_topology/search_method").execute(*args, **kwargs)
                 def projection_method(self, *args, **kwargs):
                     """
-                    Set 2D projection method.
+                    Sets 2D projection method.
                     """
                     return PyMenu(self.service, "/define/turbo_model/turbo_topology/projection_method").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete a turbo topology.
+                    Deletes a previously created turbo topology.
                     """
                     return PyMenu(self.service, "/define/turbo_model/turbo_topology/delete").execute(*args, **kwargs)
 
             class general_turbo_interface_settings(metaclass=PyMenuMeta):
                 """
-                Set General Turbo Interface options.
+                Enters the General Turbo Interface options menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -17786,7 +17860,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class mixing_plane_model_settings(metaclass=PyMenuMeta):
                     """
-                    Set the mixing plane model settings.
+                    Defines settings for the mixing plane model.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -17804,12 +17878,12 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/define/turbo_model/general_turbo_interface_settings/mixing_plane_model_settings/mixing_set_constraint").execute(*args, **kwargs)
                     def bands_type(self, *args, **kwargs):
                         """
-                        To set the mixing plane bands type.
+                        Specifies the averaging bands for mixing as fixed or variable width.
                         """
                         return PyMenu(self.service, "/define/turbo_model/general_turbo_interface_settings/mixing_plane_model_settings/bands_type").execute(*args, **kwargs)
                     def number_of_inner_iterations(self, *args, **kwargs):
                         """
-                        To set the number of iteration used for the scaling.
+                        Sets the number of iterations used in averaging.
                         """
                         return PyMenu(self.service, "/define/turbo_model/general_turbo_interface_settings/mixing_plane_model_settings/number_of_inner_iterations").execute(*args, **kwargs)
                     def list_mixing_planes(self, *args, **kwargs):
@@ -17820,7 +17894,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class number_of_bands(metaclass=PyMenuMeta):
                         """
-                        Set the maximum number of bands to be used for mixing.
+                        Sets the number of bands to be used for mixing.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -17838,27 +17912,27 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class pitch_scale_model_settings(metaclass=PyMenuMeta):
                     """
-                    Set the pitch scale model settings.
+                    Defines settings for the pitch-scale model.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def scale_mflux(self, *args, **kwargs):
                         """
-                        Scale mass flux to improve the conservation.
+                        Scales mass flux to improve conservation.
                         """
                         return PyMenu(self.service, "/define/turbo_model/general_turbo_interface_settings/pitch_scale_model_settings/scale_mflux").execute(*args, **kwargs)
 
                 class no_pitch_scale_model_settings(metaclass=PyMenuMeta):
                     """
-                    Set the no pitch scale model settings.
+                    Defines settings for the no pitch-scale model.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def scale_mflux(self, *args, **kwargs):
                         """
-                        Scale mass flux to improve the conservation.
+                        Scales mass flux to improve conservation.
                         """
                         return PyMenu(self.service, "/define/turbo_model/general_turbo_interface_settings/no_pitch_scale_model_settings/scale_mflux").execute(*args, **kwargs)
 
@@ -17882,7 +17956,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class blade_flutter_harmonics(metaclass=PyMenuMeta):
                 """
-                Enter the blade flutter harmonics menu.
+                Enters the blade flutter harmonics options menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -17910,7 +17984,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class phases(metaclass=PyMenuMeta):
             """
-            Enter the phases menu.
+            Enters the phases menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -17920,7 +17994,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class set_domain_properties(metaclass=PyMenuMeta):
                 """
-                Enter the menu to set domain properties.
+                Enters the menu to set phase domain properties.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -17928,18 +18002,18 @@ class main_menu(metaclass=PyMenuMeta):
                     self.interaction_domain = self.__class__.interaction_domain(path + [("interaction_domain", None)], service)
                 def change_phases_names(self, *args, **kwargs):
                     """
-                    Change names for all defined phases?.
+                    Allows you to change the names of all the phases in your simulation.
                     """
                     return PyMenu(self.service, "/define/phases/set_domain_properties/change_phases_names").execute(*args, **kwargs)
                 def phase_domains(self, *args, **kwargs):
                     """
-                    Enter the menu to select a specific phase domain.
+                    Enters the menu to select a specific phase.
                     """
                     return PyMenu(self.service, "/define/phases/set_domain_properties/phase_domains").execute(*args, **kwargs)
 
                 class interaction_domain(metaclass=PyMenuMeta):
                     """
-                    Enter the menu to set the interaction domain properties.
+                    Enters the menu to set the interaction domain 	properties.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -17952,7 +18026,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class forces(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set interfacial forces related models.
+                        Enters the menu to set interfacial forces models.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -17965,7 +18039,7 @@ class main_menu(metaclass=PyMenuMeta):
                             self.virtual_mass = self.__class__.virtual_mass(path + [("virtual_mass", None)], service)
                         def drag(self, *args, **kwargs):
                             """
-                            Specify the drag function for each pair of phases. It also enables drag modification and allow specifying the drag factor.
+                            Specifies the drag function, drag modification, and drag factor for each pair of phases. This command is available only with the Eulerian and Mixture multiphase models.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/drag").execute(*args, **kwargs)
                         def heat_coeff(self, *args, **kwargs):
@@ -17995,27 +18069,27 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/reactions").execute(*args, **kwargs)
                         def restitution(self, *args, **kwargs):
                             """
-                            Specify the restitution coefficient for collisions between each pair of granular phases and for collisions between particles of the same granular phase.
+                            Specifies the restitution coefficient for collisions between each pair of granular phases, and for collisions between particles of the same granular phase. This command is available only for multiphase flows with two or more granular phases.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/restitution").execute(*args, **kwargs)
                         def slip_velocity(self, *args, **kwargs):
                             """
-                            Specify the slip velocity function for each secondary phase with respect to the primary phase.
+                            Specifies the slip velocity function for each secondary phase with respect to the primary phase. This command is available only for the Mixture multiphase model.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/slip_velocity").execute(*args, **kwargs)
                         def turbulence_interaction(self, *args, **kwargs):
                             """
-                            Specify the turbulence interaction model for each primary-secondary phase pair.
+                            Specifies the turbulence interaction model for each primary-secondary phase pair. This command is available only with the Eulerian multiphase model.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/turbulence_interaction").execute(*args, **kwargs)
                         def turbulent_dispersion(self, *args, **kwargs):
                             """
-                            Specify the turbulent dispersion model for each primary-secondary phase pair.
+                            Specifies the turbulent dispersion model for each primary-secondary phase pair. This command is available only with the Eulerian multiphase model.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/turbulent_dispersion").execute(*args, **kwargs)
                         def wall_lubrication(self, *args, **kwargs):
                             """
-                            Specify the wall lubrication model for each primary-secondary phase pair.
+                            Specifies the wall lubrication model for each primary-secondary phase pair. This command is available only with the Eulerian multiphase model.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/wall_lubrication").execute(*args, **kwargs)
 
@@ -18300,7 +18374,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                         class lift(metaclass=PyMenuMeta):
                             """
-                            Enter the menu to set lift models.
+                            Enters the menu to set the lift force. This item is available only with the Eulerian multiphase model.
                             """
                             def __init__(self, path, service):
                                 self.path = path
@@ -18327,7 +18401,7 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/lift/jump_adhesion").execute(*args, **kwargs)
                             def lift(self, *args, **kwargs):
                                 """
-                                .
+                                Specifies the lift function for each pair of phases. 
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/lift/lift").execute(*args, **kwargs)
                             def lift_montoya(self, *args, **kwargs):
@@ -18337,7 +18411,7 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/lift/lift_montoya").execute(*args, **kwargs)
                             def lift_shaver_podowski(self, *args, **kwargs):
                                 """
-                                Include the Shaver-Podowski correction for Lift.
+                                Enables/disables the Shaver-Podowski lift correction. 
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/lift/lift_shaver_podowski").execute(*args, **kwargs)
                             def sfc_model_type(self, *args, **kwargs):
@@ -18393,7 +18467,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                         class surface_tension(metaclass=PyMenuMeta):
                             """
-                            Enter the menu to set surface tension models.
+                            Enters the menu to set surface tension models.
                             """
                             def __init__(self, path, service):
                                 self.path = path
@@ -18415,7 +18489,7 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/interphase_visc_disp").execute(*args, **kwargs)
                             def jump_adhesion(self, *args, **kwargs):
                                 """
-                                Enable the treatment of the contact angle specification at the porous jump boundary?.
+                                Enables/disables the treatment of the contact angle specification at the porous jump boundary. This command is available only for the VOF multiphase model with the continuum surface stress model option and when sfc-modeling? is enabled.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/jump_adhesion").execute(*args, **kwargs)
                             def lift(self, *args, **kwargs):
@@ -18435,17 +18509,17 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/lift_shaver_podowski").execute(*args, **kwargs)
                             def sfc_model_type(self, *args, **kwargs):
                                 """
-                                Select the surface tension model.
+                                Selects the surface tension model. You can choose between the continuum surface force and continuum surface stress methods. This item is available only when sfc-modeling? is enabled.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/sfc_model_type").execute(*args, **kwargs)
                             def sfc_modeling(self, *args, **kwargs):
                                 """
-                                Include the effects of surface tension along the fluid-fluid interface?.
+                                Allows you to include the effects of surface tension along the fluid-fluid interface. This option is only available for the VOF and Eulerian multiphase models.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/sfc_modeling").execute(*args, **kwargs)
                             def sfc_tension_coeff(self, *args, **kwargs):
                                 """
-                                Specify the surface tension coefficient for each pair of phases.
+                                Specifies the surface tension coefficient for each pair of phases.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/sfc_tension_coeff").execute(*args, **kwargs)
                             def slope_limiter(self, *args, **kwargs):
@@ -18480,13 +18554,13 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/vmass_implicit").execute(*args, **kwargs)
                             def wall_adhesion(self, *args, **kwargs):
                                 """
-                                Enable the specification for a wall adhesion angle?.
+                                Enables/disables the specification for a wall adhesion angle. This item is available only whensfc-modeling? is enabled.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/surface_tension/wall_adhesion").execute(*args, **kwargs)
 
                         class virtual_mass(metaclass=PyMenuMeta):
                             """
-                            Enter the menu to set virtual mass models.
+                            Enters the menu to set virtual mass models.
                             """
                             def __init__(self, path, service):
                                 self.path = path
@@ -18548,7 +18622,7 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/virtual_mass/slope_limiter").execute(*args, **kwargs)
                             def virtual_mass(self, *args, **kwargs):
                                 """
-                                Include the virtual mass force that is present when a secondary phase accelerates relative to the primary phase?.
+                                Allows you to include the virtual mass force effect that occurs when a secondary phase accelerates relative to the primary phase. This command is available only with the Eulerian multiphase model.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/virtual_mass/virtual_mass").execute(*args, **kwargs)
                             def visc_disp_factor(self, *args, **kwargs):
@@ -18558,17 +18632,17 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/virtual_mass/visc_disp_factor").execute(*args, **kwargs)
                             def vmass_coeff(self, *args, **kwargs):
                                 """
-                                Specify the virtual mass coefficient for each pair of phases.
+                                Specifies the virtual mass coefficient for each pair of phases. This option is available only ifvirtual-mass? is enabled.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/virtual_mass/vmass_coeff").execute(*args, **kwargs)
                             def vmass_implicit_options(self, *args, **kwargs):
                                 """
-                                Select the virtual mass implicit option.
+                                Specifies what form of the implicit method to use (default, option-2, or option-3). default models the entire virtual mass force while option-2 and option-3 model truncated expressions which may further improve convergence. This option is available only if vmass-implicit? is enabled.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/virtual_mass/vmass_implicit_options").execute(*args, **kwargs)
                             def vmass_implicit(self, *args, **kwargs):
                                 """
-                                Enable the implicit method for the virtual mass force?.
+                                Enables/disables the implicit method for the virtual mass force. This option can improve convergence in some cases. This option is available only if virtual-mass? is enabled. 
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/forces/virtual_mass/vmass_implicit").execute(*args, **kwargs)
                             def wall_adhesion(self, *args, **kwargs):
@@ -18579,7 +18653,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class heat_mass_reactions(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set heat, mass-transfer, or reaction related models.
+                        Enters the menu to set heat, mass-transfer, and reaction models.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -18597,7 +18671,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/heat_mass_reactions/drag").execute(*args, **kwargs)
                         def heat_coeff(self, *args, **kwargs):
                             """
-                            Specify the heat transfer coefficient function between each pair of phases.
+                            Species the heat transfer coefficient function between each pair of phases (constant-htc, nusselt-number, ranz-marshall, hughmark, tomiyama, fixed-to-sat-temp, two-resistance, or user-defined). This command is enable only with the Eulerian multiphase model.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/heat_mass_reactions/heat_coeff").execute(*args, **kwargs)
                         def interfacial_area(self, *args, **kwargs):
@@ -18607,7 +18681,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/heat_mass_reactions/interfacial_area").execute(*args, **kwargs)
                         def mass_transfer(self, *args, **kwargs):
                             """
-                            Specify the mass transfer mechanisms.
+                            Sets the mass transfer mechanisms.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/heat_mass_reactions/mass_transfer").execute(*args, **kwargs)
                         def model_transition(self, *args, **kwargs):
@@ -18617,7 +18691,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/heat_mass_reactions/model_transition").execute(*args, **kwargs)
                         def reactions(self, *args, **kwargs):
                             """
-                            Define multiple heterogeneous reactions and stoichiometry.
+                            Allows you to define multiple heterogeneous reactions and stoichiometry. This option is available only with the species model.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/heat_mass_reactions/reactions").execute(*args, **kwargs)
                         def restitution(self, *args, **kwargs):
@@ -18648,7 +18722,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                         class cavitation(metaclass=PyMenuMeta):
                             """
-                            Enter the menu to set cavitation models.
+                            Enters the menu to set cavitation models. This option is available only for the Mixture multiphase model with the Singhal-et-al cavitation model enabled via solve/set/advanced/singhal-et-al-cavitation-model.
                             """
                             def __init__(self, path, service):
                                 self.path = path
@@ -19206,7 +19280,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class interfacial_area(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set interfacial area models.
+                        Enters the menu to set interfacial area models. This menu is available only for the Mixture and Eulerian multiphase models.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -19229,7 +19303,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/interfacial_area/heat_coeff").execute(*args, **kwargs)
                         def interfacial_area(self, *args, **kwargs):
                             """
-                            Set the interfacial area parameters for each pair of phases.
+                            Specifies the interfacial area model for each pair of phases.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/interfacial_area/interfacial_area").execute(*args, **kwargs)
                         def mass_transfer(self, *args, **kwargs):
@@ -19833,7 +19907,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class model_transition(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set model transition mechanisms.
+                        Enters the menu to set model transition mechanisms.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -19866,7 +19940,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/model_transition/mass_transfer").execute(*args, **kwargs)
                         def model_transition(self, *args, **kwargs):
                             """
-                            Set the model transition mechanism.
+                            Sets the VOF-to-DPM model transition mechanism.
                             """
                             return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/model_transition/model_transition").execute(*args, **kwargs)
                         def reactions(self, *args, **kwargs):
@@ -20460,7 +20534,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class numerics(metaclass=PyMenuMeta):
                         """
-                        Enter the menu to set numerics models.
+                        Enters the menu to set numerics models. This menu is available for multiphase models with the sharp-dispersed and phase localized discretization interface modeling options (set in define/models/multiphase/interface-modeling-options).
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -20622,7 +20696,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                         class interphase_discretization(metaclass=PyMenuMeta):
                             """
-                            Enter the menu to set interphase discretization models.
+                            Enters the menu to set interphase discretization models.
                             """
                             def __init__(self, path, service):
                                 self.path = path
@@ -20634,7 +20708,7 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/numerics/interphase_discretization/cavitation").execute(*args, **kwargs)
                             def interphase_discr(self, *args, **kwargs):
                                 """
-                                Enable the phase localized compressive discretization scheme where the degree of diffusion/sharpness is controlled through the value of the slope limiters?.
+                                Enables/disables phase localized compressive scheme.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/numerics/interphase_discretization/interphase_discr").execute(*args, **kwargs)
                             def interphase_visc_disp(self, *args, **kwargs):
@@ -20679,7 +20753,7 @@ class main_menu(metaclass=PyMenuMeta):
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/numerics/interphase_discretization/sfc_tension_coeff").execute(*args, **kwargs)
                             def slope_limiter(self, *args, **kwargs):
                                 """
-                                Specify the slope limiter to set a specific discretization scheme. 0: first order upwind, 1: second order reconstruction bounded by the global minimum/maximum of the volume fraction, 2: compressive. Value between 0 and 2: blended scheme.
+                                Specifies the slope limiter to set a specific discretization scheme for each phase pair. A value of 0 corresponds to first order upwind, a value of 1 corresponds to second order upwind, a value of 2 applies the compressive scheme, and a value between 0 and 2 corresponds to a blended scheme. This option is available only wheninterphase-discr? is enabled.
                                 """
                                 return PyMenu(self.service, "/define/phases/set_domain_properties/interaction_domain/numerics/interphase_discretization/slope_limiter").execute(*args, **kwargs)
                             def virtual_mass(self, *args, **kwargs):
@@ -21087,24 +21161,24 @@ class main_menu(metaclass=PyMenuMeta):
 
             class iac_expert(metaclass=PyMenuMeta):
                 """
-                Enter the IAC expert setting menu.
+                Enters the IAC expert setting menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def ishii_kim_model(self, *args, **kwargs):
                     """
-                    Set ik model coefficients.
+                    Sets Ishii-Kim model coefficients.
                     """
                     return PyMenu(self.service, "/define/phases/iac_expert/ishii_kim_model").execute(*args, **kwargs)
                 def hibiki_ishii_model(self, *args, **kwargs):
                     """
-                    Set hi model coefficients.
+                    Sets Hibiki-Ishii model coefficients.
                     """
                     return PyMenu(self.service, "/define/phases/iac_expert/hibiki_ishii_model").execute(*args, **kwargs)
                 def yao_morel_model(self, *args, **kwargs):
                     """
-                    Set ym model coefficients.
+                    Sets Yao-Morel model coefficients.
                     """
                     return PyMenu(self.service, "/define/phases/iac_expert/yao_morel_model").execute(*args, **kwargs)
                 def iac_pseudo_time_step(self, *args, **kwargs):
@@ -21115,14 +21189,14 @@ class main_menu(metaclass=PyMenuMeta):
 
         class profiles(metaclass=PyMenuMeta):
             """
-            Enter the boundary profiles menu.
+            Enters the boundary profiles menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def display_profile_surface(self, *args, **kwargs):
                 """
-                Display a profile.
+                Display the profile as a surface (this option is only available if the specified profile contains node-connectivity data).
                 """
                 return PyMenu(self.service, "/define/profiles/display_profile_surface").execute(*args, **kwargs)
             def display_profile_point_cloud_data(self, *args, **kwargs):
@@ -21152,42 +21226,42 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/profiles/list_profile_parameters").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete a profile.
+                Deletes a profile.
                 """
                 return PyMenu(self.service, "/define/profiles/delete").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all boundary-profiles.
+                Deletes all boundary-profiles.
                 """
                 return PyMenu(self.service, "/define/profiles/delete_all").execute(*args, **kwargs)
             def list_profiles(self, *args, **kwargs):
                 """
-                List all profiles.
+                Lists all profiles.
                 """
                 return PyMenu(self.service, "/define/profiles/list_profiles").execute(*args, **kwargs)
             def list_profile_fields(self, *args, **kwargs):
                 """
-                List the fields of a particular profile.
+                Lists the fields of a particular profile.
                 """
                 return PyMenu(self.service, "/define/profiles/list_profile_fields").execute(*args, **kwargs)
             def interpolation_method(self, *args, **kwargs):
                 """
-                Choose the method for interpolation of profiles.
+                Chooses the method for interpolation of profiles.
                 """
                 return PyMenu(self.service, "/define/profiles/interpolation_method").execute(*args, **kwargs)
             def morphing(self, *args, **kwargs):
                 """
-                Enable/disable profile morphing options in Orient Profile panel.
+                Enables/disables profile morphing options in Orient Profile panel.
                 """
                 return PyMenu(self.service, "/define/profiles/morphing").execute(*args, **kwargs)
             def update_interval(self, *args, **kwargs):
                 """
-                Set interval between updates of dynamic profiles.
+                Sets interval between updates of dynamic profiles.
                 """
                 return PyMenu(self.service, "/define/profiles/update_interval").execute(*args, **kwargs)
             def link_profile_to_reference_frame(self, *args, **kwargs):
                 """
-                Link profile to a reference frame.
+                Attaches a profile to a reference frame so that the profile will rotate according to the reference frame.
                 """
                 return PyMenu(self.service, "/define/profiles/link_profile_to_reference_frame").execute(*args, **kwargs)
             def replicate_profile(self, *args, **kwargs):
@@ -21197,13 +21271,13 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/profiles/replicate_profile").execute(*args, **kwargs)
             def orient_profile(self, *args, **kwargs):
                 """
-                Orient Profile.
+                Re-orient an existing profile.
                 """
                 return PyMenu(self.service, "/define/profiles/orient_profile").execute(*args, **kwargs)
 
         class solution_strategy(metaclass=PyMenuMeta):
             """
-            Enter the automatic initialization and case modification strategy menu.
+            Enters the automatic initialization and case modification strategy menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -21211,12 +21285,12 @@ class main_menu(metaclass=PyMenuMeta):
                 self.automatic_case_modification = self.__class__.automatic_case_modification(path + [("automatic_case_modification", None)], service)
             def enable_strategy(self, *args, **kwargs):
                 """
-                Specify whether automatic initialization and case modification should be enabled.
+                Enables/disables automatic initialization and case modification.
                 """
                 return PyMenu(self.service, "/define/solution_strategy/enable_strategy").execute(*args, **kwargs)
             def execute_strategy(self, *args, **kwargs):
                 """
-                Execute the automatic initialization and case modification strategy defined at present.
+                Executes the currently defined automatic initialization and case modification strategy.
                 """
                 return PyMenu(self.service, "/define/solution_strategy/execute_strategy").execute(*args, **kwargs)
             def add_edit_modification(self, *args, **kwargs):
@@ -21256,53 +21330,53 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/solution_strategy/export_modifications").execute(*args, **kwargs)
             def continue_strategy_execution(self, *args, **kwargs):
                 """
-                Continue execution of the automatic initialization and case modification strategy defined at present.
+                Continues execution of the currently defined automatic initialization and case modification strategy.
                 """
                 return PyMenu(self.service, "/define/solution_strategy/continue_strategy_execution").execute(*args, **kwargs)
             def automatic_initialization(self, *args, **kwargs):
                 """
-                Define how the case is to be initialized automatically.
+                Defines how the case is to be automatically initialized.
                 """
                 return PyMenu(self.service, "/define/solution_strategy/automatic_initialization").execute(*args, **kwargs)
 
             class automatic_case_modification(metaclass=PyMenuMeta):
                 """
-                Define how the case is to be modified as the solution progresses.
+                Enters the automatic case modification menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def before_init_modification(self, *args, **kwargs):
                     """
-                    Specify modification to be performed before initialization.
+                    Specifies modification to be performed before initialization.
                     """
                     return PyMenu(self.service, "/define/solution_strategy/automatic_case_modification/before_init_modification").execute(*args, **kwargs)
                 def original_settings(self, *args, **kwargs):
                     """
-                    Specify modification to be performed after initialization to restore to original settings.
+                    Specifies modification to be performed after initialization to restore to original 	settings.
                     """
                     return PyMenu(self.service, "/define/solution_strategy/automatic_case_modification/original_settings").execute(*args, **kwargs)
                 def modifications(self, *args, **kwargs):
                     """
-                    Specify modifications to be performed during solution.
+                    Specifies modifications to be performed during solution.
                     """
                     return PyMenu(self.service, "/define/solution_strategy/automatic_case_modification/modifications").execute(*args, **kwargs)
 
         class reference_frames(metaclass=PyMenuMeta):
             """
-            Manage reference frames.
+            Enters the reference frames menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Creates a new reference frame.
                 """
                 return PyMenu(self.service, "/define/reference_frames/add").execute(*args, **kwargs)
             def display(self, *args, **kwargs):
                 """
-                Display Reference Frame.
+                Displays the reference frame you specify.
                 """
                 return PyMenu(self.service, "/define/reference_frames/display").execute(*args, **kwargs)
             def display_edit(self, *args, **kwargs):
@@ -21312,33 +21386,33 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/reference_frames/display_edit").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Allows you to edit a reference frame.
                 """
                 return PyMenu(self.service, "/define/reference_frames/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Deletes the reference frame you specify.
                 """
                 return PyMenu(self.service, "/define/reference_frames/delete").execute(*args, **kwargs)
             def hide(self, *args, **kwargs):
                 """
-                Hide Reference Frame.
+                Removes the specified reference frame from the graphics window.
                 """
                 return PyMenu(self.service, "/define/reference_frames/hide").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists all of the reference frames.
                 """
                 return PyMenu(self.service, "/define/reference_frames/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the properties of the reference frame you specify.
                 """
                 return PyMenu(self.service, "/define/reference_frames/list_properties").execute(*args, **kwargs)
 
         class user_defined(metaclass=PyMenuMeta):
             """
-            Enter the user-defined functions and scalars menu.
+            Enters the user-defined functions and scalars menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -21351,32 +21425,32 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/user_defined/auto_compile_compiled_udfs").execute(*args, **kwargs)
             def compiled_functions(self, *args, **kwargs):
                 """
-                Open user-defined function library.
+                Opens user-defined function library.
                 """
                 return PyMenu(self.service, "/define/user_defined/compiled_functions").execute(*args, **kwargs)
             def use_built_in_compiler(self, *args, **kwargs):
                 """
-                Enable/disable the use of the built-in compiler.
+                Enables/disables the use of a built-in compiler (Clang) when the define/user-defined/compiled-functions text command is used. This text command / compiler is available for Windows only, and is provided as part of the ANSYS Fluent installation. It is recommended that you enable this text command when the compiler you installed on your machine is an older version that is no longer supported. Note that the built-in compiler is used automatically if Fluent determines that you have not installed Microsoft Visual Studio or Clang on your computer, whether this text command is enabled or not.
                 """
                 return PyMenu(self.service, "/define/user_defined/use_built_in_compiler").execute(*args, **kwargs)
             def interpreted_functions(self, *args, **kwargs):
                 """
-                Load interpreted user-defined functions.
+                Loads interpreted user-defined functions.
                 """
                 return PyMenu(self.service, "/define/user_defined/interpreted_functions").execute(*args, **kwargs)
             def function_hooks(self, *args, **kwargs):
                 """
-                Hook up user-defined functions.
+                Hooks up user-defined functions.
                 """
                 return PyMenu(self.service, "/define/user_defined/function_hooks").execute(*args, **kwargs)
             def execute_on_demand(self, *args, **kwargs):
                 """
-                Execute UDFs on demand.
+                Executes UDFs on demand.
                 """
                 return PyMenu(self.service, "/define/user_defined/execute_on_demand").execute(*args, **kwargs)
             def user_defined_memory(self, *args, **kwargs):
                 """
-                Allocate user-defined memory.
+                Allocates user-defined memory.
                 """
                 return PyMenu(self.service, "/define/user_defined/user_defined_memory").execute(*args, **kwargs)
             def user_defined_node_memory(self, *args, **kwargs):
@@ -21391,7 +21465,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/user_defined/use_contributed_cpp").execute(*args, **kwargs)
             def fan_model(self, *args, **kwargs):
                 """
-                Configure user-defined fan model.
+                Configures user-defined fan model.
                 """
                 return PyMenu(self.service, "/define/user_defined/fan_model").execute(*args, **kwargs)
             def one_D_coupling(self, *args, **kwargs):
@@ -21401,7 +21475,7 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/define/user_defined/one_D_coupling").execute(*args, **kwargs)
             def user_defined_scalars(self, *args, **kwargs):
                 """
-                Define user-defined scalars.
+                Defines user-defined scalars.
                 """
                 return PyMenu(self.service, "/define/user_defined/user_defined_scalars").execute(*args, **kwargs)
             def enable_udf_on_gpu(self, *args, **kwargs):
@@ -21417,92 +21491,92 @@ class main_menu(metaclass=PyMenuMeta):
 
             class real_gas_models(metaclass=PyMenuMeta):
                 """
-                Enable/configure real gas model.
+                Enters the real-gas menu to enable/configure real gas model.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def nist_real_gas_model(self, *args, **kwargs):
                     """
-                    Load NIST real gas library.
+                    Loads the NIST real-gas library.
                     """
                     return PyMenu(self.service, "/define/user_defined/real_gas_models/nist_real_gas_model").execute(*args, **kwargs)
                 def nist_multispecies_real_gas_model(self, *args, **kwargs):
                     """
-                    Load NIST real gas library.
+                    Loads the NIST real-gas library.
                     """
                     return PyMenu(self.service, "/define/user_defined/real_gas_models/nist_multispecies_real_gas_model").execute(*args, **kwargs)
                 def set_state(self, *args, **kwargs):
                     """
-                    Select state for NIST real gas model.
+                    Selects the state for NIST real gas model.
                     """
                     return PyMenu(self.service, "/define/user_defined/real_gas_models/set_state").execute(*args, **kwargs)
                 def nist_settings(self, *args, **kwargs):
                     """
-                    Select refprop library.
+                    Specifies the name and the location for the REFPROP library and fluid files.
                     """
                     return PyMenu(self.service, "/define/user_defined/real_gas_models/nist_settings").execute(*args, **kwargs)
                 def user_defined_real_gas_model(self, *args, **kwargs):
                     """
-                    Load user-defined real gas library.
+                    Loads the user-defined real-gas library.
                     """
                     return PyMenu(self.service, "/define/user_defined/real_gas_models/user_defined_real_gas_model").execute(*args, **kwargs)
                 def user_defined_multispecies_real_gas_model(self, *args, **kwargs):
                     """
-                    Load user-defined multispecies real gas library.
+                    Loads a user-defined multispecies real-gas library.
                     """
                     return PyMenu(self.service, "/define/user_defined/real_gas_models/user_defined_multispecies_real_gas_model").execute(*args, **kwargs)
 
         class named_expressions(metaclass=PyMenuMeta):
             """
-            Manage named expressions.
+            Enters the named expressions menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Creates a new named expression.
                 """
                 return PyMenu(self.service, "/define/named_expressions/add").execute(*args, **kwargs)
             def compute(self, *args, **kwargs):
                 """
-                Compute expression.
+                Computes and prints the value of an expression. This is only available for expressions that evaluate to a single value.
                 """
                 return PyMenu(self.service, "/define/named_expressions/compute").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
                 """
-                Copy expression.
+                Allows you to copy an existing named expression.
                 """
                 return PyMenu(self.service, "/define/named_expressions/copy").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Allows you to edit the definition of a named expression.
                 """
                 return PyMenu(self.service, "/define/named_expressions/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Allows you to delete a named expression, as long as it is not in use.
                 """
                 return PyMenu(self.service, "/define/named_expressions/delete").execute(*args, **kwargs)
             def export_to_tsv(self, *args, **kwargs):
                 """
-                Export expressions.
+                Export one or more named expressions to a file in TSV format.
                 """
                 return PyMenu(self.service, "/define/named_expressions/export_to_tsv").execute(*args, **kwargs)
             def import_from_tsv(self, *args, **kwargs):
                 """
-                Export expressions.
+                Import one or more named expressions saved in TSV format.
                 """
                 return PyMenu(self.service, "/define/named_expressions/import_from_tsv").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists all of the currently defined named expressions.
                 """
                 return PyMenu(self.service, "/define/named_expressions/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the definition of a named expression.
                 """
                 return PyMenu(self.service, "/define/named_expressions/list_properties").execute(*args, **kwargs)
 
@@ -21578,12 +21652,12 @@ class main_menu(metaclass=PyMenuMeta):
             self.interpolate = self.__class__.interpolate(path + [("interpolate", None)], service)
             self.fsi = self.__class__.fsi(path + [("fsi", None)], service)
             self.parametric_project = self.__class__.parametric_project(path + [("parametric_project", None)], service)
-            self.project_beta = self.__class__.project_beta(path + [("project[beta]", None)], service)
+            self.project = self.__class__.project(path + [("project[beta]", None)], service)
             self.table_manager = self.__class__.table_manager(path + [("table_manager", None)], service)
             self.solution_files = self.__class__.solution_files(path + [("solution_files", None)], service)
         def single_precision_coordinates(self, *args, **kwargs):
             """
-            Indicate whether to write nodal coordinates in single precision.
+            Specifies whether the nodal coordinates should be written in single precision (rather than the default double precision). This text command is only available in the single-precision version of ANSYS Fluent.
             """
             return PyMenu(self.service, "/file/single_precision_coordinates").execute(*args, **kwargs)
         def binary_legacy_files(self, *args, **kwargs):
@@ -21598,12 +21672,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/cff_files").execute(*args, **kwargs)
         def async_optimize(self, *args, **kwargs):
             """
-            Choose whether to optimize file IO using scratch disks and asynchronous operations.
+            Chooses whether to optimize file I/O using scratch disks and asynchronous operations.
             """
             return PyMenu(self.service, "/file/async_optimize").execute(*args, **kwargs)
         def write_pdat(self, *args, **kwargs):
             """
-            Indicate whether to attempt to save pdat files.
+            Enables / disables the attempt to save .pdat files. Note that this text command is no longer supported.
             """
             return PyMenu(self.service, "/file/write_pdat").execute(*args, **kwargs)
         def confirm_overwrite(self, *args, **kwargs):
@@ -21613,22 +21687,22 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/confirm_overwrite").execute(*args, **kwargs)
         def define_macro(self, *args, **kwargs):
             """
-            Save input to a named macro.
+            Saves input to a named macro.
             """
             return PyMenu(self.service, "/file/define_macro").execute(*args, **kwargs)
         def export_to_cfd_post(self, *args, **kwargs):
             """
-            Export to CFD-Post compabitble data file.
+            Exports data files that are compatible with CFD-Post and EnSight (that is, .cdat and .cst files) and opens CFD-Post, if desired.
             """
             return PyMenu(self.service, "/file/export_to_cfd_post").execute(*args, **kwargs)
         def execute_macro(self, *args, **kwargs):
             """
-            Run a previously defined macro.
+            Runs a previously defined macro.
             """
             return PyMenu(self.service, "/file/execute_macro").execute(*args, **kwargs)
         def read_settings(self, *args, **kwargs):
             """
-            Read and set boundary conditions from specified file.
+            Reads and sets boundary conditions from a specified file.
             """
             return PyMenu(self.service, "/file/read_settings").execute(*args, **kwargs)
         def read_case(self, *args, **kwargs):
@@ -21647,12 +21721,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/read_case_light").execute(*args, **kwargs)
         def read_case_data(self, *args, **kwargs):
             """
-            Read a case and a data file.
+            Reads a case and a data file.
             """
             return PyMenu(self.service, "/file/read_case_data").execute(*args, **kwargs)
         def read_data(self, *args, **kwargs):
             """
-            Read a data file.
+            Reads a data file.
             """
             return PyMenu(self.service, "/file/read_data").execute(*args, **kwargs)
         def read_case_info(self, *args, **kwargs):
@@ -21662,12 +21736,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/read_case_info").execute(*args, **kwargs)
         def read_field_functions(self, *args, **kwargs):
             """
-            Read custom field-function definitions from a file.
+            Reads custom field function definitions from a file.
             """
             return PyMenu(self.service, "/file/read_field_functions").execute(*args, **kwargs)
         def read_injections(self, *args, **kwargs):
             """
-            Read all DPM injections from a file.
+            Reads all DPM injections from a file.
             """
             return PyMenu(self.service, "/file/read_injections").execute(*args, **kwargs)
         def read_journal(self, *args, **kwargs):
@@ -21677,67 +21751,67 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/read_journal").execute(*args, **kwargs)
         def read_macros(self, *args, **kwargs):
             """
-            Read macro definitions from a file.
+            Reads macro definitions from a file.
             """
             return PyMenu(self.service, "/file/read_macros").execute(*args, **kwargs)
         def read_profile(self, *args, **kwargs):
             """
-            Read boundary profile data (\*.prof, \*.csv). Default is \*.prof.
+            Reads boundary profile data.
             """
             return PyMenu(self.service, "/file/read_profile").execute(*args, **kwargs)
         def read_transient_table(self, *args, **kwargs):
             """
-            Read a table of transient boundary profile data.
+            Reads table of transient boundary profile data.
             """
             return PyMenu(self.service, "/file/read_transient_table").execute(*args, **kwargs)
         def read_pdf(self, *args, **kwargs):
             """
-            Read a PDF file.
+            Reads a PDF file.
             """
             return PyMenu(self.service, "/file/read_pdf").execute(*args, **kwargs)
         def read_rays(self, *args, **kwargs):
             """
-            Read a DTRM rays file.
+            Reads a ray file.
             """
             return PyMenu(self.service, "/file/read_rays").execute(*args, **kwargs)
         def read_surface_clusters(self, *args, **kwargs):
             """
-            Read an S2S file.
+            Reads surface clusters from a file.
             """
             return PyMenu(self.service, "/file/read_surface_clusters").execute(*args, **kwargs)
         def read_viewfactors(self, *args, **kwargs):
             """
-            Read an S2S file.
+            Reads view factors from a file.
             """
             return PyMenu(self.service, "/file/read_viewfactors").execute(*args, **kwargs)
         def read_isat_table(self, *args, **kwargs):
             """
-            Read an ISAT table.
+            Reads ISAT Table.
             """
             return PyMenu(self.service, "/file/read_isat_table").execute(*args, **kwargs)
         def replace_mesh(self, *args, **kwargs):
             """
-            Replace the mesh with a new one while preserving settings.
+            Replaces the mesh with a new one while preserving settings.
             """
             return PyMenu(self.service, "/file/replace_mesh").execute(*args, **kwargs)
         def reload_setup(self, *args, **kwargs):
             """
-            Reload case and settings from last saved state.
+            Discards any changes in the current ANSYS Fluent in Workbench session and removes any corresponding data from the Solution cell. This command is only available when running ANSYS Fluent in Workbench.
             """
             return PyMenu(self.service, "/file/reload_setup").execute(*args, **kwargs)
         def close_without_save(self, *args, **kwargs):
             """
-            Exit without save.
+            Exits ANSYS Fluent without saving data in Workbench. This command is only available when running ANSYS Fluent in Workbench.
             """
             return PyMenu(self.service, "/file/close_without_save").execute(*args, **kwargs)
         def sync_workbench(self, *args, **kwargs):
             """
-            Sync Fluent changes with WorkBench.
+            Directly updates Workbench with the most recent Fluent changes. This command is only available when running ANSYS Fluent in Workbench.
             """
             return PyMenu(self.service, "/file/sync_workbench").execute(*args, **kwargs)
         def set_batch_options(self, *args, **kwargs):
             """
-            Set the batch options.
+            Sets the batch options.
             """
             return PyMenu(self.service, "/file/set_batch_options").execute(*args, **kwargs)
         def set_idle_timeout(self, *args, **kwargs):
@@ -21762,7 +21836,7 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/stop_journal").execute(*args, **kwargs)
         def stop_macro(self, *args, **kwargs):
             """
-            Stop recording input to a macro.
+            Stops recording input to a macro.
             """
             return PyMenu(self.service, "/file/stop_macro").execute(*args, **kwargs)
         def start_transcript(self, *args, **kwargs):
@@ -21777,12 +21851,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/stop_transcript").execute(*args, **kwargs)
         def write_settings(self, *args, **kwargs):
             """
-            Write out current boundary conditions in use.
+            Writes out current boundary conditions in use.
             """
             return PyMenu(self.service, "/file/write_settings").execute(*args, **kwargs)
         def write_boundary_mesh(self, *args, **kwargs):
             """
-            Write the boundary mesh to a file.
+            Writes the boundary mesh to a file.
             """
             return PyMenu(self.service, "/file/write_boundary_mesh").execute(*args, **kwargs)
         def write_case(self, *args, **kwargs):
@@ -21797,32 +21871,32 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/write_case_light").execute(*args, **kwargs)
         def data_file_options(self, *args, **kwargs):
             """
-            Set derived quantities to be written in data file.
+            Sets derived quantities to be written in data file.
             """
             return PyMenu(self.service, "/file/data_file_options").execute(*args, **kwargs)
         def write_case_data(self, *args, **kwargs):
             """
-            Write a case and a data file.
+            Writes a case and a data file.
             """
             return PyMenu(self.service, "/file/write_case_data").execute(*args, **kwargs)
         def write_data(self, *args, **kwargs):
             """
-            Write a data file.
+            Writes a data file.
             """
             return PyMenu(self.service, "/file/write_data").execute(*args, **kwargs)
         def write_fan_profile(self, *args, **kwargs):
             """
-            Compute radial profiles for a fan zone and write them to a profile file.
+            Computes radial profiles for a fan zone and writes them to a profile file.
             """
             return PyMenu(self.service, "/file/write_fan_profile").execute(*args, **kwargs)
         def write_field_functions(self, *args, **kwargs):
             """
-            Write the currently defined custom field functions to a file.
+            Writes the currently defined custom field functions to a file.
             """
             return PyMenu(self.service, "/file/write_field_functions").execute(*args, **kwargs)
         def write_profile(self, *args, **kwargs):
             """
-            Write surface data as a boundary profile file. To use \*.csv format specify filename with .csv suffix.
+            Writes surface data as a boundary profile file.
             """
             return PyMenu(self.service, "/file/write_profile").execute(*args, **kwargs)
         def write_currently_defined_profiles(self, *args, **kwargs):
@@ -21842,37 +21916,37 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/file/write_circumferential_averaged_profile").execute(*args, **kwargs)
         def write_merge_profiles(self, *args, **kwargs):
             """
-            Write multiple zones surface data as a single boundary profile file. To use \*.csv format specify filename with .csv suffix.
+            Writes a .csv file with the selected surfaces consolidated into one set of data points.
             """
             return PyMenu(self.service, "/file/write_merge_profiles").execute(*args, **kwargs)
         def write_pdf(self, *args, **kwargs):
             """
-            Write a pdf file.
+            Writes a pdf file.
             """
             return PyMenu(self.service, "/file/write_pdf").execute(*args, **kwargs)
         def write_flamelet(self, *args, **kwargs):
             """
-            Write a flamelet file.
+            Writes a flamelet file.
             """
             return PyMenu(self.service, "/file/write_flamelet").execute(*args, **kwargs)
         def write_injections(self, *args, **kwargs):
             """
-            Write out selected DPM injections to a file.
+            Writes out selected DPM injections to a file.
             """
             return PyMenu(self.service, "/file/write_injections").execute(*args, **kwargs)
         def write_macros(self, *args, **kwargs):
             """
-            Write the currently defined macros to a file.
+            Writes the currently defined macros to a file.
             """
             return PyMenu(self.service, "/file/write_macros").execute(*args, **kwargs)
         def write_isat_table(self, *args, **kwargs):
             """
-            Write an ISAT table.
+            Writes ISAT Table.
             """
             return PyMenu(self.service, "/file/write_isat_table").execute(*args, **kwargs)
         def write_cleanup_script(self, *args, **kwargs):
             """
-            Write the cleanup-script-file for Fluent.
+            Writes the cleanup-script-file for ANSYS Fluent.
             """
             return PyMenu(self.service, "/file/write_cleanup_script").execute(*args, **kwargs)
         def load_act_tool(self, *args, **kwargs):
@@ -21888,67 +21962,79 @@ class main_menu(metaclass=PyMenuMeta):
 
         class auto_save(metaclass=PyMenuMeta):
             """
-            Enter the auto save menu.
+            Enters the auto save menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def case_frequency(self, *args, **kwargs):
                 """
-                Set the preference for saving case files.
+                Specifies the frequency (in iterations, time steps, or flow time) with which case files are saved.
                 """
                 return PyMenu(self.service, "/file/auto_save/case_frequency").execute(*args, **kwargs)
             def data_frequency(self, *args, **kwargs):
                 """
-                Set the iteration or time step increment for saving data files.
+                Specifies the frequency (in iterations, time steps, or flow time) with which data files are saved.
                 """
                 return PyMenu(self.service, "/file/auto_save/data_frequency").execute(*args, **kwargs)
             def root_name(self, *args, **kwargs):
                 """
-                Set the root name for auto-saved files. The number of iterations or time steps will be appended to this root name.
+                Specifies the root name for the files that are saved.
                 """
                 return PyMenu(self.service, "/file/auto_save/root_name").execute(*args, **kwargs)
             def retain_most_recent_files(self, *args, **kwargs):
                 """
-                After the maximum (as in max-files) is reached, a file will be deleted for each file saved.
+                Sets autosave to retain the 5 most recent files.
                 """
                 return PyMenu(self.service, "/file/auto_save/retain_most_recent_files").execute(*args, **kwargs)
             def max_files(self, *args, **kwargs):
                 """
-                Set the maximum number of data files to save. After the maximum is reached, a file will be deleted for each file saved.
+                Sets the maximum number of files. Once the maximum is reached, files will be erased as new files are written.
                 """
                 return PyMenu(self.service, "/file/auto_save/max_files").execute(*args, **kwargs)
             def append_file_name_with(self, *args, **kwargs):
                 """
-                Set the suffix for auto-saved files. The file name can be appended by flow-time, time-step value or by user specified flags in file name.
+                Sets the suffix for auto-saved files. The file name can be appended by flow-time, time-step value, or by user-specified flags in file name.
                 """
                 return PyMenu(self.service, "/file/auto_save/append_file_name_with").execute(*args, **kwargs)
             def save_data_file_every(self, *args, **kwargs):
                 """
-                Set the auto save frequency type to either time-step or crank-angle and set the corresponding frequency.
+                Specifies the type and frequency of the data file to be saved.
                 """
                 return PyMenu(self.service, "/file/auto_save/save_data_file_every").execute(*args, **kwargs)
 
         class cffio_options(metaclass=PyMenuMeta):
             """
-            CFF I/O options.
+            Enters the cffio options menu, which provides options for the I/O of case and data files in the Common Fluids Format (CFF).
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def io_mode(self, *args, **kwargs):
                 """
-                Set CFF I/O mode.
+                Sets the I/O mode for writing CFF files.
+                                  
+                                     
+                                        1. HOST: I/O is done serially by the host process.
+                                     
+                                        2. NODE0: I/O is done serially by the node 0 process.
+                                     
+                                        3. PARALLEL INDEPENDENT: I/O is done in parallel using the independent mode of MPI I/O.
+                                     
+                                        4. PARALLEL COLLECTIVE: I/O is done in parallel using the collective mode of MPI I/O.
+                                  
+                               
+                            
                 """
                 return PyMenu(self.service, "/file/cffio_options/io_mode").execute(*args, **kwargs)
             def compression_level(self, *args, **kwargs):
                 """
-                Set CFF file compression level.
+                Sets the compression level for CFF files. The compression level can be set between 0 and 9 with 0 being least compression (fastest) and 9 being highest compression (slowest).
                 """
                 return PyMenu(self.service, "/file/cffio_options/compression_level").execute(*args, **kwargs)
             def single_precision_data(self, *args, **kwargs):
                 """
-                Specify whether the double-precision solver saves single-precision data when writing CFF data files.
+                Specifies whether the double-precision solver saves single-precision data when writing CFF data files, in order to reduce the size of the files.
                 """
                 return PyMenu(self.service, "/file/cffio_options/single_precision_data").execute(*args, **kwargs)
 
@@ -21963,7 +22049,7 @@ class main_menu(metaclass=PyMenuMeta):
                 self.settings = self.__class__.settings(path + [("settings", None)], service)
             def abaqus(self, *args, **kwargs):
                 """
-                Write an ABAQUS file.
+                Writes an ABAQUS file.
                 """
                 return PyMenu(self.service, "/file/export/abaqus").execute(*args, **kwargs)
             def mechanical_apdl(self, *args, **kwargs):
@@ -21973,22 +22059,22 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/export/mechanical_apdl").execute(*args, **kwargs)
             def mechanical_apdl_input(self, *args, **kwargs):
                 """
-                Write an Mechanical APDL Input file.
+                Writes a Mechanical APDL Input file.
                 """
                 return PyMenu(self.service, "/file/export/mechanical_apdl_input").execute(*args, **kwargs)
             def ascii(self, *args, **kwargs):
                 """
-                Write an ASCII file.
+                Writes an ASCII file.
                 """
                 return PyMenu(self.service, "/file/export/ascii").execute(*args, **kwargs)
             def common_fluids_format_post(self, *args, **kwargs):
                 """
-                Write an CFF Post-Only file.
+                Writes common fluids format files (.cas.post and .dat.post) for mesh and data, respectively. These files are saved in the hierarchical data format.
                 """
                 return PyMenu(self.service, "/file/export/common_fluids_format_post").execute(*args, **kwargs)
             def avs(self, *args, **kwargs):
                 """
-                Write an AVS UCD file.
+                Writes an AVS UCD file.
                 """
                 return PyMenu(self.service, "/file/export/avs").execute(*args, **kwargs)
             def cdat_for_cfd_post__and__ensight(self, *args, **kwargs):
@@ -22003,32 +22089,32 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/export/cgns").execute(*args, **kwargs)
             def custom_heat_flux(self, *args, **kwargs):
                 """
-                Write a generic file for heat transfer.
+                Writes a generic file for heat transfer.
                 """
                 return PyMenu(self.service, "/file/export/custom_heat_flux").execute(*args, **kwargs)
             def dx(self, *args, **kwargs):
                 """
-                Write an IBM Data Explorer format file.
+                Writes an IBM Data Explorer format file.
                 """
                 return PyMenu(self.service, "/file/export/dx").execute(*args, **kwargs)
             def ensight(self, *args, **kwargs):
                 """
-                Write EnSight 6 geometry, velocity, and scalar files.
+                Writes EnSight geometry, velocity, and scalar files.
                 """
                 return PyMenu(self.service, "/file/export/ensight").execute(*args, **kwargs)
             def ensight_gold(self, *args, **kwargs):
                 """
-                Write EnSight Gold geometry, velocity, and scalar files.
+                Writes EnSight Gold geometry, velocity, and scalar files.
                 """
                 return PyMenu(self.service, "/file/export/ensight_gold").execute(*args, **kwargs)
             def ensight_gold_parallel_surfaces(self, *args, **kwargs):
                 """
-                Write EnSight Gold geometry, velocity and scalar files for surfaces. Fluent will write files suitable for EnSight Parallel.
+                Writes EnSight Gold geometry, velocity, and scalar files for surfaces in a parallel format suitable for ANSYS Ensight Enterprise.
                 """
                 return PyMenu(self.service, "/file/export/ensight_gold_parallel_surfaces").execute(*args, **kwargs)
             def ensight_gold_parallel_volume(self, *args, **kwargs):
                 """
-                Write EnSight Gold geometry, velocity and scalar files for cell zones and boundaries attached to them. Fluent will write files suitable for EnSight Parallel.
+                Writes EnSight Gold geometry, velocity, and scalar files for cell zones in a parallel format suitable for ANSYS Ensight Enterprise.
                 """
                 return PyMenu(self.service, "/file/export/ensight_gold_parallel_volume").execute(*args, **kwargs)
             def ensight_dvs_surfaces(self, *args, **kwargs):
@@ -22043,57 +22129,57 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/export/ensight_dvs_volume").execute(*args, **kwargs)
             def icemcfd_for_icepak(self, *args, **kwargs):
                 """
-                Write a binary ICEMCFD domain file.
+                Writes a binary ICEM CFD domain file.
                 """
                 return PyMenu(self.service, "/file/export/icemcfd_for_icepak").execute(*args, **kwargs)
             def fast_mesh(self, *args, **kwargs):
                 """
-                Write a FAST/Plot3D unstructured mesh file.
+                Writes FAST/Plot3D unstructured mesh file.
                 """
                 return PyMenu(self.service, "/file/export/fast_mesh").execute(*args, **kwargs)
             def fast_scalar(self, *args, **kwargs):
                 """
-                Write a FAST/Plot3D unstructured scalar function file.
+                Writes FAST/Plot3D unstructured scalar function file.
                 """
                 return PyMenu(self.service, "/file/export/fast_scalar").execute(*args, **kwargs)
             def fast_solution(self, *args, **kwargs):
                 """
-                Write a FAST/Plot3D unstructured solution file.
+                Writes FAST/Plot3D unstructured solution file.
                 """
                 return PyMenu(self.service, "/file/export/fast_solution").execute(*args, **kwargs)
             def fast_velocity(self, *args, **kwargs):
                 """
-                Write a FAST/Plot3D unstructured vector function file.
+                Writes FAST/Plot3D unstructured vector function file.
                 """
                 return PyMenu(self.service, "/file/export/fast_velocity").execute(*args, **kwargs)
             def fieldview(self, *args, **kwargs):
                 """
-                Write Fieldview case and data files.
+                Writes FIELDVIEW case and data files.
                 """
                 return PyMenu(self.service, "/file/export/fieldview").execute(*args, **kwargs)
             def fieldview_data(self, *args, **kwargs):
                 """
-                Write Fieldview case and data files.
+                Writes FIELDVIEW case and data files.
                 """
                 return PyMenu(self.service, "/file/export/fieldview_data").execute(*args, **kwargs)
             def fieldview_unstruct(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured combined file.
+                Writes FIELDVIEW unstructured combined file.
                 """
                 return PyMenu(self.service, "/file/export/fieldview_unstruct").execute(*args, **kwargs)
             def fieldview_unstruct_mesh(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured mesh only file.
+                Writes FIELDVIEW unstructured mesh-only file.
                 """
                 return PyMenu(self.service, "/file/export/fieldview_unstruct_mesh").execute(*args, **kwargs)
             def fieldview_unstruct_data(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured results only file.
+                Writes FIELDVIEW unstructured results-only file.
                 """
                 return PyMenu(self.service, "/file/export/fieldview_unstruct_data").execute(*args, **kwargs)
             def fieldview_unstruct_surfaces(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured surface mesh, data.
+                Writes FIELDVIEW unstructured file for surfaces. You are prompted to select either [1], [2] or [3] to write either mesh-only, results-only, or combined for surfaces (respectively).
                 """
                 return PyMenu(self.service, "/file/export/fieldview_unstruct_surfaces").execute(*args, **kwargs)
             def fieldview_xdb(self, *args, **kwargs):
@@ -22103,12 +22189,12 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/export/fieldview_xdb").execute(*args, **kwargs)
             def gambit(self, *args, **kwargs):
                 """
-                Write a Gambit neutral file.
+                Writes GAMBIT neutral file.
                 """
                 return PyMenu(self.service, "/file/export/gambit").execute(*args, **kwargs)
             def ideas(self, *args, **kwargs):
                 """
-                Write an IDEAS universal file.
+                Writes an I-deas universal file.
                 """
                 return PyMenu(self.service, "/file/export/ideas").execute(*args, **kwargs)
             def nastran(self, *args, **kwargs):
@@ -22118,45 +22204,45 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/export/nastran").execute(*args, **kwargs)
             def patran_neutral(self, *args, **kwargs):
                 """
-                Write a PATRAN neutral file.
+                Writes a PATRAN neutral file.
                 """
                 return PyMenu(self.service, "/file/export/patran_neutral").execute(*args, **kwargs)
             def patran_nodal(self, *args, **kwargs):
                 """
-                Write a PATRAN nodal results file.
+                Writes a PATRAN nodal results file.
                 """
                 return PyMenu(self.service, "/file/export/patran_nodal").execute(*args, **kwargs)
             def taitherm(self, *args, **kwargs):
                 """
-                Write a TAITherm file.
+                Exports TAITherm file.
                 """
                 return PyMenu(self.service, "/file/export/taitherm").execute(*args, **kwargs)
             def tecplot(self, *args, **kwargs):
                 """
-                Write a Tecplot+3DV format file.
+                Writes a Tecplot+3DV format file.
                 """
                 return PyMenu(self.service, "/file/export/tecplot").execute(*args, **kwargs)
             def particle_history_data(self, *args, **kwargs):
                 """
-                Export particle-history data.
+                Exports particle-history data.
                 """
                 return PyMenu(self.service, "/file/export/particle_history_data").execute(*args, **kwargs)
 
             class system_coupling_definition_file_settings(metaclass=PyMenuMeta):
                 """
-                File menu.
+                Enters the system coupling file (.scp) menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable_automatic_creation_of_scp_file(self, *args, **kwargs):
                     """
-                    Enable/disable automatic creation of scp file during case write.
+                    Enables/disables automatically writing a .scp every time a case file is written.
                     """
                     return PyMenu(self.service, "/file/export/system_coupling_definition_file_settings/enable_automatic_creation_of_scp_file").execute(*args, **kwargs)
                 def write_system_coupling_file(self, *args, **kwargs):
                     """
-                    Write a Fluent Input File for System Coupling.
+                    Writes a system coupling (.scp) file.
                     """
                     return PyMenu(self.service, "/file/export/system_coupling_definition_file_settings/write_system_coupling_file").execute(*args, **kwargs)
 
@@ -22183,22 +22269,22 @@ class main_menu(metaclass=PyMenuMeta):
                 self.settings = self.__class__.settings(path + [("settings", None)], service)
             def abaqus(self, *args, **kwargs):
                 """
-                Write an ABAQUS file.
+                Writes an ABAQUS file.
                 """
                 return PyMenu(self.service, "/file/transient_export/abaqus").execute(*args, **kwargs)
             def mechanical_apdl_input(self, *args, **kwargs):
                 """
-                Write an Mechanical APDL Input file.
+                Writes a Mechanical APDL input file.
                 """
                 return PyMenu(self.service, "/file/transient_export/mechanical_apdl_input").execute(*args, **kwargs)
             def ascii(self, *args, **kwargs):
                 """
-                Write an ASCII file.
+                Writes an ASCII file.
                 """
                 return PyMenu(self.service, "/file/transient_export/ascii").execute(*args, **kwargs)
             def avs(self, *args, **kwargs):
                 """
-                Write an AVS UCD file.
+                Writes an AVS UCD file.
                 """
                 return PyMenu(self.service, "/file/transient_export/avs").execute(*args, **kwargs)
             def cdat_for_cfd_post__and__ensight(self, *args, **kwargs):
@@ -22213,27 +22299,27 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/transient_export/common_fluids_format_post").execute(*args, **kwargs)
             def cgns(self, *args, **kwargs):
                 """
-                Write a CGNS file.
+                Writes a CGNS file.
                 """
                 return PyMenu(self.service, "/file/transient_export/cgns").execute(*args, **kwargs)
             def dx(self, *args, **kwargs):
                 """
-                Write an IBM Data Explorer format file.
+                Writes an IBM Data Explorer format file.
                 """
                 return PyMenu(self.service, "/file/transient_export/dx").execute(*args, **kwargs)
             def ensight_gold_transient(self, *args, **kwargs):
                 """
-                Write EnSight Gold geometry, velocity, and scalar files.
+                Writes EnSight Gold geometry, velocity, and scalar files.
                 """
                 return PyMenu(self.service, "/file/transient_export/ensight_gold_transient").execute(*args, **kwargs)
             def ensight_gold_parallel_surfaces(self, *args, **kwargs):
                 """
-                Write EnSight Gold geometry, velocity and scalar files for surfaces. Fluent will write files suitable for EnSight Parallel.
+                Writes EnSight Gold geometry, velocity, and scalar files for surfaces in a parallel format suitable for ANSYS Ensight Enterprise.
                 """
                 return PyMenu(self.service, "/file/transient_export/ensight_gold_parallel_surfaces").execute(*args, **kwargs)
             def ensight_gold_parallel_volume(self, *args, **kwargs):
                 """
-                Write EnSight Gold geometry, velocity and scalar files for cell zones and boundaries attached to them. Fluent will write files suitable for EnSight Parallel.
+                Writes EnSight Gold geometry, velocity, and scalar files for cell zones in a parallel format suitable for ANSYS Ensight Enterprise.
                 """
                 return PyMenu(self.service, "/file/transient_export/ensight_gold_parallel_volume").execute(*args, **kwargs)
             def ensight_dvs_surfaces(self, *args, **kwargs):
@@ -22248,37 +22334,37 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/transient_export/ensight_dvs_volume").execute(*args, **kwargs)
             def ensight_gold_from_existing_files(self, *args, **kwargs):
                 """
-                Write EnSight Gold files using Fluent case files.
+                Writes EnSight Gold files using ANSYS Fluent case files.
                 """
                 return PyMenu(self.service, "/file/transient_export/ensight_gold_from_existing_files").execute(*args, **kwargs)
             def fast(self, *args, **kwargs):
                 """
-                Write a FAST/Plot3D unstructured mesh velocity scalar file.
+                Writes a FAST/Plot3D unstructured mesh velocity scalar file.
                 """
                 return PyMenu(self.service, "/file/transient_export/fast").execute(*args, **kwargs)
             def fast_solution(self, *args, **kwargs):
                 """
-                Write a FAST/Plot3D unstructured solution file.
+                Writes a FAST/Plot3D unstructured solution file.
                 """
                 return PyMenu(self.service, "/file/transient_export/fast_solution").execute(*args, **kwargs)
             def fieldview_unstruct(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured combined file.
+                Writes a FIELDVIEW unstructured combined file.
                 """
                 return PyMenu(self.service, "/file/transient_export/fieldview_unstruct").execute(*args, **kwargs)
             def fieldview_unstruct_mesh(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured mesh only file.
+                Writes a FIELDVIEW unstructured mesh only file.
                 """
                 return PyMenu(self.service, "/file/transient_export/fieldview_unstruct_mesh").execute(*args, **kwargs)
             def fieldview_unstruct_data(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured results only file.
+                Writes a FIELDVIEW unstructured results only file.
                 """
                 return PyMenu(self.service, "/file/transient_export/fieldview_unstruct_data").execute(*args, **kwargs)
             def fieldview_unstruct_surfaces(self, *args, **kwargs):
                 """
-                Write a Fieldview unstructured combined file for surfaces.
+                Writes FIELDVIEW unstructured combined file for surfaces.
                 """
                 return PyMenu(self.service, "/file/transient_export/fieldview_unstruct_surfaces").execute(*args, **kwargs)
             def fieldview_xdb(self, *args, **kwargs):
@@ -22288,22 +22374,22 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/transient_export/fieldview_xdb").execute(*args, **kwargs)
             def ideas(self, *args, **kwargs):
                 """
-                Write an IDEAS universal file.
+                Writes an I-deas universal file.
                 """
                 return PyMenu(self.service, "/file/transient_export/ideas").execute(*args, **kwargs)
             def nastran(self, *args, **kwargs):
                 """
-                Write a NASTRAN file.
+                Writes a NASTRAN file.
                 """
                 return PyMenu(self.service, "/file/transient_export/nastran").execute(*args, **kwargs)
             def patran_neutral(self, *args, **kwargs):
                 """
-                Write a PATRAN neutral file.
+                Writes a PATRAN neutral file.
                 """
                 return PyMenu(self.service, "/file/transient_export/patran_neutral").execute(*args, **kwargs)
             def taitherm(self, *args, **kwargs):
                 """
-                Write a TAITherm file.
+                Writes a TAITherm file.
                 """
                 return PyMenu(self.service, "/file/transient_export/taitherm").execute(*args, **kwargs)
             def tecplot(self, *args, **kwargs):
@@ -22313,36 +22399,36 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/transient_export/tecplot").execute(*args, **kwargs)
             def particle_history_data(self, *args, **kwargs):
                 """
-                Setup an automatic particle-history data export.
+                Sets up an automatic particle-history data export.
                 """
                 return PyMenu(self.service, "/file/transient_export/particle_history_data").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit transient exports.
+                Edits transient exports.
                 """
                 return PyMenu(self.service, "/file/transient_export/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete transient exports.
+                Deletes transient exports.
                 """
                 return PyMenu(self.service, "/file/transient_export/delete").execute(*args, **kwargs)
 
             class settings(metaclass=PyMenuMeta):
                 """
-                Enter the automatic export settings menu.
+                Enters the automatic export settings menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def cfd_post_compatible(self, *args, **kwargs):
                     """
-                    Set settings for CFD-Post compatible file export.
+                    Specifies when case files are written with the .cdat and .cst files exported for Ansys CFD-Post. Note that this setting is ignored if the Write Case File Every Time option is enabled in the Automatic Export dialog box, which is always the case starting in Release 2021 R1.
                     """
                     return PyMenu(self.service, "/file/transient_export/settings/cfd_post_compatible").execute(*args, **kwargs)
 
         class em_mapping(metaclass=PyMenuMeta):
             """
-            Assign electro-magnetic losses provided by specified product.
+            Enters the electromagnetic loss mapping menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -22359,12 +22445,12 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/file/em_mapping/surface_energy_source").execute(*args, **kwargs)
             def remove_loss_only(self, *args, **kwargs):
                 """
-                Remove the loss data provided by Ansoft and keep all other solution data.
+                Removes the loss data provided by Maxwell and keeps all other solution data.
                 """
                 return PyMenu(self.service, "/file/em_mapping/remove_loss_only").execute(*args, **kwargs)
             def maintain_loss_on_initialization(self, *args, **kwargs):
                 """
-                Maintain the loss data provided by Ansoft even if solution is initialized.
+                Maintains the loss data provided by Maxwell even if solution is initialized.
                 """
                 return PyMenu(self.service, "/file/em_mapping/maintain_loss_on_initialization").execute(*args, **kwargs)
 
@@ -22389,325 +22475,324 @@ class main_menu(metaclass=PyMenuMeta):
                 self.tecplot = self.__class__.tecplot(path + [("tecplot", None)], service)
             def chemkin_mechanism(self, *args, **kwargs):
                 """
-                Read a CHEMKIN mechanism file.
+                Reads a CHEMKIN mechanism file.
                 """
                 return PyMenu(self.service, "/file/import/chemkin_mechanism").execute(*args, **kwargs)
             def chemkin_report_each_line(self, *args, **kwargs):
                 """
-                Enable/disable reporting after reading each line.
+                Enables/disables reporting after reading each line.
                 """
                 return PyMenu(self.service, "/file/import/chemkin_report_each_line").execute(*args, **kwargs)
             def fidap(self, *args, **kwargs):
                 """
-                Read a FIDAP neutral file as a case file.
+                Imports a FIDAP neutral file.
                 """
                 return PyMenu(self.service, "/file/import/fidap").execute(*args, **kwargs)
             def fluent4_case(self, *args, **kwargs):
                 """
-                Read a formatted Fluent 4 case file.
+                Imports a formatted ANSYS Fluent 4 case file.
                 """
                 return PyMenu(self.service, "/file/import/fluent4_case").execute(*args, **kwargs)
             def gambit(self, *args, **kwargs):
                 """
-                Read a GAMBIT neutral file as a case file.
+                Imports a GAMBIT neutral file.
                 """
                 return PyMenu(self.service, "/file/import/gambit").execute(*args, **kwargs)
             def hypermesh(self, *args, **kwargs):
                 """
-                Read a HYPERMESH file as a case file.
+                Reads a HYPERMESH file as a case file.
                 """
                 return PyMenu(self.service, "/file/import/hypermesh").execute(*args, **kwargs)
             def ensight(self, *args, **kwargs):
                 """
-                Read an Ensight file as a case file.
+                Reads an EnSight file as a case file.
                 """
                 return PyMenu(self.service, "/file/import/ensight").execute(*args, **kwargs)
             def ideas_universal(self, *args, **kwargs):
                 """
-                Read an IDEAS Universal file as a case file.
+                Imports an I-deas Universal file.
                 """
                 return PyMenu(self.service, "/file/import/ideas_universal").execute(*args, **kwargs)
             def marc_post(self, *args, **kwargs):
                 """
-                Read a MARC POST file as a case file.
+                Reads a MARC POST file as a case file.
                 """
                 return PyMenu(self.service, "/file/import/marc_post").execute(*args, **kwargs)
             def ptc_mechanica(self, *args, **kwargs):
                 """
-                Read a PTC Mechanica file as a case file.
+                Reads a PTC Mechanica Design file as a case file.
                 """
                 return PyMenu(self.service, "/file/import/ptc_mechanica").execute(*args, **kwargs)
             def prebfc_structured(self, *args, **kwargs):
                 """
-                Read a formatted preBFC structured mesh (grid) file.
+                Imports a formatted PreBFC structured mesh file.
                 """
                 return PyMenu(self.service, "/file/import/prebfc_structured").execute(*args, **kwargs)
 
             class mechanical_apdl(metaclass=PyMenuMeta):
                 """
-                Enter the Mechanical APDL menu.
+                Imports a Mechanical APDL file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def input(self, *args, **kwargs):
                     """
-                    Read an Mechanical APDL file as a case file.
+                    Reads a Mechanical APDL file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/mechanical_apdl/input").execute(*args, **kwargs)
                 def result(self, *args, **kwargs):
                     """
-                    Read an Mechanical APDL result file as a case file.
+                    Reads a Mechanical APDL result file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/mechanical_apdl/result").execute(*args, **kwargs)
 
             class abaqus(metaclass=PyMenuMeta):
                 """
-                Enter the Abaqus menu.
+                Imports an ABAQUS file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def fil(self, *args, **kwargs):
                     """
-                    Read an Abaqus .fil result file as a case file.
+                    Reads an ABAQUS .fil result file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/abaqus/fil").execute(*args, **kwargs)
                 def input(self, *args, **kwargs):
                     """
-                    Read an Abaqus Input file as a case file.
+                    Reads an ABAQUS input file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/abaqus/input").execute(*args, **kwargs)
                 def odb(self, *args, **kwargs):
                     """
-                    Read an Abaqus odb file as a case file.
+                    Reads an ABAQUS odb file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/abaqus/odb").execute(*args, **kwargs)
 
             class cfx(metaclass=PyMenuMeta):
                 """
-                Enter the CFX menu.
+                Imports a CFX file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def definition(self, *args, **kwargs):
                     """
-                    Read a CFX definition file as a case file.
+                    Reads a CFX definition file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/cfx/definition").execute(*args, **kwargs)
                 def result(self, *args, **kwargs):
                     """
-                    Read a CFX result file as a case file.
+                    Reads a CFX definition file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/cfx/result").execute(*args, **kwargs)
 
             class cgns(metaclass=PyMenuMeta):
                 """
-                Enter the CGNS menu.
+                Imports a CGNS file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def mesh(self, *args, **kwargs):
                     """
-                    Read a CGNS file as a case file.
+                    Imports a CGNS mesh file.
                     """
                     return PyMenu(self.service, "/file/import/cgns/mesh").execute(*args, **kwargs)
                 def data(self, *args, **kwargs):
                     """
-                    Read data from CGNS file.
+                    Reads data from CGNS file.
                     """
                     return PyMenu(self.service, "/file/import/cgns/data").execute(*args, **kwargs)
                 def mesh_data(self, *args, **kwargs):
                     """
-                    Read a CGNS file as a case file.
+                    Imports a CGNS mesh file and data file.
                     """
                     return PyMenu(self.service, "/file/import/cgns/mesh_data").execute(*args, **kwargs)
 
             class fmu_file(metaclass=PyMenuMeta):
                 """
-                Read a FMU file.
+                Enters the import FMU file menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def import_fmu(self, *args, **kwargs):
                     """
-                    Import a FMU file.
+                    Imports an FMU file.
                     """
                     return PyMenu(self.service, "/file/import/fmu_file/import_fmu").execute(*args, **kwargs)
                 def define_fmu(self, *args, **kwargs):
                     """
-                    Link the FMU variables with Fluent parameters.
+                    Links the FMU variables with the Fluent output parameters.
                     """
                     return PyMenu(self.service, "/file/import/fmu_file/define_fmu").execute(*args, **kwargs)
                 def select_fmu_local(self, *args, **kwargs):
                     """
-                    Select the FMU local variables to monitor.
+                    Allows you to select FMU local variables to be monitored during the calculation.
                     """
                     return PyMenu(self.service, "/file/import/fmu_file/select_fmu_local").execute(*args, **kwargs)
                 def set_fmu_parameter(self, *args, **kwargs):
                     """
-                    Change the values of FMU parameter variables.
+                    Allows you to select FMU parameter variables and change their values.
                     """
                     return PyMenu(self.service, "/file/import/fmu_file/set_fmu_parameter").execute(*args, **kwargs)
 
             class flamelet(metaclass=PyMenuMeta):
                 """
-                Import a flamelet file.
+                Imports a flamelet file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def standard(self, *args, **kwargs):
                     """
-                    Read a standard format flamelet file.
+                    Reads a standard format flamelet file.
                     """
                     return PyMenu(self.service, "/file/import/flamelet/standard").execute(*args, **kwargs)
                 def cfx_rif(self, *args, **kwargs):
                     """
-                    Read a CFX-RIF format flamelet file.
+                    Reads a CFX-RIF format flamelet file.
                     """
                     return PyMenu(self.service, "/file/import/flamelet/cfx_rif").execute(*args, **kwargs)
 
             class lstc(metaclass=PyMenuMeta):
                 """
-                Enter the LSTC menu.
+                Imports an LSTC file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def input(self, *args, **kwargs):
                     """
-                    Read an LSTC input file as a case file.
+                    Reads an LSTC input file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/lstc/input").execute(*args, **kwargs)
                 def state(self, *args, **kwargs):
                     """
-                    Read an LSTC result file as a case file.
+                    Reads an LSTC result file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/lstc/state").execute(*args, **kwargs)
 
             class nastran(metaclass=PyMenuMeta):
                 """
-                Enter the NASTRAN menu.
+                Imports a NASTRAN file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def bulkdata(self, *args, **kwargs):
                     """
-                    Read a NASTRAN file as a case file.
+                    Reads a NASTRAN file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/nastran/bulkdata").execute(*args, **kwargs)
                 def output2(self, *args, **kwargs):
                     """
-                    Read a NASTRAN op2 file as a case file.
+                    Reads a NASTRAN op2 file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/nastran/output2").execute(*args, **kwargs)
 
             class partition(metaclass=PyMenuMeta):
                 """
-                Enter the partition menu.
+                Enters the partition menu to set conditions for partitioning an ANSYS Fluent case file during read.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def metis(self, *args, **kwargs):
                     """
-                    Read and partition a Fluent 5 case file.
+                    Reads and partitions an ANSYS Fluent case file.
                     """
                     return PyMenu(self.service, "/file/import/partition/metis").execute(*args, **kwargs)
                 def metis_zone(self, *args, **kwargs):
                     """
-                    Read and partition a Fluent 5 case file.
+                    Reads and partitions an ANSYS Fluent case file.
                     """
                     return PyMenu(self.service, "/file/import/partition/metis_zone").execute(*args, **kwargs)
 
             class patran(metaclass=PyMenuMeta):
                 """
-                Enter the PATRAN menu.
+                Imports a PATRAN neutral file (zones defined by named components).
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def neutral(self, *args, **kwargs):
                     """
-                    Read a PATRAN Neutral file (zones defined by named components) as a case file.
+                    Reads a PATRAN Neutral file (zones defined by named components) as a case file.
                     """
                     return PyMenu(self.service, "/file/import/patran/neutral").execute(*args, **kwargs)
 
             class plot3d(metaclass=PyMenuMeta):
                 """
-                Enter the PLOT3D menu.
+                Imports a PLOT3D file.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def mesh(self, *args, **kwargs):
                     """
-                    Read a PLOT3D file as a case file.
+                    Reads a PLOT3D file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/plot3d/mesh").execute(*args, **kwargs)
 
             class tecplot(metaclass=PyMenuMeta):
                 """
-                Enter the Tecplot menu.
+                Enters the Tecplot menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def mesh(self, *args, **kwargs):
                     """
-                    Read a Tecplot binary file as a case file.
+                    Reads a Tecplot binary file as a case file.
                     """
                     return PyMenu(self.service, "/file/import/tecplot/mesh").execute(*args, **kwargs)
 
         class interpolate(metaclass=PyMenuMeta):
             """
-            Enter the interpolate menu.
+            Interpolates data to/from another grid.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def write_data(self, *args, **kwargs):
                 """
-                Write data for interpolation.
+                Writes data for interpolation.
                 """
                 return PyMenu(self.service, "/file/interpolate/write_data").execute(*args, **kwargs)
             def read_data(self, *args, **kwargs):
                 """
-                Read and interpolate data.
+                Reads and interpolates data.
                 """
                 return PyMenu(self.service, "/file/interpolate/read_data").execute(*args, **kwargs)
             def zone_selection(self, *args, **kwargs):
                 """
-                Define a list of cell zone IDs. If specified, interpolation data will be
-                                read/written for these cell zones only.
+                Defines a list of cell zone IDs. If specified, interpolation data will be read/written for these cell zones only.
                 """
                 return PyMenu(self.service, "/file/interpolate/zone_selection").execute(*args, **kwargs)
 
         class fsi(metaclass=PyMenuMeta):
             """
-            Enter the fsi menu.
+            Enters the fluid-structure interaction menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def read_fsi_mesh(self, *args, **kwargs):
                 """
-                Read an FEA mesh for one-way FSI.
+                Reads an FEM mesh for one-way data mapping from ANSYS Fluent.
                 """
                 return PyMenu(self.service, "/file/fsi/read_fsi_mesh").execute(*args, **kwargs)
             def display_fsi_mesh(self, *args, **kwargs):
                 """
-                Display the FEA mesh that has been read.
+                Displays the mesh for a fluid-structure interaction.
                 """
                 return PyMenu(self.service, "/file/fsi/display_fsi_mesh").execute(*args, **kwargs)
             def write_fsi_mesh(self, *args, **kwargs):
                 """
-                Write an FEA mesh file with Fluent data.
+                Writes a fluid-structure interaction mesh file.
                 """
                 return PyMenu(self.service, "/file/fsi/write_fsi_mesh").execute(*args, **kwargs)
             def conserve_force(self, *args, **kwargs):
@@ -22749,7 +22834,7 @@ class main_menu(metaclass=PyMenuMeta):
                 """
                 return PyMenu(self.service, "/file/parametric_project/archive").execute(*args, **kwargs)
 
-        class project_beta(metaclass=PyMenuMeta):
+        class project(metaclass=PyMenuMeta):
             """
             Enter to create new project, open project, save and archive project.
             """
@@ -22789,72 +22874,72 @@ class main_menu(metaclass=PyMenuMeta):
 
         class table_manager(metaclass=PyMenuMeta):
             """
-            Enter the table manager menu.
+            Enters the table file manager menu. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def delete(self, *args, **kwargs):
                 """
-                Delete a table.
+                Deletes a table from local storage.
                 """
                 return PyMenu(self.service, "/file/table_manager/delete").execute(*args, **kwargs)
             def list_matrix_data(self, *args, **kwargs):
                 """
-                List matrix table data.
+                Lists the data of a “matrix” type locally-stored table.
                 """
                 return PyMenu(self.service, "/file/table_manager/list_matrix_data").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List the properties for a table.
+                Lists the properties of a locally-stored table.
                 """
                 return PyMenu(self.service, "/file/table_manager/list_properties").execute(*args, **kwargs)
             def list_tables(self, *args, **kwargs):
                 """
-                List the available tables.
+                Lists all locally-stored tables.
                 """
                 return PyMenu(self.service, "/file/table_manager/list_tables").execute(*args, **kwargs)
             def read_matrix_data_file(self, *args, **kwargs):
                 """
-                Read matrix data file.
+                Imports a “matrix” type table from a file into local storage. 
                 """
                 return PyMenu(self.service, "/file/table_manager/read_matrix_data_file").execute(*args, **kwargs)
             def read_rgp_file(self, *args, **kwargs):
                 """
-                Read material from real gas property (RGP) file.
+                Imports a set of Real Gas Property (RGP) tables from a file into local storage.
                 """
                 return PyMenu(self.service, "/file/table_manager/read_rgp_file").execute(*args, **kwargs)
             def rename(self, *args, **kwargs):
                 """
-                Rename a table.
+                Renames a locally-stored table.
                 """
                 return PyMenu(self.service, "/file/table_manager/rename").execute(*args, **kwargs)
             def store_in_case_file(self, *args, **kwargs):
                 """
-                Set persistence mode for tables (in case or separate file).
+                Sets the persistence mode for RGP tables (embedded in case file or rely on external file).
                 """
                 return PyMenu(self.service, "/file/table_manager/store_in_case_file").execute(*args, **kwargs)
 
         class solution_files(metaclass=PyMenuMeta):
             """
-            Enter the solution files menu.
+            Enters the solution files menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def print_solution_files(self, *args, **kwargs):
                 """
-                Print list of available solution files.
+                Prints a list of available solution files.
                 """
                 return PyMenu(self.service, "/file/solution_files/print_solution_files").execute(*args, **kwargs)
             def load_solution(self, *args, **kwargs):
                 """
-                Load a solution file.
+                Loads a solution file.
                 """
                 return PyMenu(self.service, "/file/solution_files/load_solution").execute(*args, **kwargs)
             def delete_solution(self, *args, **kwargs):
                 """
-                Delete solution files.
+                Deletes solution files.
                 """
                 return PyMenu(self.service, "/file/solution_files/delete_solution").execute(*args, **kwargs)
 
@@ -22911,47 +22996,47 @@ class main_menu(metaclass=PyMenuMeta):
             self.surface_mesh = self.__class__.surface_mesh(path + [("surface_mesh", None)], service)
         def adjacency(self, *args, **kwargs):
             """
-            View and rename face zones adjacent to selected cell zones.
+            Views and renames face zones adjacent to selected cell  zones.
             """
             return PyMenu(self.service, "/mesh/adjacency").execute(*args, **kwargs)
         def check(self, *args, **kwargs):
             """
-            Perform various mesh consistency checks.
+            Performs various mesh consistency checks and displays a report in the console that lists the domain extents, the volume statistics, the face area statistics, and any warnings, as well as details about the various checks and mesh failures (depending on the setting specified for mesh/check-verbosity).
             """
             return PyMenu(self.service, "/mesh/check").execute(*args, **kwargs)
         def check_before_solve(self, *args, **kwargs):
             """
-            Perform various mesh consistency checks before solve.
+            The default value for mesh/check-before-solve is “no”. If mesh/check-before-solve is set to “yes”, a mesh check operation will be invoked prior to starting solver. If grid check fails, solver will be interrupted, and relevant information will be printed in the Fluent console.
             """
             return PyMenu(self.service, "/mesh/check_before_solve").execute(*args, **kwargs)
         def check_verbosity(self, *args, **kwargs):
             """
-            Set verbosity output of mesh check and mesh quality. Higher verbosity corresponds to more detailed information.
+            Sets the level of details that will be added to the mesh check report generated by mesh/check. A value of 0 (the default) notes when checks are being performed, but does not list them individually. A value of 1 lists the individual checks as they are performed. A value of 2 enables the availability of additional mesh field variables, lists the individual checks as they are performed, and provides additional details (for example, the location of the problem, the affected cells).  The check-verbosity text command can also be used to set the level of detail displayed in the mesh quality report generated by mesh/quality. A value of 0 (the default) or 1 lists the minimum orthogonal quality and the maximum aspect ratio. A value of 2 adds information about the zones that contain the cells with the lowest quality, and additional metrics such as the maximum cell squish index and the minimum expansion ratio.
             """
             return PyMenu(self.service, "/mesh/check_verbosity").execute(*args, **kwargs)
         def enhanced_orthogonal_quality(self, *args, **kwargs):
             """
-            Enable enhanced orthogonal quality method.
+            Enables / disables an enhanced definition when calculating the orthogonal quality. When enabled, the orthogonal quality is defined using a variety quality measures, including: the orthogonality of a face relative to a vector between the face and cell centroids; a metric that detects poor cell shape at a local edge (such as twisting and/or concavity); and the variation of normals between the faces that can be constructed from the cell face. This enhanced definition is optimal for evaluating thin prism cells.
             """
             return PyMenu(self.service, "/mesh/enhanced_orthogonal_quality").execute(*args, **kwargs)
         def mesh_info(self, *args, **kwargs):
             """
-            Print zone information size.
+            Prints zone information size.
             """
             return PyMenu(self.service, "/mesh/mesh_info").execute(*args, **kwargs)
         def memory_usage(self, *args, **kwargs):
             """
-            Report solver memory use.
+            Reports solver memory use.
             """
             return PyMenu(self.service, "/mesh/memory_usage").execute(*args, **kwargs)
         def quality(self, *args, **kwargs):
             """
-            Perform analysis of mesh quality.
+            Displays information about the quality of the mesh in the console, including the minimum orthogonal quality and the maximum aspect ratio. The level of detail displayed depends on the setting specified for mesh/check-verbosity.
             """
             return PyMenu(self.service, "/mesh/quality").execute(*args, **kwargs)
         def redistribute_boundary_layer(self, *args, **kwargs):
             """
-            Enforce growth rate in boundary layer.
+            Redistributes the nodes in a boundary layer zone to achieve a desired growth rate after anisotropic adaption.
             """
             return PyMenu(self.service, "/mesh/redistribute_boundary_layer").execute(*args, **kwargs)
         def replace(self, *args, **kwargs):
@@ -22961,27 +23046,27 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/mesh/replace").execute(*args, **kwargs)
         def rotate(self, *args, **kwargs):
             """
-            Rotate the mesh.
+            Rotates the mesh.
             """
             return PyMenu(self.service, "/mesh/rotate").execute(*args, **kwargs)
         def scale(self, *args, **kwargs):
             """
-            Scale the mesh.
+            Prompts for the scaling factors in each of the active Cartesian coordinate directions.
             """
             return PyMenu(self.service, "/mesh/scale").execute(*args, **kwargs)
         def size_info(self, *args, **kwargs):
             """
-            Print mesh size.
+            Prints mesh size.
             """
             return PyMenu(self.service, "/mesh/size_info").execute(*args, **kwargs)
         def smooth_mesh(self, *args, **kwargs):
             """
-            Smooth the mesh using quality-based, Laplace or skewness methods.
+            Smooths the mesh using quality-based, Laplacian, or skewness methods.
             """
             return PyMenu(self.service, "/mesh/smooth_mesh").execute(*args, **kwargs)
         def swap_mesh_faces(self, *args, **kwargs):
             """
-            Swap mesh faces.
+            Swaps mesh faces.
             """
             return PyMenu(self.service, "/mesh/swap_mesh_faces").execute(*args, **kwargs)
         def show_periodic_shadow_zones(self, *args, **kwargs):
@@ -22991,7 +23076,7 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/mesh/show_periodic_shadow_zones").execute(*args, **kwargs)
         def translate(self, *args, **kwargs):
             """
-            Translate the mesh.
+            Prompts for the translation offset in each of the active Cartesian coordinate directions.
             """
             return PyMenu(self.service, "/mesh/translate").execute(*args, **kwargs)
         def set_unit_system(self, *args, **kwargs):
@@ -23007,7 +23092,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class adapt(metaclass=PyMenuMeta):
             """
-            Enter the adaption menu.
+            Enters the mesh adaption menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -23020,12 +23105,12 @@ class main_menu(metaclass=PyMenuMeta):
                 self.geometry = self.__class__.geometry(path + [("geometry", None)], service)
             def refinement_criteria(self, *args, **kwargs):
                 """
-                Set expression for refinement criterion.
+                Allows you to provide an expression for the refinement criterion.
                 """
                 return PyMenu(self.service, "/mesh/adapt/refinement_criteria").execute(*args, **kwargs)
             def coarsening_criteria(self, *args, **kwargs):
                 """
-                Set expression for coarsening criterion.
+                Allows you to provide an expression for the coarsening criterion.
                 """
                 return PyMenu(self.service, "/mesh/adapt/coarsening_criteria").execute(*args, **kwargs)
             def manual_refinement_criteria(self, *args, **kwargs):
@@ -23040,50 +23125,50 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/adapt/manual_coarsening_criteria").execute(*args, **kwargs)
             def adapt_mesh(self, *args, **kwargs):
                 """
-                Adapt the mesh based on set refinement/coarsening criterion.
+                Performs manual adaption on the mesh according to the methods and settings that you specified.
                 """
                 return PyMenu(self.service, "/mesh/adapt/adapt_mesh").execute(*args, **kwargs)
             def display_adaption_cells(self, *args, **kwargs):
                 """
-                Display cells marked for refinement/coarsening.
+                Displays the cells that are marked for adaption in the graphics window.
                 """
                 return PyMenu(self.service, "/mesh/adapt/display_adaption_cells").execute(*args, **kwargs)
             def list_adaption_cells(self, *args, **kwargs):
                 """
-                List the number of cells marked for refinement/coarsening.
+                Prints the number of cells marked for refinement, coarsening, and both to the console.
                 """
                 return PyMenu(self.service, "/mesh/adapt/list_adaption_cells").execute(*args, **kwargs)
             def free_hierarchy(self, *args, **kwargs):
                 """
-                Delete the adaption hierarchy.
+                Deletes the defined adaption hierarchy.
                 """
                 return PyMenu(self.service, "/mesh/adapt/free_hierarchy").execute(*args, **kwargs)
             def anisotropic_adaption(self, *args, **kwargs):
                 """
-                Anisotropically refine boundary layers.
+                Applies legacy anisotropic adaption to refine the boundary layers or registers. Cells will be split in the normal direction to the boundary face. Note that this text command is only available for 3D cases that have the adaption method set to hanging node.
                 """
                 return PyMenu(self.service, "/mesh/adapt/anisotropic_adaption").execute(*args, **kwargs)
 
             class set(metaclass=PyMenuMeta):
                 """
-                Enter the adaption set menu.
+                Enters the set menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def method(self, *args, **kwargs):
                     """
-                    Set the adaption method.
+                    Sets the adaption method.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/method").execute(*args, **kwargs)
                 def cell_zones(self, *args, **kwargs):
                     """
-                    Set cell zones to be used for marking adaption. An empty list implies that all zones are considered for adaption.
+                    Sets cell zones to be used for marking adaption. An empty list specifies that all zones are considered for adaption.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/cell_zones").execute(*args, **kwargs)
                 def verbosity(self, *args, **kwargs):
                     """
-                    Set the adaption verbosity.
+                    Allows you set how much information about the adaption is printed to the console.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/verbosity").execute(*args, **kwargs)
                 def encapsulate_children(self, *args, **kwargs):
@@ -23093,47 +23178,47 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/adapt/set/encapsulate_children").execute(*args, **kwargs)
                 def maximum_refinement_level(self, *args, **kwargs):
                     """
-                    Set maximum level of refinement in the mesh.
+                    Controls the number of levels of refinement used to split cells during the adaption.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/maximum_refinement_level").execute(*args, **kwargs)
                 def minimum_edge_length(self, *args, **kwargs):
                     """
-                    Set limit on the minimum effective edge-length of cells in the mesh.
+                    Sets an approximate limit to the edge length for cells that are considered for refinement. Even if a cell is marked for refinement, it will not be refined if (for 3D) its volume is less than the cube of this field or (for 2D) its area is less than the square of this field. The default value of zero places no limits on the size of cells that are refined.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/minimum_edge_length").execute(*args, **kwargs)
                 def minimum_cell_quality(self, *args, **kwargs):
                     """
-                    Set limit on the minimum cell orthogonal quality during adaption.
+                    Sets the minimum value allowed for the orthogonal quality of cells during adaption. If your solution diverges, you may find that using a higher minimum quality value resolves the issue. This text command is only available with the PUMA 3D adaption method.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/minimum_cell_quality").execute(*args, **kwargs)
                 def maximum_cell_count(self, *args, **kwargs):
                     """
-                    Set limit on the maximum number of cells during adaption.
+                    Sets an approximate limit to the total cell count of the mesh during adaption. Fluent uses this value to determine when to stop marking cells for refinement. A value of zero places no limits on the number of cells.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/maximum_cell_count").execute(*args, **kwargs)
                 def additional_refinement_layers(self, *args, **kwargs):
                     """
-                    Set the number of additional cell layers for refinement.
+                    Allows you to specify additional refinement layers (this is an advanced control).
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/additional_refinement_layers").execute(*args, **kwargs)
                 def anisotropic_adaption(self, *args, **kwargs):
                     """
-                    Enable/Disable anisotropic adaption for prismatic cells.
+                    Enables / disables anisotropic adaption for prismatic cells as part of manual adaption. Note that this text command requires that the adaption method is set to PUMA.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/anisotropic_adaption").execute(*args, **kwargs)
                 def anisotropic_boundary_zones(self, *args, **kwargs):
                     """
-                    Set the boundary zones to specify directions for anisotropic refinement.
+                    Allows you to select the boundary zones that specify directions for anisotropic refinement with the PUMA method.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/anisotropic_boundary_zones").execute(*args, **kwargs)
                 def anisotropic_split_ratio(self, *args, **kwargs):
                     """
-                    Set the split ratio for anisotropic refinement of prismatic cells.
+                    Sets the split ratio for the cells as part of anisotropic refinement with the PUMA method.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/anisotropic_split_ratio").execute(*args, **kwargs)
                 def display_settings(self, *args, **kwargs):
                     """
-                    Set the graphics display options for cells marked for adaption.
+                    Sets the graphics display options for the refinement, coarsening, and common cells.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/display_settings").execute(*args, **kwargs)
                 def dynamic_adaption(self, *args, **kwargs):
@@ -23148,41 +23233,41 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/adapt/set/dynamic_adaption_frequency").execute(*args, **kwargs)
                 def overset_adapt_dead_cells(self, *args, **kwargs):
                     """
-                    Enables adaption of dead cells in overset meshes.
+                    Enables/disables the adaption of dead cells in overset meshes.
                     """
                     return PyMenu(self.service, "/mesh/adapt/set/overset_adapt_dead_cells").execute(*args, **kwargs)
 
             class profile(metaclass=PyMenuMeta):
                 """
-                Enter the adaption profile menu.
+                Enters the profile menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Enable adaption profiling.
+                    Enables adaption profiling.
                     """
                     return PyMenu(self.service, "/mesh/adapt/profile/enable").execute(*args, **kwargs)
                 def disable(self, *args, **kwargs):
                     """
-                    Disable adaption profiling.
+                    Disables adaption profiling.
                     """
                     return PyMenu(self.service, "/mesh/adapt/profile/disable").execute(*args, **kwargs)
                 def print(self, *args, **kwargs):
                     """
-                    Print adaption profiling results.
+                    Prints adaption profiling results.
                     """
                     return PyMenu(self.service, "/mesh/adapt/profile/print").execute(*args, **kwargs)
                 def clear(self, *args, **kwargs):
                     """
-                    Clear adaption profiling counters.
+                    Clears the adaption profiling counters.
                     """
                     return PyMenu(self.service, "/mesh/adapt/profile/clear").execute(*args, **kwargs)
 
             class cell_registers(metaclass=PyMenuMeta):
                 """
-                Manage Cell Registers.
+                Enters the cell registers menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -23194,80 +23279,80 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/adapt").execute(*args, **kwargs)
                 def add(self, *args, **kwargs):
                     """
-                    Add a new object.
+                    Creates a new cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/add").execute(*args, **kwargs)
                 def apply_poor_mesh_numerics(self, *args, **kwargs):
                     """
-                    Apply poor mesh numerics to cell register objects.
+                    Applies poor mesh numerics to the mesh of a cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/apply_poor_mesh_numerics").execute(*args, **kwargs)
                 def coarsen(self, *args, **kwargs):
                     """
-                    Coarsen cell register objects.
+                    Coarsen the mesh based on a cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/coarsen").execute(*args, **kwargs)
                 def display(self, *args, **kwargs):
                     """
-                    Display cell register objects.
+                    Displays a cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/display").execute(*args, **kwargs)
                 def edit(self, *args, **kwargs):
                     """
-                    Edit an object.
+                    Edits an existing cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/edit").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete an object.
+                    Deletes a cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/delete").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List objects.
+                    Lists all of the currently defined cell registers.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/list").execute(*args, **kwargs)
                 def list_properties(self, *args, **kwargs):
                     """
-                    List properties of an object.
+                    Lists the properties of a cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/list_properties").execute(*args, **kwargs)
                 def refine(self, *args, **kwargs):
                     """
-                    Refine cell register objects.
+                    Refine the mesh based on a cell register.
                     """
                     return PyMenu(self.service, "/mesh/adapt/cell_registers/refine").execute(*args, **kwargs)
 
             class manage_criteria(metaclass=PyMenuMeta):
                 """
-                Manage Adaption Criteria.
+                Enters the manage criteria menu, which provides text commands for managing automatic adaption criteria.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def add(self, *args, **kwargs):
                     """
-                    Add a new object.
+                    Adds a new automatic adaption criterion.
                     """
                     return PyMenu(self.service, "/mesh/adapt/manage_criteria/add").execute(*args, **kwargs)
                 def edit(self, *args, **kwargs):
                     """
-                    Edit an object.
+                    Edits an existing automatic adaption criterion.
                     """
                     return PyMenu(self.service, "/mesh/adapt/manage_criteria/edit").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete an object.
+                    Deletes an existing automatic adaption criterion.
                     """
                     return PyMenu(self.service, "/mesh/adapt/manage_criteria/delete").execute(*args, **kwargs)
                 def list(self, *args, **kwargs):
                     """
-                    List objects.
+                    Lists all the existing automatic adaption criteria.
                     """
                     return PyMenu(self.service, "/mesh/adapt/manage_criteria/list").execute(*args, **kwargs)
                 def list_properties(self, *args, **kwargs):
                     """
-                    List properties of an object.
+                    Lists the properties of an existing automatic adaption criterion.
                     """
                     return PyMenu(self.service, "/mesh/adapt/manage_criteria/list_properties").execute(*args, **kwargs)
 
@@ -23301,25 +23386,25 @@ class main_menu(metaclass=PyMenuMeta):
 
             class geometry(metaclass=PyMenuMeta):
                 """
-                Enter the adaption geometry menu.
+                Enters the geometry menu. Note that this text command menu is not available unless the adaption method is set to hanging node.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def reconstruct_geometry(self, *args, **kwargs):
                     """
-                    Enable/Disable geometry based adaption.
+                    Enables/disables geometry-based adaption.
                     """
                     return PyMenu(self.service, "/mesh/adapt/geometry/reconstruct_geometry").execute(*args, **kwargs)
                 def set_geometry_controls(self, *args, **kwargs):
                     """
-                    Set geometry controls for wall zones.
+                    Sets geometry controls for wall zones.
                     """
                     return PyMenu(self.service, "/mesh/adapt/geometry/set_geometry_controls").execute(*args, **kwargs)
 
         class modify_zones(metaclass=PyMenuMeta):
             """
-            Enter the modify zones menu.
+            Enters the zone modification menu. For a description of the items in this menu, see define/boundary-conditions/modify-zones.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -23522,7 +23607,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class polyhedra(metaclass=PyMenuMeta):
             """
-            Enter the polyhedra menu.
+            Enters the polyhedra menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -23530,12 +23615,12 @@ class main_menu(metaclass=PyMenuMeta):
                 self.options = self.__class__.options(path + [("options", None)], service)
             def convert_domain(self, *args, **kwargs):
                 """
-                Convert entire domain to polyhedra cells.
+                Converts the entire domain to polyhedra cells.
                 """
                 return PyMenu(self.service, "/mesh/polyhedra/convert_domain").execute(*args, **kwargs)
             def convert_hanging_nodes(self, *args, **kwargs):
                 """
-                Convert cells with hanging nodes and faces to polyhedra.
+                Converts cells with hanging nodes/edges to polyhedra.
                 """
                 return PyMenu(self.service, "/mesh/polyhedra/convert_hanging_nodes").execute(*args, **kwargs)
             def convert_hanging_nodes_zones(self, *args, **kwargs):
@@ -23546,55 +23631,53 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/mesh/polyhedra/convert_hanging_nodes_zones").execute(*args, **kwargs)
             def convert_skewed_cells(self, *args, **kwargs):
                 """
-                Convert skewed cells to polyhedra.
+                Converts skewed cells to polyhedra.
                 """
                 return PyMenu(self.service, "/mesh/polyhedra/convert_skewed_cells").execute(*args, **kwargs)
 
             class options(metaclass=PyMenuMeta):
                 """
-                Enter options menu.
+                Enters the polyhedra options menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def migrate_and_reorder(self, *args, **kwargs):
                     """
-                    Perform migration and reordering at the end of the polyhedra conversion.
+                    Enables / disables the migration of newly created partitions to the compute-nodes and the reordering of the domain as part of polyhedra conversion. This is disabled by default, because it requires significant additional memory; when disabled, it is recommended that you save the case file after conversion, read it in a new Fluent session (so that the new / stored partitions become active), and then manually reorder using the mesh/reorder/reorder-domain text command. If you want to run the calculation in the current Fluent session you can enable the migrate-and-reorder? text command prior to conversion, but you must ensure that no more than half of the available memory of your system is currently used.
                     """
                     return PyMenu(self.service, "/mesh/polyhedra/options/migrate_and_reorder").execute(*args, **kwargs)
                 def preserve_boundary_layer(self, *args, **kwargs):
                     """
-                    0 = Decide at runtime.
-                    1 = Never preserve.
-                    2 = Always preserve.
+                    Specifies whether boundary layer cells will be preserved when the domain is converted to polyhedra. When the value is set to 0 (default) ANSYS Fluent checks for high aspect ratio cells at the boundary layer and if any are found, Fluent asks if you want to preserve the boundary layer. When the value is set to 1, the boundary layer cells are never preserved; when it is set to 2, the boundary layer cells are always preserved (regardless of the aspect ratio of the boundary layer cells).
                     """
                     return PyMenu(self.service, "/mesh/polyhedra/options/preserve_boundary_layer").execute(*args, **kwargs)
                 def preserve_interior_zones(self, *args, **kwargs):
                     """
-                    Interior zones with matching name pattern are preserved during polyhedra conversion.
+                    Enables the preservation of surfaces (that is, manifold zones of type interior) during the conversion of the domain to polyhedra. Note that only those zones with a name that includes the string you specify will be preserved.
                     """
                     return PyMenu(self.service, "/mesh/polyhedra/options/preserve_interior_zones").execute(*args, **kwargs)
 
         class reorder(metaclass=PyMenuMeta):
             """
-            Enter the reorder domain menu.
+            Reorders domain menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def band_width(self, *args, **kwargs):
                 """
-                Print cell bandwidth.
+                Prints cell bandwidth.
                 """
                 return PyMenu(self.service, "/mesh/reorder/band_width").execute(*args, **kwargs)
             def reorder_domain(self, *args, **kwargs):
                 """
-                Reorder cells and faces by reverse Cuthill-McKee.
+                Reorders cells and faces using the reverse Cuthill-McKee algorithm. Note that you must save a new case file (and a data file, if data exists) after reordering with this text command, as well as recreate any ray files and/or surface cluster information.
                 """
                 return PyMenu(self.service, "/mesh/reorder/reorder_domain").execute(*args, **kwargs)
             def reorder_zones(self, *args, **kwargs):
                 """
-                Reorder zones by partition, type, and id.
+                Reorders zones by partition, type, and ID.
                 """
                 return PyMenu(self.service, "/mesh/reorder/reorder_zones").execute(*args, **kwargs)
 
@@ -23607,70 +23690,70 @@ class main_menu(metaclass=PyMenuMeta):
                 self.service = service
             def report_poor_elements(self, *args, **kwargs):
                 """
-                Report invalid and poor quality elements.
+                Reports invalid and poor quality elements.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/report_poor_elements").execute(*args, **kwargs)
             def improve_quality(self, *args, **kwargs):
                 """
-                Tries to improve the mesh quality.
+                Improves poor quality cells in the mesh, if possible.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/improve_quality").execute(*args, **kwargs)
             def repair(self, *args, **kwargs):
                 """
-                Tries to repair mesh problems identified by mesh check.
+                Repairs mesh problems identified by the mesh check, if possible. The repairs include fixing cells that have the wrong node order, the wrong face handedness, faces that are small or nonexistent, or very poor quality. Only interior nodes are repositioned by default; boundary nodes may be repositioned if the  mesh/repair-improve/allow-repair-at-boundaries text command is enabled. Note that highly skewed cells may be converted into polyhedra, depending on whether the  mesh/repair-improve/include-local-polyhedra-conversion-in-repair text command is enabled.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/repair").execute(*args, **kwargs)
             def repair_face_handedness(self, *args, **kwargs):
                 """
-                Correct face handedness at left handed faces if possible.
+                Modifies cell centroids to repair meshes that contain left-handed faces without face node order problems.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/repair_face_handedness").execute(*args, **kwargs)
             def repair_face_node_order(self, *args, **kwargs):
                 """
-                Reverse order of face nodes if needed.
+                Modifies face nodes to repair faces with improper face node order and, therefore, eliminates any resulting left-handed faces.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/repair_face_node_order").execute(*args, **kwargs)
             def repair_periodic(self, *args, **kwargs):
                 """
-                Modify mesh to enforce specified periodic rotation angle.
+                Modifies the mesh to enforce a rotational angle or translational distance for periodic boundaries. For translationally periodic boundaries, the command computes an average translation distance and adjusts the node coordinates on the shadow face zone to match this distance. For rotationally periodic boundaries, the command prompts for an angle and adjusts the node coordinates on the shadow face zone using this angle and the defined rotational axis for the cell zone.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/repair_periodic").execute(*args, **kwargs)
             def repair_wall_distance(self, *args, **kwargs):
                 """
-                Correct wall distance at very high aspect ratio hexahedral/polyhedral cells.
+                Corrects wall distance at very high aspect ratio hexahedral/polyhedral cells. 
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/repair_wall_distance").execute(*args, **kwargs)
             def allow_repair_at_boundaries(self, *args, **kwargs):
                 """
-                Enable/disable adjustment of boundary nodes during mesh repair.
+                Allows the adjustment of the positions of nodes on boundaries as part of the mesh repairs performed by the mesh/repair-improve/repair text command.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/allow_repair_at_boundaries").execute(*args, **kwargs)
             def include_local_polyhedra_conversion_in_repair(self, *args, **kwargs):
                 """
-                Enable/disable local conversion to polyhedra during mesh repair.
+                Enables/disables the local conversion of degenerate cells into polyhedra based on skewness criteria as part of the mesh repairs performed by the  mesh/repair-improve/repair text command.
                 """
                 return PyMenu(self.service, "/mesh/repair_improve/include_local_polyhedra_conversion_in_repair").execute(*args, **kwargs)
 
         class surface_mesh(metaclass=PyMenuMeta):
             """
-            Enter the surface mesh menu.
+            Enters the Surface Mesh menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def delete(self, *args, **kwargs):
                 """
-                Delete surface mesh.
+                Deletes surface mesh.
                 """
                 return PyMenu(self.service, "/mesh/surface_mesh/delete").execute(*args, **kwargs)
             def display(self, *args, **kwargs):
                 """
-                Display surface meshes.
+                Displays surface meshes.
                 """
                 return PyMenu(self.service, "/mesh/surface_mesh/display").execute(*args, **kwargs)
             def read(self, *args, **kwargs):
                 """
-                Read surface meshes.
+                Reads surface meshes.
                 """
                 return PyMenu(self.service, "/mesh/surface_mesh/read").execute(*args, **kwargs)
 
@@ -23941,27 +24024,27 @@ class main_menu(metaclass=PyMenuMeta):
             self.multidomain = self.__class__.multidomain(path + [("multidomain", None)], service)
         def check(self, *args, **kwargs):
             """
-            Parallel check.
+            Performs checks of various factors that affect parallel performance.
             """
             return PyMenu(self.service, "/parallel/check").execute(*args, **kwargs)
         def check_verbosity(self, *args, **kwargs):
             """
-            Set verbosity output of parallel check. Higher verbosity corresponds to more detailed information.
+            Sets verbosity output of the parallel check. Higher verbosity corresponds to more detailed information.
             """
             return PyMenu(self.service, "/parallel/check_verbosity").execute(*args, **kwargs)
         def show_connectivity(self, *args, **kwargs):
             """
-            Show machine connectivity.
+            Prints the network connectivity for the selected compute node.
             """
             return PyMenu(self.service, "/parallel/show_connectivity").execute(*args, **kwargs)
         def latency(self, *args, **kwargs):
             """
-            Show network latency.
+            Shows network latency.
             """
             return PyMenu(self.service, "/parallel/latency").execute(*args, **kwargs)
         def bandwidth(self, *args, **kwargs):
             """
-            Show network bandwidth.
+            Shows network bandwidth.
             """
             return PyMenu(self.service, "/parallel/bandwidth").execute(*args, **kwargs)
         def thread_number_control(self, *args, **kwargs):
@@ -24010,7 +24093,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class partition(metaclass=PyMenuMeta):
             """
-            Enter the partition domain menu.
+            Enters the partition domain menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -24019,17 +24102,17 @@ class main_menu(metaclass=PyMenuMeta):
                 self.set = self.__class__.set(path + [("set", None)], service)
             def combine_partition(self, *args, **kwargs):
                 """
-                Merge every N partitions.
+                Merges every N partitions.
                 """
                 return PyMenu(self.service, "/parallel/partition/combine_partition").execute(*args, **kwargs)
             def merge_clusters(self, *args, **kwargs):
                 """
-                Merge partition clusters.
+                Calls the optimizer that attempts to decrease the number of interfaces by eliminating orphan cell clusters. (An orphan cluster is a group of connected cells such that each member has at least one face that is part of an interface boundary.)
                 """
                 return PyMenu(self.service, "/parallel/partition/merge_clusters").execute(*args, **kwargs)
             def method(self, *args, **kwargs):
                 """
-                Partition the domain.
+                Sets the partition method.
                 """
                 return PyMenu(self.service, "/parallel/partition/method").execute(*args, **kwargs)
             def print_partitions(self, *args, **kwargs):
@@ -24039,32 +24122,32 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/parallel/partition/print_partitions").execute(*args, **kwargs)
             def print_active_partitions(self, *args, **kwargs):
                 """
-                Print active partition information.
+                Prints active partition information (parallel solver).
                 """
                 return PyMenu(self.service, "/parallel/partition/print_active_partitions").execute(*args, **kwargs)
             def print_stored_partitions(self, *args, **kwargs):
                 """
-                Print stored partition information.
+                Prints stored partition information (parallel solver).
                 """
                 return PyMenu(self.service, "/parallel/partition/print_stored_partitions").execute(*args, **kwargs)
             def reorder_partitions(self, *args, **kwargs):
                 """
-                Reorder partitions.
+                Reorders partitions.
                 """
                 return PyMenu(self.service, "/parallel/partition/reorder_partitions").execute(*args, **kwargs)
             def reorder_partitions_to_architecture(self, *args, **kwargs):
                 """
-                Reorder partitions to architecture.
+                Reorders partitions to architecture.
                 """
                 return PyMenu(self.service, "/parallel/partition/reorder_partitions_to_architecture").execute(*args, **kwargs)
             def smooth_partition(self, *args, **kwargs):
                 """
-                Smooth partition interface.
+                Calls the optimizer that attempts to minimize the number of interfaces by modifying the partition boundaries to reduce surface area.
                 """
                 return PyMenu(self.service, "/parallel/partition/smooth_partition").execute(*args, **kwargs)
             def use_stored_partitions(self, *args, **kwargs):
                 """
-                Use stored partitioning.
+                Uses this partitioning.
                 """
                 return PyMenu(self.service, "/parallel/partition/use_stored_partitions").execute(*args, **kwargs)
 
@@ -24103,54 +24186,54 @@ class main_menu(metaclass=PyMenuMeta):
 
             class set(metaclass=PyMenuMeta):
                 """
-                Enter the menu to set partition parameters.
+                Enters the set partition parameters menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def across_zones(self, *args, **kwargs):
                     """
-                    Enable partitioning by zone or by domain.
+                    Allows partitions to cross zone boundaries (the default). If turned off, it will restrict partitioning to within each cell zone. This is recommended only when cells in different zones require significantly different amounts of computation during the solution phase; for example, if the domain contains both solid and fluid zones.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/across_zones").execute(*args, **kwargs)
                 def all_off(self, *args, **kwargs):
                     """
-                    Disable all optimization.
+                    Disables all optimizations.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/all_off").execute(*args, **kwargs)
                 def all_on(self, *args, **kwargs):
                     """
-                    Enable all optimization.
+                    Enables all optimizations.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/all_on").execute(*args, **kwargs)
                 def cell_function(self, *args, **kwargs):
                     """
-                    Set cell function.
+                    Sets cell function.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/cell_function").execute(*args, **kwargs)
                 def load_distribution(self, *args, **kwargs):
                     """
-                    Set partition load vector.
+                    Sets the number of cells desired for each partition. This is useful, for example, when computing on multiple machines with significantly different performance characteristics. If left unset, each partition will contain an approximately equal number of cells. Normalized relative values may be used for the entries.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/load_distribution").execute(*args, **kwargs)
                 def merge(self, *args, **kwargs):
                     """
-                    Set partition merging optimization.
+                    Toggles the optimizer that attempts to decrease the number of interfaces by eliminating orphan cell clusters.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/merge").execute(*args, **kwargs)
                 def origin(self, *args, **kwargs):
                     """
-                    Set coordinates of origin.
+                    Sets the , , and  coordinate of the origin used by those partitioning functions that require a radial distance. By default, the origin is set to (0, 0, 0).
                     """
                     return PyMenu(self.service, "/parallel/partition/set/origin").execute(*args, **kwargs)
                 def pre_test(self, *args, **kwargs):
                     """
-                    Set partition pre-testing optimization.
+                    Enables the operation that determines the best coordinate-splitting direction.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/pre_test").execute(*args, **kwargs)
                 def smooth(self, *args, **kwargs):
                     """
-                    Set partition smoothing optimization.
+                    Toggles the optimizer that attempts to minimize the number of interfaces by modifying the partition boundaries to reduce surface area.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/smooth").execute(*args, **kwargs)
                 def laplace_smoothing(self, *args, **kwargs):
@@ -24160,17 +24243,17 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/parallel/partition/set/laplace_smoothing").execute(*args, **kwargs)
                 def verbosity(self, *args, **kwargs):
                     """
-                    Set partition print verbosity.
+                    Controls the amount of information that is printed out during partitioning. If set to 1 (the default), a text character. is displayed during each bisection, and partition statistics are displayed once the partitioning completes. If set to 2, additional information about the bisection operation is displayed during each bisection. If set to 0, partition statistics and information during each bisection are not displayed.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/verbosity").execute(*args, **kwargs)
                 def nfaces_as_weights(self, *args, **kwargs):
                     """
-                    Use number of faces as weights.
+                    Uses number of faces as weights.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/nfaces_as_weights").execute(*args, **kwargs)
                 def face_area_as_weights(self, *args, **kwargs):
                     """
-                    Use face area as connection weights.
+                    Uses face area as connection weights.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/face_area_as_weights").execute(*args, **kwargs)
                 def stretched_mesh_enhancement(self, *args, **kwargs):
@@ -24185,27 +24268,27 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/parallel/partition/set/layering").execute(*args, **kwargs)
                 def solid_thread_weight(self, *args, **kwargs):
                     """
-                    Use solid thread weights.
+                    Uses solid thread weights.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/solid_thread_weight").execute(*args, **kwargs)
                 def particle_weight(self, *args, **kwargs):
                     """
-                    Set DPM particle weight.
+                    Sets DPM particle weight.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/particle_weight").execute(*args, **kwargs)
                 def vof_free_surface_weight(self, *args, **kwargs):
                     """
-                    Set VOF free surface weight.
+                    Sets VOF free surface weight.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/vof_free_surface_weight").execute(*args, **kwargs)
                 def isat_weight(self, *args, **kwargs):
                     """
-                    Set ISAT weight.
+                    Sets ISAT weight.
                     """
                     return PyMenu(self.service, "/parallel/partition/set/isat_weight").execute(*args, **kwargs)
                 def model_weighted_partition(self, *args, **kwargs):
                     """
-                    Set model weighted partition.
+                    Enables / disables model-weighted partitioning. This option works with the METIS partitioning method, and specifies that Fluent automatically calculates the weighting based on the cell count and the models and attributes specified as weights (using the parallel/partition/set/isat-weight text command, for example).
                     """
                     return PyMenu(self.service, "/parallel/partition/set/model_weighted_partition").execute(*args, **kwargs)
                 def fluid_solid_rebalance_after_read_case(self, *args, **kwargs):
@@ -24215,30 +24298,30 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/parallel/partition/set/fluid_solid_rebalance_after_read_case").execute(*args, **kwargs)
                 def dpm_load_balancing(self, *args, **kwargs):
                     """
-                    Enable automatic load balancing for DPM.
+                    Enables / disables dynamic load balancing for discrete phase model cases that use a second domain for DPM particle tracking (that is, cases for which you have enabled the define/models/dpm/parallel/hybrid-2domain? text command).
                     """
                     return PyMenu(self.service, "/parallel/partition/set/dpm_load_balancing").execute(*args, **kwargs)
 
         class set(metaclass=PyMenuMeta):
             """
-            Enter the set parallel parameters menu.
+            Enters the set parallel parameters menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def partition_mask(self, *args, **kwargs):
                 """
-                Set partition mask.
+                Sets partition mask.
                 """
                 return PyMenu(self.service, "/parallel/set/partition_mask").execute(*args, **kwargs)
             def verbosity(self, *args, **kwargs):
                 """
-                Set the parallel verbosity.
+                Sets the parallel verbosity.
                 """
                 return PyMenu(self.service, "/parallel/set/verbosity").execute(*args, **kwargs)
             def time_out(self, *args, **kwargs):
                 """
-                Set spawn timeout seconds.
+                Sets spawn time-out in seconds.
                 """
                 return PyMenu(self.service, "/parallel/set/time_out").execute(*args, **kwargs)
             def fast_i(self, *args, **kwargs):
@@ -24249,66 +24332,66 @@ class main_menu(metaclass=PyMenuMeta):
 
         class load_balance(metaclass=PyMenuMeta):
             """
-            Enter the load balancing parameters menu.
+            Enters the load balancing parameters menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def physical_models(self, *args, **kwargs):
                 """
-                Use physical-models load balancing?.
+                Uses physical-models load balancing?
                 """
                 return PyMenu(self.service, "/parallel/load_balance/physical_models").execute(*args, **kwargs)
             def dynamic_mesh(self, *args, **kwargs):
                 """
-                Use load balancing for dynamic mesh?.
+                Uses load balancing for dynamic mesh?
                 """
                 return PyMenu(self.service, "/parallel/load_balance/dynamic_mesh").execute(*args, **kwargs)
             def mesh_adaption(self, *args, **kwargs):
                 """
-                Use load balancing for mesh adaption?.
+                Uses load balancing for mesh adaption?
                 """
                 return PyMenu(self.service, "/parallel/load_balance/mesh_adaption").execute(*args, **kwargs)
 
         class gpgpu(metaclass=PyMenuMeta):
             """
-            Select and show gpgpu.
+            Enters the GPGPU menu
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def show(self, *args, **kwargs):
                 """
-                Show gpgpu.
+                Lists the available GPGPUs. GPGPUs selected for use are indicated by the presence of an asterisk (*).
                 """
                 return PyMenu(self.service, "/parallel/gpgpu/show").execute(*args, **kwargs)
             def select(self, *args, **kwargs):
                 """
-                Select gpgpu.
+                Selects which GPGPUs to use for AMG acceleration
                 """
                 return PyMenu(self.service, "/parallel/gpgpu/select").execute(*args, **kwargs)
 
         class timer(metaclass=PyMenuMeta):
             """
-            Enter the timer menu.
+            Enters the timer menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def usage(self, *args, **kwargs):
                 """
-                Print solver timer.
+                Prints performance statistics in the console window.
                 """
                 return PyMenu(self.service, "/parallel/timer/usage").execute(*args, **kwargs)
             def reset(self, *args, **kwargs):
                 """
-                Reset domain timers.
+                Adjusts domain timers.
                 """
                 return PyMenu(self.service, "/parallel/timer/reset").execute(*args, **kwargs)
 
         class multidomain(metaclass=PyMenuMeta):
             """
-            Enter the multidomain architecture menu.
+            Enters the multidomain architecture menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -24318,7 +24401,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class conjugate_heat_transfer(metaclass=PyMenuMeta):
                 """
-                Enter the conjugate heat transfer menu for multidomain simulation.
+                Enters the conjugate heat transfer menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -24326,13 +24409,13 @@ class main_menu(metaclass=PyMenuMeta):
                     self.set = self.__class__.set(path + [("set", None)], service)
                 def enable(self, *args, **kwargs):
                     """
-                    Enable/disable loosely coupled conjugate heat transfer.
+                    Enables/disables loosely coupled conjugate heat transfer. This works in conjunction with the solve/set/transient-controls/solid-time-step-size text command (and thereby enables the use of a user-specified time step size for solid zones that can be larger than that used for the fluid zones) to increase the robustness of the energy equation calculation, and specifies that multidomain architecture is used within a single Fluent session to enhance the performance of the simulation.
                     """
                     return PyMenu(self.service, "/parallel/multidomain/conjugate_heat_transfer/enable").execute(*args, **kwargs)
 
                 class set(metaclass=PyMenuMeta):
                     """
-                    Enter the set menu for loosely coupled conjugate heat transfer.
+                    Enters the set menu for loosely coupled conjugate heat transfer.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -24344,7 +24427,7 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/parallel/multidomain/conjugate_heat_transfer/set/session_mode").execute(*args, **kwargs)
                     def coupling(self, *args, **kwargs):
                         """
-                        Specify when the fluid and solid zone calculations are coupled.
+                        Specifies when the fluid and solid zone calculations are coupled,  either at a defined time period or number of fluid time steps.
                         """
                         return PyMenu(self.service, "/parallel/multidomain/conjugate_heat_transfer/set/coupling").execute(*args, **kwargs)
                     def helper_session(self, *args, **kwargs):
@@ -24383,22 +24466,22 @@ class main_menu(metaclass=PyMenuMeta):
             self.flamelet_curves = self.__class__.flamelet_curves(path + [("flamelet_curves", None)], service)
         def circum_avg_axial(self, *args, **kwargs):
             """
-            Compute iso-axial band surfaces and plot data vs axial coordinate on them.
+            Computes iso-axial band surfaces and plots data vs. axial coordinate on them. 
             """
             return PyMenu(self.service, "/plot/circum_avg_axial").execute(*args, **kwargs)
         def circum_avg_radial(self, *args, **kwargs):
             """
-            Compute iso-radial band surfaces and plot data vs radius on them.
+            Computes iso-radial band surfaces and plots data vs. radius on them. 
             """
             return PyMenu(self.service, "/plot/circum_avg_radial").execute(*args, **kwargs)
         def change_fft_ref_pressure(self, *args, **kwargs):
             """
-            Change acoustic reference pressure.
+            Changes reference acoustic pressure. 
             """
             return PyMenu(self.service, "/plot/change_fft_ref_pressure").execute(*args, **kwargs)
         def fft(self, *args, **kwargs):
             """
-            Plot FFT of file data.
+            Plots fast Fourier transform (FFT) of file data. If you respond yes to Acoustic Analysis?, then additional Y axis functions are made available.
             """
             return PyMenu(self.service, "/plot/fft").execute(*args, **kwargs)
         def fft_set(self, *args, **kwargs):
@@ -24408,110 +24491,108 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/plot/fft_set").execute(*args, **kwargs)
         def file(self, *args, **kwargs):
             """
-            Plot data from file.
+            Plots data from an external file. 
             """
             return PyMenu(self.service, "/plot/file").execute(*args, **kwargs)
         def datasources(self, *args, **kwargs):
             """
-            Enter the menu to set data sources.
+            Enters the menu for creating and modifying plots containing multiple data sources.
             """
             return PyMenu(self.service, "/plot/datasources").execute(*args, **kwargs)
         def display_profile_data(self, *args, **kwargs):
             """
-            Plot profile data.
+            Plots profile data. 
             """
             return PyMenu(self.service, "/plot/display_profile_data").execute(*args, **kwargs)
         def file_list(self, *args, **kwargs):
             """
-            Plot data from multiple files.
+            Plots data from multiple external files. 
             """
             return PyMenu(self.service, "/plot/file_list").execute(*args, **kwargs)
         def file_set(self, *args, **kwargs):
             """
-            Enter the menu to set file plot parameters.
+            Sets file plot parameters. 
             """
             return PyMenu(self.service, "/plot/file_set").execute(*args, **kwargs)
         def histogram(self, *args, **kwargs):
             """
-            Plot a histogram of a specified scalar quantity.
+            Plots a histogram of the specified solution variable using the defined range and number of intervals. 
             """
             return PyMenu(self.service, "/plot/histogram").execute(*args, **kwargs)
         def histogram_set(self, *args, **kwargs):
             """
-            Enter the menu to set histogram plot parameters.
+            Sets histogram plot parameters. Sub-menu items are the same as file-set/ above. 
             """
             return PyMenu(self.service, "/plot/histogram_set").execute(*args, **kwargs)
         def plot(self, *args, **kwargs):
             """
-            Plot solution on surfaces.
+            Plots solution on surfaces. 
             """
             return PyMenu(self.service, "/plot/plot").execute(*args, **kwargs)
         def plot_direction(self, *args, **kwargs):
             """
-            Set plot direction for xy plot.
+            Sets plot direction for XY plot. 
             """
             return PyMenu(self.service, "/plot/plot_direction").execute(*args, **kwargs)
         def residuals(self, *args, **kwargs):
             """
-            Plot equation residual history.
+            Contains commands that allow you to select the variables for which you want to display XY plots of residual histories in the active graphics window. 
             """
             return PyMenu(self.service, "/plot/residuals").execute(*args, **kwargs)
         def residuals_set(self, *args, **kwargs):
             """
-            Enter the menu to set residual plot parameters.
+            Sets residual plot parameters. Sub-menu items are the same as file-set/ above. 
             """
             return PyMenu(self.service, "/plot/residuals_set").execute(*args, **kwargs)
         def solution(self, *args, **kwargs):
             """
-            Plot solution on surfaces and/or zones.
+            Plots solution on surfaces and/or zones. Zone and surface names can be indicated using a  wildcard (*). 
             """
             return PyMenu(self.service, "/plot/solution").execute(*args, **kwargs)
         def solution_set(self, *args, **kwargs):
             """
-            Enter the menu to set solution plot parameters.
+            Sets solution plot parameters. Sub-menu items are the same as file-set/ above. 
             """
             return PyMenu(self.service, "/plot/solution_set").execute(*args, **kwargs)
         def set_boundary_val_off(self, *args, **kwargs):
             """
-            Set boundary value off when node values off for XY/Solution Plot.
-                   
-             Note: This setting is valid for current Fluent session only.
+            Disables the use of boundary face values when node values are disabled in solution XY plots. This option is disabled by default, that is, boundary face values are used when node values are disabled.
             """
             return PyMenu(self.service, "/plot/set_boundary_val_off").execute(*args, **kwargs)
         def label_alignment(self, *args, **kwargs):
             """
-            Set the alignment of xy plot label to horizontal or axis aligned.
+            Set the orientation of XY plot axis labels as either horizontal or axis-aligned.
             """
             return PyMenu(self.service, "/plot/label_alignment").execute(*args, **kwargs)
 
         class ansys_sound_analysis(metaclass=PyMenuMeta):
             """
-            Ansys Sound analysis and specification.
+            Enter the Ansys sound analysis menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def write_files(self, *args, **kwargs):
                 """
-                Write Ansys Sound out files.
+                Read in a pressure signal or spectrum file, then optionally read in a frequency response function (FRF) or transfer function file, before writing a WAV, output pressure, and/or acoustic indicators file.
                 """
                 return PyMenu(self.service, "/plot/ansys_sound_analysis/write_files").execute(*args, **kwargs)
             def print_indicators(self, *args, **kwargs):
                 """
-                Print Ansys Sound indicators.
+                Read in a pressure signal or spectrum file, then optionally read in a frequency response function (FRF) or transfer function file, before printing the acoustics indicators.
                 """
                 return PyMenu(self.service, "/plot/ansys_sound_analysis/print_indicators").execute(*args, **kwargs)
 
         class cumulative_plot(metaclass=PyMenuMeta):
             """
-            Plot Cumulative Force and Moments.
+            Plot the development of force, force coefficient, moment, or moment coefficient across the specified wall zones.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Create a new cumulative plot.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/add").execute(*args, **kwargs)
             def axes(self, *args, **kwargs):
@@ -24526,55 +24607,55 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/plot/cumulative_plot/curves").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Edit an existing cumulative plot object.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Delete an existing cumulative plot object.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Print the names of the existing cumulative plot objects to the console.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Print the properties of the specified cumulative plot object to the console.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/list_properties").execute(*args, **kwargs)
             def plot(self, *args, **kwargs):
                 """
-                Plot the Cumulative Forces/Moments.
+                Plot a cumulative plot in the graphics window.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/plot").execute(*args, **kwargs)
             def print(self, *args, **kwargs):
                 """
-                Print the Cumulative Forces/Moments.
+                Print the value of a cumulative plot to the console.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/print").execute(*args, **kwargs)
             def write(self, *args, **kwargs):
                 """
-                Write the Cumulative Forces/Moments.
+                Write a cumulative plot to a file.
                 """
                 return PyMenu(self.service, "/plot/cumulative_plot/write").execute(*args, **kwargs)
 
         class flamelet_curves(metaclass=PyMenuMeta):
             """
-            Plot flamelet curves.
+            Enters the flamelet curves menu. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def write_to_file(self, *args, **kwargs):
                 """
-                Write curve to a file instead of plot.
+                Writes curve to a file instead of plot. 
                 """
                 return PyMenu(self.service, "/plot/flamelet_curves/write_to_file").execute(*args, **kwargs)
             def plot_curves(self, *args, **kwargs):
                 """
-                Plot of a property.
+                Plots of a curve property. 
                 """
                 return PyMenu(self.service, "/plot/flamelet_curves/plot_curves").execute(*args, **kwargs)
 
@@ -25155,6 +25236,11 @@ class main_menu(metaclass=PyMenuMeta):
                 .
                 """
                 return PyMenu(self.service, "/preferences/graphics/min_graphics_text_size").execute(*args, **kwargs)
+            def new_material_infra(self, *args, **kwargs):
+                """
+                .
+                """
+                return PyMenu(self.service, "/preferences/graphics/new_material_infra").execute(*args, **kwargs)
             def plot_legend_margin(self, *args, **kwargs):
                 """
                 .
@@ -26462,47 +26548,47 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/report/aero_optical_distortions").execute(*args, **kwargs)
         def dpm_summary(self, *args, **kwargs):
             """
-            Print discrete phase summary report of particle fates.
+            Prints discrete phase summary report.
             """
             return PyMenu(self.service, "/report/dpm_summary").execute(*args, **kwargs)
         def dpm_extended_summary(self, *args, **kwargs):
             """
-            Print extended discrete phase summary report of particle fates, with options.
+            Create an extended discrete phase summary report of the discrete phase injection(s). You can choose whether you want to save the extended report to a file or print it in the console window. For unsteady tracking, you will be asked whether you want to include in-domain particle/tracks in the report. You will be also prompted whether you want to select a single injection for the summary report. By default, all injections are included. The output depends on whether you have enabled the report/dpm-zone-summaries-per-injection? text command, in which case additional information is printed for escaped particles, such as per-injection data. Note that, for unsteady particle tracking, it is necessary to enable the report/dpm-zone-summaries-per-injection? text command before any particle parcels are injected into the domain.
             """
             return PyMenu(self.service, "/report/dpm_extended_summary").execute(*args, **kwargs)
         def dpm_zone_summaries_per_injection(self, *args, **kwargs):
             """
-            Enable per-injection zone DPM summaries.
+            Enables/disables calculation of the escaped mass per injection. Note that for unsteady particle tracking, if you want to report the mass of escaped particles per injection, this text command must be enabled before any particles are injected into the domain.
             """
             return PyMenu(self.service, "/report/dpm_zone_summaries_per_injection").execute(*args, **kwargs)
         def dpm_sample(self, *args, **kwargs):
             """
-            Sample trajectories at boundaries and lines/planes.
+            Samples trajectories at boundaries and lines/planes.
             """
             return PyMenu(self.service, "/report/dpm_sample").execute(*args, **kwargs)
         def dpm_sample_output_udf(self, *args, **kwargs):
             """
-            Set the DPM sampling output UDF.
+            Allows you to hook a previously loaded DEFINE_DPM_OUTPUT UDF for file format specification for sampling of trajectories and VOF-to-DPM lump conversion transcripts.
             """
             return PyMenu(self.service, "/report/dpm_sample_output_udf").execute(*args, **kwargs)
         def dpm_sample_sort_file(self, *args, **kwargs):
             """
-            Enable writing of sorted DPM sample files.
+            Enables/disables writing of sorted DPM sample files.
             """
             return PyMenu(self.service, "/report/dpm_sample_sort_file").execute(*args, **kwargs)
         def particle_summary(self, *args, **kwargs):
             """
-            Print summary report for all current particles.
+            Prints summary report for all current particles.
             """
             return PyMenu(self.service, "/report/particle_summary").execute(*args, **kwargs)
         def path_line_summary(self, *args, **kwargs):
             """
-            Print path-line-summary report.
+            Prints pathline summary report.
             """
             return PyMenu(self.service, "/report/path_line_summary").execute(*args, **kwargs)
         def print_histogram(self, *args, **kwargs):
             """
-            Print a histogram of a scalar quantity.
+            Prints a histogram of a scalar quantity.
             """
             return PyMenu(self.service, "/report/print_histogram").execute(*args, **kwargs)
         def write_histogram(self, *args, **kwargs):
@@ -26512,38 +26598,38 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/report/write_histogram").execute(*args, **kwargs)
         def projected_surface_area(self, *args, **kwargs):
             """
-            Print total area of the projection of a group of surfaces to a plane.
+            Computes the area of the projection of selected surfaces along the  ,  , or   axis.
             """
             return PyMenu(self.service, "/report/projected_surface_area").execute(*args, **kwargs)
         def species_mass_flow(self, *args, **kwargs):
             """
-            Print list of species mass flow rates at boundaries.
+            Prints list of species mass flow rate at inlets and outlets. This reports the mass flow rates of all species (in kg/s) flowing through the simulation boundaries.
             """
             return PyMenu(self.service, "/report/species_mass_flow").execute(*args, **kwargs)
         def element_mass_flow(self, *args, **kwargs):
             """
-            Print list of element mass flow rates at boundaries.
+            Prints list of element flow rate at inlets and outlets. This reports the mass flow rates of all chemical elements (in kg/s) flowing through the simulation boundaries.
             """
             return PyMenu(self.service, "/report/element_mass_flow").execute(*args, **kwargs)
         def summary(self, *args, **kwargs):
             """
-            Print report summary.
+            Prints the current settings for physical models, boundary conditions, material properties, and solution parameters.
             """
             return PyMenu(self.service, "/report/summary").execute(*args, **kwargs)
         def uds_flow(self, *args, **kwargs):
             """
-            Print list of UDS flow rate at boundaries.
+            Prints list of user-defined scalar flow rate at boundaries.
             """
             return PyMenu(self.service, "/report/uds_flow").execute(*args, **kwargs)
         def mphase_summary(self, *args, **kwargs):
             """
-            Multiphase Summary and Recommendations.
+            Prints summary report for a multiphase case setup.
             """
             return PyMenu(self.service, "/report/mphase_summary").execute(*args, **kwargs)
 
         class dpm_histogram(metaclass=PyMenuMeta):
             """
-            Enter the DPM histogram menu.
+            Enters the DPM histogram menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -26552,27 +26638,27 @@ class main_menu(metaclass=PyMenuMeta):
                 self.setup_reduction = self.__class__.setup_reduction(path + [("setup_reduction", None)], service)
             def compute_sample(self, *args, **kwargs):
                 """
-                Compute minimum/maximum of a sample variable.
+                Computes the minimum/maximum of a sample variable.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/compute_sample").execute(*args, **kwargs)
             def delete_sample(self, *args, **kwargs):
                 """
-                Delete a sample from loaded sample list.
+                Deletes a sample from the loaded sample list.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/delete_sample").execute(*args, **kwargs)
             def list_samples(self, *args, **kwargs):
                 """
-                Show all samples in loaded sample list.
+                Shows all samples in a loaded sample list.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/list_samples").execute(*args, **kwargs)
             def plot_sample(self, *args, **kwargs):
                 """
-                Plot a histogram of a loaded sample.
+                Plots a histogram of a loaded sample.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/plot_sample").execute(*args, **kwargs)
             def read_sample(self, *args, **kwargs):
                 """
-                Read a sample file and add it to the sample list.
+                Reads a sample file and adds it to the sample list.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/read_sample").execute(*args, **kwargs)
             def write_sample(self, *args, **kwargs):
@@ -26582,66 +26668,65 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/report/dpm_histogram/write_sample").execute(*args, **kwargs)
             def pick_sample_to_reduce(self, *args, **kwargs):
                 """
-                Pick a sample for which to first set-up and then perform the data reduction.
+                Select a sample to be reduced.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/pick_sample_to_reduce").execute(*args, **kwargs)
             def reduce_picked_sample(self, *args, **kwargs):
                 """
-                Reduce a sample after first picking it and setting up all data-reduction options and parameters.
+                Reduce a sample as specified by the data reduction parameters. This command is available only after you selected the sample using the pick-sample-to-reduce text command.
                 """
                 return PyMenu(self.service, "/report/dpm_histogram/reduce_picked_sample").execute(*args, **kwargs)
 
             class set(metaclass=PyMenuMeta):
                 """
-                Enter the settings menu for the histogram.
+                Enters the settings menu for the histogram.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def auto_range(self, *args, **kwargs):
                     """
-                    Automatically compute range of sampling variable for histogram plots.
+                    Automatically computes the range of the sampling variable for histogram plots.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/auto_range").execute(*args, **kwargs)
                 def correlation(self, *args, **kwargs):
                     """
-                    Compute correlation of sampling variable with other variable.
+                    Computes the correlation of the sampling variable with another variable.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/correlation").execute(*args, **kwargs)
                 def cumulation_curve(self, *args, **kwargs):
                     """
-                    Compute a cumulative curve for sampling variable or correlation variable when correlation? was specified.
+                    Computes a cumulative curve for the sampling variable or correlation variable when correlation? is specified.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/cumulation_curve").execute(*args, **kwargs)
                 def diameter_statistics(self, *args, **kwargs):
                     """
-                    Compute Rosin Rammler parameters, Sauter and other mean diameters.
-                    Requires specification of diameter as sampling variable.
+                    Computes the Rosin Rammler parameters, Sauter, and other mean diameters.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/diameter_statistics").execute(*args, **kwargs)
                 def histogram_mode(self, *args, **kwargs):
                     """
-                    Use bars for histogram plot or xy-style.
+                    Uses bars for the histogram plot or xy-style.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/histogram_mode").execute(*args, **kwargs)
                 def minimum(self, *args, **kwargs):
                     """
-                    Specify mimimum value of x-axis variable for histogram plots.
+                    Specifies the minimum value of the x-axis variable for histogram plots.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/minimum").execute(*args, **kwargs)
                 def maximum(self, *args, **kwargs):
                     """
-                    Specify maximum value of x-axis variable for histogram plots.
+                    Specifies the maximum value of the x-axis variable for histogram plots.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/maximum").execute(*args, **kwargs)
                 def number_of_bins(self, *args, **kwargs):
                     """
-                    Specify the number of bins.
+                    Specifies the number of bins.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/number_of_bins").execute(*args, **kwargs)
                 def percentage(self, *args, **kwargs):
                     """
-                    Use percentages of bins to be computed.
+                    Uses percentages of bins to be computed.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/percentage").execute(*args, **kwargs)
                 def variable_power_3(self, *args, **kwargs):
@@ -26652,12 +26737,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/report/dpm_histogram/set/variable_power_3").execute(*args, **kwargs)
                 def logarithmic(self, *args, **kwargs):
                     """
-                    Use logarithmic scaling on the abscissa (variable axis)? -- Will not work unless all values are positive.
+                    Enables/disables the use of logarithmic scaling on the abscissa of the histogram.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/logarithmic").execute(*args, **kwargs)
                 def weighting(self, *args, **kwargs):
                     """
-                    Use weighting with additional variable when sorting data into samples.
+                    Uses weighting with additional variables when sorting data into samples.
                     """
                     return PyMenu(self.service, "/report/dpm_histogram/set/weighting").execute(*args, **kwargs)
 
@@ -26721,78 +26806,78 @@ class main_menu(metaclass=PyMenuMeta):
 
         class fluxes(metaclass=PyMenuMeta):
             """
-            Flux report menu.
+            Enters the fluxes menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def mass_flow(self, *args, **kwargs):
                 """
-                Print mass flow rate at inlets and outlets.
+                Prints mass flow rate at inlets and outlets.
                 """
                 return PyMenu(self.service, "/report/fluxes/mass_flow").execute(*args, **kwargs)
             def heat_transfer(self, *args, **kwargs):
                 """
-                Print heat transfer rate at boundaries.
+                Prints heat transfer rate at boundaries.
                 """
                 return PyMenu(self.service, "/report/fluxes/heat_transfer").execute(*args, **kwargs)
             def heat_transfer_sensible(self, *args, **kwargs):
                 """
-                Print sensible heat transfer rate at boundaries.
+                Prints the sensible heat transfer rate at the boundaries.
                 """
                 return PyMenu(self.service, "/report/fluxes/heat_transfer_sensible").execute(*args, **kwargs)
             def rad_heat_trans(self, *args, **kwargs):
                 """
-                Print radiation heat transfer rate at boundaries.
+                Prints radiation heat transfer rate at boundaries.
                 """
                 return PyMenu(self.service, "/report/fluxes/rad_heat_trans").execute(*args, **kwargs)
             def film_mass_flow(self, *args, **kwargs):
                 """
-                Print film mass flow rate at boundaries.
+                Prints wall film mass flow rate at boundaries. This text command is only available when you enable the Eulerian wall film model.
                 """
                 return PyMenu(self.service, "/report/fluxes/film_mass_flow").execute(*args, **kwargs)
             def film_heat_transfer(self, *args, **kwargs):
                 """
-                Print film heat transfer rate at boundaries.
+                Prints wall film heat transfer rate at boundaries. This text command is only available when you enable the Eulerian wall film model.
                 """
                 return PyMenu(self.service, "/report/fluxes/film_heat_transfer").execute(*args, **kwargs)
             def pressure_work(self, *args, **kwargs):
                 """
-                Print pressure work rate at moving boundaries.
+                Prints the pressure work rate at the boundaries. This text command is only available when the energy equation is enabled, the absolute velocity formulation is selected, and zone motion is enabled for a fluid cell zone.
                 """
                 return PyMenu(self.service, "/report/fluxes/pressure_work").execute(*args, **kwargs)
             def viscous_work(self, *args, **kwargs):
                 """
-                Print viscous work rate at boundaries.
+                Prints the viscous work rate at the boundaries. This text command is only available when the energy equation is enabled and the pressure-based solver is selected.
                 """
                 return PyMenu(self.service, "/report/fluxes/viscous_work").execute(*args, **kwargs)
 
         class forces(metaclass=PyMenuMeta):
             """
-            Force report menu.
+            Enters the forces menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def wall_forces(self, *args, **kwargs):
                 """
-                Print integrated pressure and viscous forces on wall zones.
+                Computes the forces along the specified force vector for all wall zones.
                 """
                 return PyMenu(self.service, "/report/forces/wall_forces").execute(*args, **kwargs)
             def wall_moments(self, *args, **kwargs):
                 """
-                Print integrated pressure and viscous moments on wall zones.
+                Computes the moments about the specified moment center for all wall zones.
                 """
                 return PyMenu(self.service, "/report/forces/wall_moments").execute(*args, **kwargs)
             def pressure_center(self, *args, **kwargs):
                 """
-                Print center of pressure on wall zones.
+                Prints the center of pressure on wall zones.
                 """
                 return PyMenu(self.service, "/report/forces/pressure_center").execute(*args, **kwargs)
 
         class reference_values(metaclass=PyMenuMeta):
             """
-            Reference value menu.
+            Enters the reference value menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -26800,68 +26885,68 @@ class main_menu(metaclass=PyMenuMeta):
                 self.compute = self.__class__.compute(path + [("compute", None)], service)
             def area(self, *args, **kwargs):
                 """
-                Set reference area for normalization.
+                Sets reference area for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/area").execute(*args, **kwargs)
             def depth(self, *args, **kwargs):
                 """
-                Set reference depth for volume calculation.
+                Sets reference depth for volume calculation.
                 """
                 return PyMenu(self.service, "/report/reference_values/depth").execute(*args, **kwargs)
             def density(self, *args, **kwargs):
                 """
-                Set reference density for normalization.
+                Sets reference density for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/density").execute(*args, **kwargs)
             def enthalpy(self, *args, **kwargs):
                 """
-                Set reference enthalpy for enthalpy damping and normalization.
+                Sets reference enthalpy for enthalpy damping and normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/enthalpy").execute(*args, **kwargs)
             def length(self, *args, **kwargs):
                 """
-                Set reference length for normalization.
+                Sets reference length for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/length").execute(*args, **kwargs)
             def pressure(self, *args, **kwargs):
                 """
-                Set reference pressure for normalization.
+                Sets reference pressure for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/pressure").execute(*args, **kwargs)
             def temperature(self, *args, **kwargs):
                 """
-                Set reference temperature for normalization.
+                Sets reference temperature for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/temperature").execute(*args, **kwargs)
             def yplus(self, *args, **kwargs):
                 """
-                Set reference yplus for normalization.
+                Sets reference yplus for calculation of Yplus Based Heat Transfer Coefficient.
                 """
                 return PyMenu(self.service, "/report/reference_values/yplus").execute(*args, **kwargs)
             def velocity(self, *args, **kwargs):
                 """
-                Set reference velocity for normalization.
+                Sets reference velocity for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/velocity").execute(*args, **kwargs)
             def viscosity(self, *args, **kwargs):
                 """
-                Set reference viscosity for normalization.
+                Sets reference viscosity for normalization.
                 """
                 return PyMenu(self.service, "/report/reference_values/viscosity").execute(*args, **kwargs)
             def zone(self, *args, **kwargs):
                 """
-                Set reference zone.
+                Sets reference zone.
                 """
                 return PyMenu(self.service, "/report/reference_values/zone").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List current reference values.
+                Lists current reference values.
                 """
                 return PyMenu(self.service, "/report/reference_values/list").execute(*args, **kwargs)
 
             class compute(metaclass=PyMenuMeta):
                 """
-                Enter the compute menu.
+                Computes reference values from zone boundary conditions.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -27029,14 +27114,14 @@ class main_menu(metaclass=PyMenuMeta):
 
         class surface_integrals(metaclass=PyMenuMeta):
             """
-            Surface Integral menu.
+            Enters the surface integral menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def area(self, *args, **kwargs):
                 """
-                Print total area of surfaces.
+                Prints the area of the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/area").execute(*args, **kwargs)
             def area_weighted_avg(self, *args, **kwargs):
@@ -27046,98 +27131,98 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/report/surface_integrals/area_weighted_avg").execute(*args, **kwargs)
             def facet_avg(self, *args, **kwargs):
                 """
-                Print average of scalar at facet centroids of the surfaces.
+                Prints the facet average of the specified quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/facet_avg").execute(*args, **kwargs)
             def facet_max(self, *args, **kwargs):
                 """
-                Print maximum of scalar at facet centroids of the surfaces.
+                Prints the maximum of the specified quantity over facet centroids of the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/facet_max").execute(*args, **kwargs)
             def facet_min(self, *args, **kwargs):
                 """
-                Print minimum of scalar at facet centroids of the surfaces.
+                Prints the minimum of the specified quantity over facet centroids of the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/facet_min").execute(*args, **kwargs)
             def flow_rate(self, *args, **kwargs):
                 """
-                Print flow rate of scalar through surfaces.
+                Prints the flow rate of the specified quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/flow_rate").execute(*args, **kwargs)
             def integral(self, *args, **kwargs):
                 """
-                Print integral of scalar over surfaces.
+                Prints the integral of the specified quantity over the selected surfaces. You can include a wildcard (*) within the surface names.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/integral").execute(*args, **kwargs)
             def mass_flow_rate(self, *args, **kwargs):
                 """
-                Print mass flow rate through surfaces.
+                Prints the mass flow rate through the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/mass_flow_rate").execute(*args, **kwargs)
             def mass_weighted_avg(self, *args, **kwargs):
                 """
-                Print mass-average of scalar over surfaces.
+                Prints the mass-averaged quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/mass_weighted_avg").execute(*args, **kwargs)
             def standard_deviation(self, *args, **kwargs):
                 """
-                Print standard deviation of scalar.
+                Prints the standard deviation of the scalar at the facet centroids of the surface.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/standard_deviation").execute(*args, **kwargs)
             def sum(self, *args, **kwargs):
                 """
-                Print sum of scalar at facet centroids of the surfaces.
+                Prints sum of scalar at facet centroids of the surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/sum").execute(*args, **kwargs)
             def uniformity_index_area_weighted(self, *args, **kwargs):
                 """
-                Print uniformity index of scalar over surfaces.
+                Prints the area-weighted uniformity index of the specified quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/uniformity_index_area_weighted").execute(*args, **kwargs)
             def uniformity_index_mass_weighted(self, *args, **kwargs):
                 """
-                Print uniformity index of scalar over surfaces.
+                Prints the mass-weighted uniformity index of the specified quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/uniformity_index_mass_weighted").execute(*args, **kwargs)
             def vector_based_flux(self, *args, **kwargs):
                 """
-                Print custom vector based flux.
+                Prints the vector-based flux of the specified quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/vector_based_flux").execute(*args, **kwargs)
             def vector_flux(self, *args, **kwargs):
                 """
-                Print custom vector flux.
+                Prints the vector flux over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/vector_flux").execute(*args, **kwargs)
             def vector_weighted_average(self, *args, **kwargs):
                 """
-                Print custom vector weighted average.
+                Prints the vector-averaged quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/vector_weighted_average").execute(*args, **kwargs)
             def vertex_avg(self, *args, **kwargs):
                 """
-                Print average of scalar at vertices of the surfaces.
+                Prints the vertex average of the specified quantity over the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/vertex_avg").execute(*args, **kwargs)
             def vertex_max(self, *args, **kwargs):
                 """
-                Print maximkum of scalar at vertices of the surfaces.
+                Prints the maximum of the specified quantity over vertices of the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/vertex_max").execute(*args, **kwargs)
             def vertex_min(self, *args, **kwargs):
                 """
-                Print minimum of scalar at vertices of the surfaces.
+                Prints the minimum of the specified quantity over vertices of the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/vertex_min").execute(*args, **kwargs)
             def volume_flow_rate(self, *args, **kwargs):
                 """
-                Print volume flow rate through surfaces.
+                Prints the volume flow rate through the selected surfaces.
                 """
                 return PyMenu(self.service, "/report/surface_integrals/volume_flow_rate").execute(*args, **kwargs)
 
         class volume_integrals(metaclass=PyMenuMeta):
             """
-            Volume Integral menu.
+            Enters the volume integral menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -27149,60 +27234,60 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/report/volume_integrals/mass").execute(*args, **kwargs)
             def mass_avg(self, *args, **kwargs):
                 """
-                Print mass-average of scalar over cell zones.
+                Prints mass-average of scalar over cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/mass_avg").execute(*args, **kwargs)
             def mass_integral(self, *args, **kwargs):
                 """
-                Print mass-weighted integral of scalar over cell zones.
+                Prints mass-weighted integral of scalar over cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/mass_integral").execute(*args, **kwargs)
             def maximum(self, *args, **kwargs):
                 """
-                Print maximum of scalar over all cell zones.
+                Prints maximum of scalar over all cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/maximum").execute(*args, **kwargs)
             def minimum(self, *args, **kwargs):
                 """
-                Print minimum of scalar over all cell zones.
+                Prints minimum of scalar over all cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/minimum").execute(*args, **kwargs)
             def sum(self, *args, **kwargs):
                 """
-                Print sum of scalar over all cell zones.
+                Prints sum of scalar over all cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/sum").execute(*args, **kwargs)
             def twopisum(self, *args, **kwargs):
                 """
-                Print sum of scalar over all cell zones multiplied by 2\*Pi.
+                Prints sum of scalar over all cell zones multiplied by 2π.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/twopisum").execute(*args, **kwargs)
             def volume(self, *args, **kwargs):
                 """
-                Print total volume of specified cell zones.
+                Prints total volume of specified cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/volume").execute(*args, **kwargs)
             def volume_avg(self, *args, **kwargs):
                 """
-                Print volume-weighted average of scalar over cell zones.
+                Prints volume-weighted average of scalar over cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/volume_avg").execute(*args, **kwargs)
             def volume_integral(self, *args, **kwargs):
                 """
-                Print integral of scalar over cell zones.
+                Prints integral of scalar over cell zones.
                 """
                 return PyMenu(self.service, "/report/volume_integrals/volume_integral").execute(*args, **kwargs)
 
         class modified_setting(metaclass=PyMenuMeta):
             """
-            Enter the menu for setting up the Modified Settings Summary table.
+            Enter the modified settings menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def modified_setting(self, *args, **kwargs):
                 """
-                Specify which settings will be checked for non-default status for generating the Modified Settings Summary table.
+                Specify which areas of setup will be checked for non-default settings for generating the Modified Settings Summary table. The table is displayed tabbed with the graphics window.
                 """
                 return PyMenu(self.service, "/report/modified_setting/modified_setting").execute(*args, **kwargs)
             def write_user_setting(self, *args, **kwargs):
@@ -27231,62 +27316,62 @@ class main_menu(metaclass=PyMenuMeta):
 
         class heat_exchanger(metaclass=PyMenuMeta):
             """
-            Enter the heat exchanger menu.
+            Enters the heat exchanger menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def computed_heat_rejection(self, *args, **kwargs):
                 """
-                Print total heat rejection.
+                Prints total heat rejection.
                 """
                 return PyMenu(self.service, "/report/heat_exchanger/computed_heat_rejection").execute(*args, **kwargs)
             def inlet_temperature(self, *args, **kwargs):
                 """
-                Print inlet temperature.
+                Prints inlet temperature.
                 """
                 return PyMenu(self.service, "/report/heat_exchanger/inlet_temperature").execute(*args, **kwargs)
             def outlet_temperature(self, *args, **kwargs):
                 """
-                Print outlet temperature.
+                Prints outlet temperature.
                 """
                 return PyMenu(self.service, "/report/heat_exchanger/outlet_temperature").execute(*args, **kwargs)
             def mass_flow_rate(self, *args, **kwargs):
                 """
-                Print mass flow rate.
+                Prints mass flow rate.
                 """
                 return PyMenu(self.service, "/report/heat_exchanger/mass_flow_rate").execute(*args, **kwargs)
             def specific_heat(self, *args, **kwargs):
                 """
-                Print fluid's specific heat.
+                Prints fluid’s specific heat.
                 """
                 return PyMenu(self.service, "/report/heat_exchanger/specific_heat").execute(*args, **kwargs)
 
         class system(metaclass=PyMenuMeta):
             """
-            Sytem menu.
+            Enters the system menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def proc_stats(self, *args, **kwargs):
                 """
-                Fluent process information.
+                Prints ANSYS Fluent process information. This is used to report the memory usage of each of the ANSYS Fluent processes.
                 """
                 return PyMenu(self.service, "/report/system/proc_stats").execute(*args, **kwargs)
             def sys_stats(self, *args, **kwargs):
                 """
-                System information.
+                System information. This is used to report the CPU configuration of the machines where ANSYS Fluent processes have been spawned.
                 """
                 return PyMenu(self.service, "/report/system/sys_stats").execute(*args, **kwargs)
             def gpgpu_stats(self, *args, **kwargs):
                 """
-                GPGPU information.
+                Prints information about installed general purpose graphical processing units.
                 """
                 return PyMenu(self.service, "/report/system/gpgpu_stats").execute(*args, **kwargs)
             def time_stats(self, *args, **kwargs):
                 """
-                Time usage information.
+                Timer information. This is used to report CPU timings for user and kernel processes and detailed solver timings.
                 """
                 return PyMenu(self.service, "/report/system/time_stats").execute(*args, **kwargs)
 
@@ -37666,12 +37751,12 @@ class main_menu(metaclass=PyMenuMeta):
             self.execute_commands = self.__class__.execute_commands(path + [("execute_commands", None)], service)
         def patch(self, *args, **kwargs):
             """
-            Patch a value for a flow variable in the domain.
+            Patches a value for a flow variable in the domain. You can either provide a numerical value, which you can enter directly, or you can enter an expression, which must be entered within quotation marks.
             """
             return PyMenu(self.service, "/solve/patch").execute(*args, **kwargs)
         def iterate(self, *args, **kwargs):
             """
-            Perform a specified number of iterations.
+            Performs a specified number of iterations.  This option is still available during transient simulations, since it can be used to add more iterations to the same time step after interrupting iterations within a time step. 
             """
             return PyMenu(self.service, "/solve/iterate").execute(*args, **kwargs)
         def iterate_steady_2way_fsi(self, *args, **kwargs):
@@ -37681,17 +37766,17 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/solve/iterate_steady_2way_fsi").execute(*args, **kwargs)
         def convergence_conditions(self, *args, **kwargs):
             """
-            Manage convergence report.
+            Enters the convergence conditions menu.
             """
             return PyMenu(self.service, "/solve/convergence_conditions").execute(*args, **kwargs)
         def dpm_update(self, *args, **kwargs):
             """
-            Update discrete phase source terms.
+            Updates discrete phase source terms.
             """
             return PyMenu(self.service, "/solve/dpm_update").execute(*args, **kwargs)
         def dual_time_iterate(self, *args, **kwargs):
             """
-            Perform unsteady iterations.
+            Performs unsteady iterations for a specified number of time steps.
             """
             return PyMenu(self.service, "/solve/dual_time_iterate").execute(*args, **kwargs)
         def multistage_time_iterate(self, *args, **kwargs):
@@ -37701,18 +37786,18 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/solve/multistage_time_iterate").execute(*args, **kwargs)
         def update_physical_time(self, *args, **kwargs):
             """
-            Update the solution to the next physical time level.
+            Advances the unsteady solution to the next physical time level. Using this command in conjunction with theiterate command allows you to manually advance the solution in time (rather than doing it automatically with the dual-time-iterate command).
             """
             return PyMenu(self.service, "/solve/update_physical_time").execute(*args, **kwargs)
         def mesh_motion(self, *args, **kwargs):
             """
-            Perform mesh motion.
+            Performs mesh motion.
             """
             return PyMenu(self.service, "/solve/mesh_motion").execute(*args, **kwargs)
 
         class animate(metaclass=PyMenuMeta):
             """
-            Enter the animation menu.
+            Enters the animation menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -37724,25 +37809,25 @@ class main_menu(metaclass=PyMenuMeta):
 
             class define(metaclass=PyMenuMeta):
                 """
-                Enter the animation definition menu.
+                Enters the animation definition menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def define_monitor(self, *args, **kwargs):
                     """
-                    Define new animation.
+                    Defines new animation.
                     """
                     return PyMenu(self.service, "/solve/animate/define/define_monitor").execute(*args, **kwargs)
                 def edit_monitor(self, *args, **kwargs):
                     """
-                    Change animation monitor attributes.
+                    Changes animation monitor attributes.
                     """
                     return PyMenu(self.service, "/solve/animate/define/edit_monitor").execute(*args, **kwargs)
 
             class playback(metaclass=PyMenuMeta):
                 """
-                Enter animation playback menu.
+                Enters the animation playback menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -37750,38 +37835,38 @@ class main_menu(metaclass=PyMenuMeta):
                     self.video = self.__class__.video(path + [("video", None)], service)
                 def read(self, *args, **kwargs):
                     """
-                    Read new animation from file or already-defined animations.
+                    Reads new animation from file or already defined animations.
                     """
                     return PyMenu(self.service, "/solve/animate/playback/read").execute(*args, **kwargs)
                 def play(self, *args, **kwargs):
                     """
-                    Play the selected animation.
+                    Plays the selected animation.
                     """
                     return PyMenu(self.service, "/solve/animate/playback/play").execute(*args, **kwargs)
                 def write(self, *args, **kwargs):
                     """
-                    Write animation sequence to the file.
+                    Writes animation sequence to the file.
                     """
                     return PyMenu(self.service, "/solve/animate/playback/write").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete animation sequence.
+                    Deletes animation sequence.
                     """
                     return PyMenu(self.service, "/solve/animate/playback/delete").execute(*args, **kwargs)
                 def stored_view(self, *args, **kwargs):
                     """
-                    Play the 3D animation sequence using the view stored in the sequence.
+                    Plays the 3D animation sequence using the view stored in the sequence.
                     """
                     return PyMenu(self.service, "/solve/animate/playback/stored_view").execute(*args, **kwargs)
                 def set_custom_frames(self, *args, **kwargs):
                     """
-                    Set custom frames start, end, skip frames for video export.
+                    Specify a custom start frame, increment, and end frame for video export.
                     """
                     return PyMenu(self.service, "/solve/animate/playback/set_custom_frames").execute(*args, **kwargs)
 
                 class video(metaclass=PyMenuMeta):
                     """
-                    Set options for exporting video file menu.
+                    Enters the video menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -37789,12 +37874,12 @@ class main_menu(metaclass=PyMenuMeta):
                         self.advance_quality = self.__class__.advance_quality(path + [("advance_quality", None)], service)
                     def fps(self, *args, **kwargs):
                         """
-                        Set the Frame Per Sec(FPS) for exporting video file.
+                        Sets the target frames per second (FPS) for the saved video  file.
                         """
                         return PyMenu(self.service, "/solve/animate/playback/video/fps").execute(*args, **kwargs)
                     def format(self, *args, **kwargs):
                         """
-                        Set format for exporting video file.
+                        Specifies what format the video file will be written in (MP4 | AVI |  FLV | MOV | MPEG).
                         """
                         return PyMenu(self.service, "/solve/animate/playback/video/format").execute(*args, **kwargs)
                     def quality(self, *args, **kwargs):
@@ -37804,17 +37889,17 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/animate/playback/video/quality").execute(*args, **kwargs)
                     def name(self, *args, **kwargs):
                         """
-                        Exporting video file name.
+                        Sets the name of the saved video file.
                         """
                         return PyMenu(self.service, "/solve/animate/playback/video/name").execute(*args, **kwargs)
                     def use_original_resolution(self, *args, **kwargs):
                         """
-                        Enable original resolution.
+                        Controls whether the resolution of the saved video file matches that  of the images used to create it.
                         """
                         return PyMenu(self.service, "/solve/animate/playback/video/use_original_resolution").execute(*args, **kwargs)
                     def scale(self, *args, **kwargs):
                         """
-                        Set scale by which video resolution will expand.
+                        Expands or collapses the resolution based on this scaling  factor.
                         """
                         return PyMenu(self.service, "/solve/animate/playback/video/scale").execute(*args, **kwargs)
                     def set_standard_resolution(self, *args, **kwargs):
@@ -37868,40 +37953,40 @@ class main_menu(metaclass=PyMenuMeta):
 
             class objects(metaclass=PyMenuMeta):
                 """
-                Enter to define, edit, delete solution animation objects.
+                Enters the object manipulation menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def create(self, *args, **kwargs):
                     """
-                    Create new graphics object.
+                    Creates new solution animation object.
                     """
                     return PyMenu(self.service, "/solve/animate/objects/create").execute(*args, **kwargs)
                 def edit(self, *args, **kwargs):
                     """
-                    Edit graphics object.
+                    Edits solution animation object.
                     """
                     return PyMenu(self.service, "/solve/animate/objects/edit").execute(*args, **kwargs)
                 def copy(self, *args, **kwargs):
                     """
-                    Copy graphics object.
+                    Copies solution animation object.
                     """
                     return PyMenu(self.service, "/solve/animate/objects/copy").execute(*args, **kwargs)
                 def delete(self, *args, **kwargs):
                     """
-                    Delete graphics object.
+                    Deletes solution animation object.
                     """
                     return PyMenu(self.service, "/solve/animate/objects/delete").execute(*args, **kwargs)
                 def clear_history(self, *args, **kwargs):
                     """
-                    Clear object history.
+                    Clears solution animation object history.
                     """
                     return PyMenu(self.service, "/solve/animate/objects/clear_history").execute(*args, **kwargs)
 
             class pulse(metaclass=PyMenuMeta):
                 """
-                Enter save pulse menu.
+                Enter the pulse animation menu (only available when one or more particle track or pathline graphics objects are defined).
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -37910,12 +37995,12 @@ class main_menu(metaclass=PyMenuMeta):
                     self.hardcopy = self.__class__.hardcopy(path + [("hardcopy", None)], service)
                 def pulse_mode(self, *args, **kwargs):
                     """
-                    Set pulse-mode.
+                    Set whether the pulse is a single pulse or continuous.
                     """
                     return PyMenu(self.service, "/solve/animate/pulse/pulse_mode").execute(*args, **kwargs)
                 def write(self, *args, **kwargs):
                     """
-                    Exporting pulse.
+                    Select a pathline or particle track graphics object, specify whether you want to write a video file or picture files, and enter the destination directory for the files. Continuous pulse animations result in a 5 second video. Single pulse animations run for a full cycle.
                     """
                     return PyMenu(self.service, "/solve/animate/pulse/write").execute(*args, **kwargs)
 
@@ -38202,7 +38287,7 @@ class main_menu(metaclass=PyMenuMeta):
 
         class initialize(metaclass=PyMenuMeta):
             """
-            Enter the flow initialization menu.
+            Enters the flow initialization menu. 
             """
             def __init__(self, path, service):
                 self.path = path
@@ -38214,7 +38299,7 @@ class main_menu(metaclass=PyMenuMeta):
                 self.set_hyb_initialization = self.__class__.set_hyb_initialization(path + [("set_hyb_initialization", None)], service)
             def open_channel_auto_init(self, *args, **kwargs):
                 """
-                Open channel automatic initialization.
+                Opens channel automatic initialization.
                 """
                 return PyMenu(self.service, "/solve/initialize/open_channel_auto_init").execute(*args, **kwargs)
             def levelset_auto_init(self, *args, **kwargs):
@@ -38224,34 +38309,32 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/initialize/levelset_auto_init").execute(*args, **kwargs)
             def dpm_reset(self, *args, **kwargs):
                 """
-                Reset discrete phase source terms to zero.
+                Resets discrete phase source terms to zero.
                 """
                 return PyMenu(self.service, "/solve/initialize/dpm_reset").execute(*args, **kwargs)
             def lwf_initialization(self, *args, **kwargs):
                 """
-                Delete wall film particles and initialize wall film variables to zero.
+                Deletes wall film particles and initializes wall film variables to zero. This option is available only with the wall-film DPM boundary condition.
                 """
                 return PyMenu(self.service, "/solve/initialize/lwf_initialization").execute(*args, **kwargs)
             def initialize_flow(self, *args, **kwargs):
                 """
-                Initialize the flow field with the current default values.
+                Initializes the flow field with the current default values.
                 """
                 return PyMenu(self.service, "/solve/initialize/initialize_flow").execute(*args, **kwargs)
             def init_acoustics_options(self, *args, **kwargs):
                 """
-                Specify number of timesteps for ramping of sources
-                and initialize acoustics model variables.
-                During ramping the sound sources are multiplied by a factor smoothly growing from 0 to 1.
+                Specifies the number of timesteps for ramping of sound sources and re-initializes the acoustics wave equation solution. For the initialized acoustics solution, Fluent reports the current state of the sound sources ramping.
                 """
                 return PyMenu(self.service, "/solve/initialize/init_acoustics_options").execute(*args, **kwargs)
             def hyb_initialization(self, *args, **kwargs):
                 """
-                Initialize using the hybrid initialization method.
+                Initializes using the hybrid initialization method.
                 """
                 return PyMenu(self.service, "/solve/initialize/hyb_initialization").execute(*args, **kwargs)
             def init_flow_statistics(self, *args, **kwargs):
                 """
-                Initialize statistics.
+                Initializes unsteady statistics.
                 """
                 return PyMenu(self.service, "/solve/initialize/init_flow_statistics").execute(*args, **kwargs)
             def patch(self, *args, **kwargs):
@@ -38261,53 +38344,53 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/initialize/patch").execute(*args, **kwargs)
             def show_time_sampled(self, *args, **kwargs):
                 """
-                Display the amount of simulated time covered by the data sampled for unsteady statistics.
+                Displays the amount of simulated time covered by the data sampled for unsteady statistics.
                 """
                 return PyMenu(self.service, "/solve/initialize/show_time_sampled").execute(*args, **kwargs)
             def show_iterations_sampled(self, *args, **kwargs):
                 """
-                Display the amount of simulated iterations covered by the data sampled for steady statistics.
+                Displays the number of iterations covered by the data sampled for steady statistics.
                 """
                 return PyMenu(self.service, "/solve/initialize/show_iterations_sampled").execute(*args, **kwargs)
             def init_turb_vel_fluctuations(self, *args, **kwargs):
                 """
-                Initialize turbulent velocity fluctuations.
+                Initializes instantaneous velocity field out of steady state RANS results, for use before enabling a scale resolving simulation such as LES.
                 """
                 return PyMenu(self.service, "/solve/initialize/init_turb_vel_fluctuations").execute(*args, **kwargs)
             def fmg_initialization(self, *args, **kwargs):
                 """
-                Initialize using the full-multigrid initialization (FMG).
+                Initializes using the full-multigrid initialization (FMG).
                 """
                 return PyMenu(self.service, "/solve/initialize/fmg_initialization").execute(*args, **kwargs)
             def repair_wall_distance(self, *args, **kwargs):
                 """
-                Correct wall distance at very high aspect ratio hexahedral/polyhedral cells.
+                Corrects wall distance at very high aspect ratio hexahedral/polyhedral cells.
                 """
                 return PyMenu(self.service, "/solve/initialize/repair_wall_distance").execute(*args, **kwargs)
             def set_defaults(self, *args, **kwargs):
                 """
-                Enter the set defaults menu.
+                Sets default initial values.
                 """
                 return PyMenu(self.service, "/solve/initialize/set_defaults").execute(*args, **kwargs)
             def set_fmg_initialization(self, *args, **kwargs):
                 """
-                Enter the set full-multigrid for initialization menu.
+                Enters the set full-multigrid for initialization menu. Initial values for each variable can be set within this menu.
                 """
                 return PyMenu(self.service, "/solve/initialize/set_fmg_initialization").execute(*args, **kwargs)
             def list_defaults(self, *args, **kwargs):
                 """
-                List default values.
+                Lists default values.
                 """
                 return PyMenu(self.service, "/solve/initialize/list_defaults").execute(*args, **kwargs)
             def reference_frame(self, *args, **kwargs):
                 """
-                Set reference frame absolute or relative.
+                Sets reference frame to absolute or relative.
                 """
                 return PyMenu(self.service, "/solve/initialize/reference_frame").execute(*args, **kwargs)
 
             class compute_defaults(metaclass=PyMenuMeta):
                 """
-                Enter the compute defaults menu.
+                Enters the compute default values menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -38329,7 +38412,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/initialize/compute_defaults/dummy_entry").execute(*args, **kwargs)
                 def all_zones(self, *args, **kwargs):
                     """
-                    Initialize the flow field with the default values.
+                    Initializes the flow field with the default values.
                     """
                     return PyMenu(self.service, "/solve/initialize/compute_defaults/all_zones").execute(*args, **kwargs)
                 def exhaust_fan(self, *args, **kwargs):
@@ -38480,32 +38563,32 @@ class main_menu(metaclass=PyMenuMeta):
 
             class mp_localized_turb_init(metaclass=PyMenuMeta):
                 """
-                Localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models.
+                Enters the menu for localized turbulent flow initialization.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Localized initialization of turbulent flow variables for VOF/Mixture multiphase flow models.
+                    Enables/disables localized initialization of turbulent flow variables.
                     """
                     return PyMenu(self.service, "/solve/initialize/mp_localized_turb_init/enable").execute(*args, **kwargs)
                 def turb_init_parameters(self, *args, **kwargs):
                     """
-                    Turbulent flow parameters for localized initialization.
+                    Sets values for the turbulent intensity and turbulent viscosity ratio for localized initialization.
                     """
                     return PyMenu(self.service, "/solve/initialize/mp_localized_turb_init/turb_init_parameters").execute(*args, **kwargs)
 
             class vof_patch_smooth_options(metaclass=PyMenuMeta):
                 """
-                Enter the vof patch/smooth options menu.
+                Enters the vof patch/smooth options menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def set_options(self, *args, **kwargs):
                     """
-                    Patch and smoothing options for volume fraction.
+                    Sets options for patching and smoothing volume fraction.
                     """
                     return PyMenu(self.service, "/solve/initialize/vof_patch_smooth_options/set_options").execute(*args, **kwargs)
                 def execute_smoothing(self, *args, **kwargs):
@@ -38539,14 +38622,14 @@ class main_menu(metaclass=PyMenuMeta):
 
             class set_hyb_initialization(metaclass=PyMenuMeta):
                 """
-                Enter the settings for hybrid initialization method.
+                Enters the hybrid initialization menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def general_settings(self, *args, **kwargs):
                     """
-                    Enter the general settings menu.
+                    Enters the general settings menu.
                     """
                     return PyMenu(self.service, "/solve/initialize/set_hyb_initialization/general_settings").execute(*args, **kwargs)
                 def turbulent_settings(self, *args, **kwargs):
@@ -38556,13 +38639,13 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/initialize/set_hyb_initialization/turbulent_settings").execute(*args, **kwargs)
                 def species_settings(self, *args, **kwargs):
                     """
-                    Enter the species settings menu.
+                    Enters the species-settings menu.
                     """
                     return PyMenu(self.service, "/solve/initialize/set_hyb_initialization/species_settings").execute(*args, **kwargs)
 
         class monitors(metaclass=PyMenuMeta):
             """
-            Enter the monitors menu.
+            Sets solution monitors.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -38768,143 +38851,138 @@ class main_menu(metaclass=PyMenuMeta):
 
             class residual(metaclass=PyMenuMeta):
                 """
-                Enter the residual monitors menu.
+                Enters the residual monitors menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def check_convergence(self, *args, **kwargs):
                     """
-                    Choose which currently-monitored residuals
-                    should be checked for convergence.
+                    Chooses which currently monitored residuals should be checked for convergence.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/check_convergence").execute(*args, **kwargs)
                 def convergence_criteria(self, *args, **kwargs):
                     """
-                    Set convergence criteria for residuals which are
-                    currently being both monitored and checked.
+                    Sets convergence criteria for residuals that are currently being both monitored and checked.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/convergence_criteria").execute(*args, **kwargs)
                 def criterion_type(self, *args, **kwargs):
                     """
-                    Set convergence criterion type.
+                    Sets convergence criterion type.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/criterion_type").execute(*args, **kwargs)
                 def monitor(self, *args, **kwargs):
                     """
-                    Choose which residuals to monitor as printed and/or plotted output.
+                    Chooses which residuals to monitor as printed and/or plotted output.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/monitor").execute(*args, **kwargs)
                 def enhanced_continuity_residual(self, *args, **kwargs):
                     """
-                    Scale the continuity residuals locally based on the enhanced formulation.
+                    Enables/disables an enhanced formulation for the local scaling of the continuity residuals with the pressure-based solver, so that the absolute mass flow rate at each cell is used. This text command is only available when the computing of the local scale is enabled through the solve/monitors/residual/scale-by-coefficient? text command.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/enhanced_continuity_residual").execute(*args, **kwargs)
                 def n_display(self, *args, **kwargs):
                     """
-                    Set the number of most recent residuals to display in plots.
+                    Sets the number of most recent residuals to display in plots.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/n_display").execute(*args, **kwargs)
                 def n_maximize_norms(self, *args, **kwargs):
                     """
-                    Set the number of iterations through which normalization
-                    factors will be maximized.
+                    Sets the number of iterations through which normalization factors will be maximized.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/n_maximize_norms").execute(*args, **kwargs)
                 def normalization_factors(self, *args, **kwargs):
                     """
-                    Set normalization factors for currently-monitored residuals.
+                    Sets normalization factors for currently monitored residuals (if normalize? is set to yes).
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/normalization_factors").execute(*args, **kwargs)
                 def normalize(self, *args, **kwargs):
                     """
-                    Choose whether or not to normalize residuals in printed and plotted output.
+                    Chooses whether to normalize residuals in printed and plotted output.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/normalize").execute(*args, **kwargs)
                 def n_save(self, *args, **kwargs):
                     """
-                    Set number of residuals to be saved with data.
-                    History is automatically compacted when buffer becomes full.
+                    Sets number of residuals to be saved with data. History is automatically compacted when buffer becomes full.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/n_save").execute(*args, **kwargs)
                 def plot(self, *args, **kwargs):
                     """
-                    Choose whether or not residuals will be plotted during iteration.
+                    Chooses whether residuals will be plotted during iteration.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/plot").execute(*args, **kwargs)
                 def print(self, *args, **kwargs):
                     """
-                    Choose whether or not residuals will be printed during iteration.
+                    Chooses whether residuals will be printed during iteration.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/print").execute(*args, **kwargs)
                 def relative_conv_criteria(self, *args, **kwargs):
                     """
-                    Set relative convergence criteria for residuals which are
-                    currently being both monitored and checked.
+                    Sets relative convergence criteria for residuals that are currently being both monitored and checked.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/relative_conv_criteria").execute(*args, **kwargs)
                 def re_normalize(self, *args, **kwargs):
                     """
-                    Renormalize residuals by maximum values.
+                    Re-normalize residuals by maximum values.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/re_normalize").execute(*args, **kwargs)
                 def reset(self, *args, **kwargs):
                     """
-                    Delete the residual history and reset iteration counter to unity.
+                    Chooses whether to delete the residual history and reset iteration counter to 1.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/reset").execute(*args, **kwargs)
                 def scale_by_coefficient(self, *args, **kwargs):
                     """
-                    Enable/disable scaling of residuals by coefficient sum in printed and plotted output.
+                    Chooses whether to scale residuals by coefficient sum in printed and plotted output.
                     """
                     return PyMenu(self.service, "/solve/monitors/residual/scale_by_coefficient").execute(*args, **kwargs)
 
         class report_files(metaclass=PyMenuMeta):
             """
-            Manage report files.
+            Enters the report files menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Creates a report file.
                 """
                 return PyMenu(self.service, "/solve/report_files/add").execute(*args, **kwargs)
             def clear_data(self, *args, **kwargs):
                 """
-                Delete the report file from the system.
+                Clears the data associated with a report file.
                 """
                 return PyMenu(self.service, "/solve/report_files/clear_data").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all report file objects.
+                Deletes all of the report file objects.
                 """
                 return PyMenu(self.service, "/solve/report_files/delete_all").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Edits a report file.
                 """
                 return PyMenu(self.service, "/solve/report_files/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Deletes a report file object.
                 """
                 return PyMenu(self.service, "/solve/report_files/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists all defined report files.
                 """
                 return PyMenu(self.service, "/solve/report_files/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the properties of a report file.
                 """
                 return PyMenu(self.service, "/solve/report_files/list_properties").execute(*args, **kwargs)
 
         class report_definitions(metaclass=PyMenuMeta):
             """
-            Manage report definitions.
+            Enters the report definitions menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -38921,101 +38999,101 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/report_definitions/compute").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
                 """
-                Makes a copy of selected report definition with new name.
+                Creates a copy of a report definition.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/copy").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all report definition objects.
+                Deletes all of the report definition objects.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/delete_all").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Edits a report definition.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Deletes a report definition.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists all defined report definitions.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the properties of a report definition.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/list_properties").execute(*args, **kwargs)
             def rename(self, *args, **kwargs):
                 """
-                Rename selected report definition with new name.
+                Renames a report definition.
                 """
                 return PyMenu(self.service, "/solve/report_definitions/rename").execute(*args, **kwargs)
 
         class report_plots(metaclass=PyMenuMeta):
             """
-            Manage report plots.
+            Enters the report plots menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Creates a report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/add").execute(*args, **kwargs)
             def axes(self, *args, **kwargs):
                 """
-                Set axes options of an object.
+                Defines the axes for a report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/axes").execute(*args, **kwargs)
             def clear_data(self, *args, **kwargs):
                 """
-                Clear report plot data.
+                Clears the data associated with a report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/clear_data").execute(*args, **kwargs)
             def curves(self, *args, **kwargs):
                 """
-                Set curves options of an object.
+                Defines the curves for a report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/curves").execute(*args, **kwargs)
             def delete_all(self, *args, **kwargs):
                 """
-                Delete all plot objects.
+                Deletes all of the report plot objects.
                 """
                 return PyMenu(self.service, "/solve/report_plots/delete_all").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Edits a report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Deletes a report plot object.
                 """
                 return PyMenu(self.service, "/solve/report_plots/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists all defined report plots.
                 """
                 return PyMenu(self.service, "/solve/report_plots/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the properties of a report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/list_properties").execute(*args, **kwargs)
             def plot(self, *args, **kwargs):
                 """
-                Plot.
+                Plots the specified report plot.
                 """
                 return PyMenu(self.service, "/solve/report_plots/plot").execute(*args, **kwargs)
 
         class cell_registers(metaclass=PyMenuMeta):
             """
-            Manage Cell Registers.
+            Enters the cell registers menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -39027,86 +39105,86 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/cell_registers/adapt").execute(*args, **kwargs)
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Creates a new cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/add").execute(*args, **kwargs)
             def apply_poor_mesh_numerics(self, *args, **kwargs):
                 """
-                Apply poor mesh numerics to cell register objects.
+                Applies poor mesh numerics to the mesh of a cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/apply_poor_mesh_numerics").execute(*args, **kwargs)
             def coarsen(self, *args, **kwargs):
                 """
-                Coarsen cell register objects.
+                Coarsen the mesh based on a cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/coarsen").execute(*args, **kwargs)
             def display(self, *args, **kwargs):
                 """
-                Display cell register objects.
+                Displays a cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/display").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Edits an existing cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Deletes a cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists all of the currently defined cell registers.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the properties of a cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/list_properties").execute(*args, **kwargs)
             def refine(self, *args, **kwargs):
                 """
-                Refine cell register objects.
+                Refine the mesh based on a cell register.
                 """
                 return PyMenu(self.service, "/solve/cell_registers/refine").execute(*args, **kwargs)
 
         class cell_register_operations(metaclass=PyMenuMeta):
             """
-            Manage Cell Register Operations.
+            Enters the cell register operations menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add(self, *args, **kwargs):
                 """
-                Add a new object.
+                Creates a new cell register operation.
                 """
                 return PyMenu(self.service, "/solve/cell_register_operations/add").execute(*args, **kwargs)
             def edit(self, *args, **kwargs):
                 """
-                Edit an object.
+                Edits an existing cell register operation.
                 """
                 return PyMenu(self.service, "/solve/cell_register_operations/edit").execute(*args, **kwargs)
             def delete(self, *args, **kwargs):
                 """
-                Delete an object.
+                Deletes a cell register operation.
                 """
                 return PyMenu(self.service, "/solve/cell_register_operations/delete").execute(*args, **kwargs)
             def list(self, *args, **kwargs):
                 """
-                List objects.
+                Lists the currently defined cell register operations.
                 """
                 return PyMenu(self.service, "/solve/cell_register_operations/list").execute(*args, **kwargs)
             def list_properties(self, *args, **kwargs):
                 """
-                List properties of an object.
+                Lists the properties of a report register operation.
                 """
                 return PyMenu(self.service, "/solve/cell_register_operations/list_properties").execute(*args, **kwargs)
 
         class set(metaclass=PyMenuMeta):
             """
-            Enter the set solution parameters menu.
+            Enters the set solution parameters menu.
             """
             def __init__(self, path, service):
                 self.path = path
@@ -39147,77 +39225,77 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/variable_time_stepping").execute(*args, **kwargs)
             def bc_pressure_extrapolations(self, *args, **kwargs):
                 """
-                Setting pressure extrapolations schemes on boundaries.
+                Sets pressure extrapolations schemes on boundaries.
                 """
                 return PyMenu(self.service, "/solve/set/bc_pressure_extrapolations").execute(*args, **kwargs)
             def correction_tolerance(self, *args, **kwargs):
                 """
-                Enter the correction tolerance menu.
+                Enters the correction tolerance menu.
                 """
                 return PyMenu(self.service, "/solve/set/correction_tolerance").execute(*args, **kwargs)
             def courant_number(self, *args, **kwargs):
                 """
-                Set the fine mesh Courant number (time step factor).
+                Sets the fine-grid Courant number (time step factor). This command is available only for the coupled solvers.
                 """
                 return PyMenu(self.service, "/solve/set/courant_number").execute(*args, **kwargs)
             def data_sampling(self, *args, **kwargs):
                 """
-                Set iteration options.
+                Enables data sampling for steady or unsteady flow statistics.
                 """
                 return PyMenu(self.service, "/solve/set/data_sampling").execute(*args, **kwargs)
             def disable_reconstruction(self, *args, **kwargs):
                 """
-                Enable/Disable reconstruction. When disabled, accuracy will be first-order.
+                Completely disables reconstruction, resulting in totally first-order accuracy.
                 """
                 return PyMenu(self.service, "/solve/set/disable_reconstruction").execute(*args, **kwargs)
             def discretization_scheme(self, *args, **kwargs):
                 """
-                Enter the discretization-scheme menu.
+                Enters the discretization scheme menu. This allows you to select the discretization scheme for the convection terms in the solution equations. The following text commands can make a selection from a subset of the models in the following table:
                 """
                 return PyMenu(self.service, "/solve/set/discretization_scheme").execute(*args, **kwargs)
             def flux_type(self, *args, **kwargs):
                 """
-                Enter the flux type.
+                Sets the flux type. Note that for the pressure-based solver, you can enable the Auto Select option that automatically selects the flux interpolation type based on the setup of the case.
                 """
                 return PyMenu(self.service, "/solve/set/flux_type").execute(*args, **kwargs)
             def equations(self, *args, **kwargs):
                 """
-                Enter the equations menu.
+                Selects the equations to be solved.
                 """
                 return PyMenu(self.service, "/solve/set/equations").execute(*args, **kwargs)
             def expert(self, *args, **kwargs):
                 """
-                Set expert options.
+                Sets expert options.
                 """
                 return PyMenu(self.service, "/solve/set/expert").execute(*args, **kwargs)
             def flow_warnings(self, *args, **kwargs):
                 """
-                Control the display of warning diagnostics for boundaries with reversed flow, etc.
+                Specifies whether or not to print warning messages when reversed flow occurs at inlets and outlets, and when mass-flow inlets develop supersonic regions. By default, flow warnings are printed.
                 """
                 return PyMenu(self.service, "/solve/set/flow_warnings").execute(*args, **kwargs)
             def gradient_scheme(self, *args, **kwargs):
                 """
-                Set gradient options.
+                Sets gradient options.
                 """
                 return PyMenu(self.service, "/solve/set/gradient_scheme").execute(*args, **kwargs)
             def nb_gradient_boundary_option(self, *args, **kwargs):
                 """
-                Set ggnb options.
+                Switches between the modified treatment of node-based gradients at boundary cells and the legacy treatment (R14.5.7 and earlier). If using the density-based solver, you can also specify the extended treatment. For details, see .
                 """
                 return PyMenu(self.service, "/solve/set/nb_gradient_boundary_option").execute(*args, **kwargs)
             def limits(self, *args, **kwargs):
                 """
-                Set solver limits for the values of various solution variables.
+                Sets solver limits for various solution variables, in order to improve the stability of the solution.
                 """
                 return PyMenu(self.service, "/solve/set/limits").execute(*args, **kwargs)
             def limiter_warnings(self, *args, **kwargs):
                 """
-                Control the display of limiter warning diagnostics.
+                Specifies whether or not to print warning messages when quantities are being limited. By default, limiter warnings are printed.
                 """
                 return PyMenu(self.service, "/solve/set/limiter_warnings").execute(*args, **kwargs)
             def mp_mfluid_aniso_drag(self, *args, **kwargs):
                 """
-                Set anisotropic drag parameters for Eulerian multiphase.
+                Sets anisotropic drag parameters for the Eulerian multiphase model.
                 """
                 return PyMenu(self.service, "/solve/set/mp_mfluid_aniso_drag").execute(*args, **kwargs)
             def material_property_warnings(self, *args, **kwargs):
@@ -39230,147 +39308,166 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/material_property_warnings").execute(*args, **kwargs)
             def mp_reference_density(self, *args, **kwargs):
                 """
-                Set reference density option for Eulerian multiphase.
+                Sets the reference density method for the Eulerian multiphase model. The following options are available: 
+                                  
+                                     
+                                        
+                                           0 (default): Averaged density of the phase  
+                                     
+                                     
+                                        
+                                           1: Cell density of the phase  
+                                     
+                                     
+                                        
+                                           1: Constant value of 1 
+                                     
+                                     
+                                        
+                                           1: Cell density of the phase  
+                                     
+                                  
+                                See  for more information.
                 """
                 return PyMenu(self.service, "/solve/set/mp_reference_density").execute(*args, **kwargs)
             def max_corrections(self, *args, **kwargs):
                 """
-                Enter the max-corrections menu.
+                Enters the max-corrections menu.
                 """
                 return PyMenu(self.service, "/solve/set/max_corrections").execute(*args, **kwargs)
             def multi_grid_amg(self, *args, **kwargs):
                 """
-                Set the parameters that govern the algebraic multigrid procedure.
+                Sets the parameters that govern the algebraic multigrid procedure.
                 """
                 return PyMenu(self.service, "/solve/set/multi_grid_amg").execute(*args, **kwargs)
             def multi_grid_fas(self, *args, **kwargs):
                 """
-                Set the coefficients that govern the FAS multigrid procedure.
+                Sets the parameters that control the FAS multigrid solver. This command appears only when the explicit coupled solver is used.
                 """
                 return PyMenu(self.service, "/solve/set/multi_grid_fas").execute(*args, **kwargs)
             def multi_grid_controls(self, *args, **kwargs):
                 """
-                Enter the multi-grid-controls menu.
+                Sets multigrid parameters and termination criteria.
                 """
                 return PyMenu(self.service, "/solve/set/multi_grid_controls").execute(*args, **kwargs)
             def multi_stage(self, *args, **kwargs):
                 """
-                Set the multiple-stage time stepping scheme coefficients.
+                Sets the multi-stage coefficients and the dissipation and viscous evaluation stages. This command appears only when the explicit coupled solver is used.
                 """
                 return PyMenu(self.service, "/solve/set/multi_stage").execute(*args, **kwargs)
             def number_of_iterations(self, *args, **kwargs):
                 """
-                Set number of iterations.
+                Sets the number of iterations for a steady-state simulation without starting the calculation.
                 """
                 return PyMenu(self.service, "/solve/set/number_of_iterations").execute(*args, **kwargs)
             def numerics(self, *args, **kwargs):
                 """
-                Set numeric options.
+                Sets numerics options.
                 """
                 return PyMenu(self.service, "/solve/set/numerics").execute(*args, **kwargs)
             def second_order_time_options(self, *args, **kwargs):
                 """
-                Set options for second-order time formulation.
+                Enables / disables the variable time step size formulation for second-order implicit transient formulations. If you disable the variable time step size formulation, note that any change in the time step size will introduce an error proportional to the change in the time step size ratio.
                 """
                 return PyMenu(self.service, "/solve/set/second_order_time_options").execute(*args, **kwargs)
             def solution_steering(self, *args, **kwargs):
                 """
-                Enable solution steering for density-based solver.
+                Enables solution steering for the density-based solver.
                 """
                 return PyMenu(self.service, "/solve/set/solution_steering").execute(*args, **kwargs)
             def set_solution_steering(self, *args, **kwargs):
                 """
-                Set Solution Steering Parameters.
+                Sets solution steering parameters.
                 """
                 return PyMenu(self.service, "/solve/set/set_solution_steering").execute(*args, **kwargs)
             def p_v_coupling(self, *args, **kwargs):
                 """
-                Select the pressure velocity coupling scheme.
+                Selects which pressure-velocity coupling scheme is to be used. Five schemes are available:
                 """
                 return PyMenu(self.service, "/solve/set/p_v_coupling").execute(*args, **kwargs)
             def p_v_controls(self, *args, **kwargs):
                 """
-                Set P-V-Controls.
+                Sets pressure-velocity controls.
                 """
                 return PyMenu(self.service, "/solve/set/p_v_controls").execute(*args, **kwargs)
             def phase_based_vof_discretization(self, *args, **kwargs):
                 """
-                Set phase based slope limiter for VOF compressive scheme.
+                Sets phase based slope limiter for VOF compressive scheme.
                 """
                 return PyMenu(self.service, "/solve/set/phase_based_vof_discretization").execute(*args, **kwargs)
             def accelerated_non_iterative_time_marching(self, *args, **kwargs):
                 """
-                Enable/disable accelerated non-iterative time marching.
+                Enables a modified NITA scheme and other setting changes that can speed up the simulation. This option is only available with the Large Eddy Simulation (LES) turbulence model, and is intended for unreacting flow simulations that use a constant-density fluid.
                 """
                 return PyMenu(self.service, "/solve/set/accelerated_non_iterative_time_marching").execute(*args, **kwargs)
             def relaxation_method(self, *args, **kwargs):
                 """
-                Set the solver relaxation method.
+                Sets the solver relaxation method.
                 """
                 return PyMenu(self.service, "/solve/set/relaxation_method").execute(*args, **kwargs)
             def reactions(self, *args, **kwargs):
                 """
-                Enable/disable the species reaction sources and set relaxation factor.
+                Enables the species reaction sources and sets relaxation factor.
                 """
                 return PyMenu(self.service, "/solve/set/reactions").execute(*args, **kwargs)
             def relaxation_factor(self, *args, **kwargs):
                 """
-                Enter the relaxation-factor menu.
+                Enters the relaxation-factor menu.
                 """
                 return PyMenu(self.service, "/solve/set/relaxation_factor").execute(*args, **kwargs)
             def reporting_interval(self, *args, **kwargs):
                 """
-                Set number of solver iterations before returning to scheme.
+                Sets the number of iterations for which convergence monitors are reported. The default is 1 (after every iteration).
                 """
                 return PyMenu(self.service, "/solve/set/reporting_interval").execute(*args, **kwargs)
             def residual_smoothing(self, *args, **kwargs):
                 """
-                Set residual smoothing factor and number of iterations.
+                Sets the implicit residual smoothing parameters. This command is available only for the explicit coupled solver.
                 """
                 return PyMenu(self.service, "/solve/set/residual_smoothing").execute(*args, **kwargs)
             def residual_tolerance(self, *args, **kwargs):
                 """
-                Enter the residual tolerance menu.
+                Enters the residual tolerance menu.
                 """
                 return PyMenu(self.service, "/solve/set/residual_tolerance").execute(*args, **kwargs)
             def residual_verbosity(self, *args, **kwargs):
                 """
-                Set the residual report verbosity.
+                Sets the amount of residual information to be printed. A value of 0 (the default) prints residuals at the end of each fine grid iteration. A value of 1 prints residuals after every stage of the fine grid iteration. A value of 2 prints residuals after every stage on every grid level.
                 """
                 return PyMenu(self.service, "/solve/set/residual_verbosity").execute(*args, **kwargs)
             def set_solution_methods_to_default(self, *args, **kwargs):
                 """
-                Set solution methods to default values.
+                Sets the solution methods to the default settings.
                 """
                 return PyMenu(self.service, "/solve/set/set_solution_methods_to_default").execute(*args, **kwargs)
             def set_controls_to_default(self, *args, **kwargs):
                 """
-                Set controls to default values.
+                Sets controls to default values.
                 """
                 return PyMenu(self.service, "/solve/set/set_controls_to_default").execute(*args, **kwargs)
             def set_all_species_together(self, *args, **kwargs):
                 """
-                Set all species discretizations and URFs together.
+                Sets all species discretizations and URFs together.
                 """
                 return PyMenu(self.service, "/solve/set/set_all_species_together").execute(*args, **kwargs)
             def slope_limiter_set(self, *args, **kwargs):
                 """
-                Enter the slope limiter set menu.
+                Selects a new Fluent solver slope limiter.
                 """
                 return PyMenu(self.service, "/solve/set/slope_limiter_set").execute(*args, **kwargs)
             def vof_numerics(self, *args, **kwargs):
                 """
-                Set VOF numeric options.
+                Sets VOF numeric options.
                 """
                 return PyMenu(self.service, "/solve/set/vof_numerics").execute(*args, **kwargs)
             def vof_explicit_controls(self, *args, **kwargs):
                 """
-                Set Explicit VOF controls.
+                Sets the sub time step calculation method for VOF calculations.
                 """
                 return PyMenu(self.service, "/solve/set/vof_explicit_controls").execute(*args, **kwargs)
             def surface_tension(self, *args, **kwargs):
                 """
-                Set surface-tension calculation options.
+                Sets surface-tension calculation options.
                 """
                 return PyMenu(self.service, "/solve/set/surface_tension").execute(*args, **kwargs)
             def surface_tension_expert(self, *args, **kwargs):
@@ -39380,23 +39477,52 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/surface_tension_expert").execute(*args, **kwargs)
             def open_channel_controls(self, *args, **kwargs):
                 """
-                
-                Set additional open channel controls.
+                For flows that do not transition from sub-critical to super-critical, or vice-versa, you can speed-up the solution calculation by updating the frequency of Froude number during run time.
                 """
                 return PyMenu(self.service, "/solve/set/open_channel_controls").execute(*args, **kwargs)
             def numerical_beach_controls(self, *args, **kwargs):
                 """
-                Set damping function in flow direction.
+                Sets damping function in flow direction. This command appears only when the VOF model is enabled. Select the damping function to be used:
+                                  
+                                     
+                                     
+                                     
+                                        
+                                            Index
+                                            Damping Function
+                                        
+                                     
+                                     
+                                        
+                                            0
+                                            Linear
+                                        
+                                        
+                                            1
+                                            Quadratic
+                                        
+                                        
+                                            2
+                                            Cubic
+                                        
+                                        
+                                            3
+                                            Cosine
+                                        
+                                     
+                                  
+                               
+                            
                 """
                 return PyMenu(self.service, "/solve/set/numerical_beach_controls").execute(*args, **kwargs)
             def heterogeneous_stiff_chemistry(self, *args, **kwargs):
                 """
-                Set heterogeneous stiff-chemistry solver.
+                Sets the heterogeneous stiff-chemistry solver.
                 """
                 return PyMenu(self.service, "/solve/set/heterogeneous_stiff_chemistry").execute(*args, **kwargs)
             def stiff_chemistry(self, *args, **kwargs):
                 """
-                Set solver options for stiff-chemistry solutions.
+                Sets solver options for stiff chemistry solutions.
                 """
                 return PyMenu(self.service, "/solve/set/stiff_chemistry").execute(*args, **kwargs)
             def time_step(self, *args, **kwargs):
@@ -39406,12 +39532,12 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/time_step").execute(*args, **kwargs)
             def under_relaxation(self, *args, **kwargs):
                 """
-                Enter the under-relaxation menu.
+                Enters the under-relaxation menu, which allows you to set the under-relaxation factor for each equation that is being solved in a segregated manner.
                 """
                 return PyMenu(self.service, "/solve/set/under_relaxation").execute(*args, **kwargs)
             def convergence_acceleration_for_stretched_meshes(self, *args, **kwargs):
                 """
-                Enable convergence acceleration for stretched meshes to improve the convergence of the implicit density based solver on meshes with high cell stretching.
+                Enables convergence acceleration for stretched meshes to improve the convergence of the implicit density based solver on meshes with high cell stretching.
                 """
                 return PyMenu(self.service, "/solve/set/convergence_acceleration_for_stretched_meshes").execute(*args, **kwargs)
             def reduced_rank_extrapolation(self, *args, **kwargs):
@@ -39431,17 +39557,17 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/solve/set/moving_mesh_numerics").execute(*args, **kwargs)
             def lock_solid_temperature(self, *args, **kwargs):
                 """
-                Lock the temperature for all solid and shell cell zones in the domain.
+                Specifies whether you want to lock (or “freeze”) the temperature values for all the cells in solid zones (including those to which you have a hooked an energy source through a UDF) and in walls that have shell conduction enabled, so that the values do not change during further solver iterations.
                 """
                 return PyMenu(self.service, "/solve/set/lock_solid_temperature").execute(*args, **kwargs)
             def enable_output_dp_dt(self, *args, **kwargs):
                 """
-                Enable postprocessing of pressure time derivative. Requires storage of pressure from the previous timesteps.
+                Controls whether the output field variabledp-dt will be available for transient simulation postprocessing. If you select no, pressure fields at the previous time steps will not be stored in memory which reduces memory usage.
                 """
                 return PyMenu(self.service, "/solve/set/enable_output_dp_dt").execute(*args, **kwargs)
             def equation_ordering(self, *args, **kwargs):
                 """
-                Set the equation order.
+                Sets the order in which the model equations are solved, which can affect the convergence speed when you are using the pressure-based solver. The standard method is enabled by default and corresponds to the ordering shown in  and  in the Theory Guide; alternatively, you can select theoptimized-for-volumetric-expansion method, which is recommended for flows in which the density is strongly dependent on thermal effects, chemical composition, and so on (such as combustion simulations). This text command is not available for steady simulations and/or when a multiphase model is enabled.
                 """
                 return PyMenu(self.service, "/solve/set/equation_ordering").execute(*args, **kwargs)
 
@@ -39688,7 +39814,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class transient_controls(metaclass=PyMenuMeta):
                 """
-                Enter into the transient controls menu.
+                Enters the transient controls menu, which allows you to define settings related to time advancement for transient flow calculations.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -39696,72 +39822,72 @@ class main_menu(metaclass=PyMenuMeta):
                     self.multiphase_specific_time_constraints = self.__class__.multiphase_specific_time_constraints(path + [("multiphase_specific_time_constraints", None)], service)
                 def specified_time_step(self, *args, **kwargs):
                     """
-                    Use specified time step or courant number.
+                    Specifies whether to define the transient advancement either directly by entering a time step size / period / frequency (using the text commands available in thesolve/set/transient-controls menu) or indirectly by entering a Courant number value (using the solve/set/courant-number text command). This text command is only available for the density-based solver when both the explicit formulation and explicit transient formulation are used.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/specified_time_step").execute(*args, **kwargs)
                 def fixed_user_specified(self, *args, **kwargs):
                     """
-                    Enable user-specified fixed time stepping method.
+                    Allows you to specify that a fixed time stepping method is used in which you directly specify the time step size and number of time steps.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/fixed_user_specified").execute(*args, **kwargs)
                 def fixed_periodic(self, *args, **kwargs):
                     """
-                    Set period- or frequency-based fixed time-stepping parameters.
+                    Allows you to specify that a fixed time stepping method is used in which a specified period or frequency is the basis for determining the time step size and number of time steps.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/fixed_periodic").execute(*args, **kwargs)
                 def duration_specification_method(self, *args, **kwargs):
                     """
-                    Set Duration Specification Method: [0] Incremental Time Steps, [1] Total Time Steps, [2] Total Time, [3] Incremental Time.
+                    Sets the method by which you will specify the duration of the calculation. The duration can be defined by the total time, the total number of time steps, the incremental time, or the number of incremental time steps. In this context, "total" indicates that Fluent will consider the amount of time / steps that have already been solved and stop appropriately, whereas "incremental" indicates that the solution will proceed for a specified amount of time / steps regardless of what has previously been calculated. This text command is only available when the time stepping is adaptive or based on a user-defined function.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/duration_specification_method").execute(*args, **kwargs)
                 def incremental_time(self, *args, **kwargs):
                     """
-                    Set Incremental Time.
+                    Sets the amount of incremental (that is, additional) time to run the simulation, regardless of how much time has already been run in previous calculations. This text command is only available when the solve/set/transient-controls/duration-specification-method is set to3.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/incremental_time").execute(*args, **kwargs)
                 def max_iterations_per_time_step(self, *args, **kwargs):
                     """
-                    Set Max Iterations/Time step.
+                    Sets the number of time steps for a transient simulation.  This option is available when automatic initialization and case modification is enabled.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/max_iterations_per_time_step").execute(*args, **kwargs)
                 def number_of_time_steps(self, *args, **kwargs):
                     """
-                    Set inceremtal number of Time steps.
+                    Sets the number of time steps for a transient simulation without starting the calculation.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/number_of_time_steps").execute(*args, **kwargs)
                 def total_number_of_time_steps(self, *args, **kwargs):
                     """
-                    Set total number of Time steps.
+                    Sets the total number of time steps that the simulation will run (which includes any time steps that have already been run in previous calculations). This text command is only available when the solve/set/transient-controls/duration-specification-method is set to1.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/total_number_of_time_steps").execute(*args, **kwargs)
                 def total_time(self, *args, **kwargs):
                     """
-                    Set Total Simulation Time.
+                    Sets the total amount of time that the simulation will be run (which includes any time that has already been run in previous calculations). This text command is only available when the solve/set/transient-controls/duration-specification-method is set to2.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/total_time").execute(*args, **kwargs)
                 def time_step_size(self, *args, **kwargs):
                     """
-                    Set the physical time step size.
+                    Sets the magnitude of the (physical) time step . This text command is only available when the solve/set/transient-controls/fixed-user-specified text command is set toyes.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/time_step_size").execute(*args, **kwargs)
                 def solution_status(self, *args, **kwargs):
                     """
-                    Activate the simulation status panel.
+                    Allows you to open theSimulation Status dialog box, which reports details about the simulation.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/solution_status").execute(*args, **kwargs)
                 def extrapolate_vars(self, *args, **kwargs):
                     """
-                    Applies a predictor algorithm for computing initial condition at time step n+1.
+                    Applies a predictor algorithm for computing initial conditions at time step n+1. The predictor algorithm is a computation that sets a better initial condition for the time step.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/extrapolate_vars").execute(*args, **kwargs)
                 def extrapolate_eqn_vars(self, *args, **kwargs):
                     """
-                    Enter the extrapolation menu.
+                    Enters the extrapolation menu.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/extrapolate_eqn_vars").execute(*args, **kwargs)
                 def max_flow_time(self, *args, **kwargs):
                     """
-                    Set maximum flow time.
+                    Sets the maximum flow time.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/max_flow_time").execute(*args, **kwargs)
                 def cfl_based_time_stepping_advanced_options(self, *args, **kwargs):
@@ -39771,53 +39897,53 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/transient_controls/cfl_based_time_stepping_advanced_options").execute(*args, **kwargs)
                 def cfl_based_time_stepping(self, *args, **kwargs):
                     """
-                    Set CFL-based adaptive time-stepping parameters.
+                    Allows you to specify that an adaptive time stepping method is used in which the time step gets modified by ANSYS Fluent as the calculation proceeds such that the Courant–Friedrichs–Lewy (CFL) condition is satisfied, using the specified Courant number.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/cfl_based_time_stepping").execute(*args, **kwargs)
                 def multiphase_specific_time_stepping(self, *args, **kwargs):
                     """
-                    Set Multiphase-specific adaptive time stepping parameters.
+                    Allows you to specify that an adaptive time stepping method is used in which the time step gets modified by ANSYS Fluent  based on the convective time scale (global Courant number): the time-step-size calculation depends on the mesh density and velocity in interfacial cells. This method is available for all multiphase models using the implicit or explicit volume fraction formulation, except for the wet steam model.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_stepping").execute(*args, **kwargs)
                 def udf_based_time_stepping(self, *args, **kwargs):
                     """
-                    Set the time-stepping parameters for user-defined time stepping method.
+                    Allows you to specify that the time step size is defined by a user-defined function (UDF) that uses theDEFINE_DELTAT macro.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/udf_based_time_stepping").execute(*args, **kwargs)
                 def error_based_time_stepping(self, *args, **kwargs):
                     """
-                    Set Error-based adaptive time-stepping parameters.
+                    Allows you to specify that an adaptive time stepping method is used in which the time step gets modified by ANSYS Fluent  based on the specified truncation error tolerance.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/error_based_time_stepping").execute(*args, **kwargs)
                 def undo_timestep(self, *args, **kwargs):
                     """
-                    Undo the previous time step.
+                    When enabled, if the truncation error within a time step exceeds the specified tolerance Fluent will automatically undo the current calculation and make another attempt with the time step reduced by 1/2. This will be attempted up to 5 times after which Fluent will accept the result and proceed to the next time step.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/undo_timestep").execute(*args, **kwargs)
                 def predict_next_time(self, *args, **kwargs):
                     """
-                    Applies a predictor algorithm for computing initial condition at time step n+1.
+                    Applies a predictor algorithm for computing the next time step. The predictor algorithm is a computation that sets a better initial condition for the time step. It uses the rate of change between the prediction and the correction as an indicator for whether the next time step should be larger, smaller, or the same as the current one.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/predict_next_time").execute(*args, **kwargs)
                 def rotating_mesh_flow_predictor(self, *args, **kwargs):
                     """
-                    Improve prediction of flow field at time step n+1 for rotating mesh.
+                    Enables / disables an option that allows for better prediction of the flow field in rotating fluid zones at every time step, in order to speed up the calculation. This text command is only available for transient simulations.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/rotating_mesh_flow_predictor").execute(*args, **kwargs)
                 def solid_time_step_size(self, *args, **kwargs):
                     """
-                    Specify a different time step size for solid zones.
+                    Allows you to specify that the time step size used for solid zones is independent from that used for fluid zones. This text command is only available when both a solid zone exists and energy is enabled.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/solid_time_step_size").execute(*args, **kwargs)
                 def time_step_size_for_acoustic_export(self, *args, **kwargs):
                     """
-                    Set number of time step size for acoustic export.
+                    Specifies the time interval for acoustic data sampling. This text command is only available when both the Ffowcs Williams and Hawkings model is selected and the density-based solver is used with the explicit formulation and explicit transient formulation.
                     """
                     return PyMenu(self.service, "/solve/set/transient_controls/time_step_size_for_acoustic_export").execute(*args, **kwargs)
 
                 class multiphase_specific_time_constraints(metaclass=PyMenuMeta):
                     """
-                    Set Multiphase-specific time constraints.
+                    Enters the menu for setting multiphase-specific time constraints.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -39830,46 +39956,46 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/moving_mesh_cfl_constraint").execute(*args, **kwargs)
                     def physics_based_constraint(self, *args, **kwargs):
                         """
-                        Include physics driven time-step constraints.
+                        Enables/disables the physics-driven time-step constraints.
                         """
                         return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/physics_based_constraint").execute(*args, **kwargs)
                     def verbosity(self, *args, **kwargs):
                         """
-                        Set verbosity to print multiphase specific time scales.
+                        When enabled, various time scales (depending on the selection) are  printed to the console window at every time step. This text command is  available with the moving mesh CFL constraint and with the physics-based  constraint.
                         """
                         return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/verbosity").execute(*args, **kwargs)
 
                     class time_scale_options(metaclass=PyMenuMeta):
                         """
-                        Set physics based time scale options.
+                        Enters the menu for choosing the time-scale options. This menu  becomes available after you enable the physics-driven time-step  constraints using the solve/set/transient-controls/multiphase-specific-time-constraints/physics-based-constraint?  text command.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def viscous_scale(self, *args, **kwargs):
                             """
-                            Include viscous time scale.
+                            Allows you to Include the viscous time scale. This option is disabled by default. This command is not available with inviscid flows.
                             """
                             return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/time_scale_options/viscous_scale").execute(*args, **kwargs)
                         def gravity_scale(self, *args, **kwargs):
                             """
-                            Include gravity based time scale.
+                            Allows you to Include the gravitational time scale. This option is available only if gravity is enabled.
                             """
                             return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/time_scale_options/gravity_scale").execute(*args, **kwargs)
                         def surface_tension_scale(self, *args, **kwargs):
                             """
-                            Include surface tension based time scale.
+                            Allows you to Include the surface-tension-driven time scale. This option is available only if the surface tension force modeling is enabled.
                             """
                             return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/time_scale_options/surface_tension_scale").execute(*args, **kwargs)
                         def acoustic_scale(self, *args, **kwargs):
                             """
-                            Include acoustic time scale.
+                            Allows you to Include the acoustic time scale. This option is available only for compressible flows.
                             """
                             return PyMenu(self.service, "/solve/set/transient_controls/multiphase_specific_time_constraints/time_scale_options/acoustic_scale").execute(*args, **kwargs)
 
             class data_sampling_options(metaclass=PyMenuMeta):
                 """
-                Data sampling options for statistics.
+                Enter the menu for specifying quantities and zones for steady and unsteady flow statistics.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -39881,7 +40007,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/data_sampling_options/add_datasets").execute(*args, **kwargs)
                 def add_rtdft_datasets(self, *args, **kwargs):
                     """
-                    Add a dataset. After providing the zones for a dataset, press [Enter] to move onto selecting quantities. Enter () to complete the quantity selection for this dataset.
+                    Specify zone and quantity combinations for sampling Fourier coefficients of unsteady flows.
                     """
                     return PyMenu(self.service, "/solve/set/data_sampling_options/add_rtdft_datasets").execute(*args, **kwargs)
                 def remove_dataset(self, *args, **kwargs):
@@ -39891,40 +40017,40 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/data_sampling_options/remove_dataset").execute(*args, **kwargs)
                 def list_datasets(self, *args, **kwargs):
                     """
-                    List dataset.
+                    Lists the combinations of zones and quantities that are defined for sampling steady and unsteady flow statistics.
                     """
                     return PyMenu(self.service, "/solve/set/data_sampling_options/list_datasets").execute(*args, **kwargs)
 
             class pseudo_time_method(metaclass=PyMenuMeta):
                 """
-                Enter the pseudo time method menu.
+                Enters the pseudo time method menu. This menu is only available for cases that use a pressure-based segregated solver (SIMPLE, SIMPLEC, or PISO) or for steady-state cases that use the pressure-based coupled solver or the density-based implicit solver.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def formulation(self, *args, **kwargs):
                     """
-                    Select the pseudo time step size formulation for the pseudo time method.
+                    Enables and sets the pseudo time step size formulation or disables the pseudo time method option.
                     """
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/formulation").execute(*args, **kwargs)
                 def local_time_step_settings(self, *args, **kwargs):
                     """
-                    Adjust the settings for the local time step formulation.
+                    Defines the pseudo time Courant number when the local time step formulation is selected.
                     """
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/local_time_step_settings").execute(*args, **kwargs)
                 def global_time_step_settings(self, *args, **kwargs):
                     """
-                    Adjust the settings for the global time step formulation.
+                    Defines the pseudo time settings for the calculation when the global time step formulation is selected.
                     """
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/global_time_step_settings").execute(*args, **kwargs)
                 def advanced_options(self, *args, **kwargs):
                     """
-                    Enter the advanced options menu to define pseudo time settings for equations.
+                    Enters the advanced options menu, which allows you to enable / disable the pseudo time method for individual equations and define their pseudo time scale factors or under-relaxation factors, respectively. These settings only apply when the global time step formulation is selected.
                     """
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/advanced_options").execute(*args, **kwargs)
                 def relaxation_factors(self, *args, **kwargs):
                     """
-                    Enter the relaxation factors menu to set the pseudo time explicit relaxation factors for equations.
+                    Enters the relaxation factors menu, where you can set the pseudo time explicit relaxation factors for individual equations. These factors only apply when the global time step formulation is selected.
                     """
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/relaxation_factors").execute(*args, **kwargs)
                 def relaxation_method(self, *args, **kwargs):
@@ -39939,36 +40065,36 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/relaxation_bounds").execute(*args, **kwargs)
                 def verbosity(self, *args, **kwargs):
                     """
-                    Set the verbosity for the pseudo time method.
+                    Sets the verbosity of the messages related to the pseudo time method.
                     """
                     return PyMenu(self.service, "/solve/set/pseudo_time_method/verbosity").execute(*args, **kwargs)
 
             class nita_expert_controls(metaclass=PyMenuMeta):
                 """
-                Enter the nita expert controls menu.
+                Enters the NITA expert control menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def set_verbosity(self, *args, **kwargs):
                     """
-                    Set nita verbosity option.
+                    Setting this to 1, enables the verbosity for NITA diagnostics. The default value of 0 disables verbosity output for NITA diagnostics.
                     """
                     return PyMenu(self.service, "/solve/set/nita_expert_controls/set_verbosity").execute(*args, **kwargs)
                 def skewness_neighbor_coupling(self, *args, **kwargs):
                     """
-                    Set skewness neighbor coupling for nita.
+                    Enables/disables coupling of the neighbor and skewness corrections.
                     """
                     return PyMenu(self.service, "/solve/set/nita_expert_controls/skewness_neighbor_coupling").execute(*args, **kwargs)
                 def hybrid_nita_settings(self, *args, **kwargs):
                     """
-                    Select a hybrid NITA settings option for faster performance and better robustness.
+                    Enables and sets hybrid NITA options. For more details, see .
                     """
                     return PyMenu(self.service, "/solve/set/nita_expert_controls/hybrid_nita_settings").execute(*args, **kwargs)
 
             class multiphase_numerics(metaclass=PyMenuMeta):
                 """
-                Enter the multiphase numerics options menu.
+                Sets multiphase numerics options.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -39985,63 +40111,63 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class porous_media(metaclass=PyMenuMeta):
                     """
-                    Multiphase relative permeability numerics menu.
+                    Enters the porous media numerics menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def relative_permeability(self, *args, **kwargs):
                         """
-                        Multiphase relative permeability fix option.
+                        Allows you to fix the saturation (volume fraction) of the phase at  its user-specified residual saturation value.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/porous_media/relative_permeability").execute(*args, **kwargs)
 
                 class compressible_flow(metaclass=PyMenuMeta):
                     """
-                    Multiphase compressible numerics options menu.
+                    Enters the compressible multiphase flow numerics menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def enhanced_numerics(self, *args, **kwargs):
                         """
-                        Multiphase enhanced compressible flow numerics options.
+                        Enables an enhanced numerical treatment that provides better  stability at startup and during calculation of compressible  flows.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/compressible_flow/enhanced_numerics").execute(*args, **kwargs)
                     def alternate_bc_formulation(self, *args, **kwargs):
                         """
-                        Multiphase compressible flow BC alternate method.
+                        Enables an alternative formulation for compressible phases at an  inlet boundary. This formulation calculates static temperature and  pressure using an iterative method based on fundamental thermodynamic  relations.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/compressible_flow/alternate_bc_formulation").execute(*args, **kwargs)
 
                 class boiling_parameters(metaclass=PyMenuMeta):
                     """
-                    Multiphase boiling parameters menu.
+                    Enters the menu for the multiphase boiling model parameters.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def thin_film(self, *args, **kwargs):
                         """
-                        Multiphase boiling thin film effects.
+                        When enabled, includes multiphase boiling thin film effects using .
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/boiling_parameters/thin_film").execute(*args, **kwargs)
                     def liquid_vof_factor(self, *args, **kwargs):
                         """
-                        Multiphase boiling liquid volume fraction effects.
+                        When enabled, considers liquid volume fraction effects by multiplying the heat transfer coefficients by the local liquid volume fraction.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/boiling_parameters/liquid_vof_factor").execute(*args, **kwargs)
 
                 class viscous_flow(metaclass=PyMenuMeta):
                     """
-                    Multiphase viscous flow numerics options menu.
+                    Enters the viscous multiphase flow numerics menu.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def viscosity_averaging(self, *args, **kwargs):
                         """
-                        Multiphase options for viscosity averaging.
+                        Forces harmonic averaging of cell viscosities to calculate face  viscosity used in momentum equation. This can improve convergence for  highly viscous flow applications (the VOF model only).
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/viscous_flow/viscosity_averaging").execute(*args, **kwargs)
                     def turb_visc_based_damping(self, *args, **kwargs):
@@ -40057,7 +40183,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class heat_mass_transfer(metaclass=PyMenuMeta):
                     """
-                    Multiphase interphase heat and mass transfer numerics options menu.
+                    Enters the menu for the multiphase heat mass transfer parameters.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -40068,35 +40194,35 @@ class main_menu(metaclass=PyMenuMeta):
                         self.area_density = self.__class__.area_density(path + [("area_density", None)], service)
                     def alternative_energy_treatment(self, *args, **kwargs):
                         """
-                        Alternative treatment of latent heat source due to mass transfer.
+                        Enables the alternative treatment of the energy sources. For more  information, see .
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/alternative_energy_treatment").execute(*args, **kwargs)
 
                     class cavitation(metaclass=PyMenuMeta):
                         """
-                        Cavitation numerics options menu.
+                        Enters the cavitation heat mass transfer menu.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def schnerr_evap_coeff(self, *args, **kwargs):
                             """
-                            Evaporation coefficient for Schnerr-Sauer model.
+                            Sets the evaporation coefficient for the Schnerr-Sauer model (  in ). The default and recommended value of 1.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/schnerr_evap_coeff").execute(*args, **kwargs)
                         def schnerr_cond_coeff(self, *args, **kwargs):
                             """
-                            Condensation coefficient for Schnerr-Sauer model.
+                            Sets the condensation coefficient for the Schnerr-Sauer model (  in ). The default and recommended value of 0.2.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/schnerr_cond_coeff").execute(*args, **kwargs)
                         def max_vapor_pressure_ratio(self, *args, **kwargs):
                             """
-                            Maximum limit on vapor pressure after turbulence and thermal correction.
+                            Sets the maximum limit on the vapor pressure after the turbulence and thermal correction. The default value is five times the vapor pressure, with consideration of turbulent and thermal effects for each cell and phase.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/max_vapor_pressure_ratio").execute(*args, **kwargs)
                         def min_vapor_pressure(self, *args, **kwargs):
                             """
-                            Minimum vapor pressure limit for cavitation model.
+                            Sets the minimum vapor pressure limit for the cavitation mass-transfer model. The default value is 1 Pa.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/min_vapor_pressure").execute(*args, **kwargs)
                         def display_clipped_pressure(self, *args, **kwargs):
@@ -40106,9 +40232,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/display_clipped_pressure").execute(*args, **kwargs)
                         def turbulent_diffusion(self, *args, **kwargs):
                             """
-                            Enable/disable turbulent diffusion treatment between phases participating in cavitation.
-                            This treatment is generally recommended for better solution stability.
-                            However, in case of numerical difficulties, it can be disabled.
+                            Enables/disables the turbulent diffusion treatment for a cavitating turbulent flow. See  for details.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/cavitation/turbulent_diffusion").execute(*args, **kwargs)
 
@@ -40152,48 +40276,48 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class boiling(metaclass=PyMenuMeta):
                         """
-                        Boiling advanced options menu.
+                        Enters the menu for the advanced boiling options for the  semi-mechanistic boiling model.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def heat_flux_relaxation_factor(self, *args, **kwargs):
                             """
-                            Under-relaxation factor for boiling heat flux.
+                            Sets the under-relaxation factor for boiling heat flux. See  for details.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/boiling/heat_flux_relaxation_factor").execute(*args, **kwargs)
                         def show_expert_options(self, *args, **kwargs):
                             """
-                            Exposes expert options of min/max superheat along with wetting fraction controls.
+                            Exposes the expert options for the semi-mechanistic boiling model. For more information about these options, see .
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/boiling/show_expert_options").execute(*args, **kwargs)
                         def two_resistance_boiling_framework(self, *args, **kwargs):
                             """
-                            Allow generalized two-resistance framework for boiling model.
+                            Enables/disables the two-resistance boiling framework to improve the robustness and accuracy of the solution of cases with multiple boiling mechanisms. For more information about this item, see .
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/boiling/two_resistance_boiling_framework").execute(*args, **kwargs)
 
                     class area_density(metaclass=PyMenuMeta):
                         """
-                        Interfacial area density menu.
+                        Enters the menu for the area density.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def vof_min_seeding(self, *args, **kwargs):
                             """
-                            Minimum vof seeding for non-zero area density in heat and mass transfer.
+                            Sets the minimum volume fraction for the area density and cavitation. This may be useful, for example, in cases when a species mass transfer model (such as the Symmetric model or Particle model) do not consider evaporation or condensation if the volume fraction of one of the phases is zero. The seeding allows for a phase change to occur in the fluid flow. The default value is 1e-6.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/area_density/vof_min_seeding").execute(*args, **kwargs)
                         def ia_grad_sym(self, *args, **kwargs):
                             """
-                            Interfacial area density gradient-symmetric mechanism.
+                            Enables/disables the interfacial area density Gradient-Symmetric model. For more information about this model, see .
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/heat_mass_transfer/area_density/ia_grad_sym").execute(*args, **kwargs)
 
                 class advanced_stability_controls(metaclass=PyMenuMeta):
                     """
-                    Stability controls for multiphase flow.
+                    Enters the menu for the stability controls for multiphase flows. For more information about the below option, see  and .
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -40263,7 +40387,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class p_v_coupling(metaclass=PyMenuMeta):
                         """
-                        Pressure velocity coupling controls for multiphase flow.
+                        Enters the menu for the pressure-velocity coupling controls.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -40274,46 +40398,46 @@ class main_menu(metaclass=PyMenuMeta):
 
                         class coupled_vof(metaclass=PyMenuMeta):
                             """
-                            Set Coupled VOF stability controls.
+                            Enters the stability control menu for VOF cases that involve the Coupled pressure-velocity coupling scheme.
                             """
                             def __init__(self, path, service):
                                 self.path = path
                                 self.service = service
                             def buoyancy_force_linearization(self, *args, **kwargs):
                                 """
-                                Set buoynacy force linerization options in coupled vof.
+                                Allows you to use the linearized buoyancy force and the  blended treatment for the buoyancy force.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/p_v_coupling/coupled_vof/buoyancy_force_linearization").execute(*args, **kwargs)
 
                         class rhie_chow_flux(metaclass=PyMenuMeta):
                             """
-                            Set Rhie-Chow related stability controls.
+                            Enters the stability controls menu for the Rhie-Chow interpolation.
                             """
                             def __init__(self, path, service):
                                 self.path = path
                                 self.service = service
                             def low_order_rhie_chow(self, *args, **kwargs):
                                 """
-                                Use low order velocity interpolation in flux calculation.
+                                Enables/disables the low-order velocity interpolation in  the flux calculation.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/p_v_coupling/rhie_chow_flux/low_order_rhie_chow").execute(*args, **kwargs)
 
                         class skewness_correction(metaclass=PyMenuMeta):
                             """
-                            Skewness correction related stabiity controls for multiphase flow.
+                            Enters the skewness correction menu.
                             """
                             def __init__(self, path, service):
                                 self.path = path
                                 self.service = service
                             def limit_pressure_correction_gradient(self, *args, **kwargs):
                                 """
-                                Use limited pressure correction gradient in skewness corrections for better stability.
+                                Enables/disables the limited pressure correction  gradient in skewness terms for the PISO, SIMPLEC, or  fractional step pressure-coupling schemes.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/p_v_coupling/skewness_correction/limit_pressure_correction_gradient").execute(*args, **kwargs)
 
                     class hybrid_nita(metaclass=PyMenuMeta):
                         """
-                        Hybrid NITA stability controls for multiphase flow.
+                        Enters the equation order menu for homogeneous multiphase flow  models.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -40321,58 +40445,58 @@ class main_menu(metaclass=PyMenuMeta):
                             self.instability_detector = self.__class__.instability_detector(path + [("instability_detector", None)], service)
                         def outer_iterations(self, *args, **kwargs):
                             """
-                            Set number of outer iterations in hybrid nita.
+                            Sets the number of outer iterations.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/outer_iterations").execute(*args, **kwargs)
                         def initial_outer_iterations(self, *args, **kwargs):
                             """
-                            Set hybrid nita start-up controls.
+                            Allows you to change the number of initial time-steps and the number of initial outer iterations to control solution stability.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/initial_outer_iterations").execute(*args, **kwargs)
 
                         class instability_detector(metaclass=PyMenuMeta):
                             """
-                            Set Hybrid NITA instability detector controls.
+                            Enters the menu for the instability detector controls.
                             """
                             def __init__(self, path, service):
                                 self.path = path
                                 self.service = service
                             def enable_instability_detector(self, *args, **kwargs):
                                 """
-                                Enable instability detector for better stability.
+                                Enables/disables the instability detector to deal with  possible instability problems. Once this option is enabled,  additional instability detection options become  available.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/instability_detector/enable_instability_detector").execute(*args, **kwargs)
                             def set_cfl_limit(self, *args, **kwargs):
                                 """
-                                Set Courant Number limit for detection of unstable event.
+                                Sets the Courant number limit for detecting unstable  events. This command becomes available once the enable-instability-detector? text  option has been enabled.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/instability_detector/set_cfl_limit").execute(*args, **kwargs)
                             def set_cfl_type(self, *args, **kwargs):
                                 """
-                                Set Courant Number type for detection of unstable event.
+                                Selects the CFL number type for detection of an unstable  event. This command becomes available once the enable-instability-detector? text  option has been enabled.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/instability_detector/set_cfl_type").execute(*args, **kwargs)
                             def set_velocity_limit(self, *args, **kwargs):
                                 """
-                                Set velocity limit for detection of unstable event.
+                                Sets the velocity limit for detecting unstable events.  This command becomes available once the enable-instability-detector? text  option has been enabled.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/instability_detector/set_velocity_limit").execute(*args, **kwargs)
                             def unstable_event_outer_iterations(self, *args, **kwargs):
                                 """
-                                Set number of outer iterations for unstable event.
+                                Sets the number of outer iterations for an unstable  event.
                                 """
                                 return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/hybrid_nita/instability_detector/unstable_event_outer_iterations").execute(*args, **kwargs)
 
                     class equation_order(metaclass=PyMenuMeta):
                         """
-                        Equation Order Menu for Homogeneous Multiphase Flow Models.
+                        Enters the equation order menu for homogeneous multiphase flow  models.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def solve_flow_last(self, *args, **kwargs):
                             """
-                            Solve flow equation at the end of iteration as an alternative.
+                            When enabled, solves the flow equation at the end of the iteration. This improves the behavior at the start of new time-step if the solution does not converge properly.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/equation_order/solve_flow_last").execute(*args, **kwargs)
                         def solve_exp_vof_at_end(self, *args, **kwargs):
@@ -40383,37 +40507,37 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class anti_diffusion(metaclass=PyMenuMeta):
                         """
-                        Anti Diffusion Menu for VOF/Multi-Fluid VOF Models.
+                        Enters the anti-diffusion menu. This item is available for VOF cases  with the Interfacial Anti-Diffusion option  enabled.
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def enable_dynamic_strength(self, *args, **kwargs):
                             """
-                            Enable dynamic strength to reduce compression in the tangential direction to the interface.
+                            Enables dynamic strength to reduce compression in the direction tangential to the interface.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/anti_diffusion/enable_dynamic_strength").execute(*args, **kwargs)
                         def set_dynamic_strength_exponent(self, *args, **kwargs):
                             """
-                            Set cosine exponent in dynamic strength treatment.
+                            Sets the cosine exponent in the dynamic strength treatment in ).
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/anti_diffusion/set_dynamic_strength_exponent").execute(*args, **kwargs)
                         def set_maximum_dynamic_strength(self, *args, **kwargs):
                             """
-                            Set maximum value of dynamic anti-diffusion strength.
+                            Sets the maximum value of dynamic anti-diffusion strength in ).
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/advanced_stability_controls/anti_diffusion/set_maximum_dynamic_strength").execute(*args, **kwargs)
 
                 class default_controls(metaclass=PyMenuMeta):
                     """
-                    Multiphase default controls menu.
+                    Enters the default controls menu. This menu is available only for multiphase flows.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def recommended_defaults_for_existing_cases(self, *args, **kwargs):
                         """
-                        Activate multiphase defaults for loaded case.
+                        Applies the multiphase defaults (version 2020 R1) to the loaded case  file.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/default_controls/recommended_defaults_for_existing_cases").execute(*args, **kwargs)
                     def revert_to_pre_r20_point_1_default_settings(self, *args, **kwargs):
@@ -40437,7 +40561,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class solution_stabilization(metaclass=PyMenuMeta):
                     """
-                    VOF solution stabilization menu.
+                    Enters the solution-stabilization numerics menu. This item is available only for the VOF model.
                     """
                     def __init__(self, path, service):
                         self.path = path
@@ -40451,25 +40575,25 @@ class main_menu(metaclass=PyMenuMeta):
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/execute_settings_optimization").execute(*args, **kwargs)
                     def execute_advanced_stabilization(self, *args, **kwargs):
                         """
-                        Execute advanced stabilization for VOF.
+                        When enabled, modifies solver settings for improved solution  stability.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/execute_advanced_stabilization").execute(*args, **kwargs)
                     def execute_additional_stability_controls(self, *args, **kwargs):
                         """
-                        Execute additional stability controls for VOF.
+                        When enabled, uses additional controls for improved solution  stability.
                         """
                         return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/execute_additional_stability_controls").execute(*args, **kwargs)
 
                     class additional_stabilization_controls(metaclass=PyMenuMeta):
                         """
-                        Additional advanced stability controls for VOF.
+                        Enters the menu for additional advanced stability controls. 
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def blended_compressive_scheme(self, *args, **kwargs):
                             """
-                            Blended Compressive discretization scheme for VOF.
+                            Enables/disables the blended compressive discretization scheme.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/additional_stabilization_controls/blended_compressive_scheme").execute(*args, **kwargs)
                         def pseudo_time_stabilization(self, *args, **kwargs):
@@ -40480,14 +40604,14 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class velocity_limiting_treatment(metaclass=PyMenuMeta):
                         """
-                        Velocity limiting related stabiity controls for VOF.
+                        Enters the menu for the velocity-limiting-treatment. 
                         """
                         def __init__(self, path, service):
                             self.path = path
                             self.service = service
                         def enable_velocity_limiting(self, *args, **kwargs):
                             """
-                            Enable velocity limiting treatment.
+                            Enables/disables the velocity limiting treatment.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/velocity_limiting_treatment/enable_velocity_limiting").execute(*args, **kwargs)
                         def set_velocity_and_vof_cutoffs(self, *args, **kwargs):
@@ -40502,7 +40626,7 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/velocity_limiting_treatment/set_damping_strengths").execute(*args, **kwargs)
                         def set_velocity_cutoff(self, *args, **kwargs):
                             """
-                            Enter max velocity magnitude.
+                            Specifies the maximum velocity magnitude.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/velocity_limiting_treatment/set_velocity_cutoff").execute(*args, **kwargs)
                         def set_damping_strength(self, *args, **kwargs):
@@ -40512,30 +40636,30 @@ class main_menu(metaclass=PyMenuMeta):
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/velocity_limiting_treatment/set_damping_strength").execute(*args, **kwargs)
                         def verbosity(self, *args, **kwargs):
                             """
-                            Enable verbosity to print number of velocity limited cells during iterations.
+                            When enabled, the solver prints the number of velocity limited cells at each iteration.
                             """
                             return PyMenu(self.service, "/solve/set/multiphase_numerics/solution_stabilization/velocity_limiting_treatment/verbosity").execute(*args, **kwargs)
 
             class open_channel_wave_options(metaclass=PyMenuMeta):
                 """
-                Enter the open-channel-wave-options menu.
+                Sets buffer layer height, verbosity, and open channel wave theory formulation.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def set_verbosity(self, *args, **kwargs):
                     """
-                    Set open channel wave verbosity.
+                    Sets the open channel wave verbosity.
                     """
                     return PyMenu(self.service, "/solve/set/open_channel_wave_options/set_verbosity").execute(*args, **kwargs)
                 def stokes_wave_variants(self, *args, **kwargs):
                     """
-                    Set stokes wave theory variants.
+                    Specifies which open channel wave theory formulation Fluent uses.
                     """
                     return PyMenu(self.service, "/solve/set/open_channel_wave_options/stokes_wave_variants").execute(*args, **kwargs)
                 def set_buffer_layer_ht(self, *args, **kwargs):
                     """
-                    Set bufer layer height between phases for segregated velocity inputs.
+                    Sets the buffer layer height.
                     """
                     return PyMenu(self.service, "/solve/set/open_channel_wave_options/set_buffer_layer_ht").execute(*args, **kwargs)
 
@@ -40549,7 +40673,7 @@ class main_menu(metaclass=PyMenuMeta):
                     self.options = self.__class__.options(path + [("options", None)], service)
                 def enable(self, *args, **kwargs):
                     """
-                    Enable/Disable High Order Term Relaxation.
+                    Enables/disables High Order Term Relaxation.
                     """
                     return PyMenu(self.service, "/solve/set/high_order_term_relaxation/enable").execute(*args, **kwargs)
 
@@ -40563,7 +40687,7 @@ class main_menu(metaclass=PyMenuMeta):
                         self.variables = self.__class__.variables(path + [("variables", None)], service)
                     def relaxation_factor(self, *args, **kwargs):
                         """
-                        Sets relaxation factor.
+                        Sets the relaxation factor.
                         """
                         return PyMenu(self.service, "/solve/set/high_order_term_relaxation/options/relaxation_factor").execute(*args, **kwargs)
                     def expert(self, *args, **kwargs):
@@ -40574,7 +40698,7 @@ class main_menu(metaclass=PyMenuMeta):
 
                     class variables(metaclass=PyMenuMeta):
                         """
-                        Select Variables.
+                        Selects the variables.
                         """
                         def __init__(self, path, service):
                             self.path = path
@@ -40587,7 +40711,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class poor_mesh_numerics(metaclass=PyMenuMeta):
                 """
-                Enter Poor Mesh Numerics Menu.
+                Enters the poor mesh numerics menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -40595,47 +40719,47 @@ class main_menu(metaclass=PyMenuMeta):
                     self.solution_based_pmn = self.__class__.solution_based_pmn(path + [("solution_based_pmn", None)], service)
                 def enable(self, *args, **kwargs):
                     """
-                    Solution correction on meshes of poor quality.
+                    Enables/disables the application of poor mesh numerics on cells (those with an orthogonal quality of 0, as well as those identified by other enabled criteria), and defines whether the local solution correction is 0th, 1st, or 2nd order.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/enable").execute(*args, **kwargs)
                 def cell_quality_based(self, *args, **kwargs):
                     """
-                    Enable/disable poor mesh numerics on cells with low quality.
+                    Enables/disables the application of poor mesh numerics on cells with an orthogonal quality that is equal to or less than the threshold defined by the solve/set/poor-mesh-numerics/set-quality-threshold text command (which by default is set to 0.05).
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/cell_quality_based").execute(*args, **kwargs)
                 def set_quality_threshold(self, *args, **kwargs):
                     """
-                    Set quality threshold.
+                    Sets the orthogonal quality threshold used for applying poor mesh numerics when the solve/set/poor-mesh-numerics/cell-quality-based? text command is enabled. By default, cells with an orthogonal quality of 0.05 or lower are corrected.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/set_quality_threshold").execute(*args, **kwargs)
                 def solution_and_quality_based(self, *args, **kwargs):
                     """
-                    Enable/disable poor mesh numerics based on solution and cell quality.
+                    Enables/disables the detection and treatment of poor cells using a criterion based on the solution and cell quality. Poor mesh numerics are applied when the criterion value is equal to or less than a threshold value defined as part of this text command, and at a specified frequency (of iterations or time steps). This criterion is only available with the pressure-based solver.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/solution_and_quality_based").execute(*args, **kwargs)
                 def gradient_quality_based(self, *args, **kwargs):
                     """
-                    Enable/disable poor mesh numerics based on cell gradient quality.
+                    Enables/disables the detection and treatment of poor cells using a criterion based on the cell gradient quality. Poor mesh numerics are applied when the criterion value is equal to or less than a threshold value defined as part of this text command. This criterion is only available with the pressure-based solver, and is not supported for cases that have periodic boundaries.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/gradient_quality_based").execute(*args, **kwargs)
                 def orthogonality_enhancing_cell_centroids(self, *args, **kwargs):
                     """
-                    Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+                    Enables/disables the relocation of select cell centroids, to improve the orthogonality metrics and solution stability. It is applied to cells when the criterion value is equal to or less than a threshold value defined as part of the text command. Note that the enhanced metrics are only apparent when reporting the quality in the solution mode of Fluent, and not in the meshing mode. 
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/orthogonality_enhancing_cell_centroids").execute(*args, **kwargs)
                 def user_defined_on_register(self, *args, **kwargs):
                     """
-                    Include cells in register in poor mesh numerics.
+                    Includes a register for the poor mesh numerics or not.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/user_defined_on_register").execute(*args, **kwargs)
                 def reset_poor_elements(self, *args, **kwargs):
                     """
-                    Reset marking of poor cell elements.
+                    Resets the list of poor cells included by the default, cell quality, user-defined, cell gradient quality, and solution and cell quality criteria.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/reset_poor_elements").execute(*args, **kwargs)
                 def print_poor_elements_count(self, *args, **kwargs):
                     """
-                    Print poor cells count.
+                    Prints out a listing of the poor cells for each criterion: default, cell quality, and user-defined, and (if enabled) cell gradient quality and solution and cell quality.
                     """
                     return PyMenu(self.service, "/solve/set/poor_mesh_numerics/print_poor_elements_count").execute(*args, **kwargs)
                 def enhanced_pmn(self, *args, **kwargs):
@@ -40679,24 +40803,24 @@ class main_menu(metaclass=PyMenuMeta):
 
             class amg_options(metaclass=PyMenuMeta):
                 """
-                Enter AMG options menu.
+                Enters the AMG options menu
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def laplace_coarsening(self, *args, **kwargs):
                     """
-                    Set AMG laplace coarsening options.
+                    Enables / disables Laplace coarsening for scalar and/or coupled equations.
                     """
                     return PyMenu(self.service, "/solve/set/amg_options/laplace_coarsening").execute(*args, **kwargs)
                 def conservative_amg_coarsening(self, *args, **kwargs):
                     """
-                    Use conservative AMG coarsening?.
+                    Enables / disables the use of conservative coarsening techniques for scalar and/or coupled equations that can improve parallel performance and/or convergence for some difficult cases.
                     """
                     return PyMenu(self.service, "/solve/set/amg_options/conservative_amg_coarsening").execute(*args, **kwargs)
                 def aggressive_amg_coarsening(self, *args, **kwargs):
                     """
-                    Use aggressive AMG coarsening.
+                    Enables / disables the use of a version of the AMG solver that is optimized for high coarsening rates. This option is recommended if the AMG solver diverges with the default settings.
                     """
                     return PyMenu(self.service, "/solve/set/amg_options/aggressive_amg_coarsening").execute(*args, **kwargs)
                 def amg_gpgpu_options(self, *args, **kwargs):
@@ -40707,14 +40831,14 @@ class main_menu(metaclass=PyMenuMeta):
 
             class warped_face_gradient_correction(metaclass=PyMenuMeta):
                 """
-                Enter warped-face-gradient-correction menu.
+                Enters the warped-face gradient correction menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Enable Warped-Face Gradient Correction.
+                    Enables/disables gradient enhancement computations and specifies whether Fluent uses fast or memory saving mode.
                     """
                     return PyMenu(self.service, "/solve/set/warped_face_gradient_correction/enable").execute(*args, **kwargs)
                 def turbulence_options(self, *args, **kwargs):
@@ -40725,33 +40849,33 @@ class main_menu(metaclass=PyMenuMeta):
 
             class fast_transient_settings(metaclass=PyMenuMeta):
                 """
-                Enter the fast transient settings menu.
+                Enters the fast transient settings menu. This menu is only available for transient cases that use the density-based solver.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def rk2(self, *args, **kwargs):
                     """
-                    Enable the use of a two-stage Runge-Kutta scheme for time integration.
+                    Allows you to enable the use of a two-stage Runge-Kutta scheme for time integration, or revert to the default multi-stage Runge-Kutta scheme. This text command is only available for transient cases that use the density-based explicit formulation.
                     """
                     return PyMenu(self.service, "/solve/set/fast_transient_settings/rk2").execute(*args, **kwargs)
 
             class divergence_prevention(metaclass=PyMenuMeta):
                 """
-                Enter the divergence prevention menu.
+                Enters the divergence prevention menu. This menu is only available for the density-based solver.
                 """
                 def __init__(self, path, service):
                     self.path = path
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Enable divergence prevention.
+                    Enables a divergence prevention option so that Fluent applies under-relaxation to the variables in select cells where the temperature and/or pressure values are approaching the minimum and/or maximum limits.
                     """
                     return PyMenu(self.service, "/solve/set/divergence_prevention/enable").execute(*args, **kwargs)
 
             class advanced(metaclass=PyMenuMeta):
                 """
-                Enter the advanced settings menu.
+                Enters the advanced settings menu.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -40761,39 +40885,37 @@ class main_menu(metaclass=PyMenuMeta):
                     self.turbo_solver_options = self.__class__.turbo_solver_options(path + [("turbo_solver_options", None)], service)
                 def energy_numerical_noise_filter(self, *args, **kwargs):
                     """
-                    The energy equation numerical noise filter can be enabled to eliminate non-physical numerical noise in the energy field.
-                    The numerical noise can appear in solution fields where large variations in specific heat or combustion with phase change are present.
-                    Using the energy equation numerical noise filter increases robustness, but may make the solution slightly more diffusive.
+                    Enables/disables a filter to eliminate non-physical numerical noise in the energy field. Numerical noise can appear in solution fields where large variations in specific heat or combustion with phase change are present. Using the energy equation numerical noise filter increases robustness, but may make the solution slightly more diffusive. This text command is only available with the pressure-based solver.
                     """
                     return PyMenu(self.service, "/solve/set/advanced/energy_numerical_noise_filter").execute(*args, **kwargs)
                 def linearized_mass_transfer_udf(self, *args, **kwargs):
                     """
-                    Use linearized mass transfer UDFs?.
+                    Enables/disables the use of a linearized mass transfer user-defined function (that is, the DEFINE_LINEARIZED_MASS_TRANSFER macro), as opposed to a mass transfer user-defined function (that is, the DEFINE_MASS_TRANSFER macro).
                     """
                     return PyMenu(self.service, "/solve/set/advanced/linearized_mass_transfer_udf").execute(*args, **kwargs)
                 def singhal_et_al_cavitation_model(self, *args, **kwargs):
                     """
-                    Use Singhal-et-al cavitation model?.
+                    Enables/disables the availability of the Singhal et al. cavitation model option, which can then be enabled in the Multiphase Model dialog box or by using the following text command: define/phases/set-domain-properties/interaction-domain/heat-mass-reaction/cavitation/cavitation?.
                     """
                     return PyMenu(self.service, "/solve/set/advanced/singhal_et_al_cavitation_model").execute(*args, **kwargs)
                 def alternate_wall_temp_formulation(self, *args, **kwargs):
                     """
-                    Alternate formulation for wall temperatures?.
+                    Enables/disables an alternate formulation for wall temperatures.
                     """
                     return PyMenu(self.service, "/solve/set/advanced/alternate_wall_temp_formulation").execute(*args, **kwargs)
                 def retain_cell_residuals(self, *args, **kwargs):
                     """
-                    Retain cell residuals for postprocessing?.
+                    Enables/disables the retention of cell residuals for postprocessing.
                     """
                     return PyMenu(self.service, "/solve/set/advanced/retain_cell_residuals").execute(*args, **kwargs)
                 def retain_temporary_solver_mem(self, *args, **kwargs):
                     """
-                    Retain temporary solver memory?.
+                    Enables/disables the retention of temporary solver memory, which retains gradient data and makes some advanced options available for postprocessing.
                     """
                     return PyMenu(self.service, "/solve/set/advanced/retain_temporary_solver_mem").execute(*args, **kwargs)
                 def show_all_discretization_schemes(self, *args, **kwargs):
                     """
-                    Allow selection of all applicable discretization schemes?.
+                    Enables/disables the availability of all applicable discretization schemes.
                     """
                     return PyMenu(self.service, "/solve/set/advanced/show_all_discretization_schemes").execute(*args, **kwargs)
                 def explicit_under_relaxation_value(self, *args, **kwargs):
@@ -40803,7 +40925,7 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/advanced/explicit_under_relaxation_value").execute(*args, **kwargs)
                 def correction_form(self, *args, **kwargs):
                     """
-                    Discretize momentum equations in correction form for the pressure-based solver.
+                    S
                     """
                     return PyMenu(self.service, "/solve/set/advanced/correction_form").execute(*args, **kwargs)
                 def energy_reconstruction_gradient_limiting(self, *args, **kwargs):
@@ -40813,13 +40935,12 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/advanced/energy_reconstruction_gradient_limiting").execute(*args, **kwargs)
                 def bcd_boundedness(self, *args, **kwargs):
                     """
-                    BCD scheme boundedness strength, constant or expression (0 to 1).
+                    Specifies the BCD scheme parameter, which controls the boundedness strength of the BCD scheme in the pressure-based solver, as described in . 
                     """
                     return PyMenu(self.service, "/solve/set/advanced/bcd_boundedness").execute(*args, **kwargs)
                 def bcd_weights_freeze(self, *args, **kwargs):
                     """
-                    At each timestep, freeze BCD scheme weights after specified iteration
-                    in order to improve timestep convergence.
+                    Enables/disables freezing of weighting coefficients of the central differencing and the upwind components of the BCD scheme. This dialog command requires the iteration number, after which the BCD scheme weights are to be frozen at each timestep. Freezing the BCD weighting coefficients may help to improve convergence of the timestep iterations as described in . 
                     """
                     return PyMenu(self.service, "/solve/set/advanced/bcd_weights_freeze").execute(*args, **kwargs)
                 def anisotropic_heat_flux(self, *args, **kwargs):
@@ -40858,24 +40979,24 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class secondary_gradient_limiting(metaclass=PyMenuMeta):
                     """
-                    Enter the Secondary Gradient Limiting Menu.
+                    Enters the secondary gradient limiting menu. This menu is only available when the define/models/solver/pressure-based text command is enabled.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def energy(self, *args, **kwargs):
                         """
-                        Enable/disable secondary gradient limiting at coupled walls for energy equation.
+                        Enables/disables secondary gradient limiting for the energy  calculations on coupled two-sided walls. This limiting can help prevent  divergence when the cells on such walls have poor orthogonality. 
                         """
                         return PyMenu(self.service, "/solve/set/advanced/secondary_gradient_limiting/energy").execute(*args, **kwargs)
                     def uds(self, *args, **kwargs):
                         """
-                        Enable/disable secondary gradient limiting at coupled walls for user-defined scalars.
+                        Enables/disables secondary gradient limiting for the user-defined  scalar (UDS) calculations on coupled two-sided walls. This limiting can  help prevent divergence when the cells on such walls have poor  orthogonality. 
                         """
                         return PyMenu(self.service, "/solve/set/advanced/secondary_gradient_limiting/uds").execute(*args, **kwargs)
                     def mesh_quality_limits(self, *args, **kwargs):
                         """
-                        Specify minimum and maximum mesh quality limits.
+                        Defines the mesh quality limits used when applying secondary  gradient limiting to faces on coupled two-sided walls. Shifting this  range closer to 1 will decrease the risk of divergence, but at the cost  of accuracy.
                         """
                         return PyMenu(self.service, "/solve/set/advanced/secondary_gradient_limiting/mesh_quality_limits").execute(*args, **kwargs)
 
@@ -40906,23 +41027,23 @@ class main_menu(metaclass=PyMenuMeta):
                     self.service = service
                 def enable(self, *args, **kwargs):
                     """
-                    Enable/disable high-speed-numerics.
+                    Enables/disables High Speed Numerics.
                     """
                     return PyMenu(self.service, "/solve/set/high_speed_numerics/enable").execute(*args, **kwargs)
                 def expert(self, *args, **kwargs):
                     """
-                    Expert high-speed-numerics.
+                    Sets the level of stabilization used to achieve fast convergence. Enter a number 0-5 corresponding to the Mach number range that best characterizes the flow. 
                     """
                     return PyMenu(self.service, "/solve/set/high_speed_numerics/expert").execute(*args, **kwargs)
                 def visualize_pressure_discontinuity_sensor(self, *args, **kwargs):
                     """
-                    Enable/disable pressure-discontinuity-sensor visualization.
+                    Makes available the Pressure Discontinuity Sensor which is a binary identifier equal to 1 if a cell is in proximity of a pressure discontinuity.
                     """
                     return PyMenu(self.service, "/solve/set/high_speed_numerics/visualize_pressure_discontinuity_sensor").execute(*args, **kwargs)
 
             class previous_defaults(metaclass=PyMenuMeta):
                 """
-                Enter previous defaults menu.
+                Provides text commands that allow you to undo enhancements to the default solver behavior.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -40934,33 +41055,33 @@ class main_menu(metaclass=PyMenuMeta):
                     return PyMenu(self.service, "/solve/set/previous_defaults/undo_r19_point_0_default_changes").execute(*args, **kwargs)
                 def undo_2019r1_default_changes(self, *args, **kwargs):
                     """
-                    Undo default changes introduced in 2019R1.
+                    Allows you to undo enhancements introduced in version 2019 R1 of ANSYS Fluent, including:
                     """
                     return PyMenu(self.service, "/solve/set/previous_defaults/undo_2019r1_default_changes").execute(*args, **kwargs)
                 def undo_2019r3_default_changes(self, *args, **kwargs):
                     """
-                    Undo default changes introduced in 2019R3.
+                    Allows you to undo enhancements introduced in version 2019 R3 of ANSYS Fluent, including:
                     """
                     return PyMenu(self.service, "/solve/set/previous_defaults/undo_2019r3_default_changes").execute(*args, **kwargs)
                 def undo_2021r1_default_changes(self, *args, **kwargs):
                     """
-                    Undo default changes introduced in 2021R1.
+                    Allows you to undo enhancements introduced in version 2021 R1 of ANSYS Fluent, including:
                     """
                     return PyMenu(self.service, "/solve/set/previous_defaults/undo_2021r1_default_changes").execute(*args, **kwargs)
                 def undo_2021r2_default_changes(self, *args, **kwargs):
                     """
-                    Undo default changes introduced in 2021R2.
+                    Allows you to undo the following enhancements introduced in version 2021 R2 of ANSYS Fluent:
                     """
                     return PyMenu(self.service, "/solve/set/previous_defaults/undo_2021r2_default_changes").execute(*args, **kwargs)
                 def undo_2022r1_default_changes(self, *args, **kwargs):
                     """
-                    Undo default changes introduced in 2022R1.
+                    Allows you to undo the following enhancements introduced in version 2022 R1 of ANSYS Fluent:
                     """
                     return PyMenu(self.service, "/solve/set/previous_defaults/undo_2022r1_default_changes").execute(*args, **kwargs)
 
             class overset(metaclass=PyMenuMeta):
                 """
-                Enter overset solver options menu.
+                Specifies overset meshing solver options.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -40968,17 +41089,17 @@ class main_menu(metaclass=PyMenuMeta):
                     self.expert = self.__class__.expert(path + [("expert", None)], service)
                 def high_order_pressure(self, *args, **kwargs):
                     """
-                    High order pressure extrapolation at overset interface.
+                    Uses the pressure gradient of the donor cell in the interpolation of pressure for its receptor cell.
                     """
                     return PyMenu(self.service, "/solve/set/overset/high_order_pressure").execute(*args, **kwargs)
                 def interpolation_method(self, *args, **kwargs):
                     """
-                    Choose the interpolation method for overset interface(s).
+                    Selects the interpolation method for overset interfaces. Note that the least squares method is recommended for sliding mesh cases.
                     """
                     return PyMenu(self.service, "/solve/set/overset/interpolation_method").execute(*args, **kwargs)
                 def orphan_cell_treatment(self, *args, **kwargs):
                     """
-                    Enable solver to run with orphans present.
+                    Enables/disables a numerical treatment that attempts to assign reasonable data values to orphan cells.
                     """
                     return PyMenu(self.service, "/solve/set/overset/orphan_cell_treatment").execute(*args, **kwargs)
 
@@ -41002,7 +41123,7 @@ class main_menu(metaclass=PyMenuMeta):
 
             class acoustics_wave_equation_controls(metaclass=PyMenuMeta):
                 """
-                Enter menu for acoustics wave equation solver controls.
+                Enters the menu to specify parameters of the acoustics wave equation solver.
                 """
                 def __init__(self, path, service):
                     self.path = path
@@ -41022,21 +41143,19 @@ class main_menu(metaclass=PyMenuMeta):
 
                 class expert(metaclass=PyMenuMeta):
                     """
-                    Enter menu for expert controls.
+                    Enters the menu to specify the expert parameters.
                     """
                     def __init__(self, path, service):
                         self.path = path
                         self.service = service
                     def under_relaxation_factor(self, *args, **kwargs):
                         """
-                        Specify under-relaxation factor to be used in 
-                        the diagonal matrix elements of implicit solver.
+                        Specifies the implicit under-relaxation factor. Should be used only  with bad meshes, when the AMG linear solver does not converge.
                         """
                         return PyMenu(self.service, "/solve/set/acoustics_wave_equation_controls/expert/under_relaxation_factor").execute(*args, **kwargs)
                     def explicit_relaxation_factor(self, *args, **kwargs):
                         """
-                        Specify explicit relaxation factor to be applied to
-                        the solution correction when updating solution in the timestep iterations.
+                        Specifies the explicit relaxation factor. Should be used only with  bad meshes, when iterations do not converge.
                         """
                         return PyMenu(self.service, "/solve/set/acoustics_wave_equation_controls/expert/explicit_relaxation_factor").execute(*args, **kwargs)
 
@@ -41065,24 +41184,24 @@ class main_menu(metaclass=PyMenuMeta):
 
         class execute_commands(metaclass=PyMenuMeta):
             """
-            Enter the execute-monitor-commands menu.
+            Enters the execute commands menu.
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def add_edit(self, *args, **kwargs):
                 """
-                Add or edit execute-commands.
+                Adds or edits execute commands.
                 """
                 return PyMenu(self.service, "/solve/execute_commands/add_edit").execute(*args, **kwargs)
             def enable(self, *args, **kwargs):
                 """
-                Enable an execute-command.
+                Enables an execute command.
                 """
                 return PyMenu(self.service, "/solve/execute_commands/enable").execute(*args, **kwargs)
             def disable(self, *args, **kwargs):
                 """
-                Disable an execute-command.
+                Disables an execute command.
                 """
                 return PyMenu(self.service, "/solve/execute_commands/disable").execute(*args, **kwargs)
             def copy(self, *args, **kwargs):
@@ -41318,11 +41437,11 @@ class main_menu(metaclass=PyMenuMeta):
                         Apply a local correction where the flow is tangential to the boundary.
                         """
                         return PyMenu(self.service, "/setup/boundary_conditions/bc_settings/pressure_far_field/riemann_invariants_tangency_correction").execute(*args, **kwargs)
-                    def type_flag(self, *args, **kwargs):
+                    def type(self, *args, **kwargs):
                         """
                         Choose pressure-far-field boundary-condition type.
                         """
-                        return PyMenu(self.service, "/setup/boundary_conditions/bc_settings/pressure_far_field/type_flag").execute(*args, **kwargs)
+                        return PyMenu(self.service, "/setup/boundary_conditions/bc_settings/pressure_far_field/type").execute(*args, **kwargs)
 
             class expert(metaclass=PyMenuMeta):
                 """
@@ -47158,26 +47277,26 @@ class main_menu(metaclass=PyMenuMeta):
                         .
                         """
                         return PyMenu(self.service, "/setup/models/dpm/interaction/linear_growth_of_dpm_source_term").execute(*args, **kwargs)
-                    def reset_sources_at_timestep_flag(self, *args, **kwargs):
+                    def reset_sources_at_timestep(self, *args, **kwargs):
                         """
                         Enable/disable flush of DPM source terms at beginning of every time step.
                         """
-                        return PyMenu(self.service, "/setup/models/dpm/interaction/reset_sources_at_timestep_flag").execute(*args, **kwargs)
-                    def enable_flow_blocking_by_particles_flag(self, *args, **kwargs):
+                        return PyMenu(self.service, "/setup/models/dpm/interaction/reset_sources_at_timestep").execute(*args, **kwargs)
+                    def enable_flow_blocking_by_particles(self, *args, **kwargs):
                         """
                         Enable/disable inclusion of DPM volume fraction in continuous flow.
                         """
-                        return PyMenu(self.service, "/setup/models/dpm/interaction/enable_flow_blocking_by_particles_flag").execute(*args, **kwargs)
-                    def enable_source_scaling_due_to_flow_blocking_flag(self, *args, **kwargs):
+                        return PyMenu(self.service, "/setup/models/dpm/interaction/enable_flow_blocking_by_particles").execute(*args, **kwargs)
+                    def enable_source_scaling_due_to_flow_blocking(self, *args, **kwargs):
                         """
                         Enable/disable scaling of DPM source terms due to inclusion of DPM volume fraction in continuous flow.
                         """
-                        return PyMenu(self.service, "/setup/models/dpm/interaction/enable_source_scaling_due_to_flow_blocking_flag").execute(*args, **kwargs)
-                    def enable_drag_scaling_due_to_flow_blocking_flag(self, *args, **kwargs):
+                        return PyMenu(self.service, "/setup/models/dpm/interaction/enable_source_scaling_due_to_flow_blocking").execute(*args, **kwargs)
+                    def enable_drag_scaling_due_to_flow_blocking(self, *args, **kwargs):
                         """
                         Enable/disable scaling of DPM drag coefficient due to inclusion of DPM volume fraction in continuous flow.
                         """
-                        return PyMenu(self.service, "/setup/models/dpm/interaction/enable_drag_scaling_due_to_flow_blocking_flag").execute(*args, **kwargs)
+                        return PyMenu(self.service, "/setup/models/dpm/interaction/enable_drag_scaling_due_to_flow_blocking").execute(*args, **kwargs)
                     def max_vf_allowed_for_blocking(self, *args, **kwargs):
                         """
                         Maximum DPM volume fraction used in continuous flow.
@@ -54196,12 +54315,12 @@ class main_menu(metaclass=PyMenuMeta):
             self.query = self.__class__.query(path + [("query", None)], service)
         def circle_slice(self, *args, **kwargs):
             """
-            Extract a circular slice.
+            Extracts a circular slice. 
             """
             return PyMenu(self.service, "/surface/circle_slice").execute(*args, **kwargs)
         def delete_surface(self, *args, **kwargs):
             """
-            Remove a defined data surface.
+            Removes a defined data surface. 
             """
             return PyMenu(self.service, "/surface/delete_surface").execute(*args, **kwargs)
         def group_surfaces(self, *args, **kwargs):
@@ -54216,12 +54335,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/surface/ungroup_surface").execute(*args, **kwargs)
         def iso_clip(self, *args, **kwargs):
             """
-            Clip a data surface (surface, curve, or point) between two iso-values.
+            Clips a data surface (surface, curve, or point) between two isovalues. 
             """
             return PyMenu(self.service, "/surface/iso_clip").execute(*args, **kwargs)
         def iso_surface(self, *args, **kwargs):
             """
-            Extract an iso-surface (surface, curve, or point) from the curent data field.
+            Extracts an iso-surface (surface, curve, or point) from the current data field. 
             """
             return PyMenu(self.service, "/surface/iso_surface").execute(*args, **kwargs)
         def expression_volume(self, *args, **kwargs):
@@ -54231,42 +54350,42 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/surface/expression_volume").execute(*args, **kwargs)
         def multiple_iso_surfaces(self, *args, **kwargs):
             """
-            Create multiple iso-surfaces from the data field at specified spacing.
+            Creates multiple iso-surfaces at once. Accepts zone names, lists of zone ID’s, and wildcards.
             """
             return PyMenu(self.service, "/surface/multiple_iso_surfaces").execute(*args, **kwargs)
         def line_slice(self, *args, **kwargs):
             """
-            Extract a linear slice.
+            Extracts a linear slice in 2D, given the normal to the line and a distance from the origin. 
             """
             return PyMenu(self.service, "/surface/line_slice").execute(*args, **kwargs)
         def line_surface(self, *args, **kwargs):
             """
-            Define a "line" surface by specifying the two endpoint coordinates.
+            Defines a “line" surface by specifying the two endpoint coordinates. 
             """
             return PyMenu(self.service, "/surface/line_surface").execute(*args, **kwargs)
         def list_surfaces(self, *args, **kwargs):
             """
-            List the number of facets in the defined surfaces.
+            Displays the ID and name, and the number of point, curve, and surface facets of the current surfaces. 
             """
             return PyMenu(self.service, "/surface/list_surfaces").execute(*args, **kwargs)
         def mouse_line(self, *args, **kwargs):
             """
-            Define a line surface using the mouse to select two points.
+            Extracts a line surface that you define by using the mouse to select the endpoints. 
             """
             return PyMenu(self.service, "/surface/mouse_line").execute(*args, **kwargs)
         def mouse_plane(self, *args, **kwargs):
             """
-            Define a plane surface using the mouse to select three points.
+            Extracts a planar surface defined by selecting three points with the mouse. 
             """
             return PyMenu(self.service, "/surface/mouse_plane").execute(*args, **kwargs)
         def mouse_rake(self, *args, **kwargs):
             """
-            Define a "rake" surface using the mouse to select the end points.
+            Extracts a “rake" surface that you define by using the mouse to select the endpoints. 
             """
             return PyMenu(self.service, "/surface/mouse_rake").execute(*args, **kwargs)
         def partition_surface(self, *args, **kwargs):
             """
-            Define a data surface on mesh faces on the partition boundary.
+            Defines a data surface consisting of mesh faces on the partition boundary. 
             """
             return PyMenu(self.service, "/surface/partition_surface").execute(*args, **kwargs)
         def plane(self, *args, **kwargs):
@@ -54281,47 +54400,47 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/surface/plane_surface").execute(*args, **kwargs)
         def multiple_plane_surfaces(self, *args, **kwargs):
             """
-            Create multiple plane surfaces at specified spacing.
+            Creates multiple planes at once. Accepts zone names, lists of zone ID’s, and wildcards.
             """
             return PyMenu(self.service, "/surface/multiple_plane_surfaces").execute(*args, **kwargs)
         def plane_slice(self, *args, **kwargs):
             """
-            Extract a planar slice.
+            Extracts a planar slice. 
             """
             return PyMenu(self.service, "/surface/plane_slice").execute(*args, **kwargs)
         def point_array(self, *args, **kwargs):
             """
-            Extract a rectangular array of data points.
+            Extracts a rectangular array of data points. 
             """
             return PyMenu(self.service, "/surface/point_array").execute(*args, **kwargs)
         def point_surface(self, *args, **kwargs):
             """
-            Define a "point" surface by specifying the coordinates.
+            Defines a “point" surface by specifying the coordinates. 
             """
             return PyMenu(self.service, "/surface/point_surface").execute(*args, **kwargs)
         def structural_point_surface(self, *args, **kwargs):
             """
-            Define a "structural point" surface by specifying the coordinates.
+            Defines a structural “point" surface by specifying the coordinates.
             """
             return PyMenu(self.service, "/surface/structural_point_surface").execute(*args, **kwargs)
         def quadric_slice(self, *args, **kwargs):
             """
-            Extract a quadric slice.
+            Extracts a quadric slice. 
             """
             return PyMenu(self.service, "/surface/quadric_slice").execute(*args, **kwargs)
         def rake_surface(self, *args, **kwargs):
             """
-            Define a "rake" surface by specifying the end points.
+            Extracts a “rake" surface, given the coordinates of the endpoints. 
             """
             return PyMenu(self.service, "/surface/rake_surface").execute(*args, **kwargs)
         def rename_surface(self, *args, **kwargs):
             """
-            Rename a defined data surface.
+            Renames a defined data surface. 
             """
             return PyMenu(self.service, "/surface/rename_surface").execute(*args, **kwargs)
         def sphere_slice(self, *args, **kwargs):
             """
-            Extract a spherical slice.
+            Extracts a spherical slice. 
             """
             return PyMenu(self.service, "/surface/sphere_slice").execute(*args, **kwargs)
         def ellipsoid_slice(self, *args, **kwargs):
@@ -54336,12 +54455,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/surface/cone_slice").execute(*args, **kwargs)
         def surface_cells(self, *args, **kwargs):
             """
-            Extract all cells intersected by a data surface.
+            Extracts all cells intersected by a data surface. 
             """
             return PyMenu(self.service, "/surface/surface_cells").execute(*args, **kwargs)
         def transform_surface(self, *args, **kwargs):
             """
-            Transform surface.
+            Transforms surface. 
             """
             return PyMenu(self.service, "/surface/transform_surface").execute(*args, **kwargs)
         def create_imprint_surface(self, *args, **kwargs):
@@ -54351,22 +54470,22 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/surface/create_imprint_surface").execute(*args, **kwargs)
         def zone_surface(self, *args, **kwargs):
             """
-            Define a data surface on a mesh zone.
+            Creates a surface of a designated zone and gives it a specified name. 
             """
             return PyMenu(self.service, "/surface/zone_surface").execute(*args, **kwargs)
         def reset_zone_surfaces(self, *args, **kwargs):
             """
-            Reset case surface list.
+            Recreates missing surface zones by resetting the case surface list. 
             """
             return PyMenu(self.service, "/surface/reset_zone_surfaces").execute(*args, **kwargs)
         def multiple_zone_surfaces(self, *args, **kwargs):
             """
-            Create multiple data surfaces at a time.
+            Creates multiple data surfaces at one time. Accepts zone names, lists of zone ID’s, and wildcards.
             """
             return PyMenu(self.service, "/surface/multiple_zone_surfaces").execute(*args, **kwargs)
         def edit_surface(self, *args, **kwargs):
             """
-            Edit a defined data surface.
+            Allows you to edit any of the listed available surfaces.
             """
             return PyMenu(self.service, "/surface/edit_surface").execute(*args, **kwargs)
 
@@ -54498,32 +54617,32 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def start_server(self, *args, **kwargs):
             """
-            Start server.
+            Starts the server for the ANSYS Fluent remote visualization client.
             """
             return PyMenu(self.service, "/server/start_server").execute(*args, **kwargs)
         def start_client(self, *args, **kwargs):
             """
-            Start client.
+            Start the ANSYS Fluent remote visualization client.
             """
             return PyMenu(self.service, "/server/start_client").execute(*args, **kwargs)
         def print_server_address(self, *args, **kwargs):
             """
-            Print server address.
+            Prints the host address and port number of the server to the console.
             """
             return PyMenu(self.service, "/server/print_server_address").execute(*args, **kwargs)
         def write_or_reset_server_info(self, *args, **kwargs):
             """
-            Write/Reset server info.
+            Allows you to create a new server_info.txt file (with any name you specify), which resets the password for connecting to this server session. It does not restart the server.
             """
             return PyMenu(self.service, "/server/write_or_reset_server_info").execute(*args, **kwargs)
         def print_connected_clients(self, *args, **kwargs):
             """
-            Print connected clients.
+            Prints the name of the connected client and its IP address to the console.
             """
             return PyMenu(self.service, "/server/print_connected_clients").execute(*args, **kwargs)
         def shutdown_server(self, *args, **kwargs):
             """
-            Shutdown server.
+            Shuts-down the server and disconnects the connected client.
             """
             return PyMenu(self.service, "/server/shutdown_server").execute(*args, **kwargs)
 
@@ -54536,17 +54655,17 @@ class main_menu(metaclass=PyMenuMeta):
             self.service = service
         def compute_report(self, *args, **kwargs):
             """
-            Compute the turbo report.
+            Computes turbomachinery quantities. 
             """
             return PyMenu(self.service, "/turbo_post/compute_report").execute(*args, **kwargs)
         def write_report(self, *args, **kwargs):
             """
-            Write the turbo report to file.
+            Writes the turbo report to file. 
             """
             return PyMenu(self.service, "/turbo_post/write_report").execute(*args, **kwargs)
         def avg_contours(self, *args, **kwargs):
             """
-            Display average contours.
+            Displays average contours. 
             """
             return PyMenu(self.service, "/turbo_post/avg_contours").execute(*args, **kwargs)
         def two_d_contours(self, *args, **kwargs):
@@ -54556,12 +54675,12 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/turbo_post/two_d_contours").execute(*args, **kwargs)
         def xy_plot_avg(self, *args, **kwargs):
             """
-            Display average xy plot.
+            Displays average XY plots. 
             """
             return PyMenu(self.service, "/turbo_post/xy_plot_avg").execute(*args, **kwargs)
         def current_topology(self, *args, **kwargs):
             """
-            Set the current turbo topology for global use.
+            Sets the current turbo topology for global use. 
             """
             return PyMenu(self.service, "/turbo_post/current_topology").execute(*args, **kwargs)
 
@@ -54575,22 +54694,22 @@ class main_menu(metaclass=PyMenuMeta):
             self.camera = self.__class__.camera(path + [("camera", None)], service)
         def auto_scale(self, *args, **kwargs):
             """
-            Scale and center the current scene.
+            Scales and centers the current scene without changing its orientation. 
             """
             return PyMenu(self.service, "/views/auto_scale").execute(*args, **kwargs)
         def default_view(self, *args, **kwargs):
             """
-            Reset view to front and center.
+            Resets view to front and center. 
             """
             return PyMenu(self.service, "/views/default_view").execute(*args, **kwargs)
         def delete_view(self, *args, **kwargs):
             """
-            Remove a view from the list.
+            Removes a view from the list. 
             """
             return PyMenu(self.service, "/views/delete_view").execute(*args, **kwargs)
         def last_view(self, *args, **kwargs):
             """
-            Return to the camera position before the last manipulation.
+            Returns to the camera position before the last manipulation. 
             """
             return PyMenu(self.service, "/views/last_view").execute(*args, **kwargs)
         def next_view(self, *args, **kwargs):
@@ -54600,60 +54719,60 @@ class main_menu(metaclass=PyMenuMeta):
             return PyMenu(self.service, "/views/next_view").execute(*args, **kwargs)
         def list_views(self, *args, **kwargs):
             """
-            List predefined and saved views.
+            Lists predefined and saved views. 
             """
             return PyMenu(self.service, "/views/list_views").execute(*args, **kwargs)
         def restore_view(self, *args, **kwargs):
             """
-            Use a saved view.
+            Uses a saved view. 
             """
             return PyMenu(self.service, "/views/restore_view").execute(*args, **kwargs)
         def read_views(self, *args, **kwargs):
             """
-            Read views from a view file.
+            Reads views from a view file. 
             """
             return PyMenu(self.service, "/views/read_views").execute(*args, **kwargs)
         def save_view(self, *args, **kwargs):
             """
-            Save the current view to the view list.
+            Saves the current view to the view list. 
             """
             return PyMenu(self.service, "/views/save_view").execute(*args, **kwargs)
         def write_views(self, *args, **kwargs):
             """
-            Write selected views to a view file.
+            Writes selected views to a view file. 
             """
             return PyMenu(self.service, "/views/write_views").execute(*args, **kwargs)
 
         class camera(metaclass=PyMenuMeta):
             """
-            Enter the camera menu to modify the current viewing parameters.
+            Enters the camera menu to modify the current viewing parameters. 
             """
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
             def dolly_camera(self, *args, **kwargs):
                 """
-                Adjust the camera position and target.
+                Adjusts the camera position and target. 
                 """
                 return PyMenu(self.service, "/views/camera/dolly_camera").execute(*args, **kwargs)
             def field(self, *args, **kwargs):
                 """
-                Set the field of view (width and height).
+                Sets the field of view (width and height). 
                 """
                 return PyMenu(self.service, "/views/camera/field").execute(*args, **kwargs)
             def orbit_camera(self, *args, **kwargs):
                 """
-                Adjust the camera position without modifying the target.
+                Adjusts the camera position without modifying the target. 
                 """
                 return PyMenu(self.service, "/views/camera/orbit_camera").execute(*args, **kwargs)
             def pan_camera(self, *args, **kwargs):
                 """
-                Adjust the camera target without modifying the position.
+                Adjusts the camera target without modifying the position. 
                 """
                 return PyMenu(self.service, "/views/camera/pan_camera").execute(*args, **kwargs)
             def position(self, *args, **kwargs):
                 """
-                Set the camera position.
+                Sets the camera position. 
                 """
                 return PyMenu(self.service, "/views/camera/position").execute(*args, **kwargs)
             def projection(self, *args, **kwargs):
@@ -54663,22 +54782,22 @@ class main_menu(metaclass=PyMenuMeta):
                 return PyMenu(self.service, "/views/camera/projection").execute(*args, **kwargs)
             def roll_camera(self, *args, **kwargs):
                 """
-                Adjust the camera up-vector.
+                Adjusts the camera up-vector. 
                 """
                 return PyMenu(self.service, "/views/camera/roll_camera").execute(*args, **kwargs)
             def target(self, *args, **kwargs):
                 """
-                Set the point to be the center of the camera view.
+                Sets the point to be the center of the camera view. 
                 """
                 return PyMenu(self.service, "/views/camera/target").execute(*args, **kwargs)
             def up_vector(self, *args, **kwargs):
                 """
-                Set the camera up-vector.
+                Sets the camera up-vector. 
                 """
                 return PyMenu(self.service, "/views/camera/up_vector").execute(*args, **kwargs)
             def zoom_camera(self, *args, **kwargs):
                 """
-                Adjust the camera field of view.
+                Adjusts the camera’s field of view. This operation is similar to dollying the camera in or out of the scene. Dollying causes objects in front to move past you. Zooming changes the perspective effect in the scene (and can be disconcerting). 
                 """
                 return PyMenu(self.service, "/views/camera/zoom_camera").execute(*args, **kwargs)
 
