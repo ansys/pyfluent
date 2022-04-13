@@ -29,7 +29,7 @@ install_requires_post = [
 ]
 
 packages = []
-for package in find_namespace_packages(include="ansys*"):
+for package in find_namespace_packages(where="src", include="ansys*"):
     if package.startswith("ansys.api"):
         packages.append(package)
     if package.startswith("ansys.fluent"):
@@ -38,6 +38,7 @@ for package in find_namespace_packages(include="ansys*"):
 setup(
     name="ansys-fluent-solver",
     packages=packages,
+    package_dir={"": "src"},
     include_package_data=True,
     version=__version__,
     description="Pythonic interface to Ansys Fluent",
