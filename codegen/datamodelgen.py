@@ -54,6 +54,7 @@ class DataModelStaticInfo:
         self.filepath = (
             _THIS_DIR
             / ".."
+            / "src"
             / "ansys"
             / "fluent"
             / "core"

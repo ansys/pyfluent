@@ -18,7 +18,7 @@ _PROTOS_PATH = os.path.abspath(
     os.path.join(_THIS_DIRNAME, "..", "protos", "ansys", "api", "fluent", "v0")
 )
 _PY_OUT_PATH = os.path.abspath(
-    os.path.join(_THIS_DIRNAME, "..", "ansys", "api", "fluent", "v0")
+    os.path.join(_THIS_DIRNAME, "..", "src", "ansys", "api", "fluent", "v0")
 )
 _PACKAGE_NAME = "ansys.api.fluent.v0"
 

@@ -3,7 +3,7 @@
 Running this module generates a python module with the definition of the Fluent
 settings classes. The out is placed at:
 
-- ansys/fluent/core/solver/settings.py
+- src/ansys/fluent/core/solver/settings.py
 
 Running this module requires Fluent to be installed.
 
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     dirname = os.path.dirname(__file__)
     filepath = os.path.normpath(
         os.path.join(
-            dirname, "..", "ansys", "fluent", "core", "solver", "settings.py"
+            dirname, "..", "src", "ansys", "fluent", "core", "solver", "settings.py"
         )
     )
     session = launch_fluent()
