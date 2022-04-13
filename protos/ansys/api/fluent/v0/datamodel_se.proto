@@ -16,7 +16,8 @@ service DataModel {
   rpc setState(SetStateRequest) returns (SetStateResponse) {}
   rpc updateDict(UpdateDictRequest) returns (UpdateDictResponse) {}
   rpc deleteObject(DeleteObjectRequest) returns (DeleteObjectResponse) {}
-  rpc getAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse) {}
+  rpc getAttributeValue(GetAttributeValueRequest)
+      returns (GetAttributeValueResponse) {}
   rpc executeCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse) {}
   rpc getSpecs(GetSpecsRequest) returns (GetSpecsResponse) {}
   rpc getStaticInfo(GetStaticInfoRequest) returns (GetStaticInfoResponse) {}
@@ -48,9 +49,7 @@ message GetStateRequest {
   string path = 2;
 }
 
-message GetStateResponse {
-  utils.Variant state = 1;
-}
+message GetStateResponse { utils.Variant state = 1; }
 
 message SetStateRequest {
   string rules = 1;
@@ -64,16 +63,14 @@ message SetStateResponse {
   repeated string deletedpaths = 2;
 }
 
-message UpdateDictRequest
-{
+message UpdateDictRequest {
   string rules = 1;
   string path = 2;
   utils.Variant dicttomerge = 3;
   bool wait = 4;
 }
 
-message UpdateDictResponse
-{
+message UpdateDictResponse {
   utils.Variant state = 1;
   repeated string deletedpaths = 2;
 }
@@ -95,9 +92,7 @@ message GetAttributeValueRequest {
   string attribute = 3;
 }
 
-message GetAttributeValueResponse {
-  utils.Variant result = 1;
-}
+message GetAttributeValueResponse { utils.Variant result = 1; }
 
 message ExecuteCommandRequest {
   string rules = 1;
@@ -129,28 +124,18 @@ message CommonSpecs {
   string helpstring = 7;
 }
 
-message BoolParameterSpecs {
-  CommonSpecs common = 1;
-}
+message BoolParameterSpecs { CommonSpecs common = 1; }
 
 message IntParameterSpecs {
   CommonSpecs common = 1;
-  oneof il {
-    int32 lowerbound = 2;
-  }
-  oneof iu {
-    int32 upperbound = 3;
-  }
+  oneof il { int32 lowerbound = 2; }
+  oneof iu { int32 upperbound = 3; }
 }
 
 message RealParameterSpecs {
   CommonSpecs common = 1;
-  oneof rl {
-    double lowerbound = 2;
-  }
-  oneof ru {
-    double upperbound = 3;
-  }
+  oneof rl { double lowerbound = 2; }
+  oneof ru { double upperbound = 3; }
 }
 
 message StringParameterSpecs {
@@ -158,9 +143,7 @@ message StringParameterSpecs {
   repeated string allowedstringlist = 2;
 }
 
-message IntListParameterSpecs {
-  CommonSpecs common = 1;
-}
+message IntListParameterSpecs { CommonSpecs common = 1; }
 
 message StringListParameterSpecs {
   CommonSpecs common = 1;
@@ -202,9 +185,7 @@ message MemberSpecs {
   repeated MemberSpecs children = 11;
 }
 
-message GetSpecsResponse {
-  MemberSpecs member = 1;
-}
+message GetSpecsResponse { MemberSpecs member = 1; }
 
 message CommandArg {
   string type = 1;
@@ -225,10 +206,6 @@ message StaticInfo {
   CommandInfo commandinfo = 6;
 }
 
-message GetStaticInfoRequest {
-  string rules = 1;
-}
+message GetStaticInfoRequest { string rules = 1; }
 
-message GetStaticInfoResponse {
-  StaticInfo info = 1;
-}
+message GetStaticInfoResponse { StaticInfo info = 1; }

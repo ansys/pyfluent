@@ -9,9 +9,11 @@ package ansys.api.fluent.v0;
 import "google/protobuf/struct.proto";
 
 service DataModel {
-  rpc NotifyChanges(NotifyChangesRequest) returns (stream NotifyChangesResponse);
+  rpc NotifyChanges(NotifyChangesRequest)
+      returns (stream NotifyChangesResponse);
 
-  rpc GetAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse);
+  rpc GetAttributeValue(GetAttributeValueRequest)
+      returns (GetAttributeValueResponse);
   rpc GetState(GetStateRequest) returns (GetStateResponse);
   rpc SetState(SetStateRequest) returns (SetStateResponse);
   rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
@@ -63,26 +65,18 @@ message GetAttributeValueRequest {
   google.protobuf.Struct args = 3;
 }
 
-message GetAttributeValueResponse {
-  google.protobuf.Value value = 1;
-}
+message GetAttributeValueResponse { google.protobuf.Value value = 1; }
 
-message GetStateRequest {
-  string path = 1;
-}
+message GetStateRequest { string path = 1; }
 
-message GetStateResponse {
-  google.protobuf.Value state = 1;
-}
+message GetStateResponse { google.protobuf.Value state = 1; }
 
 message SetStateRequest {
   string path = 1;
   google.protobuf.Value state = 2;
 }
 
-message SetStateResponse {
-  google.protobuf.Value state = 1;
-}
+message SetStateResponse { google.protobuf.Value state = 1; }
 
 message ExecuteCommandRequest {
   string path = 1;
@@ -90,21 +84,13 @@ message ExecuteCommandRequest {
   google.protobuf.Struct args = 3;
 }
 
-message ExecuteCommandResponse {
-  google.protobuf.Value result = 1;
-}
+message ExecuteCommandResponse { google.protobuf.Value result = 1; }
 
-message ExecuteQueryRequest {
-  string path = 1;
-}
+message ExecuteQueryRequest { string path = 1; }
 
-message ExecuteQueryResponse {
-  google.protobuf.Value result = 1;
-}
+message ExecuteQueryResponse { google.protobuf.Value result = 1; }
 
-message CompositeGetRequest {
-  repeated DataModelGetter getters = 1;
-}
+message CompositeGetRequest { repeated DataModelGetter getters = 1; }
 
 message DataModelGetter {
   oneof request {
@@ -113,6 +99,4 @@ message DataModelGetter {
   }
 }
 
-message CompositeGetResponse {
-  google.protobuf.Value response = 1;
-}
+message CompositeGetResponse { google.protobuf.Value response = 1; }

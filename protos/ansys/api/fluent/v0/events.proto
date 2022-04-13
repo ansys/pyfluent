@@ -10,8 +10,7 @@ service Events {
       returns (stream BeginStreamingResponse) {}
 }
 
-message BeginStreamingRequest {
-}
+message BeginStreamingRequest {}
 
 /**
  * Event at end of the time step.
@@ -31,14 +30,12 @@ message IterationEndedEvent {
 /**
  * Event at start of calculation.
  */
-message CalculationsStartedEvent {
-}
+message CalculationsStartedEvent {}
 
 /**
  * Event at end of calculation.
  */
-message CalculationsEndedEvent {
-}
+message CalculationsEndedEvent {}
 
 /**
  * Event at case read.
@@ -57,8 +54,7 @@ message DataReadEvent {
 /**
  * Event at solution initialization.
  */
-message InitializedEvent {
-}
+message InitializedEvent {}
 
 message BeginStreamingResponse {
   oneof as {

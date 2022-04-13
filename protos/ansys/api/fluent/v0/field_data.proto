@@ -16,10 +16,12 @@ service FieldData {
   rpc GetRange(GetRangeRequest) returns (GetRangeResponse) {}
 
   /* Get surfaces info.*/
-  rpc GetSurfacesInfo(GetSurfacesInfoRequest) returns (GetSurfacesInfoResponse) {}
+  rpc GetSurfacesInfo(GetSurfacesInfoRequest)
+      returns (GetSurfacesInfoResponse) {}
 
   /* Get vector fields info.*/
-  rpc GetVectorFieldsInfo(GetVectorFieldsInfoRequest) returns (GetVectorFieldsInfoResponse) {}
+  rpc GetVectorFieldsInfo(GetVectorFieldsInfoRequest)
+      returns (GetVectorFieldsInfoResponse) {}
 
   /* Get scalar fields info.*/
   rpc GetFieldsInfo(GetFieldsInfoRequest) returns (GetFieldsInfoResponse) {}
@@ -28,71 +30,71 @@ service FieldData {
   rpc GetSurfaces(GetSurfacesRequest) returns (stream GetSurfacesResponse) {}
 
   /* Get scalar field data.*/
-  rpc GetScalarField(GetScalarFieldRequest) returns (stream GetScalarFieldResponse) {}
+  rpc GetScalarField(GetScalarFieldRequest)
+      returns (stream GetScalarFieldResponse) {}
 
   /* Get vector field data.*/
-  rpc GetVectorField(GetVectorFieldRequest) returns (stream GetVectorFieldResponse) {}
+  rpc GetVectorField(GetVectorFieldRequest)
+      returns (stream GetVectorFieldResponse) {}
 
   /* Get pathlines field data.*/
-  rpc GetPathlinesField(GetPathlinesFieldRequest) returns (stream GetPathlinesFieldResponse) {}
+  rpc GetPathlinesField(GetPathlinesFieldRequest)
+      returns (stream GetPathlinesFieldResponse) {}
 
   /* Get particle tracks field data.*/
-  rpc GetParticleTracksField(GetParticleTracksFieldRequest) returns (stream GetParticleTracksFieldResponse) {}
+  rpc GetParticleTracksField(GetParticleTracksFieldRequest)
+      returns (stream GetParticleTracksFieldResponse) {}
 
   /*Check if boundary values are on.*/
-  rpc IsBoundaryValuesOn(IsBoundaryValuesOnRequest) returns (IsBoundaryValuesOnResponse) {}
+  rpc IsBoundaryValuesOn(IsBoundaryValuesOnRequest)
+      returns (IsBoundaryValuesOnResponse) {}
 }
 
-message DoublePayload {
-  repeated double payload = 1;
-}
+message DoublePayload { repeated double payload = 1; }
 
-message FloatPayload {
-  repeated float payload = 1;
-}
+message FloatPayload { repeated float payload = 1; }
 
-message IntPayload {
-  repeated sint32 payload = 1;
-}
+message IntPayload { repeated sint32 payload = 1; }
 
-message LongPayload {
-  repeated sint64 payload = 1;
-}
+message LongPayload { repeated sint64 payload = 1; }
 
 /**
  * Field Type
  */
 enum FieldType {
-  INT_ARRAY = 0;     // Integer array.
-  LONG_ARRAY = 1;    // Long array.
-  FLOAT_ARRAY = 2;   // Float array.
-  DOUBLE_ARRAY = 3;  // Double array.
+  INT_ARRAY = 0;    // Integer array.
+  LONG_ARRAY = 1;   // Long array.
+  FLOAT_ARRAY = 2;  // Float array.
+  DOUBLE_ARRAY = 3; // Double array.
 }
 
 /**
  * Information about payload
  */
 message PayloadInfo {
-  uint64 surfaceId = 1;     // Surface id corresponding to field data.
-  string fieldName = 2;     // Field name e.g. vertices, faces, temperature, vector etc.
-  FieldType fieldType = 3;  // Field type.
-  uint64 fieldSize = 4;     // Field size. For bytes it will be number of bytes otherwise array size.
+  uint64 surfaceId = 1; // Surface id corresponding to field data.
+  string fieldName =
+      2; // Field name e.g. vertices, faces, temperature, vector etc.
+  FieldType fieldType = 3; // Field type.
+  uint64 fieldSize = 4;    // Field size. For bytes it will be number of bytes
+                           // otherwise array size.
 }
 
 /**
- * GetFieldsResponse can be either bytePayload or one of double/float/long/int payload.
- * Whether data is sent as bytes or as arrays of double/float/long/int depends upon value
- * of provideBytesStream in GetFieldsRequest. During streaming first payloadInfo is
- * streamed and then corresponding data is streamed.
+ * GetFieldsResponse can be either bytePayload or one of double/float/long/int
+ * payload. Whether data is sent as bytes or as arrays of double/float/long/int
+ * depends upon value of provideBytesStream in GetFieldsRequest. During
+ * streaming first payloadInfo is streamed and then corresponding data is
+ * streamed.
  */
 message GetFieldsResponse {
   oneof chunk {
-    bytes bytePayload = 1;            // Bytes payload.
-    DoublePayload doublePayload = 2;  // Double payload.
-    FloatPayload floatPayload = 3;    // Float payload.
-    LongPayload longPayload = 4;      // Long payload.
-    IntPayload intPayload = 5;        // Int payload.
-    PayloadInfo payloadInfo = 6;      // Payload info.
+    bytes bytePayload = 1;           // Bytes payload.
+    DoublePayload doublePayload = 2; // Double payload.
+    FloatPayload floatPayload = 3;   // Float payload.
+    LongPayload longPayload = 4;     // Long payload.
+    IntPayload intPayload = 5;       // Int payload.
+    PayloadInfo payloadInfo = 6;     // Payload info.
   }
 }
 
@@ -101,12 +103,12 @@ message GetFieldsResponse {
  * Surface data consists of information about vertices and faces.
  */
 message SurfaceRequest {
-  uint64 surfaceId = 1;      // Surface id.
-  bool oversetMesh = 2;      // Provide overset mesh.
-  bool provideVertices = 3;  // Provide vectices.
-  bool provideFaces = 4;     // Provide face to vertex connectivity.
-  bool provideFacesCentroid = 5;  // Provide face centroids.
-  bool provideFacesNormal = 6;    // Provide face normals.
+  uint64 surfaceId = 1;          // Surface id.
+  bool oversetMesh = 2;          // Provide overset mesh.
+  bool provideVertices = 3;      // Provide vectices.
+  bool provideFaces = 4;         // Provide face to vertex connectivity.
+  bool provideFacesCentroid = 5; // Provide face centroids.
+  bool provideFacesNormal = 6;   // Provide face normals.
 }
 
 enum DataLocation {
@@ -118,31 +120,32 @@ enum DataLocation {
  * Request for scalar field data
  */
 message ScalarFieldRequest {
-  uint64 surfaceId = 1;            // Surface id for scalar field.
-  string scalarFieldName = 2;      // Scalar field name.
-  DataLocation dataLocation = 3;   // Scalar Field location (Nodes/Elements).
-  bool provideBoundaryValues = 4;  // Provide boundary values.
+  uint64 surfaceId = 1;           // Surface id for scalar field.
+  string scalarFieldName = 2;     // Scalar field name.
+  DataLocation dataLocation = 3;  // Scalar Field location (Nodes/Elements).
+  bool provideBoundaryValues = 4; // Provide boundary values.
 }
 
 /**
  * Request for vector field data.
  */
 message VectorFieldRequest {
-  uint64 surfaceId = 1;             // Surface id for vector field.
-  string vectorFieldName = 2;       // Vector field name.
+  uint64 surfaceId = 1;       // Surface id for vector field.
+  string vectorFieldName = 2; // Vector field name.
 }
 
 /**
  * Request for fields.
  * - Default chunk size is 256kb. Minimum chunk size is 8b and Maximum is 4Mb.
- * - If true chunks of bytes will be streamed. Otherwise chunks of int/long/float or double array will be streamed.
+ * - If true chunks of bytes will be streamed. Otherwise chunks of
+ * int/long/float or double array will be streamed.
  */
 message GetFieldsRequest {
-  uint32 chunkSize = 1;                                // Chunk size.
-  bool provideBytesStream = 2;                         // Bytes are streamed if true
-  repeated SurfaceRequest surfaceRequest = 3;          // Surface request.
-  repeated ScalarFieldRequest scalarFieldRequest = 4;  // Scalar field request.
-  repeated VectorFieldRequest vectorFieldRequest = 5;  // Vector field request.
+  uint32 chunkSize = 1;                       // Chunk size.
+  bool provideBytesStream = 2;                // Bytes are streamed if true
+  repeated SurfaceRequest surfaceRequest = 3; // Surface request.
+  repeated ScalarFieldRequest scalarFieldRequest = 4; // Scalar field request.
+  repeated VectorFieldRequest vectorFieldRequest = 5; // Vector field request.
 }
 
 enum DataStampingType {
@@ -171,13 +174,9 @@ message UnitInfo {
   string label = 5;
 }
 
-message DataStampingInfo {
-  repeated DataStamping datastamping = 1;
-}
+message DataStampingInfo { repeated DataStamping datastamping = 1; }
 
-message SurfaceId {
-  sint64 id = 1;
-}
+message SurfaceId { sint64 id = 1; }
 
 message GetSurfacesRequest {
   repeated SurfaceId surfaceid = 1;
@@ -197,9 +196,7 @@ message Coordinate {
   double z = 3;
 }
 
-message Facet {
-  repeated sint32 node = 1;
-}
+message Facet { repeated sint32 node = 1; }
 
 message SurfaceInfo {
   repeated SurfaceId surfaceId = 1;
@@ -219,9 +216,7 @@ message SurfaceData {
   }
 }
 
-message GetSurfacesResponse {
-  SurfaceData surfacedata = 1;
-}
+message GetSurfacesResponse { SurfaceData surfacedata = 1; }
 
 message GetRangeRequest {
   string fieldName = 1;
@@ -241,15 +236,11 @@ message FieldInfo {
   string domain = 4;
 }
 
-message GetFieldsInfoRequest {
-}
+message GetFieldsInfoRequest {}
 
-message GetFieldsInfoResponse {
-  repeated FieldInfo fieldInfo = 1;
-}
+message GetFieldsInfoResponse { repeated FieldInfo fieldInfo = 1; }
 
-message GetVectorFieldsInfoRequest {
-}
+message GetVectorFieldsInfoRequest {}
 message VectorFieldInfo {
   string displayName = 1;
   string xComponent = 2;
@@ -261,11 +252,8 @@ message GetVectorFieldsInfoResponse {
   repeated VectorFieldInfo vectorFieldInfo = 1;
 }
 
-message GetSurfacesInfoRequest {
-}
-message GetSurfacesInfoResponse {
-  repeated SurfaceInfo surfaceInfo = 1;
-}
+message GetSurfacesInfoRequest {}
+message GetSurfacesInfoResponse { repeated SurfaceInfo surfaceInfo = 1; }
 
 message GetScalarFieldRequest {
   repeated SurfaceId surfaceid = 1;
@@ -295,17 +283,11 @@ message VectorComponents {
   double z = 3;
 }
 
-message ScalarField {
-  repeated double data = 1;
-}
+message ScalarField { repeated double data = 1; }
 
-message VectorField {
-  repeated VectorComponents vectorComponents = 1;
-}
+message VectorField { repeated VectorComponents vectorComponents = 1; }
 
-message ActiveField {
-  repeated sint64 active = 1;
-}
+message ActiveField { repeated sint64 active = 1; }
 
 message ScalarFieldData {
   SurfaceId surfaceid = 1;
@@ -319,9 +301,7 @@ message ScalarFieldData {
   }
 }
 
-message GetScalarFieldResponse {
-  ScalarFieldData scalarfielddata = 1;
-}
+message GetScalarFieldResponse { ScalarFieldData scalarfielddata = 1; }
 
 message GetVectorFieldRequest {
   repeated SurfaceId surfaceid = 1;
@@ -342,9 +322,7 @@ message VectorFieldMetaData {
   UnitInfo scalarfieldunit = 4;
 }
 
-message VectorScale {
-  double data = 1;
-}
+message VectorScale { double data = 1; }
 
 message VectorFieldData {
   SurfaceId surfaceid = 1;
@@ -361,9 +339,7 @@ message VectorFieldData {
   VectorScale vectorscale = 10;
 }
 
-message GetVectorFieldResponse {
-  VectorFieldData vectorfielddata = 1;
-}
+message GetVectorFieldResponse { VectorFieldData vectorfielddata = 1; }
 
 message GetPathlinesFieldRequest {
   repeated SurfaceId releaseFrom = 1;
@@ -377,7 +353,7 @@ message GetPathlinesFieldRequest {
   bool accuracyControlOn = 10;
   double tolerance = 11;
   sint32 coarsen = 12;
-  string zone = 13 [deprecated = true];
+  string zone = 13 [ deprecated = true ];
   string velocityDomain = 14;
   DataStampingInfo dataStampingInfo = 15;
   repeated string zones = 16;
@@ -409,9 +385,7 @@ message PathlineData {
   }
 }
 
-message GetPathlinesFieldResponse {
-  PathlineData pathlineData = 1;
-}
+message GetPathlinesFieldResponse { PathlineData pathlineData = 1; }
 
 message ParticleTracksFilter {
   string field = 1;
@@ -421,13 +395,15 @@ message ParticleTracksFilter {
 
 message GetParticleTracksFieldRequest {
   repeated string releaseFrom = 1;
-  string field1 = 2;     // to color
-  string field2 = 3;     // either spehere[only particle variable] or ribbon[non particle]
-  string field3 = 4;     // vector
-  string vectorsOf = 5;  // vector
+  string field1 = 2; // to color
+  string field2 =
+      3; // either spehere[only particle variable] or ribbon[non particle]
+  string field3 = 4;    // vector
+  string vectorsOf = 5; // vector
   bool nodeValue = 6;
   sint32 skip = 7;
-  sint32 singleStreamId = 8;  // if < 0 all stream will tracked. Otherwise single stream will be tracked
+  sint32 singleStreamId = 8; // if < 0 all stream will tracked. Otherwise single
+                             // stream will be tracked
   sint32 coarsen = 9;
   bool freeStreamParticles = 10;
   bool wallFilmParticles = 11;
@@ -468,9 +444,6 @@ message GetParticleTracksFieldResponse {
   ParticleTrackData particleTrackData = 1;
 }
 
-message IsBoundaryValuesOnRequest {
-}
+message IsBoundaryValuesOnRequest {}
 
-message IsBoundaryValuesOnResponse {
-  bool isboundaryvalueson = 1;
-}
+message IsBoundaryValuesOnResponse { bool isboundaryvalueson = 1; }

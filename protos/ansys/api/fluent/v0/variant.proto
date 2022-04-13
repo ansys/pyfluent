@@ -6,32 +6,19 @@ syntax = "proto3";
 
 package utils;
 
-message Empty {
-}
+message Empty {}
 
-message StringVector {
-  repeated string item = 1;
-}
+message StringVector { repeated string item = 1; }
 
-message DoubleVector {
-  repeated double item = 1;
-}
+message DoubleVector { repeated double item = 1; }
 
-message BoolVector {
-  repeated bool item = 1;
-}
+message BoolVector { repeated bool item = 1; }
 
-message Int64Vector {
-  repeated sint64 item = 1;
-}
+message Int64Vector { repeated sint64 item = 1; }
 
-message VariantMap {
-  map<string, Variant> item = 1;
-}
+message VariantMap { map<string, Variant> item = 1; }
 
-message VariantVector {
-  repeated Variant item = 1;
-}
+message VariantVector { repeated Variant item = 1; }
 
 message Variant {
   oneof as {

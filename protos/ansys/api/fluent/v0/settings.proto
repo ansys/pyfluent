@@ -7,9 +7,11 @@ syntax = "proto3";
 package ansys.api.fluent.v0.settings;
 
 service Settings {
-  /* Static info about objects (type, children, commands, arguments, object-type) in a recursive manner.
-     This rpc is deprecated, use GetStaticInfo instead */
-  rpc GetObjectStaticInfo(GetObjectStaticInfoRequest) returns (GetObjectStaticInfoResponse) {
+  /* Static info about objects (type, children, commands, arguments,
+     object-type) in a recursive manner. This rpc is deprecated, use
+     GetStaticInfo instead */
+  rpc GetObjectStaticInfo(GetObjectStaticInfoRequest)
+      returns (GetObjectStaticInfoResponse) {
     option deprecated = true;
   };
 
@@ -39,7 +41,8 @@ service Settings {
   rpc GetListSize(GetListSizeRequest) returns (GetListSizeResponse);
 
   /* Resize a list object */
-  rpc ResizeListObject(ResizeListObjectRequest) returns (ResizeListObjectResponse);
+  rpc ResizeListObject(ResizeListObjectRequest)
+      returns (ResizeListObjectResponse);
 
   /* Execute a command */
   rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
@@ -50,12 +53,8 @@ service Settings {
 
 /* Represents value of an object -- return value of GetVar */
 message Value {
-  message ValueList {
-    repeated Value lst = 1;
-  };
-  message ValueMap {
-    map<string, Value> m = 1;
-  };
+  message ValueList { repeated Value lst = 1; };
+  message ValueMap { map<string, Value> m = 1; };
   oneof value {
     bool boolean = 2;
     int64 integer = 3;
@@ -71,9 +70,7 @@ message PathInfo {
   string path = 2;
 }
 
-message GetObjectStaticInfoRequest {
-  string root = 1;
-}
+message GetObjectStaticInfoRequest { string root = 1; }
 
 message ObjectStaticInfo {
   string type = 1;
@@ -83,9 +80,7 @@ message ObjectStaticInfo {
   ObjectStaticInfo object_type = 4;
 }
 
-message GetObjectStaticInfoResponse {
-  ObjectStaticInfo info = 1;
-}
+message GetObjectStaticInfoResponse { ObjectStaticInfo info = 1; }
 
 message StaticInfoMap {
   string name = 1;
@@ -102,37 +97,27 @@ message StaticInfo {
   bool has_allowed_values = 7;
 }
 
-message GetStaticInfoRequest {
-  string root = 1;
-}
+message GetStaticInfoRequest { string root = 1; }
 
-message GetStaticInfoResponse {
-  StaticInfo info = 1;
-}
+message GetStaticInfoResponse { StaticInfo info = 1; }
 
-message GetVarRequest {
-  PathInfo path_info = 1;
-}
+message GetVarRequest { PathInfo path_info = 1; }
 
-message GetVarResponse {
-  Value value = 1;
-}
+message GetVarResponse { Value value = 1; }
 
 message SetVarRequest {
   PathInfo path_info = 1;
   Value value = 2;
 }
 
-message SetVarResponse {
-}
+message SetVarResponse {}
 
 message CreateRequest {
   PathInfo path_info = 1;
   string name = 2;
 }
 
-message CreateResponse {
-}
+message CreateResponse {}
 
 message RenameRequest {
   PathInfo path_info = 1;
@@ -140,40 +125,29 @@ message RenameRequest {
   string new_name = 3;
 }
 
-message RenameResponse {
-}
+message RenameResponse {}
 
 message DeleteRequest {
   PathInfo path_info = 1;
   string name = 2;
 }
 
-message DeleteResponse {
-}
+message DeleteResponse {}
 
-message GetObjectNamesRequest {
-  PathInfo path_info = 1;
-}
+message GetObjectNamesRequest { PathInfo path_info = 1; }
 
-message GetObjectNamesResponse {
-  repeated string names = 1;
-}
+message GetObjectNamesResponse { repeated string names = 1; }
 
-message GetListSizeRequest {
-  PathInfo path_info = 1;
-}
+message GetListSizeRequest { PathInfo path_info = 1; }
 
-message GetListSizeResponse {
-  int32 size = 1;
-}
+message GetListSizeResponse { int32 size = 1; }
 
 message ResizeListObjectRequest {
   PathInfo path_info = 1;
   int32 size = 2;
 }
 
-message ResizeListObjectResponse {
-}
+message ResizeListObjectResponse {}
 
 message ExecuteCommandRequest {
   PathInfo path_info = 1;
@@ -181,9 +155,7 @@ message ExecuteCommandRequest {
   Value args = 3;
 }
 
-message ExecuteCommandResponse {
-  Value reply = 1;
-}
+message ExecuteCommandResponse { Value reply = 1; }
 
 message GetAttrsRequest {
   PathInfo path_info = 1;

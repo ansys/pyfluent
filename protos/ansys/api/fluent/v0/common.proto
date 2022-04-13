@@ -6,5 +6,4 @@ syntax = "proto3";
 
 package grpcRemoting;
 
-message Empty {
-}
+message Empty {}
