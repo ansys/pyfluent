@@ -101,10 +101,10 @@ message GetFieldsResponse {
  * Surface data consists of information about vertices and faces.
  */
 message SurfaceRequest {
-  uint64 surfaceId = 1;      // Surface id.
-  bool oversetMesh = 2;      // Provide overset mesh.
-  bool provideVertices = 3;  // Provide vectices.
-  bool provideFaces = 4;     // Provide face to vertex connectivity.
+  uint64 surfaceId = 1;           // Surface id.
+  bool oversetMesh = 2;           // Provide overset mesh.
+  bool provideVertices = 3;       // Provide vectices.
+  bool provideFaces = 4;          // Provide face to vertex connectivity.
   bool provideFacesCentroid = 5;  // Provide face centroids.
   bool provideFacesNormal = 6;    // Provide face normals.
 }
@@ -128,8 +128,8 @@ message ScalarFieldRequest {
  * Request for vector field data.
  */
 message VectorFieldRequest {
-  uint64 surfaceId = 1;             // Surface id for vector field.
-  string vectorFieldName = 2;       // Vector field name.
+  uint64 surfaceId = 1;        // Surface id for vector field.
+  string vectorFieldName = 2;  // Vector field name.
 }
 
 /**
