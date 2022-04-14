@@ -6,17 +6,7 @@ import appdirs
 
 from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import launch_fluent  # noqa: F401
-from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.logging import LOG
-
-try:
-    from ansys.fluent.core.meshing import tui as meshing_tui
-    from ansys.fluent.core.solver import tui as solver_tui
-
-    Session.MeshingTui.register_module(meshing_tui)
-    Session.SolverTui.register_module(solver_tui)
-except ImportError:
-    pass
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""

@@ -117,27 +117,6 @@ class Attribute:
 class PyMenuMeta(type):
     """Metaclass for explicit TUI menu classes."""
 
-    @classmethod
-    def __create_init(cls):
-        def wrapper(self, path, service):
-            self.path = path
-            self.service = service
-            for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyMenuMeta":
-                    setattr(
-                        self,
-                        name,
-                        cls(self.path + [(name, None)], service),
-                    )
-                if cls.__class__.__name__ == "PyNamedObjectMeta":
-                    setattr(
-                        self,
-                        name,
-                        cls(self.path + [(name, None)], None, service),
-                    )
-
-        return wrapper
-
     # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size()
     @classmethod
     def __create_get_state(cls):
@@ -162,7 +141,6 @@ class PyMenuMeta(type):
         return wrapper
 
     def __new__(cls, name, bases, attrs):
-        attrs["__init__"] = cls.__create_init()
         attrs["__dir__"] = cls.__create_dir()
         if "is_extended_tui" in attrs:
             attrs["__call__"] = cls.__create_get_state()

@@ -8,6 +8,16 @@ from typing import Callable, List, Optional, Tuple
 
 import grpc
 
+from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService as DatamodelService_TUI,
+)
+
+try:
+    from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
+    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
+except ImportError:
+    pass
+
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -24,10 +34,6 @@ try:
 except ImportError:
     pass
 
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
-from ansys.fluent.core.services.datamodel_tui import PyMenu as PyMenu_TUI
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import (
     FieldData,
@@ -336,36 +342,10 @@ class Session:
 
     class Tui:
         def __init__(self, service):
-            self.meshing = Session.MeshingTui(service)
-            self.solver = Session.SolverTui(service)
-
-    class TuiMode:
-        """Base class for Meshing or Solver TUI."""
-
-        def __init__(self, service):
-            self.service = service
-            for mod in self.__class__.application_modules:
-                for name, cls in mod.__dict__.items():
-                    if cls.__class__.__name__ == "PyMenuMeta":
-                        setattr(self, name, cls([(name, None)], service))
-                    if cls.__class__.__name__ in "PyNamedObjectMeta":
-                        setattr(self, name, cls([(name, None)], None, service))
-
-        @classmethod
-        def register_module(cls, mod):
-            cls.application_modules.append(mod)
-            for name, obj in mod.__dict__.items():
-                if callable(obj):
-                    setattr(cls, name, obj)
-
-        def __dir__(self):
-            return PyMenu_TUI(self.service, "").get_child_names()
-
-    class MeshingTui(TuiMode):
-        application_modules: List = []
-
-    class SolverTui(TuiMode):
-        application_modules: List = []
+            if "MeshingMainMenu" in globals():
+                self.meshing = MeshingMainMenu([], service)
+            if "SolverMainMenu" in globals():
+                self.solver = SolverMainMenu([], service)
 
 
 atexit.register(Session.exit_all)
