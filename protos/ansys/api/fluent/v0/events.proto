@@ -7,7 +7,8 @@ syntax = "proto3";
 package grpcRemoting;
 service Events {
   rpc BeginStreaming(BeginStreamingRequest)
-      returns (stream BeginStreamingResponse) {}
+      returns (stream BeginStreamingResponse) {
+  }
 }
 
 message BeginStreamingRequest {
@@ -17,15 +18,15 @@ message BeginStreamingRequest {
  * Event at end of the time step.
  */
 message TimestepEndedEvent {
-  sint64 index = 1; // Time step index.
-  double size = 2;  // Time step size.
+  sint64 index = 1;  // Time step index.
+  double size = 2;   // Time step size.
 }
 
 /**
  * Event at end of the iteration.
  */
 message IterationEndedEvent {
-  sint64 index = 1; // Iteration index
+  sint64 index = 1;  // Iteration index
 }
 
 /**
@@ -44,14 +45,14 @@ message CalculationsEndedEvent {
  * Event at case read.
  */
 message CaseReadEvent {
-  string casefilepath = 1; // Case file path.
+  string casefilepath = 1;  // Case file path.
 }
 
 /**
  * Event at data read.
  */
 message DataReadEvent {
-  string datafilepath = 1; // Data file path.
+  string datafilepath = 1;  // Data file path.
 }
 
 /**

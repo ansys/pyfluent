@@ -13,34 +13,44 @@ service FieldData {
   rpc GetFields(GetFieldsRequest) returns (stream GetFieldsResponse);
 
   /* Get scalar field range.*/
-  rpc GetRange(GetRangeRequest) returns (GetRangeResponse) {}
+  rpc GetRange(GetRangeRequest) returns (GetRangeResponse) {
+  }
 
   /* Get surfaces info.*/
-  rpc GetSurfacesInfo(GetSurfacesInfoRequest) returns (GetSurfacesInfoResponse) {}
+  rpc GetSurfacesInfo(GetSurfacesInfoRequest) returns (GetSurfacesInfoResponse) {
+  }
 
   /* Get vector fields info.*/
-  rpc GetVectorFieldsInfo(GetVectorFieldsInfoRequest) returns (GetVectorFieldsInfoResponse) {}
+  rpc GetVectorFieldsInfo(GetVectorFieldsInfoRequest) returns (GetVectorFieldsInfoResponse) {
+  }
 
   /* Get scalar fields info.*/
-  rpc GetFieldsInfo(GetFieldsInfoRequest) returns (GetFieldsInfoResponse) {}
+  rpc GetFieldsInfo(GetFieldsInfoRequest) returns (GetFieldsInfoResponse) {
+  }
 
   /* Get surfaces data.*/
-  rpc GetSurfaces(GetSurfacesRequest) returns (stream GetSurfacesResponse) {}
+  rpc GetSurfaces(GetSurfacesRequest) returns (stream GetSurfacesResponse) {
+  }
 
   /* Get scalar field data.*/
-  rpc GetScalarField(GetScalarFieldRequest) returns (stream GetScalarFieldResponse) {}
+  rpc GetScalarField(GetScalarFieldRequest) returns (stream GetScalarFieldResponse) {
+  }
 
   /* Get vector field data.*/
-  rpc GetVectorField(GetVectorFieldRequest) returns (stream GetVectorFieldResponse) {}
+  rpc GetVectorField(GetVectorFieldRequest) returns (stream GetVectorFieldResponse) {
+  }
 
   /* Get pathlines field data.*/
-  rpc GetPathlinesField(GetPathlinesFieldRequest) returns (stream GetPathlinesFieldResponse) {}
+  rpc GetPathlinesField(GetPathlinesFieldRequest) returns (stream GetPathlinesFieldResponse) {
+  }
 
   /* Get particle tracks field data.*/
-  rpc GetParticleTracksField(GetParticleTracksFieldRequest) returns (stream GetParticleTracksFieldResponse) {}
+  rpc GetParticleTracksField(GetParticleTracksFieldRequest) returns (stream GetParticleTracksFieldResponse) {
+  }
 
   /*Check if boundary values are on.*/
-  rpc IsBoundaryValuesOn(IsBoundaryValuesOnRequest) returns (IsBoundaryValuesOnResponse) {}
+  rpc IsBoundaryValuesOn(IsBoundaryValuesOnRequest) returns (IsBoundaryValuesOnResponse) {
+  }
 }
 
 message DoublePayload {
@@ -75,21 +85,21 @@ enum FieldType {
  * or it contains boundary values etc.
  */
 enum PayloadTag {
-  OVERSET_MESH = 0;     // This tag is set if oversetMesh flag in SurfaceRequest is set to True.
-  ELEMENT_LOCATION = 1; // This tag is set if dataLocation in ScalarFieldRequest is Elements.
-  NODE_LOCATION = 2;    // This tag is set if dataLocation in ScalarFieldRequest is Nodes.
-  BOUNDARY_VALUES = 3;  // This tag is set if provideBoundaryValues in ScalarFieldRequest is set to True.
+  OVERSET_MESH = 0;      // This tag is set if oversetMesh flag in SurfaceRequest is set to True.
+  ELEMENT_LOCATION = 1;  // This tag is set if dataLocation in ScalarFieldRequest is Elements.
+  NODE_LOCATION = 2;     // This tag is set if dataLocation in ScalarFieldRequest is Nodes.
+  BOUNDARY_VALUES = 3;   // This tag is set if provideBoundaryValues in ScalarFieldRequest is set to True.
 }
 
 /**
  * Information about payload
  */
 message PayloadInfo {
-  uint64 surfaceId = 1;     // Surface id corresponding to field data.
-  string fieldName = 2;     // Field name e.g. vertices, faces, temperature, vector etc.
-  FieldType fieldType = 3;  // Field type.
-  uint64 fieldSize = 4;     // Field size. For bytes it will be number of bytes otherwise array size.
-  repeated PayloadTag payloadTag = 5; //PayloadTag to provide extra information about payload. 
+  uint64 surfaceId = 1;                // Surface id corresponding to field data.
+  string fieldName = 2;                // Field name e.g. vertices, faces, temperature, vector etc.
+  FieldType fieldType = 3;             // Field type.
+  uint64 fieldSize = 4;                // Field size. For bytes it will be number of bytes otherwise array size.
+  repeated PayloadTag payloadTag = 5;  //PayloadTag to provide extra information about payload.
 }
 
 /**

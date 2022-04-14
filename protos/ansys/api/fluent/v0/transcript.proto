@@ -9,7 +9,8 @@ package grpcRemoting;
 option objc_class_prefix = "HLW";
 
 service Transcript {
-  rpc BeginStreaming(TranscriptRequest) returns (stream TranscriptResponse) {}
+  rpc BeginStreaming(TranscriptRequest) returns (stream TranscriptResponse) {
+  }
 }
 
 message TranscriptRequest {

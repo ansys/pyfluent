@@ -9,17 +9,27 @@ package grpcRemoting;
 import "variant.proto";
 
 service DataModel {
-  rpc BeginStreaming(DataModelRequest) returns (stream DataModelResponse) {}
+  rpc BeginStreaming(DataModelRequest) returns (stream DataModelResponse) {
+  }
 
-  rpc initDatamodel(InitDatamodelRequest) returns (InitDatamodelResponse) {}
-  rpc getState(GetStateRequest) returns (GetStateResponse) {}
-  rpc setState(SetStateRequest) returns (SetStateResponse) {}
-  rpc updateDict(UpdateDictRequest) returns (UpdateDictResponse) {}
-  rpc deleteObject(DeleteObjectRequest) returns (DeleteObjectResponse) {}
-  rpc getAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse) {}
-  rpc executeCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse) {}
-  rpc getSpecs(GetSpecsRequest) returns (GetSpecsResponse) {}
-  rpc getStaticInfo(GetStaticInfoRequest) returns (GetStaticInfoResponse) {}
+  rpc initDatamodel(InitDatamodelRequest) returns (InitDatamodelResponse) {
+  }
+  rpc getState(GetStateRequest) returns (GetStateResponse) {
+  }
+  rpc setState(SetStateRequest) returns (SetStateResponse) {
+  }
+  rpc updateDict(UpdateDictRequest) returns (UpdateDictResponse) {
+  }
+  rpc deleteObject(DeleteObjectRequest) returns (DeleteObjectResponse) {
+  }
+  rpc getAttributeValue(GetAttributeValueRequest) returns (GetAttributeValueResponse) {
+  }
+  rpc executeCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse) {
+  }
+  rpc getSpecs(GetSpecsRequest) returns (GetSpecsResponse) {
+  }
+  rpc getStaticInfo(GetStaticInfoRequest) returns (GetStaticInfoResponse) {
+  }
 }
 
 message DataModelRequest {
@@ -64,16 +74,14 @@ message SetStateResponse {
   repeated string deletedpaths = 2;
 }
 
-message UpdateDictRequest
-{
+message UpdateDictRequest {
   string rules = 1;
   string path = 2;
   utils.Variant dicttomerge = 3;
   bool wait = 4;
 }
 
-message UpdateDictResponse
-{
+message UpdateDictResponse {
   utils.Variant state = 1;
   repeated string deletedpaths = 2;
 }
