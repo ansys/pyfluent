@@ -173,9 +173,9 @@ class PyVistaWindow(PostWindow):
             )
             if obj.show_edges():
                 plotter.add_mesh(mesh, show_edges=True, color="white")
-
-    def _display_contour(
-        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+                
+    def fetch_contour_data(
+        self, obj
     ):
         if not obj.surfaces_list() or not obj.field():
             raise RuntimeError("Contour definition is incomplete.")
@@ -187,9 +187,6 @@ class PyVistaWindow(PostWindow):
         contour_lines = obj.contour_lines()
         node_values = obj.node_values()
         boundary_values = obj.boundary_values()
-
-        # scalar bar properties
-        scalar_bar_args = self._scalar_bar_default_properties()
 
         field_info = obj._data_extractor.field_info()
         field_data = obj._data_extractor.field_data()
@@ -225,8 +222,24 @@ class PyVistaWindow(PostWindow):
         scalar_field_payload_data = field_data.get_fields()
         data_tag = location_tag | boundary_value_tag
         scalar_field_data = scalar_field_payload_data[data_tag]
-        surface_data = scalar_field_payload_data[surface_tag]
+        surface_data = scalar_field_payload_data[surface_tag] 
+        return  surface_data, scalar_field_data       
 
+    def _display_contour(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):        
+        # contour properties
+        field = obj.field()
+        range_option = obj.range.option()
+        filled = obj.filled()
+        contour_lines = obj.contour_lines()
+        node_values = obj.node_values()
+        boundary_values = obj.boundary_values()
+
+        # scalar bar properties
+        scalar_bar_args = self._scalar_bar_default_properties()
+        surface_data, scalar_field_data =  self.fetch_contour_data(obj)
+        
         # loop over all meshes
         for surface_id, mesh_data in surface_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
@@ -297,6 +310,7 @@ class PyVistaWindow(PostWindow):
                 auto_range_on = obj.range.auto_range_on
                 if auto_range_on.global_range():
                     if filled:
+                        field_info = obj._data_extractor.field_info()
                         plotter.add_mesh(
                             mesh,
                             clim=field_info.get_range(field, False),
