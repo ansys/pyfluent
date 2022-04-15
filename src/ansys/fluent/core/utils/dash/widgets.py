@@ -5,7 +5,7 @@ import dash_core_components as dcc
 import dash_vtk 
 from dash.dependencies import Input, Output, State
 
-
+from dash.exceptions import PreventUpdate
 
 
 class GraphicsWidget:
@@ -25,28 +25,23 @@ class GraphicsWidget:
                 ],
             )        
         self._vtk_view = vtk_view
-        
+        self._all_widgets = {}        
+        self.__refresh_bcs=[] 
         self._update_vtk_fun =  update_vtk_fun
-        #self.refresh()       
-        #self.__plotter_id = plotter_id
-        #print(self.__object.__class__.__name__)
-        #if self.__object.__class__.__name__=="XYPlot":
-        #    self.__plotter = xyplotter  
-        #else:
-        #    self.__plotter = plotter
-        #self.__plotter.set_graphics(obj, plotter_id)        
-                       
+        self.store_all_widgets(self._object)   
+        self._all_widgets["display"+self._object._name]= self.get_button("display"+self._object._name)               
    
     def update_widgets(self):
-        self.__widgets=[]
-        self.__refresh_bcs=[]
+        self.__widgets=[]   
         self.populate_widgets(self._object)
-        self.populate_buttons(self._object)
+        self.__widgets.append(self.get_button("display"+self._object._name))  
         
         
     def refresh(self):
-        self.create_callback()
-        self.update_widgets()        
+        print(list(self._all_widgets.keys())[:-1])
+        self.create_callback()  
+        self.update_widgets()   
+              
         if self._create_vtk_view:
             return dbc.Row(
                                 
@@ -83,36 +78,82 @@ class GraphicsWidget:
               
     def create_callback(self):
 
-        inputs =[Input(name+self._object._name, "value") for name in ["field", "surfaces_list"]]   
+        inputs =[Input(name+"data", "value") for name in list(self._all_widgets.keys())[:-1]] 
+        outputs =[Output(name+"container", "style") for name in list(self._all_widgets.keys())[:-1]] 
+        outputs =outputs + [Output(name, "value") for name in list(self._all_widgets.keys())[:-1]] 
+        #inputs =[Input(name, "value") for name in ['fieldcontour-1', 'surfaces_listcontour-1',]]        
         @self._app.callback(
-          Output(f"{self._object._name}-container", "children"),                      
+          #Output(f"{self._object._name}-container", "children"), 
+          *outputs,          
           *inputs                   
         )
         def update_oject2(*args): 
-            print('update_oject2', args)              
-            self.update_widgets()
-            return [self.__widgets]            
-        #    if self._need_to_refresh():
-        #       pass
-        #        #self.refresh()
-        #    else:
-        #        for cb in self.__refresh_bcs:
-        #            cb()   
-        #    return [1]               
+
+            #for cb in self.__refresh_bcs:
+            #    cb()
+            print('update_oject2')                                 
+            #if self._need_to_refresh():
+            self._visible_widgets = []
+            self.visible_widgets(self._object)
+            visible_widgets = [pair[0] for pair in self._visible_widgets]
+            widgets_value_map = {pair[0]:pair[1] for pair in self._visible_widgets}
+            widget_values = []
+            for value in [widgets_value_map[name] if name in  visible_widgets else None for name in list(self._all_widgets.keys())[:-1]]:
+                if isinstance(value, bool):
+                    widget_values.append(['selected'] if value else [])
+                else:
+                    widget_values.append(value)
+            
+            return ([{'display': 'block'} if name in  visible_widgets else {'display': 'none'} for name in list(self._all_widgets.keys())[:-1]] +  
+                  widget_values)
+                                     
+            #else:
+            #   print('PreventUpdate...') 
+            #   raise PreventUpdate
+               
+        def update_oject2(*args): 
+            print('update_oject2')                                 
+            if self._need_to_refresh():
+               self.update_widgets() 
+               print('update_widgets...')               
+               #return []
+               return [self.__widgets] 
+            else:
+               print('PreventUpdate...') 
+               raise PreventUpdate               
+             
         
-    def populate_widgets(self, obj):        
+
+    def store_all_widgets(self, obj):        
+        for name,value in obj.__dict__.items():       
+            if name=="_parent":
+                continue
+            
+            if value.__class__.__class__.__name__ in ("PyLocalPropertyMeta", "PyLocalObjectMeta"):               
+                if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
+                    widget =  self.get_widget(value, value._type, name+self._object._name, getattr(value, "attributes", None) )
+                    #if widget:
+                    if isinstance(widget, list):
+                        self._all_widgets[name+self._object._name]=widget
+                    else:                    
+                        self._all_widgets[name+self._object._name]=widget
+                else:
+                    self.store_all_widgets(value)
+                   
+                    
+    def populate_widgets(self, obj):              
         for name,value in obj.__dict__.items():       
             if name=="_parent":
                 continue
             
             if value.__class__.__class__.__name__ in ("PyLocalPropertyMeta", "PyLocalObjectMeta"):
                 availability = (
-                    getattr(obj, "availability")(name)
-                    if hasattr(obj, "availability")
+                    getattr(obj, "_availability")(name)
+                    if hasattr(obj, "_availability")
                     else True
                 )  
-                if not availability:
-                    continue
+                #if not availability:
+                #    continue
                 #print(name, value, value.__class__.__class__.__name__)    
                 if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                     widget =  self.get_widget(value, value._type, name+self._object._name, getattr(value, "attributes", None) )
@@ -124,13 +165,37 @@ class GraphicsWidget:
                 else:
                     self.populate_widgets(value) 
                     
-    def populate_buttons(self, obj):                         
-        self.__widgets.append(self.get_button("refresh"+self._object._name))
+                    
+    def visible_widgets(self, obj):              
+        for name,value in obj.__dict__.items():       
+            if name=="_parent":
+                continue
+            
+            if value.__class__.__class__.__name__ in ("PyLocalPropertyMeta", "PyLocalObjectMeta"):
+                availability = (
+                    getattr(obj, "_availability")(name)
+                    if hasattr(obj, "_availability")
+                    else True
+                )  
+                if not availability:
+                    continue
+                #print(name, value, value.__class__.__class__.__name__)    
+                if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
+                   
+                    self._visible_widgets.append((name+self._object._name, value()))
+                else:
+                    self.visible_widgets(value)                     
+                   
+                         
+        
 
                    
                    
                     
     def get_button(self, description):
+        widget = self._all_widgets.get(description) 
+        if widget is not None:            
+            return widget    
                      
         button = html.Button(description, id=description,  n_clicks=0) 
         
@@ -148,7 +213,9 @@ class GraphicsWidget:
         return button        
     
     def get_widget(self, obj, type, description, attributes): 
-        widget = None    
+        widget = self._all_widgets.get(description) 
+        if widget is not None:            
+            return widget        
         #print(str(type), description)
         if str(type)=="<class 'str'>":
             if attributes and "allowed_values" in attributes:
@@ -215,14 +282,15 @@ class GraphicsWidget:
         #    return 
             
         @self._app.callback(         
-          Output("scale-factor", description),            
+          Output(description+"data", "value"),            
           Input(description, "value"),                     
         )
         def update_oject(value): 
             print('update_oject', description, value)
             self.__old_defn = self._object()   
             if str(type)=="<class 'bool'>": 
-               obj.set_state(True if value else False)      
+               value =True if value else False
+               obj.set_state(value)      
             else:            
                 obj.set_state(value)  
         #    self.update_widgets()
@@ -233,20 +301,26 @@ class GraphicsWidget:
         #    else:
         #        for cb in self.__refresh_bcs:
         #            cb()   
-            return [1]        
+            return str(value)        
                                        
         def refresh_bc(widget, obj):
-            widget.value = obj()
+            print('refresh_bc', description, obj())           
+            if str(type)=="<class 'bool'>":                
+                widget.value = ["selected"] if obj() else []      
+            else:            
+                widget.value = obj()         
+            
         w=widget    
                   
         self.__refresh_bcs.append(partial(refresh_bc, w, obj))            
-        return html.Div(
+        widget = html.Div(
             [
                 description,
-                widget
-            ]
-        )        
-        
+                widget,
+                html.Data(id = description+"data")
+            ],
+            id = description+"container"
+        )                  
         return widget    
                         
         
