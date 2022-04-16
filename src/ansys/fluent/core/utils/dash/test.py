@@ -37,6 +37,7 @@ graphics_session1 = Graphics(session)
 contour1 = graphics_session1.Contours["contour-1"]
 contour1.field = "velocity-magnitude"
 contour1.surfaces_list = ["symmetry"]
+#contour1.node_values = False
 
 contour2 = graphics_session1.Contours["contour-2"]
 contour2.field = "temperature"
@@ -60,7 +61,7 @@ def update_vtk_fun(obj):
         fields_data = []  
         fields_min  = None 
         fields_max  = None 
-        print('update_vtk_fun', contour1.surfaces_list())
+        print('update_vtk_fun', contour1())
         for surface_id, mesh_data in surface_data.items():
             field  = scalar_field_data[surface_id][contour1.field()]
             range_min = np.amin(field)
@@ -77,27 +78,40 @@ def update_vtk_fun(obj):
             id="vtk-representation-"+field_data[3],
             children=[
                 dash_vtk.PolyData(
-                    id="vtk-polydata-"+field_data[3],
+                    id=f"vtk-polydata-{'point-data' if obj.node_values() else 'cell-data'}"+field_data[3],
                     points=field_data[0],
                     polys=field_data[1],
                     children=[
                         dash_vtk.PointData(
                             [
                                 dash_vtk.DataArray(
-                                    id="vtk-array-"+field_data[3],
+                                    id="vtk-array-point-data"+field_data[3],
                                     registration="setScalars",
-                                    name=field_data[3],
+                                    name="vtk-array-point-data"+field_data[3],
                                     values=field_data[2],
                                 )
                             ]
                         )
+                        if obj.node_values() else
+                        dash_vtk.CellData(
+                            [
+                                dash_vtk.DataArray(
+                                    id="vtk-array-cell-data"+field_data[3],
+                                    registration="setScalars",
+                                    name="vtk-array-cell-data"+field_data[3],
+                                    values=field_data[2],
+                                )
+                            ]
+                        )                        
                     ],
                 )
                 #for field_data in fields_data
             ],            
             colorMapPreset="Rainbow Blended White",
             colorDataRange=fields_range,
-            property={"edgeVisibility": contour1.show_edges()},            
+            
+            
+            property={"edgeVisibility": obj.show_edges(), "showScalarBar" : True, "scalarBarTitle" : obj.field(),},            
         )
         for field_data in fields_data
     ],
