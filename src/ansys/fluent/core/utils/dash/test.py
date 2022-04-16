@@ -12,7 +12,7 @@ import numpy as np
 import pyvista as pv
 from pyvista import examples
 from vtk.util.numpy_support import vtk_to_numpy
-
+import uuid
 from dash_vtk.utils import presets
 
 random.seed(42)
@@ -26,22 +26,9 @@ from ansys.fluent.post import set_config
 set_config(blocking=False)
 #import module
 
-from ansys.fluent.post.pyvista import  Graphics
-from ansys.fluent.post.pyvista.pyvista_objects import Contour
-from ansys.fluent.post.matplotlib import Plots
-from ansys.fluent.post.pyvista.pyvista_windows_manager import (  # noqa: F401
-    PyVistaWindow,
-)
 
-graphics_session1 = Graphics(session)
-contour1 = graphics_session1.Contours["contour-1"]
-contour1.field = "velocity-magnitude"
-contour1.surfaces_list = ["symmetry"]
-#contour1.node_values = False
 
-contour2 = graphics_session1.Contours["contour-2"]
-contour2.field = "temperature"
-contour2.surfaces_list = ["wall"]
+from ansys.fluent.post.pyvista.pyvista_windows_manager import PyVistaWindow
 
 def toDropOption(name):
     return {"label": name, "value": name}
@@ -61,7 +48,7 @@ def update_vtk_fun(obj):
         fields_data = []  
         fields_min  = None 
         fields_max  = None 
-        print('update_vtk_fun', contour1())
+        #print('update_vtk_fun', contour1())
         for surface_id, mesh_data in surface_data.items():
             field  = scalar_field_data[surface_id][contour1.field()]
             range_min = np.amin(field)
@@ -118,31 +105,7 @@ def update_vtk_fun(obj):
      random.random(),
     ]
 
-def updateWarp(surfaces):
-    try:
-        set_config(blocking=True)
-        graphics_session1 = Graphics(session)
-        contour1 = graphics_session1.Contours["contour-1"]
-        contour1.field = "velocity-magnitude"
-        contour1.surfaces_list = surfaces
-        surface_iter = iter(contour1.surfaces_list())
-        win = PyVistaWindow("x", contour1)
-        surface_data, scalar_field_data =  win.fetch_contour_data(contour1)  
-        fields_data = []  
-        fields_min  = None 
-        fields_max  = None 
-        print('updateWarp', contour1.surfaces_list())
-        for surface_id, mesh_data in surface_data.items():
-            field  = scalar_field_data[surface_id][contour1.field()]
-            range_min = np.amin(field)
-            range_max = np.amax(field) 
-            fields_min =  min(fields_min, range_min) if fields_min else range_min
-            fields_max =  max(fields_max, range_max) if fields_max else range_max       
-            fields_data.append([mesh_data["vertices"], mesh_data["faces"], field, next(surface_iter)])
-        return  fields_data, [fields_min, fields_max]
-    except Exception as e:
-        print(e)
-        None, None         
+        
 
 def get_surfaces():
     set_config(blocking=True)
@@ -156,7 +119,8 @@ def get_surfaces():
 # Setup VTK rendering of PointCloud
 
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+app.config.suppress_callback_exceptions=True
 server = app.server
 
 #vtk_view = dash_vtk.View(
@@ -166,10 +130,14 @@ server = app.server
 #    ],
 #)
 
-app.layout = dbc.Container(
+def serve_layout():
+    session_id = str(uuid.uuid4())
+
+app.layout =  dbc.Container(
     fluid=True,
     style={"height": "100vh"},
     children=[
+        dcc.Store(data=str(uuid.uuid4()), id='session-id'),
         dbc.Row(
             [
                 dbc.Col(
@@ -182,14 +150,14 @@ app.layout = dbc.Container(
                         marks={0.1: "0.1", 5: "5"},
                     )
                 ),
-                dbc.Col(
-                    children=dcc.Dropdown(
-                        id="dropdown-surfaces",
-                        options=list(map(toDropOption, get_surfaces())),
-                        value= [],
-                        multi=True
-                    ),
-                ),
+               # dbc.Col(
+               #     children=dcc.Dropdown(
+               #         id="dropdown-surfaces",
+               #         options=list(map(toDropOption, get_surfaces())),
+               #         value= [],
+               #         multi=True
+               #     ),
+               # ),
                 dbc.Col(
                     children=dcc.Checklist(
                         id="toggle-cube-axes",
@@ -200,10 +168,18 @@ app.layout = dbc.Container(
                         labelStyle={"display": "inline-block"},
                     ),
                 ),
+                dbc.Col(
+                    children=dbc.Button(
+                        "Restore View",
+                        id="restore-view",                        
+                    ),
+                ),                
+                
+                                
             ],
             style={"height": "12%", "alignItems": "center"},
         ),
-        GraphicsWidget(app, contour1, update_vtk_fun).refresh(),
+        GraphicsWidget(app, update_vtk_fun).refresh(),
         # GraphicsWidget(app, contour2, update_vtk_fun).refresh(),
         
         html.Pre(
@@ -217,8 +193,8 @@ app.layout = dbc.Container(
             },
         ),
     ],
-)
-
+    )
+#app.layout = serve_layout
 
 
 
