@@ -40,11 +40,10 @@ class GraphicsWidget:
             pickingModes=["hover"],
             children=[],
         )
+        self._widget_value_map = {}
         self._update_vtk_fun = update_vtk_fun
-        self._comple_widget_collection ={}
         self._all_widgets = {}
         self._button_widget = None 
-        self._created_callbacks = []
         self.create_callback()
 
     def get_label(self, name):
@@ -79,7 +78,7 @@ class GraphicsWidget:
                                
                                 
                             ),
-                            html.Data(id="graphics-selectordata"),
+                            #html.Data(id="graphics-selectordata"),
                         ],                
                         id="graphics-selector" + "container",
                         style = {'padding': "1px 1px 10px 1px"},  
@@ -102,9 +101,8 @@ class GraphicsWidget:
             style={"height": "50rem"},
         )
 
-    def create_callback(self, value=None):
-        def update_stored_widgets(value):
-            self._all_widgets = {}
+    def create_callback(self):
+        def update_object(value):
             if value is not None:
                 if value=="Contour":
                     self._object = graphics_session1.Contours["dummy-contour"]
@@ -113,75 +111,70 @@ class GraphicsWidget:
                 if value=="Vector":
                     self._object = graphics_session1.Vectors["dummy-vector"] 
                 if value=="Surface":
-                    self._object = graphics_session1.Surfaces["dummy-surface"]                    
-                self.store_all_widgets(self._object)
-                self._all_widgets["display"] = self.get_button(
-                    "display", "display"
-                )        
+                    self._object = graphics_session1.Surfaces["dummy-surface"] 
+                   
+    
+        def update_stored_widgets(value):
+            if value is not None:
+                update_object(value)
+                if value=="button":                                    
+                    self._all_widgets["display"] = self.get_button(
+                        "display", "display"
+                    )
+                else:
+                    self.store_all_widgets(self._object)
 
-        if value is not None and value not in self._created_callbacks:
-            self._created_callbacks.append(value)
-            update_stored_widgets(value)
-            inputs = [
-                Input(name + "data", "value")
-                for name in list(self._all_widgets.keys())[:-1]
-            ]
-            outputs = [
-                Output(name + "container", "style")
-                for name in list(self._all_widgets.keys())[:-1]
-            ]
-            outputs = outputs + [
-                Output(name, "value")
-                for name in list(self._all_widgets.keys())[:-1]
-            ]
+        for value in ["Contour", "Mesh", "Vector", "button"]:
+            update_stored_widgets(value)                    
+        self._object = None   
 
-            @self._app.callback(*outputs, *inputs)
-            def callback(*args): 
-                nonlocal value
-                if not self._object:
-                    raise PreventUpdate
-                print('show hide callback', value)
-                self._visible_widgets = []
-                self.update_visible_widgets(self._object)
-                visible_widgets = [pair[0] for pair in self._visible_widgets]
-                widgets_value_map = {
-                    pair[0]: pair[1] for pair in self._visible_widgets
-                }
-                widget_values = []
-                for value in [
-                    widgets_value_map[name] if name in visible_widgets else None
-                    for name in list(self._all_widgets.keys())[:-1]
-                ]:
-                    if isinstance(value, bool):
-                        widget_values.append(["selected"] if value else [])
-                    else:
-                        widget_values.append(value)
-                print(widget_values[:8])
-                return [
-                    {"display": "block"}
-                    if name in visible_widgets
-                    else {"display": "none"}
-                    for name in list(self._all_widgets.keys())[:-1]
-                ] + widget_values
+        print("all widgets", self._all_widgets.keys())
+        inputs = [
+            Input(name + "data", "value")
+            for name in list(self._all_widgets.keys())[:-1]
+        ]
+        inputs.append(Input("graphics-selector", "value"))
+        outputs = [
+            Output(name + "container", "style")
+            for name in list(self._all_widgets.keys())[:-1]
+        ]
+        outputs = outputs + [
+            Output(name, "value")
+            for name in list(self._all_widgets.keys())[:-1]
+        ]
+
+        @self._app.callback(*outputs, *inputs)
+        def callback(*args): 
+            update_object(args[-1])
+            if self._object is None:
+                raise PreventUpdate
+            print('show hide callback', args[-1])
+            self._visible_widgets = []
+            self.update_visible_widgets(self._object)
+            visible_widgets = [pair[0] for pair in self._visible_widgets]
+            widgets_value_map = {
+                pair[0]: pair[1] for pair in self._visible_widgets
+            }
+            widget_values = []
+            for value in [
+                widgets_value_map[name] if name in visible_widgets else self._widget_value_map[name]
+                for name in list(self._all_widgets.keys())[:-1]
+            ]:
+                if isinstance(value, bool):
+                    widget_values.append(["selected"] if value else [])
+                else:
+                    widget_values.append(value)
+            return [
+                {"display": "block"}
+                if name in visible_widgets
+                else {"display": "none"}
+                for name in list(self._all_widgets.keys())[:-1]
+            ] + widget_values
+        
+
             
-        if value is None:    
-            @self._app.callback(
-                [
-                    Output("graphics-card-body", "children"), 
-                    Output("graphics-card", "header")                    
-                ],
-                Input("graphics-selector", "value"),                
-            )
-            def callback_graphics_selection(value):    
-                print('\n\ncallback_graphics_selection' , value) 
-                if value is None:
-                    raise PreventUpdate                
-                update_stored_widgets(value)                        
-                return [list(self._all_widgets.values()), self._object.__class__.__name__] 
-                
-            for value in ["Contour", "Mesh", "Vector"]:
-                self.create_callback(value)  
-            self._object = None                  
+
+                       
 
     def store_all_widgets(self, obj):
         for name, value in obj.__dict__.items():
@@ -224,7 +217,7 @@ class GraphicsWidget:
                 if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
 
                     self._visible_widgets.append(
-                        (self.get_unique_name(name), value())
+                        (self.get_unique_name(name), value() if value._type != "<class 'bool'>" else ['selected'] if value() else [])
                     )
                 else:
                     self.update_visible_widgets(value)
@@ -249,7 +242,7 @@ class GraphicsWidget:
         return self._button_widget
 
     def get_widget(self, obj, type, name, unique_name, attributes):
-        widget = self._comple_widget_collection.get(unique_name)
+        widget = self._all_widgets.get(unique_name)
         if widget is not None:
             return widget
         # print(str(type), unique_name)
@@ -313,19 +306,21 @@ class GraphicsWidget:
             Input(unique_name, "value"),
         )
         def update_oject(value):
-            print("update_oject", unique_name, value)
+            #print("update_oject", unique_name, value)
             #self.__old_defn = self._object()
             if value is None or value == obj():
-                print('PreventUpdate')
+                #print('PreventUpdate')
                 raise PreventUpdate
                 
             if str(type) == "<class 'bool'>":
                 value = True if value else False
                 if value == obj():
-                    print('PreventUpdate')
+                    #print('PreventUpdate')
                     raise PreventUpdate
                 obj.set_state(value)
+                self._widget_value_map[unique_name]= ['selected'] if value else []
             else:
+                self._widget_value_map[unique_name]= value
                 obj.set_state(value)
             #    self.update_widgets()
             #    return [self.__widgets]
@@ -347,13 +342,17 @@ class GraphicsWidget:
         w = widget
 
         self.__refresh_bcs.append(partial(refresh_bc, w, obj))
+        
+        
         if str(type) == "<class 'bool'>":
+            self._widget_value_map[unique_name]=["selected"] if obj() else []
             widget = html.Div(
                 
                 [widget, html.Data(id=unique_name + "data")],
                 id=unique_name + "container",
             )
         else:
+            self._widget_value_map[unique_name]= obj()
             widget = html.Div(
                 [
                     dbc.Label(self.get_label(name)),
@@ -361,7 +360,6 @@ class GraphicsWidget:
                     html.Data(id=unique_name + "data"),
                 ],
                 id=unique_name + "container",
-            )
-        self._comple_widget_collection[unique_name]=widget    
+            )    
         return widget
 
