@@ -72,7 +72,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
                             dbc.Label("Select Graphics"),
                             dcc.Dropdown(
                                 id="graphics-selector",
-                                options=["Contour", "Vector",  "Surface"],
+                                options=["Mesh", "Contour", "Vector",  "Surface"],
                                
                                 
                             ),
@@ -273,16 +273,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
     def get_button(self, name, unique_name):        
 
         self._button_widget = dbc.Button(self.get_label(name), id=unique_name, n_clicks=0)
-        #@self._app.callback(
-        #    [
-        #        Output("vtk-view", "children"),
-        #        Output("vtk-view", "triggerResetCamera"),
-        #    ],
-        #    Input("display", "n_clicks"),
-        #)
-        def fun(n_clicks):
-            print("n_clicks", n_clicks, self._object._name)
-            return self._update_vtk_fun(self._object)
+
 
 
         return self._button_widget

@@ -391,8 +391,8 @@ class PyVistaWindow(PostWindow):
             del post_session.Meshes[dummy_object]
         surface_api.delete_surface_on_server()
 
-    def _display_mesh(
-        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    def fetch_mesh_data(
+        self, obj
     ):
         if not obj.surfaces_list():
             raise RuntimeError("Mesh definition is incomplete.")
@@ -411,6 +411,13 @@ class PyVistaWindow(PostWindow):
         surface_tag = 0
 
         surfaces_data = field_data.get_fields()[surface_tag]
+        return surfaces_data
+
+    def _display_mesh(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
+       
+        surfaces_data = self.fetch_mesh_data(obj)
         for surface_id, mesh_data in surfaces_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"

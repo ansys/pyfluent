@@ -39,6 +39,15 @@ uniformGrid = examples.download_crater_topo()
 subset = uniformGrid.extract_subset((500, 900, 400, 800, 0, 0), (5, 5, 1))
    
 def update_vtk_fun(obj):
+        if obj.__class__.__name__ == "Mesh":
+            return update_vtk_fun_mesh(obj)
+        elif obj.__class__.__name__ == "Surface":
+            return update_vtk_fun_field(obj) 
+        elif obj.__class__.__name__ == "Contour":
+            return update_vtk_fun_field(obj) 
+
+   
+def update_vtk_fun_field(obj):
     try:
         set_config(blocking=True)   
         surface_iter = iter([obj._name]) if obj.__class__.__name__ == "Surface" else iter(obj.surfaces_list())
@@ -46,9 +55,7 @@ def update_vtk_fun(obj):
         node_values = True if obj.__class__.__name__ == "Surface" else obj.node_values()
         #print(obj.surface)
         win = PyVistaWindow("x", obj)
-        if obj.__class__.__name__ == "Mesh":
-            pass
-        elif obj.__class__.__name__ == "Surface":
+        if obj.__class__.__name__ == "Surface":
             surface_data, scalar_field_data =  win.fetch_surface_data(obj) 
         elif obj.__class__.__name__ == "Contour":
             surface_data, scalar_field_data =  win.fetch_contour_data(obj) 
@@ -117,6 +124,44 @@ def update_vtk_fun(obj):
      random.random(),
     ]
 
+def update_vtk_fun_mesh(obj):
+    try:
+        set_config(blocking=True)   
+        surface_iter = iter([obj._name]) if obj.__class__.__name__ == "Surface" else iter(obj.surfaces_list())       
+        win = PyVistaWindow("x", obj)
+        if obj.__class__.__name__ == "Mesh":
+            surface_data =  win.fetch_mesh_data(obj) 
+        elif obj.__class__.__name__ == "Surface":
+            surface_data, scalar_field_data =  win.fetch_surface_data(obj) 
+       
+        print('update_vtk_fun', 'surface_data', surface_data) 
+        
+        fields_data = []  
+        for surface_id, mesh_data in surface_data.items():               
+            fields_data.append([mesh_data["vertices"], mesh_data["faces"], next(surface_iter)])       
+        print(fields_data)
+    except Exception as e:
+        print(e)
+        return [], None     
+    return [[
+        dash_vtk.GeometryRepresentation(
+            id="vtk-representation-"+field_data[2],
+            children=[
+                dash_vtk.Mesh(
+                    id=f"vtk-mesh-"+field_data[2],
+                    state = {"mesh":
+                    {"points":field_data[0],
+                    "polys":field_data[1],}
+                    }
+                )
+                #for field_data in fields_data
+            ],                                                
+            property={"edgeVisibility": obj.show_edges()},            
+        )
+        for field_data in fields_data
+    ],
+     random.random(),
+    ]
         
 
 def get_surfaces():
