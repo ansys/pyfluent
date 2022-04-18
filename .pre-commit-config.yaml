@@ -6,8 +6,8 @@ repos:
   - id: black
     args: [
       --line-length, "79",
-      --force-exclude, ansys/api/fluent/v0/|ansys/fluent/core/meshing/tui.py|ansys/fluent/core/solver/tui.py|ansys/fluent/core/solver/settings.py|ansys/fluent/core/datamodel,
-      ansys, codegen, doc, examples, tests
+      --force-exclude, src/ansys/api/fluent/v0/|src/ansys/fluent/core/meshing/tui.py|src/ansys/fluent/core/solver/tui.py|src/ansys/fluent/core/solver/settings.py|src/ansys/fluent/core/datamodel,
+      src/ansys, codegen, doc, examples, tests
     ]
 
 - repo: https://github.com/pycqa/isort
@@ -16,11 +16,11 @@ repos:
   - id: isort
     args: [
       --profile, black,
-      --skip, ansys/fluent/core/meshing/tui.py,
-      --skip, ansys/fluent/core/solver/tui.py,
-      --skip, ansys/fluent/core/solver/settings.py,
-      --skip-glob, ansys/api/fluent/v0/*,
-      --skip-glob, ansys/fluent/core/datamodel/*,
+      --skip, src/ansys/fluent/core/meshing/tui.py,
+      --skip, src/ansys/fluent/core/solver/tui.py,
+      --skip, src/ansys/fluent/core/solver/settings.py,
+      --skip-glob, src/ansys/api/fluent/v0/*,
+      --skip-glob, src/ansys/fluent/core/datamodel/*,
       --force-sort-within-sections,
       --line-length, "79",
       --section-default, THIRDPARTY, 
@@ -34,7 +34,7 @@ repos:
   hooks:
   - id: flake8
     args: [
-      --exclude, ansys/api/fluent/v0/* ansys/fluent/core/meshing/tui.py ansys/fluent/core/solver/tui.py ansys/fluent/core/solver/settings.py ansys/fluent/core/datamodel/*,
+      --exclude, src/ansys/api/fluent/v0/* src/ansys/fluent/core/meshing/tui.py src/ansys/fluent/core/solver/tui.py src/ansys/fluent/core/solver/settings.py src/ansys/fluent/core/datamodel/*,
       --select, W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 F401 F403 N801 N802 N803 N804 N805 N806,
       --count,
       --statistics,
@@ -48,14 +48,14 @@ repos:
   hooks:
   - id: codespell
     args: [
-      --skip, "ansys/api/fluent/v0/*,ansys/fluent/core/meshing/tui.py,ansys/fluent/core/solver/tui.py,ansys/fluent/core/solver/settings.py,ansys/fluent/core/datamodel/*,codegen/data/fluent_gui_help.xml",
+      --skip, "src/ansys/api/fluent/v0/*,src/ansys/fluent/core/meshing/tui.py,src/ansys/fluent/core/solver/tui.py,src/ansys/fluent/core/solver/settings.py,src/ansys/fluent/core/datamodel/*,codegen/data/fluent_gui_help.xml",
     ]
 
 - repo: https://github.com/myint/docformatter
   rev: v1.3.1
   hooks:
   - id: docformatter
-    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py|ansys\/fluent\/core\/datamodel\/)
+    exclude: ^(tests\/|src\/ansys\/api\/fluent\/v0\/|src\/ansys\/fluent\/core\/meshing\/tui.py|src\/ansys\/fluent\/core\/solver\/tui.py|src\/ansys\/fluent\/core\/solver\/settings.py|src\/ansys\/fluent\/core\/datamodel\/)
     args: [-r, --in-place]
 
 #- repo: https://github.com/pycqa/pydocstyle

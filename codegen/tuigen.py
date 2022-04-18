@@ -3,8 +3,8 @@
 This module starts up Fluent and calls the underlying gRPC APIs to generate the
 following TUI Python modules:
 
-- ansys/fluent/core/solver/tui.py
-- ansys/fluent/core/meshing/tui.py.
+- src/ansys/fluent/core/solver/tui.py
+- src/ansys/fluent/core/meshing/tui.py.
 
 Usage
 -----
@@ -27,12 +27,26 @@ from ansys.fluent.core.services.datamodel_tui import (
 _THIS_DIRNAME = os.path.dirname(__file__)
 _MESHING_TUI_FILE = os.path.normpath(
     os.path.join(
-        _THIS_DIRNAME, "..", "ansys", "fluent", "core", "meshing", "tui.py"
+        _THIS_DIRNAME,
+        "..",
+        "src",
+        "ansys",
+        "fluent",
+        "core",
+        "meshing",
+        "tui.py",
     )
 )
 _SOLVER_TUI_FILE = os.path.normpath(
     os.path.join(
-        _THIS_DIRNAME, "..", "ansys", "fluent", "core", "solver", "tui.py"
+        _THIS_DIRNAME,
+        "..",
+        "src",
+        "ansys",
+        "fluent",
+        "core",
+        "solver",
+        "tui.py",
     )
 )
 _INDENT_STEP = 4
