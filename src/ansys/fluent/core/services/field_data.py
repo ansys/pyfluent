@@ -1,5 +1,6 @@
 """Wrappers over FieldData grpc service of Fluent."""
 
+from functools import reduce
 from typing import Dict, List, Optional
 
 import grpc
@@ -121,33 +122,35 @@ class FieldData:
 
     Methods
     -------
-    def get_surfaces(
+    add_get_surfaces_request(
         surface_ids: List[int],
         overset_mesh: bool = False,
         provide_vertices=True,
         provide_faces=True,
         provide_faces_centroid=False,
         provide_faces_normal=False,
-    ) -> Dict[int, Dict]
-        Get surfaces data i.e. vertices, faces connectivity, centroids and normals.
+    ) -> None
+        Add request to get surfaces data i.e. vertices, faces connectivity,
+        centroids and normals.
 
-    get_scalar_field(
+    add_get_scalar_fields_request(
         surface_ids: List[int],
         scalar_field: str,
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        Get scalar field data i.e. surface data and associated
-        scalar field values.
+    ) -> None
+        Add request to get scalar field data on surfaces.
 
-    get_vector_field(
+    add_get_vector_fields_request(
         surface_ids: List[int],
-        vector_field: Optional[str] = "velocity",
-        scalar_field: Optional[str] = "",
-        node_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        Get vector field data i.e. surface data and associated
-        scalar and vector field values.
+        vector_field: Optional[str] = "velocity"
+    ) -> None
+        Add request to get vector field data on surfaces.
+
+    get_fields(self) -> Dict[int, Dict]
+        Provide data for previously added requests.
+        Data is returned as dictionary of dictionaries in following structure:
+            tag_id [int]-> surface_id [int] -> field_name [str] -> field_data
     """
 
     # data mapping
@@ -159,9 +162,16 @@ class FieldData:
     }
     _chunk_size = 256 * 1024
     _bytes_stream = True
+    _payloadTags = {
+        FieldDataProtoModule.PayloadTag.OVERSET_MESH: 1,
+        FieldDataProtoModule.PayloadTag.ELEMENT_LOCATION: 2,
+        FieldDataProtoModule.PayloadTag.NODE_LOCATION: 4,
+        FieldDataProtoModule.PayloadTag.BOUNDARY_VALUES: 8,
+    }
 
     def __init__(self, service: FieldDataService):
         self.__service = service
+        self._fields_request = None
 
     def _extract_fields(self, chunk_iterator):
         def _extract_field(field_datatype, field_size, chunk_iterator):
@@ -199,21 +209,39 @@ class FieldData:
 
         fields_data = {}
         for chunk in chunk_iterator:
+
             payload_info = chunk.payloadInfo
-            surface_id = payload_info.surfaceId
-            surface_data = fields_data.get(surface_id)
             field = _extract_field(
                 self._proto_field_type_to_np_data_type[payload_info.fieldType],
                 payload_info.fieldSize,
                 chunk_iterator,
             )
+
+            surface_id = payload_info.surfaceId
+            payload_tag_id = reduce(
+                lambda x, y: x | y,
+                [self._payloadTags[tag] for tag in payload_info.payloadTag]
+                or [0],
+            )
+            payload_data = fields_data.get(payload_tag_id)
+            if not payload_data:
+                payload_data = fields_data[payload_tag_id] = {}
+            surface_data = payload_data.get(surface_id)
             if surface_data:
                 surface_data.update({payload_info.fieldName: field})
             else:
-                fields_data[surface_id] = {payload_info.fieldName: field}
+                payload_data[surface_id] = {payload_info.fieldName: field}
         return fields_data
 
-    def get_surfaces(
+    def _get_fields_request(self):
+        if not self._fields_request:
+            self._fields_request = FieldDataProtoModule.GetFieldsRequest(
+                provideBytesStream=self._bytes_stream,
+                chunkSize=self._chunk_size,
+            )
+        return self._fields_request
+
+    def add_get_surfaces_request(
         self,
         surface_ids: List[int],
         overset_mesh: bool = False,
@@ -221,11 +249,8 @@ class FieldData:
         provide_faces=True,
         provide_faces_centroid=False,
         provide_faces_normal=False,
-    ) -> Dict[int, Dict]:
-        request = FieldDataProtoModule.GetFieldsRequest(
-            provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
-        )
-        request.surfaceRequest.extend(
+    ) -> None:
+        self._get_fields_request().surfaceRequest.extend(
             [
                 FieldDataProtoModule.SurfaceRequest(
                     surfaceId=surface_id,
@@ -238,32 +263,15 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        return self._extract_fields(self.__service.get_fields(request))
 
-    def get_scalar_field(
+    def add_get_scalar_fields_request(
         self,
         surface_ids: List[int],
         field_name: str,
         node_value: Optional[bool] = True,
         boundary_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        request = FieldDataProtoModule.GetFieldsRequest(
-            provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
-        )
-        request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=False,
-                    provideFaces=True,
-                    provideVertices=True,
-                    provideFacesCentroid=False,
-                    provideFacesNormal=False,
-                )
-                for surface_id in surface_ids
-            ]
-        )
-        request.scalarFieldRequest.extend(
+    ) -> None:
+        self._get_fields_request().scalarFieldRequest.extend(
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
@@ -276,46 +284,13 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
-        return self._extract_fields(self.__service.get_fields(request))
 
-    def get_vector_field(
+    def add_get_vector_fields_request(
         self,
         surface_ids: List[int],
         vector_field: Optional[str] = "velocity",
-        field_name: Optional[str] = "",
-        node_value: Optional[bool] = False,
-    ) -> Dict[int, Dict]:
-        request = FieldDataProtoModule.GetFieldsRequest(
-            provideBytesStream=self._bytes_stream, chunkSize=self._chunk_size
-        )
-        request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=False,
-                    provideFaces=True,
-                    provideVertices=True,
-                    provideFacesCentroid=False,
-                    provideFacesNormal=False,
-                )
-                for surface_id in surface_ids
-            ]
-        )
-        if field_name:
-            request.scalarFieldRequest.extend(
-                [
-                    FieldDataProtoModule.ScalarFieldRequest(
-                        surfaceId=surface_id,
-                        scalarFieldName=field_name,
-                        dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements,
-                        provideBoundaryValues=boundary_value,
-                    )
-                    for surface_id in surface_ids
-                ]
-            )
-        request.vectorFieldRequest.extend(
+    ) -> None:
+        self._get_fields_request().vectorFieldRequest.extend(
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
@@ -324,4 +299,8 @@ class FieldData:
                 for surface_id in surface_ids
             ]
         )
+
+    def get_fields(self) -> Dict[int, Dict]:
+        request = self._get_fields_request()
+        self._fields_request = None
         return self._extract_fields(self.__service.get_fields(request))

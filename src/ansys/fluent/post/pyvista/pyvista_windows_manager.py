@@ -7,6 +7,7 @@ import numpy as np
 import pyvista as pv
 from pyvistaqt import BackgroundPlotter
 
+from ansys.api.fluent.v0.field_data_pb2 import PayloadTag
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
 from ansys.fluent.post import get_config
@@ -55,8 +56,7 @@ class PyVistaWindow(PostWindow):
         if obj.__class__.__name__ == "Mesh":
             self._display_mesh(obj, plotter)
         elif obj.__class__.__name__ == "Surface":
-            if obj.surface.type() == "iso-surface":
-                self._display_iso_surface(obj, plotter)
+            self._display_surface(obj, plotter)
         elif obj.__class__.__name__ == "Contour":
             self._display_contour(obj, plotter)
         elif obj.__class__.__name__ == "Vector":
@@ -101,7 +101,9 @@ class PyVistaWindow(PostWindow):
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
-            for surf in obj.surfaces_list()
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
             for id in surfaces_info[surf]["surface_id"]
         ]
 
@@ -111,13 +113,16 @@ class PyVistaWindow(PostWindow):
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
 
-        # get vector field data
-        vector_field_data = field_data.get_vector_field(
-            surface_ids, obj.vectors_of()
-        )
+        field_data.add_get_surfaces_request(surface_ids)
+        field_data.add_get_vector_fields_request(surface_ids, obj.vectors_of())
+        vector_field_tag = 0
+        vector_field_data = field_data.get_fields()[vector_field_tag]
         for surface_id, mesh_data in vector_field_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
-            mesh_data["vector"].shape = mesh_data["vector"].size // 3, 3
+            mesh_data[obj.vectors_of()].shape = (
+                mesh_data[obj.vectors_of()].size // 3,
+                3,
+            )
             vector_scale = mesh_data["vector-scale"][0]
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
@@ -130,8 +135,10 @@ class PyVistaWindow(PostWindow):
                     mesh_data["vertices"],
                     faces=mesh_data["faces"],
                 )
-            mesh.cell_data["vectors"] = mesh_data["vector"]
-            velocity_magnitude = np.linalg.norm(mesh_data["vector"], axis=1)
+            mesh.cell_data["vectors"] = mesh_data[obj.vectors_of()]
+            velocity_magnitude = np.linalg.norm(
+                mesh_data[obj.vectors_of()], axis=1
+            )
             if obj.range.option() == "auto-range-off":
                 auto_range_off = obj.range.auto_range_off
                 range = [auto_range_off.minimum(), auto_range_off.maximum()]
@@ -189,18 +196,39 @@ class PyVistaWindow(PostWindow):
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
-            for surf in obj.surfaces_list()
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
             for id in surfaces_info[surf]["surface_id"]
         ]
         # get scalar field data
-        scalar_field_data = field_data.get_scalar_field(
+        field_data.add_get_surfaces_request(surface_ids)
+        field_data.add_get_scalar_fields_request(
             surface_ids,
             field,
             node_values,
             boundary_values,
         )
+
+        location_tag = (
+            field_data._payloadTags[PayloadTag.NODE_LOCATION]
+            if node_values
+            else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
+        )
+        boundary_value_tag = (
+            field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
+            if boundary_values
+            else 0
+        )
+        surface_tag = 0
+
+        scalar_field_payload_data = field_data.get_fields()
+        data_tag = location_tag | boundary_value_tag
+        scalar_field_data = scalar_field_payload_data[data_tag]
+        surface_data = scalar_field_payload_data[surface_tag]
+
         # loop over all meshes
-        for surface_id, mesh_data in scalar_field_data.items():
+        for surface_id, mesh_data in surface_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"
             if topology == "line":
@@ -214,9 +242,9 @@ class PyVistaWindow(PostWindow):
                     faces=mesh_data["faces"],
                 )
             if node_values:
-                mesh.point_data[field] = mesh_data[field]
+                mesh.point_data[field] = scalar_field_data[surface_id][field]
             else:
-                mesh.cell_data[field] = mesh_data[field]
+                mesh.cell_data[field] = scalar_field_data[surface_id][field]
             if range_option == "auto-range-off":
                 auto_range_off = obj.range.auto_range_off
                 if auto_range_off.clip_to_range():
@@ -294,45 +322,31 @@ class PyVistaWindow(PostWindow):
                     ):
                         plotter.add_mesh(mesh.contour(isosurfaces=20))
 
-    def _display_iso_surface(
+    def _display_surface(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
     ):
-        field = obj.surface.iso_surface.field()
-        if not field:
-            raise RuntimeError("Iso surface definition is incomplete.")
-
-        dummy_surface_name = "_dummy_iso_surface_for_pyfluent"
-        field_info = obj._data_extractor.field_info()
-        surfaces_list = list(field_info.get_surfaces_info().keys())
-        iso_value = obj.surface.iso_surface.iso_value()
-        if dummy_surface_name in surfaces_list:
-            obj._data_extractor.surface_api().delete_surface(
-                dummy_surface_name
-            )
-
-        obj._data_extractor.surface_api().iso_surface(
-            field, dummy_surface_name, (), (), iso_value, ()
-        )
-
-        surfaces_list = list(field_info.get_surfaces_info().keys())
-        if dummy_surface_name not in surfaces_list:
-            raise RuntimeError("Iso surface creation failed.")
+        surface_api = obj._data_extractor.surface_api
+        surface_api.create_surface_on_server()
+        dummy_object = "dummy_object"
         post_session = obj._get_top_most_parent()
-        if obj.surface.iso_surface.rendering() == "mesh":
-            mesh = post_session.Meshes[dummy_surface_name]
-            mesh.surfaces_list = [dummy_surface_name]
-            mesh.show_edges = True
-            self._display_mesh(mesh, plotter)
-            del post_session.Meshes[dummy_surface_name]
-        else:
-            contour = post_session.Contours[dummy_surface_name]
+        if (
+            obj.surface.type() == "iso-surface"
+            and obj.surface.iso_surface.rendering() == "contour"
+        ):
+            contour = post_session.Contours[dummy_object]
             contour.field = obj.surface.iso_surface.field()
-            contour.surfaces_list = [dummy_surface_name]
+            contour.surfaces_list = [obj._name]
             contour.show_edges = True
             contour.range.auto_range_on.global_range = True
             self._display_contour(contour, plotter)
-            del post_session.Contours[dummy_surface_name]
-        obj._data_extractor.surface_api().delete_surface(dummy_surface_name)
+            del post_session.Contours[dummy_object]
+        else:
+            mesh = post_session.Meshes[dummy_object]
+            mesh.surfaces_list = [obj._name]
+            mesh.show_edges = True
+            self._display_mesh(mesh, plotter)
+            del post_session.Meshes[dummy_object]
+        surface_api.delete_surface_on_server()
 
     def _display_mesh(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
@@ -344,10 +358,16 @@ class PyVistaWindow(PostWindow):
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
-            for surf in obj.surfaces_list()
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
             for id in surfaces_info[surf]["surface_id"]
         ]
-        surfaces_data = field_data.get_surfaces(surface_ids)
+
+        field_data.add_get_surfaces_request(surface_ids)
+        surface_tag = 0
+
+        surfaces_data = field_data.get_fields()[surface_tag]
         for surface_id, mesh_data in surfaces_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"

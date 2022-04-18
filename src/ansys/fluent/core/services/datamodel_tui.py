@@ -354,8 +354,9 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
     """
     if keyword.iskeyword(menu):
         return menu + "_"
-    if menu.endswith("?"):
-        return menu[:-1] + "_flag"
+    if menu.endswith("[beta]"):
+        menu = menu[:-6]
+    menu = menu.rstrip("?")
     return menu
 
 

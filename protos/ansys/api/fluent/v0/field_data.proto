@@ -70,6 +70,18 @@ enum FieldType {
 }
 
 /**
+ * Payload tag, provides extra information about payload.
+ * For example it tells if payload data corresponds to cell or node location 
+ * or it contains boundary values etc.
+ */
+enum PayloadTag {
+  OVERSET_MESH = 0;     // This tag is set if oversetMesh flag in SurfaceRequest is set to True.
+  ELEMENT_LOCATION = 1; // This tag is set if dataLocation in ScalarFieldRequest is Elements.
+  NODE_LOCATION = 2;    // This tag is set if dataLocation in ScalarFieldRequest is Nodes.
+  BOUNDARY_VALUES = 3;  // This tag is set if provideBoundaryValues in ScalarFieldRequest is set to True.
+}
+
+/**
  * Information about payload
  */
 message PayloadInfo {
@@ -77,6 +89,7 @@ message PayloadInfo {
   string fieldName = 2;     // Field name e.g. vertices, faces, temperature, vector etc.
   FieldType fieldType = 3;  // Field type.
   uint64 fieldSize = 4;     // Field size. For bytes it will be number of bytes otherwise array size.
+  repeated PayloadTag payloadTag = 5; //PayloadTag to provide extra information about payload. 
 }
 
 /**
@@ -101,10 +114,10 @@ message GetFieldsResponse {
  * Surface data consists of information about vertices and faces.
  */
 message SurfaceRequest {
-  uint64 surfaceId = 1;      // Surface id.
-  bool oversetMesh = 2;      // Provide overset mesh.
-  bool provideVertices = 3;  // Provide vectices.
-  bool provideFaces = 4;     // Provide face to vertex connectivity.
+  uint64 surfaceId = 1;           // Surface id.
+  bool oversetMesh = 2;           // Provide overset mesh.
+  bool provideVertices = 3;       // Provide vectices.
+  bool provideFaces = 4;          // Provide face to vertex connectivity.
   bool provideFacesCentroid = 5;  // Provide face centroids.
   bool provideFacesNormal = 6;    // Provide face normals.
 }
@@ -128,8 +141,8 @@ message ScalarFieldRequest {
  * Request for vector field data.
  */
 message VectorFieldRequest {
-  uint64 surfaceId = 1;             // Surface id for vector field.
-  string vectorFieldName = 2;       // Vector field name.
+  uint64 surfaceId = 1;        // Surface id for vector field.
+  string vectorFieldName = 2;  // Vector field name.
 }
 
 /**

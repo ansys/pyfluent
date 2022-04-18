@@ -25,6 +25,7 @@ repos:
       --line-length, "79",
       --section-default, THIRDPARTY, 
       --filter-files,
+      --project, ansys,
       ansys, codegen, doc, examples, tests
     ]
 
@@ -47,7 +48,7 @@ repos:
   hooks:
   - id: codespell
     args: [
-      --skip, "src/ansys/api/fluent/v0/*,src/ansys/fluent/core/meshing/tui.py,src/ansys/fluent/core/solver/tui.py,src/ansys/fluent/core/solver/settings.py,src/ansys/fluent/core/datamodel/*",
+      --skip, "src/ansys/api/fluent/v0/*,src/ansys/fluent/core/meshing/tui.py,src/ansys/fluent/core/solver/tui.py,src/ansys/fluent/core/solver/settings.py,src/ansys/fluent/core/datamodel/*,codegen/data/fluent_gui_help.xml",
     ]
 
 - repo: https://github.com/myint/docformatter

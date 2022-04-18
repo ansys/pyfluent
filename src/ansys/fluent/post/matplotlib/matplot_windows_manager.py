@@ -5,6 +5,7 @@ from typing import List, Optional, Union
 
 import numpy as np
 
+from ansys.api.fluent.v0.field_data_pb2 import PayloadTag
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
 from ansys.fluent.post import get_config
@@ -130,25 +131,55 @@ class MatplotWindow(PostWindow):
         surfaces_info = field_info.get_surfaces_info()
         surface_ids = [
             id
-            for surf in obj.surfaces_list()
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
             for id in surfaces_info[surf]["surface_id"]
         ]
+
         # get scalar field data
-        data = field_data.get_scalar_field(
+        field_data.add_get_surfaces_request(
+            surface_ids,
+            provide_faces=False,
+            provide_vertices=True if node_values else False,
+            provide_faces_centroid=False if node_values else True,
+        )
+        field_data.add_get_scalar_fields_request(
             surface_ids,
             field,
-            True,
+            node_values,
             boundary_values,
         )
+
+        location_tag = (
+            field_data._payloadTags[PayloadTag.NODE_LOCATION]
+            if node_values
+            else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
+        )
+        boundary_value_tag = (
+            field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
+            if boundary_values
+            else 0
+        )
+        surface_tag = 0
+        xyplot_payload_data = field_data.get_fields()
+        data_tag = location_tag | boundary_value_tag
+        xyplot_data = xyplot_payload_data[data_tag]
+        surface_data = xyplot_payload_data[surface_tag]
 
         # loop over all meshes
         xy_plots_data = {}
         surfaces_list_iter = iter(surfaces_list)
-        for surface_id, mesh_data in data.items():
-            mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
-            faces = mesh_data["faces"]
-            y_values = mesh_data[field]
-            x_values = np.matmul(mesh_data["vertices"], direction_vector)
+        for surface_id, mesh_data in surface_data.items():
+            mesh_data["vertices" if node_values else "centroid"].shape = (
+                mesh_data["vertices" if node_values else "centroid"].size // 3,
+                3,
+            )
+            y_values = xyplot_data[surface_id][field]
+            x_values = np.matmul(
+                mesh_data["vertices" if node_values else "centroid"],
+                direction_vector,
+            )
             structured_data = np.empty(
                 x_values.size,
                 dtype={
