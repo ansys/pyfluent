@@ -340,7 +340,6 @@ class PyVistaWindow(PostWindow):
     def fetch_surface_data(
         self, obj
     ):
-        surface_data =None
         surface_api = obj._data_extractor.surface_api
         surface_api.create_surface_on_server()
         dummy_object = "dummy_object"
@@ -354,7 +353,7 @@ class PyVistaWindow(PostWindow):
             contour.surfaces_list = [obj._name]
             contour.show_edges = True
             contour.range.auto_range_on.global_range = True
-            surface_data = self.fetch_contour_data(contour)
+            mesh_data, scalar_field_data = self.fetch_contour_data(contour)
             del post_session.Contours[dummy_object]
         else:
             mesh = post_session.Meshes[dummy_object]
@@ -363,7 +362,8 @@ class PyVistaWindow(PostWindow):
             self._display_mesh(mesh, plotter)
             #surface_data = self.fetch_mesh_data(contour)
         surface_api.delete_surface_on_server()
-        return surface_data
+        #print('fetch_surface_data', mesh_data, scalar_field_data)
+        return mesh_data, scalar_field_data
 
     def _display_surface(
         self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]

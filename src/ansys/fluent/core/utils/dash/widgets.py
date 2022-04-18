@@ -131,8 +131,10 @@ class GraphicsWidget(metaclass=SingletonMeta):
         @self._app.callback(
             [Output(f"{graphics_type}-graphics-card", "style")  for graphics_type in self._graphics],
             Input("graphics-selector", "value"),
+            Input('session-id', 'data')
         )
-        def show_graphics_object(value):
+        def show_graphics_object(value, session_id):
+            self.update_object(value, session_id)
             return [
                 {"display": "block"}
                 if graphics_type==value
@@ -213,7 +215,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
 
                        
 
-    def store_all_widgets(self, obj_type, obj, parent=""):
+    def store_all_widgets(self, obj_type, obj, parent="" , parent_visible=True):
         for name, value in obj.__dict__.items():
             if name == "_parent":
                 continue
@@ -222,6 +224,12 @@ class GraphicsWidget(metaclass=SingletonMeta):
                 "PyLocalPropertyMeta",
                 "PyLocalObjectMeta",
             ):
+                visible = (
+                    getattr(obj, "_availability")(name)
+                    if hasattr(obj, "_availability")
+                    else True
+                )
+                
                 if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                     widget = self.get_widget(
                         value,
@@ -229,12 +237,13 @@ class GraphicsWidget(metaclass=SingletonMeta):
                         name,
                         obj_type,
                         parent,
+                        parent_visible and visible,
                         self.get_unique_name(name),
                         getattr(value, "attributes", None),
                     )
                     self._all_widgets[obj_type][self.get_unique_name(name)] = widget
                 else:
-                    self.store_all_widgets(obj_type, value, parent+"/"+name)
+                    self.store_all_widgets(obj_type, value, parent+"/"+name, parent_visible and visible)
 
     def update_visible_widgets(self, obj):
         for name, value in obj.__dict__.items():
@@ -278,7 +287,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
 
         return self._button_widget
 
-    def get_widget(self, obj, type, name, obj_type, parent, unique_name, attributes):
+    def get_widget(self, obj, type, name, obj_type, parent, visible, unique_name, attributes):
         widget = self._all_widgets.get(obj_type,{}).get(unique_name)
         if widget is not None:
             return widget
@@ -390,6 +399,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
                 
                 [widget, html.Data(id=unique_name + "data")],
                 id=unique_name + "container",
+                style = {"display":"block"} if visible else {"display":"none"}
             )
         else:
             self._widget_value_map[unique_name]= obj()
@@ -400,6 +410,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
                     html.Data(id=unique_name + "data"),
                 ],
                 id=unique_name + "container",
+                style = {"display":"block"} if visible else {"display":"none"}
             )    
         return widget
 

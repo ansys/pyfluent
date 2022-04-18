@@ -42,6 +42,9 @@ def update_vtk_fun(obj):
     try:
         set_config(blocking=True)   
         surface_iter = iter([obj._name]) if obj.__class__.__name__ == "Surface" else iter(obj.surfaces_list())
+        field = obj.surface.iso_surface.field() if obj.__class__.__name__ == "Surface" else obj.field()
+        node_values = True if obj.__class__.__name__ == "Surface" else obj.node_values()
+        #print(obj.surface)
         win = PyVistaWindow("x", obj)
         if obj.__class__.__name__ == "Mesh":
             pass
@@ -51,19 +54,21 @@ def update_vtk_fun(obj):
             surface_data, scalar_field_data =  win.fetch_contour_data(obj) 
         elif obj.__class__.__name__ == "Vector":
             pass        
-         
+        print('update_vtk_fun', field, 'surface_data', surface_data, 'scalar_field_data', scalar_field_data) 
+        
         fields_data = []  
         fields_min  = None 
         fields_max  = None 
         #print('update_vtk_fun', contour1())
         for surface_id, mesh_data in surface_data.items():
-            field  = scalar_field_data[surface_id][obj.field()]
-            range_min = np.amin(field)
-            range_max = np.amax(field) 
+            scalar_field  = scalar_field_data[surface_id][field]
+            range_min = np.amin(scalar_field)
+            range_max = np.amax(scalar_field) 
             fields_min =  min(fields_min, range_min) if fields_min else range_min
             fields_max =  max(fields_max, range_max) if fields_max else range_max       
-            fields_data.append([mesh_data["vertices"], mesh_data["faces"], field, next(surface_iter)])
+            fields_data.append([mesh_data["vertices"], mesh_data["faces"], scalar_field, next(surface_iter)])
         fields_range = [fields_min, fields_max]
+        print(fields_data, fields_range)
     except Exception as e:
         print(e)
         return [], None     
@@ -72,7 +77,7 @@ def update_vtk_fun(obj):
             id="vtk-representation-"+field_data[3],
             children=[
                 dash_vtk.PolyData(
-                    id=f"vtk-polydata-{'point-data' if obj.node_values() else 'cell-data'}"+field_data[3],
+                    id=f"vtk-polydata-{'point-data' if node_values else 'cell-data'}"+field_data[3],
                     points=field_data[0],
                     polys=field_data[1],
                     children=[
@@ -86,7 +91,7 @@ def update_vtk_fun(obj):
                                 )
                             ]
                         )
-                        if obj.node_values() else
+                        if node_values else
                         dash_vtk.CellData(
                             [
                                 dash_vtk.DataArray(
@@ -105,7 +110,7 @@ def update_vtk_fun(obj):
             colorDataRange=fields_range,
             
             
-            property={"edgeVisibility": obj.show_edges(), "showScalarBar" : True, "scalarBarTitle" : obj.field(),},            
+            property={"edgeVisibility": obj.show_edges(), "showScalarBar" : True, "scalarBarTitle" : field,},            
         )
         for field_data in fields_data
     ],
