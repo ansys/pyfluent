@@ -40,17 +40,24 @@ subset = uniformGrid.extract_subset((500, 900, 400, 800, 0, 0), (5, 5, 1))
    
 def update_vtk_fun(obj):
     try:
-        set_config(blocking=True)
-        contour1 = obj        
-        surface_iter = iter(contour1.surfaces_list())
-        win = PyVistaWindow("x", contour1)
-        surface_data, scalar_field_data =  win.fetch_contour_data(contour1)  
+        set_config(blocking=True)   
+        surface_iter = iter([obj._name]) if obj.__class__.__name__ == "Surface" else iter(obj.surfaces_list())
+        win = PyVistaWindow("x", obj)
+        if obj.__class__.__name__ == "Mesh":
+            pass
+        elif obj.__class__.__name__ == "Surface":
+            surface_data, scalar_field_data =  win.fetch_surface_data(obj) 
+        elif obj.__class__.__name__ == "Contour":
+            surface_data, scalar_field_data =  win.fetch_contour_data(obj) 
+        elif obj.__class__.__name__ == "Vector":
+            pass        
+         
         fields_data = []  
         fields_min  = None 
         fields_max  = None 
         #print('update_vtk_fun', contour1())
         for surface_id, mesh_data in surface_data.items():
-            field  = scalar_field_data[surface_id][contour1.field()]
+            field  = scalar_field_data[surface_id][obj.field()]
             range_min = np.amin(field)
             range_max = np.amax(field) 
             fields_min =  min(fields_min, range_min) if fields_min else range_min
@@ -121,7 +128,17 @@ def get_surfaces():
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 app.config.suppress_callback_exceptions=True
-server = app.server
+
+
+external_stylesheets = [
+    # Dash CSS
+    'https://codepen.io/chriddyp/pen/bWLwgP.css',
+    # Loading screen CSS
+    'https://codepen.io/chriddyp/pen/brPBPO.css']
+
+#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+#server = app.server
 
 #vtk_view = dash_vtk.View(
 #    id="vtk-view",    
@@ -130,14 +147,16 @@ server = app.server
 #    ],
 #)
 
+
 def serve_layout():
     session_id = str(uuid.uuid4())
 
-app.layout =  dbc.Container(
+
+    return  dbc.Container(
     fluid=True,
     style={"height": "100vh"},
     children=[
-        dcc.Store(data=str(uuid.uuid4()), id='session-id'),
+        dcc.Store(data=session_id, id='session-id'),
         dbc.Row(
             [
                 dbc.Col(
@@ -194,7 +213,7 @@ app.layout =  dbc.Container(
         ),
     ],
     )
-#app.layout = serve_layout
+app.layout = serve_layout
 
 
 

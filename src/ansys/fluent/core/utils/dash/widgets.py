@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output, State
 
 from dash.exceptions import PreventUpdate
 import re
-
+from ansys.fluent.core.utils.generic import SingletonMeta
 from ansys.fluent.post.pyvista import  Graphics
 from ansys.fluent.post.pyvista.pyvista_objects import Contour, Mesh, Surface, Vector
 from ansys.fluent.post import set_config
@@ -15,7 +15,7 @@ from ansys.fluent.core.session  import Session
 session =Session.create_from_server_info_file("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt", False)
 set_config(blocking=False)
 graphics_session1 = Graphics(session)
-
+import uuid
 #contour1 = graphics_session1.Contours["contour-1"]
 #contour1.field = "velocity-magnitude"
 #contour1.surfaces_list = ["symmetry"]
@@ -26,7 +26,7 @@ graphics_session1 = Graphics(session)
 #contour2.surfaces_list = ["wall"]
 
 
-class GraphicsWidget:
+class GraphicsWidget(metaclass=SingletonMeta):
     _fun = None
     _exe_method = None
 
@@ -39,7 +39,7 @@ class GraphicsWidget:
             id=self._vtk_view_id,
             pickingModes=["hover"],
             children=[],
-        )
+        )        
         self._widget_value_map = {}
         self._update_vtk_fun = update_vtk_fun
         self._all_widgets = {}
@@ -51,7 +51,7 @@ class GraphicsWidget:
         return " ".join([name.capitalize() for name in name_list])
 
     def get_unique_name(self, name):
-        return name + self._object._name
+        return name + self._object.__class__.__name__
 
     def refresh(self):
 
@@ -101,17 +101,28 @@ class GraphicsWidget:
             style={"height": "50rem"},
         )
 
+    def update_object(self, value, session_id=None):
+        if value is not None:
+            if value=="Contour":
+                self._object = graphics_session1.Contours["dummy-contour"+session_id if session_id else ""]
+            if value=="Mesh":
+                self._object = graphics_session1.Meshes["dummy-mesh"+session_id if session_id else ""] 
+            if value=="Vector":
+                self._object = graphics_session1.Vectors["dummy-vector"+session_id if session_id else ""] 
+            if value=="Surface":
+                self._object = graphics_session1.Surfaces["dummy-surface"+session_id if session_id else ""] 
+                    
     def create_callback(self):
-        def update_object(value):
+        def update_object(value, session_id=None):
             if value is not None:
                 if value=="Contour":
-                    self._object = graphics_session1.Contours["dummy-contour"]
+                    self._object = graphics_session1.Contours["dummy-contour"+session_id if session_id else ""]
                 if value=="Mesh":
-                    self._object = graphics_session1.Meshes["dummy-mesh"] 
+                    self._object = graphics_session1.Meshes["dummy-mesh"+session_id if session_id else ""] 
                 if value=="Vector":
-                    self._object = graphics_session1.Vectors["dummy-vector"] 
+                    self._object = graphics_session1.Vectors["dummy-vector"+session_id if session_id else ""] 
                 if value=="Surface":
-                    self._object = graphics_session1.Surfaces["dummy-surface"] 
+                    self._object = graphics_session1.Surfaces["dummy-surface"+session_id if session_id else ""] 
                    
     
         def update_stored_widgets(value):
@@ -122,18 +133,19 @@ class GraphicsWidget:
                         "display", "display"
                     )
                 else:
-                    self.store_all_widgets(self._object)
+                    self.store_all_widgets(value, self._object)
 
-        for value in ["Contour", "Mesh", "Vector", "button"]:
+        for value in ["Contour", "Mesh", "Vector", "Surface", "button"]:
             update_stored_widgets(value)                    
         self._object = None   
 
-        print("all widgets", self._all_widgets.keys())
+        #print("all widgets", self._all_widgets.keys())
         inputs = [
             Input(name + "data", "value")
             for name in list(self._all_widgets.keys())[:-1]
         ]
         inputs.append(Input("graphics-selector", "value"))
+        inputs.append(Input('session-id', 'data'))
         outputs = [
             Output(name + "container", "style")
             for name in list(self._all_widgets.keys())[:-1]
@@ -144,11 +156,12 @@ class GraphicsWidget:
         ]
 
         @self._app.callback(*outputs, *inputs)
-        def callback(*args): 
-            update_object(args[-1])
+        def callback(*args,): 
+            print(args[-2], args[-1])
+            update_object(args[-2], args[-1])
             if self._object is None:
                 raise PreventUpdate
-            print('show hide callback', args[-1])
+            print('show hide callback', args[-2], args[-1], self._object._name)
             self._visible_widgets = []
             self.update_visible_widgets(self._object)
             visible_widgets = [pair[0] for pair in self._visible_widgets]
@@ -176,7 +189,7 @@ class GraphicsWidget:
 
                        
 
-    def store_all_widgets(self, obj):
+    def store_all_widgets(self, obj_type, obj, parent=""):
         for name, value in obj.__dict__.items():
             if name == "_parent":
                 continue
@@ -190,12 +203,14 @@ class GraphicsWidget:
                         value,
                         value._type,
                         name,
+                        obj_type,
+                        parent,
                         self.get_unique_name(name),
                         getattr(value, "attributes", None),
                     )
                     self._all_widgets[self.get_unique_name(name)] = widget
                 else:
-                    self.store_all_widgets(value)
+                    self.store_all_widgets(obj_type, value, parent+"/"+name)
 
     def update_visible_widgets(self, obj):
         for name, value in obj.__dict__.items():
@@ -227,21 +242,21 @@ class GraphicsWidget:
             return self._button_widget
 
         self._button_widget = dbc.Button(self.get_label(name), id=unique_name, n_clicks=0)
-
         @self._app.callback(
             [
-                Output(self._vtk_view_id, "children"),
-                Output(self._vtk_view_id, "triggerResetCamera"),
+                Output("vtk-view", "children"),
+                Output("vtk-view", "triggerResetCamera"),
             ],
-            Input(unique_name, "n_clicks"),
+            Input("display", "n_clicks"),
         )
         def fun(n_clicks):
-            #print(dir(self._vtk_view))
+            print("n_clicks", n_clicks, self._object._name)
             return self._update_vtk_fun(self._object)
+
 
         return self._button_widget
 
-    def get_widget(self, obj, type, name, unique_name, attributes):
+    def get_widget(self, obj, type, name, obj_type, parent, unique_name, attributes):
         widget = self._all_widgets.get(unique_name)
         if widget is not None:
             return widget
@@ -276,12 +291,13 @@ class GraphicsWidget:
             )
         elif str(type) == "<class 'float'>":
             if attributes and "range" in attributes:
+                range  = getattr(obj, "range")
                 widget = dcc.Input(
                     id=unique_name,
                     type="number",
                     value=obj(),
-                    min=getattr(obj, "range")[0],
-                    max=getattr(obj, "range")[1],
+                    min=range[0] if range else None,
+                    max=range[1] if range else None,
                 )
             else:
                 widget = dcc.Input(id=unique_name, type="number", value=obj())
@@ -304,9 +320,25 @@ class GraphicsWidget:
         @self._app.callback(
             Output(unique_name + "data", "value"),
             Input(unique_name, "value"),
+            Input("session-id", "data"),
+            State("graphics-selector", "value"),
         )
-        def update_oject(value):
-            #print("update_oject", unique_name, value)
+        def update_oject(value, session_id, graphics_selection):
+            if graphics_selection != obj_type:
+                raise PreventUpdate    
+            print("update_oject", session_id, graphics_selection, unique_name, value)
+            self.update_object(graphics_selection, session_id)
+            obj = self._object
+            path_list = parent.split("/")
+            if len(path_list)>1:
+                path_list = path_list[1:]
+                for path in  path_list:
+                    obj = getattr(obj, path)
+                    if obj is None:
+                        raise PreventUpdate                    
+            obj = getattr(obj, name)                    
+            if obj is None:
+                raise PreventUpdate               
             #self.__old_defn = self._object()
             if value is None or value == obj():
                 #print('PreventUpdate')
