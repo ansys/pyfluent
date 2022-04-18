@@ -27,11 +27,8 @@ import uuid
 
 
 class GraphicsWidget(metaclass=SingletonMeta):
-    _fun = None
-    _exe_method = None
 
     def __init__(self, app, update_vtk_fun):
-        self.__refresh_bcs = []
         self._app = app
         self._object = None
         self._vtk_view_id = "vtk-view"
@@ -43,6 +40,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
         self._widget_value_map = {}
         self._update_vtk_fun = update_vtk_fun
         self._all_widgets = {}
+        self._graphics = ["Contour", "Surface", "Mesh", "Vector"]
         self._button_widget = None 
         self.create_callback()
 
@@ -83,17 +81,20 @@ class GraphicsWidget(metaclass=SingletonMeta):
                         id="graphics-selector" + "container",
                         style = {'padding': "1px 1px 10px 1px"},  
                     ),
-
+                    ]+
+                    [
                     
-                    dbc.Card(
-                        [
-                            dbc.CardHeader(id="graphics-card-header"),
-                            dbc.CardBody(list(self._all_widgets.values()), id="graphics-card-body"),
-                        ],
-                        body=True,
-                        className="mb-3",
-                        id="graphics-card"
-                    )
+                      dbc.Card(
+                          [
+                              #dbc.CardHeader(id=f"{graphics_type}-graphics-card-header"),
+                              dbc.CardBody(list(self._all_widgets[graphics_type].values()), id=f"{graphics_type}-graphics-card-body"),
+                          ],
+                          body=True,
+                          className="mb-3",
+                          id=f"{graphics_type}-graphics-card"
+                      )
+                      
+                      for graphics_type in self._graphics
                     ],
                     md=2,
                 ),
@@ -113,77 +114,100 @@ class GraphicsWidget(metaclass=SingletonMeta):
                 self._object = graphics_session1.Surfaces["dummy-surface"+session_id if session_id else ""] 
                     
     def create_callback(self):
-        def update_object(value, session_id=None):
-            if value is not None:
-                if value=="Contour":
-                    self._object = graphics_session1.Contours["dummy-contour"+session_id if session_id else ""]
-                if value=="Mesh":
-                    self._object = graphics_session1.Meshes["dummy-mesh"+session_id if session_id else ""] 
-                if value=="Vector":
-                    self._object = graphics_session1.Vectors["dummy-vector"+session_id if session_id else ""] 
-                if value=="Surface":
-                    self._object = graphics_session1.Surfaces["dummy-surface"+session_id if session_id else ""] 
                    
     
         def update_stored_widgets(value):
             if value is not None:
-                update_object(value)
-                if value=="button":                                    
-                    self._all_widgets["display"] = self.get_button(
-                        "display", "display"
-                    )
-                else:
-                    self.store_all_widgets(value, self._object)
+                self.update_object(value)
+                self._all_widgets[value] ={}
+                self.store_all_widgets(value, self._object)
+                self._all_widgets[value][self.get_unique_name("display")] =self.get_button(
+                    "display", self.get_unique_name("display")
+                )
+                
+        for value in self._graphics:
+            update_stored_widgets(value)                 
 
-        for value in ["Contour", "Mesh", "Vector", "Surface", "button"]:
-            update_stored_widgets(value)                    
-        self._object = None   
-
-        #print("all widgets", self._all_widgets.keys())
-        inputs = [
-            Input(name + "data", "value")
-            for name in list(self._all_widgets.keys())[:-1]
-        ]
-        inputs.append(Input("graphics-selector", "value"))
-        inputs.append(Input('session-id', 'data'))
-        outputs = [
-            Output(name + "container", "style")
-            for name in list(self._all_widgets.keys())[:-1]
-        ]
-        outputs = outputs + [
-            Output(name, "value")
-            for name in list(self._all_widgets.keys())[:-1]
-        ]
-
-        @self._app.callback(*outputs, *inputs)
-        def callback(*args,): 
-            print(args[-2], args[-1])
-            update_object(args[-2], args[-1])
-            if self._object is None:
-                raise PreventUpdate
-            print('show hide callback', args[-2], args[-1], self._object._name)
-            self._visible_widgets = []
-            self.update_visible_widgets(self._object)
-            visible_widgets = [pair[0] for pair in self._visible_widgets]
-            widgets_value_map = {
-                pair[0]: pair[1] for pair in self._visible_widgets
-            }
-            widget_values = []
-            for value in [
-                widgets_value_map[name] if name in visible_widgets else self._widget_value_map[name]
-                for name in list(self._all_widgets.keys())[:-1]
-            ]:
-                if isinstance(value, bool):
-                    widget_values.append(["selected"] if value else [])
-                else:
-                    widget_values.append(value)
+        @self._app.callback(
+            [Output(f"{graphics_type}-graphics-card", "style")  for graphics_type in self._graphics],
+            Input("graphics-selector", "value"),
+        )
+        def show_graphics_object(value):
             return [
                 {"display": "block"}
-                if name in visible_widgets
+                if graphics_type==value
                 else {"display": "none"}
-                for name in list(self._all_widgets.keys())[:-1]
-            ] + widget_values
+                for graphics_type in self._graphics
+            ] 
+            
+        print([list(self._all_widgets[graphics_type].keys())[-1]  for graphics_type in self._graphics])    
+        @self._app.callback(
+            [
+                Output("vtk-view", "children"),
+                Output("vtk-view", "triggerResetCamera"),
+            ],
+            [Input(list(self._all_widgets[graphics_type].keys())[-1], "n_clicks")  for graphics_type in self._graphics],
+        )
+        def display_graphics(*args):
+            print("n_clicks", args, self._object._name)
+            return self._update_vtk_fun(self._object)            
         
+        for value in self._graphics:
+              
+            #print("all widgets", self._all_widgets.keys())
+            inputs = [
+                Input(name + "data", "value")
+                for name in list(self._all_widgets[value].keys())[:-1]
+            ]            
+            inputs.append(Input('session-id', 'data'))
+            inputs.append(State("graphics-selector", "value"))
+            
+            outputs = [
+                Output(name + "container", "style")
+                for name in list(self._all_widgets[value].keys())[:-1]
+            ]
+            outputs = outputs + [
+                Output(name, "value")
+                for name in list(self._all_widgets[value].keys())[:-1]
+            ]
+
+            @self._app.callback(*outputs, *inputs)
+            def callback(*args): 
+                nonlocal value
+                callback_type = lambda : value 
+                value = args[-1]
+                session_id = args[-2]
+                    
+                if value is None or callback_type() != value:
+                    raise PreventUpdate    
+                self.update_object(value, session_id)
+                if self._object is None:
+                    raise PreventUpdate
+                print('show hide callback', callback_type(), value, session_id, self._object._name)
+                self._visible_widgets = []
+                self.update_visible_widgets(self._object)
+                visible_widgets = [pair[0] for pair in self._visible_widgets]
+                widgets_value_map = {
+                    pair[0]: pair[1] for pair in self._visible_widgets
+                }
+                widget_values = []
+                for widget_value in [
+                    widgets_value_map[name] if name in visible_widgets else self._widget_value_map[name]
+                    for name in list(self._all_widgets[value].keys())[:-1]
+                ]:
+                    if isinstance(widget_value, bool):
+                        widget_values.append(["selected"] if widget_value else [])
+                    else:
+                        widget_values.append(widget_value)
+                return [
+                    {"display": "block"}
+                    if name in visible_widgets
+                    else {"display": "none"}
+                    for name in list(self._all_widgets[value].keys())[:-1]
+                ] + widget_values
+        
+           
+
 
             
 
@@ -208,7 +232,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
                         self.get_unique_name(name),
                         getattr(value, "attributes", None),
                     )
-                    self._all_widgets[self.get_unique_name(name)] = widget
+                    self._all_widgets[obj_type][self.get_unique_name(name)] = widget
                 else:
                     self.store_all_widgets(obj_type, value, parent+"/"+name)
 
@@ -238,17 +262,15 @@ class GraphicsWidget(metaclass=SingletonMeta):
                     self.update_visible_widgets(value)
 
     def get_button(self, name, unique_name):        
-        if self._button_widget is not None:
-            return self._button_widget
 
         self._button_widget = dbc.Button(self.get_label(name), id=unique_name, n_clicks=0)
-        @self._app.callback(
-            [
-                Output("vtk-view", "children"),
-                Output("vtk-view", "triggerResetCamera"),
-            ],
-            Input("display", "n_clicks"),
-        )
+        #@self._app.callback(
+        #    [
+        #        Output("vtk-view", "children"),
+        #        Output("vtk-view", "triggerResetCamera"),
+        #    ],
+        #    Input("display", "n_clicks"),
+        #)
         def fun(n_clicks):
             print("n_clicks", n_clicks, self._object._name)
             return self._update_vtk_fun(self._object)
@@ -257,7 +279,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
         return self._button_widget
 
     def get_widget(self, obj, type, name, obj_type, parent, unique_name, attributes):
-        widget = self._all_widgets.get(unique_name)
+        widget = self._all_widgets.get(obj_type,{}).get(unique_name)
         if widget is not None:
             return widget
         # print(str(type), unique_name)
@@ -354,26 +376,12 @@ class GraphicsWidget(metaclass=SingletonMeta):
             else:
                 self._widget_value_map[unique_name]= value
                 obj.set_state(value)
-            #    self.update_widgets()
-            #    return [self.__widgets]
-            #    if self._need_to_refresh():
-            #       pass
-            #        #self.refresh()
-            #    else:
-            #        for cb in self.__refresh_bcs:
-            #            cb()
             return str(value)
 
-        def refresh_bc(widget, obj):
-            #print("refresh_bc", unique_name, obj())
-            if str(type) == "<class 'bool'>":
-                widget.value = ["selected"] if obj() else []
-            else:
-                widget.value = obj()
 
-        w = widget
 
-        self.__refresh_bcs.append(partial(refresh_bc, w, obj))
+
+        
         
         
         if str(type) == "<class 'bool'>":
