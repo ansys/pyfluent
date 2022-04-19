@@ -7,7 +7,7 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
-from ansys.api.fluent.v0 import variant_pb2 as VariantProtoModule
+from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
@@ -59,7 +59,7 @@ class DatamodelService:
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 
 
-def _convert_value_to_gvalue(val: Any, gval: VariantProtoModule.Variant):
+def _convert_value_to_gvalue(val: Any, gval: Variant):
     """Convert Python datatype to Value type of
     google/protobuf/struct.proto."""
     if isinstance(val, bool):
@@ -80,7 +80,7 @@ def _convert_value_to_gvalue(val: Any, gval: VariantProtoModule.Variant):
             _convert_value_to_gvalue(v, gval.struct_value.fields[k])
 
 
-def _convert_gvalue_to_value(gval: VariantProtoModule.Variant):
+def _convert_gvalue_to_value(gval: Variant):
     """Convert Value type of google/protobuf/struct.proto to Python
     datatype."""
     if gval.HasField("bool_value"):

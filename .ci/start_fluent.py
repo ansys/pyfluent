@@ -3,11 +3,12 @@ import subprocess
 import sys
 import tempfile
 import time
+from typing import List
 
 from ansys.fluent.core import EXAMPLES_PATH
 
 
-def start_fluent_container(args):
+def start_fluent_container(args: List[str]) -> None:
     fd, sifile = tempfile.mkstemp(
         suffix=".txt", prefix="serverinfo-", dir=EXAMPLES_PATH
     )

@@ -34,17 +34,23 @@ class SchemeEvalService:
     It is suggested to use the methods from SchemeEval class.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         self.__stub = SchemeEvalGrpcModule.SchemeEvalStub(channel)
         self.__metadata = metadata
 
-    def eval(self, request):
+    def eval(
+        self, request: SchemePointerProtoModule.SchemePointer
+    ) -> SchemePointer:
         return self.__stub.Eval(request, metadata=self.__metadata)
 
-    def exec(self, request):
+    def exec(
+        self, request: SchemeEvalProtoModule.ExecRequest
+    ) -> SchemeEvalProtoModule.ExecResponse:
         return self.__stub.Exec(request, metadata=self.__metadata)
 
-    def string_eval(self, request):
+    def string_eval(
+        self, request: SchemeEvalProtoModule.StringEvalRequest
+    ) -> SchemeEvalProtoModule.StringEvalResponse:
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
 

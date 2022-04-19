@@ -26,7 +26,7 @@ class Logger:
         Disable logging to file
     """
 
-    def __init__(self, level=logging.ERROR):
+    def __init__(self, level: Any = logging.ERROR):
         self.logger = logging.getLogger()
         self.stream_handler = None
         self.file_handler = None
@@ -45,7 +45,7 @@ class Logger:
         self.critical = self.logger.critical
         self.log = self.logger.log
 
-    def set_level(self, level):
+    def set_level(self, level: Any) -> None:
         """Set logging level.
 
         Parameters
@@ -65,18 +65,18 @@ class Logger:
         os.close(fd)
         return Path(filepath)
 
-    def enable_logging_to_stdout(self):
+    def enable_logging_to_stdout(self) -> None:
         """Enable logging to stdout."""
         if self.stream_handler is None:
             self.stream_handler = logging.StreamHandler()
             self.stream_handler.setFormatter(self.formatter)
         self.logger.addHandler(self.stream_handler)
 
-    def disable_logging_to_stdout(self):
+    def disable_logging_to_stdout(self) -> None:
         """Disable logging to stdout."""
         self.logger.removeHandler(self.stream_handler)
 
-    def enable_logging_to_file(self, filepath=None):
+    def enable_logging_to_file(self, filepath: str = None) -> None:
         """Enable logging to file.
 
         Parameters
@@ -94,7 +94,7 @@ class Logger:
         self.file_handler.setFormatter(self.formatter)
         self.logger.addHandler(self.file_handler)
 
-    def disable_logging_to_file(self):
+    def disable_logging_to_file(self) -> None:
         """Disable logging to file."""
         self.logger.removeHandler(self.file_handler)
 

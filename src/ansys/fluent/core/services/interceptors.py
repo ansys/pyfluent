@@ -11,9 +11,9 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
 
     def _intercept_call(
         self,
-        continuation,
+        continuation: Any,
         client_call_details: grpc.ClientCallDetails,
-        request,
+        request: Any,
     ):
         LOG.debug(
             "GRPC_TRACE: rpc = %s, request = %s",
@@ -29,6 +29,9 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         return response
 
     def intercept_unary_unary(
-        self, continuation, client_call_details, request
-    ):
+        self,
+        continuation: Any,
+        client_call_details: grpc.ClientCallDetails,
+        request: Any,
+    ) -> Any:
         return self._intercept_call(continuation, client_call_details, request)

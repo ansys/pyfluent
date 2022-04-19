@@ -1,12 +1,13 @@
 """Wrappers over StateEngine based datamodel grpc service of Fluent."""
 
 from enum import Enum
-from typing import Any, Iterator, List, Tuple
+from typing import Any, Dict, Iterator, List, Tuple
 
 import grpc
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
@@ -54,7 +55,7 @@ class DatamodelService:
     It is suggested to use the methods from PyMenu class.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         tracing_interceptor = TracingInterceptor()
         intercept_channel = grpc.intercept_channel(
             channel, tracing_interceptor
@@ -63,43 +64,61 @@ class DatamodelService:
         self.__metadata = metadata
 
     @catch_grpc_error
-    def initialize_datamodel(self, request):
+    def initialize_datamodel(
+        self, request: DataModelProtoModule.InitDatamodelRequest
+    ) -> DataModelProtoModule.InitDatamodelResponse:
         return self.__stub.initDatamodel(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_attribute_value(self, request):
+    def get_attribute_value(
+        self, request: DataModelProtoModule.GetAttributeValueRequest
+    ) -> DataModelProtoModule.GetAttributeValueResponse:
         return self.__stub.getAttributeValue(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_state(self, request):
+    def get_state(
+        self, request: DataModelProtoModule.GetStateRequest
+    ) -> DataModelProtoModule.GetStateResponse:
         return self.__stub.getState(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def set_state(self, request):
+    def set_state(
+        self, request: DataModelProtoModule.SetStateRequest
+    ) -> DataModelProtoModule.SetStateResponse:
         return self.__stub.setState(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def update_dict(self, request):
+    def update_dict(
+        self, request: DataModelProtoModule.UpdateDictRequest
+    ) -> DataModelProtoModule.UpdateDictResponse:
         return self.__stub.updateDict(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def delete_object(self, request):
+    def delete_object(
+        self, request: DataModelProtoModule.DeleteObjectRequest
+    ) -> DataModelProtoModule.DeleteObjectResponse:
         return self.__stub.deleteObject(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def execute_command(self, request):
+    def execute_command(
+        self, request: DataModelProtoModule.ExecuteCommandRequest
+    ) -> DataModelProtoModule.ExecuteCommandResponse:
         return self.__stub.executeCommand(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_specs(self, request):
+    def get_specs(
+        self, request: DataModelProtoModule.GetSpecsRequest
+    ) -> DataModelProtoModule.GetSpecsResponse:
         return self.__stub.getSpecs(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_static_info(self, request):
+    def get_static_info(
+        self, request: DataModelProtoModule.GetStaticInfoRequest
+    ) -> DataModelProtoModule.GetStaticInfoResponse:
         return self.__stub.getStaticInfo(request, metadata=self.__metadata)
 
 
-def _convert_value_to_variant(val, var):
+def _convert_value_to_variant(val: Any, var: Variant):
     """Convert Python datatype to Fluent's Variant type."""
 
     if isinstance(val, bool):
@@ -122,7 +141,7 @@ def _convert_value_to_variant(val, var):
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
 
-def _convert_variant_to_value(var):
+def _convert_variant_to_value(var: Variant):
     """Convert Fluent's Variant to Python datatype."""
 
     if var.HasField("bool_state"):
@@ -221,7 +240,7 @@ class PyMenu:
         else:
             self.path = path
 
-    def get_state(self):
+    def get_state(self) -> Any:
         request = DataModelProtoModule.GetStateRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
@@ -230,7 +249,7 @@ class PyMenu:
 
     getState = get_state
 
-    def set_state(self, state):
+    def set_state(self, state: Any) -> None:
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
@@ -239,7 +258,7 @@ class PyMenu:
 
     setState = set_state
 
-    def update_dict(self, dict_state: dict):
+    def update_dict(self, dict_state: Dict[str, Any]) -> None:
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
@@ -295,7 +314,7 @@ class PyMenu:
 
     getAttribValue = get_attrib_value
 
-    def help(self):
+    def help(self) -> None:
         """Prints help string."""
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
@@ -306,7 +325,7 @@ class PyMenu:
         ).common.helpstring
         print(help_string)
 
-    def rename(self, new_name: str):
+    def rename(self, new_name: str) -> None:
         """Rename the named object.
 
         Parameters
@@ -520,7 +539,7 @@ class PyCommand:
         response = self.service.execute_command(request)
         return _convert_variant_to_value(response.result)
 
-    def help(self):
+    def help(self) -> None:
         """Prints help string."""
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
