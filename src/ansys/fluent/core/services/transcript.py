@@ -1,5 +1,7 @@
 """Wrapper over the transcript grpc service of Fluent."""
 
+from typing import Generator, List, Tuple
+
 import grpc
 
 from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
@@ -15,12 +17,14 @@ class TranscriptService:
         Begin transcript streaming from Fluent
     """
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         self.__stub = TranscriptGrpcModule.TranscriptStub(channel)
         self.__metadata = metadata
         self.__streams = None
 
-    def begin_streaming(self):
+    def begin_streaming(
+        self,
+    ) -> Generator[TranscriptModule.TranscriptResponse]:
         """Begin transcript streaming from Fluent.
 
         Yields
@@ -39,6 +43,6 @@ class TranscriptService:
             except Exception:
                 break
 
-    def end_streaming(self):
+    def end_streaming(self) -> None:
         if self.__streams and not self.__streams.cancelled():
             self.__streams.cancel()

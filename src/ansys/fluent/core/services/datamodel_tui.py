@@ -7,6 +7,7 @@ import grpc
 
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0 import variant_pb2 as VariantProtoModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
@@ -19,7 +20,7 @@ class DatamodelService:
     It is suggested to use the methods from PyMenu class.
     """
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         tracing_interceptor = TracingInterceptor()
         intercept_channel = grpc.intercept_channel(
             channel, tracing_interceptor
@@ -28,27 +29,37 @@ class DatamodelService:
         self.__metadata = metadata
 
     @catch_grpc_error
-    def get_attribute_value(self, request):
+    def get_attribute_value(
+        self, request: DataModelProtoModule.GetAttributeValueRequest
+    ) -> DataModelProtoModule.GetAttributeValueResponse:
         return self.__stub.GetAttributeValue(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def get_state(self, request):
+    def get_state(
+        self, request: DataModelProtoModule.GetStateRequest
+    ) -> DataModelProtoModule.GetStateResponse:
         return self.__stub.GetState(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def set_state(self, request):
+    def set_state(
+        self, request: DataModelProtoModule.SetStateRequest
+    ) -> DataModelProtoModule.SetStateResponse:
         return self.__stub.SetState(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def execute_command(self, request):
+    def execute_command(
+        self, request: DataModelProtoModule.ExecuteCommandRequest
+    ) -> DataModelProtoModule.ExecuteCommandResponse:
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
     @catch_grpc_error
-    def execute_query(self, request):
+    def execute_query(
+        self, request: DataModelProtoModule.ExecuteQueryRequest
+    ) -> DataModelProtoModule.ExecuteQueryResponse:
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
 
 
-def _convert_value_to_gvalue(val, gval):
+def _convert_value_to_gvalue(val: Any, gval: VariantProtoModule.Variant):
     """Convert Python datatype to Value type of
     google/protobuf/struct.proto."""
     if isinstance(val, bool):
@@ -69,7 +80,7 @@ def _convert_value_to_gvalue(val, gval):
             _convert_value_to_gvalue(v, gval.struct_value.fields[k])
 
 
-def _convert_gvalue_to_value(gval):
+def _convert_gvalue_to_value(gval: VariantProtoModule.Variant):
     """Convert Value type of google/protobuf/struct.proto to Python
     datatype."""
     if gval.HasField("bool_value"):
