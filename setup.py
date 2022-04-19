@@ -38,7 +38,7 @@ for package in find_namespace_packages(where="src", include="ansys*"):
 setup(
     name="ansys-fluent-solver",
     packages=packages,
-    data_files=[("/ansys/fluent/core/",["README.rst"])],
+    data_files=[("/ansys/fluent/core/", ["README.rst"])],
     package_dir={"": "src"},
     include_package_data=True,
     version=__version__,

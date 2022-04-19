@@ -18,12 +18,11 @@ _README_FILE = os.path.normpath(
 
 if not os.path.exists(_README_FILE):
     # Then we are in the package distribution... point to its expected location
-    _README_FILE = os.path.normpath(
-        os.path.join(_THIS_DIRNAME, "README.rst")
-    )
-    
+    _README_FILE = os.path.normpath(os.path.join(_THIS_DIRNAME, "README.rst"))
+
 with open(_README_FILE, encoding="utf8") as f:
     __doc__ = f.read()
+
 
 def version_info():
     """Method returning the version of PyFluent being used.
