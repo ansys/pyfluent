@@ -10,6 +10,13 @@ repos:
       src/ansys, codegen, doc, examples, tests
     ]
 
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v14.0.1
+  hooks:
+  - id: clang-format
+    files: ^.+.proto$
+    args: [ -i ]
+
 - repo: https://github.com/pycqa/isort
   rev: 5.10.1
   hooks:
