@@ -50,7 +50,7 @@ import_filename = examples.download_file(
 # Start Fluent in double precision running on 4 processors
 
 session = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count=4
+    meshing_mode=True, precision="double", processor_count=2
 )
 
 ###############################################################################
@@ -659,4 +659,4 @@ session.tui.solver.display.objects.display("scene-1")
 # Save case, data and exit.
 # session.tui.solver.file.write_case_data("exhaust_system.cas.h5")
 
-session.exit()
+# session.exit()
