@@ -46,6 +46,7 @@ for package in find_namespace_packages(include="ansys*"):
 setup(
     name="ansys-fluent-solver",
     packages=packages,
+    data_files=[("/ansys/fluent/",["README.rst"])],
     include_package_data=True,
     version=__version__,
     description="Fluent's SolverAPI exposed in Python",
