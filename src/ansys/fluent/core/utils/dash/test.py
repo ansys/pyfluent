@@ -45,6 +45,83 @@ def update_vtk_fun(obj):
             return update_vtk_fun_field(obj) 
         elif obj.__class__.__name__ == "Contour":
             return update_vtk_fun_field(obj) 
+        elif obj.__class__.__name__ == "Vector":
+            return update_vtk_fun_vector(obj)             
+
+def update_vtk_fun_vector(obj):
+    try:
+        set_config(blocking=True)   
+        surface_iter = iter(obj.surfaces_list())
+        field = obj.vectors_of()
+
+        
+        win = PyVistaWindow("x", obj)
+        vector_field_data = win.fetch_vector_data(obj) 
+               
+        fields_data = []  
+        fields_min  = None 
+        fields_max  = None        
+        for surface_id, vector_data in vector_field_data.items():
+        
+                   
+            faces_centroid = vector_data["centroid"]                  
+            vector_field  = vector_data[field]
+            vector_end_points = np.add(faces_centroid, vector_field*vector_data["vector-scale"][0]*obj.scale())          
+            
+            line_sgements_vertices = np.append(faces_centroid, vector_end_points)           
+            line_segements_connectivity =  [x for l in [ (2, index+1,index+1+faces_centroid.size//3) for index in range(faces_centroid.size//3)] for x in l]
+                        
+            vector_field.shape = (
+                vector_field.size // 3,
+                3,
+            )            
+            velocity_magnitude = np.linalg.norm(
+                vector_field, axis=1
+            )            
+            range_min = np.amin(velocity_magnitude)
+            range_max = np.amax(velocity_magnitude) 
+            fields_min =  min(fields_min, range_min) if fields_min else range_min
+            fields_max =  max(fields_max, range_max) if fields_max else range_max       
+            fields_data.append([line_sgements_vertices, line_segements_connectivity, velocity_magnitude, next(surface_iter)])            
+        fields_range = [fields_min, fields_max]
+        
+    except Exception as e:
+        print(e)
+        return [], None     
+    return [[
+        dash_vtk.GeometryRepresentation(
+            id="vtk-representation-"+field_data[3],
+            children=[
+            
+                dash_vtk.PolyData(
+                    id=f"vtk-polydata-"+field_data[3],
+                    points=field_data[0],
+                    lines=field_data[1],
+                    connectivity='points',
+                    children=[
+                        dash_vtk.PointData(
+                            [
+                                dash_vtk.DataArray(
+                                    id="vtk-array-point-data"+field_data[3],
+                                    registration="setScalars",
+                                    name="vtk-array-point-data"+field_data[3],
+                                    values=field_data[2]+field_data[2],
+                                )
+                            ]
+                        )                        
+                    ],
+                )               
+            ],             
+            colorMapPreset="Rainbow Blended White",
+            colorDataRange=fields_range,
+            
+            
+                      
+        )
+        for field_data in fields_data
+    ],
+     random.random(),
+    ]
 
    
 def update_vtk_fun_field(obj):

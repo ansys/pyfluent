@@ -87,8 +87,9 @@ class PyVistaWindow(PostWindow):
             position_y=0.3,
         )
 
-    def _display_vector(
-        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+
+    def fetch_vector_data(
+        self, obj
     ):
 
         if not obj.surfaces_list():
@@ -106,17 +107,37 @@ class PyVistaWindow(PostWindow):
             )
             for id in surfaces_info[surf]["surface_id"]
         ]
-
-        # field
-        field = "velocity-magnitude"
-
-        # scalar bar properties
-        scalar_bar_args = self._scalar_bar_default_properties()
-
-        field_data.add_get_surfaces_request(surface_ids)
+      
+        field_data.add_get_surfaces_request(surface_ids, provide_faces_centroid=True, provide_faces_normal=True)
         field_data.add_get_vector_fields_request(surface_ids, obj.vectors_of())
         vector_field_tag = 0
-        vector_field_data = field_data.get_fields()[vector_field_tag]
+        fields =  field_data.get_fields()[vector_field_tag]                
+        return fields
+       
+    def _display_vector(
+        self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]
+    ):
+
+        vector_field_data = self.fetch_vector_data(obj)
+        field_info = obj._data_extractor.field_info()
+        
+        # surface ids
+        surfaces_info = field_info.get_surfaces_info()
+        surface_ids = [
+            id
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
+            for id in surfaces_info[surf]["surface_id"]
+        ]
+        
+        # scalar bar properties
+        scalar_bar_args = self._scalar_bar_default_properties()
+        
+        # field
+        field = "velocity-magnitude"
+        
+        
         for surface_id, mesh_data in vector_field_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             mesh_data[obj.vectors_of()].shape = (
