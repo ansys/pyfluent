@@ -33,11 +33,6 @@ from ansys.fluent.post.pyvista.pyvista_windows_manager import PyVistaWindow
 def toDropOption(name):
     return {"label": name, "value": name}
 
-
-# Get point cloud data from PyVista
-uniformGrid = examples.download_crater_topo()
-subset = uniformGrid.extract_subset((500, 900, 400, 800, 0, 0), (5, 5, 1))
-   
 def update_vtk_fun(obj):
         if obj.__class__.__name__ == "Mesh":
             return update_vtk_fun_mesh(obj)
@@ -63,26 +58,43 @@ def update_vtk_fun_vector(obj):
         fields_max  = None        
         for surface_id, vector_data in vector_field_data.items():
         
-                   
+      
             faces_centroid = vector_data["centroid"]                  
             vector_field  = vector_data[field]
-            vector_end_points = np.add(faces_centroid, vector_field*vector_data["vector-scale"][0]*obj.scale())          
-            
-            line_sgements_vertices = np.append(faces_centroid, vector_end_points)           
+            vector_field_saved  = vector_field
+            if obj.skip():   
+                faces_centroid.shape = (
+                    faces_centroid.size // 3,
+                    3,
+                )
+                vector_field.shape = (
+                    vector_field.size // 3,
+                    3,
+                )                  
+                faces_centroid = faces_centroid[:: obj.skip() + 1]
+                vector_field = vector_field[:: obj.skip() + 1]  
+                faces_centroid = faces_centroid.ravel()
+                vector_field = vector_field.ravel()
+                
+            vector_end_points = np.add(faces_centroid, vector_field*vector_data["vector-scale"][0]*obj.scale())                      
+            line_sgements_vertices = np.append(faces_centroid, vector_end_points)                             
             line_segements_connectivity =  [x for l in [ (2, index+1,index+1+faces_centroid.size//3) for index in range(faces_centroid.size//3)] for x in l]
                         
-            vector_field.shape = (
-                vector_field.size // 3,
+            vector_field_saved.shape = (
+                vector_field_saved.size // 3,
                 3,
             )            
             velocity_magnitude = np.linalg.norm(
-                vector_field, axis=1
+                vector_field_saved, axis=1
             )            
             range_min = np.amin(velocity_magnitude)
             range_max = np.amax(velocity_magnitude) 
             fields_min =  min(fields_min, range_min) if fields_min else range_min
-            fields_max =  max(fields_max, range_max) if fields_max else range_max       
-            fields_data.append([line_sgements_vertices, line_segements_connectivity, velocity_magnitude, next(surface_iter)])            
+            fields_max =  max(fields_max, range_max) if fields_max else range_max   
+            if obj.skip():                
+                velocity_magnitude = velocity_magnitude[:: obj.skip() + 1]                      
+                
+            fields_data.append([vector_data["vertices"], vector_data["faces"], line_sgements_vertices, line_segements_connectivity, velocity_magnitude, next(surface_iter)])            
         fields_range = [fields_min, fields_max]
         
     except Exception as e:
@@ -90,28 +102,30 @@ def update_vtk_fun_vector(obj):
         return [], None     
     return [[
         dash_vtk.GeometryRepresentation(
-            id="vtk-representation-"+field_data[3],
+            id="vtk-representation-"+field_data[5],
             children=[
             
                 dash_vtk.PolyData(
-                    id=f"vtk-polydata-"+field_data[3],
-                    points=field_data[0],
-                    lines=field_data[1],
+                    id=f"vtk-polydata-"+field_data[5],
+                    points=field_data[2],
+                    lines=field_data[3],
                     connectivity='points',
                     children=[
                         dash_vtk.PointData(
                             [
                                 dash_vtk.DataArray(
-                                    id="vtk-array-point-data"+field_data[3],
+                                    id="vtk-array-point-data"+field_data[5],
                                     registration="setScalars",
-                                    name="vtk-array-point-data"+field_data[3],
-                                    values=field_data[2]+field_data[2],
+                                    name="vtk-array-point-data"+field_data[5],
+                                    values=field_data[4]+field_data[4],
                                 )
                             ]
                         )                        
                     ],
                 )               
-            ],             
+            ]  
+                                   
+            ,             
             colorMapPreset="Rainbow Blended White",
             colorDataRange=fields_range,
             
@@ -119,7 +133,8 @@ def update_vtk_fun_vector(obj):
                       
         )
         for field_data in fields_data
-    ],
+    ]+ (update_vtk_fun_mesh(obj)[0] if obj.show_edges() else []) 
+    ,
      random.random(),
     ]
 
@@ -203,10 +218,11 @@ def update_vtk_fun_field(obj):
 
 def update_vtk_fun_mesh(obj):
     try:
+        print('update_vtk_fun_mesh..',)
         set_config(blocking=True)   
         surface_iter = iter([obj._name]) if obj.__class__.__name__ == "Surface" else iter(obj.surfaces_list())       
         win = PyVistaWindow("x", obj)
-        if obj.__class__.__name__ == "Mesh":
+        if obj.__class__.__name__ == "Mesh" or obj.__class__.__name__ == "Vector":
             surface_data =  win.fetch_mesh_data(obj) 
         elif obj.__class__.__name__ == "Surface":
             surface_data, scalar_field_data =  win.fetch_surface_data(obj) 
@@ -233,7 +249,7 @@ def update_vtk_fun_mesh(obj):
                 )
                 #for field_data in fields_data
             ],                                                
-            property={"edgeVisibility": obj.show_edges()},            
+            property={"edgeVisibility": obj.show_edges(), "faceVisibility":False},            
         )
         for field_data in fields_data
     ],
@@ -248,32 +264,8 @@ def get_surfaces():
     return contour1.surfaces_list.allowed_values    
         
 
-#points, polys, elevation, color_range = updateWarp(1)
-#print(points, polys, elevation, color_range)
-# Setup VTK rendering of PointCloud
-
-
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 app.config.suppress_callback_exceptions=True
-
-
-external_stylesheets = [
-    # Dash CSS
-    'https://codepen.io/chriddyp/pen/bWLwgP.css',
-    # Loading screen CSS
-    'https://codepen.io/chriddyp/pen/brPBPO.css']
-
-#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-#server = app.server
-
-#vtk_view = dash_vtk.View(
-#    id="vtk-view",    
-#    pickingModes=["hover"],
-#    children=[       
-#    ],
-#)
-
 
 def serve_layout():
     session_id = str(uuid.uuid4())
