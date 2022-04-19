@@ -1,5 +1,6 @@
 """Setup file for ansys-fluent-solver."""
 import os
+import shutil
 
 from setuptools import find_namespace_packages, setup
 
@@ -12,6 +13,13 @@ _VERSION_FILE = os.path.join(
 with open(_VERSION_FILE, mode="r", encoding="utf8") as fd:
     # execute file from raw string
     exec(fd.read())
+
+# Copy README.rst file to docs folder in ansys.fluent.core
+_README_FILE = os.path.join(_THIS_FILE, "README.rst")
+_DOCS_FILE = os.path.join(
+    _THIS_FILE, "src", "ansys", "fluent", "core", "docs", "README.rst"
+)
+shutil.copy2(_README_FILE, _DOCS_FILE)
 
 install_requires = [
     "grpcio>=1.30.0",
@@ -38,12 +46,11 @@ for package in find_namespace_packages(where="src", include="ansys*"):
 setup(
     name="ansys-fluent-solver",
     packages=packages,
-    data_files=[("/ansys/fluent/core/", ["README.rst"])],
     package_dir={"": "src"},
     include_package_data=True,
     version=__version__,
     description="Pythonic interface to Ansys Fluent",
-    long_description=open("README.rst", encoding="utf8").read(),
+    long_description=open(_README_FILE, encoding="utf8").read(),
     long_description_content_type="text/x-rst",
     license="MIT",
     author="ANSYS, Inc.",
