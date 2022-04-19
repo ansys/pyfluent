@@ -89,12 +89,6 @@ class _TUIMenuGenerator:
     def get_doc_string(self) -> str:
         return self._menu.get_doc_string(True)
 
-    def is_extended_tui(self) -> bool:
-        return self._menu.is_extended_tui(True)
-
-    def is_container(self) -> bool:
-        return self._menu.is_container(True)
-
 
 class _TUIMenu:
     """Class representing Fluent's TUI menu."""
@@ -109,8 +103,6 @@ class _TUIMenu:
             del _XML_HELPSTRINGS[tui_path]
         self.children = {}
         self.is_command = False
-        self.is_extended_tui = False
-        self.is_container = False
 
     def get_command_path(self, command: str) -> str:
         return convert_path_to_grpc_path(self.path + [(command, None)])
@@ -136,8 +128,6 @@ class TUIGenerator:
         menugen = _TUIMenuGenerator(menu.path, self._service)
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
-        menu.is_extended_tui = menugen.is_extended_tui()
-        menu.is_container = menugen.is_container()
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
@@ -145,7 +135,7 @@ class TUIGenerator:
                     child_menu = _TUIMenu(menu.path + [(child_name, None)])
                     menu.children[child_menu.name] = child_menu
                     self._populate_menu(child_menu)
-        elif not menu.is_extended_tui:
+        else:
             menu.is_command = True
 
     def _write_code_to_tui_file(self, code: str, indent: int = 0):
@@ -153,23 +143,13 @@ class TUIGenerator:
 
     def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int = 0):
         self._write_code_to_tui_file("\n")
-        if menu.is_container:
-            self._write_code_to_tui_file(
-                f"class {menu.name}(metaclass=PyNamedObjectMeta):\n",
-                indent,
-            )
-        else:
-            self._write_code_to_tui_file(
-                f"class {menu.name}(metaclass=PyMenuMeta):\n", indent
-            )
+        self._write_code_to_tui_file(f"class {menu.name}(TUIMenu):\n", indent)
         indent += 1
         self._write_code_to_tui_file('"""\n', indent)
         doc_lines = menu.doc.splitlines()
         for line in doc_lines:
             self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
-        if menu.is_extended_tui:
-            self._write_code_to_tui_file("is_extended_tui = True\n", indent)
         self._write_code_to_tui_file(
             "def __init__(self, path, service):\n", indent
         )
@@ -177,20 +157,15 @@ class TUIGenerator:
         self._write_code_to_tui_file("self.path = path\n", indent)
         self._write_code_to_tui_file("self.service = service\n", indent)
         for k, v in menu.children.items():
-            if v.is_command:
-                continue
-            elif v.is_container:
-                self._write_code_to_tui_file(
-                    f"self.{k} = self.__class__.{k}"
-                    f'(path + [("{v.tui_name}", None)], None, service)\n',
-                    indent,
-                )
-            else:
+            if not v.is_command:
                 self._write_code_to_tui_file(
                     f"self.{k} = self.__class__.{k}"
                     f'(path + [("{v.tui_name}", None)], service)\n',
                     indent,
                 )
+        self._write_code_to_tui_file(
+            "super().__init__(path, service)\n", indent
+        )
         indent -= 1
 
         command_names = [
@@ -236,10 +211,8 @@ class TUIGenerator:
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.core.meta "
-                "import PyMenuMeta, PyNamedObjectMeta\n"
                 "from ansys.fluent.core.services.datamodel_tui "
-                "import PyMenu\n\n\n"
+                "import PyMenu, TUIMenu\n\n\n"
             )
             self._main_menu.name = "main_menu"
             self._write_menu_to_tui_file(self._main_menu)
