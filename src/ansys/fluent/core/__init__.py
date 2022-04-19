@@ -1,6 +1,7 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
+from typing import Any, Optional
 
 import appdirs
 

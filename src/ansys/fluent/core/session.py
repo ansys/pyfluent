@@ -4,7 +4,7 @@ import atexit
 import itertools
 import os
 import threading
-from typing import Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 import grpc
 

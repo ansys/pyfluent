@@ -57,7 +57,7 @@ Using parametric session
 
 from pathlib import Path
 import tempfile
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG

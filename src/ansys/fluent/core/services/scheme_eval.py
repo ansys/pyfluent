@@ -38,9 +38,7 @@ class SchemeEvalService:
         self.__stub = SchemeEvalGrpcModule.SchemeEvalStub(channel)
         self.__metadata = metadata
 
-    def eval(
-        self, request: SchemePointerProtoModule.SchemePointer
-    ) -> SchemePointer:
+    def eval(self, request: SchemePointer) -> SchemePointer:
         return self.__stub.Eval(request, metadata=self.__metadata)
 
     def exec(

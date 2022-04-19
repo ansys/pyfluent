@@ -1,5 +1,7 @@
 """Interceptor classes to use with gRPC services."""
 
+from typing import Any
+
 from google.protobuf.json_format import MessageToDict
 import grpc
 

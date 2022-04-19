@@ -24,7 +24,7 @@ class TranscriptService:
 
     def begin_streaming(
         self,
-    ) -> Generator[TranscriptModule.TranscriptResponse]:
+    ) -> Generator[TranscriptModule.TranscriptResponse, None, None]:
         """Begin transcript streaming from Fluent.
 
         Yields
