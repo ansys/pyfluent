@@ -57,10 +57,11 @@ Using parametric session
 
 from pathlib import Path
 import tempfile
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
+from ansys.fluent.core.solver.settings import root
 
 BASE_DP_NAME = "Base DP"
 
@@ -82,7 +83,7 @@ class DesignPoint:
         Whether to capture simulation report data for the design point.
     """
 
-    def __init__(self, name: str, dp_settings):
+    def __init__(self, name: str, dp_settings: Any):
         self.name = name
         self._dp_settings = dp_settings
 
@@ -115,7 +116,7 @@ class DesignPoint:
         return self._dp_settings.capture_simulation_report_data()
 
     @capture_simulation_report_data_enabled.setter
-    def capture_simulation_report_data_enabled(self, value: bool):
+    def capture_simulation_report_data_enabled(self, value: bool) -> None:
         self._dp_settings.capture_simulation_report_data = value
 
 
@@ -183,7 +184,12 @@ class ParametricStudy:
     _all_studies: Dict[int, "ParametricStudy"] = {}
     current_study_name = None
 
-    def __init__(self, parametric_studies, name=None, design_points=None):
+    def __init__(
+        self,
+        parametric_studies: root.parametric_studies,
+        name: Optional[str] = None,
+        design_points: Dict[str, DesignPoint] = None,
+    ):
         self._parametric_studies = parametric_studies
         self.name = name
         self.design_points = {}
@@ -203,7 +209,7 @@ class ParametricStudy:
         """
         return {v.name: v for _, v in cls._all_studies.items()}
 
-    def initialize(self):
+    def initialize(self) -> "ParametricStudy":
         """Initialize parametric study."""
         if self._parametric_studies.initialize.is_active():
             self.project_filepath = Path(
@@ -513,8 +519,8 @@ class ParametricProject:
 
     def __init__(
         self,
-        parametric_project,
-        parametric_studies,
+        parametric_project: root.file.parametric_project,
+        parametric_studies: root.parametric_studies,
         project_filepath: str,
         open_project: bool = True,
     ):
@@ -640,7 +646,7 @@ class ParametricSession:
         self,
         case_filepath: str = None,
         project_filepath: str = None,
-        launcher=ParametricSessionLauncher(),
+        launcher: Any = ParametricSessionLauncher(),
         start_transcript: bool = False,
     ):
         """Instantiate a ParametricSession.
@@ -744,13 +750,13 @@ class ParametricSession:
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self._session.exit()
 
-    def start_transcript(self):
+    def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._session.start_transcript()
 
-    def stop_transcript(self):
+    def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
         self._session.stop_transcript()

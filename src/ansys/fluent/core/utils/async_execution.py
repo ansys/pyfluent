@@ -2,9 +2,10 @@
 
 from concurrent.futures import ThreadPoolExecutor
 import functools
+from typing import Callable
 
 
-def asynchronous(f):
+def asynchronous(f: Callable) -> Callable:
     """Use for decorating functions to execute asynchronously. The decorated
     function returns a `future`_ object. Calling `result()`_ on the future
     object synchronizes the function execution.
@@ -29,7 +30,7 @@ def asynchronous(f):
     """
 
     @functools.wraps(f)
-    def func(*args, **kwargs):
+    def func(*args, **kwargs) -> Callable:
         return ThreadPoolExecutor(max_workers=1).submit(f, *args, **kwargs)
 
     return func
