@@ -1,43 +1,35 @@
-"""Setup file for ansys-fluent-solver"""
+"""Setup file for ansys-fluent-solver."""
 import os
-import platform
-import struct
-import sys
 
 from setuptools import find_namespace_packages, setup
 
 # Get version from version info
 __version__ = None
-THIS_FILE = os.path.dirname(__file__)
-VERSION_FILE = os.path.join(
-    THIS_FILE, "ansys", "fluent", "core", "_version.py"
+_THIS_FILE = os.path.dirname(__file__)
+_VERSION_FILE = os.path.join(
+    _THIS_FILE, "src", "ansys", "fluent", "core", "_version.py"
 )
-with open(VERSION_FILE, mode="r", encoding="utf8") as fd:
+with open(_VERSION_FILE, mode="r", encoding="utf8") as fd:
     # execute file from raw string
     exec(fd.read())
 
 install_requires = [
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
-    "pyvista>=0.33.2",
     "protobuf>=3.12.2",
-    "pyvistaqt>=0.7.0",
-    "PySide6>=6.2.3",
+    "appdirs>=1.4.0",
 ]
 
-is64 = struct.calcsize("P") * 8 == 64
-if sys.version_info.minor == 10 and is64:
-    if platform.system().lower() == "linux":
-        install_requires.append(
-            "vtk @ https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" # noqa: E501
-        )
-    elif platform.system().lower() == "windows":
-        install_requires.append(
-            "vtk @ https://github.com/pyvista/pyvista-wheels/raw/main/vtk-9.1.0.dev0-cp310-cp310-win_amd64.whl" # noqa: E501
-        )
+install_requires_post = [
+    "vtk==9.1.0",
+    "pyvista==0.33.2",
+    "pyvistaqt==0.7.0",
+    "pyside6==6.2.3",
+    "matplotlib==3.5.1",
+]
 
 packages = []
-for package in find_namespace_packages(include="ansys*"):
+for package in find_namespace_packages(where="src", include="ansys*"):
     if package.startswith("ansys.api"):
         packages.append(package)
     if package.startswith("ansys.fluent"):
@@ -47,22 +39,27 @@ setup(
     name="ansys-fluent-solver",
     packages=packages,
     data_files=[("/ansys/fluent/",["README.rst"])],
+    package_dir={"": "src"},
     include_package_data=True,
     version=__version__,
-    description="Fluent's SolverAPI exposed in Python",
+    description="Pythonic interface to Ansys Fluent",
     long_description=open("README.rst", encoding="utf8").read(),
     long_description_content_type="text/x-rst",
-    url="https://github.com/pyansys/pyfluent",
     license="MIT",
     author="ANSYS, Inc.",
-    maintainer="Mainak Kundu",
-    maintainer_email="mainak.kundu@ansys.com",
-    install_requires=install_requires,
-    python_requires=">3.6",
+    author_email="pyansys.support@ansys.com",
+    maintainer="PyAnsys developers",
+    maintainer_email="pyansys.maintainers@ansys.com",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    url="https://github.com/pyansys/pyfluent",
+    python_requires=">3.6",
+    install_requires=install_requires,
+    extras_require={
+        "post": install_requires_post,
+    },
 )

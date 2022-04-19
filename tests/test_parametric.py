@@ -1,10 +1,11 @@
-import pytest
 from pathlib import Path
+
+import pytest
 from pytest_mock import MockerFixture
 
-from ansys.fluent.addons.parametric import ParametricProject
-from ansys.fluent.solver.flobject import Command, NamedObject
-from ansys.fluent.solver.settings import root
+from ansys.fluent.core.solver.flobject import Command, NamedObject
+from ansys.fluent.core.solver.settings import root
+from ansys.fluent.parametric import ParametricProject
 
 
 @pytest.fixture(autouse=True)
@@ -21,7 +22,6 @@ def fixture_parametric_project():
 
 
 class TestParamtericProject:
-
     def test_open(
         self,
         mocker: MockerFixture,
@@ -32,7 +32,7 @@ class TestParamtericProject:
         parametric_project.open(project_filepath=project_filepath)
         spy.assert_called_once_with(
             project_filename=str(Path(project_filepath).resolve()),
-            load_case=True
+            load_case=True,
         )
 
     def test_save(

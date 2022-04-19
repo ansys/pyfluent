@@ -1,33 +1,42 @@
+"""Builds *.py source interface files from *.protos files.
+
+Usage
+-----
+
+`python codegen/pyprotogen.py`
+"""
+
 import glob
 import os
+from pathlib import Path
 import re
 import shutil
 import sys
-from pathlib import Path
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 _PROTOS_PATH = os.path.abspath(
     os.path.join(_THIS_DIRNAME, "..", "protos", "ansys", "api", "fluent", "v0")
 )
 _PY_OUT_PATH = os.path.abspath(
-    os.path.join(_THIS_DIRNAME, "..", "ansys", "api", "fluent", "v0")
+    os.path.join(_THIS_DIRNAME, "..", "src", "ansys", "api", "fluent", "v0")
 )
 _PACKAGE_NAME = "ansys.api.fluent.v0"
 
 
 def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
-    """
-    Builds *.py source interface files given a path containing *.protos
-    files
+    """Build the Python gRPC interface files.
+
+    Given a path containing the .proto files this function builds the
+    .py source interface files.
     """
     # verify proto tools are installed
     try:
-        import grpc_tools  # noqa: F401 # pylint: disable=unused-import
+        import grpc_tools  # noqa: F401, E501 # pylint: disable=unused-import, import-outside-toplevel
     except ImportError:
         raise ImportError(
             "Missing ``grpcio-tools`` package.\n"
             "Install with `pip install grpcio-tools`"
-        )
+        ) from None
 
     # check for protos at the protos path
     proto_glob = os.path.join(protos_path, "*.proto")
@@ -41,7 +50,7 @@ def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
     Path.mkdir(Path(out_path), parents=True, exist_ok=True)
     os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "cpp"
 
-    cmd = f"{sys.executable} -m grpc_tools.protoc -I{protos_path} "
+    cmd = f'"{sys.executable}" -m grpc_tools.protoc -I{protos_path} '
     cmd += f"--python_out={out_path} --grpc_python_out={out_path} {proto_glob}"
 
     if os.system(cmd):
@@ -61,7 +70,7 @@ def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
         module_name = ".".join(re.split(r"\\|/", relative_path))
         module_name = module_name.rstrip(".py")
         module_name = module_name.strip(".")
-        py_source[module_name] = open(filename).read()
+        py_source[module_name] = open(filename, encoding="utf8").read()
 
     # Replace all imports for each module with an absolute import with
     # the new full module name
@@ -86,7 +95,7 @@ def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
         relative_module_path[-1] = f"{relative_module_path[-1]}.py"
         filename = os.path.join(out_path, *relative_module_path)
 
-        with open(filename, "w") as f:
+        with open(filename, "w", encoding="utf8") as f:
             f.write(module_source)
 
 

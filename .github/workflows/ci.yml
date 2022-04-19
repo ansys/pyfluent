@@ -10,6 +10,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   stylecheck:
     name: Style Check
@@ -23,14 +27,14 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install Style Requirements
+      - name: Install pre-commit
         run: |
-          pip install -r requirements_style.txt --disable-pip-version-check
+          python -m pip install pre-commit
 
-      - name: Run flake8
+      - name: Run pre-commit
         if: always()
         run: |
-          make flake8
+          pre-commit run --all-files --show-diff-on-failure
 
       - name: Run protolint
         uses: plexsystems/protolint-action@v0.6.0
@@ -75,12 +79,83 @@ jobs:
       - name: Install pyfluent
         run: make install
 
-      - name: Install pyvistaqt requirements
-        if: matrix.os == 'ubuntu-latest'
-        run: make install-pyvistaqt-requirements
-
       - name: Test import
         run: make test-import
+
+  docs_build:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # used for documentation deployment
+      - name: Get Bot Application Token
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: ${{ secrets.BOT_APPLICATION_ID }}
+          application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install OS packages
+        run: |
+          sudo apt update
+          sudo apt install pandoc libegl1
+
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements_docs*.txt') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Install pyfluent with post requirements
+        run: make install-post
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+
+      - name: Build Documentation
+        run: |
+          pip install -r requirements_docs.txt
+          make -C doc html
+          touch doc/_build/html/.nojekyll
+          echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_FLUENT_PORT: 63084
+          PYFLUENT_START_INSTANCE: 0
+
+      - name: Upload HTML Documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML-Documentation
+          path: doc/_build/html
+          retention-days: 7
+
+      - name: Deploy
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          repository-name: pyansys/pyfluent-docs
+          token: ${{ steps.get_workflow_token.outputs.token }}
+          BRANCH: gh-pages
+          FOLDER: doc/_build/html
+          CLEAN: true
 
   build_test:
     name: Build and Unit Testing
@@ -103,14 +178,24 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Install pyfluent
-        run: make install
-
       - name: Install pyvistaqt requirements
         run: make install-pyvistaqt-requirements
 
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent with post requirements
+        run: make install-post
+
       - name: Unit Testing
         run: make unittest
+
+      - name: Upload Coverage Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: HTML-Coverage
+          path: cov_html
+          retention-days: 7
 
       - name: Check package
         run: |

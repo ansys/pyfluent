@@ -11,6 +11,8 @@ Core
    :maxdepth: 2
    :hidden:
   
-   core
-   logging
+   launcher
+   utils
+   meshing/index
+   solver/index
    

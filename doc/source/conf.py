@@ -1,8 +1,11 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
+import os
+import subprocess
+import sys
 
-from sphinx_gallery.sorting import FileNameSortKey
 from pyansys_sphinx_theme import pyansys_logo_black
+from sphinx_gallery.sorting import FileNameSortKey
 
 from ansys.fluent.core import __version__
 
@@ -29,14 +32,20 @@ extensions = [
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "sphinx_gallery.gen_gallery",
-    'sphinxemoji.sphinxemoji',
+    "sphinxemoji.sphinxemoji",
 ]
 
 # Intersphinx mapping
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/dev", None)
+    "python": ("https://docs.python.org/dev", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
+    "numpy": ("https://numpy.org/devdocs", None),
+    "matplotlib": ("https://matplotlib.org/stable", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
+    "pyvista": ("https://docs.pyvista.org/", None),
 }
 
+# SS01, SS02, SS03, GL08 all need clean up in the code to be reactivated.
 # numpydoc configuration
 numpydoc_use_plots = True
 numpydoc_show_class_members = False
@@ -50,7 +59,7 @@ numpydoc_validation_checks = {
     "GL10",  # reST directives {directives} must be followed by two colons
     "SS01",  # No summary found
     "SS02",  # Summary does not start with a capital letter
-    # "SS03", # Summary does not end with a period
+    "SS03",  # Summary does not end with a period
     "SS04",  # Summary contains heading whitespaces
     # "SS05", # Summary must start with infinitive verb, not third person
     "RT02",  # The first line of the Returns section should contain only the
@@ -87,12 +96,41 @@ copybutton_prompt_text = r">>> ?|\.\.\. "
 copybutton_prompt_is_regexp = True
 
 
+_THIS_DIR = os.path.dirname(__file__)
+_START_FLUENT_FILE = os.path.normpath(
+    os.path.join(_THIS_DIR, "..", "..", ".ci", "start_fluent.py")
+)
+_STOP_FLUENT_FILE = os.path.normpath(
+    os.path.join(_THIS_DIR, "..", "..", ".ci", "stop_fluent.py")
+)
+
+
+def _start_or_stop_fluent_container(gallery_conf, fname, when):
+    start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
+    if not start_instance:
+        if when == "before":
+            if fname in [
+                "mixing_elbow_settings_api.py",
+                "mixing_elbow_tui_api.py",
+            ]:
+                args = ["3ddp", "-t4", "-meshing"]
+            elif fname in [
+                "parametric_static_mixer_1.py",
+                "parametric_static_mixer_2.py",
+                "parametric_static_mixer_3.py",
+            ]:
+                args = ["3ddp", "-t4"]
+            subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
+        elif when == "after":
+            subprocess.run([sys.executable, _STOP_FLUENT_FILE])
+
+
 # -- Sphinx Gallery Options ---------------------------------------------------
 sphinx_gallery_conf = {
     # convert rst to md for ipynb
-    #"pypandoc": True,
+    # "pypandoc": True,
     # path to your examples scripts
-    "examples_dirs": ["../examples/"],
+    "examples_dirs": ["../../examples/"],
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
     # Patter to search for example files
@@ -107,15 +145,22 @@ sphinx_gallery_conf = {
     "doc_module": "ansys-fluent-core",
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
+    "reset_modules_order": "both",
+    "reset_modules": (_start_or_stop_fluent_container),
 }
 
 
 # -- Options for HTML output -------------------------------------------------
+html_short_title = html_title = "PyFluent"
 html_theme = "pyansys_sphinx_theme"
 html_logo = pyansys_logo_black
 html_theme_options = {
     "github_url": "https://github.com/pyansys/pyfluent",
     "show_prev_next": False,
+    "show_breadcrumbs": True,
+    "additional_breadcrumbs": [
+        ("PyAnsys", "https://docs.pyansys.com/"),
+    ],
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
@@ -131,8 +176,13 @@ latex_elements = {}
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, f"pyfluent-Documentation-{__version__}.tex",
-     "ansys.fluent.core Documentation", author, "manual"),
+    (
+        master_doc,
+        f"pyfluent-Documentation-{__version__}.tex",
+        "ansys.fluent.core Documentation",
+        author,
+        "manual",
+    ),
 ]
 
 
@@ -141,8 +191,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "ansys.fluent.core",
-     "ansys.fluent.core Documentation", [author], 1)
+    (
+        master_doc,
+        "ansys.fluent.core",
+        "ansys.fluent.core Documentation",
+        [author],
+        1,
+    )
 ]
 
 

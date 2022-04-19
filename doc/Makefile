@@ -2,10 +2,10 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    =
+SPHINXOPTS    = -j auto -W --keep-going -w build_errors.txt -N
 SPHINXBUILD   = sphinx-build
 SOURCEDIR     = source
-BUILDDIR      = build
+BUILDDIR      = _build
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -18,7 +18,11 @@ help:
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-
 # customized clean due to examples gallery
 clean:
-	rm -rf build
+	rm -rf $(BUILDDIR)/*
+	rm -rf $(SOURCEDIR)/examples
+	find . -type d -name "_autosummary" -exec rm -rf {} +
+
+
+
