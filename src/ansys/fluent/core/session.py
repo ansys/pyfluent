@@ -4,7 +4,7 @@ import atexit
 import itertools
 import os
 import threading
-from typing import Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 import grpc
 
@@ -49,6 +49,7 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.solver.settings import root
 from ansys.fluent.core.utils.logging import LOG
 
 
@@ -78,7 +79,7 @@ class MonitorThread(threading.Thread):
         super().__init__(daemon=True)
         self.cbs: List[Callable] = []
 
-    def run(self):
+    def run(self) -> None:
         main_thread = threading.main_thread()
         main_thread.join()
         for cb in self.cbs:
@@ -265,15 +266,15 @@ class Session:
         return session
 
     @property
-    def id(self):
+    def id(self) -> str:
         """Return the session id."""
         return self._id
 
-    def get_settings_service(self):
+    def get_settings_service(self) -> SettingsService:
         """Return an instance of SettingsService object."""
         return SettingsService(self._channel, self._metadata)
 
-    def get_settings_root(self):
+    def get_settings_root(self) -> root:
         """Return root settings object."""
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
@@ -295,7 +296,7 @@ class Session:
             except StopIteration:
                 break
 
-    def start_transcript(self):
+    def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(
             target=Session._process_transcript, args=(self,)
@@ -303,18 +304,18 @@ class Session:
 
         self._transcript_thread.start()
 
-    def stop_transcript(self):
+    def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
         self._transcript_service.end_streaming()
 
-    def check_health(self):
+    def check_health(self) -> str:
         """Check health of Fluent connection."""
         if self._channel:
             return self._health_check_service.check_health()
         else:
             return HealthCheckService.Status.NOT_SERVING.name
 
-    def exit(self):
+    def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
         if self._channel:
             if self._cleanup_on_exit:
@@ -328,20 +329,20 @@ class Session:
         """Close the Fluent connection and exit Fluent."""
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self.exit()
 
     @classmethod
-    def register_on_exit(cls, callback):
+    def register_on_exit(cls, callback: Callable) -> None:
         cls._on_exit_cbs.append(callback)
 
     @staticmethod
-    def exit_all():
+    def exit_all() -> None:
         for cb in Session._on_exit_cbs:
             cb()
 
     class Tui:
-        def __init__(self, service):
+        def __init__(self, service: DatamodelService_TUI):
             if "MeshingMainMenu" in globals():
                 self.meshing = MeshingMainMenu([], service)
             if "SolverMainMenu" in globals():

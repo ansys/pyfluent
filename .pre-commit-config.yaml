@@ -40,9 +40,13 @@ repos:
   rev: 4.0.1
   hooks:
   - id: flake8
+    additional_dependencies: [
+      'flake8-annotations==2.9.0'
+    ]
     args: [
       --exclude, src/ansys/api/fluent/v0/* src/ansys/fluent/core/meshing/tui.py src/ansys/fluent/core/solver/tui.py src/ansys/fluent/core/solver/settings.py src/ansys/fluent/core/datamodel/*,
       --select, W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 F401 F403 N801 N802 N803 N804 N805 N806,
+      #--select, W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 F401 F403 N801 N802 N803 N804 N805 N806 ANN001 ANN201 ANN205 ANN206,
       --count,
       --statistics,
       --max-complexity, "10",

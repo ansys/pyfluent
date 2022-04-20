@@ -1,6 +1,7 @@
 """Wrapper over the health check grpc service of Fluent."""
 
 from enum import Enum
+from typing import List, Tuple
 
 import grpc
 
@@ -24,7 +25,7 @@ class HealthCheckService:
         NOT_SERVING = 2
         SERVICE_UNKNOWN = 3
 
-    def __init__(self, channel: grpc.Channel, metadata):
+    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         self.__stub = HealthCheckGrpcModule.HealthStub(channel)
         self.__metadata = metadata
 

@@ -1,6 +1,7 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
+from typing import Any, Optional
 
 import appdirs
 
@@ -12,7 +13,7 @@ _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
 
 
-def version_info():
+def version_info() -> str:
     """Method returning the version of PyFluent being used.
 
     Returns
@@ -27,7 +28,7 @@ def version_info():
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-def set_log_level(level):
+def set_log_level(level: Any) -> None:
     """Set logging level.
 
     Parameters
@@ -39,17 +40,17 @@ def set_log_level(level):
     LOG.set_level(level)
 
 
-def enable_logging_to_stdout():
+def enable_logging_to_stdout() -> None:
     """Enable logging to stdout."""
     LOG.enable_logging_to_stdout()
 
 
-def disable_logging_to_stdout():
+def disable_logging_to_stdout() -> None:
     """Disable logging to stdout."""
     LOG.disable_logging_to_stdout()
 
 
-def enable_logging_to_file(filepath: str = None):
+def enable_logging_to_file(filepath: Optional[str] = None) -> None:
     """Enable logging to file.
 
     Parameters
@@ -61,7 +62,7 @@ def enable_logging_to_file(filepath: str = None):
     LOG.enable_logging_to_file(filepath)
 
 
-def disable_logging_to_file():
+def disable_logging_to_file() -> None:
     """Disable logging to file."""
     LOG.disable_logging_to_file()
 

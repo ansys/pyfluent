@@ -23,7 +23,9 @@ _PY_OUT_PATH = os.path.abspath(
 _PACKAGE_NAME = "ansys.api.fluent.v0"
 
 
-def build_python_grpc(protos_path=_PROTOS_PATH, out_path=_PY_OUT_PATH):
+def build_python_grpc(
+    protos_path: str = _PROTOS_PATH, out_path: str = _PY_OUT_PATH
+) -> None:
     """Build the Python gRPC interface files.
 
     Given a path containing the .proto files this function builds the

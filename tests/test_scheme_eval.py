@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
 
@@ -106,7 +108,9 @@ from ansys.fluent.core.services.scheme_eval import (
         ),
     ],
 )
-def test_convert_py_value_to_scheme_pointer(py_value, json_dict):
+def test_convert_py_value_to_scheme_pointer(
+    py_value: Any, json_dict: Dict[str, Any]
+) -> None:
     p = SchemePointer()
     _convert_py_value_to_scheme_pointer(py_value, p)
     assert MessageToDict(p) == json_dict
@@ -249,14 +253,16 @@ def test_convert_py_value_to_scheme_pointer(py_value, json_dict):
         ),
     ],
 )
-def test_convert_scheme_pointer_to_py_value(py_value, json_dict):
+def test_convert_scheme_pointer_to_py_value(
+    py_value: Any, json_dict: Dict[str, Any]
+) -> None:
     p = SchemePointer()
     ParseDict(json_dict, p)
     val = _convert_scheme_pointer_to_py_value(p)
     assert val == py_value
 
 
-def test_convert_scheme_pointer_having_symbol_to_py_value():
+def test_convert_scheme_pointer_having_symbol_to_py_value() -> None:
     p = SchemePointer()
     ParseDict(
         {
@@ -274,7 +280,7 @@ def test_convert_scheme_pointer_having_symbol_to_py_value():
     assert val[1] == 5.0
 
 
-def test_convert_scheme_pointer_having_pair_to_py_value():
+def test_convert_scheme_pointer_having_pair_to_py_value() -> None:
     p = SchemePointer()
     ParseDict(
         {
@@ -315,14 +321,14 @@ def test_convert_scheme_pointer_having_pair_to_py_value():
         {"a": {"b": {"c": 3.0}, "d": 4.0}},
     ],
 )
-def test_two_way_conversion(py_value):
+def test_two_way_conversion(py_value: Any) -> None:
     p = SchemePointer()
     _convert_py_value_to_scheme_pointer(py_value, p)
     val = _convert_scheme_pointer_to_py_value(p)
     assert val == py_value
 
 
-def test_two_way_conversion_for_symbol():
+def test_two_way_conversion_for_symbol() -> None:
     py_value = [Symbol("+"), 2.0, 3.0]
     p = SchemePointer()
     _convert_py_value_to_scheme_pointer(py_value, p)
@@ -333,7 +339,7 @@ def test_two_way_conversion_for_symbol():
     assert val[1:] == [2.0, 3.0]
 
 
-def test_two_way_conversion_for_pairs():
+def test_two_way_conversion_for_pairs() -> None:
     py_value = ("abc", 5.0)
     p = SchemePointer()
     _convert_py_value_to_scheme_pointer(py_value, p)

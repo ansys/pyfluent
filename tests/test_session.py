@@ -1,5 +1,6 @@
 from concurrent import futures
 import os
+from pathlib import Path
 
 import grpc
 import pytest
@@ -23,7 +24,9 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
         )
 
 
-def test_create_session_by_passing_ip_and_port(monkeypatch):
+def test_create_session_by_passing_ip_and_port(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -38,7 +41,9 @@ def test_create_session_by_passing_ip_and_port(monkeypatch):
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_by_setting_ip_and_port_env_var(monkeypatch):
+def test_create_session_by_setting_ip_and_port_env_var(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -55,7 +60,9 @@ def test_create_session_by_setting_ip_and_port_env_var(monkeypatch):
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_by_passing_grpc_channel(monkeypatch):
+def test_create_session_by_passing_grpc_channel(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -71,7 +78,7 @@ def test_create_session_by_passing_grpc_channel(monkeypatch):
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_from_server_info_file(tmp_path):
+def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -89,7 +96,9 @@ def test_create_session_from_server_info_file(tmp_path):
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_from_server_info_file_with_wrong_password(tmp_path):
+def test_create_session_from_server_info_file_with_wrong_password(
+    tmp_path: Path,
+) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -108,7 +117,9 @@ def test_create_session_from_server_info_file_with_wrong_password(tmp_path):
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port(monkeypatch):
+def test_create_session_from_launch_fluent_by_passing_ip_and_port(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -126,8 +137,8 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port(monkeypatch):
 
 
 def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
-    monkeypatch,
-):
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051

@@ -10,32 +10,33 @@ Example
 """
 import os
 import shutil
+from typing import Optional
 import urllib.request
 import zipfile
 
 import ansys.fluent.core as pyfluent
 
 
-def get_ext(filename):
+def get_ext(filename: str) -> str:
     """Extract the extension of the filename."""
     ext = os.path.splitext(filename)[1].lower()
     return ext
 
 
-def delete_downloads():
+def delete_downloads() -> bool:
     """Delete all downloaded examples to free space or update the files."""
     shutil.rmtree(pyfluent.EXAMPLES_PATH)
     os.makedirs(pyfluent.EXAMPLES_PATH)
     return True
 
 
-def _decompress(filename):
+def _decompress(filename: str) -> None:
     zip_ref = zipfile.ZipFile(filename, "r")
     zip_ref.extractall(pyfluent.EXAMPLES_PATH)
     return zip_ref.close()
 
 
-def _get_file_url(filename, directory=None):
+def _get_file_url(filename: str, directory: Optional[str] = None) -> str:
     if directory:
         return (
             "https://github.com/pyansys/example-data/raw/master/"
@@ -44,7 +45,7 @@ def _get_file_url(filename, directory=None):
     return f"https://github.com/pyansys/example-data/raw/master/{filename}"
 
 
-def _retrieve_file(url, filename):
+def _retrieve_file(url: str, filename: str):
     # First check if file has already been downloaded
     local_path = os.path.join(
         pyfluent.EXAMPLES_PATH, os.path.basename(filename)
@@ -65,6 +66,6 @@ def _retrieve_file(url, filename):
     return local_path, resp
 
 
-def download_file(filename, directory=None):
+def download_file(filename: str, directory: Optional[str] = None):
     url = _get_file_url(filename, directory)
     return _retrieve_file(url, filename)[0]

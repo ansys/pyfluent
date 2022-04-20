@@ -14,11 +14,13 @@ Usage
 
 import os
 from pathlib import Path
+from typing import Iterable
 import xml.etree.ElementTree as ET
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
 from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService,
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
@@ -78,26 +80,26 @@ def _populate_xml_helpstrings():
 class _TUIMenuGenerator:
     """Wrapper over PyMenu to extract TUI menu metadata from Fluent."""
 
-    def __init__(self, path, service):
+    def __init__(self, path: str, service: DatamodelService):
         self._menu = PyMenu(service, path)
 
-    def get_child_names(self):
+    def get_child_names(self) -> Iterable[str]:
         return self._menu.get_child_names(True)
 
-    def get_doc_string(self):
+    def get_doc_string(self) -> str:
         return self._menu.get_doc_string(True)
 
-    def is_extended_tui(self):
+    def is_extended_tui(self) -> bool:
         return self._menu.is_extended_tui(True)
 
-    def is_container(self):
+    def is_container(self) -> bool:
         return self._menu.is_container(True)
 
 
 class _TUIMenu:
     """Class representing Fluent's TUI menu."""
 
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path = path
         self.tui_name = path[-1][0] if path else ""
         self.name = convert_tui_menu_to_func_name(self.tui_name)
@@ -110,7 +112,7 @@ class _TUIMenu:
         self.is_extended_tui = False
         self.is_container = False
 
-    def get_command_path(self, command):
+    def get_command_path(self, command: str) -> str:
         return convert_path_to_grpc_path(self.path + [(command, None)])
 
 
@@ -119,9 +121,9 @@ class TUIGenerator:
 
     def __init__(
         self,
-        meshing_tui_file=_MESHING_TUI_FILE,
-        solver_tui_file=_SOLVER_TUI_FILE,
-        meshing=False,
+        meshing_tui_file: str = _MESHING_TUI_FILE,
+        solver_tui_file: str = _SOLVER_TUI_FILE,
+        meshing: bool = False,
     ):
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
@@ -146,10 +148,10 @@ class TUIGenerator:
         elif not menu.is_extended_tui:
             menu.is_command = True
 
-    def _write_code_to_tui_file(self, code, indent=0):
+    def _write_code_to_tui_file(self, code: str, indent: int = 0):
         self.__writer.write(" " * _INDENT_STEP * indent + code)
 
-    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent=0):
+    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int = 0):
         self._write_code_to_tui_file("\n")
         if menu.is_container:
             self._write_code_to_tui_file(
@@ -216,7 +218,7 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
-    def generate(self):
+    def generate(self) -> None:
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             if self._tui_file == _SOLVER_TUI_FILE:
