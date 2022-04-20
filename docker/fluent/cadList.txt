@@ -1,0 +1,8 @@
+vNNN/meshing
+vNNN/commonfiles/CAD
+vNNN/aisol
+vNNN/commonfiles/MainWin
+vNNN/Framework
+vNNN/commonfiles/registry
+vNNN/tp/stdc++
+vNNN/tp/openssl
