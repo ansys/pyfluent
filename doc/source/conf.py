@@ -115,6 +115,11 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
             ]:
                 args = ["3ddp", "-t4", "-meshing"]
             elif fname in [
+                "exhaust_system_settings_api.py",
+                "exhaust_system_tui_api.py",
+            ]:
+                args = ["3ddp", "-t2", "-meshing"]
+            elif fname in [
                 "parametric_static_mixer_1.py",
                 "parametric_static_mixer_2.py",
                 "parametric_static_mixer_3.py",
