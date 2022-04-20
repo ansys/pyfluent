@@ -1,24 +1,24 @@
 """
-This app creates a simple sidebar layout using inline style arguments and the
-dbc.Nav component.
-
-dcc.Location is used to track the current location, and a callback uses the
-current location to render the appropriate page content. The active prop of
-each NavLink is set automatically according to the current pathname. To use
-this feature you must install dash-bootstrap-components >= 0.11.0.
-
-For more details on building multi-page Dash applications, check out the Dash
-documentation: https://dash.plot.ly/urls
+A simple app demonstrating how to dynamically render tab content containing
+dcc.Graph components to ensure graphs get sized correctly. We also show how
+dcc.Store can be used to cache the results of an expensive graph generation
+process so that switching tabs is fast.
 """
+import time
+import uuid
 import dash
 import dash_bootstrap_components as dbc
-from dash import Input, Output, dcc, html
+import numpy as np
+import plotly.graph_objs as go
+from dash import Input, Output, State, dcc, html
 
-app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-# the style arguments for the sidebar. We use position:fixed and a fixed width
+from ansys.fluent.core.utils.dash.post_widgets import GraphicsWidget, PlotWidget
+
+app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
+app.config.suppress_callback_exceptions=True
+
 SIDEBAR_STYLE = {
-    "position": "fixed",
     "top": 0,
     "left": 0,
     "bottom": 0,
@@ -27,26 +27,17 @@ SIDEBAR_STYLE = {
     "background-color": "#f8f9fa",
 }
 
-# the styles for the main content position it to the right of the sidebar and
-# add some padding.
-CONTENT_STYLE = {
-    "margin-left": "18rem",
-    "margin-right": "2rem",
-    "padding": "2rem 1rem",
-}
-
 sidebar = html.Div(
     [
-        html.H2("Sidebar", className="display-4"),
-        html.Hr(),
+
         html.P(
-            "A simple sidebar layout with navigation links", className="lead"
+            "Outline", className="lead"
         ),
         dbc.Nav(
             [
-                dbc.NavLink("Home", href="/", active="exact"),
-                dbc.NavLink("Page 1", href="/page-1", active="exact"),
-                dbc.NavLink("Page 2", href="/page-2", active="exact"),
+                dbc.NavLink("Contour", href="/", active="exact"),
+                dbc.NavLink("Vector", href="/page-1", active="exact"),
+                dbc.NavLink("Mesh", href="/page-2", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -55,28 +46,64 @@ sidebar = html.Div(
     style=SIDEBAR_STYLE,
 )
 
-content = html.Div(id="page-content", style=CONTENT_STYLE)
 
-app.layout = html.Div([dcc.Location(id="url"), sidebar, content])
-
-
-@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
-def render_page_content(pathname):
-    if pathname == "/":
-        return html.P("This is the content of the home page!")
-    elif pathname == "/page-1":
-        return html.P("This is the content of page 1. Yay!")
-    elif pathname == "/page-2":
-        return html.P("Oh cool, this is page 2!")
-    # If the user tries to reach a different page, return a 404 message
-    return dbc.Jumbotron(
-        [
-            html.H1("404: Not found", className="text-danger"),
-            html.Hr(),
-            html.P(f"The pathname {pathname} was not recognised..."),
-        ]
+def serve_layout():
+    session_id = str(uuid.uuid4())
+    GraphicsWidget(app, session_id, 1)
+    PlotWidget(app, session_id, 1)
+    return dbc.Container(
+        fluid=True,
+        children=[            
+            dcc.Store(data=session_id, id="session-id"),
+            dcc.Store(id="tab-info"),
+            html.H1("Ansys pyFluent post web App"),
+            html.Hr(),            
+            dbc.Row(
+                children=[
+                    dbc.Col(sidebar, align="start", width="auto"),
+                    dbc.Col(
+                        [
+                            dbc.Tabs(
+                                [
+                                    dbc.Tab(
+                                        label="Graphics", tab_id="graphics"
+                                    ),
+                                    dbc.Tab(label="Plots", tab_id="plots"),
+                                ],
+                                id="tabs",
+                                active_tab="scatter",
+                            ),
+                            html.Div(id="tab-content", className="p-4"),
+                        ],
+                    ),
+                ]
+            ),
+        ],
     )
 
 
+app.layout = serve_layout
+
+
+@app.callback(
+    Output("tab-content", "children"),
+    Input("tabs", "active_tab"),
+    Input("session-id", "data"),
+    State("tab-content", "children"),
+)
+def render_tab_content(active_tab, session_id, tab_content):
+    """
+    This callback takes the 'active_tab' property as input, as well as the
+    stored graphs, and renders the tab content depending on what the value of
+    'active_tab' is.
+    """
+
+    if active_tab == "graphics":        
+        return GraphicsWidget(app, session_id, 1).layout()
+            
+    elif active_tab == "plots":
+        return PlotWidget(app, session_id, 1).layout()
+
+
 if __name__ == "__main__":
-    app.run_server(port=8888)
+    app.run_server(debug=True, port=8888)

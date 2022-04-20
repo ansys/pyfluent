@@ -18,7 +18,7 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
 )
 from ansys.fluent.post import set_config
 from ansys.fluent.core.session import Session
-
+from post_data import update_vtk_fun, update_graph_fun
 session = Session.create_from_server_info_file(
     "E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt", False
 )
@@ -37,7 +37,8 @@ import uuid
 # contour2.surfaces_list = ["wall"]
 
 
-class PostWidget(metaclass=SingletonMeta):
+class PostWidget():
+
     def __init__(self, app, wind_id):
         self._app = app
         self._wind_id = wind_id
@@ -187,6 +188,7 @@ class PostWidget(metaclass=SingletonMeta):
         unique_name,
         attributes,
     ):
+        widget = html.Div(f"Widget not found for {name}.")
         if str(type) == "<class 'str'>":
             if attributes and "allowed_values" in attributes:
                 widget = dcc.Dropdown(
@@ -264,29 +266,56 @@ class PostWidget(metaclass=SingletonMeta):
             )
         return widget
 
-class GraphicsWidget(PostWidget):
-    def __init__(self, app, wind_id, update_display_fun):
-        self._post_objects = ["Mesh", "Contour", "Vector", "Surface"]
-        super().__init__(app, wind_id)
-        self._vtk_children  = []
 
-        @self._app.callback(
-            [
-                Output(f"vtk-view-{self._wind_id}", "children"),
-                Output(f"vtk-view-{self._wind_id}", "triggerResetCamera"),
-            ],
-            Input(f"display_button-{self._wind_id}", "n_clicks"),
-            Input("session-id", "data"),
-            State(f"graphics-selector-{self._wind_id}", "value"),            
+        session_state = Graphics._sessions_state.get(
+            session.id if session else 1
         )
-        def on_button_click(n_clicks, session_id, graphics_type):
-            obj = self.update_object(graphics_type, session_id)
-            print("n_clicks", obj._name)
-            if n_clicks == 0:
-                raise PreventUpdate
-            vtk_rendering = update_display_fun(obj)  
-            self._vtk_children =  vtk_rendering[0]           
-            return vtk_rendering        
+        if not session_state:
+            session_state = self.__dict__
+            Graphics._sessions_state[
+                session.id if session else 1
+            ] = session_state
+            self.session = session
+            self._init_module(self, sys.modules[__name__])
+        else:
+            self.__dict__ = session_state
+
+class GraphicsWidget(PostWidget):
+
+    _windows_state = {}
+    def __init__(self, app, session_id, wind_id):
+        wind_id = f"graphics-win-{wind_id}-{session_id}"
+        window_state = GraphicsWidget._windows_state.get(
+            wind_id
+        )           
+        if not window_state:  
+            GraphicsWidget._windows_state[
+                wind_id
+            ] = self.__dict__
+            
+            self._post_objects = ["Mesh", "Contour", "Vector", "Surface"]
+            super().__init__(app, wind_id)
+            self._vtk_children  = []
+
+            @self._app.callback(
+                [
+                    Output(f"vtk-view-{self._wind_id}", "children"),
+                    Output(f"vtk-view-{self._wind_id}", "triggerResetCamera"),
+                ],
+                Input(f"display_button-{self._wind_id}", "n_clicks"),
+                Input("session-id", "data"),
+                State(f"graphics-selector-{self._wind_id}", "value"),            
+            )
+            def on_button_click(n_clicks, session_id, graphics_type):
+                obj = self.update_object(graphics_type, session_id)
+                print("n_clicks", obj._name)
+                if n_clicks == 0:
+                    raise PreventUpdate
+                vtk_rendering = update_vtk_fun(obj)  
+                self._vtk_children =  vtk_rendering[0]           
+                return vtk_rendering 
+        else:
+            self.__dict__ = window_state                
         
     def layout(self):
 
@@ -338,3 +367,83 @@ class GraphicsWidget(PostWidget):
             style={"height": "50rem"},
         )        
        
+class PlotWidget(PostWidget):
+
+    _windows_state = {}
+    def __init__(self, app, session_id, wind_id):
+        wind_id = f"plot-win-{wind_id}-{session_id}"
+        window_state = PlotWidget._windows_state.get(
+            wind_id
+        )           
+        if not window_state:  
+            PlotWidget._windows_state[
+                wind_id
+            ] = self.__dict__
+            
+            self._post_objects = ["XYPlot"]
+            super().__init__(app, wind_id)
+            self._figure  = {}
+
+
+            @self._app.callback(            
+                Output(f"plot-viewer-{self._wind_id}", "figure"), 
+                Input(f"display_button-{self._wind_id}", "n_clicks"),
+                Input("session-id", "data"),
+                State(f"graphics-selector-{self._wind_id}", "value"),                         
+            )
+            def on_button_click(n_clicks, session_id, graphics_type):
+                obj = self.update_object(graphics_type, session_id)
+                print("n_clicks", obj._name)
+                if n_clicks == 0:
+                    raise PreventUpdate
+                self._figure = update_graph_fun(obj)                           
+                return self._figure                                         
+        else:
+            self.__dict__ = window_state                
+        
+    def layout(self):
+        return dbc.Row(
+            [
+                dbc.Col(
+                    [html.Data(id=f"refresh-trigger-{self._wind_id}"),
+                    dcc.Graph(
+                        id = f"plot-viewer-{self._wind_id}",
+                        figure = self._figure, 
+                        style ={"height":900}
+                    ) ]                 
+
+                ),
+                dbc.Col(
+                    [
+                        html.Div(
+                            [
+                                dbc.Label("Select Graphics"),
+                                dcc.Dropdown(
+                                    id=f"graphics-selector-{self._wind_id}",
+                                    options=self._post_objects,
+                                    value=self._graphics_selector_value,
+                                ),
+                            ],
+                            style={
+                                "padding": "1px 1px 10px 1px",
+                                "width": "20rem",
+                            },
+                        ),
+                    ]
+                    + [
+                        html.Div(
+                            html.Div(id=f"graphics-card-body-{self._wind_id}",
+                            children = list(self._all_widgets.values())
+                            ),
+                            className="mb-3",
+                            style={
+                                "padding": "1px 1px 10px 1px",
+                                "width": "20rem",
+                            },
+                        )
+                    ],
+                    width="auto",
+                ),
+            ],
+            style={"height": "50rem"},
+        )       
