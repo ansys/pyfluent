@@ -12,6 +12,15 @@ from ansys.fluent.core.utils.logging import LOG
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
 
+_THIS_DIRNAME = os.path.dirname(__file__)
+_README_FILE = os.path.normpath(
+    os.path.join(_THIS_DIRNAME, "docs", "README.rst")
+)
+
+if os.path.exists(_README_FILE):
+    with open(_README_FILE, encoding="utf8") as f:
+        __doc__ = f.read()
+
 
 def version_info() -> str:
     """Method returning the version of PyFluent being used.
