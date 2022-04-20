@@ -50,12 +50,11 @@ sidebar = html.Div(
 
 def serve_layout():
     session_id = str(uuid.uuid4())
-    GraphicsWidget(app, update_vtk_fun)
+    GraphicsWidget(app, 1, update_vtk_fun)
     PlotsWidget(app, update_graph_fun)
     return dbc.Container(
         fluid=True,
-        children=[
-            html.Data(id="refresh-trigger"),
+        children=[            
             dcc.Store(data=session_id, id="session-id"),
             dcc.Store(id="tab-info"),
             html.H1("Ansys pyFluent post web App"),
@@ -100,7 +99,7 @@ def render_tab_content(active_tab, tab_content):
     """
 
     if active_tab == "graphics":        
-        return GraphicsWidget(app, update_vtk_fun).refresh()
+        return GraphicsWidget(app, 1, update_vtk_fun).layout()
             
     elif active_tab == "plots":
         return PlotsWidget(app).layout()
