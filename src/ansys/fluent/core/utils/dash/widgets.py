@@ -51,7 +51,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
     def get_unique_name(self, name):
         return name + self._object.__class__.__name__
 
-    def refresh(self):
+    def refresh(self, graphics_selector_value=None):
 
         return dbc.Row(
             [
@@ -61,9 +61,7 @@ class GraphicsWidget(metaclass=SingletonMeta):
                             self._vtk_view,
                             style={"height": "100%", "width": "100%"},
                         ),
-                        
-                   
-                    md=9,
+
                 ),
                 dbc.Col(
                     [
@@ -73,30 +71,32 @@ class GraphicsWidget(metaclass=SingletonMeta):
                             dcc.Dropdown(
                                 id="graphics-selector",
                                 options=["Mesh", "Contour", "Vector",  "Surface"],
-                               
+                                value = graphics_selector_value
                                 
                             ),
                             #html.Data(id="graphics-selectordata"),
                         ],                
                         id="graphics-selector" + "container",
-                        style = {'padding': "1px 1px 10px 1px"},  
+                        style = {'padding': "1px 1px 10px 1px", "width":"20rem"},  
                     ),
                     ]+
                     [
                     
-                      dbc.Card(
-                          [
+                      html.Div(
+                         html.Div(
                               #dbc.CardHeader(id=f"{graphics_type}-graphics-card-header"),
-                              dbc.CardBody(list(self._all_widgets[graphics_type].values()), id=f"{graphics_type}-graphics-card-body"),
-                          ],
-                          body=True,
+                              list(self._all_widgets[graphics_type].values()), 
+                              id=f"{graphics_type}-graphics-card-body"
+                          ),
+                          #body=True,
                           className="mb-3",
-                          id=f"{graphics_type}-graphics-card"
+                          id=f"{graphics_type}-graphics-card",
+                           style = {'padding': "1px 1px 10px 1px", "width":"20rem"},  
                       )
                       
                       for graphics_type in self._graphics
                     ],
-                    md=2,
+                    width="auto",
                 ),
             ],
             style={"height": "50rem"},
