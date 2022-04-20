@@ -593,7 +593,7 @@ session.tui.solver.display.objects.create(
     "()",
     "quit",
 )
-session.tui.solver.display.objects.display("pathlines-1")
+# session.tui.solver.display.objects.display("pathlines-1")
 
 ###############################################################################
 # Create an iso-surface through the manifold geometry.
@@ -629,7 +629,7 @@ session.tui.solver.display.objects.create(
     "quit",
     "quit",
 )
-session.tui.solver.display.objects.display("contour-velocity")
+# session.tui.solver.display.objects.display("contour-velocity")
 
 session.tui.solver.display.objects.create(
     "mesh", "mesh-1", "surfaces-list", "*", "()", "quit"
@@ -653,7 +653,7 @@ session.tui.solver.display.objects.create(
     "quit",
     "quit",
 )
-session.tui.solver.display.objects.display("scene-1")
+# session.tui.solver.display.objects.display("scene-1")
 
 ###############################################################################
 # Save case, data and exit.

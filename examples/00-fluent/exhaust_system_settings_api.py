@@ -606,7 +606,7 @@ root.results.graphics.pathlines["pathlines-1"].surfaces_list = [
     "inlet-3",
 ]
 
-root.results.graphics.pathlines["pathlines-1"].display()
+# root.results.graphics.pathlines["pathlines-1"].display()
 
 
 ###############################################################################
@@ -637,14 +637,14 @@ root.results.graphics.contour["contour-velocity"].node_values = False
 root.results.graphics.contour[
     "contour-velocity"
 ].range_option.auto_range_on.global_range = False
-root.results.graphics.contour["contour-velocity"].display()
+# root.results.graphics.contour["contour-velocity"].display()
 
 root.results.graphics.mesh["mesh-1"] = {}
 surface_list = root.results.graphics.mesh["mesh-1"].surfaces_list.get_attr(
     "allowed-values"
 )
 root.results.graphics.mesh["mesh-1"].surfaces_list = surface_list
-root.results.graphics.mesh["mesh-1"].display()
+# root.results.graphics.mesh["mesh-1"].display()
 
 
 ###############################################################################
@@ -666,7 +666,7 @@ session.tui.solver.display.objects.create(
     "quit",
     "quit",
 )
-session.tui.solver.display.objects.display("scene-1")
+# session.tui.solver.display.objects.display("scene-1")
 
 ###############################################################################
 # Save case, data and exit.
