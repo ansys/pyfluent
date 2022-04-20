@@ -1,0 +1,5 @@
+vNNN/CEI/BUILDINFO.txt
+vNNN/CEI/apex222
+vNNN/CEI/bin
+vNNN/CEI/ensight222lang
+vNNN/CEI/nexus222
