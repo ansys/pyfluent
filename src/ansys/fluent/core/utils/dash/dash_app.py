@@ -10,10 +10,12 @@ import dash
 import dash_bootstrap_components as dbc
 import numpy as np
 import plotly.graph_objs as go
-from dash import Input, Output, State, dcc, html
+from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
 
 from ansys.fluent.core.utils.dash.post_widgets import GraphicsWidget, PlotWidget
+
+from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
 app = dash.Dash(external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 app.config.suppress_callback_exceptions=True
@@ -46,28 +48,18 @@ sidebar = html.Div(
     style=SIDEBAR_STYLE,
 )
 
-class SessionView:
-    _sessions_state = {}
-    def __init__(self, connection_id, session_id):
-        session_id = f"session-{session_id}-{connection_id}"
-        session_state = SessionView._sessions_state.get(
-            session_id
-        )           
-        if not session_state:  
-            SessionView._sessions_state[
-                session_id
-            ] = self.__dict__  
-        else:            
-            self.__dict__ = session_state 
 
+_max_session_count = 6
 def serve_layout():
     connection_id = str(uuid.uuid4())
-    GraphicsWidget(app, connection_id, 1)
-    PlotWidget(app, connection_id, 1)
+    for session_id in range(_max_session_count):
+        SessionsManager(app, connection_id, session_id)
+        
     return dbc.Container(
         fluid=True,
         children=[            
             dcc.Store(data=connection_id, id="connection-id"),
+            dcc.Store(data=None, id="session-id"),
             dcc.Store(id="tab-info"),
             html.H1("Ansys pyFluent post web App"),
             html.Hr(),            
@@ -84,7 +76,7 @@ def serve_layout():
                                     dbc.Tab(label="Plots", tab_id="plots"),
                                 ],
                                 id="tabs",
-                                active_tab="scatter",
+                                active_tab="graphics",
                             ),
                             html.Div(id="tab-content", className="p-4"),
                         ],
@@ -100,34 +92,57 @@ app.layout = serve_layout
 @app.callback(
     Output("session-list", "children"),
     Input("connect-session", "n_clicks"),
+    Input("connection-id", "data"),
     State("session-list", "children"),
 )
-def connect_to_session(n_clicks, session_list):
+def create_session(n_clicks, connection_id, session_list):
     if n_clicks==0:
         raise PreventUpdate
-    id = f"{len(session_list)}"
-    session_list.append(dbc.Button(f"Session-{id}", id=f"session-{id}", n_clicks=0, style={"margin-top": "10px", "margin-left": "5px", "margin-right": "15px"}))  
+    session_id = len(session_list)
+    sessions_manager = SessionsManager(app, connection_id, session_id)
+    sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")
+    session_list.append(dbc.Button(f"Session-{session_id}", id={"type": f"create-session-button", "index": session_id}, n_clicks=0, style={"margin-top": "10px", "margin-left": "5px", "margin-right": "15px"}))  
     return session_list
 
+
+@app.callback(
+    Output("session-id", "data"),       
+    Input({"type": f"create-session-button", "index": ALL}, "n_clicks"),
+    Input("connection-id", "data"),    
+)
+def on_session_select(
+    values,
+    connection_id,
+):
+    ctx = dash.callback_context
+    prop_value = ctx.triggered[0]["value"]
+    if prop_value is None:
+      raise PreventUpdate    
+    prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
+    print('on_session_select', prop_id, prop_value)
+    return prop_id
+            
 
 @app.callback(
     Output("tab-content", "children"),
     Input("tabs", "active_tab"),
     Input("connection-id", "data"),
-    State("tab-content", "children"),
+    Input("session-id", "data"),
 )
-def render_tab_content(active_tab, connection_id, tab_content):
+def render_tab_content(active_tab, connection_id, session_id):
     """
     This callback takes the 'active_tab' property as input, as well as the
     stored graphs, and renders the tab content depending on what the value of
     'active_tab' is.
     """
-
+    print('render_tab_content', active_tab, connection_id, session_id)
+    if session_id is None:
+        raise PreventUpdate
     if active_tab == "graphics":        
-        return GraphicsWidget(app, connection_id, 1).layout()
+        return GraphicsWidget(app, connection_id, session_id, 0, SessionsManager).layout()
             
     elif active_tab == "plots":
-        return PlotWidget(app, connection_id, 1).layout()
+        return PlotWidget(app, connection_id, session_id, 0, SessionsManager).layout()
 
 
 if __name__ == "__main__":

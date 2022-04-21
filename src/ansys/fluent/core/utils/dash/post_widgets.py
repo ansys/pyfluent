@@ -17,28 +17,21 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
     Vector,
 )
 from ansys.fluent.post import set_config
-from ansys.fluent.core.session import Session
 from post_data import update_vtk_fun, update_graph_fun
 set_config(blocking=False)
-
-
-session = Session.create_from_server_info_file(
-    "E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt", False
-)
-
-graphics_session1 = Graphics(session)
-plots_session1 = Plots(session)
 
 
 
 class PostWidget():
 
-    def __init__(self, app, wind_id):
+    def __init__(self, app, wind_id, SessionsManager):
         self._app = app
         self._wind_id = wind_id
         self._graphics_selector_value =None
-        self._all_widgets = {}        
+        self._all_widgets = {}   
+        self.SessionsManager = SessionsManager        
         self.create_callback()
+        
 
     def get_label(self, name):
         name_list = re.split("[^a-zA-Z]", name)
@@ -47,27 +40,32 @@ class PostWidget():
     def get_unique_name(self, name):
         return name 
 
-    def update_object(self, graphics_selector, connection_id=None):
+    def update_object(self, graphics_selector, connection_id, session_id, object_id=None):
         self._graphics_selector_value = graphics_selector
-        if graphics_selector is not None:
+        if graphics_selector is not None:            
+            session =  self.SessionsManager(self._app, connection_id, session_id).session
+            graphics_session = Graphics(session)
+            plots_session = Plots(session)        
             if graphics_selector == "Contour":
-                return graphics_session1.Contours[
-                    f"dummy-contour-{self._wind_id}" + connection_id if connection_id else ""
+                return graphics_session.Contours[
+                    f"contour-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}" 
                 ]
             if graphics_selector == "Mesh":
-                return  graphics_session1.Meshes[
-                    f"dummy-mesh-{self._wind_id}" + connection_id if connection_id else ""
+                return  graphics_session.Meshes[
+                    f"mesh-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}" 
                 ]
             if graphics_selector == "Vector":
-                return graphics_session1.Vectors[
-                    f"dummy-vector-{self._wind_id}" + connection_id if connection_id else ""
+                return graphics_session.Vectors[
+                    f"vector-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
                 ]
             if graphics_selector == "Surface":
-                return graphics_session1.Surfaces[
-                    f"dummy-surface-{self._wind_id}" + connection_id if connection_id else ""
+                return graphics_session.Surfaces[
+                    f"surface-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
                 ]
             if graphics_selector == "XYPlot":
-                return plots_session1.XYPlots["dummy-xyplot"+connection_id if connection_id else ""]
+                return plots_session.XYPlots[
+                    f"xyplot-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"                    
+                ]
 
     def create_callback(self):
         def store_all_widgets(obj_type, obj, parent="", parent_visible=True):
@@ -114,8 +112,10 @@ class PostWidget():
                         )
 
 
-        def update_stored_widgets(graphics_type, connection_id=None):
-            obj = self.update_object(graphics_type, connection_id)
+        def update_stored_widgets(graphics_type, connection_id, session_id):
+            print('update_stored_widgets')
+            obj = self.update_object(graphics_type, connection_id, session_id)
+            print('update_stored_widgets', obj)
             self._all_widgets = {}
             store_all_widgets(graphics_type, obj)
             self._all_widgets[
@@ -126,11 +126,13 @@ class PostWidget():
             Output(f"refresh-trigger-{self._wind_id}", "value"),
             Input({"type": f"graphics-widget-{self._wind_id}", "index": ALL}, "value"),
             Input("connection-id", "data"),
+            State("session-id", "data"),
             State(f"graphics-selector-{self._wind_id}", "value"),
         )
         def on_value_changed(
             values,
             connection_id,
+            session_id,
             graphics_selection,
         ):
             ctx = dash.callback_context
@@ -140,7 +142,7 @@ class PostWidget():
             prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
             
             print("value_changed", prop_id, prop_value)
-            obj = self.update_object(graphics_selection, connection_id)            
+            obj = self.update_object(graphics_selection, connection_id, session_id)            
             path_list = prop_id.split("/")[1:]
             for path in path_list:
                 obj = getattr(obj, path)
@@ -158,14 +160,15 @@ class PostWidget():
         @self._app.callback(
             Output(f"graphics-card-body-{self._wind_id}", "children"),
             Input(f"refresh-trigger-{self._wind_id}", "value"),
-            Input("connection-id", "data"),
+            Input("connection-id", "data"),            
             Input(f"graphics-selector-{self._wind_id}", "value"),
+            State("session-id", "data"),
         )
-        def refresh_widgets(_, connection_id, graphics_selector):
-            print("show hide", _, connection_id, graphics_selector)
-            if graphics_selector is None:
+        def refresh_widgets(_, connection_id, graphics_selector, session_id):
+            print("show hide", _, connection_id, session_id, graphics_selector)
+            if graphics_selector is None or session_id is None:
                 raise PreventUpdate
-            update_stored_widgets(graphics_selector, connection_id)
+            update_stored_widgets(graphics_selector, connection_id, session_id)
             return list(self._all_widgets.values())
 
     def get_button(self, name, unique_name):
@@ -277,8 +280,8 @@ class PostWidget():
 class GraphicsWidget(PostWidget):
 
     _windows_state = {}
-    def __init__(self, app, connection_id, wind_id):
-        wind_id = f"graphics-win-{wind_id}-{connection_id}"
+    def __init__(self, app, connection_id, session_id, wind_id, SessionsManager):
+        wind_id = f"graphics-win-{wind_id}-{session_id}-{connection_id}"
         window_state = GraphicsWidget._windows_state.get(
             wind_id
         )           
@@ -288,7 +291,7 @@ class GraphicsWidget(PostWidget):
             ] = self.__dict__
             
             self._post_objects = ["Mesh", "Contour", "Vector", "Surface"]
-            super().__init__(app, wind_id)
+            super().__init__(app, wind_id, SessionsManager)
             self._vtk_children  = []
 
             @self._app.callback(
@@ -298,10 +301,11 @@ class GraphicsWidget(PostWidget):
                 ],
                 Input(f"display_button-{self._wind_id}", "n_clicks"),
                 Input("connection-id", "data"),
+                State("session-id", "data"),
                 State(f"graphics-selector-{self._wind_id}", "value"),            
             )
-            def on_button_click(n_clicks, connection_id, graphics_type):
-                obj = self.update_object(graphics_type, connection_id)
+            def on_button_click(n_clicks, connection_id, session_id, graphics_type):
+                obj = self.update_object(graphics_type, connection_id, session_id)
                 print("n_clicks", obj._name)
                 if n_clicks == 0:
                     raise PreventUpdate
@@ -364,8 +368,8 @@ class GraphicsWidget(PostWidget):
 class PlotWidget(PostWidget):
 
     _windows_state = {}
-    def __init__(self, app, connection_id, wind_id):
-        wind_id = f"plot-win-{wind_id}-{connection_id}"
+    def __init__(self, app, connection_id, session_id, wind_id, SessionsManager):
+        wind_id = f"plot-win-{wind_id}-{session_id}-{connection_id}"
         window_state = PlotWidget._windows_state.get(
             wind_id
         )           
@@ -375,7 +379,7 @@ class PlotWidget(PostWidget):
             ] = self.__dict__
             
             self._post_objects = ["XYPlot"]
-            super().__init__(app, wind_id)
+            super().__init__(app, wind_id, SessionsManager)
             self._figure  = {}
 
 
@@ -383,10 +387,11 @@ class PlotWidget(PostWidget):
                 Output(f"plot-viewer-{self._wind_id}", "figure"), 
                 Input(f"display_button-{self._wind_id}", "n_clicks"),
                 Input("connection-id", "data"),
+                State("session-id", "data"),
                 State(f"graphics-selector-{self._wind_id}", "value"),                         
             )
-            def on_button_click(n_clicks, connection_id, graphics_type):
-                obj = self.update_object(graphics_type, connection_id)
+            def on_button_click(n_clicks, connection_id, session_id, graphics_type):
+                obj = self.update_object(graphics_type, connection_id, session_id)
                 print("n_clicks", obj._name)
                 if n_clicks == 0:
                     raise PreventUpdate
