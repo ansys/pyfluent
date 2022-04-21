@@ -11,7 +11,7 @@ import dash_bootstrap_components as dbc
 import numpy as np
 import plotly.graph_objs as go
 from dash import Input, Output, State, dcc, html
-
+from dash.exceptions import PreventUpdate
 
 from ansys.fluent.core.utils.dash.post_widgets import GraphicsWidget, PlotWidget
 
@@ -25,36 +25,49 @@ SIDEBAR_STYLE = {
     "width": "16rem",
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
+    "height": "55rem",
+    "overflow-y": "scroll"
 }
 
 sidebar = html.Div(
     [
-
         html.P(
             "Outline", className="lead"
         ),
-        dbc.Nav(
-            [
-                dbc.NavLink("Contour", href="/", active="exact"),
-                dbc.NavLink("Vector", href="/page-1", active="exact"),
-                dbc.NavLink("Mesh", href="/page-2", active="exact"),
-            ],
-            vertical=True,
-            pills=True,
+        dbc.Col(
+            dbc.Button("Connect to Session", id="connect-session", size="lg", n_clicks=0, active=True)
         ),
+        
+        html.Div(
+            children =[],
+            id =  "session-list",           
+        )
     ],
     style=SIDEBAR_STYLE,
 )
 
+class SessionView:
+    _sessions_state = {}
+    def __init__(self, connection_id, session_id):
+        session_id = f"session-{session_id}-{connection_id}"
+        session_state = SessionView._sessions_state.get(
+            session_id
+        )           
+        if not session_state:  
+            SessionView._sessions_state[
+                session_id
+            ] = self.__dict__  
+        else:            
+            self.__dict__ = session_state 
 
 def serve_layout():
-    session_id = str(uuid.uuid4())
-    GraphicsWidget(app, session_id, 1)
-    PlotWidget(app, session_id, 1)
+    connection_id = str(uuid.uuid4())
+    GraphicsWidget(app, connection_id, 1)
+    PlotWidget(app, connection_id, 1)
     return dbc.Container(
         fluid=True,
         children=[            
-            dcc.Store(data=session_id, id="session-id"),
+            dcc.Store(data=connection_id, id="connection-id"),
             dcc.Store(id="tab-info"),
             html.H1("Ansys pyFluent post web App"),
             html.Hr(),            
@@ -84,14 +97,26 @@ def serve_layout():
 
 app.layout = serve_layout
 
+@app.callback(
+    Output("session-list", "children"),
+    Input("connect-session", "n_clicks"),
+    State("session-list", "children"),
+)
+def connect_to_session(n_clicks, session_list):
+    if n_clicks==0:
+        raise PreventUpdate
+    id = f"{len(session_list)}"
+    session_list.append(dbc.Button(f"Session-{id}", id=f"session-{id}", n_clicks=0, style={"margin-top": "10px", "margin-left": "5px", "margin-right": "15px"}))  
+    return session_list
+
 
 @app.callback(
     Output("tab-content", "children"),
     Input("tabs", "active_tab"),
-    Input("session-id", "data"),
+    Input("connection-id", "data"),
     State("tab-content", "children"),
 )
-def render_tab_content(active_tab, session_id, tab_content):
+def render_tab_content(active_tab, connection_id, tab_content):
     """
     This callback takes the 'active_tab' property as input, as well as the
     stored graphs, and renders the tab content depending on what the value of
@@ -99,10 +124,10 @@ def render_tab_content(active_tab, session_id, tab_content):
     """
 
     if active_tab == "graphics":        
-        return GraphicsWidget(app, session_id, 1).layout()
+        return GraphicsWidget(app, connection_id, 1).layout()
             
     elif active_tab == "plots":
-        return PlotWidget(app, session_id, 1).layout()
+        return PlotWidget(app, connection_id, 1).layout()
 
 
 if __name__ == "__main__":
