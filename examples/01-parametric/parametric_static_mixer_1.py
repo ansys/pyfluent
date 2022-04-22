@@ -1,7 +1,7 @@
 """.. _ref_parametric_static_mixer_1:
 
 Parametric Study Workflow
-------------------------------
+-------------------------
 This example for executing a parametric study workflow
 performs these steps:
 
