@@ -57,6 +57,6 @@ following environment variable:
 
 .. code::
 
-		set PYFLUENT_SHOW_SERVER_GUI=1    # Windows
+		    set PYFLUENT_SHOW_SERVER_GUI=1    # Windows
         export PYFLUENT_SHOW_SERVER_GUI=1 # Linux (bash)
 
