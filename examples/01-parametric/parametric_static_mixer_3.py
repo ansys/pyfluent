@@ -14,16 +14,12 @@ This example for executing a parametric session workflow performs these steps:
 
 #########################################################################
 # Parametric session workflow
-# Import the parametric session workflow
+# Import the parametric session workflow. Import pandas module
 
 from pathlib import Path
-
 import ansys.fluent.core as pyfluent
+import pandas as pd
 from ansys.fluent.parametric import ParametricSession
-
-############################################################################
-# Import the pyfluent module and path
-
 
 #########################################################################
 # Launch parametric session using the hopper/mixer case File
@@ -77,8 +73,6 @@ study_2.export_design_table(design_point_table_study_2)
 
 #########################################################################
 # Display CSV table as a pandas dataframe
-
-import pandas as pd
 
 data_frame = pd.read_csv(design_point_table_study_2)
 print(data_frame)
