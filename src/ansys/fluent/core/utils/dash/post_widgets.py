@@ -304,7 +304,7 @@ class GraphicsWidget(PostWidget):
             )
             def on_button_click(n_clicks, connection_id, session_id, graphics_type):
                 obj = self.update_object(graphics_type, connection_id, session_id)
-                print("n_clicks", obj._name)
+                print("n_clicks on_button_click", n_clicks, obj._name)
                 if n_clicks == 0:
                     raise PreventUpdate
                 vtk_rendering = update_vtk_fun(obj)  

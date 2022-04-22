@@ -65,6 +65,7 @@ class LocalObjectDataExtractor:
                 )
             field_info = self.obj._data_extractor.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())
+            print(self._surface_name_on_server, surfaces_list)
             if self._surface_name_on_server not in surfaces_list:
                 raise RuntimeError("Surface creation failed.")
 

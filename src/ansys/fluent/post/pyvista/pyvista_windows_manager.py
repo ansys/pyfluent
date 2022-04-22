@@ -365,6 +365,7 @@ class PyVistaWindow(PostWindow):
         surface_api.create_surface_on_server()
         dummy_object = "dummy_object"
         post_session = obj._get_top_most_parent()
+        scalar_field_data = None
         if (
             obj.surface.type() == "iso-surface"
             and obj.surface.iso_surface.rendering() == "contour"
@@ -379,11 +380,9 @@ class PyVistaWindow(PostWindow):
         else:
             mesh = post_session.Meshes[dummy_object]
             mesh.surfaces_list = [obj._name]
-            mesh.show_edges = True
-            self._display_mesh(mesh, plotter)
-            #surface_data = self.fetch_mesh_data(contour)
-        surface_api.delete_surface_on_server()
-        #print('fetch_surface_data', mesh_data, scalar_field_data)
+            mesh.show_edges = True            
+            mesh_data = self.fetch_mesh_data(mesh)
+        surface_api.delete_surface_on_server()        
         return mesh_data, scalar_field_data
 
     def _display_surface(

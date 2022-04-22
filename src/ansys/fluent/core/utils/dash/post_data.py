@@ -53,8 +53,11 @@ def update_graph_fun_xyplot(obj):
 def update_vtk_fun(obj):
         if obj.__class__.__name__ == "Mesh":
             return update_vtk_fun_mesh(obj)
-        elif obj.__class__.__name__ == "Surface":
-            return update_vtk_fun_field(obj) 
+        elif obj.__class__.__name__ == "Surface":            
+            if obj.surface.type() == "iso-surface":
+                return update_vtk_fun_field(obj) 
+            else:
+                return update_vtk_fun_mesh(obj) 
         elif obj.__class__.__name__ == "Contour":
             return update_vtk_fun_field(obj) 
         elif obj.__class__.__name__ == "Vector":

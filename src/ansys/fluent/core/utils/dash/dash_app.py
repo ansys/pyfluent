@@ -53,7 +53,7 @@ _max_session_count = 6
 def serve_layout():
     connection_id = str(uuid.uuid4())
     for session_id in range(_max_session_count):
-        SessionsManager(app, connection_id, f"Session-{session_id}")
+        SessionsManager(app, connection_id, f"session-{session_id}")
         
     return dbc.Container(
         fluid=True,
@@ -116,7 +116,7 @@ app.layout = serve_layout
 def create_session(n_clicks, connection_id, session_list, options):
     if n_clicks==0:
         raise PreventUpdate
-    session_id = f"Session-{len(session_list)}" 
+    session_id = f"session-{len(session_list)}" 
     sessions_manager = SessionsManager(app, connection_id, session_id)
     sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")    
     sessions = []
