@@ -22,9 +22,7 @@ class DatamodelService:
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(
-            channel, tracing_interceptor
-        )
+        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
@@ -134,9 +132,7 @@ class PyMenu:
 
     def __init__(self, service: DatamodelService, path: Union[Path, str]):
         self._service = service
-        self._path = (
-            path if isinstance(path, str) else convert_path_to_grpc_path(path)
-        )
+        self._path = path if isinstance(path, str) else convert_path_to_grpc_path(path)
 
     def is_extended_tui(self, include_unavailable: bool = False) -> bool:
         """Check if menu is in extended TUI.
@@ -179,9 +175,7 @@ class PyMenu:
         if include_unavailable:
             request.args["include_unavailable"] = 1
         response = self._service.get_attribute_value(request)
-        return (
-            _convert_gvalue_to_value(response.value) == "NamedObjectContainer"
-        )
+        return _convert_gvalue_to_value(response.value) == "NamedObjectContainer"
 
     def get_child_names(self, include_unavailable: bool = False) -> List[str]:
         """Get child menu names.
@@ -296,9 +290,7 @@ class PyMenu:
         """
         request = DataModelProtoModule.SetStateRequest()
         request.path = self._path
-        _convert_value_to_gvalue(
-            new_name, request.state.struct_value.fields["name"]
-        )
+        _convert_value_to_gvalue(new_name, request.state.struct_value.fields["name"])
         self._service.set_state(request)
 
     def get_child_object_names(self) -> List[str]:

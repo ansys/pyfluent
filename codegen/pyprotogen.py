@@ -44,9 +44,7 @@ def build_python_grpc(
     proto_glob = os.path.join(protos_path, "*.proto")
     files = glob.glob(proto_glob, recursive=True)
     if not files:
-        raise FileNotFoundError(
-            f"Unable locate any *.proto files at {protos_path}"
-        )
+        raise FileNotFoundError(f"Unable locate any *.proto files at {protos_path}")
 
     shutil.rmtree(out_path, ignore_errors=True)
     Path.mkdir(Path(out_path), parents=True, exist_ok=True)

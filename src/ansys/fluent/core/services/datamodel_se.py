@@ -57,9 +57,7 @@ class DatamodelService:
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(
-            channel, tracing_interceptor
-        )
+        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 
@@ -230,9 +228,7 @@ class PyMenu:
 
     docstring = None
 
-    def __init__(
-        self, service: DatamodelService, rules: str, path: Path = None
-    ):
+    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
         self.service = service
         self.rules = rules
         if path is None:
@@ -359,9 +355,7 @@ class PyNamedObjectContainer:
         Deletes the child object by name
     """
 
-    def __init__(
-        self, service: DatamodelService, rules: str, path: Path = None
-    ):
+    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
         self.service = service
         self.rules = rules
         if path is None:
@@ -382,9 +376,7 @@ class PyNamedObjectContainer:
                 struct_field = getattr(response.member, struct_type)
                 for member in struct_field.members:
                     if member.startswith(child_type_suffix):
-                        child_object_names.append(
-                            member[len(child_type_suffix) :]
-                        )
+                        child_object_names.append(member[len(child_type_suffix) :])
         return child_object_names
 
     def __get_child_object_display_names(self):
@@ -432,8 +424,7 @@ class PyNamedObjectContainer:
             )
         else:
             raise LookupError(
-                f"{key} is not found at path "
-                f"{_convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
             )
 
     def __del_item(self, key: str):
@@ -446,8 +437,7 @@ class PyNamedObjectContainer:
             self.service.delete_object(request)
         else:
             raise LookupError(
-                f"{key} is not found at path "
-                f"{_convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
             )
 
     def __getitem__(self, key: str) -> PyMenu:
@@ -478,9 +468,7 @@ class PyNamedObjectContainer:
         if isinstance(value, dict) and not value:
             value["_name_"] = key
         parent_state = {f"{self.__class__.__name__}:{key}": value}
-        PyMenu(self.service, self.rules, self.path[:-1]).set_state(
-            parent_state
-        )
+        PyMenu(self.service, self.rules, self.path[:-1]).set_state(parent_state)
 
     def __delitem__(self, key: str):
         """Deletes the child object by name.

@@ -81,9 +81,7 @@ class MatplotWindow(PostWindow):
         self.post_object: Union[GraphicsDefn, PlotDefn] = post_object
         self.id: str = id
         self.properties: dict = None
-        self.plotter: Union[
-            _ProcessPlotterHandle, Plotter
-        ] = self._get_plotter()
+        self.plotter: Union[_ProcessPlotterHandle, Plotter] = self._get_plotter()
         self.animate: bool = False
         self.close: bool = False
         self.refresh: bool = False
@@ -195,9 +193,7 @@ class MatplotWindow(PostWindow):
         return xy_plots_data
 
 
-class MatplotWindowsManager(
-    PostWindowsManager, metaclass=AbstractSingletonMeta
-):
+class MatplotWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta):
     """Class for matplot windows manager."""
 
     def __init__(self):
@@ -375,18 +371,13 @@ class MatplotWindowsManager(
 
     # private methods
 
-    def _open_window(
-        self, window_id: str
-    ) -> Union[Plotter, _ProcessPlotterHandle]:
+    def _open_window(self, window_id: str) -> Union[Plotter, _ProcessPlotterHandle]:
         window = self._post_windows.get(window_id)
         plotter = None
         if (
             window
             and not window.plotter.is_closed()
-            and (
-                not (in_notebook() or get_config()["blocking"])
-                or window.refresh
-            )
+            and (not (in_notebook() or get_config()["blocking"]) or window.refresh)
         ):
             window.refresh = False
         else:

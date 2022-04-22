@@ -47,9 +47,7 @@ DictStateType = Dict[str, "StateType"]
 ListStateType = List["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
-_ttable = str.maketrans(
-    string.punctuation, "_" * len(string.punctuation), "?'"
-)
+_ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation), "?'")
 
 
 def to_python_name(scheme_name: str) -> str:
@@ -205,17 +203,13 @@ class SettingsBase(Base, Generic[StateT]):
             out.write("\n")
             for index, value in enumerate(state):
                 out.write(f'{indent*indent_factor*" "}{index} : ')
-                SettingsBase._print_state_helper(
-                    value, out, indent + 1, indent_factor
-                )
+                SettingsBase._print_state_helper(value, out, indent + 1, indent_factor)
         else:
             out.write(f"{state}\n")
 
     def print_state(self, out=sys.stdout, indent_factor=2):
         """Print the state of this object."""
-        self._print_state_helper(
-            self.get_state(), out, indent_factor=indent_factor
-        )
+        self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
 
 
 class Integer(SettingsBase[int]):
@@ -623,9 +617,7 @@ class Command(Base):
                 newkwds[ccls.scheme_name] = ccls.to_scheme_keys(v)
             else:
                 raise RuntimeError("Argument '" + str(k) + "' is invalid")
-        return self.flproxy.execute_cmd(
-            self._parent.path, self.obj_name, **newkwds
-        )
+        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
 _baseTypes = {
@@ -675,13 +667,9 @@ def get_cls(name, info, parent=None):
                 dct["__doc__"] = "root object"
             else:
                 if obj_type == "command":
-                    dct[
-                        "__doc__"
-                    ] = f"'{pname}' command of '{parent.__name__}' object"
+                    dct["__doc__"] = f"'{pname}' command of '{parent.__name__}' object"
                 else:
-                    dct[
-                        "__doc__"
-                    ] = f"'{pname}' child of '{parent.__name__}' object"
+                    dct["__doc__"] = f"'{pname}' child of '{parent.__name__}' object"
         cls = type(pname, (base,), dct)
 
         children = info.get("children")
@@ -720,9 +708,7 @@ def get_cls(name, info, parent=None):
             cls.__doc__ = doc
         object_type = info.get("object-type")
         if object_type:
-            cls.child_object_type = get_cls(
-                "child-object-type", object_type, cls
-            )
+            cls.child_object_type = get_cls("child-object-type", object_type, cls)
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "

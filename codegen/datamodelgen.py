@@ -42,9 +42,7 @@ def _build_parameter_docstring(name: str, t: str):
 
 def _build_command_docstring(name: str, info: Any):
     return_type = _PY_TYPE_BY_DM_TYPE[info.returntype]
-    arg_strings = [
-        arg.name + ": " + _PY_TYPE_BY_DM_TYPE[arg.type] for arg in info.args
-    ]
+    arg_strings = [arg.name + ": " + _PY_TYPE_BY_DM_TYPE[arg.type] for arg in info.args]
     arg_string = ", ".join(arg_strings)
     return name + "(" + arg_string + ") -> " + return_type
 
@@ -72,9 +70,7 @@ class DataModelGenerator:
             "workflow": DataModelStaticInfo("workflow", "meshing"),
             "meshing": DataModelStaticInfo("meshing", "meshing"),
             "PartManagement": DataModelStaticInfo("PartManagement", "meshing"),
-            "PMFileManagement": DataModelStaticInfo(
-                "PMFileManagement", "meshing"
-            ),
+            "PMFileManagement": DataModelStaticInfo("PMFileManagement", "meshing"),
         }
         self._delete_generated_files()
         self._populate_static_info()
@@ -98,23 +94,17 @@ class DataModelGenerator:
             session = pyfluent.launch_fluent(meshing_mode=True)
             for _, info in self._static_info.items():
                 if info.mode == "meshing":
-                    info.static_info = self._get_static_info(
-                        info.rules, session
-                    )
+                    info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
         if run_solver_mode:
             session = pyfluent.launch_fluent()
             for _, info in self._static_info.items():
                 if info.mode == "solver":
-                    info.static_info = self._get_static_info(
-                        info.rules, session
-                    )
+                    info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
-    def _write_static_info(
-        self, name: str, info: Any, f: FileIO, level: int = 0
-    ):
+    def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         indent = " " * level * 4
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
@@ -144,14 +134,9 @@ class DataModelGenerator:
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in info.namedobjects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
-            self._write_static_info(
-                f"_{k}", info.namedobjects[k], f, level + 2
-            )
+            self._write_static_info(f"_{k}", info.namedobjects[k], f, level + 2)
             # Specify the concrete named object type for __getitem__
-            f.write(
-                f"{indent}        def __getitem__(self, key: str) -> "
-                f"_{k}:\n"
-            )
+            f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
         for k in info.singletons:
             self._write_static_info(k, info.singletons[k], f, level + 1)
@@ -182,9 +167,7 @@ class DataModelGenerator:
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
                 f.write("# pylint: disable=line-too-long\n\n")
-                f.write(
-                    "from ansys.fluent.core.services.datamodel_se import (\n"
-                )
+                f.write("from ansys.fluent.core.services.datamodel_se import (\n")
                 f.write("    PyMenu,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand\n")

@@ -16,9 +16,7 @@ class LocalObjectDataExtractor:
 
         def __init__(self, obj):
             self.obj = obj
-            self._surface_name_on_server = self.surface_name_in_server(
-                obj._name
-            )
+            self._surface_name_on_server = self.surface_name_in_server(obj._name)
 
         @staticmethod
         def surface_name_in_server(local_surface_name):
@@ -52,11 +50,7 @@ class LocalObjectDataExtractor:
                 self._delete_if_exist_on_server()
                 self._get_api_handle().plane_surface(
                     self._surface_name_on_server,
-                    "xy-plane"
-                    if xy_plane
-                    else "yz-plane"
-                    if yz_plane
-                    else "zx-plane",
+                    "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
                     xy_plane.z()
                     if xy_plane
                     else yz_plane.x()
@@ -197,9 +191,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         )
                     if attr == "allowed_values":
                         if isinstance(value, list):
-                            if not all(
-                                v in self.allowed_values for v in value
-                            ):
+                            if not all(v in self.allowed_values for v in value):
                                 raise ValueError(
                                     f"Not all values in {value}, are in the "
                                     "list of allowed values "
@@ -233,9 +225,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
             )
             if reset_on_change:
                 for obj in reset_on_change:
-                    obj._register_on_change_cb(
-                        lambda: setattr(self, "_value", None)
-                    )
+                    obj._register_on_change_cb(lambda: setattr(self, "_value", None))
 
         return wrapper
 
@@ -372,9 +362,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
                         if cls.__class__.__name__ == "PyLocalPropertyMeta":
                             state[name] = o()
-                            attrs = show_attributes and getattr(
-                                o, "attributes", None
-                            )
+                            attrs = show_attributes and getattr(o, "attributes", None)
                             if attrs:
                                 for attr in attrs:
                                     state[name + "." + attr] = getattr(o, attr)
@@ -393,10 +381,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
     def __create_setattr(cls):
         def wrapper(self, name, value):
             attr = getattr(self, name, None)
-            if (
-                attr
-                and attr.__class__.__class__.__name__ == "PyLocalPropertyMeta"
-            ):
+            if attr and attr.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                 attr.set_state(value)
             else:
                 object.__setattr__(self, name, value)
@@ -456,9 +441,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
 
     def __new__(cls, name, bases, attrs):
         attrs["__init__"] = cls.__create_init()
-        return super(PyLocalNamedObjectMeta, cls).__new__(
-            cls, name, bases, attrs
-        )
+        return super(PyLocalNamedObjectMeta, cls).__new__(cls, name, bases, attrs)
 
 
 class PyLocalNamedObjectMetaAbstract(ABCMeta, PyLocalNamedObjectMeta):

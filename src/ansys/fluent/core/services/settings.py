@@ -12,9 +12,7 @@ from ansys.fluent.core.services.interceptors import TracingInterceptor
 class _SettingsServiceImpl:
     def __init__(self, channel: grpc.Channel, metadata):
         tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(
-            channel, tracing_interceptor
-        )
+        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 
@@ -52,9 +50,7 @@ class _SettingsServiceImpl:
 
     @catch_grpc_error
     def get_obj_static_info(self, request):
-        return self.__stub.GetObjectStaticInfo(
-            request, metadata=self.__metadata
-        )
+        return self.__stub.GetObjectStaticInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_static_info(self, request):
@@ -133,13 +129,10 @@ class SettingsService:
         elif t == "string":
             return state.string
         elif t == "value_list":
-            return [
-                self._get_state_from_value(v) for v in state.value_list.lst
-            ]
+            return [self._get_state_from_value(v) for v in state.value_list.lst]
         elif t == "value_map":
             return {
-                k: self._get_state_from_value(v)
-                for k, v in state.value_map.m.items()
+                k: self._get_state_from_value(v) for k, v in state.value_map.m.items()
             }
         else:
             return None
@@ -147,27 +140,21 @@ class SettingsService:
     @_trace
     def set_var(self, path: str, value: Any):
         """Set the value for the given path."""
-        request = _get_request_instance_for_path(
-            SettingsModule.SetVarRequest, path
-        )
+        request = _get_request_instance_for_path(SettingsModule.SetVarRequest, path)
         self._set_state_from_value(request.value, value)
         self.__service_impl.set_var(request)
 
     @_trace
     def get_var(self, path: str) -> Any:
         """Get the value for the given path."""
-        request = _get_request_instance_for_path(
-            SettingsModule.GetVarRequest, path
-        )
+        request = _get_request_instance_for_path(SettingsModule.GetVarRequest, path)
         response = self.__service_impl.get_var(request)
         return self._get_state_from_value(response.value)
 
     @_trace
     def rename(self, path: str, new: str, old: str):
         """Rename the object at the given path."""
-        request = _get_request_instance_for_path(
-            SettingsModule.RenameRequest, path
-        )
+        request = _get_request_instance_for_path(SettingsModule.RenameRequest, path)
         request.old_name = old
         request.new_name = new
 
@@ -176,9 +163,7 @@ class SettingsService:
     @_trace
     def create(self, path: str, name: str):
         """Create a new named object child for the given path."""
-        request = _get_request_instance_for_path(
-            SettingsModule.CreateRequest, path
-        )
+        request = _get_request_instance_for_path(SettingsModule.CreateRequest, path)
         request.name = name
 
         self.__service_impl.create(request)
@@ -186,9 +171,7 @@ class SettingsService:
     @_trace
     def delete(self, path: str, name: str):
         """Delete the object with the given name at the give path."""
-        request = _get_request_instance_for_path(
-            SettingsModule.DeleteRequest, path
-        )
+        request = _get_request_instance_for_path(SettingsModule.DeleteRequest, path)
         request.name = name
 
         self.__service_impl.delete(request)
@@ -317,8 +300,7 @@ class SettingsService:
             }
         if response.list_object_children:
             ret["list_object_children"] = [
-                self._parse_attrs(child)
-                for child in response.list_object_children
+                self._parse_attrs(child) for child in response.list_object_children
             ]
         if response.arguments:
             ret["arguments"] = {
@@ -330,9 +312,7 @@ class SettingsService:
     @_trace
     def get_attrs(self, path: str, attrs: List[str], recursive=False) -> Any:
         """Return values of given attributes."""
-        request = _get_request_instance_for_path(
-            SettingsModule.GetAttrsRequest, path
-        )
+        request = _get_request_instance_for_path(SettingsModule.GetAttrsRequest, path)
         request.attrs[:] = attrs
         request.recursive = recursive
 

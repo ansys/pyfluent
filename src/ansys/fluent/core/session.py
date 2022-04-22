@@ -183,9 +183,7 @@ class Session:
             Session._monitor_thread = MonitorThread()
             Session._monitor_thread.start()
 
-        self._transcript_service = TranscriptService(
-            self._channel, self._metadata
-        )
+        self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
 
         self._events_service = EventsService(self._channel, self._metadata)
@@ -195,24 +193,16 @@ class Session:
             self._channel, self._metadata
         )
 
-        self._field_data_service = FieldDataService(
-            self._channel, self._metadata
-        )
+        self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service)
         self.tui = Session.Tui(self._datamodel_service_tui)
 
-        self._datamodel_service_se = DatamodelService_SE(
-            self._channel, self._metadata
-        )
+        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         if "meshing_root" in globals():
-            self.meshing = meshing_root(
-                self._datamodel_service_se, "meshing", []
-            )
+            self.meshing = meshing_root(self._datamodel_service_se, "meshing", [])
         if "workflow_root" in globals():
-            self.workflow = workflow_root(
-                self._datamodel_service_se, "workflow", []
-            )
+            self.workflow = workflow_root(self._datamodel_service_se, "workflow", [])
         if "PartManagement_root" in globals():
             self.part_management = PartManagement_root(
                 self._datamodel_service_se, "PartManagement", []
@@ -224,13 +214,9 @@ class Session:
             )
             self.PMFileManagement = self.pm_file_management
 
-        self._health_check_service = HealthCheckService(
-            self._channel, self._metadata
-        )
+        self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
-        self._scheme_eval_service = SchemeEvalService(
-            self._channel, self._metadata
-        )
+        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
@@ -278,9 +264,7 @@ class Session:
         """Return root settings object."""
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
-            self._settings_root = settings_get_root(
-                flproxy=self.get_settings_service()
-            )
+            self._settings_root = settings_get_root(flproxy=self.get_settings_service())
         return self._settings_root
 
     def _process_transcript(self):

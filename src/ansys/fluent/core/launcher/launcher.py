@@ -42,18 +42,14 @@ def _get_fluent_exe_path():
 def _get_server_info_filepath():
     server_info_dir = os.getenv("SERVER_INFO_DIR")
     dir_ = Path(server_info_dir) if server_info_dir else tempfile.gettempdir()
-    fd, filepath = tempfile.mkstemp(
-        suffix=".txt", prefix="serverinfo-", dir=str(dir_)
-    )
+    fd, filepath = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=str(dir_))
     os.close(fd)
     return filepath
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
-    kwargs.update(
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
+    kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if platform.system() == "Windows":
         kwargs.update(
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
@@ -201,10 +197,7 @@ def launch_fluent(
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             subprocess.Popen(launch_string, **kwargs)
             while True:
-                if (
-                    Path(server_info_filepath).stat().st_mtime
-                    > sifile_last_mtime
-                ):
+                if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
                     time.sleep(1)
                     LOG.info("Fluent process is successfully launched.")
                     break

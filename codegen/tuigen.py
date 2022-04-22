@@ -63,9 +63,7 @@ def _populate_xml_helpstrings():
     tree = ET.parse(_XML_HELP_FILE)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
-    field_help_node = help_contents_node.find(
-        ".//*[@id='fluent_tui_field_help']"
-    )
+    field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
 
     for node in field_help_node.findall("sect2"):
         k = node.find("h3").text
@@ -170,9 +168,7 @@ class TUIGenerator:
         self._write_code_to_tui_file('"""\n', indent)
         if menu.is_extended_tui:
             self._write_code_to_tui_file("is_extended_tui = True\n", indent)
-        self._write_code_to_tui_file(
-            "def __init__(self, path, service):\n", indent
-        )
+        self._write_code_to_tui_file("def __init__(self, path, service):\n", indent)
         indent += 1
         self._write_code_to_tui_file("self.path = path\n", indent)
         self._write_code_to_tui_file("self.service = service\n", indent)
@@ -193,9 +189,7 @@ class TUIGenerator:
                 )
         indent -= 1
 
-        command_names = [
-            v.name for _, v in menu.children.items() if v.is_command
-        ]
+        command_names = [v.name for _, v in menu.children.items() if v.is_command]
         if command_names:
             for command in command_names:
                 self._write_code_to_tui_file(
@@ -222,14 +216,10 @@ class TUIGenerator:
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             if self._tui_file == _SOLVER_TUI_FILE:
-                self._write_code_to_tui_file(
-                    '"""Fluent Solver TUI Commands"""\n'
-                )
+                self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
                 self._main_menu.doc = "Fluent solver main menu."
             else:
-                self._write_code_to_tui_file(
-                    '"""Fluent Meshing TUI Commands"""\n'
-                )
+                self._write_code_to_tui_file('"""Fluent Meshing TUI Commands"""\n')
                 self._main_menu.doc = "Fluent meshing main menu."
             self._write_code_to_tui_file(
                 "#\n"
