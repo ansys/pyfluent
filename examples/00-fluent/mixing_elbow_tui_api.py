@@ -1,7 +1,8 @@
 """.. _ref_mixing_elbow_tui_api:
 
-Fluid Flow and Heat Transfer in a Mixing Elbow
-----------------------------------------------
+Fluid Flow and Heat Transfer in a Mixing Elbow (TUI API)
+--------------------------------------------------------
+
 This example illustrates the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and

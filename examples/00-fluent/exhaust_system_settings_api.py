@@ -1,7 +1,7 @@
 """.. _ref_exhaust_system_settings_api:
 
-Exhaust System: Fault-tolerant Meshing
-----------------------------------------------
+Exhaust System: Fault-tolerant Meshing (Settings API)
+-----------------------------------------------------
 
 This tutorial illustrates the setup and solution of a three-dimensional
 turbulent fluid flow in a manifold exhaust system. The manifold configuration

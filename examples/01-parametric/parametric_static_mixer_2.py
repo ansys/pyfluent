@@ -1,7 +1,7 @@
 """.. _ref_parametric_static_mixer_2:
 
 Parametric Project-Based Workflow
-----------------------------------------------------
+---------------------------------
 This example for executing a parametric project-based workflow
 performs these steps:
 

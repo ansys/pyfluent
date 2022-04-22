@@ -1,7 +1,7 @@
 """.. _ref_parametric_static_mixer_3:
 
 Parametric Session Workflow
-----------------------------------------------
+---------------------------
 This example for executing a parametric session workflow performs these steps:
 
 - Launches a parametric session using the hopper/mixer case file
