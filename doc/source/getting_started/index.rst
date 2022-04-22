@@ -34,7 +34,7 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
   pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
   session.check_health()
-  session.start_transcript() # enable transcript streaming
+  session.start_transcript() # Streaming the transcript locally
 
 Fluent is now active and you can send commands to it as a genuine Python class.
 For example, if we wanted to read a case file, update a setting and iterate the
@@ -42,7 +42,7 @@ solver:
 
 .. code:: python
 
-  session.tui.solver.file.read_case(case_file_name='elbow.cas.gz')
+  session.tui.solver.file.read_case(case_file_name='elbow.cas.h5')
   session.tui.solver.define.models.unsteady_2nd_order("yes")
   session.tui.solver.solve.initialize.initialize_flow()
   session.tui.solver.solve.dual_time_iterate(2, 3)
