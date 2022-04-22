@@ -53,13 +53,12 @@ _max_session_count = 6
 def serve_layout():
     connection_id = str(uuid.uuid4())
     for session_id in range(_max_session_count):
-        SessionsManager(app, connection_id, session_id)
+        SessionsManager(app, connection_id, f"Session-{session_id}")
         
     return dbc.Container(
         fluid=True,
         children=[            
             dcc.Store(data=connection_id, id="connection-id"),
-            dcc.Store(data=None, id="session-id"),
             dcc.Store(id="tab-info"),
             
             dbc.Row(
@@ -108,7 +107,7 @@ app.layout = serve_layout
 @app.callback(
     [Output("session-list", "children"),
     Output("sessions", "options"),
-    Output("sessions", "value"),],
+    ],
     Input("connect-session", "n_clicks"),
     Input("connection-id", "data"),
     State("session-list", "children"),
@@ -117,48 +116,40 @@ app.layout = serve_layout
 def create_session(n_clicks, connection_id, session_list, options):
     if n_clicks==0:
         raise PreventUpdate
-    session_id = len(session_list)
+    session_id = f"Session-{len(session_list)}" 
     sessions_manager = SessionsManager(app, connection_id, session_id)
-    sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")
-    print('create_session', n_clicks, connection_id, options)
+    sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")    
     sessions = []
     if options is not None:
         sessions = options
-    sessions.append(f"Session-{session_id}")    
-    session_list.append(dbc.Button(f"Session-{session_id}", id={"type": f"create-session-button", "index": session_id}, n_clicks=0, style={"margin-top": "10px", "margin-left": "5px", "margin-right": "15px"}))  
-    return [session_list, sessions, f"Session-{session_id}"]
-    #return session_list    
+    sessions.append(session_id)    
+    session_list.append(dbc.Button(session_id, id={"type": f"create-session-button", "index": session_id}, n_clicks=0, style={"margin-top": "10px", "margin-left": "5px", "margin-right": "15px"}))  
+    return [session_list, sessions]      
 
 
-@app.callback(
-    Output("session-id", "data"),       
+@app.callback(  
+    Output("sessions", "value"),
     Input({"type": f"create-session-button", "index": ALL}, "n_clicks"),
-    Input("sessions", "value"),
-    Input("connection-id", "data"),    
+    Input("connection-id", "data"),
 )
-def on_session_select(
-    values,
-    session_value,
+def on_session_click(
+    _,
     connection_id,
 ):    
     ctx = dash.callback_context
     prop_value = ctx.triggered[0]["value"]
-    print(prop_value)
-    if prop_value is not None: 
-        try:    
-            prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])
-            prop_id =  prop_id["index"]
-        except NameError:
-            prop_id =ctx.triggered[0]["value"].split("-")[1]                                  
-    print('on_session_select', prop_id)
+    if prop_value is None:
+        raise PreventUpdate  
+    prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])
+    prop_id =  prop_id["index"]        
     return prop_id
-            
-
+    
+   
 @app.callback(
     Output("tab-content", "children"),
     Input("tabs", "active_tab"),
     Input("connection-id", "data"),
-    Input("session-id", "data"),
+    Input("sessions", "value"),
 )
 def render_tab_content(active_tab, connection_id, session_id):
     """
@@ -169,6 +160,7 @@ def render_tab_content(active_tab, connection_id, session_id):
     print('render_tab_content', active_tab, connection_id, session_id)
     if session_id is None:
         raise PreventUpdate
+            
     if active_tab == "graphics":        
         return GraphicsWidget(app, connection_id, session_id, 0, SessionsManager).layout()
             

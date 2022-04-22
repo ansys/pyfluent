@@ -124,7 +124,7 @@ class PostWidget():
             Output(f"refresh-trigger-{self._wind_id}", "value"),
             Input({"type": f"graphics-widget-{self._wind_id}", "index": ALL}, "value"),
             Input("connection-id", "data"),
-            State("session-id", "data"),
+            State("sessions", "value"),
             State(f"graphics-selector-{self._wind_id}", "value"),
         )
         def on_value_changed(
@@ -160,7 +160,7 @@ class PostWidget():
             Input(f"refresh-trigger-{self._wind_id}", "value"),
             Input("connection-id", "data"),            
             Input(f"graphics-selector-{self._wind_id}", "value"),
-            State("session-id", "data"),
+            State("sessions", "value"),
         )
         def refresh_widgets(_, connection_id, graphics_selector, session_id):
             print("show hide", _, connection_id, session_id, graphics_selector)
@@ -299,7 +299,7 @@ class GraphicsWidget(PostWidget):
                 ],
                 Input(f"display_button-{self._wind_id}", "n_clicks"),
                 Input("connection-id", "data"),
-                State("session-id", "data"),
+                State("sessions", "value"),
                 State(f"graphics-selector-{self._wind_id}", "value"),            
             )
             def on_button_click(n_clicks, connection_id, session_id, graphics_type):
@@ -385,7 +385,7 @@ class PlotWidget(PostWidget):
                 Output(f"plot-viewer-{self._wind_id}", "figure"), 
                 Input(f"display_button-{self._wind_id}", "n_clicks"),
                 Input("connection-id", "data"),
-                State("session-id", "data"),
+                State("sessions", "value"),
                 State(f"graphics-selector-{self._wind_id}", "value"),                         
             )
             def on_button_click(n_clicks, connection_id, session_id, graphics_type):
