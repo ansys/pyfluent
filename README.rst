@@ -20,8 +20,8 @@ as well as broad access to Fluent features including:
 
 Documentation and Issues
 ------------------------
-See the `Development Documentation <https://dev.fluentdocs.pyansys.com>`_ page
-for more details.
+Please see the latest release `documentation <https://fluentdocs.pyansys.com>`_
+page for more details.
 
 Please feel free to post issues and other questions at `PyFluent Issues
 <https://github.com/pyansys/pyfluent/issues>`_.  This is the best place
@@ -44,9 +44,11 @@ with:
 
 .. code:: console
 
-  git clone https://github.com/pyansys/pyfluent.git
-  cd pyfluent
-  pip install -e .
+    git clone https://github.com/pyansys/pyfluent.git
+    cd pyfluent
+    pip install pip -U
+    pip install -e .
+    pip install -e .[post]  # If you want to use pyvista
 
 Dependencies
 ------------
