@@ -61,13 +61,29 @@ def serve_layout():
             dcc.Store(data=connection_id, id="connection-id"),
             dcc.Store(data=None, id="session-id"),
             dcc.Store(id="tab-info"),
-            html.H1("Ansys pyFluent post web App"),
+            
+            dbc.Row(
+              [
+              dbc.Col(html.H1("Ansys pyFluent post web App")),
+              dbc.Col(
+              dcc.Dropdown(
+                  id="sessions",
+                  options=[],
+                  value=None,
+                  style = {"width":"200px"}
+                  
+              ),
+              width="auto",
+              align="end"              
+              )
+              ]
+            ),            
             html.Hr(),            
             dbc.Row(
                 children=[
                     dbc.Col(sidebar, align="start", width="auto"),
                     dbc.Col(
-                        [
+                        [                            
                             dbc.Tabs(
                                 [
                                     dbc.Tab(
@@ -90,36 +106,51 @@ def serve_layout():
 app.layout = serve_layout
 
 @app.callback(
-    Output("session-list", "children"),
+    [Output("session-list", "children"),
+    Output("sessions", "options"),
+    Output("sessions", "value"),],
     Input("connect-session", "n_clicks"),
     Input("connection-id", "data"),
     State("session-list", "children"),
+    State("sessions", "options"),
 )
-def create_session(n_clicks, connection_id, session_list):
+def create_session(n_clicks, connection_id, session_list, options):
     if n_clicks==0:
         raise PreventUpdate
     session_id = len(session_list)
     sessions_manager = SessionsManager(app, connection_id, session_id)
     sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")
+    print('create_session', n_clicks, connection_id, options)
+    sessions = []
+    if options is not None:
+        sessions = options
+    sessions.append(f"Session-{session_id}")    
     session_list.append(dbc.Button(f"Session-{session_id}", id={"type": f"create-session-button", "index": session_id}, n_clicks=0, style={"margin-top": "10px", "margin-left": "5px", "margin-right": "15px"}))  
-    return session_list
+    return [session_list, sessions, f"Session-{session_id}"]
+    #return session_list    
 
 
 @app.callback(
     Output("session-id", "data"),       
     Input({"type": f"create-session-button", "index": ALL}, "n_clicks"),
+    Input("sessions", "value"),
     Input("connection-id", "data"),    
 )
 def on_session_select(
     values,
+    session_value,
     connection_id,
-):
+):    
     ctx = dash.callback_context
     prop_value = ctx.triggered[0]["value"]
-    if prop_value is None:
-      raise PreventUpdate    
-    prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
-    print('on_session_select', prop_id, prop_value)
+    print(prop_value)
+    if prop_value is not None: 
+        try:    
+            prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])
+            prop_id =  prop_id["index"]
+        except NameError:
+            prop_id =ctx.triggered[0]["value"].split("-")[1]                                  
+    print('on_session_select', prop_id)
     return prop_id
             
 

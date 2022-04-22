@@ -113,9 +113,7 @@ class PostWidget():
 
 
         def update_stored_widgets(graphics_type, connection_id, session_id):
-            print('update_stored_widgets')
             obj = self.update_object(graphics_type, connection_id, session_id)
-            print('update_stored_widgets', obj)
             self._all_widgets = {}
             store_all_widgets(graphics_type, obj)
             self._all_widgets[
