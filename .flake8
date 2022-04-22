@@ -1,0 +1,9 @@
+[flake8]
+exclude = venv, doc/_build, src/ansys/api/fluent/v0/*, src/ansys/fluent/core/meshing/tui.py, src/ansys/fluent/core/solver/tui.py, src/ansys/fluent/core/solver/settings.py, src/ansys/fluent/core/datamodel/*
+max-line-length = 88
+count = True
+max-complexity = 10
+max-line-length = 100
+statistics = True
+select = W191 W291 W293 W391 E115 E117 E122 E124 E125 E225 E231 E301 E303 F401 F403 N801 N802 N803 N804 N805 N806
+extend-ignore = E203, E501
