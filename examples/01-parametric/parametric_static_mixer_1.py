@@ -79,23 +79,15 @@ root.solution.report_definitions.surface["outlet-temp-avg"] = {}
 root.solution.report_definitions.surface[
     "outlet-temp-avg"
 ].report_type = "surface-areaavg"
-root.solution.report_definitions.surface[
-    "outlet-temp-avg"
-].field = "temperature"
-root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = [
-    "outlet"
-]
+root.solution.report_definitions.surface["outlet-temp-avg"].field = "temperature"
+root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = ["outlet"]
 
 root.solution.report_definitions.surface["outlet-vel-avg"] = {}
 root.solution.report_definitions.surface[
     "outlet-vel-avg"
 ].report_type = "surface-areaavg"
-root.solution.report_definitions.surface[
-    "outlet-vel-avg"
-].field = "velocity-magnitude"
-root.solution.report_definitions.surface["outlet-vel-avg"].surface_names = [
-    "outlet"
-]
+root.solution.report_definitions.surface["outlet-vel-avg"].field = "velocity-magnitude"
+root.solution.report_definitions.surface["outlet-vel-avg"].surface_names = ["outlet"]
 
 session.tui.solver.define.parameters.enable_in_TUI("yes")
 session.tui.solver.define.parameters.output_parameters.create(
@@ -112,9 +104,7 @@ session.tui.solver.solve.monitors.residual.criterion_type("0")
 
 ###########################################################################
 # Write case with all the settings in place
-case_path = str(
-    Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5"
-)
+case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
 session.tui.solver.file.write_case(case_path)
 
 ###########################################################################
@@ -211,8 +201,6 @@ study_2 = study_1.duplicate()
 #########################################################################
 # Save parametric project
 
-project_filepath = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj"
-)
+project_filepath = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
 session.tui.solver.file.parametric_project.save_as(project_filepath)
