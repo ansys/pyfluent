@@ -14,6 +14,7 @@ from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
 
 from ansys.fluent.core.utils.dash.post_widgets import GraphicsWidget, PlotWidget
+from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
@@ -85,6 +86,7 @@ def serve_layout():
                         [                            
                             dbc.Tabs(
                                 [
+                                    dbc.Tab(label="Settings", tab_id="settings"),
                                     dbc.Tab(
                                         label="Graphics", tab_id="graphics"
                                     ),
@@ -166,6 +168,9 @@ def render_tab_content(active_tab, connection_id, session_id):
             
     elif active_tab == "plots":
         return PlotWidget(app, connection_id, session_id, 0, SessionsManager).layout()
+        
+    elif active_tab == "settings":
+        return SettingsWidget(app, connection_id, session_id, SessionsManager).layout()        
 
 
 if __name__ == "__main__":

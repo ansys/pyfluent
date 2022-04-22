@@ -262,19 +262,6 @@ class PostWidget():
         return widget
 
 
-        session_state = Graphics._sessions_state.get(
-            session.id if session else 1
-        )
-        if not session_state:
-            session_state = self.__dict__
-            Graphics._sessions_state[
-                session.id if session else 1
-            ] = session_state
-            self.session = session
-            self._init_module(self, sys.modules[__name__])
-        else:
-            self.__dict__ = session_state
-
 class GraphicsWidget(PostWidget):
 
     _windows_state = {}

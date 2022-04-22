@@ -166,10 +166,10 @@ class MatplotWindow(PostWindow):
         if not self.post_object:
             return
         self.properties = {
-            "curves": obj.surfaces_list(),
+            "curves": self.post_object.surfaces_list(),
             "title": "XY Plot",
             "xlabel": "position",
-            "ylabel": obj.y_axis_function(),
+            "ylabel": self.post_object.y_axis_function(),
         }            
         xy_data = get_xy_plot_data(self.post_object)
         if in_notebook() or get_config()["blocking"]:
