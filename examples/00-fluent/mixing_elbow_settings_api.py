@@ -48,26 +48,26 @@ import_filename = examples.download_file(
     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
 )
 
-s = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count="4"
+session = pyfluent.launch_fluent(
+    meshing_mode=True, precision="double", processor_count=2
 )
 
 ###############################################################################
 
 # Import the CAD geometry (mixing_elbow.scdoc). For Length Units, select "in".
 # Execute the Import Geometry task.
-s.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 ###############################################################################
 
 # Import the CAD geometry. For Length Units, select "in".
 # Execute the Import Geometry task.
 
-s.workflow.TaskObject["Import Geometry"].Arguments = dict(
+session.workflow.TaskObject["Import Geometry"].Arguments = dict(
     FileName=import_filename, LengthUnit="in"
 )
 
-s.workflow.TaskObject["Import Geometry"].Execute()
+session.workflow.TaskObject["Import Geometry"].Execute()
 
 ###############################################################################
 
@@ -77,8 +77,8 @@ s.workflow.TaskObject["Import Geometry"].Execute()
 # of this tutorial, you can keep the default setting. Execute to complete this
 # task and proceed to the next task in the workflow.
 
-s.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-s.workflow.TaskObject["Add Local Sizing"].Execute()
+session.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
+session.workflow.TaskObject["Add Local Sizing"].Execute()
 
 ###############################################################################
 
@@ -88,10 +88,10 @@ s.workflow.TaskObject["Add Local Sizing"].Execute()
 # the Surface Mesh to complete this task and proceed to the next task in the
 # workflow.
 
-s.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
+session.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
     "CFDSurfaceMeshControls": {"MaxSize": 0.3}
 }
-s.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 ###############################################################################
 
@@ -102,16 +102,16 @@ s.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 # voids for Geometry Type. Execute Describe Geometry to complete this task and
 # proceed
 # to the next task in the workflow.
-s.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
+session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
     SetupTypeChanged=False
 )
-s.workflow.TaskObject["Describe Geometry"].Arguments = dict(
+session.workflow.TaskObject["Describe Geometry"].Arguments = dict(
     SetupType="The geometry consists of only fluid regions with no voids"
 )
-s.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
+session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
     SetupTypeChanged=True
 )
-s.workflow.TaskObject["Describe Geometry"].Execute()
+session.workflow.TaskObject["Describe Geometry"].Execute()
 
 ###############################################################################
 
@@ -119,13 +119,13 @@ s.workflow.TaskObject["Describe Geometry"].Execute()
 # For the wall-inlet boundary, change the Boundary Type field to wall. Execute
 # Update Boundaries to complete this task and proceed to the next task in the
 # workflow.
-s.workflow.TaskObject["Update Boundaries"].Arguments = {
+session.workflow.TaskObject["Update Boundaries"].Arguments = {
     "BoundaryLabelList": ["wall-inlet"],
     "BoundaryLabelTypeList": ["wall"],
     "OldBoundaryLabelList": ["wall-inlet"],
     "OldBoundaryLabelTypeList": ["velocity-inlet"],
 }
-s.workflow.TaskObject["Update Boundaries"].Execute()
+session.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
 
@@ -133,20 +133,20 @@ s.workflow.TaskObject["Update Boundaries"].Execute()
 # Select the Update Regions task, where you can review the names and types of
 # the various regions that have been generated from your imported geometry, and
 # change them as needed. Keep the default settings, and execute Update Regions.
-s.workflow.TaskObject["Update Regions"].Execute()
+session.workflow.TaskObject["Update Regions"].Execute()
 
 ###############################################################################
 
 # Add Boundary Layers:
 # Select the Add Boundary Layers task, where you can set properties of the
 # boundary layer mesh. Keep the default settings, and Add Boundary Layers.
-s.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-s.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-s.workflow.TaskObject["smooth-transition_1"].Arguments = {
+session.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
+session.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+session.workflow.TaskObject["smooth-transition_1"].Arguments = {
     "BLControlName": "smooth-transition_1",
 }
-s.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
-s.workflow.TaskObject["smooth-transition_1"].Execute()
+session.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
+session.workflow.TaskObject["smooth-transition_1"].Execute()
 
 ###############################################################################
 
@@ -154,23 +154,23 @@ s.workflow.TaskObject["smooth-transition_1"].Execute()
 # Select the Generate the Volume Mesh task, where you can set properties of the
 # volume mesh. Select the poly-hexcore for Fill With. Execute Generate the
 # Volume Mesh.
-s.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
+session.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
     "VolumeFill": "poly-hexcore",
     "VolumeFillControls": {
         "HexMaxCellLength": 0.3,
     },
 }
-s.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+session.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
 ###############################################################################
 
 # Check the mesh in Meshing mode
-s.tui.meshing.mesh.check_mesh()
+session.tui.meshing.mesh.check_mesh()
 
 ###############################################################################
 
 # Save the mesh file (mixing_elbow.msh.h5).
-# s.tui.meshing.file.write_mesh('mixing_elbow.msh.h5')
+# session.tui.meshing.file.write_mesh('mixing_elbow.msh.h5')
 
 ###############################################################################
 
@@ -179,7 +179,7 @@ s.tui.meshing.mesh.check_mesh()
 # mode, you can now switch to solver mode to complete the setup of the
 # simulation. We have just checked the mesh, so select Yes to switch to
 # solution mode.
-s.tui.meshing.switch_to_solution_mode("yes")
+session.tui.meshing.switch_to_solution_mode("yes")
 
 ###############################################################################
 
@@ -189,7 +189,7 @@ s.tui.meshing.switch_to_solution_mode("yes")
 # mesh features that are checked. Any errors in the mesh will be reported at
 # this time. Ensure that the minimum volume is not negative, since Ansys Fluent
 # cannot begin a calculation when this is the case.
-s.tui.solver.mesh.check()
+session.tui.solver.mesh.check()
 
 ###############################################################################
 
@@ -197,7 +197,7 @@ s.tui.solver.mesh.check()
 # The top-level settings object for a session can be accessed with the
 # get_settings_root() method of the session object.
 # Enabling the settings objects.
-root = s.get_settings_root()
+root = session.get_settings_root()
 
 ###############################################################################
 
@@ -207,7 +207,7 @@ root = s.get_settings_root()
 # to change any other units in this problem. If you want a different working
 # unit for length, other than inches (for example, millimeters), make the
 # appropriate change.
-s.tui.solver.define.units("length", "in")
+session.tui.solver.define.units("length", "in")
 
 ###############################################################################
 
@@ -217,13 +217,13 @@ root.setup.models.energy.enabled = True
 ###############################################################################
 
 # Create a new material called water-liquid.
-s.tui.solver.define.materials.copy("fluid", "water-liquid")
+session.tui.solver.define.materials.copy("fluid", "water-liquid")
 
 ###############################################################################
 
 # Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
 # water-liquid from the Material list.
-s.tui.solver.define.boundary_conditions.fluid(
+session.tui.solver.define.boundary_conditions.fluid(
     "elbow-fluid",
     "yes",
     "water-liquid",
@@ -315,7 +315,7 @@ root.setup.boundary_conditions.pressure_outlet[
 ###############################################################################
 
 # Enable the plotting of residuals during the calculation.
-s.tui.solver.solve.monitors.residual.plot("yes")
+session.tui.solver.solve.monitors.residual.plot("yes")
 
 ###############################################################################
 
@@ -337,7 +337,7 @@ root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
 
 # Create a surface report file called outlet-temp-avg-rfile using
 # report-definition outlet-temp-avg
-# s.tui.solver.solve.report_files.add(
+# session.tui.solver.solve.report_files.add(
 #    "outlet-temp-avg-rfile",
 #    "report-defs",
 #    "outlet-temp-avg",
@@ -376,7 +376,7 @@ root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
 # console is the deviation between the current and previous iteration values
 # only.
 # Change Convergence Conditions
-s.tui.solver.solve.convergence_conditions(
+session.tui.solver.solve.convergence_conditions(
     "conv-reports",
     "add",
     "con-outlet-temp-avg",
@@ -398,22 +398,22 @@ s.tui.solver.solve.convergence_conditions(
     "3",
     "quit",
 )
-s.tui.solver.solve.convergence_conditions("frequency", "3", "quit")
+session.tui.solver.solve.convergence_conditions("frequency", "3", "quit")
 
 ###############################################################################
 
 # Initialize the flow field using the Hybrid Initialization
-s.tui.solver.solve.initialize.hyb_initialization()
+session.tui.solver.solve.initialize.hyb_initialization()
 
 ###############################################################################
 
-# Solve for 150 Iterations.
-s.tui.solver.solve.iterate(150)
+# Solve for 150 iterations.
+session.tui.solver.solve.iterate(150)
 
 ###############################################################################
 
 # Save the case and data file (mixing_elbow1.cas.h5 and mixing_elbow1.dat.h5).
-# s.tui.solver.file.write_case_data('mixing_elbow1.cas.h5')
+# session.tui.solver.file.write_case_data('mixing_elbow1.cas.h5')
 
 ###############################################################################
 
@@ -478,7 +478,7 @@ root.results.graphics.vector["vector-vel"].style = "arrow"
 
 # Create an iso-surface representing the intersection of the plane z=0 and the
 # surface outlet. Name: z=0_outlet
-s.tui.solver.surface.iso_surface(
+session.tui.solver.surface.iso_surface(
     "z-coordinate", "z=0_outlet", "outlet", "()", "()", "0", "()"
 )
 
@@ -492,12 +492,12 @@ root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = [
 # root.results.graphics.contour["contour-z_0_outlet"].display()
 
 ###############################################################################
-# s.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5")
+# session.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5")
 
 # Display and save an XY plot of the temperature profile across the centerline
 # of the outlet for the initial solution
 
-s.tui.solver.display.objects.create(
+session.tui.solver.display.objects.create(
     "xy",
     "xy-outlet-temp",
     "y-axis-function",
@@ -507,8 +507,8 @@ s.tui.solver.display.objects.create(
     "()",
     "quit",
 )
-# s.tui.solver.display.objects.display("xy-outlet-temp")
-# s.tui.solver.plot.plot(
+# session.tui.solver.display.objects.display("xy-outlet-temp")
+# session.tui.solver.plot.plot(
 #    "yes",
 #    "temp-1.xy",
 #    "no",
@@ -526,6 +526,6 @@ s.tui.solver.display.objects.create(
 ###############################################################################
 
 # Write final case and data.
-# s.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5')
+# session.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5')
 
 ###############################################################################

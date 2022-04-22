@@ -27,7 +27,7 @@ import ansys.fluent.core as pyfluent
 ############################################################################
 # Launch Fluent in 3D and double precision
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
 
 ############################################################################
 # Enable the settings API (Beta)
