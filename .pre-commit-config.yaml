@@ -5,7 +5,6 @@ repos:
   hooks:
   - id: black
     args: [
-      --line-length, "79",
       --force-exclude, src/ansys/api/fluent/v0/|src/ansys/fluent/core/meshing/tui.py|src/ansys/fluent/core/solver/tui.py|src/ansys/fluent/core/solver/settings.py|src/ansys/fluent/core/datamodel,
       src/ansys, codegen, doc, examples, tests
     ]
@@ -29,7 +28,7 @@ repos:
       --skip-glob, src/ansys/api/fluent/v0/*,
       --skip-glob, src/ansys/fluent/core/datamodel/*,
       --force-sort-within-sections,
-      --line-length, "79",
+      --line-length, "88",
       --section-default, THIRDPARTY, 
       --filter-files,
       --project, ansys,
@@ -50,7 +49,8 @@ repos:
       --count,
       --statistics,
       --max-complexity, "10",
-      --max-line-length, "79",
+      --max-line-length, "88",
+      --extend-ignore, E203 E501,
       ansys, codegen, doc, examples, tests
     ]
 
