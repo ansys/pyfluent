@@ -43,9 +43,7 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file(
-    "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-)
+import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
 session = pyfluent.launch_fluent(
     meshing_mode=True, precision="double", processor_count=2
@@ -106,9 +104,7 @@ session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
 session.workflow.TaskObject["Describe Geometry"].Arguments = dict(
     SetupType="The geometry consists of only fluid regions with no voids"
 )
-session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=True
-)
+session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 session.workflow.TaskObject["Describe Geometry"].Execute()
 
 ###############################################################################

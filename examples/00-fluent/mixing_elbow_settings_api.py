@@ -44,9 +44,7 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-import_filename = examples.download_file(
-    "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-)
+import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
 session = pyfluent.launch_fluent(
     meshing_mode=True, precision="double", processor_count=2
@@ -108,9 +106,7 @@ session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
 session.workflow.TaskObject["Describe Geometry"].Arguments = dict(
     SetupType="The geometry consists of only fluid regions with no voids"
 )
-session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=True
-)
+session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 session.workflow.TaskObject["Describe Geometry"].Execute()
 
 ###############################################################################
@@ -308,9 +304,7 @@ root.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
 # Backflow Turbulent Viscosity Ratio: 4
-root.setup.boundary_conditions.pressure_outlet[
-    "outlet"
-].turb_viscosity_ratio = 4
+root.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
 ###############################################################################
 
@@ -325,12 +319,8 @@ root.solution.report_definitions.surface["outlet-temp-avg"] = {}
 root.solution.report_definitions.surface[
     "outlet-temp-avg"
 ].report_type = "surface-massavg"
-root.solution.report_definitions.surface[
-    "outlet-temp-avg"
-].field = "temperature"
-root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = [
-    "outlet"
-]
+root.solution.report_definitions.surface["outlet-temp-avg"].field = "temperature"
+root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = ["outlet"]
 root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
 
 ###############################################################################
@@ -440,9 +430,7 @@ root.solution.report_definitions.compute(report_defs=["report_mfr"])
 root.results.graphics.contour["contour-vel"] = {}
 root.results.graphics.contour["contour-vel"].print_state()
 root.results.graphics.contour["contour-vel"].field = "velocity-magnitude"
-root.results.graphics.contour["contour-vel"].surfaces_list = [
-    "symmetry-xyplane"
-]
+root.results.graphics.contour["contour-vel"].surfaces_list = ["symmetry-xyplane"]
 # root.results.graphics.contour["contour-vel"].display()
 
 ###############################################################################
@@ -455,9 +443,7 @@ root.results.graphics.contour["contour-vel"].surfaces_list = [
 root.results.graphics.contour["contour-temp"] = {}
 root.results.graphics.contour["contour-temp"].print_state()
 root.results.graphics.contour["contour-temp"].field = "temperature"
-root.results.graphics.contour["contour-temp"].surfaces_list = [
-    "symmetry-xyplane"
-]
+root.results.graphics.contour["contour-temp"].surfaces_list = ["symmetry-xyplane"]
 # root.results.graphics.contour["contour-temp"].display()
 
 ###############################################################################
@@ -486,9 +472,7 @@ session.tui.solver.surface.iso_surface(
 root.results.graphics.contour["contour-z_0_outlet"] = {}
 root.results.graphics.contour["contour-z_0_outlet"].print_state()
 root.results.graphics.contour["contour-z_0_outlet"].field = "temperature"
-root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = [
-    "z=0_outlet"
-]
+root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = ["z=0_outlet"]
 # root.results.graphics.contour["contour-z_0_outlet"].display()
 
 ###############################################################################

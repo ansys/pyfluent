@@ -68,24 +68,17 @@ session.part_management.InputFileChanged(
 session.PMFileManagement.FileManager.LoadFiles()
 session.part_management.Node["Meshing Model"].Copy(
     Paths=[
-        "/dirty_manifold-for-wrapper,"
-        + "1/dirty_manifold-for-wrapper,1/main,1",
-        "/dirty_manifold-for-wrapper,"
-        + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
-        "/dirty_manifold-for-wrapper,"
-        + "1/dirty_manifold-for-wrapper,1/outpipe3,1",
-        "/dirty_manifold-for-wrapper,"
-        + "1/dirty_manifold-for-wrapper,1/object2,1",
-        "/dirty_manifold-for-wrapper,"
-        + "1/dirty_manifold-for-wrapper,1/object1,1",
+        "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
+        "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
+        "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/outpipe3,1",
+        "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object2,1",
+        "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
-session.part_management.ObjectSetting[
-    "DefaultObjectSetting"
-].OneZonePer.setState("part")
-session.workflow.TaskObject[
-    "Import CAD and Part Management"
-].Arguments.setState(
+session.part_management.ObjectSetting["DefaultObjectSetting"].OneZonePer.setState(
+    "part"
+)
+session.workflow.TaskObject["Import CAD and Part Management"].Arguments.setState(
     {
         "Context": 0,
         "CreateObjectPer": "Custom",
@@ -133,9 +126,7 @@ session.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 ###############################################################################
 # Cover any openings in your geometry.
 
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "CreatePatchPreferences": {
             "ShowCreatePatchPreferences": False,
@@ -145,9 +136,7 @@ session.workflow.TaskObject[
         "ZoneSelectionList": ["inlet.1"],
     }
 )
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "CreatePatchPreferences": {
             "ShowCreatePatchPreferences": False,
@@ -169,25 +158,17 @@ session.workflow.TaskObject[
 )
 session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 session.workflow.TaskObject["inlet-1"].Execute()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-2",
         "SelectionType": "zone",
         "ZoneSelectionList": ["inlet.2"],
     }
 )
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-2",
         "SelectionType": "zone",
@@ -206,25 +187,17 @@ session.workflow.TaskObject[
 )
 session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 session.workflow.TaskObject["inlet-2"].Execute()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-3",
         "SelectionType": "zone",
         "ZoneSelectionList": ["inlet"],
     }
 )
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-3",
         "SelectionType": "zone",
@@ -243,16 +216,10 @@ session.workflow.TaskObject[
 )
 session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 session.workflow.TaskObject["inlet-3"].Execute()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "outlet-1",
         "SelectionType": "zone",
@@ -260,9 +227,7 @@ session.workflow.TaskObject[
         "ZoneType": "pressure-outlet",
     }
 )
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "outlet-1",
         "SelectionType": "zone",
@@ -282,12 +247,8 @@ session.workflow.TaskObject[
 )
 session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-session.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+session.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 session.workflow.TaskObject["outlet-1"].Execute()
 
 ###############################################################################
@@ -403,9 +364,7 @@ session.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
 )
 session.workflow.TaskObject["Define Leakage Threshold"].AddChildToTask()
 
-session.workflow.TaskObject[
-    "Define Leakage Threshold"
-].InsertCompoundChildTask()
+session.workflow.TaskObject["Define Leakage Threshold"].InsertCompoundChildTask()
 session.workflow.TaskObject["leakage-1"].Arguments.setState(
     {
         "AddChild": "yes",
@@ -562,9 +521,7 @@ session.tui.solver.define.boundary_conditions.copy_bc(
 ###############################################################################
 # Set the boundary conditions at the outlet (outlet-1).
 
-root.setup.boundary_conditions.pressure_outlet[
-    "outlet-1"
-].turb_intensity = 0.05
+root.setup.boundary_conditions.pressure_outlet["outlet-1"].turb_intensity = 0.05
 
 ###############################################################################
 # Enable the plotting of residuals during the calculation.
@@ -630,9 +587,7 @@ session.tui.solver.surface.iso_surface(
 root.results.graphics.contour["contour-velocity"] = {}
 root.results.graphics.contour["contour-velocity"].print_state()
 root.results.graphics.contour["contour-velocity"].field = "velocity-magnitude"
-root.results.graphics.contour["contour-velocity"].surfaces_list = [
-    "surf-x-coordinate"
-]
+root.results.graphics.contour["contour-velocity"].surfaces_list = ["surf-x-coordinate"]
 root.results.graphics.contour["contour-velocity"].node_values = False
 root.results.graphics.contour[
     "contour-velocity"
