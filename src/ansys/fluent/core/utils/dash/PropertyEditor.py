@@ -1,9 +1,11 @@
 from dash.dependencies import Input, Output, State, MATCH, ALL
 import dash
 from dash.exceptions import PreventUpdate
+from dash import html
 from local_property_editor import LocalPropertyEditor
 from settings_property_editor import SettingsPropertyEditor
 from ansys.fluent.core.utils.generic import SingletonMeta
+from ansys.fluent.core.solver.flobject import to_python_name
 class PropertyEditor(metaclass=SingletonMeta):
     def __init__(self, app, SessionsManager):
         self._app = app
@@ -75,6 +77,7 @@ class PropertyEditor(metaclass=SingletonMeta):
             return str(input_index) + str(input_value)
 
         @self._app.callback(
+            Output("property-editor-title", "children"),
             Output("property-editor", "children"),
             Input("refresh-property-editor", "value"),
             Input("connection-id", "data"),
@@ -87,6 +90,32 @@ class PropertyEditor(metaclass=SingletonMeta):
                 raise PreventUpdate
             self._id_map[f"{connection_id}-{session_id}"] = object_id
             update_stored_widgets(object_id, connection_id, session_id)
-            return list(self._all_widgets.values())
+            return html.H5(object_id.split(":")[-1].split("/")[-1].capitalize()),list(self._all_widgets.values())
 
 
+        @self._app.callback(
+            Output("object-id", "value"),
+            Input("connection-id", "data"),#
+            Input("session-id", "value"),
+            Input("tree-view", "selected")
+        )
+        def session_changed_or_tree_selected(connection_id, session_id, object_id):
+            print("session_changed", connection_id, session_id, object_id)
+
+            if session_id is None:
+                raise PreventUpdate
+            if object_id is None or len(object_id)==0:
+                raise PreventUpdate                
+            object_id = object_id[0]
+            ctx = dash.callback_context
+            triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+            if triggered_from == 'tree-view':        
+                if "local" in object_id or "remote" in object_id:           
+                     return object_id 
+                else:
+                     raise PreventUpdate
+            else:             
+                object_id = self._id_map.get(f"{connection_id}-{session_id}")
+                if object_id is None:
+                    raise PreventUpdate
+                return object_id

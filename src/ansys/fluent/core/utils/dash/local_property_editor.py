@@ -271,7 +271,7 @@ class PlotPropertyEditor:
     def is_type_supported(self, type):
         return type in ("XYPlot")
 
-    def get_widgets(graphics_type, connection_id, session_id):
+    def get_widgets(self, graphics_type, connection_id, session_id):
         return {
             "plot-button": dbc.Button(
                 "Plot",
@@ -299,7 +299,7 @@ class GraphicsWindow:
     _windows = {}
 
     def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
-        unique_win_id = f"{connection_id}-{session_id}-{win_id}"
+        unique_win_id = f"graphics-{connection_id}-{session_id}-{win_id}"
         window_state = GraphicsWindow._windows.get(unique_win_id)
         if not window_state:
             GraphicsWindow._windows[unique_win_id] = self.__dict__
@@ -354,17 +354,18 @@ class PlotWindow:
     _windows = {}
 
     def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
-        win_id = f"{connection_id}-{session_id}-{win_id}"
-        window_state = PlotWindow._windows.get(win_id)
+        unique_win_id = f"plot-{connection_id}-{session_id}-{win_id}"        
+        window_state = PlotWindow._windows.get(unique_win_id)
         if not window_state:
-            PlotWindow._windows[win_id] = self.__dict__
+            PlotWindow._windows[unique_win_id] = self.__dict__
 
             self._state = {}
             self._win_id = win_id
+            self._unique_win_id = unique_win_id
             self._app = app
 
             @self._app.callback(
-                Output(f"plot-viewer-{self._win_id}", "figure"),
+                Output(f"plot-viewer-{self._unique_win_id}", "figure"),
                 Input(f"{PLOT_BUTTON_ID}", "n_clicks"),
                 Input("connection-id", "data"),
                 State("window-id", "value"),
@@ -379,7 +380,7 @@ class PlotWindow:
                 object_location, object_type = object_id.split(":")
                 if object_location != "local":
                     raise PreventUpdat
-                if window_id != self._win_id:
+                if int(window_id) != self._win_id:
                     raise PreventUpdate
                 editor = PlotPropertyEditor(app, SessionsManager)       
                 obj = editor.get_object(object_type, connection_id, session_id)
@@ -391,8 +392,8 @@ class PlotWindow:
             self.__dict__ = window_state
 
     def get_widgets(self):
-        return {f"plot-viewer-{self._win_id}": dcc.Graph(
-            id=f"plot-viewer-{self._win_id}",
+        return {f"plot-viewer-{self._unique_win_id}": dcc.Graph(
+            id=f"plot-viewer-{self._unique_win_id}",
             figure=self._state,
             style={"height": 900},
         )}

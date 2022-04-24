@@ -16,13 +16,14 @@ from dash.exceptions import PreventUpdate
 
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
-import dash_treeview_antd
+
 from local_property_editor import PlotWindow, GraphicsWindow
 from PropertyEditor import PropertyEditor
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
 )
+import dash_treeview_antd
 app.config.suppress_callback_exceptions = True
 
 SIDEBAR_STYLE = {
@@ -32,7 +33,7 @@ SIDEBAR_STYLE = {
     "width": "16rem",
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
-    "height": "55rem",
+    "height": "53rem",
     "overflow-y": "scroll",
 }
 
@@ -63,29 +64,19 @@ def get_tree_data():
     return populate_tree(data)[0] 
     
 sidebar = html.Div(
-    [
-        html.P("Outline", className="lead"),
-        dbc.Col(
-            dbc.Button(
-                "Connect to Session",
-                id="connect-session",
-                size="lg",
-                n_clicks=0,
-                active=True,
-            )
-        ),
-        html.Div(
-            children =[],
-            id =  "session-list",           
-        ),
-        
+    [        
+        html.H5("Outline"),
         html.Div(
             [
                 dash_treeview_antd.TreeView(
                     id="tree-view",
                     multiple=False,
-                    expanded=["0"],
-                    data=get_tree_data()
+                    expanded=["Root"],
+                    data={
+                      "title": "Root",
+                      "key": "",
+                      "children":[]
+                    }
                 ),
                 html.Div(id="output-selected"),                
             ],
@@ -93,36 +84,7 @@ sidebar = html.Div(
     ],
     style=SIDEBAR_STYLE,
 )
-
-#@self._app.callback(
-#    Output("object-id", "value"),
-#    Input("connection-id", "data"),#
-#    Input("session-id", "value"),
-#)
-#def session_changed(connection_id, session_id):
-#    print("session_changed", connection_id, session_id)
-#    if session_id is None:
-#        raise PreventUpdate
-#    object_id = self._id_map.get(f"{connection_id}-{session_id}")
-#    if object_id is None:
-#        raise PreventUpdate
-#    return object_id
-
-@app.callback(
-    Output("object-id", "value"), 
-    [Input("tree-view", "selected")]
-)
-def _display_selected(object_id):
-    print('_display_selected', object_id)
-
-    if object_id is None or len(object_id)==0:
-        raise PreventUpdate
-    object_id = object_id[0]    
-    if "local" in object_id or "remote" in object_id:
-         print( "You have checked {}".format(object_id))
-         return object_id 
-    else:
-         raise PreventUpdate    
+ 
 
 _max_session_count = 6
 
@@ -144,6 +106,16 @@ def serve_layout():
                 [
                     dbc.Col(html.H1("Ansys pyFluent post web App")),
                     dbc.Col(
+                        dbc.Button(
+                            "Connect to Session",
+                            id="connect-session",
+                            n_clicks=0,
+                            style={"width": "200px"},
+                        ),
+                        width="auto",
+                        align="end",
+                    ),                     
+                    dbc.Col(
                         dcc.Dropdown(
                             id="session-id",
                             options=[],
@@ -161,20 +133,24 @@ def serve_layout():
                     dbc.Col(sidebar, align="start", width="auto"),
             dbc.Col(
                     [
-                    
+                        html.Div(id="property-editor-title"),
                         html.Div(
                             html.Div(
                                 id="property-editor",
                                 children=[],
                             ),
                             className="mb-3",
-                            style={
-                                "padding": "1px 1px 10px 1px",
-                                "width": "20rem",
-                            },
+
                         )
                     ],
                     width="auto",
+                            style={
+                                "padding": "1px 1px 1px 1px",
+                                "width": "20rem",
+                                "background-color": "#f8f9fa",                               
+                                "overflow-y": "scroll",  
+                                "height": "53rem",                               
+                            },                    
                 ),
                     dbc.Col(
                         [
@@ -201,38 +177,25 @@ app.layout = serve_layout
 
 
 @app.callback(
-    [
-        Output("session-list", "children"),
-        Output("session-id", "options"),
-    ],
+        
+    Output("session-id", "options"),    
+    Output("session-id", "value"),
+    Output("tree-view", "data"),
     Input("connect-session", "n_clicks"),
     Input("connection-id", "data"),
-    State("session-list", "children"),
     State("session-id", "options"),
 )
-def create_session(n_clicks, connection_id, session_list, options):
+def create_session(n_clicks, connection_id, options):
     if n_clicks == 0:
         raise PreventUpdate
-    session_id = f"session-{len(session_list)}"
+    session_id = f"session-{len(options)}"
     sessions_manager = SessionsManager(app, connection_id, session_id)
     sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")
     sessions = []
     if options is not None:
         sessions = options
     sessions.append(session_id)
-    session_list.append(
-        dbc.Button(
-            session_id,
-            id={"type": f"create-session-button", "index": session_id},
-            n_clicks=0,
-            style={
-                "margin-top": "10px",
-                "margin-left": "5px",
-                "margin-right": "15px",
-            },
-        )
-    )
-    return [session_list, sessions]
+    return [sessions, session_id, get_tree_data()]
 
 
 
