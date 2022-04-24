@@ -95,7 +95,7 @@ def serve_layout():
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
     PropertyEditor(app, SessionsManager)
-    print("get_tree_data", get_tree_data())
+    
     return dbc.Container(
         fluid=True,
         children=[
@@ -117,6 +117,16 @@ def serve_layout():
                         width="auto",
                         align="end",
                     ),
+                    dbc.Col(
+                        dbc.Input(
+                            placeholder="Session token to connect",
+                            id="session-token", 
+                            type = "number",                              
+                            style={"width": "200px"},
+                        ),
+                        width="auto",
+                        align="end",
+                    ),                    
                     dbc.Col(
                         dcc.Dropdown(
                             id="session-id",
@@ -182,15 +192,16 @@ app.layout = serve_layout
     Output("session-id", "value"),
     Output("tree-view", "data"),
     Input("connect-session", "n_clicks"),
+    Input("session-token", "value"),
     Input("connection-id", "data"),
     State("session-id", "options"),
 )
-def create_session(n_clicks, connection_id, options):
+def create_session(n_clicks, session_token, connection_id, options):
     if n_clicks == 0:
         raise PreventUpdate
     session_id = f"session-{len(options)}"
     sessions_manager = SessionsManager(app, connection_id, session_id)
-    sessions_manager.add_session("E:\\ajain\\Demo\\pyApp\\pyvista\\server.txt")
+    sessions_manager.add_session(session_token)
     sessions = []
     if options is not None:
         sessions = options

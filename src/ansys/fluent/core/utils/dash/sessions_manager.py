@@ -26,8 +26,9 @@ class SessionsManager:
         else:
             self.__dict__ = session_state
 
-    def add_session(self, file_path):
-        self.session = Session.create_from_server_info_file(file_path, False)
+    def add_session(self, session_token):
+        #self.session = Session.create_from_server_info_file(file_path, False)
+        self.session = Session("10.18.44.30", session_token)
         self.static_info = (
             self.session.get_settings_service().get_static_info()
         )

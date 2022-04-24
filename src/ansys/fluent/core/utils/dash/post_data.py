@@ -206,15 +206,6 @@ def update_vtk_fun_field(obj):
             surface_data, scalar_field_data = win.fetch_contour_data(obj)
         elif obj.__class__.__name__ == "Vector":
             pass
-        print(
-            "update_vtk_fun",
-            field,
-            "surface_data",
-            surface_data,
-            "scalar_field_data",
-            scalar_field_data,
-        )
-
         fields_data = []
         fields_min = None
         fields_max = None
