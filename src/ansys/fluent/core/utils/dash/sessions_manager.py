@@ -27,7 +27,7 @@ class SessionsManager:
 
     def add_session(self, file_path):
         self.session = Session.create_from_server_info_file(file_path, False)
-        #self.static_info = (
-        #    self.session.get_settings_service().get_static_info()
-        #)
-        #self.settings_root = self.session.get_settings_root()
+        self.static_info = (
+            self.session.get_settings_service().get_static_info()
+        )
+        self.settings_root = self.session.get_settings_root()

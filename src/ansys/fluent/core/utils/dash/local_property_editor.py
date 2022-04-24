@@ -33,17 +33,17 @@ class LocalPropertyEditor:
         )
         self._plot_property_editor = PlotPropertyEditor(app, SessionsManager)
 
-    def get_object(
+    def get_object_and_static_info(
         self, graphics_type, connection_id, session_id, object_id=None
     ):
         if self._graphics_property_editor.is_type_supported(graphics_type):
             return self._graphics_property_editor.get_object(
                 graphics_type, connection_id, session_id
-            )
+            ), None
         if self._plot_property_editor.is_type_supported(graphics_type):
             return self._plot_property_editor.get_object(
                 graphics_type, connection_id, session_id
-            )
+            ), None
 
     def get_label(self, name):
         name_list = re.split("[^a-zA-Z]", name)
@@ -90,7 +90,7 @@ class LocalPropertyEditor:
                             parent_visible and visible,
                         )
                         
-        obj = self.get_object(graphics_type, connection_id, session_id)
+        obj, static_info = self.get_object_and_static_info(graphics_type, connection_id, session_id)
         self._all_widgets = {}
         store_all_widgets(graphics_type, obj)
         if self._graphics_property_editor.is_type_supported(graphics_type):

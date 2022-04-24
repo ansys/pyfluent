@@ -2,12 +2,13 @@ from dash.dependencies import Input, Output, State, MATCH, ALL
 import dash
 from dash.exceptions import PreventUpdate
 from local_property_editor import LocalPropertyEditor
+from settings_property_editor import SettingsPropertyEditor
 from ansys.fluent.core.utils.generic import SingletonMeta
 class PropertyEditor(metaclass=SingletonMeta):
     def __init__(self, app, SessionsManager):
         self._app = app
         self._remote_property_editor = (
-            None  # SettingsEditor(app, SessionsManager)
+             SettingsPropertyEditor(app, SessionsManager)
         )
         self._local_property_editor = LocalPropertyEditor(app, SessionsManager)
         self._id_map = {}
@@ -56,14 +57,16 @@ class PropertyEditor(metaclass=SingletonMeta):
             )
 
             print("value_changed", input_index, input_value)
-            obj = editor.get_object(object_type, connection_id, session_id)
+            obj, static_info = editor.get_object_and_static_info(object_type, connection_id, session_id)
             path_list = input_index.split("/")[1:]
             for path in path_list:
                 obj = getattr(obj, path)
                 if obj is None:
                     raise PreventUpdate
+                if static_info:
+                    static_info = static_info["children"][obj.scheme_name]                    
 
-            if isinstance(obj(), bool):
+            if (static_info and static_info["type"] == "boolean") or isinstance(obj(), bool):
                 input_value = True if input_value else False
             if input_value == obj():
                 print("PreventUpdate")

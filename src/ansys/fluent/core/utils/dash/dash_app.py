@@ -123,6 +123,7 @@ def serve_layout():
             dcc.Store(data=connection_id, id="connection-id"),
             html.Data(id="refresh-property-editor"),
             html.Data(id="window-id", value="0"),
+            html.Data(id="command-output"),
             dbc.Row(
                 [
                     dbc.Col(html.H1("Ansys pyFluent post web App")),
@@ -149,7 +150,12 @@ def serve_layout():
                                 dbc.Label("Select Graphics"),
                                 dcc.Dropdown(
                                     id="object-id",
-                                    options=["local:Contour", "local:Vector"],                                    
+                                    options=[
+                                    "local:Mesh", "local:Surface", "local:Contour", "local:Vector",
+                                    "remote:Viscous", "remote:Multiphase", "remote:Initialization", "remote:calculation"
+                                    
+                                    
+                                    ],                                    
                                 ),
                             ],
                             style={
@@ -177,9 +183,6 @@ def serve_layout():
                         [
                             dbc.Tabs(
                                 [
-                                    dbc.Tab(
-                                        label="Settings", tab_id="settings"
-                                    ),
                                     dbc.Tab(
                                         label="Graphics", tab_id="graphics"
                                     ),
@@ -267,11 +270,6 @@ def render_tab_content(active_tab, connection_id, session_id):
         return  dbc.Col( children=list(PlotWindow(
             app, connection_id, session_id, 0, SessionsManager
         ).get_widgets().values()))
-
-    #elif active_tab == "settings":
-    #    return SettingsWidget(
-    #        app, connection_id, session_id, SessionsManager
-    #    ).layout()
 
 
 if __name__ == "__main__":
