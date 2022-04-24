@@ -18,6 +18,7 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
 )
 from ansys.fluent.post import set_config
 from post_data import update_vtk_fun, update_graph_fun
+
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "display-graphics-button"
 PLOT_BUTTON_ID = "plot-graph-button"
@@ -37,21 +38,25 @@ class LocalPropertyEditor:
         self, graphics_type, connection_id, session_id, object_id=None
     ):
         if self._graphics_property_editor.is_type_supported(graphics_type):
-            return self._graphics_property_editor.get_object(
-                graphics_type, connection_id, session_id
-            ), None
+            return (
+                self._graphics_property_editor.get_object(
+                    graphics_type, connection_id, session_id
+                ),
+                None,
+            )
         if self._plot_property_editor.is_type_supported(graphics_type):
-            return self._plot_property_editor.get_object(
-                graphics_type, connection_id, session_id
-            ), None
+            return (
+                self._plot_property_editor.get_object(
+                    graphics_type, connection_id, session_id
+                ),
+                None,
+            )
 
     def get_label(self, name):
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
-            
+
     def get_widgets(self, graphics_type, connection_id, session_id):
-
-
         def store_all_widgets(obj_type, obj, parent="", parent_visible=True):
             for name, value in obj.__dict__.items():
                 if name == "_parent":
@@ -89,8 +94,10 @@ class LocalPropertyEditor:
                             parent + "/" + name,
                             parent_visible and visible,
                         )
-                        
-        obj, static_info = self.get_object_and_static_info(graphics_type, connection_id, session_id)
+
+        obj, static_info = self.get_object_and_static_info(
+            graphics_type, connection_id, session_id
+        )
         self._all_widgets = {}
         store_all_widgets(graphics_type, obj)
         if self._graphics_property_editor.is_type_supported(graphics_type):
@@ -105,7 +112,7 @@ class LocalPropertyEditor:
                     graphics_type, connection_id, session_id
                 )
             )
-        return self._all_widgets                        
+        return self._all_widgets
 
     def get_widget(
         self,
@@ -218,7 +225,6 @@ class LocalPropertyEditor:
         return widget
 
 
-
 class GraphicsPropertyEditor:
     def __init__(self, app, SessionsManager):
         self._app = app
@@ -298,7 +304,9 @@ class GraphicsWindow:
 
     _windows = {}
 
-    def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
+    def __init__(
+        self, app, connection_id, session_id, win_id, SessionsManager
+    ):
         unique_win_id = f"graphics-{connection_id}-{session_id}-{win_id}"
         window_state = GraphicsWindow._windows.get(unique_win_id)
         if not window_state:
@@ -319,16 +327,24 @@ class GraphicsWindow:
             )
             def on_button_click(
                 n_clicks, connection_id, window_id, session_id, object_id
-            ):                
-                print('on_button_click', n_clicks, connection_id, window_id, session_id, object_id, self._win_id)
+            ):
+                print(
+                    "on_button_click",
+                    n_clicks,
+                    connection_id,
+                    window_id,
+                    session_id,
+                    object_id,
+                    self._win_id,
+                )
                 if n_clicks == 0:
                     raise PreventUpdate
-                object_location, object_type = object_id.split(":")                
+                object_location, object_type = object_id.split(":")
                 if object_location != "local":
                     raise PreventUpdat
                 if int(window_id) != self._win_id:
                     raise PreventUpdate
-                editor = GraphicsPropertyEditor(app, SessionsManager)    
+                editor = GraphicsPropertyEditor(app, SessionsManager)
                 obj = editor.get_object(object_type, connection_id, session_id)
                 print("n_clicks on_button_click", n_clicks, obj._name)
                 vtk_rendering_data = update_vtk_fun(obj)
@@ -339,22 +355,26 @@ class GraphicsWindow:
             self.__dict__ = window_state
 
     def get_widgets(self):
-        return {f"vtk-widget-{self._unique_win_id}": html.Div(
-            dash_vtk.View(
-                id=f"vtk-view-{self._unique_win_id}",
-                pickingModes=["hover"],
-                children=self._state,
-            ),
-            style={"height": "100%", "width": "100%"},
-        )}
+        return {
+            f"vtk-widget-{self._unique_win_id}": html.Div(
+                dash_vtk.View(
+                    id=f"vtk-view-{self._unique_win_id}",
+                    pickingModes=["hover"],
+                    children=self._state,
+                ),
+                style={"height": "100%", "width": "100%"},
+            )
+        }
 
 
 class PlotWindow:
 
     _windows = {}
 
-    def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
-        unique_win_id = f"plot-{connection_id}-{session_id}-{win_id}"        
+    def __init__(
+        self, app, connection_id, session_id, win_id, SessionsManager
+    ):
+        unique_win_id = f"plot-{connection_id}-{session_id}-{win_id}"
         window_state = PlotWindow._windows.get(unique_win_id)
         if not window_state:
             PlotWindow._windows[unique_win_id] = self.__dict__
@@ -382,7 +402,7 @@ class PlotWindow:
                     raise PreventUpdat
                 if int(window_id) != self._win_id:
                     raise PreventUpdate
-                editor = PlotPropertyEditor(app, SessionsManager)       
+                editor = PlotPropertyEditor(app, SessionsManager)
                 obj = editor.get_object(object_type, connection_id, session_id)
                 print("n_clicks on_button_click", n_clicks, obj._name)
                 self._state = update_graph_fun(obj)
@@ -392,8 +412,10 @@ class PlotWindow:
             self.__dict__ = window_state
 
     def get_widgets(self):
-        return {f"plot-viewer-{self._unique_win_id}": dcc.Graph(
-            id=f"plot-viewer-{self._unique_win_id}",
-            figure=self._state,
-            style={"height": 900},
-        )}
+        return {
+            f"plot-viewer-{self._unique_win_id}": dcc.Graph(
+                id=f"plot-viewer-{self._unique_win_id}",
+                figure=self._state,
+                style={"height": 900},
+            )
+        }

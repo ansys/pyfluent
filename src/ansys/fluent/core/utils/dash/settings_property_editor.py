@@ -29,23 +29,21 @@ class SettingsPropertyEditor:
     def __init__(self, app, SessionsManager):
         self._app = app
         self._all_widgets = {}
-        self.SessionsManager = SessionsManager  
+        self.SessionsManager = SessionsManager
         self._type_to_path = {
             "Viscous": "setup/models/viscous",
             "Multiphase": "setup/models/multiphase",
             "Initialization": "solution/initialization",
             "Calculation": "solution/run_calculation",
-        }        
+        }
 
         @self._app.callback(
             Output(f"command-output", "value"),
             Input(
                 {"type": "settings-command-button", "index": ALL}, "n_clicks"
-            ),            
+            ),
             Input("connection-id", "data"),
-            State(
-                {"type": "settings-command-input", "index": ALL}, "value"
-            ),            
+            State({"type": "settings-command-input", "index": ALL}, "value"),
             State("session-id", "value"),
             State("object-id", "value"),
         )
@@ -56,35 +54,51 @@ class SettingsPropertyEditor:
             session_id,
             object_id,
         ):
-            print('on_settings_command_execution', connection_id, args_value, session_id, object_id)
+            print(
+                "on_settings_command_execution",
+                connection_id,
+                args_value,
+                session_id,
+                object_id,
+            )
             if object_id is None or session_id is None:
-                raise PreventUpdate 
-            object_location, object_type = object_id.split(":")                
+                raise PreventUpdate
+            object_location, object_type = object_id.split(":")
             if object_location != "remote":
-                raise PreventUpdate        
+                raise PreventUpdate
             ctx = dash.callback_context
             n_clicks = ctx.triggered[0]["value"]
             if not n_clicks:
                 raise PreventUpdate
-            command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]            
-            print("on_command_execution", command_name, n_clicks, args_value, ctx.triggered)
+            command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])[
+                "index"
+            ]
+            print(
+                "on_command_execution",
+                command_name,
+                n_clicks,
+                args_value,
+                ctx.triggered,
+            )
             obj, static_info = self.get_object_and_static_info(
                 object_type, connection_id, session_id
             )
             kwargs = {}
             cmd_obj = getattr(obj, command_name)
             args_iter = iter(args_value)
-            args_info = static_info["commands"][cmd_obj.scheme_name]["arguments"]
-            for arg_name, arg_info in  args_info.items():
-                kwargs[to_python_name(arg_name)] =  next(args_iter)
-            print(kwargs)    
+            args_info = static_info["commands"][cmd_obj.scheme_name][
+                "arguments"
+            ]
+            for arg_name, arg_info in args_info.items():
+                kwargs[to_python_name(arg_name)] = next(args_iter)
+            print(kwargs)
             return_value = cmd_obj(**kwargs)
-            return f"{return_value}"        
+            return f"{return_value}"
 
     def get_object_and_static_info(
         self, object_type_path, connection_id, session_id, object_id=None
-    ):        
-        if object_type_path is not None:            
+    ):
+        if object_type_path is not None:
             path_list = object_type_path.split("/")
             session = self.SessionsManager(
                 self._app, connection_id, session_id
@@ -98,20 +112,18 @@ class SettingsPropertyEditor:
             for path in path_list:
                 obj = getattr(obj, path)
                 static_info = static_info["children"][obj.scheme_name]
-            return obj, static_info        
-
+            return obj, static_info
 
     def get_label(self, name):
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
-            
+
     def get_widgets(self, object_type, connection_id, session_id):
-    
         def store_all_widgets(obj, si_info, state, parent=""):
             for name, value in obj.get_state().items():
                 child_obj = getattr(obj, name)
                 si_info_child = si_info["children"][child_obj.scheme_name]
-                
+
                 if si_info_child["type"] != "group":
                     widget = self.get_widget(
                         child_obj,
@@ -127,33 +139,43 @@ class SettingsPropertyEditor:
                         state[name],
                         parent + "/" + name,
                     )
+
         def store_all_buttons(obj, si_info):
-            commands  = si_info.get("commands",[])
+            commands = si_info.get("commands", [])
             for command_name in commands:
-                try:             
+                try:
                     cmd_obj = getattr(obj, command_name)
                 except AttributeError:
-                    continue                
+                    continue
                 if not cmd_obj.is_active():
                     continue
                 self._all_widgets[command_name] = dbc.Button(
-                  self.get_label(command_name),
-                  id = {"type": "settings-command-button", "index": command_name},
-                  n_clicks=0,
-                )               
+                    self.get_label(command_name),
+                    id={
+                        "type": "settings-command-button",
+                        "index": command_name,
+                    },
+                    n_clicks=0,
+                )
                 si_info_command = si_info["commands"][cmd_obj.scheme_name]
-                command_args = si_info_command['arguments']
+                command_args = si_info_command["arguments"]
                 for command_arg, arg_info in command_args.items():
-                    if arg_info['type']=="integer":
+                    if arg_info["type"] == "integer":
                         self._all_widgets[command_arg] = dcc.Input(
-                            id={"type": "settings-command-input", "index": command_name+":"+command_arg},
-                            type="number"                            
-                        ) 
-                    if arg_info['type']=="real":
+                            id={
+                                "type": "settings-command-input",
+                                "index": command_name + ":" + command_arg,
+                            },
+                            type="number",
+                        )
+                    if arg_info["type"] == "real":
                         self._all_widgets[command_arg] = dcc.Input(
-                            id={"type": "settings-command-input", "index": command_name+":"+command_arg},
-                            type="number"                            
-                        )                             
+                            id={
+                                "type": "settings-command-input",
+                                "index": command_name + ":" + command_arg,
+                            },
+                            type="number",
+                        )
 
         obj, static_info = self.get_object_and_static_info(
             object_type, connection_id, session_id
@@ -162,7 +184,7 @@ class SettingsPropertyEditor:
         print("update_stored_widgets", obj, obj.get_state())
         store_all_widgets(obj, static_info, obj.get_state())
         store_all_buttons(obj, static_info)
-        return self._all_widgets                        
+        return self._all_widgets
 
     def get_widget(
         self,
@@ -196,7 +218,7 @@ class SettingsPropertyEditor:
             # print('widget', widget)
         elif static_info["type"] == "boolean":
             widget = dcc.Checklist(
-                id={"type":"input-widget", "index": path},
+                id={"type": "input-widget", "index": path},
                 options={
                     "selected": self.get_label(name),
                 },
@@ -249,4 +271,4 @@ class SettingsPropertyEditor:
                     widget,
                 ],
             )
-        return widget 
+        return widget

@@ -14,16 +14,17 @@ from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
 
 
-
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
 from local_property_editor import PlotWindow, GraphicsWindow
 from PropertyEditor import PropertyEditor
+
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
 )
 import dash_treeview_antd
+
 app.config.suppress_callback_exceptions = True
 
 SIDEBAR_STYLE = {
@@ -37,34 +38,38 @@ SIDEBAR_STYLE = {
     "overflow-y": "scroll",
 }
 
+
 def populate_tree(data):
     children = []
     for item_name, item_data in data.items():
         tree_data = {}
-        tree_data["title"] = item_name 
-        remote =  item_data.get("remote")   
-        local =  item_data.get("local")
+        tree_data["title"] = item_name
+        remote = item_data.get("remote")
+        local = item_data.get("local")
         if local:
-            tree_data["key"] = f"local:{local}" 
+            tree_data["key"] = f"local:{local}"
         elif remote:
-            tree_data["key"] = f"remote:{remote}" 
+            tree_data["key"] = f"remote:{remote}"
         else:
-            tree_data["key"] = "" 
-        children.append(tree_data)  
-        if  item_data.get("children"):                    
-            tree_data["children"] = populate_tree(item_data["children"]) 
-    return children                
-            
-             
-            
+            tree_data["key"] = ""
+        children.append(tree_data)
+        if item_data.get("children"):
+            tree_data["children"] = populate_tree(item_data["children"])
+    return children
+
+
 def get_tree_data():
-    import yaml 
-    with open('E:\\ajain\\ANSYSDev\\vNNN\\pyfluent\\src\\ansys\\fluent\\core\\utils\\dash\\outline.yaml') as f:
-        data = yaml.load(f, Loader=yaml.SafeLoader) 
-    return populate_tree(data)[0] 
-    
+    import yaml
+
+    with open(
+        "E:\\ajain\\ANSYSDev\\vNNN\\pyfluent\\src\\ansys\\fluent\\core\\utils\\dash\\outline.yaml"
+    ) as f:
+        data = yaml.load(f, Loader=yaml.SafeLoader)
+    return populate_tree(data)[0]
+
+
 sidebar = html.Div(
-    [        
+    [
         html.H5("Outline"),
         html.Div(
             [
@@ -72,28 +77,25 @@ sidebar = html.Div(
                     id="tree-view",
                     multiple=False,
                     expanded=["Root"],
-                    data={
-                      "title": "Root",
-                      "key": "",
-                      "children":[]
-                    }
+                    data={"title": "Root", "key": "", "children": []},
                 ),
-                html.Div(id="output-selected"),                
+                html.Div(id="output-selected"),
             ],
         ),
     ],
     style=SIDEBAR_STYLE,
 )
- 
+
 
 _max_session_count = 6
+
 
 def serve_layout():
     connection_id = str(uuid.uuid4())
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
     PropertyEditor(app, SessionsManager)
-    print('get_tree_data', get_tree_data())
+    print("get_tree_data", get_tree_data())
     return dbc.Container(
         fluid=True,
         children=[
@@ -114,7 +116,7 @@ def serve_layout():
                         ),
                         width="auto",
                         align="end",
-                    ),                     
+                    ),
                     dbc.Col(
                         dcc.Dropdown(
                             id="session-id",
@@ -131,27 +133,26 @@ def serve_layout():
             dbc.Row(
                 children=[
                     dbc.Col(sidebar, align="start", width="auto"),
-            dbc.Col(
-                    [
-                        html.Div(id="property-editor-title"),
-                        html.Div(
+                    dbc.Col(
+                        [
+                            html.Div(id="property-editor-title"),
                             html.Div(
-                                id="property-editor",
-                                children=[],
+                                html.Div(
+                                    id="property-editor",
+                                    children=[],
+                                ),
+                                className="mb-3",
                             ),
-                            className="mb-3",
-
-                        )
-                    ],
-                    width="auto",
-                            style={
-                                "padding": "1px 1px 1px 1px",
-                                "width": "20rem",
-                                "background-color": "#f8f9fa",                               
-                                "overflow-y": "scroll",  
-                                "height": "53rem",                               
-                            },                    
-                ),
+                        ],
+                        width="auto",
+                        style={
+                            "padding": "1px 1px 1px 1px",
+                            "width": "20rem",
+                            "background-color": "#f8f9fa",
+                            "overflow-y": "scroll",
+                            "height": "53rem",
+                        },
+                    ),
                     dbc.Col(
                         [
                             dbc.Tabs(
@@ -177,8 +178,7 @@ app.layout = serve_layout
 
 
 @app.callback(
-        
-    Output("session-id", "options"),    
+    Output("session-id", "options"),
     Output("session-id", "value"),
     Output("tree-view", "data"),
     Input("connect-session", "n_clicks"),
@@ -196,9 +196,6 @@ def create_session(n_clicks, connection_id, options):
         sessions = options
     sessions.append(session_id)
     return [sessions, session_id, get_tree_data()]
-
-
-
 
 
 @app.callback(
@@ -219,17 +216,28 @@ def render_tab_content(active_tab, connection_id, session_id):
 
     if active_tab == "graphics":
         return dbc.Row(
-            [ dbc.Col( children=list(GraphicsWindow(
-            app, connection_id, session_id, 0, SessionsManager
-        ).get_widgets().values()))],
-         style={"height": "50rem"},
-        
+            [
+                dbc.Col(
+                    children=list(
+                        GraphicsWindow(
+                            app, connection_id, session_id, 0, SessionsManager
+                        )
+                        .get_widgets()
+                        .values()
+                    )
+                )
+            ],
+            style={"height": "50rem"},
         )
 
     elif active_tab == "plots":
-        return  dbc.Col( children=list(PlotWindow(
-            app, connection_id, session_id, 0, SessionsManager
-        ).get_widgets().values()))
+        return dbc.Col(
+            children=list(
+                PlotWindow(app, connection_id, session_id, 0, SessionsManager)
+                .get_widgets()
+                .values()
+            )
+        )
 
 
 if __name__ == "__main__":
