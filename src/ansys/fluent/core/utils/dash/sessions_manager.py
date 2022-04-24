@@ -1,9 +1,6 @@
 from ansys.fluent.core.session import Session
-from ansys.fluent.core.utils.dash.post_widgets import (
-    GraphicsWidget,
-    PlotWidget,
-)
-from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
+from local_property_editor import PlotWindow, GraphicsWindow
+#from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
 
 
 class SessionsManager:
@@ -16,12 +13,12 @@ class SessionsManager:
         session_state = SessionsManager._sessions_state.get(cmplete_session_id)
         if not session_state:
             SessionsManager._sessions_state[cmplete_session_id] = self.__dict__
-            SettingsWidget(app, connection_id, session_id, SessionsManager)
+            #SettingsWidget(app, connection_id, session_id, SessionsManager)
             for win_id in range(SessionsManager._windows_per_session):
-                GraphicsWidget(
+                GraphicsWindow(
                     app, connection_id, session_id, win_id, SessionsManager
                 )
-                PlotWidget(
+                PlotWindow(
                     app, connection_id, session_id, win_id, SessionsManager
                 )
 
@@ -30,7 +27,7 @@ class SessionsManager:
 
     def add_session(self, file_path):
         self.session = Session.create_from_server_info_file(file_path, False)
-        self.static_info = (
-            self.session.get_settings_service().get_static_info()
-        )
-        self.settings_root = self.session.get_settings_root()
+        #self.static_info = (
+        #    self.session.get_settings_service().get_static_info()
+        #)
+        #self.settings_root = self.session.get_settings_root()

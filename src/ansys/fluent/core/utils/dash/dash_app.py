@@ -21,7 +21,8 @@ from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 import dash_treeview_antd
-
+from local_property_editor import PlotWindow, GraphicsWindow
+from PropertyEditor import PropertyEditor
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
@@ -115,18 +116,19 @@ def serve_layout():
     connection_id = str(uuid.uuid4())
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
-
+    PropertyEditor(app, SessionsManager)
     return dbc.Container(
         fluid=True,
         children=[
             dcc.Store(data=connection_id, id="connection-id"),
-            dcc.Store(id="tab-info"),
+            html.Data(id="refresh-property-editor"),
+            html.Data(id="window-id", value="0"),
             dbc.Row(
                 [
                     dbc.Col(html.H1("Ansys pyFluent post web App")),
                     dbc.Col(
                         dcc.Dropdown(
-                            id="sessions",
+                            id="session-id",
                             options=[],
                             value=None,
                             style={"width": "200px"},
@@ -140,6 +142,37 @@ def serve_layout():
             dbc.Row(
                 children=[
                     dbc.Col(sidebar, align="start", width="auto"),
+            dbc.Col(
+                    [
+                        html.Div(
+                            [
+                                dbc.Label("Select Graphics"),
+                                dcc.Dropdown(
+                                    id="object-id",
+                                    options=["local:Contour", "local:Vector"],                                    
+                                ),
+                            ],
+                            style={
+                                "padding": "1px 1px 10px 1px",
+                                "width": "20rem",
+                            },
+                        ),
+                    
+                    
+                        html.Div(
+                            html.Div(
+                                id="property-editor",
+                                children=[],
+                            ),
+                            className="mb-3",
+                            style={
+                                "padding": "1px 1px 10px 1px",
+                                "width": "20rem",
+                            },
+                        )
+                    ],
+                    width="auto",
+                ),
                     dbc.Col(
                         [
                             dbc.Tabs(
@@ -170,12 +203,12 @@ app.layout = serve_layout
 @app.callback(
     [
         Output("session-list", "children"),
-        Output("sessions", "options"),
+        Output("session-id", "options"),
     ],
     Input("connect-session", "n_clicks"),
     Input("connection-id", "data"),
     State("session-list", "children"),
-    State("sessions", "options"),
+    State("session-id", "options"),
 )
 def create_session(n_clicks, connection_id, session_list, options):
     if n_clicks == 0:
@@ -202,29 +235,14 @@ def create_session(n_clicks, connection_id, session_list, options):
     return [session_list, sessions]
 
 
-@app.callback(
-    Output("sessions", "value"),
-    Input({"type": f"create-session-button", "index": ALL}, "n_clicks"),
-    Input("connection-id", "data"),
-)
-def on_session_click(
-    _,
-    connection_id,
-):
-    ctx = dash.callback_context
-    prop_value = ctx.triggered[0]["value"]
-    if prop_value is None:
-        raise PreventUpdate
-    prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])
-    prop_id = prop_id["index"]
-    return prop_id
+
 
 
 @app.callback(
     Output("tab-content", "children"),
     Input("tabs", "active_tab"),
     Input("connection-id", "data"),
-    Input("sessions", "value"),
+    Input("session-id", "value"),
 )
 def render_tab_content(active_tab, connection_id, session_id):
     """
@@ -237,19 +255,23 @@ def render_tab_content(active_tab, connection_id, session_id):
         raise PreventUpdate
 
     if active_tab == "graphics":
-        return GraphicsWidget(
+        return dbc.Row(
+            [ dbc.Col( children=list(GraphicsWindow(
             app, connection_id, session_id, 0, SessionsManager
-        ).layout()
+        ).get_widgets().values()))],
+         style={"height": "50rem"},
+        
+        )
 
     elif active_tab == "plots":
-        return PlotWidget(
+        return  dbc.Col( children=list(PlotWindow(
             app, connection_id, session_id, 0, SessionsManager
-        ).layout()
+        ).get_widgets().values()))
 
-    elif active_tab == "settings":
-        return SettingsWidget(
-            app, connection_id, session_id, SessionsManager
-        ).layout()
+    #elif active_tab == "settings":
+    #    return SettingsWidget(
+    #        app, connection_id, session_id, SessionsManager
+    #    ).layout()
 
 
 if __name__ == "__main__":
