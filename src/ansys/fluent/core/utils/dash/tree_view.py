@@ -32,7 +32,7 @@ class TreeView:
                 tree_data["key"] = f"remote:{remote}"
             else:
                 tree_data["key"] = ""
-            children.append(tree_data)
+            
             if item_data.get("children"):
                 tree_data["children"] = self.populate_tree(item_data["children"])
             elif remote:
@@ -47,12 +47,15 @@ class TreeView:
                     except AttributeError:
                         obj = obj[path] 
                         static_info =  static_info['object-type'] 
-                if static_info['type']=='named-object' and obj.is_active():  
+                if static_info['type']=='named-object':
+                    if not obj.is_active():  
+                        continue
                     children_name =  list(obj.get_state().keys()) 
                     if children_name:                    
                         tree_data["key"] =""                    
                         children_data = {child:{'remote':f"{remote}/{child}"}  for child in children_name}
-                        tree_data["children"] = self.populate_tree(children_data)                    
+                        tree_data["children"] = self.populate_tree(children_data)
+            children.append(tree_data)                        
                                      
         return children
 
