@@ -31,8 +31,7 @@ SIDEBAR_STYLE = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "16rem",
-    "padding": "2rem 1rem",
+    "width": "16rem",   
     "background-color": "#f8f9fa",
     "height": "53rem",
     "overflow-y": "scroll",
@@ -78,8 +77,7 @@ sidebar = html.Div(
                     multiple=False,
                     expanded=["Root"],
                     data={"title": "Root", "key": "", "children": []},
-                ),
-                html.Div(id="output-selected"),
+                ),               
             ],
         ),
     ],
@@ -106,7 +104,15 @@ def serve_layout():
             html.Data(id="command-output"),
             dbc.Row(
                 [
-                    dbc.Col(html.H1("Ansys pyFluent post web App")),
+                    dbc.Col(
+                      html.Div(
+                      [
+                        html.Img(src='/assets/ansys.jpg', style={'width':'35px', 'height':'35px', "padding":"5px 2px 2px 2px"}),
+                        html.H2("Ansys PyFluent Web App"), 
+                        ],
+                      style = {"display": "flex", "flex-direction": "row"}  
+                      )
+                    ),
                     dbc.Col(
                         dbc.Button(
                             "Connect to Session",
@@ -137,7 +143,11 @@ def serve_layout():
                         width="auto",
                         align="end",
                     ),
-                ]
+                ],
+                        style={                                               
+                            "background-color": "#f8f9fa",
+                            "background-image": 'url("/resources//ansys-logo.png")',
+                        }                 
             ),
             html.Hr(),
             dbc.Row(
