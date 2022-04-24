@@ -66,11 +66,16 @@ class PropertyEditor(metaclass=SingletonMeta):
             )
             path_list = input_index.split("/")[1:]
             for path in path_list:
-                obj = getattr(obj, path)
+                try:
+                    obj = getattr(obj, path)
+                    if static_info:
+                        static_info = static_info["children"][obj.scheme_name]                    
+                except AttributeError:
+                    obj = obj[path] 
+                    static_info =  static_info['object-type']                     
                 if obj is None:
                     raise PreventUpdate
-                if static_info:
-                    static_info = static_info["children"][obj.scheme_name]
+
 
             if (
                 static_info and static_info["type"] == "boolean"
@@ -96,7 +101,7 @@ class PropertyEditor(metaclass=SingletonMeta):
                 raise PreventUpdate
             self._id_map[f"{connection_id}-{session_id}"] = object_id
             update_stored_widgets(object_id, connection_id, session_id)
-            return html.H5(
+            return html.H6(
                 object_id.split(":")[-1].split("/")[-1].capitalize()
             ), list(self._all_widgets.values())
 

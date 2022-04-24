@@ -12,7 +12,7 @@ import numpy as np
 import plotly.graph_objs as go
 from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
-
+from tree_view import TreeView
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
@@ -38,38 +38,10 @@ SIDEBAR_STYLE = {
 }
 
 
-def populate_tree(data):
-    children = []
-    for item_name, item_data in data.items():
-        tree_data = {}
-        tree_data["title"] = item_name
-        remote = item_data.get("remote")
-        local = item_data.get("local")
-        if local:
-            tree_data["key"] = f"local:{local}"
-        elif remote:
-            tree_data["key"] = f"remote:{remote}"
-        else:
-            tree_data["key"] = ""
-        children.append(tree_data)
-        if item_data.get("children"):
-            tree_data["children"] = populate_tree(item_data["children"])
-    return children
-
-
-def get_tree_data():
-    import yaml
-
-    with open(
-        "E:\\ajain\\ANSYSDev\\vNNN\\pyfluent\\src\\ansys\\fluent\\core\\utils\\dash\\outline.yaml"
-    ) as f:
-        data = yaml.load(f, Loader=yaml.SafeLoader)
-    return populate_tree(data)[0]
-
 
 sidebar = html.Div(
     [
-        html.H5("Outline"),
+        html.H6("Outline"),
         html.Div(
             [
                 dash_treeview_antd.TreeView(
@@ -197,10 +169,11 @@ def serve_layout():
 app.layout = serve_layout
 
 
+
+
 @app.callback(
     Output("session-id", "options"),
     Output("session-id", "value"),
-    Output("tree-view", "data"),
     Input("connect-session", "n_clicks"),
     Input("session-token", "value"),
     Input("connection-id", "data"),
@@ -216,8 +189,20 @@ def create_session(n_clicks, session_token, connection_id, options):
     if options is not None:
         sessions = options
     sessions.append(session_id)
-    return [sessions, session_id, get_tree_data()]
+    return [sessions, session_id]
 
+@app.callback(
+    Output("tree-view", "data"),
+    Input("connection-id", "data"),  #
+    Input("session-id", "value"),    
+)
+def session_changed(
+    connection_id, session_id
+):
+   if session_id is None or connection_id is None:
+       raise PreventUpdate
+   print("session_changed", connection_id, session_id)
+   return TreeView(app, connection_id, session_id, SessionsManager).get_tree_nodes()
 
 @app.callback(
     Output("tab-content", "children"),

@@ -30,12 +30,6 @@ class SettingsPropertyEditor:
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
-        self._type_to_path = {
-            "Viscous": "setup/models/viscous",
-            "Multiphase": "setup/models/multiphase",
-            "Initialization": "solution/initialization",
-            "Calculation": "solution/run_calculation",
-        }
 
         @self._app.callback(
             Output(f"command-output", "value"),
@@ -110,8 +104,12 @@ class SettingsPropertyEditor:
                 self._app, connection_id, session_id
             ).settings_root
             for path in path_list:
-                obj = getattr(obj, path)
-                static_info = static_info["children"][obj.scheme_name]
+                try:
+                    obj = getattr(obj, path)
+                    static_info = static_info["children"][obj.scheme_name]                    
+                except AttributeError:
+                    obj = obj[path] 
+                    static_info =  static_info['object-type']                                     
             return obj, static_info
 
     def get_label(self, name):
@@ -121,10 +119,16 @@ class SettingsPropertyEditor:
     def get_widgets(self, object_type, connection_id, session_id):
         def store_all_widgets(obj, si_info, state, parent=""):
             for name, value in obj.get_state().items():
-                child_obj = getattr(obj, name)
-                si_info_child = si_info["children"][child_obj.scheme_name]
+                if si_info["type"]== 'named-object':
+                    child_obj = obj[name]
+                    si_info_child =  si_info['object-type']                
+                else:
+                    child_obj = getattr(obj, name)
+                    si_info_child = si_info["children"][child_obj.scheme_name]                
 
-                if si_info_child["type"] != "group":
+                
+                print(name, si_info_child["type"])
+                if si_info_child["type"] not in ("group", 'named-object'):
                     widget = self.get_widget(
                         child_obj,
                         name,
@@ -194,7 +198,7 @@ class SettingsPropertyEditor:
         static_info,
     ):
         print("get_widget", obj, name, path)
-        widget = html.Div(f"Widget not found for {name}.")
+        widget = html.Div("Widget not found.")
         if static_info["type"] == "string":
             if static_info.get("has_allowed_values"):
                 widget = dcc.Dropdown(
@@ -223,9 +227,8 @@ class SettingsPropertyEditor:
                     "selected": self.get_label(name),
                 },
                 value=["selected"] if obj() else [],
-                style={"padding": "5px"},
-                labelStyle={"display": "inline-block"},
-                inputStyle={"padding": "1px 1px 1px 5px"},
+                style={"padding": "5px 5px"},
+                
             )
         elif static_info["type"] == "real":
             if static_info.get("has_range"):
@@ -263,6 +266,7 @@ class SettingsPropertyEditor:
         if static_info["type"] == "boolean":
             widget = html.Div(
                 [widget],
+              style = {"padding": "10px 1px 2px"}       
             )
         else:
             widget = html.Div(
@@ -270,5 +274,6 @@ class SettingsPropertyEditor:
                     dbc.Label(self.get_label(name)),
                     widget,
                 ],
+                style = {"display": "flex", "flex-direction": "column", "padding": "10px 1px 2px"}  
             )
         return widget
