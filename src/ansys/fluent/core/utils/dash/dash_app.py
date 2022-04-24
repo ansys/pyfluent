@@ -13,11 +13,7 @@ import plotly.graph_objs as go
 from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
 
-from ansys.fluent.core.utils.dash.post_widgets import (
-    GraphicsWidget,
-    PlotWidget,
-)
-from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
+
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 import dash_treeview_antd

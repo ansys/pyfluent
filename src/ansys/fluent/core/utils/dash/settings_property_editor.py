@@ -57,12 +57,14 @@ class SettingsPropertyEditor:
             object_id,
         ):
             print('on_settings_command_execution', connection_id, args_value, session_id, object_id)
+            if object_id is None or session_id is None:
+                raise PreventUpdate 
             object_location, object_type = object_id.split(":")                
             if object_location != "remote":
                 raise PreventUpdate        
             ctx = dash.callback_context
             n_clicks = ctx.triggered[0]["value"]
-            if n_clicks is None or n_clicks==0:
+            if not n_clicks:
                 raise PreventUpdate
             command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]            
             print("on_command_execution", command_name, n_clicks, args_value, ctx.triggered)
