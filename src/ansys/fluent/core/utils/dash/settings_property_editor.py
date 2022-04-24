@@ -34,7 +34,7 @@ class SettingsPropertyEditor:
             "Viscous": "setup/models/viscous",
             "Multiphase": "setup/models/multiphase",
             "Initialization": "solution/initialization",
-            "calculation": "solution/run_calculation",
+            "Calculation": "solution/run_calculation",
         }        
 
         @self._app.callback(
@@ -82,10 +82,9 @@ class SettingsPropertyEditor:
             return f"{return_value}"        
 
     def get_object_and_static_info(
-        self, object_type, connection_id, session_id, object_id=None
+        self, object_type_path, connection_id, session_id, object_id=None
     ):        
-        if object_type is not None:
-            object_type_path = self._type_to_path[object_type]
+        if object_type_path is not None:            
             path_list = object_type_path.split("/")
             session = self.SessionsManager(
                 self._app, connection_id, session_id

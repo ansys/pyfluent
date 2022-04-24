@@ -36,6 +36,32 @@ SIDEBAR_STYLE = {
     "overflow-y": "scroll",
 }
 
+def populate_tree(data):
+    children = []
+    for item_name, item_data in data.items():
+        tree_data = {}
+        tree_data["title"] = item_name 
+        remote =  item_data.get("remote")   
+        local =  item_data.get("local")
+        if local:
+            tree_data["key"] = f"local:{local}" 
+        elif remote:
+            tree_data["key"] = f"remote:{remote}" 
+        else:
+            tree_data["key"] = "" 
+        children.append(tree_data)  
+        if  item_data.get("children"):                    
+            tree_data["children"] = populate_tree(item_data["children"]) 
+    return children                
+            
+             
+            
+def get_tree_data():
+    import yaml 
+    with open('E:\\ajain\\ANSYSDev\\vNNN\\pyfluent\\src\\ansys\\fluent\\core\\utils\\dash\\outline.yaml') as f:
+        data = yaml.load(f, Loader=yaml.SafeLoader) 
+    return populate_tree(data)[0] 
+    
 sidebar = html.Div(
     [
         html.P("Outline", className="lead"),
@@ -57,68 +83,62 @@ sidebar = html.Div(
             [
                 dash_treeview_antd.TreeView(
                     id="tree-view",
-                    multiple=True,
+                    multiple=False,
                     expanded=["0"],
-                    data={
-                        "title": "Parent",
-                        "key": "0",
-                        "children": [
-                            {
-                                "title": "Child",
-                                "key": "0-0",
-                                "children": [
-                                    {
-                                        "title": "Subchild1", 
-                                        "key": "0-0-1"
-                                    },
-                                    {
-                                        "title": "Subchild2", 
-                                        "key": "0-0-2"
-                                    },
-                                    {
-                                        "title": "Subchild3",
-                                        "key": "0-0-3",
-                                        "children": [
-                                            {
-                                                "title": "Subchild1",
-                                                "key": "0-0-3-1",
-                                            },
-                                            {
-                                                "title": "Subchild2",
-                                                "key": "0-0-3-2",
-                                            },
-                                            {
-                                                "title": "Subchild3",
-                                                "key": "0-0-3-3",
-                                            },
-                                        ],
-                                    },
-                                ],
-                            }
-                        ],
-                    },
-                ),               
+                    data=get_tree_data()
+                ),
+                html.Div(id="output-selected"),                
             ],
         ),
     ],
     style=SIDEBAR_STYLE,
 )
 
+#@self._app.callback(
+#    Output("object-id", "value"),
+#    Input("connection-id", "data"),#
+#    Input("session-id", "value"),
+#)
+#def session_changed(connection_id, session_id):
+#    print("session_changed", connection_id, session_id)
+#    if session_id is None:
+#        raise PreventUpdate
+#    object_id = self._id_map.get(f"{connection_id}-{session_id}")
+#    if object_id is None:
+#        raise PreventUpdate
+#    return object_id
+
+@app.callback(
+    Output("object-id", "value"), 
+    [Input("tree-view", "selected")]
+)
+def _display_selected(object_id):
+    print('_display_selected', object_id)
+
+    if object_id is None or len(object_id)==0:
+        raise PreventUpdate
+    object_id = object_id[0]    
+    if "local" in object_id or "remote" in object_id:
+         print( "You have checked {}".format(object_id))
+         return object_id 
+    else:
+         raise PreventUpdate    
 
 _max_session_count = 6
-
 
 def serve_layout():
     connection_id = str(uuid.uuid4())
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
     PropertyEditor(app, SessionsManager)
+    print('get_tree_data', get_tree_data())
     return dbc.Container(
         fluid=True,
         children=[
             dcc.Store(data=connection_id, id="connection-id"),
             html.Data(id="refresh-property-editor"),
             html.Data(id="window-id", value="0"),
+            html.Data(id="object-id"),
             html.Data(id="command-output"),
             dbc.Row(
                 [
@@ -141,25 +161,6 @@ def serve_layout():
                     dbc.Col(sidebar, align="start", width="auto"),
             dbc.Col(
                     [
-                        html.Div(
-                            [
-                                dbc.Label("Select Graphics"),
-                                dcc.Dropdown(
-                                    id="object-id",
-                                    options=[
-                                    "local:Mesh", "local:Surface", "local:Contour", "local:Vector",
-                                    "remote:Viscous", "remote:Multiphase", "remote:Initialization", "remote:calculation"
-                                    
-                                    
-                                    ],                                    
-                                ),
-                            ],
-                            style={
-                                "padding": "1px 1px 10px 1px",
-                                "width": "20rem",
-                            },
-                        ),
-                    
                     
                         html.Div(
                             html.Div(

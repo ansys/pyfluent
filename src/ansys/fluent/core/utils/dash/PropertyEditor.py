@@ -89,16 +89,4 @@ class PropertyEditor(metaclass=SingletonMeta):
             update_stored_widgets(object_id, connection_id, session_id)
             return list(self._all_widgets.values())
 
-        @self._app.callback(
-            Output("object-id", "value"),
-            Input("connection-id", "data"),
-            Input("session-id", "value"),
-        )
-        def session_changed(connection_id, session_id):
-            print("session_changed", connection_id, session_id)
-            if session_id is None:
-                raise PreventUpdate
-            object_id = self._id_map.get(f"{connection_id}-{session_id}")
-            if object_id is None:
-                raise PreventUpdate
-            return object_id
+
