@@ -20,10 +20,11 @@ performs these steps:
 # Import the path module
 from pathlib import Path
 
+import pandas as pd
+
 ############################################################################
 # Import the pyfluent, example ,pandas and parametric study module
 import ansys.fluent.core as pyfluent
-import pandas as pd
 from ansys.fluent.core import examples
 from ansys.fluent.parametric import ParametricStudy
 

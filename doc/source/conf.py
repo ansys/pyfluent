@@ -1,14 +1,15 @@
 """Sphinx documentation configuration file."""
+from datetime import datetime
 import os
 import subprocess
 import sys
-from datetime import datetime
 
 import numpy as np
-import pyvista
-from ansys.fluent.core import __version__
 from pyansys_sphinx_theme import pyansys_logo_black
+import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
+
+from ansys.fluent.core import __version__
 
 # Manage errors
 pyvista.set_error_output_file("errors.txt")

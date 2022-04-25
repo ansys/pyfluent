@@ -18,8 +18,9 @@ This example for executing a parametric session workflow performs these steps:
 
 from pathlib import Path
 
-import ansys.fluent.core as pyfluent
 import pandas as pd
+
+import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricSession
 
 #########################################################################
