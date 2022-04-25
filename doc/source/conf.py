@@ -95,6 +95,7 @@ todo_include_todos = False
 copybutton_prompt_text = r">>> ?|\.\.\. "
 copybutton_prompt_is_regexp = True
 
+templates_path = ["_templates"]
 
 _THIS_DIR = os.path.dirname(__file__)
 _START_FLUENT_FILE = os.path.normpath(

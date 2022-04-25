@@ -49,7 +49,11 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.solver.settings import root
+
+try:
+    from ansys.fluent.core.solver.settings import root
+except:
+    root = Any
 from ansys.fluent.core.utils.logging import LOG
 
 

@@ -21,7 +21,7 @@ import keyword
 import pickle
 import string
 import sys
-from typing import Dict, Generic, List, NewType, Tuple, TypeVar, Union
+from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
 from ansys.fluent.core.utils.logging import LOG
@@ -52,15 +52,15 @@ _ttable = str.maketrans(
 )
 
 
-def to_python_name(scheme_name: str) -> str:
+def to_python_name(fluent_name: str) -> str:
     """Convert a scheme string to python variable name.
 
-    The function does this by replacing symbols with _. `?`s are
+    The function does this by replacing symbols with _. '?'s are
     ignored.
     """
-    if not scheme_name:
-        return scheme_name
-    name = scheme_name.translate(_ttable)
+    if not fluent_name:
+        return fluent_name
+    name = fluent_name.translate(_ttable)
     while name in keyword.kwlist:
         name = name + "_"
     return name
@@ -80,12 +80,13 @@ class Base:
     ----------
     flproxy
     obj_name
-    scheme_name
+    fluent_name
     """
 
     _initialized = False
 
     def __init__(self, name: str = None, parent=None):
+        """__init__ of Base class."""
         self._parent = weakref.proxy(parent) if parent is not None else None
         if name is not None:
             self._name = name
@@ -109,7 +110,7 @@ class Base:
         return self._flproxy
 
     _name = None
-    scheme_name = None
+    fluent_name = None
 
     @property
     def obj_name(self) -> str:
@@ -119,7 +120,7 @@ class Base:
         is a named-object child, the object's name is returned.
         """
         if self._name is None:
-            return self.scheme_name
+            return self.fluent_name
         return self._name
 
     @property
@@ -135,16 +136,19 @@ class Base:
             return self.obj_name
         return ppath + "/" + self.obj_name
 
-    def get_attrs(self, attrs) -> DictStateType:
+    def get_attrs(self, attrs) -> Any:
+        """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs)
 
-    def get_attr(self, attr) -> StateType:
+    def get_attr(self, attr) -> Any:
+        """Get the requested attribute for the object."""
         attrs = self.get_attrs([attr])
         if attr != "active?" and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
         return attrs[attr]
 
     def is_active(self) -> bool:
+        """Indicates if the object is active."""
         return self.get_attr("active?")
 
 
@@ -303,6 +307,7 @@ class Group(SettingsBase[DictStateType]):
     _state_type = DictStateType
 
     def __init__(self, name: str = None, parent=None):
+        """__init__ of Group class."""
         super().__init__(name, parent)
         for child in self.child_names:
             cls = getattr(self.__class__, child)
@@ -320,7 +325,7 @@ class Group(SettingsBase[DictStateType]):
             for k, v in value.items():
                 if k in cls.child_names:
                     ccls = getattr(cls, k)
-                    ret[ccls.scheme_name] = ccls.to_scheme_keys(v)
+                    ret[ccls.fluent_name] = ccls.to_scheme_keys(v)
                 else:
                     raise RuntimeError("Key '" + str(k) + "' is invalid")
             return ret
@@ -335,7 +340,7 @@ class Group(SettingsBase[DictStateType]):
             undef = object()
             for mname in cls.child_names:
                 ccls = getattr(cls, mname)
-                mvalue = value.get(ccls.scheme_name, undef)
+                mvalue = value.get(ccls.fluent_name, undef)
                 if mvalue is not undef:
                     ret[mname] = ccls.to_python_keys(mvalue)
             return ret
@@ -374,7 +379,10 @@ class Group(SettingsBase[DictStateType]):
             getattr(self, name).set_state(value)
 
 
-class NamedObject(SettingsBase[DictStateType]):
+ChildTypeT = TypeVar("ChildTypeT")
+
+
+class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     """A NamedObject container.
 
     A NamedObject is a container object, similar to a Python dict object.
@@ -389,6 +397,7 @@ class NamedObject(SettingsBase[DictStateType]):
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
     def __init__(self, name: str = None, parent=None):
+        """__init__ of NamedObject class."""
         super().__init__(name, parent)
         self._objects = {}
         for cmd in self.command_names:
@@ -408,6 +417,7 @@ class NamedObject(SettingsBase[DictStateType]):
 
     @classmethod
     def to_python_keys(cls, value):
+        """Convert value to have keys with python names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
@@ -438,7 +448,7 @@ class NamedObject(SettingsBase[DictStateType]):
     def rename(self, new: str, old: str):
         """Rename a named object.
 
-        Parameters:
+        Parameters
         ----------
         new: str
              New name
@@ -499,7 +509,7 @@ class NamedObject(SettingsBase[DictStateType]):
         """Object names."""
         return self.flproxy.get_object_names(self.path)
 
-    def __getitem__(self, name: str):
+    def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             raise KeyError(name)
         obj = self._objects.get(name)
@@ -516,11 +526,16 @@ class NamedObject(SettingsBase[DictStateType]):
         child.set_state(value)
 
 
-class ListObject(SettingsBase[ListStateType]):
+class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     """A ListObject container.
 
     A ListObject is a container object, similar to a Python list object.
     Generally, many such objects can be created.
+
+    Attributes
+    ----------
+    command_names: list[str]
+                   Names of the commands
 
     Methods
     -------
@@ -529,16 +544,12 @@ class ListObject(SettingsBase[ListStateType]):
 
     resize(size)
         Resize the list
-
-    Attributes
-    ----------
-    command_names: list[str]
-                   Names of the commands
     """
 
     # New objects could get inserted by other operations, so we cannot assume
     # that the local cache in self._objects is always up-to-date
     def __init__(self, name=None, parent=None):
+        """__init__ of ListObject class."""
         super().__init__(name, parent)
         self._objects = []
         for cmd in self.command_names:
@@ -594,7 +605,7 @@ class ListObject(SettingsBase[ListStateType]):
         """
         self.flproxy.resize_list_object(self.path, size)
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> ChildTypeT:
         size = self.get_size()
         if index >= size:
             raise IndexError(index)
@@ -620,7 +631,7 @@ class Command(Base):
         for k, v in kwds.items():
             if k in self.argument_names:
                 ccls = getattr(self, k)
-                newkwds[ccls.scheme_name] = ccls.to_scheme_keys(v)
+                newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
             else:
                 raise RuntimeError("Argument '" + str(k) + "' is invalid")
         return self.flproxy.execute_cmd(
@@ -650,6 +661,14 @@ _baseTypes = {
 }
 
 
+def _clean_helpinfo(helpinfo):
+    helpinfo = helpinfo.strip("\n")
+    if not helpinfo.endswith("."):
+        helpinfo += "."
+    helpinfo = helpinfo[0].upper() + helpinfo[1:]
+    return helpinfo
+
+
 def get_cls(name, info, parent=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -666,22 +685,18 @@ def get_cls(name, info, parent=None):
                 f"Falling back to String."
             )
             base = String
-        dct = {"scheme_name": name}
+        dct = {"fluent_name": name}
         helpinfo = info.get("help")
         if helpinfo:
-            dct["__doc__"] = helpinfo
+            dct["__doc__"] = _clean_helpinfo(helpinfo)
         else:
             if parent is None:
-                dct["__doc__"] = "root object"
+                dct["__doc__"] = "'root' object."
             else:
                 if obj_type == "command":
-                    dct[
-                        "__doc__"
-                    ] = f"'{pname}' command of '{parent.__name__}' object"
+                    dct["__doc__"] = f"'{pname.strip('_')}' command."
                 else:
-                    dct[
-                        "__doc__"
-                    ] = f"'{pname}' child of '{parent.__name__}' object"
+                    dct["__doc__"] = f"'{pname.strip('_')}' child."
         cls = type(pname, (base,), dct)
 
         children = info.get("children")
@@ -689,6 +704,14 @@ def get_cls(name, info, parent=None):
             cls.child_names = []
             for cname, cinfo in children.items():
                 ccls = get_cls(cname, cinfo, cls)
+                i = 0
+                ccls_name = ccls.__name__
+                while ccls_name in cls.child_names:
+                    if i > 0:
+                        ccls_name = ccls_name[: ccls_name.rfind("_")]
+                    i += 1
+                    ccls_name += f"_{str(i)}"
+                ccls.__name__ = ccls_name
                 # pylint: disable=no-member
                 cls.child_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
@@ -697,6 +720,13 @@ def get_cls(name, info, parent=None):
             cls.command_names = []
             for cname, cinfo in commands.items():
                 ccls = get_cls(cname, cinfo, cls)
+                ccls_name = ccls.__name__
+                while ccls_name in cls.command_names:
+                    if i > 0:
+                        ccls_name = ccls_name[: ccls_name.rfind("_")]
+                    i += 1
+                    ccls_name += f"_{str(i)}"
+                ccls.__name__ = ccls_name
                 # pylint: disable=no-member
                 cls.command_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
@@ -714,6 +744,13 @@ def get_cls(name, info, parent=None):
                 th = th.__name__ if hasattr(th, "__name__") else str(th)
                 doc += f"    {ccls.__name__} : {th}\n"
                 doc += f"        {ccls.__doc__}\n"
+                ccls_name = ccls.__name__
+                while ccls_name in cls.argument_names:
+                    if i > 0:
+                        ccls_name = ccls_name[: ccls_name.rfind("_")]
+                    i += 1
+                    ccls_name += f"_{str(i)}"
+                ccls.__name__ = ccls_name
                 # pylint: disable=no-member
                 cls.argument_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
@@ -726,7 +763,7 @@ def get_cls(name, info, parent=None):
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
-            f"'{parent.scheme_name if parent else None}'"
+            f"'{parent.fluent_name if parent else None}'"
         )
         raise
     return cls
