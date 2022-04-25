@@ -31,7 +31,7 @@ def _get_vtk_install_cmd(reinstall=False):
 
 def _update_vtk_version():
     is64 = struct.calcsize("P") * 8 == 64
-    if sys.version_info.minor == 10 and is64:
+    if sys.version_info.minor in (9, 10) and is64:
         required_libraries.update({"vtk": "9.1.0.dev0"})
 
 
