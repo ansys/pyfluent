@@ -221,6 +221,7 @@ class LocalPropertyEditor:
                     dbc.Label(self.get_label(name)),
                     widget,
                 ],
+                style = {"display": "flex", "flex-direction": "column", "padding": "10px 1px 2px"}  
             )
         return widget
 
