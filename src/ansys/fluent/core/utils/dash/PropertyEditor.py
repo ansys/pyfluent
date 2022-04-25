@@ -69,7 +69,7 @@ class PropertyEditor(metaclass=SingletonMeta):
                 try:
                     obj = getattr(obj, path)
                     if static_info:
-                        static_info = static_info["children"][obj.scheme_name]                    
+                        static_info = static_info["children"][obj.obj_name]                    
                 except AttributeError:
                     obj = obj[path] 
                     static_info =  static_info['object-type']                     
@@ -100,6 +100,8 @@ class PropertyEditor(metaclass=SingletonMeta):
             if object_id is None or session_id is None:
                 raise PreventUpdate
             self._id_map[f"{connection_id}-{session_id}"] = object_id
+            if not object_id:
+                return "", []
             update_stored_widgets(object_id, connection_id, session_id)
             return html.H6(
                 object_id.split(":")[-1].split("/")[-1].capitalize()
@@ -130,6 +132,4 @@ class PropertyEditor(metaclass=SingletonMeta):
                     raise PreventUpdate
             else:
                 object_id = self._id_map.get(f"{connection_id}-{session_id}")
-                if object_id is None:
-                    raise PreventUpdate
-                return object_id
+                return object_id if object_id else ""

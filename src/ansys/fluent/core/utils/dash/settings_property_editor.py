@@ -80,7 +80,7 @@ class SettingsPropertyEditor:
             kwargs = {}
             cmd_obj = getattr(obj, command_name)
             args_iter = iter(args_value)
-            args_info = static_info["commands"][cmd_obj.scheme_name][
+            args_info = static_info["commands"][cmd_obj.obj_name][
                 "arguments"
             ]
             for arg_name, arg_info in args_info.items():
@@ -106,7 +106,7 @@ class SettingsPropertyEditor:
             for path in path_list:
                 try:
                     obj = getattr(obj, path)
-                    static_info = static_info["children"][obj.scheme_name]                    
+                    static_info = static_info["children"][obj.obj_name]                    
                 except AttributeError:
                     obj = obj[path] 
                     static_info =  static_info['object-type']                                     
@@ -124,7 +124,7 @@ class SettingsPropertyEditor:
                     si_info_child =  si_info['object-type']                
                 else:
                     child_obj = getattr(obj, name)
-                    si_info_child = si_info["children"][child_obj.scheme_name]                
+                    si_info_child = si_info["children"][child_obj.obj_name]                
 
                 
                 print(name, si_info_child["type"])
@@ -161,7 +161,7 @@ class SettingsPropertyEditor:
                     },
                     n_clicks=0,
                 )
-                si_info_command = si_info["commands"][cmd_obj.scheme_name]
+                si_info_command = si_info["commands"][cmd_obj.obj_name]
                 command_args = si_info_command["arguments"]
                 for command_arg, arg_info in command_args.items():
                     if arg_info["type"] == "integer":

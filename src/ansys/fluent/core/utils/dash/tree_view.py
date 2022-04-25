@@ -21,6 +21,7 @@ class TreeView:
             
     def populate_tree(self, data):
         children = []
+        keys = []
         for item_name, item_data in data.items():
             tree_data = {}
             tree_data["title"] = item_name
@@ -28,13 +29,16 @@ class TreeView:
             local = item_data.get("local")
             if local:
                 tree_data["key"] = f"local:{local}"
+                keys.append(f"local:{local}")
             elif remote:
                 tree_data["key"] = f"remote:{remote}"
+                keys.append(f"remote:{remote}")
             else:
-                tree_data["key"] = ""
+                tree_data["key"] = item_name
             
             if item_data.get("children"):
-                tree_data["children"] = self.populate_tree(item_data["children"])
+                tree_data["children"], child_keys = self.populate_tree(item_data["children"])
+                keys = keys+child_keys
             elif remote:
                 static_info = self.SessionsManager(self._app, self._connection_id, self.session_id).static_info
                 obj = self.SessionsManager(self._app, self._connection_id, self.session_id).settings_root
@@ -43,7 +47,7 @@ class TreeView:
                 for path in path_list:
                     try:
                         obj = getattr(obj, path)
-                        static_info = static_info["children"][obj.scheme_name]                    
+                        static_info = static_info["children"][obj.obj_name]                    
                     except AttributeError:
                         obj = obj[path] 
                         static_info =  static_info['object-type'] 
@@ -54,10 +58,11 @@ class TreeView:
                     if children_name:                    
                         tree_data["key"] =""                    
                         children_data = {child:{'remote':f"{remote}/{child}"}  for child in children_name}
-                        tree_data["children"] = self.populate_tree(children_data)
+                        tree_data["children"], child_keys = self.populate_tree(children_data)
+                        keys = keys+child_keys
             children.append(tree_data)                        
                                      
-        return children
+        return children, keys
 
 
 
@@ -65,7 +70,6 @@ class TreeView:
 
         with open(yaml_file           
         ) as f:
-            data = yaml.load(f, Loader=yaml.SafeLoader)
-        print(data)    
-        print(self.populate_tree(data)[0])    
-        return self.populate_tree(data)[0]  
+            data = yaml.load(f, Loader=yaml.SafeLoader)  
+            tree_nodes, keys = self.populate_tree(data)            
+        return tree_nodes[0], keys  

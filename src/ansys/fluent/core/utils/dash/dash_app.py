@@ -43,14 +43,7 @@ sidebar = html.Div(
     [
         html.H6("Outline"),
         html.Div(
-            [
-                dash_treeview_antd.TreeView(
-                    id="tree-view",
-                    multiple=False,
-                    expanded=["Root"],
-                    data={"title": "Root", "key": "", "children": []},
-                ),               
-            ],
+            id="tree-view-container",  
         ),
     ],
     style=SIDEBAR_STYLE,
@@ -192,17 +185,25 @@ def create_session(n_clicks, session_token, connection_id, options):
     return [sessions, session_id]
 
 @app.callback(
-    Output("tree-view", "data"),
+    Output("tree-view-container", "children"),
+    #Output("tree-view", "expanded"),
     Input("connection-id", "data"),  #
     Input("session-id", "value"),    
 )
 def session_changed(
     connection_id, session_id
 ):
-   if session_id is None or connection_id is None:
-       raise PreventUpdate
-   print("session_changed", connection_id, session_id)
-   return TreeView(app, connection_id, session_id, SessionsManager).get_tree_nodes()
+    if session_id is None or connection_id is None:
+        raise PreventUpdate    
+    tree_nodes, keys = TreeView(app, connection_id, session_id, SessionsManager).get_tree_nodes()   
+    return dash_treeview_antd.TreeView(
+        id="tree-view",
+        multiple=False,
+        expanded=keys,
+        data=tree_nodes,
+    )   
+   
+    
 
 @app.callback(
     Output("tab-content", "children"),
@@ -233,7 +234,7 @@ def render_tab_content(active_tab, connection_id, session_id):
                     )
                 )
             ],
-            style={"height": "50rem"},
+            style={"height": "49rem"},
         )
 
     elif active_tab == "plots":
