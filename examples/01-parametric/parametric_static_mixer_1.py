@@ -17,7 +17,8 @@ performs these steps:
 """
 
 ############################################################################
-# Import the path module
+# Import modules
+import json
 from pathlib import Path
 
 ############################################################################
@@ -27,7 +28,12 @@ import ansys.fluent.core as pyfluent
 ############################################################################
 # Launch Fluent in 3D and double precision
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+configs = None
+with open(
+    str(Path.cwd() / "parametric_static_mixer_1.json"), encoding="utf-8"
+) as fp:
+    configs = json.load(fp)
+session = pyfluent.launch_fluent(**configs)
 
 ############################################################################
 # Enable the settings API (Beta)

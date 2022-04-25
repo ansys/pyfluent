@@ -39,6 +39,9 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 ###############################################################################
 # First, connect with a Fluent server
 
+import json
+from pathlib import Path
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -49,9 +52,12 @@ import_filename = examples.download_file(
 ###############################################################################
 # Start Fluent in double precision running on 4 processors
 
-session = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count=2
-)
+configs = None
+with open(
+    str(Path.cwd() / "exhaust_system_tui_api.json"), encoding="utf-8"
+) as fp:
+    configs = json.load(fp)
+session = pyfluent.launch_fluent(**configs)
 
 ###############################################################################
 # Select the Fault Tolerant Meshing Workflow

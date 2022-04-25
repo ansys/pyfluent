@@ -67,6 +67,57 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     return kwargs
 
 
+def build_fluent_launch_args_string(**kwargs) -> str:
+    """Build Fluent's launch arguments string from keyword arguments.
+
+    Returns
+    -------
+    str
+        Fluent's launch arguments string
+    """
+    all_options = None
+    with open(_OPTIONS_FILE, encoding="utf-8") as fp:
+        all_options = json.load(fp)
+    launch_args_string = ""
+    for k, v in all_options.items():
+        argval = kwargs.get(k)
+        default = v.get("default")
+        if argval is None and v.get("required") is True:
+            argval = default
+        if argval is not None:
+            allowed_values = v.get("allowed_values")
+            if allowed_values and argval not in allowed_values:
+                if default is not None:
+                    old_argval = argval
+                    argval = default
+                    LOG.warning(
+                        "Default value %s is chosen for %s as the passed "
+                        "value  %s is outside allowed values %s.",
+                        argval,
+                        k,
+                        old_argval,
+                        allowed_values,
+                    )
+                else:
+                    LOG.warning(
+                        "%s = %s is discarded as it is outside "
+                        "allowed values %s.",
+                        k,
+                        argval,
+                        allowed_values,
+                    )
+                    continue
+            fluent_map = v.get("fluent_map")
+            if fluent_map:
+                if isinstance(argval, str):
+                    json_key = argval
+                else:
+                    json_key = json.dumps(argval)
+                argval = fluent_map[json_key]
+            launch_args_string += v["fluent_format"].replace("{}", str(argval))
+    return launch_args_string
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     version: str = None,
@@ -148,45 +199,7 @@ def launch_fluent(
     if start_instance:
         exe_path = _get_fluent_exe_path()
         launch_string = exe_path
-        all_options = None
-        with open(_OPTIONS_FILE, encoding="utf-8") as fp:
-            all_options = json.load(fp)
-        for k, v in all_options.items():
-            argval = argvals.get(k)
-            default = v.get("default")
-            if argval is None and v.get("required") is True:
-                argval = default
-            if argval is not None:
-                allowed_values = v.get("allowed_values")
-                if allowed_values and argval not in allowed_values:
-                    if default is not None:
-                        old_argval = argval
-                        argval = default
-                        LOG.warning(
-                            "Default value %s is chosen for %s as the passed "
-                            "value  %s is outside allowed values %s.",
-                            argval,
-                            k,
-                            old_argval,
-                            allowed_values,
-                        )
-                    else:
-                        LOG.warning(
-                            "%s = %s is discarded as it is outside "
-                            "allowed values %s.",
-                            k,
-                            argval,
-                            allowed_values,
-                        )
-                        continue
-                fluent_map = v.get("fluent_map")
-                if fluent_map:
-                    if isinstance(argval, str):
-                        json_key = argval
-                    else:
-                        json_key = json.dumps(argval)
-                    argval = fluent_map[json_key]
-                launch_string += v["fluent_format"].replace("{}", str(argval))
+        launch_string += build_fluent_launch_args_string(**argvals)
         server_info_filepath = _get_server_info_filepath()
         try:
             launch_string += f" {additional_arguments}"

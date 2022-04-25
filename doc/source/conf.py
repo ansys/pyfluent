@@ -1,6 +1,8 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
+import json
 import os
+from pathlib import Path
 import subprocess
 import sys
 
@@ -8,6 +10,7 @@ from pyansys_sphinx_theme import pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
 
 from ansys.fluent.core import __version__
+from ansys.fluent.core.launcher.launcher import build_fluent_launch_args_string
 
 # -- Project information -----------------------------------------------------
 
@@ -110,23 +113,17 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
     start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
     if not start_instance:
         if when == "before":
-            if fname in [
-                "mixing_elbow_settings_api.py",
-                "mixing_elbow_tui_api.py",
-            ]:
-                args = ["3ddp", "-t4", "-meshing"]
-            elif fname in [
-                "exhaust_system_settings_api.py",
-                "exhaust_system_tui_api.py",
-            ]:
-                args = ["3ddp", "-t2", "-meshing"]
-            elif fname in [
-                "parametric_static_mixer_1.py",
-                "parametric_static_mixer_2.py",
-                "parametric_static_mixer_3.py",
-            ]:
-                args = ["3ddp", "-t4"]
-            subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
+            filepath = next(
+                (x for x in gallery_conf["titles"] if x.endswith(fname)),
+                None,
+            )
+            if filepath:
+                config_filepath = Path(filepath).with_suffix(".json")
+                configs = None
+                with open(str(config_filepath), encoding="utf-8") as fp:
+                    configs = json.load(fp)
+                args = build_fluent_launch_args_string(**configs).split()
+                subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
         elif when == "after":
             subprocess.run([sys.executable, _STOP_FLUENT_FILE])
 

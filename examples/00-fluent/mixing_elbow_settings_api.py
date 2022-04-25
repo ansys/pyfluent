@@ -41,6 +41,9 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 # First, download the geometry file and start Fluent as a service with
 # Meshing Mode, Double Precision, Number of Processors 4
 
+import json
+from pathlib import Path
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -48,9 +51,12 @@ import_filename = examples.download_file(
     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
 )
 
-s = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count="4"
-)
+configs = None
+with open(
+    str(Path.cwd() / "mixing_elbow_settings_api.json"), encoding="utf-8"
+) as fp:
+    configs = json.load(fp)
+s = pyfluent.launch_fluent(**configs)
 
 ###############################################################################
 

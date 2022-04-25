@@ -20,6 +20,7 @@ performs these steps:
 #########################################################################
 # Import the parametric project module and the parametric study module
 
+import json
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
@@ -32,7 +33,12 @@ from ansys.fluent.parametric import ParametricProject
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+configs = None
+with open(
+    str(Path.cwd() / "parametric_static_mixer_2.json"), encoding="utf-8"
+) as fp:
+    configs = json.load(fp)
+session = pyfluent.launch_fluent(**configs)
 root = session.get_settings_root()
 
 #########################################################################
