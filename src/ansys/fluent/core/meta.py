@@ -5,7 +5,6 @@ from pprint import pformat
 
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
-from ansys.fluent.core.services.datamodel_tui import PyMenu
 
 
 class LocalObjectDataExtractor:
@@ -112,40 +111,6 @@ class Attribute:
 
     def __get__(self, obj, objtype=None):
         return self.function(obj)
-
-
-class PyMenuMeta(type):
-    """Metaclass for explicit TUI menu classes."""
-
-    # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size()
-    @classmethod
-    def __create_get_state(cls):
-        def wrapper(self):
-            return PyMenu(self.service, self.path).get_state()
-
-        return wrapper
-
-    # pyfluent.results.graphics.objects.contour['contour-1'].color_map.size.set_state(80.0)
-    @classmethod
-    def __create_set_state(cls):
-        def wrapper(self, value):
-            PyMenu(self.service, self.path).set_state(value)
-
-        return wrapper
-
-    @classmethod
-    def __create_dir(cls):
-        def wrapper(self):
-            return PyMenu(self.service, self.path).get_child_names()
-
-        return wrapper
-
-    def __new__(cls, name, bases, attrs):
-        attrs["__dir__"] = cls.__create_dir()
-        if "is_extended_tui" in attrs:
-            attrs["__call__"] = cls.__create_get_state()
-            attrs["set_state"] = cls.__create_set_state()
-        return super(PyMenuMeta, cls).__new__(cls, name, bases, attrs)
 
 
 class PyLocalBaseMeta(type):
@@ -498,81 +463,3 @@ class PyLocalContainer(MutableMapping):
     # del graphics.Contours['contour-1']
     def __delitem__(self, name):
         del self.__collection[name]
-
-
-class PyNamedObjectMeta(type):
-    """Metaclass for explicit named object classes in Fluent."""
-
-    @classmethod
-    def __create_init(cls):
-        def wrapper(self, path, name, service):
-            self.path = path[:-1] + [(path[-1][0], name)]
-            self.service = service
-            for name, cls in self.__class__.__dict__.items():
-                if cls.__class__.__name__ == "PyMenuMeta":
-                    setattr(
-                        self,
-                        name,
-                        cls(self.path + [(name, None)], service),
-                    )
-                if cls.__class__.__name__ == "PyNamedObjectMeta":
-                    setattr(
-                        self,
-                        name,
-                        cls(self.path + [(name, None)], None, service),
-                    )
-
-        return wrapper
-
-    # pyfluent.results.graphics.objects.contour['contour-1']
-    @classmethod
-    def __create_getitem(cls):
-        def wrapper(self, name):
-            return self.__class__(self.path, name, self.service)
-
-        return wrapper
-
-    # pyfluent.results.graphics.objects.contour['contour-1'] = {...}
-    @classmethod
-    def __create_setitem(cls):
-        def wrapper(self, name, value):
-            obj = self.__class__(self.path, name, self.service)
-            if isinstance(value, dict) and not value:
-                value["name"] = name  # creation with default value
-            PyMenu(self.service, obj.path).set_state(value)
-
-        return wrapper
-
-    # del pyfluent.results.graphics.objects.contour['contour-1']
-    @classmethod
-    def __create_delitem(cls):
-        def wrapper(self, name):
-            obj = self.__class__(self.path, name, self.service)
-            PyMenu(self.service, obj.path).del_item()
-
-        return wrapper
-
-    # pyfluent.results.graphics.objects.contour['contour-1']()
-    @classmethod
-    def __create_get_state(cls):
-        def wrapper(self):
-            return PyMenu(self.service, self.path).get_state()
-
-        return wrapper
-
-    # pyfluent.results.graphics.objects.contour['contour-1'].rename('my-contour')
-    @classmethod
-    def __create_rename(cls):
-        def wrapper(self, new_name):
-            PyMenu(self.service, self.path).rename(new_name)
-
-        return wrapper
-
-    def __new__(cls, name, bases, attrs):
-        attrs["__init__"] = cls.__create_init()
-        attrs["__getitem__"] = cls.__create_getitem()
-        attrs["__setitem__"] = cls.__create_setitem()
-        attrs["__delitem__"] = cls.__create_delitem()
-        attrs["__call__"] = cls.__create_get_state()
-        attrs["rename"] = cls.__create_rename()
-        return super(PyNamedObjectMeta, cls).__new__(cls, name, bases, attrs)
