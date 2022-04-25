@@ -58,7 +58,7 @@ def update_vtk_fun(obj):
     if obj.__class__.__name__ == "Mesh":
         return update_vtk_fun_mesh(obj)
     elif obj.__class__.__name__ == "Surface":
-        if obj.surface.type() == "iso-surface":
+        if obj.surface.type() == "iso-surface" and obj.surface.iso_surface.rendering()=="contour":
             return update_vtk_fun_field(obj)
         else:
             return update_vtk_fun_mesh(obj)

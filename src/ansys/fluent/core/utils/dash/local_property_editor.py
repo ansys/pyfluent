@@ -342,7 +342,7 @@ class GraphicsWindow:
                     raise PreventUpdate
                 object_location, object_type = object_id.split(":")
                 if object_location != "local":
-                    raise PreventUpdat
+                    raise PreventUpdate
                 if int(window_id) != self._win_id:
                     raise PreventUpdate
                 editor = GraphicsPropertyEditor(app, SessionsManager)
