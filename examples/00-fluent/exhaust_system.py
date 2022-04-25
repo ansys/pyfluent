@@ -1,7 +1,7 @@
 """.. _ref_exhaust_system_tui_api:
 
-Exhaust System: Fault-tolerant Meshing (TUI API)
-------------------------------------------------
+Exhaust System: Fault-tolerant Meshing
+----------------------------------------------
 
 This tutorial illustrates the setup and solution of a three-dimensional
 turbulent fluid flow in a manifold exhaust system. The manifold configuration
@@ -47,7 +47,7 @@ import_filename = examples.download_file(
 )
 
 ###############################################################################
-# Start Fluent in double precision running on 4 processors
+# Start Fluent in double precision running on 2 processors
 
 session = pyfluent.launch_fluent(
     meshing_mode=True, precision="double", processor_count=2

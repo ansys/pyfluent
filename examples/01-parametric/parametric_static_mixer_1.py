@@ -1,7 +1,7 @@
 """.. _ref_parametric_static_mixer_1:
 
 Parametric Study Workflow
--------------------------
+------------------------------
 This example for executing a parametric study workflow
 performs these steps:
 
@@ -21,13 +21,16 @@ performs these steps:
 from pathlib import Path
 
 ############################################################################
-# Import the pyfluent module
+# Import the pyfluent, example ,pandas and parametric study module
 import ansys.fluent.core as pyfluent
+import pandas as pd
+from ansys.fluent.core import examples
+from ansys.fluent.parametric import ParametricStudy
 
 ############################################################################
 # Launch Fluent in 3D and double precision
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
 
 ############################################################################
 # Enable the settings API (Beta)
@@ -37,8 +40,6 @@ root = session.get_settings_root()
 ############################################################################
 # Read the hopper/mixer case
 
-from ansys.fluent.core import examples
-
 import_filename = examples.download_file(
     "Static_Mixer_main.cas.h5", "pyfluent/static_mixer"
 )
@@ -46,9 +47,9 @@ import_filename = examples.download_file(
 session.tui.solver.file.read_case(case_file_name=import_filename)
 
 ############################################################################
-# Set number of iterations to 1000 to ensure convergence
+# Set number of iterations to 100 to ensure convergence
 
-session.tui.solver.solve.set.number_of_iterations("1000")
+session.tui.solver.solve.set.number_of_iterations("100")
 
 ############################################################################
 # Create input parameters after enabling parameter creation in the TUI:
@@ -118,12 +119,6 @@ case_path = str(
 session.tui.solver.file.write_case(case_path)
 
 ###########################################################################
-# Parametric study workflow
-# Import the parametric study module
-
-from ansys.fluent.parametric import ParametricStudy
-
-###########################################################################
 # Instantiate a parametric study from a Fluent session
 
 study_1 = ParametricStudy(root.parametric_studies).initialize()
@@ -180,8 +175,6 @@ study_1.export_design_table(design_point_table)
 
 #########################################################################
 # Display CSV table as a pandas dataframe
-
-import pandas as pd
 
 data_frame = pd.read_csv(design_point_table)
 print(data_frame)
