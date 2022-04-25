@@ -1,6 +1,9 @@
+from io import FileIO
 from pathlib import Path
+from typing import Any
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
+from ansys.fluent.core.session import Session
 
 _THIS_DIR = Path(__file__).parent
 
@@ -37,7 +40,7 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_docstring(name: str, info):
+def _build_command_docstring(name: str, info: Any):
     return_type = _PY_TYPE_BY_DM_TYPE[info.returntype]
     arg_strings = [
         arg.name + ": " + _PY_TYPE_BY_DM_TYPE[arg.type] for arg in info.args
@@ -54,6 +57,7 @@ class DataModelStaticInfo:
         self.filepath = (
             _THIS_DIR
             / ".."
+            / "src"
             / "ansys"
             / "fluent"
             / "core"
@@ -75,7 +79,7 @@ class DataModelGenerator:
         self._delete_generated_files()
         self._populate_static_info()
 
-    def _get_static_info(self, rules: str, session):
+    def _get_static_info(self, rules: str, session: Session):
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.rules = rules
         response = session._datamodel_service_se.get_static_info(request)
@@ -108,7 +112,9 @@ class DataModelGenerator:
                     )
             session.exit()
 
-    def _write_static_info(self, name, info, f, level=0):
+    def _write_static_info(
+        self, name: str, info: Any, f: FileIO, level: int = 0
+    ):
         indent = " " * level * 4
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
@@ -169,7 +175,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
 
-    def write_static_info(self):
+    def write_static_info(self) -> None:
         for _, info in self._static_info.items():
             with open(info.filepath, "w", encoding="utf8") as f:
                 f.write("#\n")

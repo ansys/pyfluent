@@ -15,7 +15,7 @@ def mock_settings_service(mocker: MockerFixture) -> None:
 
 
 @pytest.fixture(name="parametric_project")
-def fixture_parametric_project():
+def fixture_parametric_project() -> ParametricProject:
     return ParametricProject(
         root.file.parametric_project(), root.parametric_studies(), "abc.flprj"
     )

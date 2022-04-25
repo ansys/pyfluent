@@ -12,6 +12,7 @@ Core
    :hidden:
   
    launcher
+   utils
    meshing/index
    solver/index
    
