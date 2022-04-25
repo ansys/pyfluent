@@ -5,11 +5,9 @@ PyFluent Documentation |version|
    :hidden:
    :maxdepth: 2
 
-   getting_started/index
-   users_guide/index
-   api/index
+
    examples/index
-   contributing
+
 
 Introduction
 ------------

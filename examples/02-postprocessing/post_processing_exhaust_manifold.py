@@ -22,11 +22,13 @@ This example demonstrates how to do the following:
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.post.pyvista import Graphics
+from ansys.fluent.post import set_config
+set_config(blocking=True)
 
 ###############################################################################
 # Import matplotlib plotting module
 # Unable to import as affected by Issue 290
-# from ansys.fluent.post.matplotlib import Plots
+from ansys.fluent.post.matplotlib import Plots
 
 ###############################################################################
 # First, download the case and data file and start Fluent as a service with
@@ -137,17 +139,17 @@ velocity_vector.display("window-6")
 ###############################################################################
 # Commenting out due to issue #290
 # Start the Plot Object for the session
-# plots_session_1 = Plots(session)
+plots_session_1 = Plots(session)
 
 ###############################################################################
 # Create a default XY-Plot
-# plot_1 = plots_session_1.XYPlots["plot-1"]
+plot_1 = plots_session_1.XYPlots["plot-1"]
 
 ###############################################################################
 # Set the surface on which the plot is plotted and the Y-axis function
-# plot_1.surfaces_list = ["outlet"]
-# plot_1.y_axis_function = "temperature"
+plot_1.surfaces_list = ["outlet"]
+plot_1.y_axis_function = "temperature"
 
 ###############################################################################
 # Plot the created XY-Plot
-# plot_1.plot("window-7")
+plot_1.plot("window-7")
