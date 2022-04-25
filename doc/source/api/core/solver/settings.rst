@@ -164,3 +164,15 @@ application. The ``is_active()`` method returns ``True`` if an object or command
 is active at a particular time. ``get_active_child_names`` returns the list of
 active children. ``get_active_command_names`` returns the list of active
 commands.
+
+Settings Objects Root
+---------------------
+:ref:`Settings root<root>`
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :hidden:
+
+   _autosummary/settings/*
+   flobject

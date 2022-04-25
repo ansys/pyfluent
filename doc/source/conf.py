@@ -95,6 +95,7 @@ todo_include_todos = False
 copybutton_prompt_text = r">>> ?|\.\.\. "
 copybutton_prompt_is_regexp = True
 
+templates_path = ["_templates"]
 
 _THIS_DIR = os.path.dirname(__file__)
 _START_FLUENT_FILE = os.path.normpath(
@@ -114,6 +115,11 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
                 "mixing_elbow_tui_api.py",
             ]:
                 args = ["3ddp", "-t4", "-meshing"]
+            elif fname in [
+                "exhaust_system_settings_api.py",
+                "exhaust_system_tui_api.py",
+            ]:
+                args = ["3ddp", "-t2", "-meshing"]
             elif fname in [
                 "parametric_static_mixer_1.py",
                 "parametric_static_mixer_2.py",
@@ -143,6 +149,7 @@ sphinx_gallery_conf = {
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
     "doc_module": "ansys-fluent-core",
+    "image_scrapers": ("pyvista", "matplotlib"),
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
     "reset_modules_order": "both",

@@ -1,7 +1,7 @@
 import subprocess
 
 
-def stop_fluent_container():
+def stop_fluent_container() -> None:
     try:
         subprocess.run(["docker", "stop", "fluent_server"])
     except OSError:

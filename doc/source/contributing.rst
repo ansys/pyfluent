@@ -23,6 +23,7 @@ mode:
     cd pyfluent
     pip install pip -U
     pip install -e .
+    pip install -e .[post] # If you want to use pyvista
 
 Building Documentation
 ----------------------

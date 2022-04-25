@@ -3,9 +3,21 @@
 Running this module generates a python module with the definition of the Fluent
 settings classes. The out is placed at:
 
-- ansys/fluent/core/solver/settings.py
+- src/ansys/fluent/core/solver/settings.py
 
 Running this module requires Fluent to be installed.
+
+Process
+-------
+    - Launch fluent and get static info. Parse the class with flobject.get_cls()
+    - Generate a dictionary of unique classes with their hash as a key and a tuple of cls, children hash, commands hash, arguments hash, child object type hash as value.
+    - - This eliminates reduandancy and only unique classes are written.
+    - Generate .py files for the classes in hash dictionary. Resolve named conflicts with integer suffix.
+    - - Populate files dictionary with hash as key and filename as value.
+    - - child_object_type handled specially to avoid a lot of files with same name and to provide more insight of the child.
+    - Populate the classes.
+    - - For writing the import statements, get the hash of the child/command/argument/named object stored in the hash dict tuple value.
+    - - Use that hash to locate the corresponding children file name in the hash dict.
 
 Usage
 -----
@@ -17,9 +29,12 @@ import io
 import os
 import pickle
 import pprint
-from typing import IO
 
 from ansys.fluent.core.solver import flobject
+
+hash_dict = {}
+files_dict = {}
+root_class_path = ""
 
 
 def _gethash(obj_info):
@@ -32,104 +47,289 @@ def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 
-def _write_cls_helper(out, cls, indent=0):
-    try:
-        istr = _get_indent_str(indent)
-        istr1 = _get_indent_str(indent + 1)
-        istr2 = _get_indent_str(indent + 2)
-        out.write("\n")
-        out.write(
-            f"{istr}class {cls.__name__}"
-            f'({", ".join(c.__name__ for c in cls.__bases__)}):\n'
+def _populate_hash_dict(name, info, cls):
+    children = info.get("children")
+    if children:
+        children_hash = []
+        for cname, cinfo in children.items():
+            for child in getattr(cls, "child_names", None):
+                child_cls = getattr(cls, child)
+                if cname == child_cls.fluent_name:
+                    children_hash.append(
+                        _populate_hash_dict(cname, cinfo, child_cls)
+                    )
+                    break
+    else:
+        children_hash = None
+
+    commands = info.get("commands")
+    if commands:
+        commands_hash = []
+        for cname, cinfo in commands.items():
+            for command in getattr(cls, "command_names", None):
+                command_cls = getattr(cls, command)
+                if cname == command_cls.fluent_name:
+                    commands_hash.append(
+                        _populate_hash_dict(cname, cinfo, command_cls)
+                    )
+                    break
+    else:
+        commands_hash = None
+
+    arguments = info.get("arguments")
+    if arguments:
+        arguments_hash = []
+        for aname, ainfo in arguments.items():
+            for argument in getattr(cls, "argument_names", None):
+                argument_cls = getattr(cls, argument)
+                if aname == argument_cls.fluent_name:
+                    arguments_hash.append(
+                        _populate_hash_dict(aname, ainfo, argument_cls)
+                    )
+                    break
+    else:
+        arguments_hash = None
+
+    object_type = info.get("object-type")
+    if object_type:
+        object_hash = _populate_hash_dict(
+            "child-object-type",
+            object_type,
+            getattr(cls, "child_object_type", None),
         )
+    else:
+        object_hash = None
 
-        doc = ("\n" + istr1).join(cls.__doc__.split("\n"))
-        out.write(f'{istr1}"""\n')
-        out.write(f"{istr1}{doc}")
-        out.write(f'\n{istr1}"""\n')
-        out.write(f'{istr1}scheme_name = "{cls.scheme_name}"\n')
+    cls_touple = (
+        name,
+        info["type"],
+        info.get("help"),
+        children_hash,
+        commands_hash,
+        arguments_hash,
+        object_hash,
+    )
+    hash = _gethash(cls_touple)
+    if not hash_dict.get(hash):
+        hash_dict[hash] = (
+            cls,
+            children_hash,
+            commands_hash,
+            arguments_hash,
+            object_hash,
+        )
+    return hash
 
-        child_names = getattr(cls, "child_names", None)
-        if child_names:
-            out.write(f"{istr1}child_names = \\\n")
-            strout = io.StringIO()
-            pprint.pprint(
-                child_names,
-                stream=strout,
-                compact=True,
-                width=80 - indent * 4 - 10,
+
+def _populate_classes(parent_dir):
+    istr = _get_indent_str(0)
+    istr1 = _get_indent_str(1)
+    istr2 = _get_indent_str(2)
+    files = []
+    # generate files
+    for key, (
+        cls,
+        children_hash,
+        commands_hash,
+        arguments_hash,
+        object_hash,
+    ) in hash_dict.items():
+        cls_name = file_name = cls.__name__
+        if cls_name == "child_object_type":
+            # Get the first parent for this class.
+            for (
+                cls1,
+                children_hash1,
+                commands_hash1,
+                arguments_hash1,
+                object_hash1,
+            ) in hash_dict.values():
+                if key == object_hash1:
+                    cls.__name__ = file_name = cls1.__name__ + "_child"
+                    break
+        i = 0
+        while file_name in files:
+            if i > 0:
+                file_name = file_name[: file_name.rfind("_")]
+            i += 1
+            file_name += "_" + str(i)
+        files.append(file_name)
+        files_dict[key] = file_name
+
+        # Store root class path for __init__.py
+        if cls_name == "root":
+            global root_class_path
+            root_class_path = file_name
+
+        file_name += ".py"
+        filepath = os.path.normpath(os.path.join(parent_dir, file_name))
+        with open(filepath, "w") as f:
+            f.write(f"name: {cls_name}")
+
+    # populate files
+    for key, (
+        cls,
+        children_hash,
+        commands_hash,
+        arguments_hash,
+        object_hash,
+    ) in hash_dict.items():
+        file_name = files_dict.get(key)
+        cls_name = cls.__name__
+        filepath = os.path.normpath(
+            os.path.join(parent_dir, file_name + ".py")
+        )
+        with open(filepath, "w") as f:
+            # disclaimer to py file
+            f.write("#\n")
+            f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+            f.write("#\n")
+            f.write("\n")
+
+            # write imports to py file
+            f.write("from ansys.fluent.core.solver.flobject import *\n\n")
+            if children_hash:
+                for child in children_hash:
+                    pchild_name = hash_dict.get(child)[0].__name__
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name}\n"
+                    )
+
+            if commands_hash:
+                for child in commands_hash:
+                    pchild_name = hash_dict.get(child)[0].__name__
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name}\n"
+                    )
+
+            if arguments_hash:
+                for child in arguments_hash:
+                    pchild_name = hash_dict.get(child)[0].__name__
+                    f.write(
+                        f"from .{files_dict.get(child)} import {pchild_name}\n"
+                    )
+
+            if object_hash:
+                pchild_name = hash_dict.get(object_hash)[0].__name__
+                f.write(
+                    f"from .{files_dict.get(object_hash)} import {pchild_name}\n\n"
+                )
+
+            # class name
+            f.write(
+                f"{istr}class {cls_name}"
+                f'({", ".join(f"{c.__name__}[{hash_dict.get(object_hash)[0].__name__}]" if object_hash else c.__name__ for c in cls.__bases__)}):\n'
             )
-            mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-            out.write(f"{istr2}{mn}\n")
-            for child in child_names:
-                _write_cls_helper(out, getattr(cls, child), indent + 1)
 
-        command_names = getattr(cls, "command_names", None)
-        if command_names:
-            out.write(f"{istr1}command_names = \\\n")
-            strout = io.StringIO()
-            pprint.pprint(
-                command_names,
-                stream=strout,
-                compact=True,
-                width=80 - indent * 4 - 10,
-            )
-            mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-            out.write(f"{istr2}{mn}\n")
-            for command in command_names:
-                _write_cls_helper(out, getattr(cls, command), indent + 1)
+            doc = cls.__doc__
+            # Custom doc for child object type
+            if cls.fluent_name == "child-object-type":
+                doc = f"'child_object_type' of {file_name[: file_name.find('_child')]}"
 
-        arguments = getattr(cls, "argument_names", None)
-        if arguments:
-            out.write(f"{istr1}argument_names = \\\n")
-            strout = io.StringIO()
-            pprint.pprint(
-                arguments,
-                stream=strout,
-                compact=True,
-                width=80 - indent * 4 - 10,
-            )
-            mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-            out.write(f"{istr2}{mn}\n")
-            for argument in arguments:
-                _write_cls_helper(out, getattr(cls, argument), indent + 1)
-        child_object_type = getattr(cls, "child_object_type", None)
-        if child_object_type:
-            _write_cls_helper(out, child_object_type, indent + 1)
-    except Exception:
-        raise
+            doc = ("\n" + istr1).join(doc.split("\n"))
+            f.write(f'{istr1}"""\n')
+            f.write(f"{istr1}{doc}")
+            f.write(f'\n{istr1}"""\n\n')
+            f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
+
+            # write children objects
+            child_names = getattr(cls, "child_names", None)
+            if child_names:
+                f.write(f"{istr1}child_names = \\\n")
+                strout = io.StringIO()
+                pprint.pprint(
+                    child_names, stream=strout, compact=True, width=70
+                )
+                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                f.write(f"{istr2}{mn}\n\n")
+
+                for child in child_names:
+                    f.write(f"{istr1}{child}: {child} = {child}\n")
+                    f.write(f'{istr1}"""\n')
+                    f.write(f"{istr1}{child} child of {cls_name}")
+                    f.write(f'\n{istr1}"""\n')
+
+            # write command objects
+            command_names = getattr(cls, "command_names", None)
+            if command_names:
+                f.write(f"{istr1}command_names = \\\n")
+                strout = io.StringIO()
+                pprint.pprint(
+                    command_names, stream=strout, compact=True, width=70
+                )
+                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                f.write(f"{istr2}{mn}\n\n")
+
+                for command in command_names:
+                    f.write(f"{istr1}{command}: {command} = {command}\n")
+                    f.write(f'{istr1}"""\n')
+                    f.write(f"{istr1}{command} command of {cls_name}")
+                    f.write(f'\n{istr1}"""\n')
+
+            # write arguments
+            arguments = getattr(cls, "argument_names", None)
+            if arguments:
+                f.write(f"{istr1}argument_names = \\\n")
+                strout = io.StringIO()
+                pprint.pprint(arguments, stream=strout, compact=True, width=70)
+                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                f.write(f"{istr2}{mn}\n\n")
+
+                for argument in arguments:
+                    f.write(f"{istr1}{argument}: {argument} = {argument}\n")
+                    f.write(f'{istr1}"""\n')
+                    f.write(f"{istr1}{argument} argument of {cls_name}")
+                    f.write(f'\n{istr1}"""\n')
+
+            # write object type
+            child_object_type = getattr(cls, "child_object_type", None)
+            if child_object_type:
+                f.write(
+                    f"{istr1}child_object_type: {pchild_name} = {pchild_name}\n"
+                )
+                f.write(f'{istr1}"""\n')
+                f.write(f"{istr1}child_object_type of {cls_name}.")
+                f.write(f'\n{istr1}"""\n')
 
 
-def write_settings_classes(out: IO, cls, obj_info):
-    """Write the settings classes in 'out' stream.
-
-    Parameters
-    ----------
-    out:     Stream
-    flproxy: Proxy
-             Object that interfaces with the Fluent backend
-    """
-    hash = _gethash(obj_info)
-    out.write("#\n")
-    out.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-    out.write("#\n")
-    out.write("\n")
-    out.write("from ansys.fluent.core.solver.flobject import *\n\n")
-    out.write(f'SHASH = "{hash}"\n')
-    _write_cls_helper(out, cls)
+def _populate_init(parent_dir, sinfo):
+    hash = _gethash(sinfo)
+    filepath = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
+    with open(filepath, "w") as f:
+        f.write("#\n")
+        f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+        f.write("#\n")
+        f.write("\n")
+        f.write(f'"""A package providing Fluent\'s Settings API in Python."""')
+        f.write("\n")
+        f.write("from ansys.fluent.core.solver.flobject import *\n\n")
+        f.write(f'SHASH = "{hash}"\n')
+        f.write(f"from .{root_class_path} import root")
 
 
 if __name__ == "__main__":
     from ansys.fluent.core.launcher.launcher import launch_fluent
 
     dirname = os.path.dirname(__file__)
-    filepath = os.path.normpath(
+    parent_dir = os.path.normpath(
         os.path.join(
-            dirname, "..", "ansys", "fluent", "core", "solver", "settings.py"
+            dirname,
+            "..",
+            "src",
+            "ansys",
+            "fluent",
+            "core",
+            "solver",
+            "settings",
         )
     )
+    if not os.path.exists(parent_dir):
+        os.makedirs(parent_dir)
+
     session = launch_fluent()
     sinfo = session.get_settings_service().get_static_info()
     cls = flobject.get_cls("", sinfo)
-    with open(filepath, "w") as f:
-        write_settings_classes(f, cls, sinfo)
+
+    _populate_hash_dict("", sinfo, cls)
+    _populate_classes(parent_dir)
+    _populate_init(parent_dir, sinfo)

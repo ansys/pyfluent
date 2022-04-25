@@ -3,8 +3,8 @@
 This module starts up Fluent and calls the underlying gRPC APIs to generate the
 following TUI Python modules:
 
-- ansys/fluent/core/solver/tui.py
-- ansys/fluent/core/meshing/tui.py.
+- src/ansys/fluent/core/solver/tui.py
+- src/ansys/fluent/core/meshing/tui.py.
 
 Usage
 -----
@@ -14,11 +14,13 @@ Usage
 
 import os
 from pathlib import Path
+from typing import Iterable
 import xml.etree.ElementTree as ET
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
 from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService,
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
@@ -27,12 +29,26 @@ from ansys.fluent.core.services.datamodel_tui import (
 _THIS_DIRNAME = os.path.dirname(__file__)
 _MESHING_TUI_FILE = os.path.normpath(
     os.path.join(
-        _THIS_DIRNAME, "..", "ansys", "fluent", "core", "meshing", "tui.py"
+        _THIS_DIRNAME,
+        "..",
+        "src",
+        "ansys",
+        "fluent",
+        "core",
+        "meshing",
+        "tui.py",
     )
 )
 _SOLVER_TUI_FILE = os.path.normpath(
     os.path.join(
-        _THIS_DIRNAME, "..", "ansys", "fluent", "core", "solver", "tui.py"
+        _THIS_DIRNAME,
+        "..",
+        "src",
+        "ansys",
+        "fluent",
+        "core",
+        "solver",
+        "tui.py",
     )
 )
 _INDENT_STEP = 4
@@ -64,26 +80,20 @@ def _populate_xml_helpstrings():
 class _TUIMenuGenerator:
     """Wrapper over PyMenu to extract TUI menu metadata from Fluent."""
 
-    def __init__(self, path, service):
+    def __init__(self, path: str, service: DatamodelService):
         self._menu = PyMenu(service, path)
 
-    def get_child_names(self):
+    def get_child_names(self) -> Iterable[str]:
         return self._menu.get_child_names(True)
 
-    def get_doc_string(self):
+    def get_doc_string(self) -> str:
         return self._menu.get_doc_string(True)
-
-    def is_extended_tui(self):
-        return self._menu.is_extended_tui(True)
-
-    def is_container(self):
-        return self._menu.is_container(True)
 
 
 class _TUIMenu:
     """Class representing Fluent's TUI menu."""
 
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.path = path
         self.tui_name = path[-1][0] if path else ""
         self.name = convert_tui_menu_to_func_name(self.tui_name)
@@ -93,10 +103,8 @@ class _TUIMenu:
             del _XML_HELPSTRINGS[tui_path]
         self.children = {}
         self.is_command = False
-        self.is_extended_tui = False
-        self.is_container = False
 
-    def get_command_path(self, command):
+    def get_command_path(self, command: str) -> str:
         return convert_path_to_grpc_path(self.path + [(command, None)])
 
 
@@ -105,9 +113,9 @@ class TUIGenerator:
 
     def __init__(
         self,
-        meshing_tui_file=_MESHING_TUI_FILE,
-        solver_tui_file=_SOLVER_TUI_FILE,
-        meshing=False,
+        meshing_tui_file: str = _MESHING_TUI_FILE,
+        solver_tui_file: str = _SOLVER_TUI_FILE,
+        meshing: bool = False,
     ):
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
@@ -120,8 +128,6 @@ class TUIGenerator:
         menugen = _TUIMenuGenerator(menu.path, self._service)
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
-        menu.is_extended_tui = menugen.is_extended_tui()
-        menu.is_container = menugen.is_container()
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
@@ -129,31 +135,21 @@ class TUIGenerator:
                     child_menu = _TUIMenu(menu.path + [(child_name, None)])
                     menu.children[child_menu.name] = child_menu
                     self._populate_menu(child_menu)
-        elif not menu.is_extended_tui:
+        else:
             menu.is_command = True
 
-    def _write_code_to_tui_file(self, code, indent=0):
+    def _write_code_to_tui_file(self, code: str, indent: int = 0):
         self.__writer.write(" " * _INDENT_STEP * indent + code)
 
-    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent=0):
+    def _write_menu_to_tui_file(self, menu: _TUIMenu, indent: int = 0):
         self._write_code_to_tui_file("\n")
-        if menu.is_container:
-            self._write_code_to_tui_file(
-                f"class {menu.name}(metaclass=PyNamedObjectMeta):\n",
-                indent,
-            )
-        else:
-            self._write_code_to_tui_file(
-                f"class {menu.name}(metaclass=PyMenuMeta):\n", indent
-            )
+        self._write_code_to_tui_file(f"class {menu.name}(TUIMenu):\n", indent)
         indent += 1
         self._write_code_to_tui_file('"""\n', indent)
         doc_lines = menu.doc.splitlines()
         for line in doc_lines:
             self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
-        if menu.is_extended_tui:
-            self._write_code_to_tui_file("is_extended_tui = True\n", indent)
         self._write_code_to_tui_file(
             "def __init__(self, path, service):\n", indent
         )
@@ -161,20 +157,15 @@ class TUIGenerator:
         self._write_code_to_tui_file("self.path = path\n", indent)
         self._write_code_to_tui_file("self.service = service\n", indent)
         for k, v in menu.children.items():
-            if v.is_command:
-                continue
-            elif v.is_container:
-                self._write_code_to_tui_file(
-                    f"self.{k} = self.__class__.{k}"
-                    f'(path + [("{v.tui_name}", None)], None, service)\n',
-                    indent,
-                )
-            else:
+            if not v.is_command:
                 self._write_code_to_tui_file(
                     f"self.{k} = self.__class__.{k}"
                     f'(path + [("{v.tui_name}", None)], service)\n',
                     indent,
                 )
+        self._write_code_to_tui_file(
+            "super().__init__(path, service)\n", indent
+        )
         indent -= 1
 
         command_names = [
@@ -202,7 +193,7 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
-    def generate(self):
+    def generate(self) -> None:
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             if self._tui_file == _SOLVER_TUI_FILE:
@@ -220,10 +211,8 @@ class TUIGenerator:
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
                 "#\n"
                 "# pylint: disable=line-too-long\n\n"
-                "from ansys.fluent.core.meta "
-                "import PyMenuMeta, PyNamedObjectMeta\n"
                 "from ansys.fluent.core.services.datamodel_tui "
-                "import PyMenu\n\n\n"
+                "import PyMenu, TUIMenu\n\n\n"
             )
             self._main_menu.name = "main_menu"
             self._write_menu_to_tui_file(self._main_menu)

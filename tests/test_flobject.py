@@ -519,7 +519,7 @@ class root(Group):
     """
     Root class
     """
-    scheme_name = ""
+    fluent_name = ""
     child_names = \\
         ['g_1', 'n_1', 'l_1']
 
@@ -527,7 +527,7 @@ class root(Group):
         """
         'g_1' child of 'root' object
         """
-        scheme_name = "g-1"
+        fluent_name = "g-1"
         child_names = \\
             ['r_1', 'i_2', 'b_3', 's_4']
 
@@ -535,37 +535,37 @@ class root(Group):
             """
             'r_1' child of 'g_1' object
             """
-            scheme_name = "r-1"
+            fluent_name = "r-1"
 
         class i_2(Integer):
             """
             'i_2' child of 'g_1' object
             """
-            scheme_name = "i-2"
+            fluent_name = "i-2"
 
         class b_3(Boolean):
             """
             'b_3' child of 'g_1' object
             """
-            scheme_name = "b-3"
+            fluent_name = "b-3"
 
         class s_4(String):
             """
             's_4' child of 'g_1' object
             """
-            scheme_name = "s-4"
+            fluent_name = "s-4"
 
     class n_1(NamedObject):
         """
         'n_1' child of 'root' object
         """
-        scheme_name = "n-1"
+        fluent_name = "n-1"
 
         class child_object_type(Group):
             """
             'child_object_type' child of 'n_1' object
             """
-            scheme_name = "child-object-type"
+            fluent_name = "child-object-type"
             child_names = \\
                 ['rl_1', 'sl_1']
 
@@ -573,25 +573,25 @@ class root(Group):
                 """
                 'rl_1' child of 'child_object_type' object
                 """
-                scheme_name = "rl-1"
+                fluent_name = "rl-1"
 
             class sl_1(StringList):
                 """
                 'sl_1' child of 'child_object_type' object
                 """
-                scheme_name = "sl-1"
+                fluent_name = "sl-1"
 
     class l_1(ListObject):
         """
         'l_1' child of 'root' object
         """
-        scheme_name = "l-1"
+        fluent_name = "l-1"
 
         class child_object_type(Group):
             """
             'child_object_type' child of 'l_1' object
             """
-            scheme_name = "child-object-type"
+            fluent_name = "child-object-type"
             child_names = \\
                 ['il_1', 'bl_1']
 
@@ -599,13 +599,13 @@ class root(Group):
                 """
                 'il_1' child of 'child_object_type' object
                 """
-                scheme_name = "il-1"
+                fluent_name = "il-1"
 
             class bl_1(BooleanList):
                 """
                 'bl_1' child of 'child_object_type' object
                 """
-                scheme_name = "bl-1"
+                fluent_name = "bl-1"
     command_names = \\
         ['c_1']
 
@@ -621,7 +621,7 @@ class root(Group):
                 'a_2' child of 'c_1' object
 
         """
-        scheme_name = "c-1"
+        fluent_name = "c-1"
         argument_names = \\
             ['a_1', 'a_2']
 
@@ -629,12 +629,12 @@ class root(Group):
             """
             'a_1' child of 'c_1' object
             """
-            scheme_name = "a-1"
+            fluent_name = "a-1"
 
         class a_2(Boolean):
             """
             'a_2' child of 'c_1' object
             """
-            scheme_name = "a-2"
+            fluent_name = "a-2"
 '''
     )  # noqa: W293

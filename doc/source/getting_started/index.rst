@@ -3,7 +3,8 @@
 ===============
 Getting Started
 ===============
-To use PyFluent, you need to have a local installation of Ansys.
+To use PyFluent, you will need a locally installed licenced copy of ANSYS to run
+Fluent, with the first supported version being Ansys 2022 R2.
 
 Visit `Ansys <https://www.ansys.com/>`_ for more information on
 getting a licensed copy of Ansys.
@@ -11,54 +12,51 @@ getting a licensed copy of Ansys.
 ************
 Installation
 ************
+The ``ansys-fluent-core`` package currently supports Python 3.7 through Python
+3.10 on Windows and Linux.
 
-To use PyFluent, you need to have a local installation of Ansys. The version of
-Ansys installed will dictate the interface and features available to you.
+If you want to use PyFluent please install the latest release package from
+`PyFluent GitHub <https://github.com/pyansys/pyfluent/issues>`_ via:
 
-Visit `Ansys <https://www.ansys.com/>`_ for more information on getting a
-licensed copy of Ansys.
+.. code:: console
 
-To install a local version of PyFluent, you need to clone the PyFluent
-repository through GitHub Enterprise (https://github.com/pyansys/pyfluent).
-Other Ansys Python packages are also available here or through www.pypi.org. 
+   pip install git+https://github.com/pyansys/pyfluent.git
 
-Once you have access to a cloned repository, you can install the pyfluent
-library by using
+****************
+Launching Fluent
+****************
 
-.. code::
-
-	git clone https://github.com/pyansys/pyfluent.git
-	cd pyfluent
-	pip install -e .
-
-
-***************
-Starting Fluent
-***************
-
-To see and interact with the Fluent graphical user interface, set the following
-environment variable:
-
-.. code::
-
-		PYFLUENT_SHOW_SERVER_GUI=1
-
-To start Fluent, use the following:
+You can launch Fluent from Python using the ``launch_fluent`` function:
 
 .. code:: python
 
-    >>> from ansys.fluent.core import launch_fluent
-    >>> fluent = launch_fluent()
-    >>> print(fluent)
-
-    DNW: What comes out here?
+  import ansys.fluent.core as pyfluent
+  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
+  session = pyfluent.launch_fluent()
+  session.check_health()
+  session.start_transcript() # Streaming the transcript locally
 
 Fluent is now active and you can send commands to it as a genuine Python class.
-For example, if we wanted to ... <add a basic example>:
+For example, if we wanted to read a case file, update a setting and iterate the
+solver:
 
 .. code:: python
 
-    <type some commands here>
+  session.tui.solver.file.read_case(case_file_name='elbow.cas.h5')
+  session.tui.solver.define.models.unsteady_2nd_order("yes")
+  session.tui.solver.solve.initialize.initialize_flow()
+  session.tui.solver.solve.dual_time_iterate(2, 3)
 
+In addition to all TUI commands being available there are the ``parametric`` and
+``post`` packages.  The ``parametric`` package provides access to Fluent's
+design point capability and the ``post`` package provides integrations with both
+``pyvista`` and ``matplotlib``.
 
+If you want to interact with the Fluent graphical user interface, set the
+following environment variable:
+
+.. code::
+
+		    set PYFLUENT_SHOW_SERVER_GUI=1    # Windows
+        export PYFLUENT_SHOW_SERVER_GUI=1 # Linux (bash)
 
