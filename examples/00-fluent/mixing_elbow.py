@@ -41,8 +41,8 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.post.pyvista import Graphics
 from ansys.fluent.post import set_config
+from ansys.fluent.post.pyvista import Graphics
 
 set_config(blocking=True)
 
