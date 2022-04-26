@@ -32,7 +32,7 @@ set_config(blocking=True)
 # Meshing mode, double precision, number of processors: 4
 
 import_case = examples.download_file(
-    "manifold_solution.cas.h5", "pyfluent/exhaust_manifold"
+    filename="manifold_solution.cas.h5", directory="pyfluent/exhaust_manifold"
 )
 
 import_data = examples.download_file(
