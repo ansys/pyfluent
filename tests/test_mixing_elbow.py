@@ -16,11 +16,12 @@ This test queries the following using PyTest:
 - Temperature on the outlet boundary after solution, approximately 296.2 K
 """
 
+from pytest import approx
+
 ###############################################################################
 # Start Fluent
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from pytest import approx
 
 import_filename = examples.download_file(
     filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
