@@ -1,7 +1,7 @@
 """.. _ref_parametric_static_mixer_3:
 
 Parametric Session Workflow
----------------------------
+----------------------------------------------
 This example for executing a parametric session workflow performs these steps:
 
 - Launches a parametric session using the hopper/mixer case file
@@ -13,17 +13,12 @@ This example for executing a parametric session workflow performs these steps:
 """
 
 #########################################################################
-# Parametric session workflow
-# Import the parametric session workflow
-
 from pathlib import Path
+
+import pandas as pd
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricSession
-
-############################################################################
-# Import the pyfluent module and path
-
 
 #########################################################################
 # Launch parametric session using the hopper/mixer case File
@@ -77,8 +72,6 @@ study_2.export_design_table(design_point_table_study_2)
 
 #########################################################################
 # Display CSV table as a pandas dataframe
-
-import pandas as pd
 
 data_frame = pd.read_csv(design_point_table_study_2)
 print(data_frame)

@@ -1,7 +1,7 @@
 """.. _ref_parametric_static_mixer_2:
 
 Parametric Project-Based Workflow
----------------------------------
+----------------------------------------------------
 This example for executing a parametric project-based workflow
 performs these steps:
 
@@ -15,24 +15,15 @@ performs these steps:
 """
 
 #########################################################################
-# Parametric project-based workflow
-
-#########################################################################
-# Import the parametric project module and the parametric study module
-
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricProject
 
-############################################################################
-# Import the pyfluent module and path
-
-
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
 root = session.get_settings_root()
 
 #########################################################################

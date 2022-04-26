@@ -4,10 +4,31 @@ import os
 import subprocess
 import sys
 
+import numpy as np
 from pyansys_sphinx_theme import pyansys_logo_black
+import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
 
 from ansys.fluent.core import __version__
+
+# Manage errors
+pyvista.set_error_output_file("errors.txt")
+
+# Ensure that offscreen rendering is used for docs generation
+pyvista.OFF_SCREEN = True
+
+# must be less than or equal to the XVFB window size
+pyvista.rcParams["window_size"] = np.array([1024, 768])
+
+# Save figures in specified directory
+pyvista.FIGURE_PATH = os.path.join(
+    os.path.abspath("./images/"), "auto-generated/"
+)
+if not os.path.exists(pyvista.FIGURE_PATH):
+    os.makedirs(pyvista.FIGURE_PATH)
+
+# necessary when building the sphinx gallery
+pyvista.BUILDING_GALLERY = True
 
 # -- Project information -----------------------------------------------------
 
@@ -95,7 +116,6 @@ todo_include_todos = False
 copybutton_prompt_text = r">>> ?|\.\.\. "
 copybutton_prompt_is_regexp = True
 
-templates_path = ["_templates"]
 
 _THIS_DIR = os.path.dirname(__file__)
 _START_FLUENT_FILE = os.path.normpath(
@@ -110,21 +130,15 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
     start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
     if not start_instance:
         if when == "before":
-            if fname in [
-                "mixing_elbow_settings_api.py",
-                "mixing_elbow_tui_api.py",
-            ]:
-                args = ["3ddp", "-t4", "-meshing"]
-            elif fname in [
-                "exhaust_system_settings_api.py",
-                "exhaust_system_tui_api.py",
-            ]:
+            if fname in ["mixing_elbow.py", "exhaust_system.py"]:
                 args = ["3ddp", "-t2", "-meshing"]
             elif fname in [
                 "parametric_static_mixer_1.py",
                 "parametric_static_mixer_2.py",
                 "parametric_static_mixer_3.py",
             ]:
+                args = ["3ddp", "-t2"]
+            elif fname in ["post_processing_exhaust_manifold.py"]:
                 args = ["3ddp", "-t4"]
             subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
         elif when == "after":
