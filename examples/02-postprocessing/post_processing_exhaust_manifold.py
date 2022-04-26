@@ -149,4 +149,4 @@ plot_1.y_axis_function = "temperature"
 
 ###############################################################################
 # Plot the created XY-Plot
-plot_1.plot("window-7")
+# plot_1.plot("window-7")

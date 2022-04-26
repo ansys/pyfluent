@@ -29,7 +29,7 @@ if not os.path.exists(pyvista.FIGURE_PATH):
 
 # necessary when building the sphinx gallery
 pyvista.BUILDING_GALLERY = True
-
+pyvista.set_jupyter_backend(None)
 # -- Project information -----------------------------------------------------
 
 project = "ansys.fluent.core"
