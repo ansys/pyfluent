@@ -132,7 +132,7 @@ jobs:
       - name: Build Documentation
         run: |
           pip install -r requirements_docs.txt         
-          xvfb-run make -C doc html SPHINXOPTS="-v 3"
+          xvfb-run make -C doc html SPHINXOPTS="-v"
           touch doc/_build/html/.nojekyll
           echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME
         env:
