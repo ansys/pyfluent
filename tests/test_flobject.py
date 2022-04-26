@@ -124,13 +124,9 @@ class Group(Setting):
         if cls.__doc__:
             ret["help"] = cls.__doc__
         if cls.children:
-            ret["children"] = {
-                c: v.get_static_info() for c, v in cls.children.items()
-            }
+            ret["children"] = {c: v.get_static_info() for c, v in cls.children.items()}
         if cls.commands:
-            ret["commands"] = {
-                c: v.get_static_info() for c, v in cls.commands.items()
-            }
+            ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
         return ret
 
 
@@ -167,9 +163,7 @@ class NamedObject(Setting, MutableMapping):
         return self._objs[c]
 
     def rename(self, new, old):
-        self._objs = {
-            (new if k == old else k): v for k, v in self._objs.items()
-        }
+        self._objs = {(new if k == old else k): v for k, v in self._objs.items()}
 
     def get_object_names(self):
         return list(self._objs.keys())
@@ -191,9 +185,7 @@ class NamedObject(Setting, MutableMapping):
             ret["help"] = cls.__doc__
         ret["object-type"] = cls.child_object_type.get_static_info()
         if cls.commands:
-            ret["commands"] = {
-                c: v.get_static_info() for c, v in cls.commands.items()
-            }
+            ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
         return ret
 
 
@@ -253,9 +245,7 @@ class ListObject(Setting):
             ret["help"] = cls.__doc__
         ret["object-type"] = cls.child_object_type.get_static_info()
         if cls.commands:
-            ret["commands"] = {
-                c: v.get_static_info() for c, v in cls.commands.items()
-            }
+            ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
         return ret
 
 
@@ -292,9 +282,7 @@ class Root(Group):
     class G1(Group):
         class S1(String):
             attrs = {
-                "active?": lambda self: not self.parent.objs[
-                    "b-3"
-                ].get_state(),
+                "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
             }
 

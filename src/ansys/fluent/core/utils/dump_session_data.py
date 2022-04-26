@@ -2,9 +2,7 @@
 import pickle
 
 
-def dump_session_data(
-    session, file_path: str, fields: list = [], surfaces: list = []
-):
+def dump_session_data(session, file_path: str, fields: list = [], surfaces: list = []):
     """Dump session data.
 
     Parameters
@@ -29,17 +27,12 @@ def dump_session_data(
         for k, v in session.field_info.get_surfaces_info().items()
         if (not surfaces or k in surfaces)
     }
-    session_data[
-        "vector_fields_info"
-    ] = session.field_info.get_vector_fields_info()
+    session_data["vector_fields_info"] = session.field_info.get_vector_fields_info()
     if not fields:
         fields = [
-            v["solver_name"]
-            for k, v in session_data["scalar_fields_info"].items()
+            v["solver_name"] for k, v in session_data["scalar_fields_info"].items()
         ]
-    surfaces_id = [
-        v["surface_id"][0] for k, v in session_data["surfaces_info"].items()
-    ]
+    surfaces_id = [v["surface_id"][0] for k, v in session_data["surfaces_info"].items()]
     session_data["range"] = {}
     for field in fields:
         session_data["range"][field] = {}

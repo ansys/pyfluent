@@ -21,9 +21,7 @@ class EventsService:
         Event
         """
         request = EventsProtoModule.BeginStreamingRequest()
-        self.__streams = self.__stub.BeginStreaming(
-            request, metadata=self.__metadata
-        )
+        self.__streams = self.__stub.BeginStreaming(request, metadata=self.__metadata)
 
         while True:
             try:

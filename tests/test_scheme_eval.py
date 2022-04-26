@@ -66,9 +66,7 @@ from ansys.fluent.core.services.scheme_eval import (
             {"a": 5.0},
             {
                 "pair": {
-                    "car": {
-                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
-                    },
+                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
                 }
             },
         ),
@@ -76,9 +74,7 @@ from ansys.fluent.core.services.scheme_eval import (
             {"a": 5.0, "b": 10.0},
             {
                 "pair": {
-                    "car": {
-                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
-                    },
+                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
                     "cdr": {
                         "pair": {
                             "car": {
@@ -145,9 +141,7 @@ def test_convert_py_value_to_scheme_pointer(
             {"a": 5.0, "b": 10.0},
             {
                 "pair": {
-                    "car": {
-                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
-                    },
+                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
                     "cdr": {
                         "pair": {
                             "car": {
@@ -165,9 +159,7 @@ def test_convert_py_value_to_scheme_pointer(
             [("a", 5.0), (5, 10.0)],
             {
                 "pair": {
-                    "car": {
-                        "pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}
-                    },
+                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
                     "cdr": {
                         "pair": {
                             "car": {
@@ -204,9 +196,7 @@ def test_convert_py_value_to_scheme_pointer(
                                     "cdr": {
                                         "pair": {
                                             "car": {"flonum": 10.0},
-                                            "cdr": {
-                                                "pair": {"car": {"b": True}}
-                                            },
+                                            "cdr": {"pair": {"car": {"b": True}}},
                                         }
                                     },
                                 }
@@ -239,9 +229,7 @@ def test_convert_py_value_to_scheme_pointer(
                                     "cdr": {
                                         "pair": {
                                             "car": {"flonum": 10.0},
-                                            "cdr": {
-                                                "pair": {"car": {"b": True}}
-                                            },
+                                            "cdr": {"pair": {"car": {"b": True}}},
                                         }
                                     },
                                 }

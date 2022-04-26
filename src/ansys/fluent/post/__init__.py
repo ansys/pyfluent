@@ -44,10 +44,7 @@ missing_libraries = required_libraries.keys() - installed
 import_errors = []
 if missing_libraries:
     import_errors.append(
-        (
-            f"Required libraries {missing_libraries} "
-            "are missing to use this feature."
-        )
+        (f"Required libraries {missing_libraries} " "are missing to use this feature.")
     )
     for lib in missing_libraries:
         import_errors.append(
@@ -63,9 +60,9 @@ if installed_libraries:
     for lib in installed_libraries:
         required_version = required_libraries[lib]
         installed_version = pkg_resources.get_distribution(lib).version
-        if pkg_resources.parse_version(
-            installed_version
-        ) < pkg_resources.parse_version(required_version):
+        if pkg_resources.parse_version(installed_version) < pkg_resources.parse_version(
+            required_version
+        ):
             if not versions_mismatched_message:
                 import_errors.append(
                     (

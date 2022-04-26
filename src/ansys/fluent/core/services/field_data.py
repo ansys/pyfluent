@@ -15,9 +15,7 @@ from ansys.fluent.core.services.interceptors import TracingInterceptor
 class FieldDataService:
     def __init__(self, channel: grpc.Channel, metadata):
         tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(
-            channel, tracing_interceptor
-        )
+        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
         self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
@@ -31,9 +29,7 @@ class FieldDataService:
 
     @catch_grpc_error
     def get_vector_fields_info(self, request):
-        return self.__stub.GetVectorFieldsInfo(
-            request, metadata=self.__metadata
-        )
+        return self.__stub.GetVectorFieldsInfo(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_surfaces_info(self, request):
@@ -220,8 +216,7 @@ class FieldData:
             surface_id = payload_info.surfaceId
             payload_tag_id = reduce(
                 lambda x, y: x | y,
-                [self._payloadTags[tag] for tag in payload_info.payloadTag]
-                or [0],
+                [self._payloadTags[tag] for tag in payload_info.payloadTag] or [0],
             )
             payload_data = fields_data.get(payload_tag_id)
             if not payload_data:

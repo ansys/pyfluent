@@ -225,14 +225,10 @@ class ParametricStudy:
                 project_filename=self.project_filepath.stem
             )
             new_study_names = self._parametric_studies.get_object_names()
-            self.name = (
-                set(new_study_names).difference(set(old_study_names)).pop()
-            )
+            self.name = set(new_study_names).difference(set(old_study_names)).pop()
             base_design_point = DesignPoint(
                 BASE_DP_NAME,
-                self._parametric_studies[self.name].design_points[
-                    BASE_DP_NAME
-                ],
+                self._parametric_studies[self.name].design_points[BASE_DP_NAME],
             )
             self.design_points = {BASE_DP_NAME: base_design_point}
             ParametricStudy.current_study_name = self.name
@@ -251,9 +247,7 @@ class ParametricStudy:
         self._parametric_studies.rename(new_name, self.name)
         self.name = new_name
         self.design_points = {
-            k: DesignPoint(
-                k, self._parametric_studies[self.name].design_points[k]
-            )
+            k: DesignPoint(k, self._parametric_studies[self.name].design_points[k])
             for k, _ in self.design_points.items()
         }
 
@@ -282,29 +276,21 @@ class ParametricStudy:
             New parametric study instance.
         """
         old_study_names = self._parametric_studies.get_object_names()
-        self._parametric_studies.duplicate(
-            copy_design_points=copy_design_points
-        )
+        self._parametric_studies.duplicate(copy_design_points=copy_design_points)
         new_study_names = self._parametric_studies.get_object_names()
-        clone_name = (
-            set(new_study_names).difference(set(old_study_names)).pop()
-        )
+        clone_name = set(new_study_names).difference(set(old_study_names)).pop()
         current_study = ParametricStudy.get_all_studies()[
             ParametricStudy.current_study_name
         ]
         if copy_design_points:
             clone_design_points = {
-                k: DesignPoint(
-                    k, self._parametric_studies[clone_name].design_points[k]
-                )
+                k: DesignPoint(k, self._parametric_studies[clone_name].design_points[k])
                 for k, _ in current_study.design_points.items()
             }
         else:
             base_design_point = DesignPoint(
                 BASE_DP_NAME,
-                self._parametric_studies[clone_name].design_points[
-                    BASE_DP_NAME
-                ],
+                self._parametric_studies[clone_name].design_points[BASE_DP_NAME],
             )
             clone_design_points = {BASE_DP_NAME: base_design_point}
         clone = ParametricStudy(
@@ -479,9 +465,7 @@ class ParametricStudy:
         dp_settings = self._parametric_studies[self.name].design_points
         dp_settings.update_all()
 
-    def update_selected_design_points(
-        self, design_points: List[DesignPoint]
-    ) -> None:
+    def update_selected_design_points(self, design_points: List[DesignPoint]) -> None:
         """Update a list of design points.
 
         Parameters
@@ -490,9 +474,7 @@ class ParametricStudy:
             List of design points to update.
         """
         dp_settings = self._parametric_studies[self.name].design_points
-        dp_settings.update_selected(
-            design_points=[dp.name for dp in design_points]
-        )
+        dp_settings.update_selected(design_points=[dp.name for dp in design_points])
 
 
 class ParametricProject:
@@ -569,9 +551,7 @@ class ParametricProject:
         """
         self._parametric_project.save_as(project_filename=project_filepath)
 
-    def export(
-        self, project_filepath: str, convert_to_managed: bool = False
-    ) -> None:
+    def export(self, project_filepath: str, convert_to_managed: bool = False) -> None:
         """Save project as a copy.
 
         Parameters
@@ -595,9 +575,7 @@ class ParametricProject:
             Archive name.
         """
         if not archive_path:
-            archive_path = str(
-                Path(self.project_filepath).with_suffix(".flprz")
-            )
+            archive_path = str(Path(self.project_filepath).with_suffix(".flprz"))
         self._parametric_project.archive(archive_name=archive_path)
 
 
@@ -668,8 +646,7 @@ class ParametricSession:
         self._session = launcher()
         self.scheme_eval = self._session.scheme_eval.scheme_eval
         self.scheme_eval(
-            "(set parametric-study-dependents-manager "
-            "save-project-at-exit? #f)"
+            "(set parametric-study-dependents-manager " "save-project-at-exit? #f)"
         )
         if start_transcript:
             self.start_transcript()
@@ -699,9 +676,7 @@ class ParametricSession:
                         dp_name, dps_settings[dp_name]
                     )
                 self.studies[study_name] = study
-            ParametricStudy.current_study_name = (
-                self._root.current_parametric_study()
-            )
+            ParametricStudy.current_study_name = self._root.current_parametric_study()
 
     def new_study(self) -> ParametricStudy:
         """Create new study.

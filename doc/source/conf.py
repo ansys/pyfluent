@@ -21,9 +21,7 @@ pyvista.OFF_SCREEN = True
 pyvista.rcParams["window_size"] = np.array([1024, 768])
 
 # Save figures in specified directory
-pyvista.FIGURE_PATH = os.path.join(
-    os.path.abspath("./images/"), "auto-generated/"
-)
+pyvista.FIGURE_PATH = os.path.join(os.path.abspath("./images/"), "auto-generated/")
 if not os.path.exists(pyvista.FIGURE_PATH):
     os.makedirs(pyvista.FIGURE_PATH)
 
