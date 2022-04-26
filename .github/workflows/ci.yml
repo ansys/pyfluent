@@ -152,7 +152,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           repository-name: pyansys/pyfluent-docs
-          token: ${{ steps.get_workflow_token.outputs.token }}
+          token: ${{ secrets.DOC_DEPLOYMENT_PAT }}
           BRANCH: gh-pages
           FOLDER: doc/_build/html
           CLEAN: true
