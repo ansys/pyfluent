@@ -301,31 +301,6 @@ session.tui.solver.solve.report_definitions.add(
 )
 
 ###############################################################################
-# Create a surface report file called outlet-temp-avg-rfile using
-# report-definition outlet-temp-avg
-# session.tui.solver.solve.report_files.add(
-#    "outlet-temp-avg-rfile",
-#    "report-defs",
-#    "outlet-temp-avg",
-#    "()",
-#    "file-name",
-#    "outlet-temp-avg-rfile.out",
-#    "print?",
-#    "yes",
-#    "file-name",
-#    "outlet-temp-avg-rfile.out",
-#    "frequency",
-#    "3",
-#    "frequency-of",
-#    "iteration",
-#    "itr-index",
-#    "1",
-#    "run-index",
-#    "0",
-#    "quit",
-# )
-
-###############################################################################
 # Create a convergence condition for outlet-temp-avg:
 # Provide con-outlet-temp-avg for Conditions. Select outlet-temp-avg Report
 # Definition. Provide 1e-5 for Stop Criterion. Provide 20 for Ignore Iterations

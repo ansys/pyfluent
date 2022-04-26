@@ -13,9 +13,6 @@ This example for executing a parametric session workflow performs these steps:
 """
 
 #########################################################################
-# Parametric session workflow
-# Import the parametric session workflow. Import pandas module
-
 from pathlib import Path
 
 import pandas as pd

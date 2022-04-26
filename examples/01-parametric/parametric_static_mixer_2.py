@@ -15,19 +15,10 @@ performs these steps:
 """
 
 #########################################################################
-# Parametric project-based workflow
-
-#########################################################################
-# Import the parametric project module and the parametric study module
-
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricProject
-
-############################################################################
-# Import the pyfluent module and path
-
 
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)

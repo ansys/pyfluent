@@ -1,7 +1,7 @@
 """.. _ref_post_processing_exhaust_manifold:
 
 Post Processing using PyVista and Matplotlib: Exhaust Manifold
-----------------------------------------------
+----------------------------------------------------------------------
 This example demonstrates the postprocessing capabilities of PyFluent
 (using PyVista and Matplotlib) using a 3D model
 of an exhaust manifold with high temperature flows passing through.
@@ -16,9 +16,6 @@ This example demonstrates how to do the following:
 - Plot quantitative results using Matplotlib
 """
 ###############################################################################
-# Import the PyFluent module, the matplot, the examples module and
-# the PyVista based graphics Module
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.post import set_config
@@ -32,13 +29,14 @@ set_config(blocking=True)
 # Meshing mode, double precision, number of processors: 4
 
 import_case = examples.download_file(
-    "manifold_solution.cas.h5", "pyfluent/exhaust_manifold"
+    filename="manifold_solution.cas.h5", directory="pyfluent/exhaust_manifold"
 )
 
 import_data = examples.download_file(
-    "manifold_solution.dat.h5", "pyfluent/exhaust_manifold"
+    filename="manifold_solution.dat.h5", directory="pyfluent/exhaust_manifold"
 )
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
 root = session.get_settings_root()
 
 session.tui.solver.file.read_case(case_file_name=import_case)
@@ -47,12 +45,12 @@ session.tui.solver.file.read_data(case_file_name=import_data)
 ###############################################################################
 # Get the graphics object for mesh display
 
-gs_1 = Graphics(session)
+graphics = Graphics(session=session)
 
 ###############################################################################
 # Create a graphics object for mesh display
 
-mesh1 = gs_1.Meshes["mesh-1"]
+mesh1 = graphics.Meshes["mesh-1"]
 
 ###############################################################################
 # Show edges and faces
@@ -83,7 +81,7 @@ mesh1.display("window-2")
 ###############################################################################
 # Create iso-surface on the outlet plane
 
-surf_outlet_plane = gs_1.Surfaces["outlet-plane"]
+surf_outlet_plane = graphics.Surfaces["outlet-plane"]
 surf_outlet_plane.surface.type = "iso-surface"
 iso_surf1 = surf_outlet_plane.surface.iso_surface
 iso_surf1.field = "y-coordinate"
@@ -93,7 +91,7 @@ surf_outlet_plane.display("window-3")
 ###############################################################################
 # Create iso-surface on the mid-plane (Issue # 276)
 
-surf_mid_plane_x = gs_1.Surfaces["mid-plane-x"]
+surf_mid_plane_x = graphics.Surfaces["mid-plane-x"]
 surf_mid_plane_x.surface.type = "iso-surface"
 iso_surf2 = surf_mid_plane_x.surface.iso_surface
 iso_surf2.field = "x-coordinate"
@@ -103,18 +101,19 @@ surf_mid_plane_x.display("window-4")
 ###############################################################################
 # Temperature contour on the mid-plane and the outlet
 
-local_surfaces_provider = Graphics(session=None).Surfaces
-contour_temp = gs_1.Contours["contour-temperature"]
-contour_temp.field = "temperature"
-contour_temp.surfaces_list = ["mid-plane-x", "outlet-plane"]
-contour_temp.display("window-4")
+temperature_contour = graphics.Contours["contour-temperature"]
+temperature_contour.field = "temperature"
+temperature_contour.surfaces_list = ["mid-plane-x", "outlet-plane"]
+temperature_contour.display("window-4")
 
 ###############################################################################
 # Contour plot of temperature on the manifold
 
-contour_temp_manifold = gs_1.Contours["contour-temperature-manifold"]
-contour_temp_manifold.field = "temperature"
-contour_temp_manifold.surfaces_list = [
+temperature_contour_manifold = graphics.Contours[
+    "contour-temperature-manifold"
+]
+temperature_contour_manifold.field = "temperature"
+temperature_contour_manifold.surfaces_list = [
     "in1",
     "in2",
     "in3",
@@ -122,13 +121,13 @@ contour_temp_manifold.surfaces_list = [
     "solid_up:1",
     "solid_up:1:830",
 ]
-contour_temp_manifold.display("window-5")
+temperature_contour_manifold.display("window-5")
 
 ###############################################################################
 # Vector on the mid-plane
 # Currently using outlet-plane since mid-plane is affected by Issue # 276
 
-velocity_vector = gs_1.Vectors["velocity-vector"]
+velocity_vector = graphics.Vectors["velocity-vector"]
 velocity_vector.surfaces_list = ["outlet-plane"]
 velocity_vector.scale = 1
 velocity_vector.display("window-6")

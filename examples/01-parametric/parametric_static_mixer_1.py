@@ -17,13 +17,10 @@ performs these steps:
 """
 
 ############################################################################
-# Import the path module
 from pathlib import Path
 
 import pandas as pd
 
-############################################################################
-# Import the pyfluent, example ,pandas and parametric study module
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.parametric import ParametricStudy
@@ -48,7 +45,7 @@ import_filename = examples.download_file(
 session.tui.solver.file.read_case(case_file_name=import_filename)
 
 ############################################################################
-# Set number of iterations to 100 to ensure convergence
+# Set number of iterations to 100
 
 session.tui.solver.solve.set.number_of_iterations("100")
 
