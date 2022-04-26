@@ -130,13 +130,7 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
     start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
     if not start_instance:
         if when == "before":
-            if fname in [
-                "mixing_elbow.py",
-            ]:
-                args = ["3ddp", "-t2", "-meshing"]
-            elif fname in [
-                "exhaust_system.py",
-            ]:
+            if fname in ["mixing_elbow.py", "exhaust_system.py"]:
                 args = ["3ddp", "-t2", "-meshing"]
             elif fname in [
                 "parametric_static_mixer_1.py",
@@ -144,10 +138,8 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
                 "parametric_static_mixer_3.py",
             ]:
                 args = ["3ddp", "-t2"]
-            elif fname in [
-                "post_processing_exhaust_manifold.py",
-            ]:
-                args = ["3ddp", "-t2"]                
+            elif fname in ["post_processing_exhaust_manifold.py"]:
+                args = ["3ddp", "-t4"]
             subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
         elif when == "after":
             subprocess.run([sys.executable, _STOP_FLUENT_FILE])
