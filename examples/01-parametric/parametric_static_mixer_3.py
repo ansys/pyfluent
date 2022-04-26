@@ -24,9 +24,7 @@ from ansys.fluent.parametric import ParametricSession
 # Launch parametric session using the hopper/mixer case File
 # This case file contains pre-created input and output parameters
 
-case_path = str(
-    Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5"
-)
+case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
 
 session = ParametricSession(case_filepath=case_path)
 

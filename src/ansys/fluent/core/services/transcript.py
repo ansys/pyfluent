@@ -33,9 +33,7 @@ class TranscriptService:
             A transcript line
         """
         request = TranscriptModule.TranscriptRequest()
-        self.__streams = self.__stub.BeginStreaming(
-            request, metadata=self.__metadata
-        )
+        self.__streams = self.__stub.BeginStreaming(request, metadata=self.__metadata)
 
         while True:
             try:

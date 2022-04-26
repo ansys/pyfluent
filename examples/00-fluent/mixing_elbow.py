@@ -46,9 +46,7 @@ from ansys.fluent.post.pyvista import Graphics
 
 set_config(blocking=True)
 
-import_filename = examples.download_file(
-    "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-)
+import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
 session = pyfluent.launch_fluent(
     meshing_mode=True, precision="double", processor_count=2
@@ -104,9 +102,7 @@ session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
 session.workflow.TaskObject["Describe Geometry"].Arguments = dict(
     SetupType="The geometry consists of only fluid regions with no voids"
 )
-session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=True
-)
+session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 session.workflow.TaskObject["Describe Geometry"].Execute()
 
 ###############################################################################

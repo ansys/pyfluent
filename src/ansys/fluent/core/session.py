@@ -26,25 +26,16 @@ try:
     from ansys.fluent.core.datamodel.PMFileManagement import (
         Root as PMFileManagement_root,
     )
-    from ansys.fluent.core.datamodel.PartManagement import (
-        Root as PartManagement_root,
-    )
+    from ansys.fluent.core.datamodel.PartManagement import Root as PartManagement_root
     from ansys.fluent.core.datamodel.meshing import Root as meshing_root
     from ansys.fluent.core.datamodel.workflow import Root as workflow_root
 except ImportError:
     pass
 
 from ansys.fluent.core.services.events import EventsService
-from ansys.fluent.core.services.field_data import (
-    FieldData,
-    FieldDataService,
-    FieldInfo,
-)
+from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.scheme_eval import (
-    SchemeEval,
-    SchemeEvalService,
-)
+from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
@@ -187,9 +178,7 @@ class Session:
             Session._monitor_thread = MonitorThread()
             Session._monitor_thread.start()
 
-        self._transcript_service = TranscriptService(
-            self._channel, self._metadata
-        )
+        self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
 
         self._events_service = EventsService(self._channel, self._metadata)
@@ -199,24 +188,16 @@ class Session:
             self._channel, self._metadata
         )
 
-        self._field_data_service = FieldDataService(
-            self._channel, self._metadata
-        )
+        self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service)
         self.tui = Session.Tui(self._datamodel_service_tui)
 
-        self._datamodel_service_se = DatamodelService_SE(
-            self._channel, self._metadata
-        )
+        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         if "meshing_root" in globals():
-            self.meshing = meshing_root(
-                self._datamodel_service_se, "meshing", []
-            )
+            self.meshing = meshing_root(self._datamodel_service_se, "meshing", [])
         if "workflow_root" in globals():
-            self.workflow = workflow_root(
-                self._datamodel_service_se, "workflow", []
-            )
+            self.workflow = workflow_root(self._datamodel_service_se, "workflow", [])
         if "PartManagement_root" in globals():
             self.part_management = PartManagement_root(
                 self._datamodel_service_se, "PartManagement", []
@@ -228,13 +209,9 @@ class Session:
             )
             self.PMFileManagement = self.pm_file_management
 
-        self._health_check_service = HealthCheckService(
-            self._channel, self._metadata
-        )
+        self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
-        self._scheme_eval_service = SchemeEvalService(
-            self._channel, self._metadata
-        )
+        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
@@ -282,9 +259,7 @@ class Session:
         """Return root settings object."""
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
-            self._settings_root = settings_get_root(
-                flproxy=self.get_settings_service()
-            )
+            self._settings_root = settings_get_root(flproxy=self.get_settings_service())
         return self._settings_root
 
     def _process_transcript(self):

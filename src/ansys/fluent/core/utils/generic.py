@@ -15,9 +15,7 @@ class SingletonMeta(type):
 
     def __call__(cls, *args, **kwargs):
         if not cls._single_instance:
-            cls._single_instance = super(SingletonMeta, cls).__call__(
-                *args, **kwargs
-            )
+            cls._single_instance = super(SingletonMeta, cls).__call__(*args, **kwargs)
         return cls._single_instance
 
 

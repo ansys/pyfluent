@@ -46,9 +46,7 @@ class EventsManager:
                 response = next(responses)
                 event_name = response.WhichOneof("as")
                 with self.__lock:
-                    callbacks_map = self.__events_to_callbacks_map.get(
-                        event_name, {}
-                    )
+                    callbacks_map = self.__events_to_callbacks_map.get(event_name, {})
                     for call_back in callbacks_map.values():
                         call_back(
                             session_id=self.__session_id,

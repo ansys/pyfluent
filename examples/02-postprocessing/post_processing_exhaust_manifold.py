@@ -109,9 +109,7 @@ temperature_contour.display("window-4")
 ###############################################################################
 # Contour plot of temperature on the manifold
 
-temperature_contour_manifold = graphics.Contours[
-    "contour-temperature-manifold"
-]
+temperature_contour_manifold = graphics.Contours["contour-temperature-manifold"]
 temperature_contour_manifold.field = "temperature"
 temperature_contour_manifold.surfaces_list = [
     "in1",

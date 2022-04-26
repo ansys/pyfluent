@@ -55,9 +55,7 @@ def _populate_hash_dict(name, info, cls):
             for child in getattr(cls, "child_names", None):
                 child_cls = getattr(cls, child)
                 if cname == child_cls.fluent_name:
-                    children_hash.append(
-                        _populate_hash_dict(cname, cinfo, child_cls)
-                    )
+                    children_hash.append(_populate_hash_dict(cname, cinfo, child_cls))
                     break
     else:
         children_hash = None
@@ -69,9 +67,7 @@ def _populate_hash_dict(name, info, cls):
             for command in getattr(cls, "command_names", None):
                 command_cls = getattr(cls, command)
                 if cname == command_cls.fluent_name:
-                    commands_hash.append(
-                        _populate_hash_dict(cname, cinfo, command_cls)
-                    )
+                    commands_hash.append(_populate_hash_dict(cname, cinfo, command_cls))
                     break
     else:
         commands_hash = None
@@ -176,9 +172,7 @@ def _populate_classes(parent_dir):
     ) in hash_dict.items():
         file_name = files_dict.get(key)
         cls_name = cls.__name__
-        filepath = os.path.normpath(
-            os.path.join(parent_dir, file_name + ".py")
-        )
+        filepath = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
         with open(filepath, "w") as f:
             # disclaimer to py file
             f.write("#\n")
@@ -191,29 +185,21 @@ def _populate_classes(parent_dir):
             if children_hash:
                 for child in children_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name}\n"
-                    )
+                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
 
             if commands_hash:
                 for child in commands_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name}\n"
-                    )
+                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
 
             if arguments_hash:
                 for child in arguments_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
-                    f.write(
-                        f"from .{files_dict.get(child)} import {pchild_name}\n"
-                    )
+                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
 
             if object_hash:
                 pchild_name = hash_dict.get(object_hash)[0].__name__
-                f.write(
-                    f"from .{files_dict.get(object_hash)} import {pchild_name}\n\n"
-                )
+                f.write(f"from .{files_dict.get(object_hash)} import {pchild_name}\n\n")
 
             # class name
             f.write(
@@ -237,9 +223,7 @@ def _populate_classes(parent_dir):
             if child_names:
                 f.write(f"{istr1}child_names = \\\n")
                 strout = io.StringIO()
-                pprint.pprint(
-                    child_names, stream=strout, compact=True, width=70
-                )
+                pprint.pprint(child_names, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
 
@@ -254,9 +238,7 @@ def _populate_classes(parent_dir):
             if command_names:
                 f.write(f"{istr1}command_names = \\\n")
                 strout = io.StringIO()
-                pprint.pprint(
-                    command_names, stream=strout, compact=True, width=70
-                )
+                pprint.pprint(command_names, stream=strout, compact=True, width=70)
                 mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
                 f.write(f"{istr2}{mn}\n\n")
 
@@ -284,9 +266,7 @@ def _populate_classes(parent_dir):
             # write object type
             child_object_type = getattr(cls, "child_object_type", None)
             if child_object_type:
-                f.write(
-                    f"{istr1}child_object_type: {pchild_name} = {pchild_name}\n"
-                )
+                f.write(f"{istr1}child_object_type: {pchild_name} = {pchild_name}\n")
                 f.write(f'{istr1}"""\n')
                 f.write(f"{istr1}child_object_type of {cls_name}.")
                 f.write(f'\n{istr1}"""\n')

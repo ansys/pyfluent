@@ -47,9 +47,7 @@ def _get_file_url(filename: str, directory: Optional[str] = None) -> str:
 
 def _retrieve_file(url: str, filename: str):
     # First check if file has already been downloaded
-    local_path = os.path.join(
-        pyfluent.EXAMPLES_PATH, os.path.basename(filename)
-    )
+    local_path = os.path.join(pyfluent.EXAMPLES_PATH, os.path.basename(filename))
     local_path_no_zip = local_path.replace(".zip", "")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
         return local_path_no_zip, None

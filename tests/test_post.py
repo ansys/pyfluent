@@ -124,14 +124,10 @@ class MockLocalObjectDataExtractor:
     def __init__(self, obj=None):
         if not MockLocalObjectDataExtractor._session_data:
             with open(
-                str(
-                    Path(MockLocalObjectDataExtractor._session_dump).resolve()
-                ),
+                str(Path(MockLocalObjectDataExtractor._session_dump).resolve()),
                 "rb",
             ) as pickle_obj:
-                MockLocalObjectDataExtractor._session_data = pickle.load(
-                    pickle_obj
-                )
+                MockLocalObjectDataExtractor._session_data = pickle.load(pickle_obj)
         self.field_info = lambda: MockFieldInfo(
             MockLocalObjectDataExtractor._session_data
         )
@@ -157,12 +153,8 @@ def test_field_api():
         provide_faces_centroid=True,
         provide_faces=False,
     )
-    field_data.add_get_scalar_fields_request(
-        surfaces_id[:1], "temperature", True
-    )
-    field_data.add_get_scalar_fields_request(
-        surfaces_id[:1], "temperature", False
-    )
+    field_data.add_get_scalar_fields_request(surfaces_id[:1], "temperature", True)
+    field_data.add_get_scalar_fields_request(surfaces_id[:1], "temperature", False)
     fields = field_data.get_fields()
 
     surface_tag = 0
@@ -286,25 +278,19 @@ def test_contour_object():
         if k in contour1.surfaces_list()
     ]
 
-    range = field_info.get_range(
-        contour1.field(), contour1.node_values(), surfaces_id
-    )
+    range = field_info.get_range(contour1.field(), contour1.node_values(), surfaces_id)
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
     # Range should adjust to min/max of cell field values.
     contour1.node_values = False
-    range = field_info.get_range(
-        contour1.field(), contour1.node_values(), surfaces_id
-    )
+    range = field_info.get_range(contour1.field(), contour1.node_values(), surfaces_id)
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
     # Range should adjust to min/max of node field values
     contour1.field = "pressure"
-    range = field_info.get_range(
-        contour1.field(), contour1.node_values(), surfaces_id
-    )
+    range = field_info.get_range(contour1.field(), contour1.node_values(), surfaces_id)
     assert range[0] == pytest.approx(contour1.range.auto_range_off.minimum())
     assert range[1] == pytest.approx(contour1.range.auto_range_off.maximum())
 
