@@ -23,6 +23,20 @@ from pytest import approx
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 
+
+def check_task_execute_preconditions(task_state):
+    assert task_state() == "Out-of-date"
+    
+def check_task_execute_postconditions(task_state):
+    assert task_state() == "Up-to-date"
+
+def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
+    task = workflow.TaskObject[task_name]
+    task_state = task.State
+    check_task_execute_preconditions(task_state)
+    task.Execute()
+    check_task_execute_postconditions(task_state)
+
 def test_mixing_elbow():
 
     import_filename = download_file(
@@ -44,47 +58,14 @@ def test_mixing_elbow():
         FileName=import_filename, LengthUnit="in"
     )
 
-
-    def test_task_state_before_import_geometry():
-        assert (
-            session.workflow.TaskObject["Import Geometry"].get_state()["State"]
-            == "Out-of-date"
-        )
-
-    test_task_state_before_import_geometry()
-
-    session.workflow.TaskObject["Import Geometry"].Execute()
-
-    def test_task_state_after_import_geometry():
-        assert (
-            session.workflow.TaskObject["Import Geometry"].get_state()["State"]
-            == "Up-to-date"
-        )
-
-    test_task_state_after_import_geometry()
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Import Geometry")
 
     ###############################################################################
     # Add local sizing
     # Query the task state before and after task execution
     session.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-
-
-    def test_task_state_before_local_sizing():
-        assert (
-            session.workflow.TaskObject["Add Local Sizing"].get_state()["State"]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["Add Local Sizing"].Execute()
-
-
-    def test_task_state_after_local_sizing():
-        assert (
-            session.workflow.TaskObject["Add Local Sizing"].get_state()["State"]
-            == "Up-to-date"
-        )
-
+    
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Add Local Sizing")
 
     ###############################################################################
     # Generate the surface mesh
@@ -93,26 +74,7 @@ def test_mixing_elbow():
         "CFDSurfaceMeshControls": {"MaxSize": 0.3}
     }
 
-
-    def test_task_state_before_surface_mesh():
-        assert (
-            session.workflow.TaskObject["Generate the Surface Mesh"].get_state()[
-                "State"
-            ]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
-
-
-    def test_task_state_after_surface_mesh():
-        assert (
-            session.workflow.TaskObject["Generate the Surface Mesh"].get_state()[
-                "State"
-            ]
-            == "Up-to-date"
-        )
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Generate the Surface Mesh")
 
 
     ###############################################################################
@@ -128,23 +90,7 @@ def test_mixing_elbow():
         SetupTypeChanged=True
     )
 
-
-    def test_task_state_before_describe_geometry():
-        assert (
-            session.workflow.TaskObject["Describe Geometry"].get_state()["State"]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["Describe Geometry"].Execute()
-
-
-    def test_task_state_after_describe_geometry():
-        assert (
-            session.workflow.TaskObject["Describe Geometry"].get_state()["State"]
-            == "Up-to-date"
-        )
-
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Describe Geometry")
 
     ###############################################################################
     # Update Boundaries Task
@@ -156,45 +102,13 @@ def test_mixing_elbow():
         "OldBoundaryLabelTypeList": ["velocity-inlet"],
     }
 
-
-    def test_task_state_before_update_boundaries():
-        assert (
-            session.workflow.TaskObject["Update Boundaries"].get_state()["State"]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["Update Boundaries"].Execute()
-
-
-    def test_task_state_after_update_boundaries():
-        assert (
-            session.workflow.TaskObject["Update Boundaries"].get_state()["State"]
-            == "Up-to-date"
-        )
-
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Update Boundaries")
 
     ###############################################################################
     # Update your regions
     # Query the task state before and after task execution
 
-
-    def test_task_state_before_update_regions():
-        assert (
-            session.workflow.TaskObject["Update Regions"].get_state()["State"]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["Update Regions"].Execute()
-
-
-    def test_task_state_after_update_regions():
-        assert (
-            session.workflow.TaskObject["Update Regions"].get_state()["State"]
-            == "Up-to-date"
-        )
-
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Update Regions")
 
     ###############################################################################
     # Add Boundary Layers
@@ -206,23 +120,7 @@ def test_mixing_elbow():
     }
     session.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
 
-
-    def test_task_state_before_boundary_layers():
-        assert (
-            session.workflow.TaskObject["Add Boundary Layers"].get_state()["State"]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["smooth-transition_1"].Execute()
-
-
-    def test_task_state_after_boundary_layers():
-        assert (
-            session.workflow.TaskObject["Add Boundary Layers"].get_state()["State"]
-            == "Up-to-date"
-        )
-
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Add Boundary Layers")
 
     ###############################################################################
     # Generate the volume mesh
@@ -234,27 +132,7 @@ def test_mixing_elbow():
         },
     }
 
-
-    def test_task_state_before_volume_mesh():
-        assert (
-            session.workflow.TaskObject["Generate the Volume Mesh"].get_state()[
-                "State"
-            ]
-            == "Out-of-date"
-        )
-
-
-    session.workflow.TaskObject["Generate the Volume Mesh"].Execute()
-
-
-    def test_task_state_after_volume_mesh():
-        assert (
-            session.workflow.TaskObject["Generate the Volume Mesh"].get_state()[
-                "State"
-            ]
-            == "Up-to-date"
-        )
-
+    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Generate the Volume Mesh")
 
     ###############################################################################
     # Check the mesh in Meshing mode
