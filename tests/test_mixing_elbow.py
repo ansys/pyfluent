@@ -37,6 +37,11 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
     task.Execute()
     check_task_execute_postconditions(task_state)
 
+def check_report_definition_result(report_definitions, report_definition_name, expected_result):
+    assert report_definitions.compute(
+        report_defs=[report_definition_name]
+    )[report_definition_name][0] == expected_result
+
 def test_mixing_elbow():
 
     import_filename = download_file(
@@ -137,8 +142,6 @@ def test_mixing_elbow():
     ###############################################################################
     # Check the mesh in Meshing mode
     session.tui.meshing.mesh.check_mesh()
-
-    return
 
     ###############################################################################
     # Switch to Solution mode
@@ -251,14 +254,8 @@ def test_mixing_elbow():
         "hot-inlet",
         "outlet",
     ]
-    root.solution.report_definitions.compute(report_defs=["report_mfr"])
 
-
-    def test_report_mfr():
-        assert root.solution.report_definitions.compute(
-            report_defs=["report_mfr"]
-        )["report_mfr"][0] == approx(-2.985690364942784e-06, abs=1e-3)
-
+    check_report_definition_result(report_definitions=root.solution.report_definitions, report_definition_name="report_mfr", expected_result=approx(-2.985690364942784e-06, abs=1e-3))
 
     ###############################################################################
     # Assert the returned temperature report definition value on the outlet surface
@@ -272,14 +269,9 @@ def test_mixing_elbow():
     root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = [
         "outlet"
     ]
-    root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
 
-
-    def test_outlet_temp_avg():
-        assert root.solution.report_definitions.compute(
-            report_defs=["outlet-temp-avg"]
-        )["outlet-temp-avg"][0] == approx(296.229, rel=1e-3)
-
+    check_report_definition_result(report_definitions=root.solution.report_definitions, report_definition_name="outlet-temp-avg", expected_result=approx(296.229, rel=1e-3))
+    
 
     ###############################################################################
     # Write final case and data.
