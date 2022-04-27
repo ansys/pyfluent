@@ -63,7 +63,20 @@ class PyVistaWindow(PostWindow):
             self._display_vector(obj, plotter)
         if self.animate:
             plotter.write_frame()
-        plotter.camera = camera.copy()
+        view = get_config()["set_view_on_display"]
+        view_fun = {
+            "xy": plotter.view_xy,
+            "xz": plotter.view_xz,
+            "yx": plotter.view_yx,
+            "yz": plotter.view_yz,
+            "zx": plotter.view_zx,
+            "zy": plotter.view_zy,
+            "isometric": plotter.view_isometric,
+        }.get(view)
+        if view_fun:
+            view_fun()
+        else:
+            plotter.camera = camera.copy()
         if not self._visible:
             plotter.show()
             self._visible = True
@@ -443,16 +456,14 @@ class PyVistaWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
             If window does not support object.
         """
         if not isinstance(object, GraphicsDefn):
-            raise RuntimeError("object not implemented.")
+            raise RuntimeError("Object type currently not supported.")
         with self._condition:
             window = self._post_windows.get(window_id)
             if window:
                 window.post_object = object
 
     def plot(
-        self,
-        object: Union[GraphicsDefn, PlotDefn],
-        window_id: Optional[str] = None,
+        self, object: Union[GraphicsDefn, PlotDefn], window_id: Optional[str] = None
     ) -> None:
         """Draw plot.
 
@@ -470,7 +481,7 @@ class PyVistaWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
             If window does not support object.
         """
         if not isinstance(object, GraphicsDefn):
-            raise RuntimeError("object not implemented.")
+            raise RuntimeError("Object type currently not supported.")
         with self._condition:
             if not window_id:
                 window_id = self._get_unique_window_id()
