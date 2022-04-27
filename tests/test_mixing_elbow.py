@@ -33,7 +33,9 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
     task = workflow.TaskObject[task_name]
     task_state = task.State
     check_task_execute_preconditions(task_state)
-    task.Execute()
+    # "Add Local Sizing" is wrongly retutning False in mwf 
+    # Will add issue and contact MN
+    assert task.Execute() is (task_name not in ("Add Local Sizing", "Add Boundary Layers"))
     check_task_execute_postconditions(task_state)
 
 def check_report_definition_result(report_definitions, report_definition_name, expected_result):
