@@ -85,6 +85,9 @@ numpydoc_validation_checks = {
     # type, unless multiple values are being returned"
 }
 
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ["_templates"]
+
 # The suffix(es) of source filenames.
 source_suffix = ".rst"
 
