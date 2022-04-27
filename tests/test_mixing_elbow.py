@@ -17,9 +17,8 @@ This test queries the following using PyTest:
 """
 
 from pytest import approx
+from functools import partial
 
-###############################################################################
-# Start Fluent
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 
@@ -48,8 +47,15 @@ def test_mixing_elbow():
         filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
 
+    ###############################################################################
+    # Start Fluent
     session = pyfluent.launch_fluent(
         meshing_mode=True, precision="double", processor_count=2
+    )
+
+    execute_task_with_pre_and_postconditions = partial(
+        execute_task_with_pre_and_postcondition_checks, 
+        workflow=session.workflow
     )
 
     ###############################################################################
@@ -63,14 +69,14 @@ def test_mixing_elbow():
         FileName=import_filename, LengthUnit="in"
     )
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Import Geometry")
+    execute_task_with_pre_and_postconditions(task_name="Import Geometry")
 
     ###############################################################################
     # Add local sizing
     # Query the task state before and after task execution
     session.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
     
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Add Local Sizing")
+    execute_task_with_pre_and_postconditions(task_name="Add Local Sizing")
 
     ###############################################################################
     # Generate the surface mesh
@@ -79,7 +85,7 @@ def test_mixing_elbow():
         "CFDSurfaceMeshControls": {"MaxSize": 0.3}
     }
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Generate the Surface Mesh")
+    execute_task_with_pre_and_postconditions(task_name="Generate the Surface Mesh")
 
 
     ###############################################################################
@@ -95,7 +101,7 @@ def test_mixing_elbow():
         SetupTypeChanged=True
     )
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Describe Geometry")
+    execute_task_with_pre_and_postconditions(task_name="Describe Geometry")
 
     ###############################################################################
     # Update Boundaries Task
@@ -107,13 +113,13 @@ def test_mixing_elbow():
         "OldBoundaryLabelTypeList": ["velocity-inlet"],
     }
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Update Boundaries")
+    execute_task_with_pre_and_postconditions(task_name="Update Boundaries")
 
     ###############################################################################
     # Update your regions
     # Query the task state before and after task execution
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Update Regions")
+    execute_task_with_pre_and_postconditions(task_name="Update Regions")
 
     ###############################################################################
     # Add Boundary Layers
@@ -125,7 +131,7 @@ def test_mixing_elbow():
     }
     session.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Add Boundary Layers")
+    execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
 
     ###############################################################################
     # Generate the volume mesh
@@ -137,7 +143,7 @@ def test_mixing_elbow():
         },
     }
 
-    execute_task_with_pre_and_postcondition_checks(workflow=session.workflow, task_name="Generate the Volume Mesh")
+    execute_task_with_pre_and_postconditions(task_name="Generate the Volume Mesh")
 
     ###############################################################################
     # Check the mesh in Meshing mode
@@ -255,7 +261,15 @@ def test_mixing_elbow():
         "outlet",
     ]
 
-    check_report_definition_result(report_definitions=root.solution.report_definitions, report_definition_name="report_mfr", expected_result=approx(-2.985690364942784e-06, abs=1e-3))
+    check_report_definition = partial(
+        check_report_definition_result, 
+        report_definitions=root.solution.report_definitions
+    )
+
+    check_report_definition(
+        report_definition_name="report_mfr", 
+        expected_result=approx(-2.985690364942784e-06, abs=1e-3)
+    )
 
     ###############################################################################
     # Assert the returned temperature report definition value on the outlet surface
@@ -270,8 +284,10 @@ def test_mixing_elbow():
         "outlet"
     ]
 
-    check_report_definition_result(report_definitions=root.solution.report_definitions, report_definition_name="outlet-temp-avg", expected_result=approx(296.229, rel=1e-3))
-    
+    check_report_definition(
+        report_definition_name="outlet-temp-avg", 
+        expected_result=approx(296.229, rel=1e-3)
+    )
 
     ###############################################################################
     # Write final case and data.
