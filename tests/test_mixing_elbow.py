@@ -16,8 +16,9 @@ This test queries the following using PyTest:
 - Temperature on the outlet boundary after solution, approximately 296.2 K
 """
 
-from pytest import approx
 from functools import partial
+
+from pytest import approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
@@ -25,9 +26,11 @@ from ansys.fluent.core.examples import download_file
 
 def check_task_execute_preconditions(task_state):
     assert task_state() == "Out-of-date"
-    
+
+
 def check_task_execute_postconditions(task_state):
     assert task_state() == "Up-to-date"
+
 
 def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
     task = workflow.TaskObject[task_name]
@@ -40,14 +43,17 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
         assert result is True
     check_task_execute_postconditions(task_state)
 
+
 def check_report_definition_result(
-    report_definitions, 
-    report_definition_name, 
-    expected_result
-    ):
-    assert report_definitions.compute(
-        report_defs=[report_definition_name]
-    )[report_definition_name][0] == expected_result
+    report_definitions, report_definition_name, expected_result
+):
+    assert (
+        report_definitions.compute(report_defs=[report_definition_name])[
+            report_definition_name
+        ][0]
+        == expected_result
+    )
+
 
 def test_mixing_elbow():
 
@@ -62,8 +68,7 @@ def test_mixing_elbow():
     )
 
     execute_task_with_pre_and_postconditions = partial(
-        execute_task_with_pre_and_postcondition_checks, 
-        workflow=session.workflow
+        execute_task_with_pre_and_postcondition_checks, workflow=session.workflow
     )
 
     ###############################################################################
@@ -83,7 +88,7 @@ def test_mixing_elbow():
     # Add local sizing
     # Query the task state before and after task execution
     session.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-    
+
     execute_task_with_pre_and_postconditions(task_name="Add Local Sizing")
 
     ###############################################################################
@@ -94,7 +99,6 @@ def test_mixing_elbow():
     }
 
     execute_task_with_pre_and_postconditions(task_name="Generate the Surface Mesh")
-
 
     ###############################################################################
     # Describe the geometry
@@ -270,13 +274,13 @@ def test_mixing_elbow():
     ]
 
     check_report_definition = partial(
-        check_report_definition_result, 
-        report_definitions=root.solution.report_definitions
+        check_report_definition_result,
+        report_definitions=root.solution.report_definitions,
     )
 
     check_report_definition(
-        report_definition_name="report_mfr", 
-        expected_result=approx(-2.985690364942784e-06, abs=1e-3)
+        report_definition_name="report_mfr",
+        expected_result=approx(-2.985690364942784e-06, abs=1e-3),
     )
 
     ###############################################################################
@@ -285,16 +289,14 @@ def test_mixing_elbow():
     root.solution.report_definitions.surface[
         "outlet-temp-avg"
     ].report_type = "surface-massavg"
-    root.solution.report_definitions.surface[
-        "outlet-temp-avg"
-    ].field = "temperature"
+    root.solution.report_definitions.surface["outlet-temp-avg"].field = "temperature"
     root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = [
         "outlet"
     ]
 
     check_report_definition(
-        report_definition_name="outlet-temp-avg", 
-        expected_result=approx(296.229, rel=1e-3)
+        report_definition_name="outlet-temp-avg",
+        expected_result=approx(296.229, rel=1e-3),
     )
 
     ###############################################################################
