@@ -33,7 +33,7 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
     task = workflow.TaskObject[task_name]
     task_state = task.State
     check_task_execute_preconditions(task_state)
-    # Some tasks are wrongly retutning False in meshing workflow itself
+    # Some tasks are wrongly returning False in meshing workflow itself
     # so we add a temporary caveat below
     result = task.Execute()
     if task_name not in ("Add Local Sizing", "Add Boundary Layers"):
