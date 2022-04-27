@@ -46,7 +46,7 @@ jobs:
       - name: Build Documentation
         run: |
           pip install -r requirements_docs.txt
-          make -C doc html
+          xvfb-run make -C doc html
           touch doc/_build/html/.nojekyll
           echo "dev.fluentdocs.pyansys.com" >> doc/_build/html/CNAME
         env:
