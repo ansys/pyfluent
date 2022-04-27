@@ -33,12 +33,19 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
     task = workflow.TaskObject[task_name]
     task_state = task.State
     check_task_execute_preconditions(task_state)
-    # "Add Local Sizing" is wrongly retutning False in mwf 
-    # Will add issue and contact MN
-    assert task.Execute() is (task_name not in ("Add Local Sizing", "Add Boundary Layers"))
+    # Some tasks are wrongly retutning False in meshing workflow itself
+    # so we add a temporary caveat below
+    # Will add issue and contact Mahendar
+    result = task.Execute()
+    if task_name not in ("Add Local Sizing", "Add Boundary Layers"):
+        assert result is True
     check_task_execute_postconditions(task_state)
 
-def check_report_definition_result(report_definitions, report_definition_name, expected_result):
+def check_report_definition_result(
+    report_definitions, 
+    report_definition_name, 
+    expected_result
+    ):
     assert report_definitions.compute(
         report_defs=[report_definition_name]
     )[report_definition_name][0] == expected_result
