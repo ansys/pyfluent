@@ -110,8 +110,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
     session = Session.create_from_server_info_file(
         server_info_filepath=server_info_file, cleanup_on_exit=False
     )
-    with pytest.raises(RuntimeError):
-        session.check_health()
+    assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
     server.stop(None)
     session.exit()
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name

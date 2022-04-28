@@ -84,5 +84,5 @@ try:
     if not os.path.exists(EXAMPLES_PATH):
         os.makedirs(EXAMPLES_PATH)
 
-except:
+except Exception:
     pass
