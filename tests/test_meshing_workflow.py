@@ -7,38 +7,40 @@ This test covers generic meshing workflow behaviour
 
 from functools import partial
 
-from util.meshing_workflow import (
+from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
+    mesh_session,
+    watertight_workflow,
+    watertight_workflow_session,
 )
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 
 
-def test_mixing_elbow_meshing_workflow():
+def test_mixing_elbow_meshing_workflow(
+    watertight_workflow_session, watertight_workflow
+):
+
+    workflow = watertight_workflow
 
     import_filename = download_file(
         filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
     )
 
     ###############################################################################
-    # Start Fluent
-    session = pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
-    )
 
     assign_task_args = partial(
-        assign_task_arguments, workflow=session.workflow, check_state=True
+        assign_task_arguments, workflow=workflow, check_state=True
     )
 
     execute_task_with_pre_and_postconditions = partial(
-        execute_task_with_pre_and_postcondition_checks, workflow=session.workflow
+        execute_task_with_pre_and_postcondition_checks, workflow=watertight_workflow
     )
 
     ###############################################################################
     # Select the Watertight Geometry Meshing Workflow
-    session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     ###############################################################################
     # Import the CAD geometry
@@ -52,7 +54,7 @@ def test_mixing_elbow_meshing_workflow():
     ###############################################################################
     # Add local sizing
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
+    workflow.TaskObject["Add Local Sizing"].AddChildToTask()
 
     execute_task_with_pre_and_postconditions(task_name="Add Local Sizing")
 
@@ -68,16 +70,12 @@ def test_mixing_elbow_meshing_workflow():
     ###############################################################################
     # Describe the geometry
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-        SetupTypeChanged=False
-    )
+    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
     assign_task_args(
         task_name="Describe Geometry",
         SetupType="The geometry consists of only fluid regions with no voids",
     )
-    session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-        SetupTypeChanged=True
-    )
+    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 
     execute_task_with_pre_and_postconditions(task_name="Describe Geometry")
 
@@ -103,12 +101,12 @@ def test_mixing_elbow_meshing_workflow():
     ###############################################################################
     # Add Boundary Layers
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-    session.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+    workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
+    workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
     assign_task_args(
         task_name="smooth-transition_1", BLControlName="smooth-transition_1"
     )
-    session.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
+    workflow.TaskObject["Add Boundary Layers"].Arguments = {}
 
     execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
 
@@ -125,47 +123,25 @@ def test_mixing_elbow_meshing_workflow():
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    session.tui.meshing.mesh.check_mesh()
+    watertight_workflow_session.tui.meshing.mesh.check_mesh()
 
 
-def test_meshing_workflow_raises_exception_on_invalid_task_name():
-
-    import_filename = download_file(
-        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-    )
-
-    ###############################################################################
-    # Start Fluent
-    session = pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
-    )
-
-    workflow = session.workflow
+def test_meshing_workflow_raises_exception_on_invalid_task_name(watertight_workflow):
 
     try:
-        workflow.TaskObject["no such task"]
+        watertight_workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:
         assert False
 
 
-def test_meshing_workflow_raises_exception_on_invalid_parameter_name_in_task():
-
-    import_filename = download_file(
-        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-    )
-
-    ###############################################################################
-    # Start Fluent
-    session = pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
-    )
-
-    workflow = session.workflow
+def test_meshing_workflow_raises_exception_on_invalid_parameter_name_in_task(
+    watertight_workflow,
+):
 
     try:
-        workflow.TaskObject["no such task"]
+        watertight_workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:

@@ -1,3 +1,8 @@
+import pytest
+
+import ansys.fluent.core as pyfluent
+
+
 def assign_task_arguments(
     workflow, check_state: bool, task_name: str, **kwargs
 ) -> None:
@@ -27,3 +32,28 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
     if task_name not in ("Add Local Sizing", "Add Boundary Layers"):
         assert result is True
     check_task_execute_postconditions(task)
+
+
+_mesher = None
+
+
+@pytest.fixture
+def mesh_session():
+    global _mesher
+    if not _mesher:
+        _mesher = pyfluent.launch_fluent(
+            meshing_mode=True, precision="double", processor_count=2
+        )
+    return _mesher
+
+
+@pytest.fixture
+def watertight_workflow_session(mesh_session):
+    mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    yield mesh_session
+    mesh_session.workflow.ResetWorkflow()
+
+
+@pytest.fixture
+def watertight_workflow(watertight_workflow_session):
+    return watertight_workflow_session.workflow
