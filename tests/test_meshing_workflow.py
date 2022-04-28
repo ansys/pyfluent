@@ -25,6 +25,10 @@ def test_mixing_elbow_meshing_workflow(
 
     workflow = shared_watertight_workflow
 
+    assert workflow is shared_watertight_workflow_session.workflow
+
+    workflow = shared_watertight_workflow_session.workflow
+
     ###############################################################################
 
     assign_task_args = partial(
