@@ -7,11 +7,10 @@ This test covers generic meshing workflow behaviour
 
 from functools import partial
 
-from util.meshing_workflow import (  # noqa: F401
+from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
-    model_object_throws_on_invalid_arg,
     shared_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
