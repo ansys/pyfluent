@@ -1,6 +1,7 @@
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.examples import download_file
 
 
 def assign_task_arguments(
@@ -34,26 +35,61 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
     check_task_execute_postconditions(task)
 
 
+def create_mesh_session():
+    return pyfluent.launch_fluent(
+        meshing_mode=True, precision="double", processor_count=2
+    )
+
+
+@pytest.fixture
+def new_mesh_session():
+    mesher = create_mesh_session()
+    yield mesher
+    mesher.exit()
+
+
+@pytest.fixture
+def new_watertight_workflow_session(new_mesh_session):
+    new_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    yield new_mesh_session
+
+
+@pytest.fixture
+def new_watertight_workflow(new_watertight_workflow_session):
+    yield new_watertight_workflow_session.workflow
+
+
 _mesher = None
 
 
 @pytest.fixture
-def mesh_session():
+def shared_mesh_session():
     global _mesher
     if not _mesher:
-        _mesher = pyfluent.launch_fluent(
-            meshing_mode=True, precision="double", processor_count=2
-        )
+        _mesher = create_mesh_session()
     return _mesher
 
 
 @pytest.fixture
-def watertight_workflow_session(mesh_session):
-    mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    yield mesh_session
-    mesh_session.workflow.ResetWorkflow()
+def shared_watertight_workflow_session(shared_mesh_session):
+    shared_mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    yield shared_mesh_session
+    shared_mesh_session.workflow.ResetWorkflow()
 
 
 @pytest.fixture
-def watertight_workflow(watertight_workflow_session):
-    return watertight_workflow_session.workflow
+def shared_watertight_workflow(shared_watertight_workflow_session):
+    return shared_watertight_workflow_session.workflow
+
+
+_import_filename = None
+
+
+@pytest.fixture
+def mixing_elbow_geometry():
+    global _import_filename
+    if not _import_filename:
+        _import_filename = download_file(
+            filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        )
+    return _import_filename

@@ -10,23 +10,20 @@ from functools import partial
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
-    mesh_session,
-    watertight_workflow,
-    watertight_workflow_session,
+    mixing_elbow_geometry,
+    shared_mesh_session,
+    shared_watertight_workflow,
+    shared_watertight_workflow_session,
 )
-
-from ansys.fluent.core.examples import download_file
 
 
 def test_mixing_elbow_meshing_workflow(
-    watertight_workflow_session, watertight_workflow
+    shared_watertight_workflow_session,
+    shared_watertight_workflow,
+    mixing_elbow_geometry,
 ):
 
-    workflow = watertight_workflow
-
-    import_filename = download_file(
-        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-    )
+    workflow = shared_watertight_workflow
 
     ###############################################################################
 
@@ -35,18 +32,15 @@ def test_mixing_elbow_meshing_workflow(
     )
 
     execute_task_with_pre_and_postconditions = partial(
-        execute_task_with_pre_and_postcondition_checks, workflow=watertight_workflow
+        execute_task_with_pre_and_postcondition_checks,
+        workflow=shared_watertight_workflow,
     )
-
-    ###############################################################################
-    # Select the Watertight Geometry Meshing Workflow
-    workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     ###############################################################################
     # Import the CAD geometry
     # Query the task state before and after task execution
     assign_task_args(
-        task_name="Import Geometry", FileName=import_filename, LengthUnit="in"
+        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
     )
 
     execute_task_with_pre_and_postconditions(task_name="Import Geometry")
@@ -123,13 +117,14 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    watertight_workflow_session.tui.meshing.mesh.check_mesh()
+    shared_watertight_workflow_session.tui.meshing.mesh.check_mesh()
 
 
-def test_meshing_workflow_raises_exception_on_invalid_task_name(watertight_workflow):
-
+def test_meshing_workflow_raises_exception_on_invalid_task_name(
+    shared_watertight_workflow,
+):
     try:
-        watertight_workflow.TaskObject["no such task"]
+        shared_watertight_workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:
@@ -137,11 +132,11 @@ def test_meshing_workflow_raises_exception_on_invalid_task_name(watertight_workf
 
 
 def test_meshing_workflow_raises_exception_on_invalid_parameter_name_in_task(
-    watertight_workflow,
+    shared_watertight_workflow,
 ):
 
     try:
-        watertight_workflow.TaskObject["no such task"]
+        shared_watertight_workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:

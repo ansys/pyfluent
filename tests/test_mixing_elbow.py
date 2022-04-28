@@ -19,45 +19,37 @@ This test queries the following using PyTest:
 from functools import partial
 
 from pytest import approx
-from util.meshing_workflow import (
+from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
+    mixing_elbow_geometry,
+    new_mesh_session,
+    new_watertight_workflow,
+    new_watertight_workflow_session,
 )
 from util.solver import check_report_definition_result
 
-import ansys.fluent.core as pyfluent
-from ansys.fluent.core.examples import download_file
 
+def test_mixing_elbow(
+    new_watertight_workflow_session, new_watertight_workflow, mixing_elbow_geometry
+):
 
-def test_mixing_elbow():
-
-    import_filename = download_file(
-        filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
-    )
-
-    ###############################################################################
-    # Start Fluent
-    session = pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
-    )
+    workflow = new_watertight_workflow
+    session = new_watertight_workflow_session
 
     assign_task_args = partial(
-        assign_task_arguments, workflow=session.workflow, check_state=True
+        assign_task_arguments, workflow=workflow, check_state=True
     )
 
     execute_task_with_pre_and_postconditions = partial(
-        execute_task_with_pre_and_postcondition_checks, workflow=session.workflow
+        execute_task_with_pre_and_postcondition_checks, workflow=workflow
     )
-
-    ###############################################################################
-    # Select the Watertight Geometry Meshing Workflow
-    session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     ###############################################################################
     # Import the CAD geometry
     # Query the task state before and after task execution
     assign_task_args(
-        task_name="Import Geometry", FileName=import_filename, LengthUnit="in"
+        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
     )
 
     execute_task_with_pre_and_postconditions(task_name="Import Geometry")
@@ -65,7 +57,7 @@ def test_mixing_elbow():
     ###############################################################################
     # Add local sizing
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
+    workflow.TaskObject["Add Local Sizing"].AddChildToTask()
 
     execute_task_with_pre_and_postconditions(task_name="Add Local Sizing")
 
@@ -81,16 +73,12 @@ def test_mixing_elbow():
     ###############################################################################
     # Describe the geometry
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-        SetupTypeChanged=False
-    )
+    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
     assign_task_args(
         task_name="Describe Geometry",
         SetupType="The geometry consists of only fluid regions with no voids",
     )
-    session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-        SetupTypeChanged=True
-    )
+    workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 
     execute_task_with_pre_and_postconditions(task_name="Describe Geometry")
 
@@ -116,12 +104,12 @@ def test_mixing_elbow():
     ###############################################################################
     # Add Boundary Layers
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-    session.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+    workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
+    workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
     assign_task_args(
         task_name="smooth-transition_1", BLControlName="smooth-transition_1"
     )
-    session.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
+    workflow.TaskObject["Add Boundary Layers"].Arguments = {}
 
     execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
 
