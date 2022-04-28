@@ -19,15 +19,11 @@ from util.meshing_workflow import (  # noqa: F401
 
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
-    shared_watertight_workflow,
     mixing_elbow_geometry,
 ):
 
-    workflow = shared_watertight_workflow
-
-    assert workflow is shared_watertight_workflow_session.workflow
-
-    workflow = shared_watertight_workflow_session.workflow
+    session = shared_watertight_workflow_session
+    workflow = session.workflow
 
     ###############################################################################
 
@@ -37,7 +33,7 @@ def test_mixing_elbow_meshing_workflow(
 
     execute_task_with_pre_and_postconditions = partial(
         execute_task_with_pre_and_postcondition_checks,
-        workflow=shared_watertight_workflow,
+        workflow=workflow,
     )
 
     ###############################################################################
@@ -121,7 +117,7 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    shared_watertight_workflow_session.tui.meshing.mesh.check_mesh()
+    session.tui.meshing.mesh.check_mesh()
 
 
 def test_meshing_workflow_raises_exception_on_invalid_task_name(

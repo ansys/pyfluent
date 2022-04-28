@@ -45,6 +45,10 @@ def initialize_watertight(mesh_session):
     mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 
+def reset_workflow(mesh_session):
+    mesh_session.workflow.ResetWorkflow()
+
+
 @pytest.fixture
 def new_mesh_session():
     mesher = create_mesh_session()
@@ -78,12 +82,12 @@ def shared_mesh_session():
 def shared_watertight_workflow_session(shared_mesh_session):
     initialize_watertight(shared_mesh_session)
     yield shared_mesh_session
-    shared_mesh_session.workflow.ResetWorkflow()
+    reset_workflow(shared_mesh_session)
 
 
 @pytest.fixture
 def shared_watertight_workflow(shared_watertight_workflow_session):
-    return shared_watertight_workflow_session.workflow
+    yield shared_watertight_workflow_session.workflow
 
 
 _import_filename = None
