@@ -120,6 +120,7 @@ def _populate_rst_from_settings(rst_dir, cls):
     has_named_object = hasattr(cls, "child_object_type")
     with open(rstpath, "w") as r:
         # Populate initial rst
+        r.write(":orphan:\n\n")
         r.write(f".. _{file_name}:\n\n")
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
@@ -127,15 +128,6 @@ def _populate_rst_from_settings(rst_dir, cls):
         r.write(f".. autoclass:: {cls_name}\n")
         r.write(f"{istr1}:show-inheritance:\n")
         r.write(f"{istr1}:undoc-members:\n")
-        member_str = f"{istr1}:members: fluent_name"
-        if has_children:
-            member_str += ", child_names"
-        if has_commands:
-            member_str += ", command_names"
-        if has_arguments:
-            member_str += ", argument_names"
-        member_str += "\n"
-        r.write(member_str)
 
         if has_children:
             r.write(f".. rubric:: Children\n\n")
