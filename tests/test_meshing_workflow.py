@@ -1,7 +1,7 @@
 """.. _ref_mixing_elbow_tui_api:
 
 Fluid Flow and Heat Transfer in a Mixing Elbow
-----------------------------------------------
+---------------------------------------------------
 This test covers generic meshing workflow behaviour
 """
 
