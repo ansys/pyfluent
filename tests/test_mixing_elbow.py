@@ -30,12 +30,10 @@ from util.meshing_workflow import (  # noqa: F401
 from util.solver import check_report_definition_result
 
 
-def test_mixing_elbow(
-    new_watertight_workflow_session, new_watertight_workflow, mixing_elbow_geometry
-):
+def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
-    workflow = new_watertight_workflow
     session = new_watertight_workflow_session
+    workflow = session.workflow
 
     assign_task_args = partial(
         assign_task_arguments, workflow=workflow, check_state=True
