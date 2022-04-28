@@ -11,6 +11,7 @@ from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
+    model_object_throws_on_invalid_arg,
     shared_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
@@ -131,13 +132,52 @@ def test_meshing_workflow_raises_exception_on_invalid_task_name(
         assert False
 
 
-def test_meshing_workflow_raises_exception_on_invalid_parameter_name_in_task(
+"""
+Cannot enable this test because meshing workflow makes invalid queries as
+soon as the meshing appllication is started:
+
+Error: workflow/cx-create-workflow-tree:Invalid query for child TaskType from parent /Workflow
+Error Object: ()
+
+
+def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
+    model_object_throws_on_invalid_arg,
     shared_watertight_workflow,
+    mixing_elbow_geometry
 ):
+    # task_names = ("Import Geometry", "Add Local Sizing")
+    task_names = ("Add Local Sizing",)
+    for task_name in task_names:
+        task = shared_watertight_workflow.TaskObject[task_name]
+        try:
+            task.Arguments = {"no such arg": 42}
+        except Exception:
+            pass
+        else:
+            assert False
+
+def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
+    model_object_throws_on_invalid_arg,
+    shared_watertight_workflow,
+    mixing_elbow_geometry
+):
+    workflow = shared_watertight_workflow
+    assign_task_args = partial(
+        assign_task_arguments, workflow=workflow, check_state=False
+    )
+
+    assign_task_args(
+        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
+    )
+
+    workflow.TaskObject["Import Geometry"].Execute()
 
     try:
-        shared_watertight_workflow.TaskObject["no such task"]
-    except Exception:
+        assign_task_args(
+            task_name="Add Local Sizing", XXX=42
+        )
+    except:
         pass
     else:
         assert False
+"""

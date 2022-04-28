@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -101,3 +103,8 @@ def mixing_elbow_geometry():
             filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
         )
     return _import_filename
+
+
+@pytest.fixture
+def model_object_throws_on_invalid_arg():
+    os.environ["MODEL_OBJECT_THROW_BAD_CHILD"] = "1"
