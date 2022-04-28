@@ -19,40 +19,14 @@ This test queries the following using PyTest:
 from functools import partial
 
 from pytest import approx
+from util.meshing_workflow import (
+    assign_task_arguments,
+    execute_task_with_pre_and_postcondition_checks,
+)
+from util.solver import check_report_definition_result
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-
-
-def check_task_execute_preconditions(task_state):
-    assert task_state() == "Out-of-date"
-
-
-def check_task_execute_postconditions(task_state):
-    assert task_state() == "Up-to-date"
-
-
-def execute_task_with_pre_and_postcondition_checks(workflow, task_name):
-    task = workflow.TaskObject[task_name]
-    task_state = task.State
-    check_task_execute_preconditions(task_state)
-    # Some tasks are wrongly returning False in meshing workflow itself
-    # so we add a temporary caveat below
-    result = task.Execute()
-    if task_name not in ("Add Local Sizing", "Add Boundary Layers"):
-        assert result is True
-    check_task_execute_postconditions(task_state)
-
-
-def check_report_definition_result(
-    report_definitions, report_definition_name, expected_result
-):
-    assert (
-        report_definitions.compute(report_defs=[report_definition_name])[
-            report_definition_name
-        ][0]
-        == expected_result
-    )
 
 
 def test_mixing_elbow():
@@ -67,6 +41,10 @@ def test_mixing_elbow():
         meshing_mode=True, precision="double", processor_count=2
     )
 
+    assign_task_args = partial(
+        assign_task_arguments, workflow=session.workflow, check_state=True
+    )
+
     execute_task_with_pre_and_postconditions = partial(
         execute_task_with_pre_and_postcondition_checks, workflow=session.workflow
     )
@@ -78,8 +56,8 @@ def test_mixing_elbow():
     ###############################################################################
     # Import the CAD geometry
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=import_filename, LengthUnit="in"
+    assign_task_args(
+        task_name="Import Geometry", FileName=import_filename, LengthUnit="in"
     )
 
     execute_task_with_pre_and_postconditions(task_name="Import Geometry")
@@ -94,9 +72,9 @@ def test_mixing_elbow():
     ###############################################################################
     # Generate the surface mesh
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
-        "CFDSurfaceMeshControls": {"MaxSize": 0.3}
-    }
+    assign_task_args(
+        task_name="Generate the Surface Mesh", CFDSurfaceMeshControls={"MaxSize": 0.3}
+    )
 
     execute_task_with_pre_and_postconditions(task_name="Generate the Surface Mesh")
 
@@ -106,8 +84,9 @@ def test_mixing_elbow():
     session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
         SetupTypeChanged=False
     )
-    session.workflow.TaskObject["Describe Geometry"].Arguments = dict(
-        SetupType="The geometry consists of only fluid regions with no voids"
+    assign_task_args(
+        task_name="Describe Geometry",
+        SetupType="The geometry consists of only fluid regions with no voids",
     )
     session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
         SetupTypeChanged=True
@@ -118,12 +97,13 @@ def test_mixing_elbow():
     ###############################################################################
     # Update Boundaries Task
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Update Boundaries"].Arguments = {
-        "BoundaryLabelList": ["wall-inlet"],
-        "BoundaryLabelTypeList": ["wall"],
-        "OldBoundaryLabelList": ["wall-inlet"],
-        "OldBoundaryLabelTypeList": ["velocity-inlet"],
-    }
+    assign_task_args(
+        task_name="Update Boundaries",
+        BoundaryLabelList=["wall-inlet"],
+        BoundaryLabelTypeList=["wall"],
+        OldBoundaryLabelList=["wall-inlet"],
+        OldBoundaryLabelTypeList=["velocity-inlet"],
+    )
 
     execute_task_with_pre_and_postconditions(task_name="Update Boundaries")
 
@@ -138,9 +118,9 @@ def test_mixing_elbow():
     # Query the task state before and after task execution
     session.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
     session.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-    session.workflow.TaskObject["smooth-transition_1"].Arguments = {
-        "BLControlName": "smooth-transition_1",
-    }
+    assign_task_args(
+        task_name="smooth-transition_1", BLControlName="smooth-transition_1"
+    )
     session.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
 
     execute_task_with_pre_and_postconditions(task_name="Add Boundary Layers")
@@ -148,12 +128,11 @@ def test_mixing_elbow():
     ###############################################################################
     # Generate the volume mesh
     # Query the task state before and after task execution
-    session.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
-        "VolumeFill": "poly-hexcore",
-        "VolumeFillControls": {
-            "HexMaxCellLength": 0.3,
-        },
-    }
+    assign_task_args(
+        task_name="Generate the Volume Mesh",
+        VolumeFill="poly-hexcore",
+        VolumeFillControls={"HexMaxCellLength": 0.3},
+    )
 
     execute_task_with_pre_and_postconditions(task_name="Generate the Volume Mesh")
 
