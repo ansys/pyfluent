@@ -22,7 +22,7 @@ from ansys.fluent.post import set_config
 from ansys.fluent.post.matplotlib import Plots
 from ansys.fluent.post.pyvista import Graphics
 
-set_config(blocking=True)
+set_config(blocking=True, set_view_on_display="isometric")
 
 ###############################################################################
 # First, download the case and data file and start Fluent as a service with
