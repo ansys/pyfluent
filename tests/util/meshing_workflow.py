@@ -50,7 +50,7 @@ def reset_workflow(mesh_session):
 
 
 @pytest.fixture
-def new_mesh_session():
+def new_mesh_session(with_running_pytest):
     mesher = create_mesh_session()
     yield mesher
     mesher.exit()
@@ -71,7 +71,7 @@ _mesher = None
 
 
 @pytest.fixture
-def shared_mesh_session():
+def shared_mesh_session(with_running_pytest):
     global _mesher
     if not _mesher:
         _mesher = create_mesh_session()
