@@ -133,7 +133,7 @@ def test_meshing_workflow_raises_exception_on_invalid_task_name(
 
 """
 Cannot enable this test because meshing workflow makes invalid queries as
-soon as the meshing appllication is started:
+soon as the meshing application is started:
 
 Error: workflow/cx-create-workflow-tree:Invalid query for child TaskType from parent /Workflow
 Error Object: ()
