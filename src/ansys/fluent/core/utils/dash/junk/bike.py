@@ -36,7 +36,7 @@ app.layout = dbc.Container(
             active_tab="scatter",
         ),
         html.Div(id="tab-content", className="p-4"),
-    ]
+    ],
 )
 
 
@@ -78,9 +78,7 @@ def generate_graphs(n):
     # generate 100 multivariate normal samples
     data = np.random.multivariate_normal([0, 0], [[1, 0.5], [0.5, 1]], 100)
 
-    scatter = go.Figure(
-        data=[go.Scatter(x=data[:, 0], y=data[:, 1], mode="markers")]
-    )
+    scatter = go.Figure(data=[go.Scatter(x=data[:, 0], y=data[:, 1], mode="markers")])
     hist_1 = go.Figure(data=[go.Histogram(x=data[:, 0])])
     hist_2 = go.Figure(data=[go.Histogram(x=data[:, 1])])
 

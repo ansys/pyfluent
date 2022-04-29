@@ -29,9 +29,7 @@ class LocalPropertyEditor:
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
-        self._graphics_property_editor = GraphicsPropertyEditor(
-            app, SessionsManager
-        )
+        self._graphics_property_editor = GraphicsPropertyEditor(app, SessionsManager)
         self._plot_property_editor = PlotPropertyEditor(app, SessionsManager)
 
     def get_object_and_static_info(
@@ -75,10 +73,7 @@ class LocalPropertyEditor:
                     if not visible:
                         continue
 
-                    if (
-                        value.__class__.__class__.__name__
-                        == "PyLocalPropertyMeta"
-                    ):
+                    if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                         widget = self.get_widget(
                             value,
                             value._type,
@@ -221,7 +216,11 @@ class LocalPropertyEditor:
                     dbc.Label(self.get_label(name)),
                     widget,
                 ],
-                style = {"display": "flex", "flex-direction": "column", "padding": "10px 1px 2px"}  
+                style={
+                    "display": "flex",
+                    "flex-direction": "column",
+                    "padding": "10px 1px 2px",
+                },
             )
         return widget
 
@@ -243,13 +242,9 @@ class GraphicsPropertyEditor:
             )
         }
 
-    def get_object(
-        self, graphics_type, connection_id, session_id, object_id=None
-    ):
+    def get_object(self, graphics_type, connection_id, session_id, object_id=None):
         if graphics_type is not None:
-            session = self.SessionsManager(
-                self._app, connection_id, session_id
-            ).session
+            session = self.SessionsManager(self._app, connection_id, session_id).session
             graphics_session = Graphics(session)
 
             if graphics_type == "Contour":
@@ -287,13 +282,9 @@ class PlotPropertyEditor:
             )
         }
 
-    def get_object(
-        self, graphics_type, connection_id, session_id, object_id=None
-    ):
+    def get_object(self, graphics_type, connection_id, session_id, object_id=None):
         if graphics_type is not None:
-            session = self.SessionsManager(
-                self._app, connection_id, session_id
-            ).session
+            session = self.SessionsManager(self._app, connection_id, session_id).session
             plots_session = Plots(session)
             if graphics_type == "XYPlot":
                 return plots_session.XYPlots[
@@ -305,9 +296,7 @@ class GraphicsWindow:
 
     _windows = {}
 
-    def __init__(
-        self, app, connection_id, session_id, win_id, SessionsManager
-    ):
+    def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
         unique_win_id = f"graphics-{connection_id}-{session_id}-{win_id}"
         window_state = GraphicsWindow._windows.get(unique_win_id)
         if not window_state:
@@ -372,9 +361,7 @@ class PlotWindow:
 
     _windows = {}
 
-    def __init__(
-        self, app, connection_id, session_id, win_id, SessionsManager
-    ):
+    def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
         unique_win_id = f"plot-{connection_id}-{session_id}-{win_id}"
         window_state = PlotWindow._windows.get(unique_win_id)
         if not window_state:
@@ -420,3 +407,77 @@ class PlotWindow:
                 style={"height": 900},
             )
         }
+
+
+class MonitorWindow:
+
+    _windows = {}
+
+    def __init__(self, app, connection_id, session_id, SessionsManager):
+        unique_win_id = f"monitor-{connection_id}-{session_id}"
+        window_state = MonitorWindow._windows.get(unique_win_id)
+        if not window_state:
+            MonitorWindow._windows[unique_win_id] = self.__dict__
+
+            self._unique_win_id = unique_win_id
+            self._app = app
+            self._connection_id = connection_id
+            self._session_id = session_id
+            self.SessionsManager = SessionsManager
+
+            @app.callback(
+                Output(f"{self._unique_win_id}-tab-content", "children"),
+                Input(f"{self._unique_win_id}-tabs", "active_tab"),
+                Input("interval-component", "n_intervals"),
+                Input("connection-id", "data"),
+                Input("session-id", "value"),
+            )
+            def render_tab_content(active_tab, n_intervals, connection_id, session_id):
+                """
+                This callback takes the 'active_tab' property as input, as well as the
+                stored graphs, and renders the tab content depending on what the value of
+                'active_tab' is.
+                """
+                session = self.SessionsManager(
+                    self._app, connection_id, session_id
+                ).session
+                fig = session.monitors_manager.get_monitor_set_data(active_tab)
+                # df.set_index('xvalues')
+                # fig = df.plot()
+                if active_tab == "residual":
+                    fig.update_yaxes(type="log")
+                return dcc.Graph(
+                    figure=fig,
+                    style={"height": "100%"},
+                )
+
+        else:
+            self.__dict__ = window_state
+
+    def __call__(self):
+        session = self.SessionsManager(
+            self._app, self._connection_id, self._session_id
+        ).session
+
+        session.monitors_manager.start()
+
+        monitor_sets = session.monitors_manager.get_monitor_sets_name()
+        if len(monitor_sets) == 0:
+            return []
+        return dbc.Col(
+            [
+                dbc.Tabs(
+                    [
+                        dbc.Tab(label=monitor_set, tab_id=monitor_set)
+                        for monitor_set in monitor_sets
+                    ],
+                    id=f"{self._unique_win_id}-tabs",
+                    active_tab=monitor_sets[0],
+                ),
+                html.Div(
+                    id=f"{self._unique_win_id}-tab-content",
+                    style={"height": "100%"},
+                ),
+            ],
+            style={"height": "100%"},
+        )

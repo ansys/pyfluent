@@ -33,9 +33,7 @@ class SettingsPropertyEditor:
 
         @self._app.callback(
             Output(f"command-output", "value"),
-            Input(
-                {"type": "settings-command-button", "index": ALL}, "n_clicks"
-            ),
+            Input({"type": "settings-command-button", "index": ALL}, "n_clicks"),
             Input("connection-id", "data"),
             State({"type": "settings-command-input", "index": ALL}, "value"),
             State("session-id", "value"),
@@ -64,9 +62,7 @@ class SettingsPropertyEditor:
             n_clicks = ctx.triggered[0]["value"]
             if not n_clicks:
                 raise PreventUpdate
-            command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])[
-                "index"
-            ]
+            command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
             print(
                 "on_command_execution",
                 command_name,
@@ -80,9 +76,7 @@ class SettingsPropertyEditor:
             kwargs = {}
             cmd_obj = getattr(obj, command_name)
             args_iter = iter(args_value)
-            args_info = static_info["commands"][cmd_obj.obj_name][
-                "arguments"
-            ]
+            args_info = static_info["commands"][cmd_obj.obj_name]["arguments"]
             for arg_name, arg_info in args_info.items():
                 kwargs[to_python_name(arg_name)] = next(args_iter)
             print(kwargs)
@@ -94,9 +88,7 @@ class SettingsPropertyEditor:
     ):
         if object_type_path is not None:
             path_list = object_type_path.split("/")
-            session = self.SessionsManager(
-                self._app, connection_id, session_id
-            ).session
+            session = self.SessionsManager(self._app, connection_id, session_id).session
             static_info = self.SessionsManager(
                 self._app, connection_id, session_id
             ).static_info
@@ -106,10 +98,10 @@ class SettingsPropertyEditor:
             for path in path_list:
                 try:
                     obj = getattr(obj, path)
-                    static_info = static_info["children"][obj.obj_name]                    
+                    static_info = static_info["children"][obj.obj_name]
                 except AttributeError:
-                    obj = obj[path] 
-                    static_info =  static_info['object-type']                                     
+                    obj = obj[path]
+                    static_info = static_info["object-type"]
             return obj, static_info
 
     def get_label(self, name):
@@ -119,16 +111,15 @@ class SettingsPropertyEditor:
     def get_widgets(self, object_type, connection_id, session_id):
         def store_all_widgets(obj, si_info, state, parent=""):
             for name, value in obj.get_state().items():
-                if si_info["type"]== 'named-object':
+                if si_info["type"] == "named-object":
                     child_obj = obj[name]
-                    si_info_child =  si_info['object-type']                
+                    si_info_child = si_info["object-type"]
                 else:
                     child_obj = getattr(obj, name)
-                    si_info_child = si_info["children"][child_obj.obj_name]                
+                    si_info_child = si_info["children"][child_obj.obj_name]
 
-                
                 print(name, si_info_child["type"])
-                if si_info_child["type"] not in ("group", 'named-object'):
+                if si_info_child["type"] not in ("group", "named-object"):
                     widget = self.get_widget(
                         child_obj,
                         name,
@@ -228,7 +219,6 @@ class SettingsPropertyEditor:
                 },
                 value=["selected"] if obj() else [],
                 style={"padding": "5px 5px"},
-                
             )
         elif static_info["type"] == "real":
             if static_info.get("has_range"):
@@ -264,16 +254,17 @@ class SettingsPropertyEditor:
                 )
 
         if static_info["type"] == "boolean":
-            widget = html.Div(
-                [widget],
-              style = {"padding": "10px 1px 2px"}       
-            )
+            widget = html.Div([widget], style={"padding": "10px 1px 2px"})
         else:
             widget = html.Div(
                 [
                     dbc.Label(self.get_label(name)),
                     widget,
                 ],
-                style = {"display": "flex", "flex-direction": "column", "padding": "10px 1px 2px"}  
+                style={
+                    "display": "flex",
+                    "flex-direction": "column",
+                    "padding": "10px 1px 2px",
+                },
             )
         return widget

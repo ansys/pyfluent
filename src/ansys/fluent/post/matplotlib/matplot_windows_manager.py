@@ -64,6 +64,7 @@ class _ProcessPlotterHandle:
         except (BrokenPipeError, AttributeError):
             pass
 
+
 def get_xy_plot_data(obj):
     field = obj.y_axis_function()
     node_values = obj.node_values()
@@ -75,9 +76,7 @@ def get_xy_plot_data(obj):
     surfaces_info = field_info.get_surfaces_info()
     surface_ids = [
         id
-        for surf in map(
-            obj._data_extractor.remote_surface_name, obj.surfaces_list()
-        )
+        for surf in map(obj._data_extractor.remote_surface_name, obj.surfaces_list())
         for id in surfaces_info[surf]["surface_id"]
     ]
 
@@ -101,9 +100,7 @@ def get_xy_plot_data(obj):
         else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
     )
     boundary_value_tag = (
-        field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
-        if boundary_values
-        else 0
+        field_data._payloadTags[PayloadTag.BOUNDARY_VALUES] if boundary_values else 0
     )
     surface_tag = 0
     xyplot_payload_data = field_data.get_fields()
@@ -138,6 +135,7 @@ def get_xy_plot_data(obj):
         xy_plots_data[surface_name] = structured_data[sort]
     return xy_plots_data
 
+
 class MatplotWindow(PostWindow):
     """Class for MatplotWindow."""
 
@@ -154,9 +152,7 @@ class MatplotWindow(PostWindow):
         self.post_object: Union[GraphicsDefn, PlotDefn] = post_object
         self.id: str = id
         self.properties: dict = None
-        self.plotter: Union[
-            _ProcessPlotterHandle, Plotter
-        ] = self._get_plotter()
+        self.plotter: Union[_ProcessPlotterHandle, Plotter] = self._get_plotter()
         self.animate: bool = False
         self.close: bool = False
         self.refresh: bool = False
@@ -170,7 +166,7 @@ class MatplotWindow(PostWindow):
             "title": "XY Plot",
             "xlabel": "position",
             "ylabel": self.post_object.y_axis_function(),
-        }            
+        }
         xy_data = get_xy_plot_data(self.post_object)
         if in_notebook() or get_config()["blocking"]:
             self.plotter.set_properties(self.properties)
@@ -193,11 +189,7 @@ class MatplotWindow(PostWindow):
         )
 
 
-
-
-class MatplotWindowsManager(
-    PostWindowsManager, metaclass=AbstractSingletonMeta
-):
+class MatplotWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta):
     """Class for matplot windows manager."""
 
     def __init__(self):
@@ -375,18 +367,13 @@ class MatplotWindowsManager(
 
     # private methods
 
-    def _open_window(
-        self, window_id: str
-    ) -> Union[Plotter, _ProcessPlotterHandle]:
+    def _open_window(self, window_id: str) -> Union[Plotter, _ProcessPlotterHandle]:
         window = self._post_windows.get(window_id)
         plotter = None
         if (
             window
             and not window.plotter.is_closed()
-            and (
-                not (in_notebook() or get_config()["blocking"])
-                or window.refresh
-            )
+            and (not (in_notebook() or get_config()["blocking"]) or window.refresh)
         ):
             window.refresh = False
         else:

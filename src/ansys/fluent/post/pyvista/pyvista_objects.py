@@ -31,20 +31,16 @@ class Graphics:
         local_surfaces_provider : object, optional
             Object providing local surfaces.
         """
-        session_state = Graphics._sessions_state.get(
-            session.id if session else 1
-        )
+        session_state = Graphics._sessions_state.get(session.id if session else 1)
         if not session_state:
             session_state = self.__dict__
-            Graphics._sessions_state[
-                session.id if session else 1
-            ] = session_state
+            Graphics._sessions_state[session.id if session else 1] = session_state
             self.session = session
             self._init_module(self, sys.modules[__name__])
         else:
             self.__dict__ = session_state
-        self._local_surfaces_provider = (
-            lambda: local_surfaces_provider or getattr(self, "Surfaces", [])
+        self._local_surfaces_provider = lambda: local_surfaces_provider or getattr(
+            self, "Surfaces", []
         )
 
     def _init_module(self, obj, mod):

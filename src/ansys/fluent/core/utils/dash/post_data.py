@@ -58,7 +58,10 @@ def update_vtk_fun(obj):
     if obj.__class__.__name__ == "Mesh":
         return update_vtk_fun_mesh(obj)
     elif obj.__class__.__name__ == "Surface":
-        if obj.surface.type() == "iso-surface" and obj.surface.iso_surface.rendering()=="contour":
+        if (
+            obj.surface.type() == "iso-surface"
+            and obj.surface.iso_surface.rendering() == "contour"
+        ):
             return update_vtk_fun_field(obj)
         else:
             return update_vtk_fun_mesh(obj)
@@ -103,9 +106,7 @@ def update_vtk_fun_vector(obj):
                 faces_centroid,
                 vector_field * vector_data["vector-scale"][0] * obj.scale(),
             )
-            line_sgements_vertices = np.append(
-                faces_centroid, vector_end_points
-            )
+            line_sgements_vertices = np.append(faces_centroid, vector_end_points)
             line_segements_connectivity = [
                 x
                 for l in [
@@ -122,12 +123,8 @@ def update_vtk_fun_vector(obj):
             velocity_magnitude = np.linalg.norm(vector_field_saved, axis=1)
             range_min = np.amin(velocity_magnitude)
             range_max = np.amax(velocity_magnitude)
-            fields_min = (
-                min(fields_min, range_min) if fields_min else range_min
-            )
-            fields_max = (
-                max(fields_max, range_max) if fields_max else range_max
-            )
+            fields_min = min(fields_min, range_min) if fields_min else range_min
+            fields_max = max(fields_max, range_max) if fields_max else range_max
             if obj.skip():
                 velocity_magnitude = velocity_magnitude[:: obj.skip() + 1]
 
@@ -160,11 +157,9 @@ def update_vtk_fun_vector(obj):
                             dash_vtk.PointData(
                                 [
                                     dash_vtk.DataArray(
-                                        id="vtk-array-point-data"
-                                        + field_data[5],
+                                        id="vtk-array-point-data" + field_data[5],
                                         registration="setScalars",
-                                        name="vtk-array-point-data"
-                                        + field_data[5],
+                                        name="vtk-array-point-data" + field_data[5],
                                         values=field_data[4] + field_data[4],
                                     )
                                 ]
@@ -195,9 +190,7 @@ def update_vtk_fun_field(obj):
             if obj.__class__.__name__ == "Surface"
             else obj.field()
         )
-        node_values = (
-            True if obj.__class__.__name__ == "Surface" else obj.node_values()
-        )
+        node_values = True if obj.__class__.__name__ == "Surface" else obj.node_values()
         # print(obj.surface)
         win = PyVistaWindow("x", obj)
         if obj.__class__.__name__ == "Surface":
@@ -214,12 +207,8 @@ def update_vtk_fun_field(obj):
             scalar_field = scalar_field_data[surface_id][field]
             range_min = np.amin(scalar_field)
             range_max = np.amax(scalar_field)
-            fields_min = (
-                min(fields_min, range_min) if fields_min else range_min
-            )
-            fields_max = (
-                max(fields_max, range_max) if fields_max else range_max
-            )
+            fields_min = min(fields_min, range_min) if fields_min else range_min
+            fields_max = max(fields_max, range_max) if fields_max else range_max
             fields_data.append(
                 [
                     mesh_data["vertices"],
@@ -247,11 +236,9 @@ def update_vtk_fun_field(obj):
                             dash_vtk.PointData(
                                 [
                                     dash_vtk.DataArray(
-                                        id="vtk-array-point-data"
-                                        + field_data[3],
+                                        id="vtk-array-point-data" + field_data[3],
                                         registration="setScalars",
-                                        name="vtk-array-point-data"
-                                        + field_data[3],
+                                        name="vtk-array-point-data" + field_data[3],
                                         values=field_data[2],
                                     )
                                 ]
@@ -260,11 +247,9 @@ def update_vtk_fun_field(obj):
                             else dash_vtk.CellData(
                                 [
                                     dash_vtk.DataArray(
-                                        id="vtk-array-cell-data"
-                                        + field_data[3],
+                                        id="vtk-array-cell-data" + field_data[3],
                                         registration="setScalars",
-                                        name="vtk-array-cell-data"
-                                        + field_data[3],
+                                        name="vtk-array-cell-data" + field_data[3],
                                         values=field_data[2],
                                     )
                                 ]
@@ -299,10 +284,7 @@ def update_vtk_fun_mesh(obj):
             else iter(obj.surfaces_list())
         )
         win = PyVistaWindow("x", obj)
-        if (
-            obj.__class__.__name__ == "Mesh"
-            or obj.__class__.__name__ == "Vector"
-        ):
+        if obj.__class__.__name__ == "Mesh" or obj.__class__.__name__ == "Vector":
             surface_data = win.fetch_mesh_data(obj)
         elif obj.__class__.__name__ == "Surface":
             surface_data, scalar_field_data = win.fetch_surface_data(obj)

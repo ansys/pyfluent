@@ -11,9 +11,7 @@ from ansys.fluent.core.solver.flobject import to_python_name
 class PropertyEditor(metaclass=SingletonMeta):
     def __init__(self, app, SessionsManager):
         self._app = app
-        self._remote_property_editor = SettingsPropertyEditor(
-            app, SessionsManager
-        )
+        self._remote_property_editor = SettingsPropertyEditor(app, SessionsManager)
         self._local_property_editor = LocalPropertyEditor(app, SessionsManager)
         self._id_map = {}
         self.create_callback()
@@ -50,9 +48,7 @@ class PropertyEditor(metaclass=SingletonMeta):
             input_value = ctx.triggered[0]["value"]
             if input_value is None:
                 raise PreventUpdate
-            input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])[
-                "index"
-            ]
+            input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
             object_location, object_type = object_id.split(":")
             editor = (
                 self._local_property_editor
@@ -69,17 +65,16 @@ class PropertyEditor(metaclass=SingletonMeta):
                 try:
                     obj = getattr(obj, path)
                     if static_info:
-                        static_info = static_info["children"][obj.obj_name]                    
+                        static_info = static_info["children"][obj.obj_name]
                 except AttributeError:
-                    obj = obj[path] 
-                    static_info =  static_info['object-type']                     
+                    obj = obj[path]
+                    static_info = static_info["object-type"]
                 if obj is None:
                     raise PreventUpdate
 
-
-            if (
-                static_info and static_info["type"] == "boolean"
-            ) or isinstance(obj(), bool):
+            if (static_info and static_info["type"] == "boolean") or isinstance(
+                obj(), bool
+            ):
                 input_value = True if input_value else False
             if input_value == obj():
                 print("PreventUpdate")
@@ -103,9 +98,9 @@ class PropertyEditor(metaclass=SingletonMeta):
             if not object_id:
                 return "", []
             update_stored_widgets(object_id, connection_id, session_id)
-            return html.H6(
-                object_id.split(":")[-1].split("/")[-1].capitalize()
-            ), list(self._all_widgets.values())
+            return html.H6(object_id.split(":")[-1].split("/")[-1].capitalize()), list(
+                self._all_widgets.values()
+            )
 
         @self._app.callback(
             Output("object-id", "value"),
@@ -113,9 +108,7 @@ class PropertyEditor(metaclass=SingletonMeta):
             Input("session-id", "value"),
             Input("tree-view", "selected"),
         )
-        def session_changed_or_tree_selected(
-            connection_id, session_id, object_id
-        ):
+        def session_changed_or_tree_selected(connection_id, session_id, object_id):
             print("session_changed", connection_id, session_id, object_id)
 
             if session_id is None:

@@ -16,7 +16,7 @@ from tree_view import TreeView
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
-from local_property_editor import PlotWindow, GraphicsWindow
+from local_property_editor import PlotWindow, GraphicsWindow, MonitorWindow
 from PropertyEditor import PropertyEditor
 
 app = dash.Dash(
@@ -31,19 +31,18 @@ SIDEBAR_STYLE = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "16rem",   
+    "width": "16rem",
     "background-color": "#f8f9fa",
     "height": "53rem",
     "overflow-y": "scroll",
 }
 
 
-
 sidebar = html.Div(
     [
         html.H6("Outline"),
         html.Div(
-            id="tree-view-container",  
+            id="tree-view-container",
         ),
     ],
     style=SIDEBAR_STYLE,
@@ -58,11 +57,16 @@ def serve_layout():
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
     PropertyEditor(app, SessionsManager)
-    
+
     return dbc.Container(
         fluid=True,
         children=[
             dcc.Store(data=connection_id, id="connection-id"),
+            dcc.Interval(
+                id="interval-component",
+                interval=1 * 1000,  # in milliseconds
+                n_intervals=0,
+            ),
             html.Data(id="refresh-property-editor"),
             html.Data(id="window-id", value="0"),
             html.Data(id="object-id"),
@@ -70,13 +74,20 @@ def serve_layout():
             dbc.Row(
                 [
                     dbc.Col(
-                      html.Div(
-                      [
-                        html.Img(src='/assets/ansys.jpg', style={'width':'35px', 'height':'35px', "padding":"5px 2px 2px 2px"}),
-                        html.H2("Ansys PyFluent Web App"), 
-                        ],
-                      style = {"display": "flex", "flex-direction": "row"}  
-                      )
+                        html.Div(
+                            [
+                                html.Img(
+                                    src="/assets/ansys.jpg",
+                                    style={
+                                        "width": "35px",
+                                        "height": "35px",
+                                        "padding": "5px 2px 2px 2px",
+                                    },
+                                ),
+                                html.H2("Ansys PyFluent Web App"),
+                            ],
+                            style={"display": "flex", "flex-direction": "row"},
+                        )
                     ),
                     dbc.Col(
                         dbc.Button(
@@ -91,13 +102,13 @@ def serve_layout():
                     dbc.Col(
                         dbc.Input(
                             placeholder="Session token to connect",
-                            id="session-token", 
-                            type = "number",                              
+                            id="session-token",
+                            type="number",
                             style={"width": "200px"},
                         ),
                         width="auto",
                         align="end",
-                    ),                    
+                    ),
                     dbc.Col(
                         dcc.Dropdown(
                             id="session-id",
@@ -109,10 +120,10 @@ def serve_layout():
                         align="end",
                     ),
                 ],
-                        style={                                               
-                            "background-color": "#f8f9fa",
-                            "background-image": 'url("/resources//ansys-logo.png")',
-                        }                 
+                style={
+                    "background-color": "#f8f9fa",
+                    "background-image": 'url("/resources//ansys-logo.png")',
+                },
             ),
             html.Hr(),
             dbc.Row(
@@ -142,10 +153,9 @@ def serve_layout():
                         [
                             dbc.Tabs(
                                 [
-                                    dbc.Tab(
-                                        label="Graphics", tab_id="graphics"
-                                    ),
+                                    dbc.Tab(label="Graphics", tab_id="graphics"),
                                     dbc.Tab(label="Plots", tab_id="plots"),
+                                    dbc.Tab(label="Monitors", tab_id="monitors"),
                                 ],
                                 id="tabs",
                                 active_tab="graphics",
@@ -160,8 +170,6 @@ def serve_layout():
 
 
 app.layout = serve_layout
-
-
 
 
 @app.callback(
@@ -184,26 +192,26 @@ def create_session(n_clicks, session_token, connection_id, options):
     sessions.append(session_id)
     return [sessions, session_id]
 
+
 @app.callback(
     Output("tree-view-container", "children"),
-    #Output("tree-view", "expanded"),
+    # Output("tree-view", "expanded"),
     Input("connection-id", "data"),  #
-    Input("session-id", "value"),    
+    Input("session-id", "value"),
 )
-def session_changed(
-    connection_id, session_id
-):
+def session_changed(connection_id, session_id):
     if session_id is None or connection_id is None:
-        raise PreventUpdate    
-    tree_nodes, keys = TreeView(app, connection_id, session_id, SessionsManager).get_tree_nodes()   
+        raise PreventUpdate
+    tree_nodes, keys = TreeView(
+        app, connection_id, session_id, SessionsManager
+    ).get_tree_nodes()
     return dash_treeview_antd.TreeView(
         id="tree-view",
         multiple=False,
         expanded=keys,
         data=tree_nodes,
-    )   
-   
-    
+    )
+
 
 @app.callback(
     Output("tab-content", "children"),
@@ -244,6 +252,11 @@ def render_tab_content(active_tab, connection_id, session_id):
                 .get_widgets()
                 .values()
             )
+        )
+    elif active_tab == "monitors":
+        return dbc.Row(
+            MonitorWindow(app, connection_id, session_id, SessionsManager)(),
+            style={"height": "49rem"},
         )
 
 

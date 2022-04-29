@@ -14,9 +14,7 @@ class BasePostObjectDefn:
     """Base class for post objects."""
 
     def _pre_display(self):
-        local_surfaces_provider = (
-            self._get_top_most_parent()._local_surfaces_provider()
-        )
+        local_surfaces_provider = self._get_top_most_parent()._local_surfaces_provider()
         for surf_name in self.surfaces_list():
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
@@ -24,20 +22,16 @@ class BasePostObjectDefn:
                 surf_api.create_surface_on_server()
 
     def _post_display(self):
-        local_surfaces_provider = (
-            self._get_top_most_parent()._local_surfaces_provider()
-        )
+        local_surfaces_provider = self._get_top_most_parent()._local_surfaces_provider()
         for surf_name in self.surfaces_list():
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
                 surf_api = surf_obj._data_extractor.surface_api
-                print('delete_surface_on_server', surf_name)
+                print("delete_surface_on_server", surf_name)
                 surf_api.delete_surface_on_server()
 
 
-class GraphicsDefn(
-    BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract
-):
+class GraphicsDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
     """Abstract base class for graphics objects."""
 
     @abstractmethod
@@ -105,9 +99,7 @@ class XYPlotDefn(PlotDefn):
             """Y axis function allowed values."""
             return [
                 v["solver_name"]
-                for k, v in self._data_extractor.field_info()
-                .get_fields_info()
-                .items()
+                for k, v in self._data_extractor.field_info().get_fields_info().items()
             ]
 
     class x_axis_function(metaclass=PyLocalPropertyMeta):
@@ -305,9 +297,7 @@ class SurfaceDefn(GraphicsDefn):
                     """Iso value range."""
                     field = self._parent.field()
                     if field:
-                        return self._data_extractor.field_info().get_range(
-                            field, True
-                        )
+                        return self._data_extractor.field_info().get_range(field, True)
 
 
 class ContourDefn(GraphicsDefn):
@@ -324,10 +314,7 @@ class ContourDefn(GraphicsDefn):
         def allowed_values(self):
             """Field allowed values."""
             field_info = self._data_extractor.field_info()
-            return [
-                v["solver_name"]
-                for k, v in field_info.get_fields_info().items()
-            ]
+            return [v["solver_name"] for k, v in field_info.get_fields_info().items()]
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):
         """Contour surfaces."""
@@ -355,12 +342,8 @@ class ContourDefn(GraphicsDefn):
         def value(self):
             """Node value property setter."""
             filled = self._get_parent_by_type(ContourDefn).filled()
-            auto_range_off = self._get_parent_by_type(
-                ContourDefn
-            ).range.auto_range_off
-            if not filled or (
-                auto_range_off and auto_range_off.clip_to_range()
-            ):
+            auto_range_off = self._get_parent_by_type(ContourDefn).range.auto_range_off
+            if not filled or (auto_range_off and auto_range_off.clip_to_range()):
                 self._value = True
             return self._value
 
@@ -439,9 +422,7 @@ class ContourDefn(GraphicsDefn):
                             field_info = self._data_extractor.field_info()
                             field_range = field_info.get_range(
                                 field,
-                                self._get_parent_by_type(
-                                    ContourDefn
-                                ).node_values(),
+                                self._get_parent_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[0]
                     return self._value
@@ -470,9 +451,7 @@ class ContourDefn(GraphicsDefn):
                             field_info = self._data_extractor.field_info()
                             field_range = field_info.get_range(
                                 field,
-                                self._get_parent_by_type(
-                                    ContourDefn
-                                ).node_values(),
+                                self._get_parent_by_type(ContourDefn).node_values(),
                             )
                             self._value = field_range[1]
 
@@ -497,9 +476,7 @@ class VectorDefn(GraphicsDefn):
         def allowed_values(self):
             """Vectors of allowed values."""
             return list(
-                self._data_extractor.field_info()
-                .get_vector_fields_info()
-                .keys()
+                self._data_extractor.field_info().get_vector_fields_info().keys()
             )
 
     class surfaces_list(metaclass=PyLocalPropertyMeta):

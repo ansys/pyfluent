@@ -35,6 +35,7 @@ except ImportError:
     pass
 
 from ansys.fluent.core.services.events import EventsService
+from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.field_data import (
     FieldData,
     FieldDataService,
@@ -48,6 +49,7 @@ from ansys.fluent.core.services.scheme_eval import (
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
+from ansys.fluent.core.solver.monitors_manager import MonitorsManager
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 
 try:
@@ -194,7 +196,13 @@ class Session:
 
         self._events_service = EventsService(self._channel, self._metadata)
         self.events_manager = EventsManager(self._id, self._events_service)
-
+        
+        self._monitors_service = MonitorsService(self._channel, self._metadata)
+        self.monitors_manager = MonitorsManager(self._id, self._monitors_service)
+        
+        self.events_manager.register_callback('InitializedEvent', self.monitors_manager.refresh)
+        self.events_manager.register_callback('DataReadEvent', self.monitors_manager.refresh)
+        
         self._datamodel_service_tui = DatamodelService_TUI(
             self._channel, self._metadata
         )

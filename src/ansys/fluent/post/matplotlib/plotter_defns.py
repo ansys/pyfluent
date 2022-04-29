@@ -74,18 +74,10 @@ class Plotter:
             max_x_value = np.amax(data[curve]["xvalues"])
             self._data[curve]["xvalues"] += data[curve]["xvalues"].tolist()
             self._data[curve]["yvalues"] += data[curve]["yvalues"].tolist()
-            self._min_y = (
-                min(self._min_y, min_y_value) if self._min_y else min_y_value
-            )
-            self._max_y = (
-                max(self._max_y, max_y_value) if self._max_y else max_y_value
-            )
-            self._min_x = (
-                min(self._min_x, min_x_value) if self._min_x else min_x_value
-            )
-            self._max_x = (
-                max(self._max_x, max_x_value) if self._max_x else max_x_value
-            )
+            self._min_y = min(self._min_y, min_y_value) if self._min_y else min_y_value
+            self._max_y = max(self._max_y, max_y_value) if self._max_y else max_y_value
+            self._min_x = min(self._min_x, min_x_value) if self._min_x else min_x_value
+            self._max_x = max(self._max_x, max_x_value) if self._max_x else max_x_value
 
         curve_lines = self.ax.lines
         for curve, curve_line in zip(self._curves, curve_lines):
@@ -95,9 +87,7 @@ class Plotter:
         x_range = max_x_value - min_x_value
         y_range = max_y_value - min_y_value
         self.ax.set_xlim(self._min_x, self._max_x)
-        self.ax.set_ylim(
-            self._min_y - y_range * 0.2, self._max_y + y_range * 0.2
-        )
+        self.ax.set_ylim(self._min_y - y_range * 0.2, self._max_y + y_range * 0.2)
         if not self._visible:
             self._visible = True
             plt.show()
