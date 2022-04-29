@@ -415,6 +415,22 @@ class PyVistaWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
         self._exit_thread: bool = False
         self._app = None
 
+    def get_plotter(self, window_id: str) -> Union[BackgroundPlotter, pv.Plotter]:
+        """Get PyVista Plotter.
+
+        Parameters
+        ----------
+        window_id : str
+            Window Id for plotter.
+
+        Returns
+        -------
+        Union[BackgroundPlotter, pv.Plotter]
+            PyVista Plotter.
+        """
+        with self._condition:
+            return self._post_windows[window_id].plotter
+
     def open_window(self, window_id: Optional[str] = None) -> str:
         """Open new window.
 
