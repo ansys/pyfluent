@@ -37,6 +37,10 @@ class MonitorsManager:
          with self._lock:
              return list(self._data_frames.keys())
              
+    def get_monitor_set_prop(self, monitor_set_name, prop):
+         with self._lock:             
+             return self._monitors_info.get(monitor_set_name,{}).get(prop)           
+             
     def get_monitor_set_data(self, monitor_set_name):
          with self._lock:             
              return self._data_frames[monitor_set_name]["df"].plot()            
@@ -110,9 +114,9 @@ class MonitorsManager:
             Registered callback Id.
 
         """    
-        if not self._monitors_thread:  
-            print('monitor manager', 'start')        
+        if not self._monitors_thread:                  
             self._monitors_info = self.get_monitors_info()
+            
             self._data_frames ={}
             for monitor_set_name, monitor_set_info in self._monitors_info.items():
                 self._data_frames[monitor_set_name] = {}

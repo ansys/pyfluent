@@ -26,5 +26,6 @@ class SessionsManager:
     def add_session(self, session_token):
         # self.session = Session.create_from_server_info_file(file_path, False)
         self.session = Session("10.18.44.30", session_token, cleanup_on_exit=False)
+        self.session.monitors_manager.start()
         self.static_info = self.session.get_settings_service().get_static_info()
         self.settings_root = self.session.get_settings_root()

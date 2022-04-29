@@ -17,7 +17,7 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
     Vector,
 )
 from ansys.fluent.post import set_config
-from post_data import update_vtk_fun, update_graph_fun
+from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
 
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "display-graphics-button"
@@ -367,7 +367,7 @@ class PlotWindow:
         if not window_state:
             PlotWindow._windows[unique_win_id] = self.__dict__
 
-            self._state = {}
+            self._state = update_graph_fun_xyplot()
             self._win_id = win_id
             self._unique_win_id = unique_win_id
             self._app = app
@@ -399,14 +399,17 @@ class PlotWindow:
         else:
             self.__dict__ = window_state
 
-    def get_widgets(self):
-        return {
-            f"plot-viewer-{self._unique_win_id}": dcc.Graph(
-                id=f"plot-viewer-{self._unique_win_id}",
-                figure=self._state,
-                style={"height": 900},
-            )
-        }
+    def __call__(self):
+        return dbc.Col(
+            [
+                dcc.Graph(
+                    id=f"plot-viewer-{self._unique_win_id}",
+                    figure=self._state,
+                    style={"height": "100%"},
+                )
+            ],
+            style={"height": "100%"},
+        )
 
 
 class MonitorWindow:
@@ -442,10 +445,32 @@ class MonitorWindow:
                     self._app, connection_id, session_id
                 ).session
                 fig = session.monitors_manager.get_monitor_set_data(active_tab)
-                # df.set_index('xvalues')
-                # fig = df.plot()
+
                 if active_tab == "residual":
                     fig.update_yaxes(type="log")
+
+                fig.update_layout(
+                    title={
+                        "text": session.monitors_manager.get_monitor_set_prop(
+                            active_tab, "title"
+                        ),
+                        "y": 0.95,
+                        "x": 0.5,
+                        "xanchor": "center",
+                        "yanchor": "top",
+                    },
+                    xaxis_title=session.monitors_manager.get_monitor_set_prop(
+                        active_tab, "xlabel"
+                    ),
+                    yaxis_title=session.monitors_manager.get_monitor_set_prop(
+                        active_tab, "ylabel"
+                    ),
+                    legend_title=session.monitors_manager.get_monitor_set_prop(
+                        active_tab, active_tab
+                    ),
+                    font=dict(family="Courier New, monospace", size=14, color="black"),
+                )
+                print(fig)
                 return dcc.Graph(
                     figure=fig,
                     style={"height": "100%"},
@@ -458,8 +483,6 @@ class MonitorWindow:
         session = self.SessionsManager(
             self._app, self._connection_id, self._session_id
         ).session
-
-        session.monitors_manager.start()
 
         monitor_sets = session.monitors_manager.get_monitor_sets_name()
         if len(monitor_sets) == 0:

@@ -12,6 +12,7 @@ import pyvista as pv
 from vtk.util.numpy_support import vtk_to_numpy
 import uuid
 from dash_vtk.utils import presets
+import pandas as pd
 
 random.seed(42)
 
@@ -28,27 +29,61 @@ def update_graph_fun(obj):
         return update_graph_fun_xyplot(obj)
 
 
-def update_graph_fun_xyplot(obj):
+def update_graph_fun_xyplot(obj=None):
     try:
-        print("update_graph_fun_xyplot")
-        xy_plot_data = get_xy_plot_data(obj)
-        print(xy_plot_data)
-        xy_plot__figures_data = {}
-        xy_plot__figures_data["data"] = []
-        xy_plot__figures_data["layout"] = {
-            "title": "XYPlot",
-            "xaxis": {"title": ""},
-            "yaxis": {"title": obj.y_axis_function()},
-        }
+        print("update_graph_fun_xyplot", obj)
+        xy_plot_data = get_xy_plot_data(obj) if obj else {}
+
+        # columns_data = {}
+        # for curve_name, curve_data in xy_plot_data.items():
+        #    columns_data[curve_name] = curve_data["yvalues"]
+        #    columns_data["xvalues"] = curve_data["xvalues"]
+        # df = pd.DataFrame(columns_data)
+        # df.set_index("xvalues", inplace = True)
+        # print(df)
+
+        xy_plot_figures_data = {}
+        xy_plot_figures_data["data"] = []
+
+        xy_plot_figures_data["layout"] = (
+            {
+                "title": "XYPlot",
+                "xaxis": {"title": ""},
+                "yaxis": {"title": obj.y_axis_function()},
+                "font": {
+                    "color": "black",
+                    "family": "Courier New, monospace",
+                    "size": 14,
+                },
+                "template": "plotly",
+                "margin": {"t": 60},
+            }
+            if obj is not None
+            else {
+                "xaxis": {"visible": False},
+                "yaxis": {"visible": False},
+                "template": "plotly",
+                "annotations": [
+                    {
+                        "text": "",
+                        "xref": "paper",
+                        "yref": "paper",
+                        "showarrow": False,
+                        "font": {"size": 28},
+                    }
+                ],
+            }
+        )
+
         for curve_name, curve_data in xy_plot_data.items():
             figure_data = {}
             figure_data["x"] = curve_data["xvalues"]
             figure_data["y"] = curve_data["yvalues"]
             figure_data["type"] = "scatter"
             figure_data["name"] = curve_name
-            xy_plot__figures_data["data"].append(figure_data)
-        print(xy_plot__figures_data)
-        return xy_plot__figures_data
+            xy_plot_figures_data["data"].append(figure_data)
+
+        return xy_plot_figures_data
     except Exception as e:
         print(e)
         return {}

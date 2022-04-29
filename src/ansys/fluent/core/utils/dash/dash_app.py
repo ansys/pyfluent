@@ -14,6 +14,10 @@ from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
 from tree_view import TreeView
 
+import plotly.io as pio
+
+pio.templates.default = "plotly_white"
+
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
 from local_property_editor import PlotWindow, GraphicsWindow, MonitorWindow
@@ -246,12 +250,9 @@ def render_tab_content(active_tab, connection_id, session_id):
         )
 
     elif active_tab == "plots":
-        return dbc.Col(
-            children=list(
-                PlotWindow(app, connection_id, session_id, 0, SessionsManager)
-                .get_widgets()
-                .values()
-            )
+        return dbc.Row(
+            PlotWindow(app, connection_id, session_id, 0, SessionsManager)(),
+            style={"height": "49rem"},
         )
     elif active_tab == "monitors":
         return dbc.Row(
