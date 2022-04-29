@@ -43,7 +43,7 @@ from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 
 try:
     from ansys.fluent.core.solver.settings import root
-except:
+except Exception:
     root = Any
 from ansys.fluent.core.utils.logging import LOG
 
@@ -290,7 +290,10 @@ class Session:
     def check_health(self) -> str:
         """Check health of Fluent connection."""
         if self._channel:
-            return self._health_check_service.check_health()
+            try:
+                return self._health_check_service.check_health()
+            except Exception:
+                return HealthCheckService.Status.NOT_SERVING.name
         else:
             return HealthCheckService.Status.NOT_SERVING.name
 
