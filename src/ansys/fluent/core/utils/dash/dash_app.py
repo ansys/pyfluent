@@ -25,13 +25,13 @@ from PropertyEditor import PropertyEditor
 
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
-    #suppress_callback_exceptions=True,
+    # suppress_callback_exceptions=True,
 )
 import dash_treeview_antd
 
-#app.config.suppress_callback_exceptions = True
+# app.config.suppress_callback_exceptions = True
 
-#app.config['suppress_callback_exceptions'] = True 
+# app.config['suppress_callback_exceptions'] = True
 
 SIDEBAR_STYLE = {
     "top": 0,
@@ -235,30 +235,33 @@ def add_plot_window(add_clicks, remove_clicks, connection_id, session_id):
         raise PreventUpdate
     input_index = ctx.triggered[0]["prop_id"].split(".")[0]
     if input_index == "add-plot-window":
-        if add_clicks ==0:
+        if add_clicks == 0:
             raise PreventUpdate
-        plot_window = PlotWindow(app, connection_id, session_id,  SessionsManager)
-        id=0 
+        plot_window = PlotWindow(app, connection_id, session_id, SessionsManager)
+        id = 0
         while True:
             if id not in plot_window._windows:
                 break
-            id=id+1            
+            id = id + 1
         plot_window._active_window = id
         plot_window._windows.append(id)
     if input_index == "remove-plot-window":
-        if remove_clicks ==0:
+        if remove_clicks == 0:
             raise PreventUpdate
-        plot_window = PlotWindow(app, connection_id, session_id,  SessionsManager)
-        if len(plot_window._windows) > 1:           
+        plot_window = PlotWindow(app, connection_id, session_id, SessionsManager)
+        if len(plot_window._windows) > 1:
             del plot_window._state[plot_window._active_window]
             index = plot_window._windows.index(plot_window._active_window)
-            plot_window._active_window =  plot_window._windows[index +1] if index ==0 else  plot_window._windows[index -1]               
+            plot_window._active_window = (
+                plot_window._windows[index + 1]
+                if index == 0
+                else plot_window._windows[index - 1]
+            )
             del plot_window._windows[index]
-                       
-            
+
     return "plots"
-    
-   
+
+
 @app.callback(
     Output("tab-content", "children"),
     Input("tabs", "active_tab"),

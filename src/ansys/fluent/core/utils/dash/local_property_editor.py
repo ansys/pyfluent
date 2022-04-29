@@ -367,7 +367,7 @@ class PlotWindow:
         if not window_state:
             PlotWindow._windows[unique_win_id] = self.__dict__
 
-            self._state = {}  # update_graph_fun_xyplot()           
+            self._state = {}  # update_graph_fun_xyplot()
             self._unique_win_id = unique_win_id
             self._app = app
             self._windows = [0]
@@ -434,25 +434,26 @@ class PlotWindow:
                 ),
                 html.Div(
                     [
-                       
                         dbc.Button(
                             "Add Window",
                             id=f"add-plot-window",
                             size="sm",
                             n_clicks=0,
-                            outline=True, color="secondary", className="me-2"
-                           
+                            outline=True,
+                            color="secondary",
+                            className="me-2",
                         ),
                         dbc.Button(
                             "Remove Window",
                             id=f"remove-plot-window",
                             size="sm",
                             n_clicks=0,
-                            outline=True, color="secondary", className="me-1"
-                            
+                            outline=True,
+                            color="secondary",
+                            className="me-1",
                         ),
                     ],
-                    style= {"padding": "10px"}
+                    style={"padding": "10px"},
                 ),
                 html.Div(
                     id=f"{self._unique_win_id}-tab-content",
