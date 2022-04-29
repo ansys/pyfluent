@@ -361,16 +361,41 @@ class PlotWindow:
 
     _windows = {}
 
-    def __init__(self, app, connection_id, session_id, win_id, SessionsManager):
-        unique_win_id = f"plot-{connection_id}-{session_id}-{win_id}"
+    def __init__(self, app, connection_id, session_id, SessionsManager):
+        unique_win_id = f"plot-{connection_id}-{session_id}"
         window_state = PlotWindow._windows.get(unique_win_id)
         if not window_state:
             PlotWindow._windows[unique_win_id] = self.__dict__
 
-            self._state = update_graph_fun_xyplot()
-            self._win_id = win_id
+            self._state = {}  # update_graph_fun_xyplot()           
             self._unique_win_id = unique_win_id
             self._app = app
+            self._windows = [0]
+            self._active_window = 0
+            self._last_clicked = 0
+
+            @self._app.callback(
+                Output(f"{self._unique_win_id}-tab-content", "children"),
+                Input(f"{self._unique_win_id}-tabs", "active_tab"),
+                Input("connection-id", "data"),
+                Input("session-id", "value"),
+            )
+            def render_tab_content(active_tab, connection_id, session_id):
+                """
+                This callback takes the 'active_tab' property as input, as well as the
+                stored graphs, and renders the tab content depending on what the value of
+                'active_tab' is.
+                """
+                self._active_window = int(active_tab)
+                print("active_tab", active_tab, self._state.keys())
+
+                return dcc.Graph(
+                    id=f"plot-viewer-{self._unique_win_id}",
+                    figure=self._state.get(
+                        self._active_window, update_graph_fun_xyplot()
+                    ),
+                    style={"height": "100%"},
+                )
 
             @self._app.callback(
                 Output(f"plot-viewer-{self._unique_win_id}", "figure"),
@@ -380,21 +405,18 @@ class PlotWindow:
                 State("session-id", "value"),
                 State("object-id", "value"),
             )
-            def on_button_click(
-                n_clicks, connection_id, window_id, session_id, object_id
-            ):
-                if n_clicks == 0:
+            def display_plot(n_clicks, connection_id, window_id, session_id, object_id):
+                print("************************", connection_id)
+                if n_clicks == 0 or self._last_clicked == n_clicks:
                     raise PreventUpdate
+                self._last_clicked = n_clicks
                 object_location, object_type = object_id.split(":")
                 if object_location != "local":
-                    raise PreventUpdat
-                if int(window_id) != self._win_id:
                     raise PreventUpdate
                 editor = PlotPropertyEditor(app, SessionsManager)
                 obj = editor.get_object(object_type, connection_id, session_id)
-                print("n_clicks on_button_click", n_clicks, obj._name)
-                self._state = update_graph_fun(obj)
-                return self._state
+                self._state[self._active_window] = update_graph_fun(obj)
+                return self._state[self._active_window]
 
         else:
             self.__dict__ = window_state
@@ -402,11 +424,49 @@ class PlotWindow:
     def __call__(self):
         return dbc.Col(
             [
-                dcc.Graph(
-                    id=f"plot-viewer-{self._unique_win_id}",
-                    figure=self._state,
+                dbc.Tabs(
+                    [
+                        dbc.Tab(label=f"window-{window}", tab_id=f"{window}")
+                        for window in self._windows
+                    ],
+                    id=f"{self._unique_win_id}-tabs",
+                    active_tab=f"{self._active_window}",
+                ),
+                html.Div(
+                    [
+                       
+                        dbc.Button(
+                            "Add Window",
+                            id=f"add-plot-window",
+                            size="sm",
+                            n_clicks=0,
+                            outline=True, color="secondary", className="me-2"
+                           
+                        ),
+                        dbc.Button(
+                            "Remove Window",
+                            id=f"remove-plot-window",
+                            size="sm",
+                            n_clicks=0,
+                            outline=True, color="secondary", className="me-1"
+                            
+                        ),
+                    ],
+                    style= {"padding": "10px"}
+                ),
+                html.Div(
+                    id=f"{self._unique_win_id}-tab-content",
                     style={"height": "100%"},
-                )
+                    children=[
+                        dcc.Graph(
+                            id=f"plot-viewer-{self._unique_win_id}",
+                            figure=self._state.get(
+                                self._active_window, update_graph_fun_xyplot()
+                            ),
+                            style={"height": "100%"},
+                        )
+                    ],
+                ),
             ],
             style={"height": "100%"},
         )

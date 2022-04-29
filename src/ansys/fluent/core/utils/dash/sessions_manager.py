@@ -6,7 +6,7 @@ from local_property_editor import PlotWindow, GraphicsWindow, MonitorWindow
 
 class SessionsManager:
     _sessions_state = {}
-    _windows_per_session = 20
+    _windows_per_session = 1
 
     def __init__(self, app, connection_id, session_id):
         cmplete_session_id = f"session-{session_id}-{connection_id}"
@@ -18,7 +18,7 @@ class SessionsManager:
             # SettingsWidget(app, connection_id, session_id, SessionsManager)
             for win_id in range(SessionsManager._windows_per_session):
                 GraphicsWindow(app, connection_id, session_id, win_id, SessionsManager)
-                PlotWindow(app, connection_id, session_id, win_id, SessionsManager)
+                PlotWindow(app, connection_id, session_id, SessionsManager)
 
         else:
             self.__dict__ = session_state

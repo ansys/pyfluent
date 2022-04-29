@@ -31,7 +31,7 @@ def update_graph_fun(obj):
 
 def update_graph_fun_xyplot(obj=None):
     try:
-        print("update_graph_fun_xyplot", obj)
+
         xy_plot_data = get_xy_plot_data(obj) if obj else {}
 
         # columns_data = {}
