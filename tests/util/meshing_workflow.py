@@ -35,7 +35,8 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
     check_task_execute_postconditions(task)
 
 
-def create_mesh_session():
+@pytest.fixture
+def create_mesh_session(with_running_pytest):
     return pyfluent.launch_fluent(
         meshing_mode=True, precision="double", processor_count=2
     )
@@ -50,7 +51,7 @@ def reset_workflow(mesh_session):
 
 
 @pytest.fixture
-def new_mesh_session():
+def new_mesh_session(create_mesh_session):
     mesher = create_mesh_session()
     yield mesher
     mesher.exit()
@@ -71,7 +72,7 @@ _mesher = None
 
 
 @pytest.fixture
-def shared_mesh_session():
+def shared_mesh_session(create_mesh_session):
     global _mesher
     if not _mesher:
         _mesher = create_mesh_session()

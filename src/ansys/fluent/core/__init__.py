@@ -86,3 +86,6 @@ try:
 
 except:
     pass
+
+BUILDING_GALLERY = False
+RUNNING_PYTEST = False
