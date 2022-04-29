@@ -1,6 +1,7 @@
 """Module containing class encapsulating Fluent connection."""
 
 import atexit
+from ctypes import c_int, sizeof
 import itertools
 import os
 import threading
@@ -79,6 +80,17 @@ class MonitorThread(threading.Thread):
         main_thread.join()
         for cb in self.cbs:
             cb()
+
+
+def _get_max_c_int_limit() -> int:
+    """Get the maximum limit of a C int.
+
+    Returns
+    -------
+    int
+        The maximum limit of a C int
+    """
+    return 2 ** (sizeof(c_int) * 8 - 1) - 1
 
 
 class Session:
@@ -167,7 +179,15 @@ class Session:
                 raise ValueError(
                     "The port to connect to Fluent session is not provided."
                 )
-            self._channel = grpc.insecure_channel(f"{ip}:{port}")
+            # Same maximum message length is used in the server
+            max_message_length = _get_max_c_int_limit()
+            self._channel = grpc.insecure_channel(
+                f"{ip}:{port}",
+                options=[
+                    ("grpc.max_send_message_length", max_message_length),
+                    ("grpc.max_receive_message_length", max_message_length),
+                ],
+            )
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
