@@ -9,20 +9,21 @@ from functools import partial
 
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
+    create_mesh_session,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
-    shared_mesh_session,
-    shared_watertight_workflow,
-    shared_watertight_workflow_session,
+    new_mesh_session,
+    new_watertight_workflow,
+    new_watertight_workflow_session,
 )
 
 
 def test_mixing_elbow_meshing_workflow(
-    shared_watertight_workflow_session,
+    new_watertight_workflow_session,
     mixing_elbow_geometry,
 ):
 
-    session = shared_watertight_workflow_session
+    session = new_watertight_workflow_session
     workflow = session.workflow
 
     ###############################################################################
@@ -121,10 +122,10 @@ def test_mixing_elbow_meshing_workflow(
 
 
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
-    shared_watertight_workflow,
+    new_watertight_workflow,
 ):
     try:
-        shared_watertight_workflow.TaskObject["no such task"]
+        new_watertight_workflow.TaskObject["no such task"]
     except Exception:
         pass
     else:
@@ -141,13 +142,13 @@ Error Object: ()
 
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
     model_object_throws_on_invalid_arg,
-    shared_watertight_workflow,
+    new_watertight_workflow,
     mixing_elbow_geometry
 ):
     # task_names = ("Import Geometry", "Add Local Sizing")
     task_names = ("Add Local Sizing",)
     for task_name in task_names:
-        task = shared_watertight_workflow.TaskObject[task_name]
+        task = new_watertight_workflow.TaskObject[task_name]
         try:
             task.Arguments = {"no such arg": 42}
         except Exception:
@@ -157,10 +158,10 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args(
 
 def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     model_object_throws_on_invalid_arg,
-    shared_watertight_workflow,
+    new_watertight_workflow,
     mixing_elbow_geometry
 ):
-    workflow = shared_watertight_workflow
+    workflow = new_watertight_workflow
     assign_task_args = partial(
         assign_task_arguments, workflow=workflow, check_state=False
     )

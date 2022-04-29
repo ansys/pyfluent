@@ -21,6 +21,7 @@ from functools import partial
 from pytest import approx
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
+    create_mesh_session,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
     new_mesh_session,
