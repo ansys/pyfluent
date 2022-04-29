@@ -136,8 +136,11 @@ def _start_or_stop_fluent_container(gallery_conf, fname, when):
                 "parametric_static_mixer_3.py",
             ]:
                 args = ["3ddp", "-t2"]
-            elif fname in ["post_processing_exhaust_manifold.py"]:
-                args = ["3ddp", "-t4"]
+            elif fname in [
+                "post_processing_exhaust_manifold.py",
+                "mixing_elbow_settings_api.py",
+            ]:
+                args = ["3ddp", "-t2"]
             subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
         elif when == "after":
             subprocess.run([sys.executable, _STOP_FLUENT_FILE])
