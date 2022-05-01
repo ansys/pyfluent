@@ -21,8 +21,6 @@ pio.templates.default = "plotly_white"
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
 from local_property_editor import (
-    PlotWindow,
-    GraphicsWindow,
     MonitorWindow,
     PlotWindowCollection,
     GraphicsWindowCollection,
@@ -180,8 +178,12 @@ def serve_layout():
                                             active_tab="graphics",
                                         )
                                     ),
-                                    dbc.CardBody(id="tab-content", className="p-4"),
+                                    dbc.CardBody(
+                                        id="tab-content",
+                                        className="p-4",
+                                    ),
                                 ],
+                                style={"height": "54rem"},
                             ),
                         ]
                     ),
@@ -316,20 +318,25 @@ def render_tab_content(active_tab, connection_id, session_id):
         raise PreventUpdate
 
     if active_tab == "graphics":
+        return GraphicsWindowCollection(
+            app, connection_id, session_id, SessionsManager
+        )()
         return dbc.Row(
             GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)(),
-            style={"height": "49rem"},
+            style={"height": "auto"},
         )
 
     elif active_tab == "plots":
+        return PlotWindowCollection(app, connection_id, session_id, SessionsManager)()
         return dbc.Row(
             PlotWindowCollection(app, connection_id, session_id, SessionsManager)(),
-            style={"height": "49rem"},
+            style={"height": "auto"},
         )
     elif active_tab == "monitors":
+        return MonitorWindow(app, connection_id, session_id, SessionsManager)()
         return dbc.Row(
             MonitorWindow(app, connection_id, session_id, SessionsManager)(),
-            style={"height": "49rem"},
+            style={"height": "auto"},
         )
 
 
