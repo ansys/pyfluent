@@ -8,6 +8,7 @@ from ansys.fluent.core.utils.generic import SingletonMeta
 from ansys.fluent.core.solver.flobject import to_python_name
 import dash_bootstrap_components as dbc
 
+
 class PropertyEditor(metaclass=SingletonMeta):
     def __init__(self, app, SessionsManager):
         self._app = app
@@ -83,7 +84,7 @@ class PropertyEditor(metaclass=SingletonMeta):
             return str(input_index) + str(input_value)
 
         @self._app.callback(
-            #Output("property-editor-title", "children"),
+            # Output("property-editor-title", "children"),
             Output("property-editor", "children"),
             Input("refresh-property-editor", "value"),
             Input("connection-id", "data"),
@@ -103,23 +104,12 @@ class PropertyEditor(metaclass=SingletonMeta):
                 [
                     dbc.Card(
                         [
-                            dbc.CardHeader(
-                                object_name    
-                                    
-                                
-                            ),
-                            dbc.CardBody(
-                            
-                            list(self._all_widgets.values())
-                                
-                            ),
+                            dbc.CardHeader(object_name),
+                            dbc.CardBody(list(self._all_widgets.values())),
                         ],
-                       
                     ),
                 ]
             )
-
-
 
         @self._app.callback(
             Output("object-id", "value"),

@@ -138,18 +138,17 @@ def serve_layout():
             html.Hr(),
             dbc.Row(
                 children=[
-                    dbc.Col(sidebar, align="start", width="auto"),                      
+                    dbc.Col(sidebar, align="start", width="auto"),
                     dbc.Col(
-                      id="property-editor",  
-                      width="auto",
-                      style={
-                           
+                        id="property-editor",
+                        width="auto",
+                        style={
                             "width": "20rem",
                             "background-color": "#f8f9fa",
                             "overflow-y": "scroll",
                             "height": "53rem",
-                        },                   
-                    ),                          
+                        },
+                    ),
                     dbc.Col(
                         [
                             dbc.Card(
