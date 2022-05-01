@@ -424,14 +424,6 @@ class PlotWindow:
     def __call__(self):
         return dbc.Col(
             [
-                dbc.Tabs(
-                    [
-                        dbc.Tab(label=f"window-{window}", tab_id=f"{window}")
-                        for window in self._windows
-                    ],
-                    id=f"{self._unique_win_id}-tabs",
-                    active_tab=f"{self._active_window}",
-                ),
                 html.Div(
                     [
                         dbc.Button(
@@ -453,9 +445,17 @@ class PlotWindow:
                             className="me-1",
                         ),
                     ],
-                    style={"padding": "10px"},
+                    style={"padding": "5px", "border": "1px ridge lightgrey"},
                 ),
-                html.Div(
+                dbc.Tabs(
+                    [
+                        dbc.Tab(label=f"window-{window}", tab_id=f"{window}")
+                        for window in self._windows
+                    ],
+                    id=f"{self._unique_win_id}-tabs",
+                    active_tab=f"{self._active_window}",
+                ),
+                dbc.CardBody(
                     id=f"{self._unique_win_id}-tab-content",
                     style={"height": "100%"},
                     children=[
