@@ -6,7 +6,7 @@ from local_property_editor import LocalPropertyEditor
 from settings_property_editor import SettingsPropertyEditor
 from ansys.fluent.core.utils.generic import SingletonMeta
 from ansys.fluent.core.solver.flobject import to_python_name
-
+import dash_bootstrap_components as dbc
 
 class PropertyEditor(metaclass=SingletonMeta):
     def __init__(self, app, SessionsManager):
@@ -83,7 +83,7 @@ class PropertyEditor(metaclass=SingletonMeta):
             return str(input_index) + str(input_value)
 
         @self._app.callback(
-            Output("property-editor-title", "children"),
+            #Output("property-editor-title", "children"),
             Output("property-editor", "children"),
             Input("refresh-property-editor", "value"),
             Input("connection-id", "data"),
@@ -98,9 +98,28 @@ class PropertyEditor(metaclass=SingletonMeta):
             if not object_id:
                 return "", []
             update_stored_widgets(object_id, connection_id, session_id)
-            return html.H6(object_id.split(":")[-1].split("/")[-1].capitalize()), list(
-                self._all_widgets.values()
+            object_name = object_id.split(":")[-1].split("/")[-1].capitalize()
+            return dbc.Col(
+                [
+                    dbc.Card(
+                        [
+                            dbc.CardHeader(
+                                object_name    
+                                    
+                                
+                            ),
+                            dbc.CardBody(
+                            
+                            list(self._all_widgets.values())
+                                
+                            ),
+                        ],
+                       
+                    ),
+                ]
             )
+
+
 
         @self._app.callback(
             Output("object-id", "value"),

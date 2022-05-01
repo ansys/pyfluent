@@ -380,7 +380,7 @@ class PostWindowCollection:
                             className="me-1",
                         ),
                     ],
-                    style={"padding": "5px", "border": "1px ridge lightgrey"},
+                    style={"padding": "4px 4px 4px 4px", "border": "1px ridge lightgrey", "margin" : "0px 0px 4px 0px"},
                 ),
                 dbc.Tabs(
                     [
@@ -396,6 +396,7 @@ class PostWindowCollection:
                     children=self.get_content(),
                 ),
             ],
+           
             style={"height": "43rem"},
         )
 

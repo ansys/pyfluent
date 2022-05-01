@@ -138,27 +138,18 @@ def serve_layout():
             html.Hr(),
             dbc.Row(
                 children=[
-                    dbc.Col(sidebar, align="start", width="auto"),
+                    dbc.Col(sidebar, align="start", width="auto"),                      
                     dbc.Col(
-                        [
-                            html.Div(id="property-editor-title"),
-                            html.Div(
-                                html.Div(
-                                    id="property-editor",
-                                    children=[],
-                                ),
-                                className="mb-3",
-                            ),
-                        ],
-                        width="auto",
-                        style={
-                            "padding": "1px 1px 1px 1px",
+                      id="property-editor",  
+                      width="auto",
+                      style={
+                           
                             "width": "20rem",
                             "background-color": "#f8f9fa",
                             "overflow-y": "scroll",
                             "height": "53rem",
-                        },
-                    ),
+                        },                   
+                    ),                          
                     dbc.Col(
                         [
                             dbc.Card(
@@ -183,7 +174,7 @@ def serve_layout():
                                         className="p-4",
                                     ),
                                 ],
-                                style={"height": "54rem"},
+                                style={"height": "53rem"},
                             ),
                         ]
                     ),
