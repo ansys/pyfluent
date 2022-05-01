@@ -20,8 +20,8 @@ from ansys.fluent.post import set_config
 from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
 
 set_config(blocking=False)
-DISPLAY_BUTTON_ID = "display-graphics-button"
-PLOT_BUTTON_ID = "plot-graph-button"
+DISPLAY_BUTTON_ID = "graphics-button"
+PLOT_BUTTON_ID = "plot-button"
 
 
 class LocalPropertyEditor:
@@ -290,6 +290,171 @@ class PlotPropertyEditor:
                 return plots_session.XYPlots[
                     f"xyplot-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
                 ]
+
+
+class PostWindowCollection:
+
+    _windows = {}
+
+    def __init__(self, app, connection_id, session_id, window_type, SessionsManager):
+        unique_id = f"{window_type}-{connection_id}-{session_id}"
+        window_state = PostWindowCollection._windows.get(unique_id)
+        if not window_state:
+            PostWindowCollection._windows[unique_id] = self.__dict__
+            self._window_type = window_type
+            self._state = {}
+            self._unique_id = unique_id
+            self._app = app
+            self._windows = [0]
+            self._active_window = 0
+            self._last_clicked = 0
+            self._SessionsManager = SessionsManager
+
+            @self._app.callback(
+                Output(f"{self._unique_id}-tab-content", "children"),
+                Input(f"{self._unique_id}-tabs", "active_tab"),
+                Input("connection-id", "data"),
+                Input("session-id", "value"),
+                prevent_initial_call=True,
+            )
+            def render_tab_content(active_tab, connection_id, session_id):
+                """
+                This callback takes the 'active_tab' property as input, as well as the
+                stored graphs, and renders the tab content depending on what the value of
+                'active_tab' is.
+                """
+                self._active_window = int(active_tab)
+                return self.get_content()
+
+            @self._app.callback(
+                Output(f"post-viewer-{self._unique_id}", "children"),
+                Input(f"{window_type}-button", "n_clicks"),
+                Input("connection-id", "data"),
+                State("window-id", "value"),
+                State("session-id", "value"),
+                State("object-id", "value"),
+                prevent_initial_call=True,
+            )
+            def on_button_click(
+                n_clicks, connection_id, window_id, session_id, object_id
+            ):
+                print("on_button_click", n_clicks, self._last_clicked)
+                if n_clicks == 0:
+                    raise PreventUpdate
+                self._last_clicked = n_clicks
+                object_location, object_type = object_id.split(":")
+                if object_location != "local":
+                    raise PreventUpdate
+                return self.get_viewer(object_type, connection_id, session_id)
+
+        else:
+            self.__dict__ = window_state
+
+    def __call__(self):
+        print("PostWindowCollection", self._windows)
+        return dbc.Col(
+            [
+                html.Div(
+                    [
+                        dbc.Button(
+                            "Add Window",
+                            id={
+                                "type": "add-post-window",
+                                "index": self._window_type,
+                            },
+                            size="sm",
+                            n_clicks=0,
+                            outline=True,
+                            color="secondary",
+                            className="me-2",
+                        ),
+                        dbc.Button(
+                            "Remove Window",
+                            id={
+                                "type": "remove-post-window",
+                                "index": self._window_type,
+                            },
+                            size="sm",
+                            n_clicks=0,
+                            outline=True,
+                            color="secondary",
+                            className="me-1",
+                        ),
+                    ],
+                    style={"padding": "5px", "border": "1px ridge lightgrey"},
+                ),
+                dbc.Tabs(
+                    [
+                        dbc.Tab(label=f"window-{window}", tab_id=f"{window}")
+                        for window in self._windows
+                    ],
+                    id=f"{self._unique_id}-tabs",
+                    active_tab=f"{self._active_window}",
+                ),
+                dbc.CardBody(
+                    id=f"{self._unique_id}-tab-content",
+                    style={"height": "100%"},
+                    children=self.get_content(),
+                ),
+            ],
+            style={"height": "100%"},
+        )
+
+
+class PlotWindowCollection(PostWindowCollection):
+    def __init__(self, app, connection_id, session_id, SessionsManager):
+        super().__init__(app, connection_id, session_id, "plot", SessionsManager)
+
+    def _get_graph(self):
+        return [
+            dcc.Graph(
+                figure=self._state.get(self._active_window, update_graph_fun_xyplot()),
+                style={"height": "100%"},
+            )
+        ]
+
+    def get_content(self):
+        return [
+            html.Div(
+                id=f"post-viewer-{self._unique_id}",
+                style={"height": "100%"},
+                children=self._get_graph(),
+            )
+        ]
+
+    def get_viewer(self, object_type, connection_id, session_id):
+        editor = PlotPropertyEditor(self._app, self._SessionsManager)
+        obj = editor.get_object(object_type, connection_id, session_id)
+        if obj is None:
+            raise PreventUpdate
+        self._state[self._active_window] = update_graph_fun(obj)
+        return self._get_graph()
+
+
+class GraphicsWindowCollection(PostWindowCollection):
+    def __init__(self, app, connection_id, session_id, SessionsManager):
+        super().__init__(app, connection_id, session_id, "graphics", SessionsManager)
+
+    def _get_graphics(self):
+        return self._state.get(self._active_window, [])
+
+    def get_content(self):
+        return [
+            dash_vtk.View(
+                id=f"post-viewer-{self._unique_id}",
+                pickingModes=["hover"],
+                children=self._get_graphics(),
+            )
+        ]
+
+    def get_viewer(self, object_type, connection_id, session_id):
+        editor = GraphicsPropertyEditor(self._app, self._SessionsManager)
+        obj = editor.get_object(object_type, connection_id, session_id)
+        if obj is None:
+            raise PreventUpdate
+        self._state[self._active_window] = update_vtk_fun(obj)[0]
+        print("get_viewer", self._state[self._active_window])
+        return self._get_graphics()
 
 
 class GraphicsWindow:

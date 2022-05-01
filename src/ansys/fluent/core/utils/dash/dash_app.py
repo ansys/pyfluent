@@ -20,18 +20,24 @@ pio.templates.default = "plotly_white"
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
-from local_property_editor import PlotWindow, GraphicsWindow, MonitorWindow
+from local_property_editor import (
+    PlotWindow,
+    GraphicsWindow,
+    MonitorWindow,
+    PlotWindowCollection,
+    GraphicsWindowCollection,
+)
 from PropertyEditor import PropertyEditor
 
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
-    # suppress_callback_exceptions=True,
+    suppress_callback_exceptions=True,
 )
 import dash_treeview_antd
 
-# app.config.suppress_callback_exceptions = True
+app.config.suppress_callback_exceptions = True
 
-# app.config['suppress_callback_exceptions'] = True
+app.config["suppress_callback_exceptions"] = True
 
 SIDEBAR_STYLE = {
     "top": 0,
@@ -233,41 +239,64 @@ def session_changed(connection_id, session_id):
 
 @app.callback(
     Output("tabs", "active_tab"),
-    Input("add-plot-window", "n_clicks"),
-    Input("remove-plot-window", "n_clicks"),
+    Input(
+        {"type": "add-post-window", "index": ALL},
+        "n_clicks",
+    ),
+    Input(
+        {"type": "remove-post-window", "index": ALL},
+        "n_clicks",
+    ),
     Input("connection-id", "data"),
     State("session-id", "value"),
+    prevent_initial_call=True,
 )
-def add_plot_window(add_clicks, remove_clicks, connection_id, session_id):
+def add_remove_window(add_clicks, remove_clicks, connection_id, session_id):
+
+    print("add_remove_window", add_clicks, remove_clicks, connection_id, session_id)
+    if not add_clicks or not remove_clicks:
+        raise PreventUpdate
     ctx = dash.callback_context
+    print("add_remove_window", ctx.triggered)
     input_value = ctx.triggered[0]["value"]
     if input_value is None:
         raise PreventUpdate
-    input_index = ctx.triggered[0]["prop_id"].split(".")[0]
-    plot_window = PlotWindow(app, connection_id, session_id, SessionsManager)
-    if input_index == "add-plot-window":
-        if add_clicks == 0:
+
+    input_data = eval(ctx.triggered[0]["prop_id"].split(".")[0])
+
+    input_index = input_data["index"]
+    input_type = input_data["type"]
+    window = (
+        PlotWindowCollection(app, connection_id, session_id, SessionsManager)
+        if input_index == "plot"
+        else GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)
+    )
+    opr = "add" if input_type.startswith("add") else "remove"
+    print("add_remove_window", opr, input_index, input_value)
+    if opr == "add":
+        if input_value == 0:
             raise PreventUpdate
         id = 0
         while True:
-            if id not in plot_window._windows:
+            if id not in window._windows:
                 break
             id = id + 1
-        plot_window._active_window = id
-        plot_window._windows.append(id)
-    if input_index == "remove-plot-window":
-        if remove_clicks == 0 or len(plot_window._windows) == 1:
+        window._active_window = id
+        window._windows.append(id)
+        print("add_remove_window:add", window._active_window, window._windows)
+    elif opr == "remove":
+        if input_value == 0 or len(window._windows) == 1:
             raise PreventUpdate
-        del plot_window._state[plot_window._active_window]
-        index = plot_window._windows.index(plot_window._active_window)
-        plot_window._active_window = (
-            plot_window._windows[index + 1]
-            if index == 0
-            else plot_window._windows[index - 1]
+        if window._state.get(window._active_window):
+            del window._state[window._active_window]
+        index = window._windows.index(window._active_window)
+        new_index = (
+            window._windows[index + 1] if index == 0 else window._windows[index - 1]
         )
-        plot_window._windows.remove(plot_window._active_window)
+        window._windows.remove(window._active_window)
+        window._active_window = new_index
 
-    return "plots"
+    return "plots" if input_index == "plot" else "graphics"
 
 
 @app.callback(
@@ -288,23 +317,13 @@ def render_tab_content(active_tab, connection_id, session_id):
 
     if active_tab == "graphics":
         return dbc.Row(
-            [
-                dbc.Col(
-                    children=list(
-                        GraphicsWindow(
-                            app, connection_id, session_id, 0, SessionsManager
-                        )
-                        .get_widgets()
-                        .values()
-                    )
-                )
-            ],
+            GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)(),
             style={"height": "49rem"},
         )
 
     elif active_tab == "plots":
         return dbc.Row(
-            PlotWindow(app, connection_id, session_id, SessionsManager)(),
+            PlotWindowCollection(app, connection_id, session_id, SessionsManager)(),
             style={"height": "49rem"},
         )
     elif active_tab == "monitors":
