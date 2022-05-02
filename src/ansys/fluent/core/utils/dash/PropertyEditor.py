@@ -104,7 +104,9 @@ class PropertyEditor(metaclass=SingletonMeta):
                 [
                     dbc.Card(
                         [
-                            dbc.CardHeader(object_name),
+                            dbc.CardHeader(
+                                object_name,
+                            ),
                             dbc.CardBody(list(self._all_widgets.values())),
                         ],
                     ),

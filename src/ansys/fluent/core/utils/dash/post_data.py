@@ -253,7 +253,7 @@ def update_vtk_fun_field(obj):
                 ]
             )
         fields_range = [fields_min, fields_max]
-        print(fields_data, fields_range)
+        # print(fields_data, fields_range)
     except Exception as e:
         print(e)
         return [], None

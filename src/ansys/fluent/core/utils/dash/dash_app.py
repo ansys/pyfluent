@@ -27,6 +27,7 @@ from local_property_editor import (
 )
 from PropertyEditor import PropertyEditor
 
+
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP],
     suppress_callback_exceptions=True,
@@ -80,6 +81,8 @@ def serve_layout():
             html.Data(id="refresh-property-editor"),
             html.Data(id="window-id", value="0"),
             html.Data(id="object-id"),
+            html.Data(id="graphics-button-clicked"),
+            html.Data(id="plot-button-clicked"),
             html.Data(id="command-output"),
             dbc.Row(
                 [
@@ -157,7 +160,8 @@ def serve_layout():
                                         dbc.Tabs(
                                             [
                                                 dbc.Tab(
-                                                    label="Graphics", tab_id="graphics"
+                                                    label="Graphics",
+                                                    tab_id="graphics",
                                                 ),
                                                 dbc.Tab(label="Plots", tab_id="plots"),
                                                 dbc.Tab(
@@ -227,6 +231,26 @@ def session_changed(connection_id, session_id):
         expanded=keys,
         data=tree_nodes,
     )
+
+
+@app.callback(
+    Output("graphics-button-clicked", "value"),
+    Input("graphics-button", "n_clicks"),
+)
+def on_button_click(n_graphics_clicks):
+    if n_graphics_clicks is None:
+        raise PreventUpdate
+    return str(n_graphics_clicks)
+
+
+@app.callback(
+    Output("plot-button-clicked", "value"),
+    Input("plot-button", "n_clicks"),
+)
+def on_button_click(n_post_clicks):
+    if n_post_clicks is None:
+        raise PreventUpdate
+    return str(n_post_clicks)
 
 
 @app.callback(

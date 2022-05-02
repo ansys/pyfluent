@@ -307,7 +307,9 @@ class PostWindowCollection:
             self._app = app
             self._windows = [0]
             self._active_window = 0
-            self._last_clicked = 0
+            self._last_updated_index = None
+            self._object_type = None
+            self._window_data = {}
             self._SessionsManager = SessionsManager
 
             @self._app.callback(
@@ -328,29 +330,67 @@ class PostWindowCollection:
 
             @self._app.callback(
                 Output(f"post-viewer-{self._unique_id}", "children"),
-                Input(f"{window_type}-button", "n_clicks"),
+                Input("graphics-button-clicked", "value"),
+                Input("plot-button-clicked", "value"),
                 Input("connection-id", "data"),
+                Input("interval-component", "n_intervals"),
                 State("window-id", "value"),
                 State("session-id", "value"),
                 State("object-id", "value"),
                 prevent_initial_call=True,
             )
-            def on_button_click(
-                n_clicks, connection_id, window_id, session_id, object_id
+            def on_click_update(
+                n_graphics_clicks,
+                n_plot_clicks,
+                connection_id,
+                n_intervals,
+                window_id,
+                session_id,
+                object_id,
             ):
-                print("on_button_click", n_clicks, self._last_clicked)
-                if n_clicks == 0:
+                ctx = dash.callback_context
+                triggered_value = ctx.triggered[0]["value"]
+                if triggered_value is None:
                     raise PreventUpdate
-                self._last_clicked = n_clicks
-                object_location, object_type = object_id.split(":")
-                if object_location != "local":
-                    raise PreventUpdate
+                triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+                if triggered_from == "interval-component":
+                    object_type = self._window_data.get(self._active_window, {}).get(
+                        "object_type"
+                    )
+                    if object_type is None:
+                        raise PreventUpdate
+
+                    event_info = self._SessionsManager(
+                        self._app, connection_id, session_id
+                    ).get_event_info("IterationEndedEvent")
+                    if event_info is None:
+                        raise PreventUpdate
+
+                    if (
+                        self._last_updated_index
+                        and self._last_updated_index == event_info.index
+                    ):
+                        raise PreventUpdate
+                    self._last_updated_index = event_info.index
+                else:
+                    if triggered_value == "0":
+                        raise PreventUpdate
+                    object_location, object_type = object_id.split(":")
+                    if object_location != "local":
+                        raise PreventUpdate
+                    if not self.is_type_supported(object_type):
+                        raise PreventUpdate
+                    self._window_data[self._active_window] = {
+                        "object_type": object_type
+                    }
+                print("on_button_click..updating", triggered_from, triggered_value)
                 return self.get_viewer(object_type, connection_id, session_id)
 
         else:
             self.__dict__ = window_state
 
     def __call__(self):
+
         return dbc.Col(
             [
                 html.Div(
@@ -382,7 +422,7 @@ class PostWindowCollection:
                     ],
                     style={
                         "padding": "4px 4px 4px 4px",
-                        "border": "1px ridge lightgrey",
+                        "border": "0px ridge lightgrey",
                         "margin": "0px 0px 4px 0px",
                     },
                 ),
@@ -394,9 +434,9 @@ class PostWindowCollection:
                     id=f"{self._unique_id}-tabs",
                     active_tab=f"{self._active_window}",
                 ),
-                dbc.CardBody(
+                html.Div(
                     id=f"{self._unique_id}-tab-content",
-                    style={"height": "100%"},
+                    style={"height": "100%", "padding": "8px 0px 0px 0px"},
                     children=self.get_content(),
                 ),
             ],
@@ -415,6 +455,11 @@ class PlotWindowCollection(PostWindowCollection):
                 style={"height": "100%"},
             )
         ]
+
+    def is_type_supported(self, type):
+        return PlotPropertyEditor(self._app, self._SessionsManager).is_type_supported(
+            type
+        )
 
     def get_content(self):
         return [
@@ -440,6 +485,11 @@ class GraphicsWindowCollection(PostWindowCollection):
 
     def _get_graphics(self):
         return self._state.get(self._active_window, [])
+
+    def is_type_supported(self, type):
+        return GraphicsPropertyEditor(
+            self._app, self._SessionsManager
+        ).is_type_supported(type)
 
     def get_content(self):
         return [
@@ -518,7 +568,6 @@ class MonitorWindow:
                     ),
                     font=dict(family="Courier New, monospace", size=14, color="black"),
                 )
-                print(fig)
                 return dcc.Graph(
                     figure=fig,
                     style={"height": "100%"},
