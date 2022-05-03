@@ -157,20 +157,6 @@ class LocalPropertyEditor:
         )
         self._all_widgets = {}
         store_all_widgets(object_type, obj)
-        self._all_widgets.update(
-            {
-                "save-button": dbc.Button(
-                    "Save",
-                    id=f"{SAVE_BUTTON_ID}",
-                    n_clicks=0,
-                ),
-                "delete-button": dbc.Button(
-                    "Delete",
-                    id=f"{DELETE_BUTTON_ID}",
-                    n_clicks=0,
-                ),
-            }
-        )
 
         self._all_widgets.update(
             self._get_editor(object_type).get_widgets(
@@ -305,13 +291,38 @@ class GraphicsPropertyEditor:
         return type in ("Contour", "Mesh", "Vector", "Surface")
 
     def get_widgets(self, connection_id, session_id, object_type, object_index):
-        return {
-            "display-button": dbc.Button(
-                "Display",
-                id=f"{DISPLAY_BUTTON_ID}",
-                n_clicks=0,
-            )
-        }
+        return (
+            {
+                "display-button": dbc.Button(
+                    "Display",
+                    id=f"{DISPLAY_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+                "save-button": dbc.Button(
+                    "Save",
+                    id=f"{SAVE_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+                "delete-button": dbc.Button(
+                    "Delete",
+                    id=f"{DELETE_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+            }
+            if object_index
+            else {
+                "display-button": dbc.Button(
+                    "Display",
+                    id=f"{DISPLAY_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+                "save-button": dbc.Button(
+                    "Save",
+                    id=f"{SAVE_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+            }
+        )
 
     def get_collection(self, connection_id, session_id, object_type):
         session = self.SessionsManager(self._app, connection_id, session_id).session

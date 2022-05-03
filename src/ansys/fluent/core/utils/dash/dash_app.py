@@ -247,7 +247,6 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
     tree_nodes, keys = TreeView(
         app, connection_id, session_id, SessionsManager
     ).get_tree_nodes()
-    print(tree_nodes, keys)
     return dash_treeview_antd.TreeView(
         id="tree-view",
         multiple=False,
@@ -258,22 +257,24 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
 
 @app.callback(
     Output("save-button-clicked", "value"),
-    Output("delete-button-clicked", "value"),
     Input("save-button", "n_clicks"),
+    prevent_initial_call=True,
+)
+def manage_save_delete_object(save_n_clicks):
+    if save_n_clicks is None or save_n_clicks == 0:
+        raise PreventUpdate
+    return str(save_n_clicks)
+
+
+@app.callback(
+    Output("delete-button-clicked", "value"),
     Input("delete-button", "n_clicks"),
     prevent_initial_call=True,
 )
-def manage_save_delete_object(save_n_clicks, delete_n_clicks):
-    ctx = dash.callback_context
-    triggered_value = ctx.triggered[0]["value"]
-    if triggered_value is None or triggered_value == 0:
+def manage_save_delete_object(delete_n_clicks):
+    if delete_n_clicks is None or delete_n_clicks == 0:
         raise PreventUpdate
-    triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-    print("manage_save_delete_object", triggered_from)
-    if triggered_from == "save-button":
-        return [str(save_n_clicks), dash.no_update]
-    elif triggered_from == "delete-button":
-        return [dash.no_update, str(delete_n_clicks)]
+    return str(delete_n_clicks)
 
 
 @app.callback(
