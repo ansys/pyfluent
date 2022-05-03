@@ -199,14 +199,14 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                     if attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
-                                v in self.allowed_values for v in value
+                                v is None or v in self.allowed_values for v in value
                             ):
                                 raise ValueError(
                                     f"Not all values in {value}, are in the "
                                     "list of allowed values "
                                     f"{self.allowed_values}."
                                 )
-                        elif value not in self.allowed_values:
+                        elif value is not None and value not in self.allowed_values:
                             raise ValueError(
                                 f"Value {value}, is not in the list of "
                                 f"allowed values {self.allowed_values}."

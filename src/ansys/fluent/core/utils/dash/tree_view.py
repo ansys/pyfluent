@@ -1,4 +1,5 @@
 import yaml
+from local_property_editor import LocalPropertyEditor
 
 
 class TreeView:
@@ -27,12 +28,13 @@ class TreeView:
             tree_data["title"] = item_name
             remote = item_data.get("remote")
             local = item_data.get("local")
+            index = item_data.get("index", "")
             if local:
-                tree_data["key"] = f"local:{local}:"
-                keys.append(f"local:{local}:")
+                tree_data["key"] = f"local:{local}:{index}"
+                keys.append(f"local:{local}:{index}")
             elif remote:
-                tree_data["key"] = f"remote:{remote}:"
-                keys.append(f"remote:{remote}:")
+                tree_data["key"] = f"remote:{remote}:{index}"
+                keys.append(f"remote:{remote}:{index}")
             else:
                 tree_data["key"] = item_name
 
@@ -41,6 +43,25 @@ class TreeView:
                     item_data["children"]
                 )
                 keys = keys + child_keys
+            elif local:
+                editor = LocalPropertyEditor(self._app, self.SessionsManager)
+                indices = editor.get_child_indices(
+                    self._connection_id,
+                    self.session_id,
+                    f"{local}-{index}" if index else local,
+                )
+                if indices:
+                    print("indices", indices, f"{local}-{index}" if index else local)
+                    # tree_data["key"] = ""
+                    children_data = {
+                        f"{local}-{index}": {"local": f"{local}", "index": f"{index}"}
+                        for index in indices
+                        if index
+                    }
+                    tree_data["children"], child_keys = self.populate_tree(
+                        children_data
+                    )
+                    keys = keys + child_keys
             elif remote:
                 static_info = self.SessionsManager(
                     self._app, self._connection_id, self.session_id

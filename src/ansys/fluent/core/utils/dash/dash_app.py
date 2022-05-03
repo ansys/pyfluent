@@ -83,6 +83,8 @@ def serve_layout():
             html.Data(id="object-id"),
             html.Data(id="graphics-button-clicked"),
             html.Data(id="plot-button-clicked"),
+            html.Data(id="save-button-clicked"),
+            html.Data(id="delete-button-clicked"),
             html.Data(id="command-output"),
             dbc.Row(
                 [
@@ -215,22 +217,63 @@ def create_session(n_clicks, session_token, connection_id, options):
 
 @app.callback(
     Output("tree-view-container", "children"),
-    # Output("tree-view", "expanded"),
     Input("connection-id", "data"),  #
     Input("session-id", "value"),
+    Input("save-button-clicked", "value"),
+    Input("delete-button-clicked", "value"),
+    State("object-id", "value"),
+    prevent_initial_call=True,
 )
-def session_changed(connection_id, session_id):
-    if session_id is None or connection_id is None:
+def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, object_id):
+    ctx = dash.callback_context
+    triggered_value = ctx.triggered[0]["value"]
+    if session_id is None or connection_id is None or triggered_value is None:
         raise PreventUpdate
+    triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+
+    if triggered_from == "save-button-clicked":
+        object_location, object_type, object_index = object_id.split(":")
+        editor = LocalPropertyEditor(app, SessionsManager)
+        new_object = editor.create_new_object(
+            connection_id, session_id, object_type, object_index
+        )
+    elif triggered_from == "delete-button-clicked":
+        object_location, object_type, object_index = object_id.split(":")
+        editor = LocalPropertyEditor(app, SessionsManager)
+        new_object = editor.delete_object(
+            connection_id, session_id, object_type, object_index
+        )
+    print("update_tree", triggered_from, triggered_value)
     tree_nodes, keys = TreeView(
         app, connection_id, session_id, SessionsManager
     ).get_tree_nodes()
+    print(tree_nodes, keys)
     return dash_treeview_antd.TreeView(
         id="tree-view",
         multiple=False,
         expanded=keys,
         data=tree_nodes,
     )
+
+
+@app.callback(
+    Output("save-button-clicked", "value"),
+    Output("delete-button-clicked", "value"),
+    Input("save-button", "n_clicks"),
+    Input("delete-button", "n_clicks"),
+    prevent_initial_call=True,
+)
+def manage_save_delete_object(save_n_clicks, delete_n_clicks):
+    ctx = dash.callback_context
+    triggered_value = ctx.triggered[0]["value"]
+    if triggered_value is None or triggered_value == 0:
+        raise PreventUpdate
+    triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+    print("manage_save_delete_object", triggered_from)
+    if triggered_from == "save-button":
+        return [str(save_n_clicks), dash.no_update]
+    elif triggered_from == "delete-button":
+        return [dash.no_update, str(delete_n_clicks)]
 
 
 @app.callback(

@@ -28,6 +28,7 @@ DELETE_BUTTON_ID = "delete-button"
 
 class LocalPropertyEditor:
     def __init__(self, app, SessionsManager):
+
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
@@ -41,21 +42,30 @@ class LocalPropertyEditor:
             else self._plot_property_editor
         )
 
+    def get_child_indices(self, connection_id, session_id, object_type):
+        collection = self._get_editor(object_type).get_collection(
+            connection_id, session_id, object_type
+        )
+        indices = []
+        if collection is not None:
+            base_name = self._get_name(connection_id, session_id, object_type, "")
+            for name in list(collection):
+                if name.startswith(base_name):
+                    indices.append(name.split("-")[-1])
+        return indices
+
     def _get_name(self, connection_id, session_id, object_type, object_index):
         return f"{connection_id}-{session_id}-{object_type}-{object_index}"
 
-    def create_new_object(
-        self, connection_id, session_id, object_type, from_index=None
-    ):
+    def create_new_object(self, connection_id, session_id, object_type, from_index):
         object_index = self.get_next_index(connection_id, session_id, object_type)
         new_object = self._get_object(
             connection_id, session_id, object_type, object_index
         )
-        if from_index:
-            from_object = self._get_object(
-                connection_id, session_id, object_type, from_index
-            )
-            new_object.update(from_object())
+        from_object = self._get_object(
+            connection_id, session_id, object_type, from_index
+        )
+        new_object.update(from_object())
         return new_object
 
     def get_next_index(self, connection_id, session_id, object_type):
