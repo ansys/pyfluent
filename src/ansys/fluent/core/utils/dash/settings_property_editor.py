@@ -46,16 +46,9 @@ class SettingsPropertyEditor:
             session_id,
             object_id,
         ):
-            print(
-                "on_settings_command_execution",
-                connection_id,
-                args_value,
-                session_id,
-                object_id,
-            )
             if object_id is None or session_id is None:
                 raise PreventUpdate
-            object_location, object_type = object_id.split(":")
+            object_location, object_type, object_index = object_id.split(":")
             if object_location != "remote":
                 raise PreventUpdate
             ctx = dash.callback_context
@@ -71,7 +64,7 @@ class SettingsPropertyEditor:
                 ctx.triggered,
             )
             obj, static_info = self.get_object_and_static_info(
-                object_type, connection_id, session_id
+                connection_id, session_id, object_type, object_index
             )
             kwargs = {}
             cmd_obj = getattr(obj, command_name)
@@ -84,10 +77,10 @@ class SettingsPropertyEditor:
             return f"{return_value}"
 
     def get_object_and_static_info(
-        self, object_type_path, connection_id, session_id, object_id=None
+        self, connection_id, session_id, object_type, object_index
     ):
-        if object_type_path is not None:
-            path_list = object_type_path.split("/")
+        if object_type is not None:
+            path_list = object_type.split("/")
             session = self.SessionsManager(self._app, connection_id, session_id).session
             static_info = self.SessionsManager(
                 self._app, connection_id, session_id
@@ -108,7 +101,7 @@ class SettingsPropertyEditor:
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
 
-    def get_widgets(self, object_type, connection_id, session_id):
+    def get_widgets(self, connection_id, session_id, object_type, object_index):
         def store_all_widgets(obj, si_info, state, parent=""):
             for name, value in obj.get_state().items():
                 if si_info["type"] == "named-object":
@@ -173,7 +166,7 @@ class SettingsPropertyEditor:
                         )
 
         obj, static_info = self.get_object_and_static_info(
-            object_type, connection_id, session_id
+            connection_id, session_id, object_type, object_index
         )
         self._all_widgets = {}
         print("update_stored_widgets", obj, obj.get_state())

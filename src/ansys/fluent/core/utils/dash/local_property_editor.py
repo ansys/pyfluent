@@ -22,6 +22,8 @@ from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "graphics-button"
 PLOT_BUTTON_ID = "plot-button"
+SAVE_BUTTON_ID = "save-button"
+DELETE_BUTTON_ID = "delete-button"
 
 
 class LocalPropertyEditor:
@@ -32,29 +34,79 @@ class LocalPropertyEditor:
         self._graphics_property_editor = GraphicsPropertyEditor(app, SessionsManager)
         self._plot_property_editor = PlotPropertyEditor(app, SessionsManager)
 
-    def get_object_and_static_info(
-        self, graphics_type, connection_id, session_id, object_id=None
+    def _get_editor(self, object_type):
+        return (
+            self._graphics_property_editor
+            if self._graphics_property_editor.is_type_supported(object_type)
+            else self._plot_property_editor
+        )
+
+    def _get_name(self, connection_id, session_id, object_type, object_index):
+        return f"{connection_id}-{session_id}-{object_type}-{object_index}"
+
+    def create_new_object(
+        self, connection_id, session_id, object_type, from_index=None
     ):
-        if self._graphics_property_editor.is_type_supported(graphics_type):
-            return (
-                self._graphics_property_editor.get_object(
-                    graphics_type, connection_id, session_id
-                ),
-                None,
+        object_index = self.get_next_index(connection_id, session_id, object_type)
+        new_object = self._get_object(
+            connection_id, session_id, object_type, object_index
+        )
+        if from_index:
+            from_object = self._get_object(
+                connection_id, session_id, object_type, from_index
             )
-        if self._plot_property_editor.is_type_supported(graphics_type):
-            return (
-                self._plot_property_editor.get_object(
-                    graphics_type, connection_id, session_id
-                ),
-                None,
+            new_object.update(from_object())
+        return new_object
+
+    def get_next_index(self, connection_id, session_id, object_type):
+        collection = self._get_editor(object_type).get_collection(
+            connection_id, session_id, object_type
+        )
+        if collection is not None:
+            object_index = 0
+            while True:
+                object_name = self._get_name(
+                    connection_id, session_id, object_type, object_index
+                )
+                if object_name not in list(collection):
+                    break
+                object_index = object_index + 1
+            return object_index
+
+    def _get_object(self, connection_id, session_id, object_type, object_index):
+        collection = self._get_editor(object_type).get_collection(
+            connection_id, session_id, object_type
+        )
+        if collection is not None:
+
+            object_name = self._get_name(
+                connection_id, session_id, object_type, object_index
             )
+            return collection[object_name]
+
+    def delete_object(self, connection_id, session_id, object_type, object_index):
+        collection = self._get_editor(object_type).get_collection(
+            connection_id, session_id, object_type
+        )
+        if collection is not None:
+            object_name = self._get_name(
+                connection_id, session_id, object_type, object_index
+            )
+            del collection[object_name]
+
+    def get_object_and_static_info(
+        self, connection_id, session_id, object_type, object_index
+    ):
+        return (
+            self._get_object(connection_id, session_id, object_type, object_index),
+            None,
+        )
 
     def get_label(self, name):
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
 
-    def get_widgets(self, graphics_type, connection_id, session_id):
+    def get_widgets(self, connection_id, session_id, object_type, object_index):
         def store_all_widgets(obj_type, obj, parent="", parent_visible=True):
             for name, value in obj.__dict__.items():
                 if name == "_parent":
@@ -91,22 +143,31 @@ class LocalPropertyEditor:
                         )
 
         obj, static_info = self.get_object_and_static_info(
-            graphics_type, connection_id, session_id
+            connection_id, session_id, object_type, object_index
         )
         self._all_widgets = {}
-        store_all_widgets(graphics_type, obj)
-        if self._graphics_property_editor.is_type_supported(graphics_type):
-            self._all_widgets.update(
-                self._graphics_property_editor.get_widgets(
-                    graphics_type, connection_id, session_id
-                )
+        store_all_widgets(object_type, obj)
+        self._all_widgets.update(
+            {
+                "save-button": dbc.Button(
+                    "Save",
+                    id=f"{SAVE_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+                "delete-button": dbc.Button(
+                    "Delete",
+                    id=f"{DELETE_BUTTON_ID}",
+                    n_clicks=0,
+                ),
+            }
+        )
+
+        self._all_widgets.update(
+            self._get_editor(object_type).get_widgets(
+                connection_id, session_id, object_type, object_index
             )
-        if self._plot_property_editor.is_type_supported(graphics_type):
-            self._all_widgets.update(
-                self._plot_property_editor.get_widgets(
-                    graphics_type, connection_id, session_id
-                )
-            )
+        )
+
         return self._all_widgets
 
     def get_widget(
@@ -233,7 +294,7 @@ class GraphicsPropertyEditor:
     def is_type_supported(self, type):
         return type in ("Contour", "Mesh", "Vector", "Surface")
 
-    def get_widgets(self, graphics_type, connection_id, session_id):
+    def get_widgets(self, connection_id, session_id, object_type, object_index):
         return {
             "display-button": dbc.Button(
                 "Display",
@@ -242,27 +303,17 @@ class GraphicsPropertyEditor:
             )
         }
 
-    def get_object(self, graphics_type, connection_id, session_id, object_id=None):
-        if graphics_type is not None:
-            session = self.SessionsManager(self._app, connection_id, session_id).session
-            graphics_session = Graphics(session)
-
-            if graphics_type == "Contour":
-                return graphics_session.Contours[
-                    f"contour-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
-                ]
-            if graphics_type == "Mesh":
-                return graphics_session.Meshes[
-                    f"mesh-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
-                ]
-            if graphics_type == "Vector":
-                return graphics_session.Vectors[
-                    f"vector-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
-                ]
-            if graphics_type == "Surface":
-                return graphics_session.Surfaces[
-                    f"surface-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
-                ]
+    def get_collection(self, connection_id, session_id, object_type):
+        session = self.SessionsManager(self._app, connection_id, session_id).session
+        graphics_session = Graphics(session)
+        if object_type == "Contour":
+            return graphics_session.Contours
+        if object_type == "Mesh":
+            return graphics_session.Meshes
+        if object_type == "Vector":
+            return graphics_session.Vectors
+        if object_type == "Surface":
+            return graphics_session.Surfaces
 
 
 class PlotPropertyEditor:
@@ -273,7 +324,7 @@ class PlotPropertyEditor:
     def is_type_supported(self, type):
         return type in ("XYPlot")
 
-    def get_widgets(self, graphics_type, connection_id, session_id):
+    def get_widgets(self, connection_id, session_id, object_type, object_index):
         return {
             "plot-button": dbc.Button(
                 "Plot",
@@ -282,14 +333,11 @@ class PlotPropertyEditor:
             )
         }
 
-    def get_object(self, graphics_type, connection_id, session_id, object_id=None):
-        if graphics_type is not None:
-            session = self.SessionsManager(self._app, connection_id, session_id).session
-            plots_session = Plots(session)
-            if graphics_type == "XYPlot":
-                return plots_session.XYPlots[
-                    f"xyplot-{connection_id}-{session_id}-{object_id if object_id else 'dummy'}"
-                ]
+    def get_collection(self, connection_id, session_id, object_type):
+        session = self.SessionsManager(self._app, connection_id, session_id).session
+        plots_session = Plots(session)
+        if object_type == "XYPlot":
+            return plots_session.XYPlots
 
 
 class PostWindowCollection:
@@ -354,12 +402,9 @@ class PostWindowCollection:
                     raise PreventUpdate
                 triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
                 if triggered_from == "interval-component":
-                    object_type = self._window_data.get(self._active_window, {}).get(
-                        "object_type"
-                    )
-                    if object_type is None:
+                    window_data = self._window_data.get(self._active_window)
+                    if window_data is None:
                         raise PreventUpdate
-
                     event_info = self._SessionsManager(
                         self._app, connection_id, session_id
                     ).get_event_info("IterationEndedEvent")
@@ -371,20 +416,26 @@ class PostWindowCollection:
                         and self._last_updated_index == event_info.index
                     ):
                         raise PreventUpdate
+
+                    object_type = window_data["object_type"]
+                    object_index = window_data["object_index"]
                     self._last_updated_index = event_info.index
                 else:
                     if triggered_value == "0":
                         raise PreventUpdate
-                    object_location, object_type = object_id.split(":")
+                    object_location, object_type, object_index = object_id.split(":")
                     if object_location != "local":
                         raise PreventUpdate
                     if not self.is_type_supported(object_type):
                         raise PreventUpdate
                     self._window_data[self._active_window] = {
-                        "object_type": object_type
+                        "object_type": object_type,
+                        "object_index": object_index,
                     }
                 print("on_button_click..updating", triggered_from, triggered_value)
-                return self.get_viewer(object_type, connection_id, session_id)
+                return self.get_viewer(
+                    connection_id, session_id, object_type, object_index
+                )
 
         else:
             self.__dict__ = window_state
@@ -470,9 +521,9 @@ class PlotWindowCollection(PostWindowCollection):
             )
         ]
 
-    def get_viewer(self, object_type, connection_id, session_id):
-        editor = PlotPropertyEditor(self._app, self._SessionsManager)
-        obj = editor.get_object(object_type, connection_id, session_id)
+    def get_viewer(self, connection_id, session_id, object_type, object_index):
+        editor = LocalPropertyEditor(self._app, self._SessionsManager)
+        obj = editor._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             raise PreventUpdate
         self._state[self._active_window] = update_graph_fun(obj)
@@ -500,9 +551,9 @@ class GraphicsWindowCollection(PostWindowCollection):
             )
         ]
 
-    def get_viewer(self, object_type, connection_id, session_id):
-        editor = GraphicsPropertyEditor(self._app, self._SessionsManager)
-        obj = editor.get_object(object_type, connection_id, session_id)
+    def get_viewer(self, connection_id, session_id, object_type, object_index):
+        editor = LocalPropertyEditor(self._app, self._SessionsManager)
+        obj = editor._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             raise PreventUpdate
         self._state[self._active_window] = update_vtk_fun(obj)[0]

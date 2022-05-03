@@ -28,11 +28,11 @@ class TreeView:
             remote = item_data.get("remote")
             local = item_data.get("local")
             if local:
-                tree_data["key"] = f"local:{local}"
-                keys.append(f"local:{local}")
+                tree_data["key"] = f"local:{local}:"
+                keys.append(f"local:{local}:")
             elif remote:
-                tree_data["key"] = f"remote:{remote}"
-                keys.append(f"remote:{remote}")
+                tree_data["key"] = f"remote:{remote}:"
+                keys.append(f"remote:{remote}:")
             else:
                 tree_data["key"] = item_name
 

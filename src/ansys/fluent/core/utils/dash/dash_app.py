@@ -13,7 +13,7 @@ import plotly.graph_objs as go
 from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
 from tree_view import TreeView
-
+from local_property_editor import LocalPropertyEditor
 import plotly.io as pio
 
 pio.templates.default = "plotly_white"
@@ -267,7 +267,7 @@ def on_button_click(n_post_clicks):
     State("session-id", "value"),
     prevent_initial_call=True,
 )
-def add_remove_window(add_clicks, remove_clicks, connection_id, session_id):
+def add_remove_post_window(add_clicks, remove_clicks, connection_id, session_id):
 
     print("add_remove_window", add_clicks, remove_clicks, connection_id, session_id)
     if not add_clicks or not remove_clicks:
