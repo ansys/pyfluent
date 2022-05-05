@@ -2870,6 +2870,7 @@ class main_menu(TUIMenu):
             def __init__(self, path, service):
                 self.path = path
                 self.service = service
+                self.advanced = self.__class__.advanced(path + [("advanced", None)], service)
                 self.modify_zones = self.__class__.modify_zones(path + [("modify_zones", None)], service)
                 self.non_reflecting_bc = self.__class__.non_reflecting_bc(path + [("non_reflecting_bc", None)], service)
                 self.rename_zone = self.__class__.rename_zone(path + [("rename_zone", None)], service)
@@ -3080,6 +3081,25 @@ class main_menu(TUIMenu):
                 Computes the Knudsen number based on a characteristic physical length and the area-averaged flow quantities along an incoming-flow boundary. You can use this information to determine flow regime for selecting the appropriate wall boundary treatment. For details, see .
                 """
                 return PyMenu(self.service, "/define/boundary_conditions/knudsen_number_calculator").execute(*args, **kwargs)
+
+            class advanced(TUIMenu):
+                """
+                Control settings while doing BC setup.
+                """
+                def __init__(self, path, service):
+                    self.path = path
+                    self.service = service
+                    super().__init__(path, service)
+                def delay_model_change_update(self, *args, **kwargs):
+                    """
+                    Set model change call update.
+                    """
+                    return PyMenu(self.service, "/define/boundary_conditions/advanced/delay_model_change_update").execute(*args, **kwargs)
+                def batch_thread_update(self, *args, **kwargs):
+                    """
+                    Set batch thread update option.
+                    """
+                    return PyMenu(self.service, "/define/boundary_conditions/advanced/batch_thread_update").execute(*args, **kwargs)
 
             class modify_zones(TUIMenu):
                 """
@@ -6000,7 +6020,7 @@ class main_menu(TUIMenu):
                         return PyMenu(self.service, "/define/models/dpm/interaction/linear_growth_of_dpm_source_term").execute(*args, **kwargs)
                     def reset_sources_at_timestep(self, *args, **kwargs):
                         """
-                        Enable/disable flush of DPM source terms at beginning of every time step.
+                        Enables/disables flush of DPM source terms at beginning of every time step.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/reset_sources_at_timestep").execute(*args, **kwargs)
                     def enable_flow_blocking_by_particles(self, *args, **kwargs):
@@ -6033,6 +6053,16 @@ class main_menu(TUIMenu):
                         Enable/disable the non-default interfacial area method IA-particle.
                         """
                         return PyMenu(self.service, "/define/models/dpm/interaction/ddpm_iad_particle").execute(*args, **kwargs)
+                    def ddpm_energy_coupling_via_source_term(self, *args, **kwargs):
+                        """
+                        Energy coupling in DDPM established via source term.
+                        """
+                        return PyMenu(self.service, "/define/models/dpm/interaction/ddpm_energy_coupling_via_source_term").execute(*args, **kwargs)
+                    def ddpm_enhanced_inter_phase_exchange(self, *args, **kwargs):
+                        """
+                        Enhanced Eulerian inter-phase exchange.
+                        """
+                        return PyMenu(self.service, "/define/models/dpm/interaction/ddpm_enhanced_inter_phase_exchange").execute(*args, **kwargs)
 
                 class numerics(TUIMenu):
                     """
@@ -16944,7 +16974,7 @@ class main_menu(TUIMenu):
             return PyMenu(self.service, "/file/write_profile").execute(*args, **kwargs)
         def write_currently_defined_profiles(self, *args, **kwargs):
             """
-            Write currently defined profiles. To use \*.csv format specify filename with .csv suffix.
+            Write currently defined profiles. To use *.csv format specify filename with .csv suffix.
             """
             return PyMenu(self.service, "/file/write_currently_defined_profiles").execute(*args, **kwargs)
         def set_target_reference_frame_for_write_profiles(self, *args, **kwargs):
@@ -16954,7 +16984,7 @@ class main_menu(TUIMenu):
             return PyMenu(self.service, "/file/set_target_reference_frame_for_write_profiles").execute(*args, **kwargs)
         def write_circumferential_averaged_profile(self, *args, **kwargs):
             """
-            Write surface data as a boundary profile file. To use \*.csv format specify filename with .csv suffix.
+            Write surface data as a boundary profile file. To use *.csv format specify filename with .csv suffix.
             """
             return PyMenu(self.service, "/file/write_circumferential_averaged_profile").execute(*args, **kwargs)
         def write_merge_profiles(self, *args, **kwargs):
@@ -17890,11 +17920,11 @@ class main_menu(TUIMenu):
                 Save As Project.
                 """
                 return PyMenu(self.service, "/file/parametric_project/save_as").execute(*args, **kwargs)
-            def save_as_copy(self, *args, **kwargs):
+            def save_a_copy(self, *args, **kwargs):
                 """
-                Save As Copy.
+                Save a Copy.
                 """
-                return PyMenu(self.service, "/file/parametric_project/save_as_copy").execute(*args, **kwargs)
+                return PyMenu(self.service, "/file/parametric_project/save_a_copy").execute(*args, **kwargs)
             def archive(self, *args, **kwargs):
                 """
                 Archive Project.
@@ -25987,7 +26017,7 @@ class main_menu(TUIMenu):
                     return PyMenu(self.service, "/results/report/volume_integrals/sum").execute(*args, **kwargs)
                 def twopisum(self, *args, **kwargs):
                     """
-                    Print sum of scalar over all cell zones multiplied by 2\*Pi.
+                    Print sum of scalar over all cell zones multiplied by 2*Pi.
                     """
                     return PyMenu(self.service, "/results/report/volume_integrals/twopisum").execute(*args, **kwargs)
                 def volume(self, *args, **kwargs):
@@ -37589,6 +37619,16 @@ class main_menu(TUIMenu):
                         Enable/disable the non-default interfacial area method IA-particle.
                         """
                         return PyMenu(self.service, "/setup/models/dpm/interaction/ddpm_iad_particle").execute(*args, **kwargs)
+                    def ddpm_energy_coupling_via_source_term(self, *args, **kwargs):
+                        """
+                        Energy coupling in DDPM established via source term.
+                        """
+                        return PyMenu(self.service, "/setup/models/dpm/interaction/ddpm_energy_coupling_via_source_term").execute(*args, **kwargs)
+                    def ddpm_enhanced_inter_phase_exchange(self, *args, **kwargs):
+                        """
+                        Enhanced Eulerian inter-phase exchange.
+                        """
+                        return PyMenu(self.service, "/setup/models/dpm/interaction/ddpm_enhanced_inter_phase_exchange").execute(*args, **kwargs)
 
                 class numerics(TUIMenu):
                     """
@@ -45251,6 +45291,11 @@ class main_menu(TUIMenu):
             Import Design Point Table.
             """
             return PyMenu(self.service, "/parametric_study/import_design_table").execute(*args, **kwargs)
+        def case_settings_changed(self, *args, **kwargs):
+            """
+            Check if case settings are changed.
+            """
+            return PyMenu(self.service, "/parametric_study/case_settings_changed").execute(*args, **kwargs)
 
         class design_points(TUIMenu):
             """
@@ -45340,16 +45385,16 @@ class main_menu(TUIMenu):
                 Refresh Status.
                 """
                 return PyMenu(self.service, "/parametric_study/design_points/refresh_status").execute(*args, **kwargs)
-            def interrupt_design_point_submitted_concurrently(self, *args, **kwargs):
+            def abort_concurrent_design_point_update(self, *args, **kwargs):
                 """
                 Interrupt Design Point.
                 """
-                return PyMenu(self.service, "/parametric_study/design_points/interrupt_design_point_submitted_concurrently").execute(*args, **kwargs)
-            def interrupt_all_design_points_submitted_concurrently(self, *args, **kwargs):
+                return PyMenu(self.service, "/parametric_study/design_points/abort_concurrent_design_point_update").execute(*args, **kwargs)
+            def abort_all_concurrent_design_point_updates(self, *args, **kwargs):
                 """
                 Interrupt Design Points.
                 """
-                return PyMenu(self.service, "/parametric_study/design_points/interrupt_all_design_points_submitted_concurrently").execute(*args, **kwargs)
+                return PyMenu(self.service, "/parametric_study/design_points/abort_all_concurrent_design_point_updates").execute(*args, **kwargs)
 
         class update(TUIMenu):
             """

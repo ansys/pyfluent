@@ -126,6 +126,7 @@ class TUIGenerator:
         menugen = _TUIMenuGenerator(menu.path, self._service)
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
+        menu.doc = menu.doc.replace("\\*", "*")
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
