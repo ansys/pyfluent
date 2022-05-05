@@ -37,7 +37,6 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 ###############################################################################
 # First, download the geometry file and start Fluent as a service with
 # Meshing Mode, Double Precision, Number of Processors 2
-# Importing the graphics module - pyvista
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
