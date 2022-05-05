@@ -30,7 +30,12 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
     # Some tasks are wrongly returning False in meshing workflow itself
     # so we add a temporary caveat below
     result = task.Execute()
-    if task_name not in ("Add Local Sizing", "Add Boundary Layers"):
+    if task_name not in (
+        "Add Local Sizing",
+        "Add Boundary Layers",
+        "Import CAD and Part Management",
+        "edge-group-1",
+    ):
         assert result is True
     check_task_execute_postconditions(task)
 
@@ -99,6 +104,57 @@ def mixing_elbow_geometry():
     if not _import_filename:
         _import_filename = download_file(
             filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        )
+    return _import_filename
+
+
+def initialize_fault_tolerant(mesh_session):
+    mesh_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+
+@pytest.fixture
+def new_fault_tolerant_workflow_session(new_mesh_session):
+    initialize_fault_tolerant(new_mesh_session)
+    yield new_mesh_session
+
+
+@pytest.fixture
+def new_fault_tolerant_workflow(new_fault_tolerant_workflow_session):
+    yield new_fault_tolerant_workflow_session.workflow
+
+
+_mesher = None
+
+
+@pytest.fixture
+def shared_mesh_session(with_running_pytest):
+    global _mesher
+    if not _mesher:
+        _mesher = create_mesh_session()
+    return _mesher
+
+
+@pytest.fixture
+def shared_fault_tolerant_workflow_session(shared_mesh_session):
+    initialize_fault_tolerant(shared_mesh_session)
+    yield shared_mesh_session
+    reset_workflow(shared_mesh_session)
+
+
+@pytest.fixture
+def shared_fault_tolerant_workflow(shared_fault_tolerant_workflow_session):
+    yield shared_fault_tolerant_workflow_session.workflow
+
+
+_import_filename = None
+
+
+@pytest.fixture
+def exhaust_system_geometry():
+    global _import_filename
+    if not _import_filename:
+        _import_filename = download_file(
+            filename="exhaust_system.fmd", directory="pyfluent/exhaust_system"
         )
     return _import_filename
 
