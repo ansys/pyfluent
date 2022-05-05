@@ -17,17 +17,33 @@ Ansys Fluent is a state-of-the-art computational fluid dynamics (CFD) software
 package for modeling fluid flow, heat transfer, and chemical reactions in
 complex geometries.
 
+Ansys Fluent provides complete mesh flexibility, including the ability to solve
+your flow problems using unstructured meshes that can be generated about complex
+geometries with relative ease. Supported mesh types include 2D
+triangular/quadrilateral, 3D tetrahedral/hexahedral/pyramid/wedge/polyhedral,
+and mixed (hybrid) meshes. Ansys Fluent also enables you to refine or coarsen
+your mesh based on the flow solution.
+
+You can read your mesh into Ansys Fluent, or, for 3D geometries, create your
+mesh using the meshing mode of Fluent. All other operations are performed within
+the solution mode of Fluent, including setting boundary conditions, defining
+fluid properties, executing the solution, refining the mesh, and postprocessing
+and viewing the results.
+
+Python and Fluent
+-----------------
 Python is a portable, dynamically typed, interpreted programming language that
 is easy to learn, read, and write. It is free to use and distribute and is
 supported by a vast support library of thousands of available packages.
 
-PyFluent is part of the growing `PyAnsys <https://docs.pyansys.com>`_ ecosystem
-that lets you use Ansys Fluent within or alongside any other Python environment,
+PyFluent is part of the `PyAnsys <https://docs.pyansys.com>`_ ecosystem that
+lets you use Ansys Fluent within or alongside any other Python environment,
 whether it is in conjunction with other Ansys Python libraries and packages or
 with other external Python products.
 
-PyFluent launches or connects with a running Fluent process as a server using
-gRPC interfaces, but all you need to interact with is the Python interface.
+PyFluent implements a client-server architecture.  PyFluent launches or connects
+with a running Fluent process as a server using gRPC interfaces, but all you
+need to interact with is the Python interface.
 
 You can use PyFluent to programmatically create, interact with and control an
 Ansys Fluent session to create your own customized workspace. In addition, you
