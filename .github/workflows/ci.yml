@@ -92,7 +92,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    runs-on: pyfluent-ci-1
+    runs-on: pyansys-self-hosted
 
     steps:
       - uses: actions/checkout@v2
