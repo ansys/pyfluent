@@ -48,7 +48,7 @@ set_config(blocking=True)
 import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
 session = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count=2
+    meshing_mode=True, precision="double", processor_count=4
 )
 
 ###############################################################################

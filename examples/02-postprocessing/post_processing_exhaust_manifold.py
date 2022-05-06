@@ -36,7 +36,7 @@ import_data = examples.download_file(
     filename="manifold_solution.dat.h5", directory="pyfluent/exhaust_manifold"
 )
 
-session = pyfluent.launch_fluent(precision="double", processor_count=2)
+session = pyfluent.launch_fluent(precision="double", processor_count=4)
 root = session.get_settings_root()
 
 session.tui.solver.file.read_case(case_file_name=import_case)
