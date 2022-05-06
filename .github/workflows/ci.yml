@@ -92,7 +92,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    runs-on: ubuntu-latest
+    runs-on: pyfluent-ci-1
 
     steps:
       - uses: actions/checkout@v2
