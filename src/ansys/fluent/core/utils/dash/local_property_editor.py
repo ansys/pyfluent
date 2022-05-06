@@ -376,8 +376,6 @@ class PostWindowCollection:
             self._app = app
             self._windows = [0]
             self._active_window = 0
-            self._last_updated_index = None
-            self._object_type = None
             self._window_data = {}
             self._SessionsManager = SessionsManager
 
@@ -432,15 +430,13 @@ class PostWindowCollection:
                     if event_info is None:
                         raise PreventUpdate
 
-                    if (
-                        self._last_updated_index
-                        and self._last_updated_index == event_info.index
-                    ):
+                    last_updated_index = window_data.get("last_updated_index")
+                    if last_updated_index and last_updated_index == event_info.index:
                         raise PreventUpdate
 
                     object_type = window_data["object_type"]
                     object_index = window_data["object_index"]
-                    self._last_updated_index = event_info.index
+                    window_data["last_updated_index"] = event_info.index
                 else:
                     if triggered_value == "0":
                         raise PreventUpdate
@@ -463,56 +459,77 @@ class PostWindowCollection:
 
     def __call__(self):
 
-        return dbc.Col(
+        return html.Div(
             [
-                html.Div(
+                dbc.Row(
                     [
-                        dbc.Button(
-                            "Add Window",
-                            id={
-                                "type": "add-post-window",
-                                "index": self._window_type,
-                            },
-                            size="sm",
-                            n_clicks=0,
-                            outline=True,
-                            color="secondary",
-                            className="me-2",
+                        dbc.Col(
+                            dbc.Tabs(
+                                [
+                                    dbc.Tab(
+                                        label=f"window-{window}", tab_id=f"{window}"
+                                    )
+                                    for window in self._windows
+                                ],
+                                id=f"{self._unique_id}-tabs",
+                                active_tab=f"{self._active_window}",
+                                style={
+                                    "margin": "10px 0px 0px 0px",
+                                    "padding": "4px 4px 0px 4px",
+                                },
+                            )
                         ),
-                        dbc.Button(
-                            "Remove Window",
-                            id={
-                                "type": "remove-post-window",
-                                "index": self._window_type,
-                            },
-                            size="sm",
-                            n_clicks=0,
-                            outline=True,
-                            color="secondary",
-                            className="me-1",
+                        dbc.Col(
+                            html.Div(
+                                [
+                                    dbc.Button(
+                                        "Add Window",
+                                        id={
+                                            "type": "add-post-window",
+                                            "index": self._window_type,
+                                        },
+                                        size="sm",
+                                        n_clicks=0,
+                                        outline=True,
+                                        color="secondary",
+                                        className="me-2",
+                                    ),
+                                    dbc.Button(
+                                        "Remove Window",
+                                        id={
+                                            "type": "remove-post-window",
+                                            "index": self._window_type,
+                                        },
+                                        size="sm",
+                                        n_clicks=0,
+                                        outline=True,
+                                        color="secondary",
+                                        className="me-1",
+                                    ),
+                                ],
+                                style={
+                                    "padding": "4px 4px 4px 4px",
+                                    "border" : "0px ridge lightgrey"
+                                },
+                            ),
+                        width="auto",
+                                                                         
                         ),
-                    ],
-                    style={
-                        "padding": "4px 4px 4px 4px",
-                        "border": "0px ridge lightgrey",
-                        "margin": "0px 0px 4px 0px",
-                    },
-                ),
-                dbc.Tabs(
-                    [
-                        dbc.Tab(label=f"window-{window}", tab_id=f"{window}")
-                        for window in self._windows
-                    ],
-                    id=f"{self._unique_id}-tabs",
-                    active_tab=f"{self._active_window}",
+                    ]
                 ),
                 html.Div(
                     id=f"{self._unique_id}-tab-content",
-                    style={"height": "100%", "padding": "8px 0px 0px 0px"},
+                    style={
+                        "height": "746px", "padding": "4px 4px 0px 4px",                      
+                    },
                     children=self.get_content(),
                 ),
             ],
-            style={"height": "43rem"},
+            style={
+                "height": "50rem",
+                "overflow-y": "scroll",
+                "overflow-x": "hidden",
+            },
         )
 
 
@@ -665,6 +682,10 @@ class MonitorWindow:
                     ],
                     id=f"{self._unique_win_id}-tabs",
                     active_tab=monitor_sets[0],
+                    style={
+                        "margin": "10px 0px 0px 0px",
+                        "padding": "4px 4px 0px 4px",
+                    },                    
                 ),
                 html.Div(
                     id=f"{self._unique_win_id}-tab-content",

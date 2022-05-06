@@ -5,7 +5,7 @@ from local_property_editor import (
     GraphicsWindowCollection,
 )
 import threading
- 
+
 # from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
 
 
@@ -13,7 +13,7 @@ class SessionsManager:
     _sessions_state = {}
 
     def __init__(self, app, connection_id, session_id):
-        
+
         cmplete_session_id = f"session-{session_id}-{connection_id}"
 
         session_state = SessionsManager._sessions_state.get(cmplete_session_id)

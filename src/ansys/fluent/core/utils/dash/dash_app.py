@@ -17,7 +17,9 @@ from tree_view import TreeView
 from local_property_editor import LocalPropertyEditor
 import plotly.io as pio
 from flask import request
+
 pio.templates.default = "plotly_white"
+from dash_component import DashComponent
 
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
@@ -29,31 +31,28 @@ from local_property_editor import (
 from PropertyEditor import PropertyEditor
 
 
-# Keep this out of source code repository - save in a file or a database
 VALID_USERNAME_PASSWORD_PAIRS = {
-    'user1': 'abc',
-    'user2': 'abc',
-    'user3': 'abc',
-    'user4': 'abc'
+    "user1": "abc",
+    "user2": "abc",
+    "user3": "abc",
+    "user4": "abc",
 }
-user_name_to_session_map={}
+user_name_to_session_map = {}
 
-#external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-#app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
 app = dash.Dash(
     __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP],
+    external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
 )
 
-auth = dash_auth.BasicAuth(
-    app,
-    VALID_USERNAME_PASSWORD_PAIRS
-)
-
-import dash_treeview_antd
+auth = dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
+# from dash_component import TreeView as dash_treeview_antd
+# from  dash_treeview_antd import TreeView as dash_treeview_antd
+from dash_component import RCTree as dash_treeview_antd
 
 app.config.suppress_callback_exceptions = True
 
@@ -69,45 +68,44 @@ SIDEBAR_STYLE = {
     "overflow-y": "scroll",
 }
 
+
 def get_side_bar(app, connection_id):
 
-    session_id = user_name_to_session_map.get(connection_id,[None])[0]
+    session_id = user_name_to_session_map.get(connection_id, [None])[0]
     tree_view = []
     if session_id:
         tree_nodes, keys = TreeView(
             app, connection_id, session_id, SessionsManager
         ).get_tree_nodes()
-        tree_view = dash_treeview_antd.TreeView(
+        tree_view = dash_treeview_antd(
             id="tree-view",
-            multiple=False,
-            expanded=keys,
+            # multiple=False,
+            # expanded=keys,
             data=tree_nodes,
         )
 
-
-    return  html.Div(
-      [
-          html.H5(
-          [
-          dbc.Badge(f"Welcome {connection_id}", color="primary", className="me-1"),
-          ]
-          ),
-          html.H6("Outline"),
-          html.Div(
-              id="tree-view-container",
-              children = tree_view
-          ),
-      ],
-      style=SIDEBAR_STYLE,
+    return html.Div(
+        [
+            html.H4(
+                [
+                    dbc.Badge(
+                        f"Welcome {connection_id}", color="primary", className="me-1"
+                    ),
+                ]
+            ),
+            # html.H6("Outline"),
+            html.Div(id="tree-view-container", children=tree_view),
+        ],
+        style=SIDEBAR_STYLE,
     )
 
 
-_max_session_count = 1
+_max_session_count = 6
 
 
 def serve_layout():
-    #connection_id = str(uuid.uuid4())
-    connection_id = request.authorization['username'] 
+    connection_id = str(uuid.uuid4())
+    connection_id = request.authorization["username"]
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
     PropertyEditor(app, SessionsManager)
@@ -170,8 +168,10 @@ def serve_layout():
                     dbc.Col(
                         dcc.Dropdown(
                             id="session-id",
-                            options=user_name_to_session_map.get(connection_id,[]),
-                            value=user_name_to_session_map.get(connection_id,[None])[0],
+                            options=user_name_to_session_map.get(connection_id, []),
+                            value=user_name_to_session_map.get(connection_id, [None])[
+                                0
+                            ],
                             style={"width": "200px"},
                         ),
                         width="auto",
@@ -186,7 +186,9 @@ def serve_layout():
             html.Hr(),
             dbc.Row(
                 children=[
-                    dbc.Col(get_side_bar(app, connection_id), align="start", width="auto"),
+                    dbc.Col(
+                        get_side_bar(app, connection_id), align="start", width="auto"
+                    ),
                     dbc.Col(
                         id="property-editor",
                         width="auto",
@@ -217,16 +219,17 @@ def serve_layout():
                                             active_tab="graphics",
                                         )
                                     ),
-                                    dbc.CardBody(
+                                    html.Div(
                                         id="tab-content",
-                                        className="p-4",
+                                        # className="p-4",
                                     ),
                                 ],
                                 style={"height": "53rem"},
                             ),
                         ]
                     ),
-                ]
+                ],
+                style={"font": "14px 'Segoe UI'"},
             ),
         ],
     )
@@ -235,6 +238,14 @@ def serve_layout():
 app.layout = serve_layout
 
 print("serve_layout done")
+
+
+# @app.callback(
+#    Output("rctree-select", "children"),
+#    Input("rctree", "selected"),
+# )
+# def session_changed_or_tree_selected(selected):
+#    return "You have checked {}".format(selected)
 
 
 @app.callback(
@@ -250,14 +261,14 @@ def create_session(n_clicks, session_token, connection_id, options):
     ctx = dash.callback_context
     triggered_value = ctx.triggered[0]["value"]
     triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-    print('create_session', triggered_from, triggered_value)
+    print("create_session", triggered_from, triggered_value)
     if n_clicks == 0 or triggered_value is None:
-        raise PreventUpdate    
-    
-    user_sessions= user_name_to_session_map.get(connection_id)
+        raise PreventUpdate
+
+    user_sessions = user_name_to_session_map.get(connection_id)
     if not user_sessions:
-        user_sessions =user_name_to_session_map[connection_id] = [] 
-        
+        user_sessions = user_name_to_session_map[connection_id] = []
+
     session_id = f"session-{len(options)}"
     user_sessions.append(session_id)
     sessions_manager = SessionsManager(app, connection_id, session_id)
@@ -276,16 +287,15 @@ def create_session(n_clicks, session_token, connection_id, options):
     Input("save-button-clicked", "value"),
     Input("delete-button-clicked", "value"),
     State("object-id", "value"),
-    #prevent_initial_call=True,
+    # prevent_initial_call=True,
 )
 def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, object_id):
     ctx = dash.callback_context
     triggered_value = ctx.triggered[0]["value"]
     triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-    print('update_tree', triggered_from, triggered_value)
+    print("update_tree", triggered_from, triggered_value)
     if session_id is None or connection_id is None or triggered_value is None:
         raise PreventUpdate
-    
 
     if triggered_from == "save-button-clicked":
         object_location, object_type, object_index = object_id.split(":")
@@ -303,10 +313,10 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
     tree_nodes, keys = TreeView(
         app, connection_id, session_id, SessionsManager
     ).get_tree_nodes()
-    return dash_treeview_antd.TreeView(
+    return dash_treeview_antd(
         id="tree-view",
-        multiple=False,
-        expanded=keys,
+        # multiple=False,
+        # expanded=keys,
         data=tree_nodes,
     )
 
@@ -435,23 +445,12 @@ def render_tab_content(active_tab, connection_id, session_id):
         return GraphicsWindowCollection(
             app, connection_id, session_id, SessionsManager
         )()
-        return dbc.Row(
-            GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)(),
-            style={"height": "auto"},
-        )
 
     elif active_tab == "plots":
         return PlotWindowCollection(app, connection_id, session_id, SessionsManager)()
-        return dbc.Row(
-            PlotWindowCollection(app, connection_id, session_id, SessionsManager)(),
-            style={"height": "auto"},
-        )
+
     elif active_tab == "monitors":
         return MonitorWindow(app, connection_id, session_id, SessionsManager)()
-        return dbc.Row(
-            MonitorWindow(app, connection_id, session_id, SessionsManager)(),
-            style={"height": "auto"},
-        )
 
 
 if __name__ == "__main__":

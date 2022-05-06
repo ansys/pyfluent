@@ -1,5 +1,6 @@
 import yaml
 from local_property_editor import LocalPropertyEditor
+import dash_html_components as html
 
 
 class TreeView:
@@ -26,6 +27,7 @@ class TreeView:
         for item_name, item_data in data.items():
             tree_data = {}
             tree_data["title"] = item_name
+            icon = item_data.get("icon")
             remote = item_data.get("remote")
             local = item_data.get("local")
             index = item_data.get("index", "")
@@ -37,7 +39,7 @@ class TreeView:
                 keys.append(f"remote:{remote}:{index}")
             else:
                 tree_data["key"] = item_name
-
+            tree_data["icon"] = icon
             if item_data.get("children"):
                 tree_data["children"], child_keys = self.populate_tree(
                     item_data["children"]
@@ -54,7 +56,11 @@ class TreeView:
                     print("indices", indices, f"{local}-{index}" if index else local)
                     # tree_data["key"] = ""
                     children_data = {
-                        f"{local}-{index}": {"local": f"{local}", "index": f"{index}"}
+                        f"{local}-{index}": {
+                            "local": f"{local}",
+                            "index": f"{index}",
+                            "icon": icon,
+                        }
                         for index in indices
                         if index
                     }
@@ -83,9 +89,9 @@ class TreeView:
                         continue
                     children_name = list(obj.get_state().keys())
                     if children_name:
-                        tree_data["key"] = ""
+                        tree_data["key"] = item_name
                         children_data = {
-                            child: {"remote": f"{remote}/{child}"}
+                            child: {"remote": f"{remote}/{child}", "icon": icon}
                             for child in children_name
                         }
                         tree_data["children"], child_keys = self.populate_tree(
