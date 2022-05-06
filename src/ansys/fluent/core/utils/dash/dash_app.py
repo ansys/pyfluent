@@ -86,14 +86,18 @@ def get_side_bar(app, connection_id):
 
     return html.Div(
         [
-            html.H4(
-                [
-                    dbc.Badge(
-                        f"Welcome {connection_id}", color="primary", className="me-1"
-                    ),
-                ]
+            dbc.CardHeader(
+                html.H5(
+                    [
+                        dbc.Badge(
+                            f"Welcome   {connection_id}",
+                            color="primary",                            
+                            #text_color="primary",
+                            className="border me-1",
+                        ),
+                    ]
+                ),              
             ),
-            # html.H6("Outline"),
             html.Div(id="tree-view-container", children=tree_view),
         ],
         style=SIDEBAR_STYLE,

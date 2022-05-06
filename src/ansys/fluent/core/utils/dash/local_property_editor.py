@@ -116,7 +116,9 @@ class LocalPropertyEditor:
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
 
-    def get_widgets(self, connection_id, session_id, object_type, object_index):
+    def get_widgets(
+        self, connection_id, session_id, object_type, object_index, widget_type
+    ):
         def store_all_widgets(obj_type, obj, parent="", parent_visible=True):
             for name, value in obj.__dict__.items():
                 if name == "_parent":
@@ -156,13 +158,13 @@ class LocalPropertyEditor:
             connection_id, session_id, object_type, object_index
         )
         self._all_widgets = {}
-        store_all_widgets(object_type, obj)
 
-        self._all_widgets.update(
-            self._get_editor(object_type).get_widgets(
+        if widget_type == "input":
+            store_all_widgets(object_type, obj)
+        else:
+            self._all_widgets = self._get_editor(object_type).get_widgets(
                 connection_id, session_id, object_type, object_index
             )
-        )
 
         return self._all_widgets
 
@@ -276,7 +278,7 @@ class LocalPropertyEditor:
                 style={
                     "display": "flex",
                     "flex-direction": "column",
-                    "padding": "10px 1px 2px",
+                    "padding": "4px",
                 },
             )
         return widget
@@ -294,32 +296,19 @@ class GraphicsPropertyEditor:
         return (
             {
                 "display-button": dbc.Button(
-                    "Display",
-                    id=f"{DISPLAY_BUTTON_ID}",
-                    n_clicks=0,
-                ),
-                "save-button": dbc.Button(
-                    "Save",
-                    id=f"{SAVE_BUTTON_ID}",
-                    n_clicks=0,
+                    "Display", id=f"{DISPLAY_BUTTON_ID}", n_clicks=0, size="sm"
                 ),
                 "delete-button": dbc.Button(
-                    "Delete",
-                    id=f"{DELETE_BUTTON_ID}",
-                    n_clicks=0,
+                    "Delete", id=f"{DELETE_BUTTON_ID}", n_clicks=0, size="sm"
                 ),
             }
             if object_index
             else {
                 "display-button": dbc.Button(
-                    "Display",
-                    id=f"{DISPLAY_BUTTON_ID}",
-                    n_clicks=0,
+                    "Display", id=f"{DISPLAY_BUTTON_ID}", n_clicks=0, size="sm"
                 ),
                 "save-button": dbc.Button(
-                    "Save",
-                    id=f"{SAVE_BUTTON_ID}",
-                    n_clicks=0,
+                    "New", id=f"{SAVE_BUTTON_ID}", n_clicks=0, size="sm"
                 ),
             }
         )
@@ -348,9 +337,7 @@ class PlotPropertyEditor:
     def get_widgets(self, connection_id, session_id, object_type, object_index):
         return {
             "plot-button": dbc.Button(
-                "Plot",
-                id=f"{PLOT_BUTTON_ID}",
-                n_clicks=0,
+                "Plot", id=f"{PLOT_BUTTON_ID}", n_clicks=0, size="sm"
             )
         }
 
@@ -509,18 +496,18 @@ class PostWindowCollection:
                                 ],
                                 style={
                                     "padding": "4px 4px 4px 4px",
-                                    "border" : "0px ridge lightgrey"
+                                    "border": "0px ridge lightgrey",
                                 },
                             ),
-                        width="auto",
-                                                                         
+                            width="auto",
                         ),
                     ]
                 ),
                 html.Div(
                     id=f"{self._unique_id}-tab-content",
                     style={
-                        "height": "746px", "padding": "4px 4px 0px 4px",                      
+                        "height": "746px",
+                        "padding": "4px 4px 0px 4px",
                     },
                     children=self.get_content(),
                 ),
@@ -685,7 +672,7 @@ class MonitorWindow:
                     style={
                         "margin": "10px 0px 0px 0px",
                         "padding": "4px 4px 0px 4px",
-                    },                    
+                    },
                 ),
                 html.Div(
                     id=f"{self._unique_win_id}-tab-content",

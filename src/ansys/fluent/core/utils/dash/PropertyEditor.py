@@ -25,8 +25,11 @@ class PropertyEditor(metaclass=SingletonMeta):
                 if object_location == "local"
                 else self._remote_property_editor
             )
-            self._all_widgets = editor.get_widgets(
-                connection_id, session_id, object_type, object_index
+            self._all_input_widgets = editor.get_widgets(
+                connection_id, session_id, object_type, object_index, "input"
+            )
+            self._all_command_widgets = editor.get_widgets(
+                connection_id, session_id, object_type, object_index, "command"
             )
 
         @self._app.callback(
@@ -113,7 +116,12 @@ class PropertyEditor(metaclass=SingletonMeta):
                             dbc.CardHeader(
                                 object_name,
                             ),
-                            dbc.CardBody(list(self._all_widgets.values())),
+                            dbc.CardBody(list(self._all_input_widgets.values())),
+                            html.Div(
+                                list(self._all_command_widgets.values()),
+                                className="d-grid gap-1",
+                                style={"padding": "4px 4px 4px 4px"},
+                            ),
                         ],
                     ),
                 ]

@@ -101,7 +101,9 @@ class SettingsPropertyEditor:
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
 
-    def get_widgets(self, connection_id, session_id, object_type, object_index):
+    def get_widgets(
+        self, connection_id, session_id, object_type, object_index, widget_type
+    ):
         def store_all_widgets(obj, si_info, state, parent=""):
             for name, value in obj.get_state().items():
                 if si_info["type"] == "named-object":
@@ -170,8 +172,10 @@ class SettingsPropertyEditor:
         )
         self._all_widgets = {}
         print("update_stored_widgets", obj, obj.get_state())
-        store_all_widgets(obj, static_info, obj.get_state())
-        store_all_buttons(obj, static_info)
+        if widget_type == "input":
+            store_all_widgets(obj, static_info, obj.get_state())
+        else:
+            store_all_buttons(obj, static_info)
         return self._all_widgets
 
     def get_widget(
@@ -257,7 +261,7 @@ class SettingsPropertyEditor:
                 style={
                     "display": "flex",
                     "flex-direction": "column",
-                    "padding": "10px 1px 2px",
+                    "padding": "4px",
                 },
             )
         return widget
