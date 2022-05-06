@@ -34,7 +34,6 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
         "Add Local Sizing",
         "Add Boundary Layers",
         "Import CAD and Part Management",
-        "edge-group-1",
     ):
         assert result is True
     check_task_execute_postconditions(task)
