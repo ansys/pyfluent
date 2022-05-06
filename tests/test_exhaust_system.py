@@ -5,7 +5,7 @@ Exhaust System: Fault-tolerant Meshing
 
 This test covers the setup and solution of a three-dimensional
 turbulent fluid flow in a manifold exhaust system using fault
-tolerant mehing workflow.
+tolerant meshing workflow.
 
 This test queries the following using PyTest:
 
