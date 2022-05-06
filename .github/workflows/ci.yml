@@ -113,8 +113,8 @@ jobs:
 
       - name: Install OS packages
         run: |
-          sudo apt update
-          sudo apt install pandoc libegl1
+          sudo apt-apt update
+          sudo apt-apt install pandoc libegl1 -y
 
       - name: Cache pip
         uses: actions/cache@v2
