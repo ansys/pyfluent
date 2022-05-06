@@ -62,7 +62,7 @@ SIDEBAR_STYLE = {
     "top": 0,
     "left": 0,
     "bottom": 0,
-    "width": "16rem",
+    "width": "18rem",
     "background-color": "#f8f9fa",
     "height": "53rem",
     "overflow-y": "auto",
@@ -71,7 +71,7 @@ SIDEBAR_STYLE = {
 
 def get_side_bar(app, connection_id):
 
-    session_id = user_name_to_session_map.get(connection_id, [None])[0]
+    session_id, uuid_id = user_name_to_session_map.get(connection_id, [[None, None]])[0]
     tree_view = []
     if session_id:
         tree_nodes, keys = TreeView(
@@ -87,24 +87,18 @@ def get_side_bar(app, connection_id):
     return html.Div(
         [
             dbc.CardHeader(
-                # html.H5(
                 [
-                    # dbc.Badge(
                     html.B(
                         [
                             "Welcome ",
                             dbc.Badge(
                                 html.I(f"{connection_id}", style={"font-size": "16px"}),
-                                color="primary",
+                                color="secondary",
                             ),
                         ]
-                    )
-                    #  color="primary",
-                    # text_color="primary",
-                    #  className="border me-1",
-                    # ),
+                    ),
+                    
                 ]
-                # ),
             ),
             html.Div(id="tree-view-container", children=tree_view),
         ],
@@ -140,25 +134,49 @@ def serve_layout():
             html.Data(id="save-button-clicked"),
             html.Data(id="delete-button-clicked"),
             html.Data(id="command-output"),
-            html.Data(id="uuid-id"),
-            dbc.Row(
+            html.Data(id="uuid-id", value= str(user_name_to_session_map.get(connection_id, [[None, ""]])[0][1])),
+            dbc.CardHeader(dbc.Row(
                 [
                     dbc.Col(
                         html.Div(
                             [
                                 html.Img(
-                                    src="/assets/ansys.jpg",
-                                    style={
-                                        "width": "35px",
-                                        "height": "35px",
-                                        "padding": "5px 2px 2px 2px",
-                                    },
+                                    src="/assets/pyansys.png",
+                                    style={"height":"35px"}
                                 ),
-                                html.H2("Ansys PyFluent Web App"),
+                               html.P( html.B("PyFluent Web Client"),  style={"font": "22px 'Segoe UI'",  "padding": "0px 0px 0px 20px"})
                             ],
-                            style={"display": "flex", "flex-direction": "row"},
-                        )
+                            style={"display": "flex", "flex-direction": "row", #"border-bottom": "5px solid darkgray"
+                      
+                            },
+                        ),
+                        
+                         style={"border-bottom": "1px solid black"}
                     ),
+                    
+                    dbc.Col(
+                        dcc.Dropdown(
+                            id="session-id",
+                            #options=map(lambda x: x[0],user_name_to_session_map.get(connection_id, [])),
+                            options=  list(map(lambda x: x[0],user_name_to_session_map.get(connection_id))) if   user_name_to_session_map.get(connection_id) else [],
+                            value=user_name_to_session_map.get(connection_id, [[None, None]])[
+                                0
+                            ][0],
+                            style={"width": "200px"},
+                        ),
+                        width="auto",
+                        align="end",
+                    ),                    
+                    
+                    dbc.Col(
+                        dbc.Input(
+                            placeholder="Session token to connect",
+                            id="session-token",                           
+                            style={"width": "200px"},
+                        ),
+                        width="auto",
+                        align="end",
+                    ),                    
                     dbc.Col(
                         dbc.Button(
                             "Connect to Session",
@@ -169,35 +187,51 @@ def serve_layout():
                         width="auto",
                         align="end",
                     ),
+
+                     
+
+                    
                     dbc.Col(
-                        dbc.Input(
-                            placeholder="Session token to connect",
-                            id="session-token",
-                            type="number",
-                            style={"width": "200px"},
-                        ),
-                        width="auto",
-                        align="end",
-                    ),
-                    dbc.Col(
-                        dcc.Dropdown(
-                            id="session-id",
-                            options=user_name_to_session_map.get(connection_id, []),
-                            value=user_name_to_session_map.get(connection_id, [None])[
-                                0
-                            ],
-                            style={"width": "200px"},
-                        ),
-                        width="auto",
-                        align="end",
-                    ),
+                   dcc.Clipboard(
+                          target_id="uuid-id",
+                          title="Share",
+                          style={
+                              "display": "inline-block",
+                              "fontSize": 20,
+                              "verticalAlign": "top",
+                          },
+                      ),
+                       width="auto",
+                       align="end",
+                      
+                      ),                    
+                   
+                    
                 ],
-                style={
-                    "background-color": "#f8f9fa",
-                    "background-image": 'url("/resources//ansys-logo.png")',
-                },
+                
+                                           style={
+                  #  "background-color": "#f8f9fa",
+                   # "background-image": 'url("/assets/background.png")',
+                   # "background-size": "contain",
+                    "font": "14px 'Segoe UI'",
+                    "padding": "0px 0px 5px",
+                   
+                  "border-bottom": "8px solid gray"
+                   
+                }
+
             ),
-            html.Hr(),
+            
+           
+                           style={
+                  #  "background-color": "#f8f9fa",
+                  #  "background-image": 'url("/assets/background.png")',
+                  #  "background-size": "contain",
+                    "font": "14px 'Segoe UI'"
+                },  
+            
+            ),
+           
             dbc.Row(
                 children=[
                     dbc.Col(
@@ -243,7 +277,7 @@ def serve_layout():
                         ]
                     ),
                 ],
-                style={"font": "14px 'Segoe UI'"},
+                style={"font": "14px 'Segoe UI'", "padding": "4px"},
             ),
             html.Div(
                 [
@@ -317,9 +351,9 @@ def create_session(n_clicks, session_token, connection_id, options):
         user_sessions = user_name_to_session_map[connection_id] = []
 
     session_id = f"session-{len(options)}"
-    user_sessions.append(session_id)
+    user_sessions.append((session_id, uuid.uuid4()))
     sessions_manager = SessionsManager(app, connection_id, session_id)
-    sessions_manager.add_session(session_token)
+    sessions_manager.add_session(session_token, user_name_to_session_map)
     sessions = []
     if options is not None:
         sessions = options
@@ -329,6 +363,7 @@ def create_session(n_clicks, session_token, connection_id, options):
 
 @app.callback(
     Output("tree-view-container", "children"),
+    Output("uuid-id", "value"),
     Input("connection-id", "data"),  #
     Input("session-id", "value"),
     Input("save-button-clicked", "value"),
@@ -360,12 +395,11 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
     tree_nodes, keys = TreeView(
         app, connection_id, session_id, SessionsManager
     ).get_tree_nodes()
+    filtered= filter(lambda x: session_id==x[0], user_name_to_session_map[connection_id])
     return dash_treeview_antd(
-        id="tree-view",
-        # multiple=False,
-        # expanded=keys,
+        id="tree-view",      
         data=tree_nodes,
-    )
+    ), connection_id+":"+list(filtered)[0][1].hex
 
 
 @app.callback(

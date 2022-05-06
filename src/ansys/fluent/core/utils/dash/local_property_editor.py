@@ -54,8 +54,8 @@ class LocalPropertyEditor:
                     indices.append(name.split("-")[-1])
         return indices
 
-    def _get_name(self, connection_id, session_id, object_type, object_index):
-        return f"{connection_id}-{session_id}-{object_type}-{object_index}"
+    def _get_name(self, connection_id, session_id, object_type, object_index):       
+        return f"{self.SessionsManager(self._app, connection_id, session_id)._complete_session_id}-{object_type}-{object_index}"
 
     def create_new_object(self, connection_id, session_id, object_type, from_index):
         object_index = self.get_next_index(connection_id, session_id, object_type)
@@ -443,6 +443,10 @@ class PostWindowCollection:
 
         else:
             self.__dict__ = window_state
+
+    def copy_from(self, connection_id, session_id):
+        source = PostWindowCollection( self._app, connection_id, session_id, self._window_type, self._SessionsManager)
+        PostWindowCollection._windows[self._unique_id] = PostWindowCollection._windows[source._unique_id]   
 
     def __call__(self):
 

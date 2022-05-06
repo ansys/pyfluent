@@ -14,29 +14,41 @@ class SessionsManager:
 
     def __init__(self, app, connection_id, session_id):
 
-        cmplete_session_id = f"session-{session_id}-{connection_id}"
+        complete_session_id = f"{connection_id}-{session_id}"
 
-        session_state = SessionsManager._sessions_state.get(cmplete_session_id)
+        session_state = SessionsManager._sessions_state.get(complete_session_id)
 
         if not session_state:
-            SessionsManager._sessions_state[cmplete_session_id] = self.__dict__
+            SessionsManager._sessions_state[complete_session_id] = self.__dict__
             MonitorWindow(app, connection_id, session_id, SessionsManager)
             PlotWindowCollection(app, connection_id, session_id, SessionsManager)
             GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)
+            self._app = app
+            self._complete_session_id = complete_session_id
             self._events_info_map = {}
             self._lock = threading.Lock()
-
+            self._connection_id =  connection_id
+            self._session_id =  session_id
         else:
             self.__dict__ = session_state
 
-    def add_session(self, session_token):
-        # self.session = Session.create_from_server_info_file(file_path, False)
-        self.session = Session("10.18.44.30", session_token, cleanup_on_exit=False)
-        self.session.monitors_manager.start()
+    def add_session(self, session_token, user_name_to_session_map):
+        if len(session_token.split(":"))==1:
+        
+            self.session = Session("10.18.44.30", int(session_token), cleanup_on_exit=False)
+            self.session.monitors_manager.start()
 
-        self.static_info = self.session.get_settings_service().get_static_info()
-        self.settings_root = self.session.get_settings_root()
-        self.register_events()
+            self.static_info = self.session.get_settings_service().get_static_info()
+            self.settings_root = self.session.get_settings_root()
+            self.register_events()
+        else:
+            user_id, uuid_id = session_token.split(":")
+            id_uuid_list = user_name_to_session_map[user_id]
+            session_id = list(filter(lambda x: x[1].hex==uuid_id   , id_uuid_list))[0][0]  
+            PlotWindowCollection(self._app, self._connection_id, self._session_id, SessionsManager).copy_from(user_id, session_id)
+            GraphicsWindowCollection(self._app, self._connection_id, self._session_id, SessionsManager).copy_from(user_id, session_id)
+            
+            SessionsManager._sessions_state[self._complete_session_id]= SessionsManager._sessions_state[SessionsManager(self._app, user_id, session_id)._complete_session_id]           
 
     def get_event_info(self, event_name):
         with self._lock:
