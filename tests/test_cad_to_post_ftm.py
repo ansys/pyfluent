@@ -519,7 +519,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     check_report_definition(
         report_definition_name="velocity_magnitude_outlet",
-        expected_result=approx(3.7988207, abs=1e-3),
+        expected_result=approx(3.7988207, rel=1e-3),
     )
 
     ###############################################################################
