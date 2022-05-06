@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0c\x65vents.proto\x12\x0cgrpcRemoting\"\x17\n\x15\x42\x65ginStreamingRequest\"1\n\x12TimestepEndedEvent\x12\r\n\x05index\x18\x01 \x01(\x12\x12\x0c\n\x04size\x18\x02 \x01(\x01\"$\n\x13IterationEndedEvent\x12\r\n\x05index\x18\x01 \x01(\x12\"\x1a\n\x18\x43\x61lculationsStartedEvent\"\x18\n\x16\x43\x61lculationsEndedEvent\"%\n\rCaseReadEvent\x12\x14\n\x0c\x63\x61sefilepath\x18\x01 \x01(\t\"%\n\rDataReadEvent\x12\x14\n\x0c\x64\x61tafilepath\x18\x01 \x01(\t\"\x12\n\x10InitializedEvent\"\xdc\x03\n\x16\x42\x65ginStreamingResponse\x12\x34\n\rcasereadevent\x18\x02 \x01(\x0b\x32\x1b.grpcRemoting.CaseReadEventH\x00\x12:\n\x10initializedevent\x18\x04 \x01(\x0b\x32\x1e.grpcRemoting.InitializedEventH\x00\x12\x34\n\rdatareadevent\x18\x06 \x01(\x0b\x32\x1b.grpcRemoting.DataReadEventH\x00\x12@\n\x13iterationendedevent\x18\x08 \x01(\x0b\x32!.grpcRemoting.IterationEndedEventH\x00\x12>\n\x12timestependedevent\x18\n \x01(\x0b\x32 .grpcRemoting.TimestepEndedEventH\x00\x12J\n\x18\x63\x61lculationsstartedevent\x18\x0b \x01(\x0b\x32&.grpcRemoting.CalculationsStartedEventH\x00\x12\x46\n\x16\x63\x61lculationsendedevent\x18\x0c \x01(\x0b\x32$.grpcRemoting.CalculationsEndedEventH\x00\x42\x04\n\x02\x61s2i\n\x06\x45vents\x12_\n\x0e\x42\x65ginStreaming\x12#.grpcRemoting.BeginStreamingRequest\x1a$.grpcRemoting.BeginStreamingResponse\"\x00\x30\x01\x62\x06proto3'
+  serialized_pb=b'\n\x0c\x65vents.proto\x12\x0cgrpcRemoting\"\x17\n\x15\x42\x65ginStreamingRequest\"1\n\x12TimestepEndedEvent\x12\r\n\x05index\x18\x01 \x01(\x12\x12\x0c\n\x04size\x18\x02 \x01(\x01\"$\n\x13IterationEndedEvent\x12\r\n\x05index\x18\x01 \x01(\x12\"\x1a\n\x18\x43\x61lculationsStartedEvent\"\x18\n\x16\x43\x61lculationsEndedEvent\"%\n\rCaseReadEvent\x12\x14\n\x0c\x63\x61sefilepath\x18\x01 \x01(\t\"%\n\rDataReadEvent\x12\x14\n\x0c\x64\x61tafilepath\x18\x01 \x01(\t\"\x12\n\x10InitializedEvent\"9\n\rProgressEvent\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x17\n\x0fpercentComplete\x18\x02 \x01(\x11\"\x92\x04\n\x16\x42\x65ginStreamingResponse\x12\x34\n\rcasereadevent\x18\x02 \x01(\x0b\x32\x1b.grpcRemoting.CaseReadEventH\x00\x12:\n\x10initializedevent\x18\x04 \x01(\x0b\x32\x1e.grpcRemoting.InitializedEventH\x00\x12\x34\n\rdatareadevent\x18\x06 \x01(\x0b\x32\x1b.grpcRemoting.DataReadEventH\x00\x12@\n\x13iterationendedevent\x18\x08 \x01(\x0b\x32!.grpcRemoting.IterationEndedEventH\x00\x12>\n\x12timestependedevent\x18\n \x01(\x0b\x32 .grpcRemoting.TimestepEndedEventH\x00\x12J\n\x18\x63\x61lculationsstartedevent\x18\x0b \x01(\x0b\x32&.grpcRemoting.CalculationsStartedEventH\x00\x12\x46\n\x16\x63\x61lculationsendedevent\x18\x0c \x01(\x0b\x32$.grpcRemoting.CalculationsEndedEventH\x00\x12\x34\n\rprogressevent\x18\x14 \x01(\x0b\x32\x1b.grpcRemoting.ProgressEventH\x00\x42\x04\n\x02\x61s2i\n\x06\x45vents\x12_\n\x0e\x42\x65ginStreaming\x12#.grpcRemoting.BeginStreamingRequest\x1a$.grpcRemoting.BeginStreamingResponse\"\x00\x30\x01\x62\x06proto3'
 )
 
 
@@ -260,6 +260,45 @@ _INITIALIZEDEVENT = _descriptor.Descriptor(
 )
 
 
+_PROGRESSEVENT = _descriptor.Descriptor(
+  name='ProgressEvent',
+  full_name='grpcRemoting.ProgressEvent',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message', full_name='grpcRemoting.ProgressEvent.message', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='percentComplete', full_name='grpcRemoting.ProgressEvent.percentComplete', index=1,
+      number=2, type=17, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=296,
+  serialized_end=353,
+)
+
+
 _BEGINSTREAMINGRESPONSE = _descriptor.Descriptor(
   name='BeginStreamingResponse',
   full_name='grpcRemoting.BeginStreamingResponse',
@@ -317,6 +356,13 @@ _BEGINSTREAMINGRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='progressevent', full_name='grpcRemoting.BeginStreamingResponse.progressevent', index=7,
+      number=20, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -334,8 +380,8 @@ _BEGINSTREAMINGRESPONSE = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=297,
-  serialized_end=773,
+  serialized_start=356,
+  serialized_end=886,
 )
 
 _BEGINSTREAMINGRESPONSE.fields_by_name['casereadevent'].message_type = _CASEREADEVENT
@@ -345,6 +391,7 @@ _BEGINSTREAMINGRESPONSE.fields_by_name['iterationendedevent'].message_type = _IT
 _BEGINSTREAMINGRESPONSE.fields_by_name['timestependedevent'].message_type = _TIMESTEPENDEDEVENT
 _BEGINSTREAMINGRESPONSE.fields_by_name['calculationsstartedevent'].message_type = _CALCULATIONSSTARTEDEVENT
 _BEGINSTREAMINGRESPONSE.fields_by_name['calculationsendedevent'].message_type = _CALCULATIONSENDEDEVENT
+_BEGINSTREAMINGRESPONSE.fields_by_name['progressevent'].message_type = _PROGRESSEVENT
 _BEGINSTREAMINGRESPONSE.oneofs_by_name['as'].fields.append(
   _BEGINSTREAMINGRESPONSE.fields_by_name['casereadevent'])
 _BEGINSTREAMINGRESPONSE.fields_by_name['casereadevent'].containing_oneof = _BEGINSTREAMINGRESPONSE.oneofs_by_name['as']
@@ -366,6 +413,9 @@ _BEGINSTREAMINGRESPONSE.fields_by_name['calculationsstartedevent'].containing_on
 _BEGINSTREAMINGRESPONSE.oneofs_by_name['as'].fields.append(
   _BEGINSTREAMINGRESPONSE.fields_by_name['calculationsendedevent'])
 _BEGINSTREAMINGRESPONSE.fields_by_name['calculationsendedevent'].containing_oneof = _BEGINSTREAMINGRESPONSE.oneofs_by_name['as']
+_BEGINSTREAMINGRESPONSE.oneofs_by_name['as'].fields.append(
+  _BEGINSTREAMINGRESPONSE.fields_by_name['progressevent'])
+_BEGINSTREAMINGRESPONSE.fields_by_name['progressevent'].containing_oneof = _BEGINSTREAMINGRESPONSE.oneofs_by_name['as']
 DESCRIPTOR.message_types_by_name['BeginStreamingRequest'] = _BEGINSTREAMINGREQUEST
 DESCRIPTOR.message_types_by_name['TimestepEndedEvent'] = _TIMESTEPENDEDEVENT
 DESCRIPTOR.message_types_by_name['IterationEndedEvent'] = _ITERATIONENDEDEVENT
@@ -374,6 +424,7 @@ DESCRIPTOR.message_types_by_name['CalculationsEndedEvent'] = _CALCULATIONSENDEDE
 DESCRIPTOR.message_types_by_name['CaseReadEvent'] = _CASEREADEVENT
 DESCRIPTOR.message_types_by_name['DataReadEvent'] = _DATAREADEVENT
 DESCRIPTOR.message_types_by_name['InitializedEvent'] = _INITIALIZEDEVENT
+DESCRIPTOR.message_types_by_name['ProgressEvent'] = _PROGRESSEVENT
 DESCRIPTOR.message_types_by_name['BeginStreamingResponse'] = _BEGINSTREAMINGRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -433,6 +484,13 @@ InitializedEvent = _reflection.GeneratedProtocolMessageType('InitializedEvent', 
   })
 _sym_db.RegisterMessage(InitializedEvent)
 
+ProgressEvent = _reflection.GeneratedProtocolMessageType('ProgressEvent', (_message.Message,), {
+  'DESCRIPTOR' : _PROGRESSEVENT,
+  '__module__' : 'events_pb2'
+  # @@protoc_insertion_point(class_scope:grpcRemoting.ProgressEvent)
+  })
+_sym_db.RegisterMessage(ProgressEvent)
+
 BeginStreamingResponse = _reflection.GeneratedProtocolMessageType('BeginStreamingResponse', (_message.Message,), {
   'DESCRIPTOR' : _BEGINSTREAMINGRESPONSE,
   '__module__' : 'events_pb2'
@@ -449,8 +507,8 @@ _EVENTS = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=775,
-  serialized_end=880,
+  serialized_start=888,
+  serialized_end=993,
   methods=[
   _descriptor.MethodDescriptor(
     name='BeginStreaming',

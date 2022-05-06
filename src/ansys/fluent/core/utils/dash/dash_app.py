@@ -65,7 +65,7 @@ SIDEBAR_STYLE = {
     "width": "16rem",
     "background-color": "#f8f9fa",
     "height": "53rem",
-    "overflow-y": "scroll",
+    "overflow-y": "auto",
 }
 
 
@@ -87,16 +87,24 @@ def get_side_bar(app, connection_id):
     return html.Div(
         [
             dbc.CardHeader(
-                html.H5(
-                    [
-                        dbc.Badge(
-                            f"Welcome   {connection_id}",
-                            color="primary",                            
-                            #text_color="primary",
-                            className="border me-1",
-                        ),
-                    ]
-                ),              
+                # html.H5(
+                [
+                    # dbc.Badge(
+                    html.B(
+                        [
+                            "Welcome ",
+                            dbc.Badge(
+                                html.I(f"{connection_id}", style={"font-size": "16px"}),
+                                color="primary",
+                            ),
+                        ]
+                    )
+                    #  color="primary",
+                    # text_color="primary",
+                    #  className="border me-1",
+                    # ),
+                ]
+                # ),
             ),
             html.Div(id="tree-view-container", children=tree_view),
         ],
@@ -108,7 +116,8 @@ _max_session_count = 6
 
 
 def serve_layout():
-    connection_id = str(uuid.uuid4())
+    uuid_id = str(uuid.uuid4())
+    connection_id = uuid_id
     connection_id = request.authorization["username"]
     for session_id in range(_max_session_count):
         SessionsManager(app, connection_id, f"session-{session_id}")
@@ -131,6 +140,7 @@ def serve_layout():
             html.Data(id="save-button-clicked"),
             html.Data(id="delete-button-clicked"),
             html.Data(id="command-output"),
+            html.Data(id="uuid-id"),
             dbc.Row(
                 [
                     dbc.Col(
@@ -199,7 +209,7 @@ def serve_layout():
                         style={
                             "width": "20rem",
                             "background-color": "#f8f9fa",
-                            "overflow-y": "scroll",
+                            "overflow-y": "auto",
                             "height": "53rem",
                         },
                     ),
@@ -235,6 +245,22 @@ def serve_layout():
                 ],
                 style={"font": "14px 'Segoe UI'"},
             ),
+            html.Div(
+                [
+                    html.Div(id="progress-messgae"),
+                    html.Div(
+                        dbc.Progress(
+                            id="progress-bar",
+                            value=0,
+                            label="",
+                            style={"height": "25px"},
+                        ),
+                        style={"display": "block", "width": "100%"},
+                    ),
+                ],
+                id="progress-container",
+                style={"font": "14px 'Segoe UI'"},
+            ),
         ],
     )
 
@@ -244,12 +270,29 @@ app.layout = serve_layout
 print("serve_layout done")
 
 
-# @app.callback(
-#    Output("rctree-select", "children"),
-#    Input("rctree", "selected"),
-# )
-# def session_changed_or_tree_selected(selected):
-#    return "You have checked {}".format(selected)
+@app.callback(
+    Output("progress-container", "style"),
+    Output("progress-bar", "value"),
+    Output("progress-bar", "label"),
+    Output("progress-messgae", "children"),
+    Input("interval-component", "n_intervals"),
+    Input("connection-id", "data"),
+    State("session-id", "value"),
+    prevent_initial_call=True,
+)
+def on_progress_update(n_intervals, connection_id, session_id):
+    event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+        "ProgressEvent"
+    )
+    if event_info is None:
+        return [{"display": "none"}, dash.no_update, dash.no_update, dash.no_update]
+
+    return [
+        {"display": "flex", "flex-direction": "row"},
+        event_info.percentComplete,
+        str(event_info.percentComplete) + "%",
+        event_info.message,
+    ]
 
 
 @app.callback(
@@ -443,7 +486,21 @@ def render_tab_content(active_tab, connection_id, session_id):
     """
     print("render_tab_content", active_tab, connection_id, session_id)
     if session_id is None:
-        raise PreventUpdate
+        return html.Pre(
+            """
+              Welcome to ANSYS PyFluent Web Client 22.2.0
+              
+              Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+              
+              Use session token to get connected with runnng session.
+              Please visit https://github.com/pyansys/pyfluent for more information.
+              
+              """,
+            style={"font": "14px 'Segoe UI'"},
+        )
 
     if active_tab == "graphics":
         return GraphicsWindowCollection(

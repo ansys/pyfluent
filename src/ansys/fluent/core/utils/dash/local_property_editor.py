@@ -514,7 +514,7 @@ class PostWindowCollection:
             ],
             style={
                 "height": "50rem",
-                "overflow-y": "scroll",
+                "overflow-y": "auto",
                 "overflow-x": "hidden",
             },
         )

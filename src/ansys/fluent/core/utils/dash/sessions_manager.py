@@ -46,14 +46,28 @@ class SessionsManager:
         def store_info(event_name, event_info):
             with self._lock:
                 self._events_info_map[event_name] = event_info
+                if event_name == "CalculationsEndedEvent":
+                    del self._events_info_map["ProgressEvent"]
 
-        cb_itr_id = self.session.events_manager.register_callback(
+        self.session.events_manager.register_callback(
             "IterationEndedEvent",
             lambda session_id, event_info: store_info(
                 "IterationEndedEvent", event_info
             ),
         )
-        cb_time_step_id = self.session.events_manager.register_callback(
+        self.session.events_manager.register_callback(
             "TimestepEndedEvent",
             lambda session_id, event_info: store_info("TimestepEndedEvent", event_info),
+        )
+
+        self.session.events_manager.register_callback(
+            "ProgressEvent",
+            lambda session_id, event_info: store_info("ProgressEvent", event_info),
+        )
+
+        self.session.events_manager.register_callback(
+            "CalculationsEndedEvent",
+            lambda session_id, event_info: store_info(
+                "CalculationsEndedEvent", event_info
+            ),
         )
