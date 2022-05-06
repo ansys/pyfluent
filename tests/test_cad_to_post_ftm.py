@@ -1,7 +1,6 @@
-""".. _ref_exhaust_system_tui_api:
-
-Exhaust System: Fault-tolerant Meshing
-----------------------------------------------
+"""
+End-to-end Fluent Solver Workflow using Fault Tolerant Meshing
+------------------------------------------------------------------
 
 This test covers the setup and solution of a three-dimensional
 turbulent fluid flow in a manifold exhaust system using fault
@@ -10,7 +9,7 @@ tolerant meshing workflow.
 This test queries the following using PyTest:
 
 - Meshing workflow tasks state before and after the task execution
-- Flux report after solution, approximately 0 kg/s
+- Report definitions check after solution
 """
 
 from functools import partial
@@ -479,7 +478,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     session.tui.solver.solve.iterate()
 
     ###############################################################################
-    # Assert the returned mass flux report definition value
+    # Assert the returned mass flow rate report definition value
     root = session.get_settings_root()
     root.solution.report_definitions.flux["mass_flow_rate"] = {}
     root.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
@@ -497,6 +496,30 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     check_report_definition(
         report_definition_name="mass_flow_rate",
         expected_result=approx(-6.036667e-07, abs=1e-3),
+    )
+
+    ###############################################################################
+    # Assert the returned velocity-magnitude report definition value on the outlet
+    # surface
+    root.solution.report_definitions.surface["velocity_magnitude_outlet"] = {}
+    root.solution.report_definitions.surface[
+        "velocity_magnitude_outlet"
+    ].report_type = "surface-areaavg"
+    root.solution.report_definitions.surface[
+        "velocity_magnitude_outlet"
+    ].field = "velocity-magnitude"
+    root.solution.report_definitions.surface[
+        "velocity_magnitude_outlet"
+    ].surface_names = ["outlet-1"]
+
+    check_report_definition = partial(
+        check_report_definition_result,
+        report_definitions=root.solution.report_definitions,
+    )
+
+    check_report_definition(
+        report_definition_name="velocity_magnitude_outlet",
+        expected_result=approx(3.7988207, abs=1e-3),
     )
 
     ###############################################################################

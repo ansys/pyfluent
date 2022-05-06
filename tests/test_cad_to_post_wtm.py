@@ -1,6 +1,5 @@
-""".. _ref_mixing_elbow_tui_api:
-
-Fluid Flow and Heat Transfer in a Mixing Elbow
+"""
+End-to-end Fluent Solver Workflow using Watertight Meshing
 -----------------------------------------------------------------------------
 This test covers the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
@@ -12,8 +11,7 @@ the junction.
 This test queries the following using PyTest:
 
 - Meshing workflow tasks state before and after the task execution
-- Flux report after solution, approximately 0 kg/s
-- Temperature on the outlet boundary after solution, approximately 296.2 K
+- Report definitions check after solution
 """
 
 from functools import partial
@@ -47,7 +45,9 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     # Import the CAD geometry
     # Query the task state before and after task execution
     assign_task_args(
-        task_name="Import Geometry", FileName=mixing_elbow_geometry, LengthUnit="in"
+        task_name="Import Geometry",
+        FileName=mixing_elbow_geometry,
+        LengthUnit="in",
     )
 
     execute_task_with_pre_and_postconditions(task_name="Import Geometry")
@@ -63,7 +63,8 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     # Generate the surface mesh
     # Query the task state before and after task execution
     assign_task_args(
-        task_name="Generate the Surface Mesh", CFDSurfaceMeshControls={"MaxSize": 0.3}
+        task_name="Generate the Surface Mesh",
+        CFDSurfaceMeshControls={"MaxSize": 0.3},
     )
 
     execute_task_with_pre_and_postconditions(task_name="Generate the Surface Mesh")
@@ -229,10 +230,10 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     session.tui.solver.solve.iterate(250)
 
     ###############################################################################
-    # Assert the returned mass flux report definition value
+    # Assert the returned mass flow rate report definition value
     root = session.get_settings_root()
-    root.solution.report_definitions.flux["report_mfr"] = {}
-    root.solution.report_definitions.flux["report_mfr"].zone_names = [
+    root.solution.report_definitions.flux["mass_flow_rate"] = {}
+    root.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
         "cold-inlet",
         "hot-inlet",
         "outlet",
@@ -244,28 +245,24 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     )
 
     check_report_definition(
-        report_definition_name="report_mfr",
+        report_definition_name="mass_flow_rate",
         expected_result=approx(-2.985690364942784e-06, abs=1e-3),
     )
 
     ###############################################################################
     # Assert the returned temperature report definition value on the outlet surface
-    root.solution.report_definitions.surface["outlet-temp-avg"] = {}
+    root.solution.report_definitions.surface["temperature_outlet"] = {}
     root.solution.report_definitions.surface[
-        "outlet-temp-avg"
+        "temperature_outlet"
     ].report_type = "surface-massavg"
-    root.solution.report_definitions.surface["outlet-temp-avg"].field = "temperature"
-    root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = [
+    root.solution.report_definitions.surface["temperature_outlet"].field = "temperature"
+    root.solution.report_definitions.surface["temperature_outlet"].surface_names = [
         "outlet"
     ]
 
     check_report_definition(
-        report_definition_name="outlet-temp-avg",
+        report_definition_name="temperature_outlet",
         expected_result=approx(296.229, rel=1e-3),
     )
-
-    ###############################################################################
-    # Write final case and data.
-    # session.tui.solver.file.write_case_data("mixing_elbow2_tui.cas.h5")
 
     ###############################################################################
