@@ -12,6 +12,7 @@ class EventsService:
     def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = EventsGrpcModule.EventsStub(channel)
         self.__metadata = metadata
+        self.__streams = None
 
     def begin_streaming(self):
         """Begin events streaming from Fluent.
@@ -32,5 +33,5 @@ class EventsService:
     def end_streaming(self):
         """End events streaming from Fluent."""
 
-        if not self.__streams.cancelled():
+        if self.__streams and not self.__streams.cancelled():
             self.__streams.cancel()
