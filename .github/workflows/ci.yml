@@ -114,7 +114,7 @@ jobs:
       - name: Install OS packages
         run: |
           sudo apt-get update
-          sudo apt-get install pandoc libegl1 make -y
+          sudo apt-get install pandoc libegl1 make xvfb -y
 
       - name: Cache pip
         uses: actions/cache@v2
