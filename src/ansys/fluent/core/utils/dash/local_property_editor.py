@@ -10,6 +10,7 @@ import re
 from ansys.fluent.core.utils.generic import SingletonMeta
 from ansys.fluent.post.pyvista import Graphics
 from ansys.fluent.post.matplotlib import Plots
+import plotly.graph_objs as go
 from ansys.fluent.post.pyvista.pyvista_objects import (
     Contour,
     Mesh,
@@ -382,28 +383,13 @@ class PostWindowCollection:
 
             @self._app.callback(
                 Output(f"{self._unique_id}-tab-content", "children"),
-                Input(f"{self._unique_id}-tabs", "active_tab"),
-                Input("connection-id", "data"),
-                Input("session-id", "value"),
-                prevent_initial_call=True,
-            )
-            def render_tab_content(active_tab, connection_id, session_id):
-                """
-                This callback takes the 'active_tab' property as input, as well as the
-                stored graphs, and renders the tab content depending on what the value of
-                'active_tab' is.
-                """
-                self._active_window = int(active_tab)
-                return self.get_content()
-
-            @self._app.callback(
-                Output(f"post-viewer-{self._unique_id}", "children"),
                 Input("graphics-button-clicked", "value"),
                 Input("plot-button-clicked", "value"),
                 Input("connection-id", "data"),
+                Input(f"{self._unique_id}-tabs", "active_tab"),
                 Input("interval-component", "n_intervals"),
+                Input("session-id", "value"),
                 State("window-id", "value"),
-                State("session-id", "value"),
                 State("object-id", "value"),
                 prevent_initial_call=True,
             )
@@ -411,9 +397,10 @@ class PostWindowCollection:
                 n_graphics_clicks,
                 n_plot_clicks,
                 connection_id,
+                active_tab,
                 n_intervals,
-                window_id,
                 session_id,
+                window_id,
                 object_id,
             ):
                 ctx = dash.callback_context
@@ -421,6 +408,15 @@ class PostWindowCollection:
                 if triggered_value is None:
                     raise PreventUpdate
                 triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+                if triggered_from not in (
+                    "interval-component",
+                    "plot-button-clicked",
+                    "graphics-button-clicked",
+                ):
+                    print("triggered_from", triggered_from)
+                    self._active_window = int(active_tab)
+                    return self.get_content()
+
                 if triggered_from == "interval-component":
                     window_data = self._window_data.get(self._active_window)
                     if window_data is None:
@@ -450,7 +446,12 @@ class PostWindowCollection:
                         "object_type": object_type,
                         "object_index": object_index,
                     }
-                print("on_button_click..updating", triggered_from, triggered_value)
+                print(
+                    "\n on_button_click..updating",
+                    triggered_from,
+                    triggered_value,
+                    object_index,
+                )
                 return self.get_viewer(
                     connection_id, session_id, object_type, object_index
                 )
@@ -503,7 +504,7 @@ class PostWindowCollection:
                                         },
                                         size="sm",
                                         n_clicks=0,
-                                        # outline=True,
+                                        outline=True,
                                         color="secondary",
                                         className="me-1",
                                     ),
@@ -515,7 +516,7 @@ class PostWindowCollection:
                                         },
                                         size="sm",
                                         n_clicks=0,
-                                        # outline=True,
+                                        outline=True,
                                         color="secondary",
                                         className="me-1",
                                     ),
@@ -530,10 +531,7 @@ class PostWindowCollection:
                 ),
                 html.Div(
                     id=f"{self._unique_id}-tab-content",
-                    style={
-                        "height": "746px",
-                        "padding": "4px 4px 0px 4px",
-                    },
+                    style={"padding": "4px 4px 0px 4px", "height": "745px"},
                     children=self.get_content(),
                 ),
             ],
@@ -577,7 +575,7 @@ class PlotWindowCollection(PostWindowCollection):
         if obj is None:
             raise PreventUpdate
         self._state[self._active_window] = update_graph_fun(obj)
-        return self._get_graph()
+        return self.get_content()
 
 
 class GraphicsWindowCollection(PostWindowCollection):
@@ -585,7 +583,18 @@ class GraphicsWindowCollection(PostWindowCollection):
         super().__init__(app, connection_id, session_id, "graphics", SessionsManager)
 
     def _get_graphics(self):
-        return self._state.get(self._active_window, [])
+        return self._state.get(self._active_window, [[]])[0]
+
+    def _get_colorbar(self):
+        color_bar_data = self._state.get(self._active_window, [None, None])[1]
+        try:
+            return (
+                self.make_colorbar(color_bar_data[0], color_bar_data[1:])
+                if color_bar_data
+                else go.Figure()
+            )
+        except:
+            return go.Figure()
 
     def is_type_supported(self, type):
         return GraphicsPropertyEditor(
@@ -593,22 +602,90 @@ class GraphicsWindowCollection(PostWindowCollection):
         ).is_type_supported(type)
 
     def get_content(self):
-        return [
-            dash_vtk.View(
-                id=f"post-viewer-{self._unique_id}",
-                pickingModes=["hover"],
-                children=self._get_graphics(),
+
+        content = [
+            dbc.Col(
+                dash_vtk.View(
+                    id=f"post-viewer-{self._unique_id}",
+                    pickingModes=["hover"],
+                    children=self._get_graphics(),
+                    style={"height": "745px"},
+                )
             )
         ]
+        if self._state.get(self._active_window, [None, None])[1]:
+            content.append(
+                dbc.Col(
+                    dcc.Graph(
+                        id=f"color-bar-{self._unique_id}",
+                        figure=self._get_colorbar(),
+                    ),
+                    width="auto",
+                )
+            )
+
+        return dbc.Row(
+            content,
+            className="g-0",
+        )
 
     def get_viewer(self, connection_id, session_id, object_type, object_index):
         editor = LocalPropertyEditor(self._app, self._SessionsManager)
         obj = editor._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             raise PreventUpdate
-        self._state[self._active_window] = update_vtk_fun(obj)[0]
-        print("get_viewer", self._state[self._active_window])
-        return self._get_graphics()
+        color_bar = []
+        self._state[self._active_window] = (
+            update_vtk_fun(obj, color_bar)[0],
+            color_bar,
+        )
+        print("get_viewer", self.get_content())
+        return self.get_content()
+
+    def make_colorbar(self, title, rng, bgnd="rgb(51, 76, 102)"):
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=[None],
+                y=[None],
+                mode="markers",
+                marker=dict(
+                    colorscale="rainbow",
+                    showscale=True,
+                    cmin=rng[0],
+                    cmax=rng[1],
+                    colorbar=dict(
+                        title_text=title,
+                        title_font_color="white",
+                        title_side="top",
+                        thicknessmode="pixels",
+                        thickness=50,
+                        #  lenmode="pixels", len=200,
+                        yanchor="middle",
+                        y=0.5,
+                        ypad=10,
+                        xanchor="left",
+                        x=0.0,
+                        xpad=10,
+                        ticks="outside",
+                        tickcolor="white",
+                        tickfont={"color": "white"}
+                        #  dtick=5
+                    ),
+                ),
+                hoverinfo="none",
+            )
+        )
+        fig.update_layout(
+            width=150,
+            height=745,  # px
+            margin={"b": 0, "l": 0, "r": 0, "t": 0},
+            autosize=False,
+            plot_bgcolor=bgnd,
+        )
+        fig.update_xaxes(visible=False)
+        fig.update_yaxes(visible=False)
+        return fig
 
 
 class MonitorWindow:

@@ -162,7 +162,7 @@ def serve_layout():
                                     "flex-direction": "row",  # "border-bottom": "5px solid darkgray"
                                 },
                             ),
-                            style={"border-bottom": "1px solid black"},
+                            style={"border-bottom": "2px solid black"},
                         ),
                         dbc.Col(
                             dcc.Dropdown(
@@ -223,7 +223,7 @@ def serve_layout():
                         # "background-size": "contain",
                         "font": "14px 'Segoe UI'",
                         "padding": "0px 0px 5px",
-                        "border-bottom": "10px solid gray",
+                        "border-bottom": "14px solid black",
                     },
                 ),
                 style={

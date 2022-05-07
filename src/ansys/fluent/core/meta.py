@@ -22,7 +22,7 @@ class LocalObjectDataExtractor:
 
         @staticmethod
         def surface_name_in_server(local_surface_name):
-            return "_dummy_surface_for_pyfluent:" + local_surface_name
+            return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
             return self.obj._get_top_most_parent().session.tui.solver.surface
@@ -189,7 +189,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
             attrs = getattr(self, "attributes", None)
             if attrs:
                 for attr in attrs:
-                    if attr == "range" and (
+                    if attr == "range" and self.range and (
                         value < self.range[0] or value > self.range[1]
                     ):
                         raise ValueError(

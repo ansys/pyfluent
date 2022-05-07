@@ -89,7 +89,7 @@ def update_graph_fun_xyplot(obj=None):
         return {}
 
 
-def update_vtk_fun(obj):
+def update_vtk_fun(obj, color_bar=[]):
     if obj.__class__.__name__ == "Mesh":
         return update_vtk_fun_mesh(obj)
     elif obj.__class__.__name__ == "Surface":
@@ -97,16 +97,16 @@ def update_vtk_fun(obj):
             obj.surface.type() == "iso-surface"
             and obj.surface.iso_surface.rendering() == "contour"
         ):
-            return update_vtk_fun_field(obj)
+            return update_vtk_fun_field(obj, color_bar)
         else:
             return update_vtk_fun_mesh(obj)
     elif obj.__class__.__name__ == "Contour":
-        return update_vtk_fun_field(obj)
+        return update_vtk_fun_field(obj, color_bar)
     elif obj.__class__.__name__ == "Vector":
-        return update_vtk_fun_vector(obj)
+        return update_vtk_fun_vector(obj, color_bar)
 
 
-def update_vtk_fun_vector(obj):
+def update_vtk_fun_vector(obj, color_bar):
     try:
         set_config(blocking=True)
         surface_iter = iter(obj.surfaces_list())
@@ -114,7 +114,7 @@ def update_vtk_fun_vector(obj):
 
         win = PyVistaWindow("x", obj)
         vector_field_data = win.fetch_vector_data(obj)
-
+        color_bar.append(field)
         fields_data = []
         fields_min = None
         fields_max = None
@@ -174,7 +174,7 @@ def update_vtk_fun_vector(obj):
                 ]
             )
         fields_range = [fields_min, fields_max]
-
+        color_bar.extend(fields_range)
     except Exception as e:
         print(e)
         return [], None
@@ -212,7 +212,7 @@ def update_vtk_fun_vector(obj):
     ]
 
 
-def update_vtk_fun_field(obj):
+def update_vtk_fun_field(obj, color_bar):
     try:
         set_config(blocking=True)
         surface_iter = (
@@ -225,6 +225,7 @@ def update_vtk_fun_field(obj):
             if obj.__class__.__name__ == "Surface"
             else obj.field()
         )
+        color_bar.append(field)
         node_values = True if obj.__class__.__name__ == "Surface" else obj.node_values()
         # print(obj.surface)
         win = PyVistaWindow("x", obj)
@@ -253,6 +254,7 @@ def update_vtk_fun_field(obj):
                 ]
             )
         fields_range = [fields_min, fields_max]
+        color_bar.extend(fields_range)
         # print(fields_data, fields_range)
     except Exception as e:
         print(e)
@@ -293,12 +295,12 @@ def update_vtk_fun_field(obj):
                     )
                     # for field_data in fields_data
                 ],
-                colorMapPreset="Rainbow Blended White",
+                colorMapPreset="rainbow",
                 colorDataRange=fields_range,
+                # showScalarBar= True,
+                # scalarBarTitle = field,
                 property={
                     "edgeVisibility": obj.show_edges(),
-                    "showScalarBar": True,
-                    "scalarBarTitle": field,
                 },
             )
             for field_data in fields_data

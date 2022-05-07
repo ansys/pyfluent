@@ -194,6 +194,7 @@ class PyVistaWindow(PostWindow):
             raise RuntimeError("Contour definition is incomplete.")
 
         # contour properties
+        obj._pre_display()
         field = obj.field()
         range_option = obj.range.option()
         filled = obj.filled()
@@ -236,6 +237,7 @@ class PyVistaWindow(PostWindow):
         data_tag = location_tag | boundary_value_tag
         scalar_field_data = scalar_field_payload_data[data_tag]
         surface_data = scalar_field_payload_data[surface_tag]
+        obj._post_display()
         return surface_data, scalar_field_data
 
     def _display_contour(self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]):
