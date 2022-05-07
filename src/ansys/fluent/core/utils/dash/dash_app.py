@@ -97,7 +97,6 @@ def get_side_bar(app, connection_id):
                             ),
                         ]
                     ),
-                    
                 ]
             ),
             html.Div(id="tree-view-container", children=tree_view),
@@ -134,104 +133,106 @@ def serve_layout():
             html.Data(id="save-button-clicked"),
             html.Data(id="delete-button-clicked"),
             html.Data(id="command-output"),
-            html.Data(id="uuid-id", value= str(user_name_to_session_map.get(connection_id, [[None, ""]])[0][1])),
-            dbc.CardHeader(dbc.Row(
-                [
-                    dbc.Col(
-                        html.Div(
-                            [
-                                html.Img(
-                                    src="/assets/pyansys.png",
-                                    style={"height":"35px"}
-                                ),
-                               html.P( html.B("PyFluent Web Client"),  style={"font": "22px 'Segoe UI'",  "padding": "0px 0px 0px 20px"})
-                            ],
-                            style={"display": "flex", "flex-direction": "row", #"border-bottom": "5px solid darkgray"
-                      
-                            },
-                        ),
-                        
-                         style={"border-bottom": "1px solid black"}
-                    ),
-                    
-                    dbc.Col(
-                        dcc.Dropdown(
-                            id="session-id",
-                            #options=map(lambda x: x[0],user_name_to_session_map.get(connection_id, [])),
-                            options=  list(map(lambda x: x[0],user_name_to_session_map.get(connection_id))) if   user_name_to_session_map.get(connection_id) else [],
-                            value=user_name_to_session_map.get(connection_id, [[None, None]])[
-                                0
-                            ][0],
-                            style={"width": "200px"},
-                        ),
-                        width="auto",
-                        align="end",
-                    ),                    
-                    
-                    dbc.Col(
-                        dbc.Input(
-                            placeholder="Session token to connect",
-                            id="session-token",                           
-                            style={"width": "200px"},
-                        ),
-                        width="auto",
-                        align="end",
-                    ),                    
-                    dbc.Col(
-                        dbc.Button(
-                            "Connect to Session",
-                            id="connect-session",
-                            n_clicks=0,
-                            style={"width": "200px"},
-                        ),
-                        width="auto",
-                        align="end",
-                    ),
-
-                     
-
-                    
-                    dbc.Col(
-                   dcc.Clipboard(
-                          target_id="uuid-id",
-                          title="Share",
-                          style={
-                              "display": "inline-block",
-                              "fontSize": 20,
-                              "verticalAlign": "top",
-                          },
-                      ),
-                       width="auto",
-                       align="end",
-                      
-                      ),                    
-                   
-                    
-                ],
-                
-                                           style={
-                  #  "background-color": "#f8f9fa",
-                   # "background-image": 'url("/assets/background.png")',
-                   # "background-size": "contain",
-                    "font": "14px 'Segoe UI'",
-                    "padding": "0px 0px 5px",
-                   
-                  "border-bottom": "8px solid gray"
-                   
-                }
-
+            html.Data(
+                id="uuid-id",
+                value=str(
+                    user_name_to_session_map.get(connection_id, [[None, ""]])[0][1]
+                ),
             ),
-            
-           
-                           style={
-                  #  "background-color": "#f8f9fa",
-                  #  "background-image": 'url("/assets/background.png")',
-                  #  "background-size": "contain",
+            dbc.CardHeader(
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Div(
+                                [
+                                    html.Img(
+                                        src="/assets/pyansys.png",
+                                        style={"height": "35px"},
+                                    ),
+                                    html.P(
+                                        html.B("PyFluent Web Client"),
+                                        style={
+                                            "font": "22px 'Segoe UI'",
+                                            "padding": "0px 0px 0px 20px",
+                                        },
+                                    ),
+                                ],
+                                style={
+                                    "display": "flex",
+                                    "flex-direction": "row",  # "border-bottom": "5px solid darkgray"
+                                },
+                            ),
+                            style={"border-bottom": "1px solid black"},
+                        ),
+                        dbc.Col(
+                            dcc.Dropdown(
+                                id="session-id",
+                                # options=map(lambda x: x[0],user_name_to_session_map.get(connection_id, [])),
+                                options=list(
+                                    map(
+                                        lambda x: x[0],
+                                        user_name_to_session_map.get(connection_id),
+                                    )
+                                )
+                                if user_name_to_session_map.get(connection_id)
+                                else [],
+                                value=user_name_to_session_map.get(
+                                    connection_id, [[None, None]]
+                                )[0][0],
+                                style={"width": "200px"},
+                            ),
+                            width="auto",
+                            align="end",
+                        ),
+                        dbc.Col(
+                            dbc.Input(
+                                placeholder="Session token to connect",
+                                id="session-token",
+                                style={"width": "200px"},
+                            ),
+                            width="auto",
+                            align="end",
+                        ),
+                        dbc.Col(
+                            dbc.Button(
+                                "Connect to Session",
+                                id="connect-session",
+                                n_clicks=0,
+                                style={"width": "200px"},
+                            ),
+                            width="auto",
+                            align="end",
+                        ),
+                        dbc.Col(
+                            dcc.Clipboard(
+                                target_id="uuid-id",
+                                title="Share",
+                                style={
+                                    "display": "inline-block",
+                                    "fontSize": 20,
+                                    "verticalAlign": "top",
+                                },
+                            ),
+                            width="auto",
+                            align="end",
+                        ),
+                    ],
+                    style={
+                        #  "background-color": "#f8f9fa",
+                        # "background-image": 'url("/assets/background.png")',
+                        # "background-size": "contain",
+                        "font": "14px 'Segoe UI'",
+                        "padding": "0px 0px 5px",
+                        "border-bottom": "10px solid gray",
+                    },
+                ),
+                style={
+                    #  "background-color": "#f8f9fa",
+                    #  "background-image": 'url("/assets/background.png")',
+                    #  "background-size": "contain",
                     "font": "14px 'Segoe UI'"
-                },  
-            
+                },
             ),
-           
             dbc.Row(
                 children=[
                     dbc.Col(
@@ -395,11 +396,16 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
     tree_nodes, keys = TreeView(
         app, connection_id, session_id, SessionsManager
     ).get_tree_nodes()
-    filtered= filter(lambda x: session_id==x[0], user_name_to_session_map[connection_id])
-    return dash_treeview_antd(
-        id="tree-view",      
-        data=tree_nodes,
-    ), connection_id+":"+list(filtered)[0][1].hex
+    filtered = filter(
+        lambda x: session_id == x[0], user_name_to_session_map[connection_id]
+    )
+    return (
+        dash_treeview_antd(
+            id="tree-view",
+            data=tree_nodes,
+        ),
+        connection_id + ":" + list(filtered)[0][1].hex,
+    )
 
 
 @app.callback(

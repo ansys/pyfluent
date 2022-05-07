@@ -54,7 +54,7 @@ class LocalPropertyEditor:
                     indices.append(name.split("-")[-1])
         return indices
 
-    def _get_name(self, connection_id, session_id, object_type, object_index):       
+    def _get_name(self, connection_id, session_id, object_type, object_index):
         return f"{self.SessionsManager(self._app, connection_id, session_id)._complete_session_id}-{object_type}-{object_index}"
 
     def create_new_object(self, connection_id, session_id, object_type, from_index):
@@ -335,11 +335,25 @@ class PlotPropertyEditor:
         return type in ("XYPlot")
 
     def get_widgets(self, connection_id, session_id, object_type, object_index):
-        return {
-            "plot-button": dbc.Button(
-                "Plot", id=f"{PLOT_BUTTON_ID}", n_clicks=0, size="sm"
-            )
-        }
+        return (
+            {
+                "plot-button": dbc.Button(
+                    "Plot", id=f"{PLOT_BUTTON_ID}", n_clicks=0, size="sm"
+                ),
+                "delete-button": dbc.Button(
+                    "Delete", id=f"{DELETE_BUTTON_ID}", n_clicks=0, size="sm"
+                ),
+            }
+            if object_index
+            else {
+                "plot-button": dbc.Button(
+                    "Plot", id=f"{PLOT_BUTTON_ID}", n_clicks=0, size="sm"
+                ),
+                "save-button": dbc.Button(
+                    "New", id=f"{SAVE_BUTTON_ID}", n_clicks=0, size="sm"
+                ),
+            }
+        )
 
     def get_collection(self, connection_id, session_id, object_type):
         session = self.SessionsManager(self._app, connection_id, session_id).session
@@ -445,8 +459,16 @@ class PostWindowCollection:
             self.__dict__ = window_state
 
     def copy_from(self, connection_id, session_id):
-        source = PostWindowCollection( self._app, connection_id, session_id, self._window_type, self._SessionsManager)
-        PostWindowCollection._windows[self._unique_id] = PostWindowCollection._windows[source._unique_id]   
+        source = PostWindowCollection(
+            self._app,
+            connection_id,
+            session_id,
+            self._window_type,
+            self._SessionsManager,
+        )
+        PostWindowCollection._windows[self._unique_id] = PostWindowCollection._windows[
+            source._unique_id
+        ]
 
     def __call__(self):
 
@@ -481,9 +503,9 @@ class PostWindowCollection:
                                         },
                                         size="sm",
                                         n_clicks=0,
-                                        outline=True,
+                                        # outline=True,
                                         color="secondary",
-                                        className="me-2",
+                                        className="me-1",
                                     ),
                                     dbc.Button(
                                         "Remove Window",
@@ -493,14 +515,13 @@ class PostWindowCollection:
                                         },
                                         size="sm",
                                         n_clicks=0,
-                                        outline=True,
+                                        # outline=True,
                                         color="secondary",
                                         className="me-1",
                                     ),
                                 ],
                                 style={
                                     "padding": "4px 4px 4px 4px",
-                                    "border": "0px ridge lightgrey",
                                 },
                             ),
                             width="auto",
