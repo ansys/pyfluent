@@ -420,7 +420,7 @@ class PostWindowCollection:
                 )
                 if self._unique_id != post_window_collection._unique_id:
                     print("*************wrong trigger*********************")
-                    raise PreventUpdate
+                    return dash.no_update
                 self._active_window = int(active_tab)
                 event_info = SessionsManager(
                     app, connection_id, session_id
@@ -484,9 +484,9 @@ class PostWindowCollection:
             self._window_type,
             self._SessionsManager,
         )
-        PostWindowCollection._windows[self._unique_id] = PostWindowCollection._windows[
-            source._unique_id
-        ]
+        self._windows = source._windows
+        self._window_data = source._window_data
+        self._state = source._state
 
     def __call__(self):
 
@@ -729,16 +729,30 @@ class MonitorWindow:
             @app.callback(
                 Output(f"{self._unique_win_id}-tab-content", "children"),
                 Input(f"{self._unique_win_id}-tabs", "active_tab"),
-                Input("interval-component", "n_intervals"),
+                Input("need-to-data-fetch", "value"),
+                # Input("interval-component", "n_intervals"),
                 Input("connection-id", "data"),
-                Input("session-id", "value"),
+                State("session-id", "value"),
             )
-            def render_tab_content(active_tab, n_intervals, connection_id, session_id):
+            def render_tab_content(
+                active_tab, need_to_data_fetch, connection_id, session_id
+            ):
                 """
                 This callback takes the 'active_tab' property as input, as well as the
                 stored graphs, and renders the tab content depending on what the value of
                 'active_tab' is.
                 """
+                ctx = dash.callback_context
+                triggered_value = ctx.triggered[0]["value"]
+                triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+
+                print(
+                    "\n render_tab_content:",
+                    triggered_from,
+                    triggered_value,
+                    active_tab,
+                )
+
                 session = self.SessionsManager(
                     self._app, connection_id, session_id
                 ).session
@@ -768,6 +782,7 @@ class MonitorWindow:
                     ),
                     font=dict(family="Courier New, monospace", size=14, color="black"),
                 )
+                PostWindowCollection._is_executing = False
                 return dcc.Graph(
                     figure=fig,
                     style={"height": "100%"},

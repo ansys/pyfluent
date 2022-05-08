@@ -169,7 +169,7 @@ def serve_layout():
                                     "flex-direction": "row",  # "border-bottom": "5px solid darkgray"
                                 },
                             ),
-                            style={"border-bottom": "4px solid gray"},
+                            style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
                             dcc.Dropdown(
