@@ -47,7 +47,9 @@ class SessionsManager:
         else:
             user_id, uuid_id = session_token.split(":")
             id_uuid_list = user_name_to_session_map[user_id]
-            session_id = list(filter(lambda x: x[1].hex == uuid_id, id_uuid_list))[0][0]
+            session_id = list(filter(lambda x: x[1] == session_token, id_uuid_list))[0][
+                0
+            ]
             PlotWindowCollection(
                 self._app, self._connection_id, self._session_id, SessionsManager
             ).copy_from(user_id, session_id)

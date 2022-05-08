@@ -142,9 +142,7 @@ def serve_layout():
             html.Data(id="command-output"),
             html.Data(
                 id="uuid-id",
-                value=str(
-                    user_name_to_session_map.get(connection_id, [[None, ""]])[0][1]
-                ),
+                value=user_name_to_session_map.get(connection_id, [[None, ""]])[0][1],
             ),
             dbc.CardHeader(
                 dbc.Row(
@@ -159,8 +157,9 @@ def serve_layout():
                                     html.P(
                                         html.B("PyFluent Web Client"),
                                         style={
-                                            "font": "22px 'Segoe UI'",
+                                            "font": "24px 'Segoe UI'",
                                             "padding": "0px 0px 0px 20px",
+                                            # "text-shadow": "0.5px 0.5px"
                                         },
                                     ),
                                 ],
@@ -225,12 +224,10 @@ def serve_layout():
                         ),
                     ],
                     style={
-                        #  "background-color": "#f8f9fa",
-                        # "background-image": 'url("/assets/background.png")',
-                        # "background-size": "contain",
                         "font": "14px 'Segoe UI'",
                         "padding": "0px 0px 5px",
                         "border-bottom": "14px solid black",
+                        "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19)",
                     },
                 ),
                 style={
@@ -383,7 +380,7 @@ def create_session(n_clicks, connection_id, session_token, options):
         user_sessions = user_name_to_session_map[connection_id] = []
 
     session_id = f"session-{len(options)}"
-    user_sessions.append((session_id, uuid.uuid4()))
+    user_sessions.append((session_id, connection_id + ":" + uuid.uuid4().hex))
     sessions_manager = SessionsManager(app, connection_id, session_id)
     sessions_manager.add_session(session_token, user_name_to_session_map)
     sessions = []
@@ -459,7 +456,7 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
             id="tree-view",
             data=tree_nodes,
         ),
-        connection_id + ":" + list(filtered)[0][1].hex,
+        list(filtered)[0][1],
     )
 
 
