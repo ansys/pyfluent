@@ -17,10 +17,11 @@ from tree_view import TreeView
 from local_property_editor import LocalPropertyEditor
 import plotly.io as pio
 from flask import request
+from dash.long_callback import DiskcacheLongCallbackManager
 
 pio.templates.default = "plotly_white"
 from dash_component import DashComponent
-
+from local_property_editor import PostWindowCollection
 from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
 
 from local_property_editor import (
@@ -42,11 +43,16 @@ user_name_to_session_map = {}
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 # app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+import diskcache
+
+cache = diskcache.Cache("./cache")
+long_callback_manager = DiskcacheLongCallbackManager(cache)
 
 app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
+    long_callback_manager=long_callback_manager,
 )
 
 auth = dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
@@ -92,7 +98,7 @@ def get_side_bar(app, connection_id):
                         [
                             "Welcome ",
                             dbc.Badge(
-                                html.I(f"{connection_id}", style={"font-size": "16px"}),
+                                html.I(f"{connection_id}", style={"font-size": "18px"}),
                                 color="secondary",
                             ),
                         ]
@@ -127,6 +133,7 @@ def serve_layout():
             ),
             html.Data(id="refresh-property-editor"),
             html.Data(id="window-id", value="0"),
+            html.Data(id="need-to-data-fetch", value="no"),
             html.Data(id="object-id"),
             html.Data(id="graphics-button-clicked"),
             html.Data(id="plot-button-clicked"),
@@ -162,7 +169,7 @@ def serve_layout():
                                     "flex-direction": "row",  # "border-bottom": "5px solid darkgray"
                                 },
                             ),
-                            style={"border-bottom": "2px solid black"},
+                            style={"border-bottom": "4px solid gray"},
                         ),
                         dbc.Col(
                             dcc.Dropdown(
@@ -306,6 +313,30 @@ print("serve_layout done")
 
 
 @app.callback(
+    Output("need-to-data-fetch", "value"),
+    Input("interval-component", "n_intervals"),
+    Input("connection-id", "data"),
+    State("session-id", "value"),
+    State("need-to-data-fetch", "value"),
+)
+def watcher(n_intervals, connection_id, session_id, need_to_fetch):
+    event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+        "CalculationsStartedEvent"
+    )
+    if event_info:
+        if PostWindowCollection._is_executing == False:
+            PostWindowCollection._is_executing = True
+            return "yes"
+        else:
+            raise PreventUpdate
+    else:
+        if need_to_fetch == "yes":
+            return "no"
+        else:
+            raise PreventUpdate
+
+
+@app.callback(
     Output("progress-container", "style"),
     Output("progress-bar", "value"),
     Output("progress-bar", "label"),
@@ -334,11 +365,11 @@ def on_progress_update(n_intervals, connection_id, session_id):
     Output("session-id", "options"),
     Output("session-id", "value"),
     Input("connect-session", "n_clicks"),
-    Input("session-token", "value"),
     Input("connection-id", "data"),
+    State("session-token", "value"),
     State("session-id", "options"),
 )
-def create_session(n_clicks, session_token, connection_id, options):
+def create_session(n_clicks, connection_id, session_token, options):
 
     ctx = dash.callback_context
     triggered_value = ctx.triggered[0]["value"]
@@ -360,6 +391,30 @@ def create_session(n_clicks, session_token, connection_id, options):
         sessions = options
     sessions.append(session_id)
     return [sessions, session_id]
+
+
+@app.callback(
+    Output("object-id", "value"),
+    Input("connection-id", "data"),  #
+    Input("tree-view", "selected"),
+    Input("session-id", "value"),
+)
+def update_object(connection_id, object_id, session_id):
+    print("update_object", connection_id, session_id, object_id)
+
+    if object_id is None or len(object_id) == 0 or session_id is None:
+        raise PreventUpdate
+    object_id = object_id[0]
+    ctx = dash.callback_context
+    triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+    if triggered_from == "tree-view":
+        if "local" in object_id or "remote" in object_id:
+            return object_id
+        else:
+            raise PreventUpdate
+    else:
+        PostWindowCollection._is_executing = False
+        return None
 
 
 @app.callback(

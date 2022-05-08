@@ -98,10 +98,9 @@ class PropertyEditor(metaclass=SingletonMeta):
         def refresh_widgets(_, connection_id, object_id, session_id):
             print("show hide", _, connection_id, object_id, session_id)
             if object_id is None or session_id is None:
-                raise PreventUpdate
-            self._id_map[f"{connection_id}-{session_id}"] = object_id
+                return []
             if not object_id:
-                return "", []
+                return []
             update_stored_widgets(object_id, connection_id, session_id)
             object_location, object_type, object_index = object_id.split(":")
             object_type = object_type.split("/")[-1]
@@ -126,28 +125,3 @@ class PropertyEditor(metaclass=SingletonMeta):
                     ),
                 ]
             )
-
-        @self._app.callback(
-            Output("object-id", "value"),
-            Input("connection-id", "data"),  #
-            Input("session-id", "value"),
-            Input("tree-view", "selected"),
-        )
-        def session_changed_or_tree_selected(connection_id, session_id, object_id):
-            print("session_changed", connection_id, session_id, object_id)
-
-            if session_id is None:
-                raise PreventUpdate
-            if object_id is None or len(object_id) == 0:
-                raise PreventUpdate
-            object_id = object_id[0]
-            ctx = dash.callback_context
-            triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-            if triggered_from == "tree-view":
-                if "local" in object_id or "remote" in object_id:
-                    return object_id
-                else:
-                    raise PreventUpdate
-            else:
-                object_id = self._id_map.get(f"{connection_id}-{session_id}")
-                return object_id if object_id else ""

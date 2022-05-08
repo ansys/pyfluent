@@ -33,6 +33,7 @@ class SessionsManager:
             self.__dict__ = session_state
 
     def add_session(self, session_token, user_name_to_session_map):
+        session_token = session_token.strip()
         if len(session_token.split(":")) == 1:
 
             self.session = Session(
@@ -70,11 +71,22 @@ class SessionsManager:
                 self._events_info_map[event_name] = event_info
                 if event_name == "CalculationsEndedEvent":
                     del self._events_info_map["ProgressEvent"]
+                    del self._events_info_map["CalculationsStartedEvent"]
+                if event_name == "InitializedEvent":
+                    itrEndedEvent = self._events_info_map.get("IterationEndedEvent")
+                    if itrEndedEvent:
+                        itrEndedEvent.index = 0
 
         self.session.events_manager.register_callback(
             "IterationEndedEvent",
             lambda session_id, event_info: store_info(
                 "IterationEndedEvent", event_info
+            ),
+        )
+        self.session.events_manager.register_callback(
+            "CalculationsStartedEvent",
+            lambda session_id, event_info: store_info(
+                "CalculationsStartedEvent", event_info
             ),
         )
         self.session.events_manager.register_callback(
@@ -92,4 +104,9 @@ class SessionsManager:
             lambda session_id, event_info: store_info(
                 "CalculationsEndedEvent", event_info
             ),
+        )
+
+        self.session.events_manager.register_callback(
+            "InitializedEvent",
+            lambda session_id, event_info: store_info("InitializedEvent", event_info),
         )

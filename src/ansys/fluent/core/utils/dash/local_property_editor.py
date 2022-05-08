@@ -366,6 +366,7 @@ class PlotPropertyEditor:
 class PostWindowCollection:
 
     _windows = {}
+    _is_executing = False
 
     def __init__(self, app, connection_id, session_id, window_type, SessionsManager):
         unique_id = f"{window_type}-{connection_id}-{session_id}"
@@ -387,9 +388,8 @@ class PostWindowCollection:
                 Input("plot-button-clicked", "value"),
                 Input("connection-id", "data"),
                 Input(f"{self._unique_id}-tabs", "active_tab"),
-                Input("interval-component", "n_intervals"),
-                Input("session-id", "value"),
-                State("window-id", "value"),
+                Input("need-to-data-fetch", "value"),
+                State("session-id", "value"),
                 State("object-id", "value"),
                 prevent_initial_call=True,
             )
@@ -398,44 +398,35 @@ class PostWindowCollection:
                 n_plot_clicks,
                 connection_id,
                 active_tab,
-                n_intervals,
+                need_to_data_fetch,
                 session_id,
-                window_id,
                 object_id,
             ):
                 ctx = dash.callback_context
                 triggered_value = ctx.triggered[0]["value"]
-                if triggered_value is None:
-                    raise PreventUpdate
                 triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-                if triggered_from not in (
-                    "interval-component",
-                    "plot-button-clicked",
-                    "graphics-button-clicked",
-                ):
-                    print("triggered_from", triggered_from)
-                    self._active_window = int(active_tab)
-                    return self.get_content()
 
-                if triggered_from == "interval-component":
-                    window_data = self._window_data.get(self._active_window)
-                    if window_data is None:
-                        raise PreventUpdate
-                    event_info = self._SessionsManager(
-                        self._app, connection_id, session_id
-                    ).get_event_info("IterationEndedEvent")
-                    if event_info is None:
-                        raise PreventUpdate
-
-                    last_updated_index = window_data.get("last_updated_index")
-                    if last_updated_index and last_updated_index == event_info.index:
-                        raise PreventUpdate
-
-                    object_type = window_data["object_type"]
-                    object_index = window_data["object_index"]
-                    window_data["last_updated_index"] = event_info.index
-                else:
-                    if triggered_value == "0":
+                print(
+                    "\n on_click_update:",
+                    triggered_from,
+                    triggered_value,
+                    self._active_window,
+                )
+                if triggered_value is None:
+                    print("triggered_value is None")
+                    raise PreventUpdate
+                post_window_collection = PostWindowCollection(
+                    app, connection_id, session_id, window_type, SessionsManager
+                )
+                if self._unique_id != post_window_collection._unique_id:
+                    print("*************wrong trigger*********************")
+                    raise PreventUpdate
+                self._active_window = int(active_tab)
+                event_info = SessionsManager(
+                    app, connection_id, session_id
+                ).get_event_info("IterationEndedEvent")
+                if triggered_from in ("plot-button-clicked", "graphics-button-clicked"):
+                    if object_id is None or triggered_value == "0":
                         raise PreventUpdate
                     object_location, object_type, object_index = object_id.split(":")
                     if object_location != "local":
@@ -445,16 +436,42 @@ class PostWindowCollection:
                     self._window_data[self._active_window] = {
                         "object_type": object_type,
                         "object_index": object_index,
+                        "itr_index": event_info.index if event_info else None,
                     }
-                print(
-                    "\n on_button_click..updating",
-                    triggered_from,
-                    triggered_value,
-                    object_index,
-                )
-                return self.get_viewer(
-                    connection_id, session_id, object_type, object_index
-                )
+                    return self.get_viewer(
+                        connection_id, session_id, object_type, object_index
+                    )
+                elif triggered_from == "need-to-data-fetch":
+                    if need_to_data_fetch == "yes":
+                        window_data = self._window_data.get(self._active_window)
+                        if window_data is None:
+                            PostWindowCollection._is_executing = False
+                            return self.get_content()
+                        object_type = window_data["object_type"]
+                        object_index = window_data["object_index"]
+                        window_data["itr_index"] = (
+                            event_info.index if event_info else None
+                        )
+                        viewer = self.get_viewer(
+                            connection_id, session_id, object_type, object_index
+                        )
+                        PostWindowCollection._is_executing = False
+                        return viewer
+                else:
+                    window_data = self._window_data.get(self._active_window)
+                    if (
+                        event_info
+                        and window_data
+                        and window_data["itr_index"] != event_info.index
+                    ):
+                        object_type = window_data["object_type"]
+                        object_index = window_data["object_index"]
+                        window_data["itr_index"] = event_info.index
+                        return self.get_viewer(
+                            connection_id, session_id, object_type, object_index
+                        )
+
+                return self.get_content()
 
         else:
             self.__dict__ = window_state
@@ -561,6 +578,7 @@ class PlotWindowCollection(PostWindowCollection):
         )
 
     def get_content(self):
+        print("data updated")
         return [
             html.Div(
                 id=f"post-viewer-{self._unique_id}",
@@ -575,6 +593,7 @@ class PlotWindowCollection(PostWindowCollection):
         if obj is None:
             raise PreventUpdate
         self._state[self._active_window] = update_graph_fun(obj)
+        print("data fetched")
         return self.get_content()
 
 
@@ -602,7 +621,7 @@ class GraphicsWindowCollection(PostWindowCollection):
         ).is_type_supported(type)
 
     def get_content(self):
-
+        print("data updated")
         content = [
             dbc.Col(
                 dash_vtk.View(
@@ -624,22 +643,25 @@ class GraphicsWindowCollection(PostWindowCollection):
                 )
             )
 
-        return dbc.Row(
-            content,
-            className="g-0",
-        )
+        return [
+            dbc.Row(
+                content,
+                className="g-0",
+            )
+        ]
 
     def get_viewer(self, connection_id, session_id, object_type, object_index):
         editor = LocalPropertyEditor(self._app, self._SessionsManager)
         obj = editor._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
+            print("state not updated")
             raise PreventUpdate
         color_bar = []
         self._state[self._active_window] = (
             update_vtk_fun(obj, color_bar)[0],
             color_bar,
         )
-        print("get_viewer", self.get_content())
+        print("data fetched")
         return self.get_content()
 
     def make_colorbar(self, title, rng, bgnd="rgb(51, 76, 102)"):
