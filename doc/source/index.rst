@@ -27,14 +27,11 @@ your mesh based on the flow solution.
 You can read your mesh into Ansys Fluent, or, for 3D geometries, create your
 mesh using the meshing mode of Fluent. All other operations are performed within
 the solution mode of Fluent, including setting boundary conditions, defining
-fluid properties, executing the solution, refining the mesh, and postprocessing
-and viewing the results.
+fluid properties, executing the solution, refining the mesh, running a parametric study, 
+and postprocessing and viewing the results.
 
-Python and Fluent
+What is PyFluent?
 -----------------
-Python is a portable, dynamically typed, interpreted programming language that
-is easy to learn, read, and write. It is free to use and distribute and is
-supported by a vast support library of thousands of available packages.
 
 PyFluent is part of the `PyAnsys <https://docs.pyansys.com>`_ ecosystem that
 lets you use Ansys Fluent within or alongside any other Python environment,
@@ -42,8 +39,8 @@ whether it is in conjunction with other Ansys Python libraries and packages or
 with other external Python products.
 
 PyFluent implements a client-server architecture.  PyFluent launches or connects
-with a running Fluent process as a server using gRPC interfaces, but all you
-need to interact with is the Python interface.
+with a running Fluent process as a server using Google remote procedure calls, 
+or gRPC interfaces, but all you need to interact with is the Python interface.
 
 You can use PyFluent to programmatically create, interact with and control an
 Ansys Fluent session to create your own customized workspace. In addition, you
@@ -58,6 +55,7 @@ The primary package, ``ansys-fluent``, provides features such as:
   for more information.
 - Scripting using Fluent's TUI commands. See the :ref:`ref_solver_tui`  module for
   more information about the available commands.
+- Scripting of a parametric study using Fluent.
 - Script post processing using Fluent's in-built post processing capabilities.
   See the :ref:`ref_postprocessing` module for more information.
 - Plotting of Fluent geometry and meshes using `PyVista
@@ -76,6 +74,27 @@ properties, boundary conditions are accessible without the need to pass
 parameter lists.
 
 More information is available in the :ref:`ref_settings` module documentation.
+
+Documentation and Issues
+------------------------
+
+In addition to installation, usage, and contribution information, the PyFluent
+documentation provides API documentation, examples, and code guidelines.
+
+On the PyFluent Issues page, you can create issues to submit questions,
+report bugs, and request new features. To reach the project support team,
+email pyansys.support@ansys.com.
+
+License
+-------
+PyFluent is licensed under the MIT license.
+
+This module makes no commercial claim over Ansys whatsoever. PyFluent extends
+the functionality of Ansys Fluent by adding an additional Python interface to
+Ansys Fluent without changing the core behavior or license of the original
+software. The use of the interactive control of PyFluent requires a legally
+licensed local copy of Ansys Fluent. For more information about Ansys Fluent,
+visit the Ansys Fluent page on the Ansys website.
 
 Project Index
 -------------
