@@ -6,7 +6,7 @@
             "2d"
         ],
         "default": "3d",
-        "required": true,
+        "fluent_required": true,
         "fluent_format": " {}"
     },
     "precision": {
@@ -16,7 +16,7 @@
             "double"
         ],
         "default": "double",
-        "required": true,
+        "fluent_required": true,
         "fluent_map": {
             "single": "",
             "double": "dp"

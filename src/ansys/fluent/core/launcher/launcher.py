@@ -78,7 +78,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     for k, v in all_options.items():
         argval = kwargs.get(k)
         default = v.get("default")
-        if argval is None and v.get("required") is True:
+        if argval is None and v.get("fluent_required") is True:
             argval = default
         if argval is not None:
             allowed_values = v.get("allowed_values")
