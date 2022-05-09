@@ -30,10 +30,6 @@ the solution mode of Fluent, including setting boundary conditions, defining
 fluid properties, executing the solution, refining the mesh, running a parametric study, 
 and postprocessing and viewing the results.
 
-Python is a portable, dynamically typed, interpreted programming language that
-is easy to learn, read, and write. It is free to use and distribute and is
-supported by a vast support library of thousands of available packages.
-
 What is PyFluent?
 -----------------
 
