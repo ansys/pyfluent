@@ -54,7 +54,17 @@ class Graphics:
                     cls.PLURAL,
                     PyLocalContainer(self, cls),
                 )
-
+       
+    def add_outline_mesh(self):
+        meshes = getattr(self, "Meshes", None) 
+        outline_mesh_id = "Mesh-outline"        
+        if  meshes is not None:
+            outline_mesh =  meshes[outline_mesh_id]            
+            outline_mesh.surfaces_list =  list(
+                outline_mesh._data_extractor.field_info().get_surfaces_info().keys()
+            ) + list(outline_mesh._get_top_most_parent()._local_surfaces_provider())                
+            return outline_mesh              
+    
 
 class Mesh(MeshDefn):
     """Mesh graphics."""

@@ -311,9 +311,7 @@ def update_vtk_fun_field(obj, color_bar):
 
 def update_vtk_fun_mesh(obj):
     try:
-        print(
-            "update_vtk_fun_mesh..",
-        )
+
         set_config(blocking=True)
         surface_iter = (
             iter([obj._name])
@@ -326,14 +324,12 @@ def update_vtk_fun_mesh(obj):
         elif obj.__class__.__name__ == "Surface":
             surface_data, scalar_field_data = win.fetch_surface_data(obj)
 
-        print("update_vtk_fun", "surface_data", surface_data)
-
         fields_data = []
         for surface_id, mesh_data in surface_data.items():
             fields_data.append(
                 [mesh_data["vertices"], mesh_data["faces"], next(surface_iter)]
             )
-        print(fields_data)
+        # print(fields_data)
     except Exception as e:
         print(e)
         return [], None

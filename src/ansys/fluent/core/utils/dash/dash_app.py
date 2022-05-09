@@ -139,6 +139,7 @@ def serve_layout():
             html.Data(id="plot-button-clicked"),
             html.Data(id="save-button-clicked"),
             html.Data(id="delete-button-clicked"),
+            html.Data(id="tab-content-created"),
             html.Data(id="command-output"),
             html.Data(
                 id="uuid-id",
@@ -311,26 +312,48 @@ print("serve_layout done")
 
 @app.callback(
     Output("need-to-data-fetch", "value"),
+    Input("tab-content-created", "value"),
     Input("interval-component", "n_intervals"),
     Input("connection-id", "data"),
     State("session-id", "value"),
     State("need-to-data-fetch", "value"),
 )
-def watcher(n_intervals, connection_id, session_id, need_to_fetch):
-    event_info = SessionsManager(app, connection_id, session_id).get_event_info(
-        "CalculationsStartedEvent"
-    )
-    if event_info:
-        if PostWindowCollection._is_executing == False:
-            PostWindowCollection._is_executing = True
-            return "yes"
+def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to_fetch):
+
+    ctx = dash.callback_context
+    triggered_from_list = [v["prop_id"].split(".")[0] for v in ctx.triggered]
+    if (
+        "tab-content-created" in triggered_from_list
+        and PostWindowCollection._show_outline
+    ):
+        PostWindowCollection._show_outline = False
+        graphics = GraphicsWindowCollection(
+            app, connection_id, session_id, SessionsManager
+        )
+        graphics._window_data[graphics._active_window] = {
+            "object_type": "Mesh",
+            "object_index": "outline",
+            "itr_index": None,
+        }
+        return "yes"
+
+    elif "interval-component" in triggered_from_list:
+        event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+            "CalculationsStartedEvent"
+        )
+        if event_info:
+            if PostWindowCollection._is_executing == False:
+                PostWindowCollection._is_executing = True
+                return "yes"
+            else:
+                raise PreventUpdate
         else:
-            raise PreventUpdate
-    else:
-        if need_to_fetch == "yes":
-            return "no"
-        else:
-            raise PreventUpdate
+            if need_to_fetch == "yes":
+                return "no"
+            else:
+                raise PreventUpdate
+
+    raise PreventUpdate
 
 
 @app.callback(
@@ -371,10 +394,11 @@ def create_session(n_clicks, connection_id, session_token, options):
     ctx = dash.callback_context
     triggered_value = ctx.triggered[0]["value"]
     triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-    print("create_session", triggered_from, triggered_value)
+
     if n_clicks == 0 or triggered_value is None:
         raise PreventUpdate
 
+    print("\n\n*******************create_session", triggered_from, triggered_value)
     user_sessions = user_name_to_session_map.get(connection_id)
     if not user_sessions:
         user_sessions = user_name_to_session_map[connection_id] = []
@@ -387,6 +411,7 @@ def create_session(n_clicks, connection_id, session_token, options):
     if options is not None:
         sessions = options
     sessions.append(session_id)
+    PostWindowCollection._show_outline = True
     return [sessions, session_id]
 
 
@@ -397,14 +422,17 @@ def create_session(n_clicks, connection_id, session_token, options):
     Input("session-id", "value"),
 )
 def update_object(connection_id, object_id, session_id):
-    print("update_object", connection_id, session_id, object_id)
+    print("\n\n update_object", connection_id, session_id, object_id)
 
-    if object_id is None or len(object_id) == 0 or session_id is None:
+    if session_id is None:
         raise PreventUpdate
-    object_id = object_id[0]
     ctx = dash.callback_context
     triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+    print("update_object", connection_id, session_id, object_id, triggered_from)
     if triggered_from == "tree-view":
+        if object_id is None or len(object_id) == 0:
+            raise PreventUpdate
+        object_id = object_id[0]
         if "local" in object_id or "remote" in object_id:
             return object_id
         else:
@@ -566,6 +594,7 @@ def add_remove_post_window(add_clicks, remove_clicks, connection_id, session_id)
 
 @app.callback(
     Output("tab-content", "children"),
+    Output("tab-content-created", "value"),
     Input("tabs", "active_tab"),
     Input("connection-id", "data"),
     Input("session-id", "value"),
@@ -595,15 +624,19 @@ def render_tab_content(active_tab, connection_id, session_id):
         )
 
     if active_tab == "graphics":
-        return GraphicsWindowCollection(
-            app, connection_id, session_id, SessionsManager
-        )()
+        return (
+            GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)(),
+            "yes",
+        )
 
     elif active_tab == "plots":
-        return PlotWindowCollection(app, connection_id, session_id, SessionsManager)()
+        return (
+            PlotWindowCollection(app, connection_id, session_id, SessionsManager)(),
+            "yes",
+        )
 
     elif active_tab == "monitors":
-        return MonitorWindow(app, connection_id, session_id, SessionsManager)()
+        return MonitorWindow(app, connection_id, session_id, SessionsManager)(), "yes"
 
 
 if __name__ == "__main__":

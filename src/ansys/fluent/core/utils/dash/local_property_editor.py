@@ -367,6 +367,7 @@ class PostWindowCollection:
 
     _windows = {}
     _is_executing = False
+    _show_outline = False
 
     def __init__(self, app, connection_id, session_id, window_type, SessionsManager):
         unique_id = f"{window_type}-{connection_id}-{session_id}"
@@ -411,6 +412,7 @@ class PostWindowCollection:
                     triggered_from,
                     triggered_value,
                     self._active_window,
+                    session_id,
                 )
                 if triggered_value is None:
                     print("triggered_value is None")
@@ -418,13 +420,20 @@ class PostWindowCollection:
                 post_window_collection = PostWindowCollection(
                     app, connection_id, session_id, window_type, SessionsManager
                 )
+
                 if self._unique_id != post_window_collection._unique_id:
-                    print("*************wrong trigger*********************")
+                    print(
+                        "*************wrong trigger*********************",
+                        self._unique_id,
+                        post_window_collection._unique_id,
+                    )
                     return dash.no_update
+
                 self._active_window = int(active_tab)
                 event_info = SessionsManager(
                     app, connection_id, session_id
                 ).get_event_info("IterationEndedEvent")
+
                 if triggered_from in ("plot-button-clicked", "graphics-button-clicked"):
                     if object_id is None or triggered_value == "0":
                         raise PreventUpdate
@@ -443,6 +452,7 @@ class PostWindowCollection:
                     )
                 elif triggered_from == "need-to-data-fetch":
                     if need_to_data_fetch == "yes":
+
                         window_data = self._window_data.get(self._active_window)
                         if window_data is None:
                             PostWindowCollection._is_executing = False
@@ -451,6 +461,13 @@ class PostWindowCollection:
                         object_index = window_data["object_index"]
                         window_data["itr_index"] = (
                             event_info.index if event_info else None
+                        )
+                        print(
+                            "get_viewer",
+                            connection_id,
+                            session_id,
+                            object_type,
+                            object_index,
                         )
                         viewer = self.get_viewer(
                             connection_id, session_id, object_type, object_index

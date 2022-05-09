@@ -5,8 +5,10 @@ from local_property_editor import (
     GraphicsWindowCollection,
 )
 import threading
+from ansys.fluent.post.pyvista import Graphics
 
 # from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
+from local_property_editor import LocalPropertyEditor
 
 
 class SessionsManager:
@@ -40,7 +42,11 @@ class SessionsManager:
                 "10.18.44.30", int(session_token), cleanup_on_exit=False
             )
             self.session.monitors_manager.start()
-
+            outline_mesh = LocalPropertyEditor(self._app, SessionsManager)._get_object(
+                self._connection_id, self._session_id, "Mesh", "outline"
+            )
+            outline_mesh.update(Graphics(self.session).add_outline_mesh()())
+            outline_mesh.show_edges = True
             self.static_info = self.session.get_settings_service().get_static_info()
             self.settings_root = self.session.get_settings_root()
             self.register_events()
