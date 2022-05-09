@@ -26,14 +26,14 @@ set_config(blocking=True, set_view_on_display="isometric")
 
 ###############################################################################
 # First, download the case and data file and start Fluent as a service with
-# Meshing mode, double precision, number of processors: 4
+# Meshing mode, double precision, number of processors: 2
 
 import_case = examples.download_file(
-    filename="manifold_solution.cas.h5", directory="pyfluent/exhaust_manifold"
+    filename="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
 )
 
 import_data = examples.download_file(
-    filename="manifold_solution.dat.h5", directory="pyfluent/exhaust_manifold"
+    filename="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
 )
 
 session = pyfluent.launch_fluent(precision="double", processor_count=2)
