@@ -59,7 +59,7 @@ The primary package, ``ansys-fluent``, provides features such as:
   for more information.
 - Scripting using Fluent's TUI commands. See the :ref:`ref_solver_tui`  module for
   more information about the available commands.
-- Scripring of a parametric study using Fluent.
+- Scripting of a parametric study using Fluent.
 - Script post processing using Fluent's in-built post processing capabilities.
   See the :ref:`ref_postprocessing` module for more information.
 - Plotting of Fluent geometry and meshes using `PyVista
