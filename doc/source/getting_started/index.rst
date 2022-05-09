@@ -3,24 +3,47 @@
 ===============
 Getting Started
 ===============
-To use PyFluent, you will need a locally installed licenced copy of ANSYS to run
-Fluent, with the first supported version being Ansys 2022 R2.
+To run PyFluent, you must have a local licenced copy of Ansys Fluent. 
+PyFluent supports Ansys Fluent versions 2022 R2 or newer.
 
 Visit `Ansys <https://www.ansys.com/>`_ for more information on
-getting a licensed copy of Ansys.
+getting a licensed copy of Ansys Fluent.
 
 ************
 Installation
 ************
-The ``ansys-fluent-core`` package currently supports Python 3.7 through Python
-3.10 on Windows and Linux.
 
-If you want to use PyFluent please install the latest release package from
-`PyFluent GitHub <https://github.com/pyansys/pyfluent/issues>`_ via:
+Python Module
+~~~~~~~~~~~~~
+The ``ansys-fluent-core`` package currently supports Python 3.7 through
+Python 3.10 on Windows and Linux.
 
-.. code:: console
+Install the latest release from `PyPi
+<https://pypi.org/project/ansys-fluent-core/>`_ with:
+
+.. code::
+
+   pip install ansys-fluent-core
+
+Alternatively, install the latest from `PyFluent GitHub
+<https://github.com/pyansys/pyfluent/issues>`_ via:
+
+.. code::
 
    pip install git+https://github.com/pyansys/pyfluent.git
+
+
+For a local "development" version, install with:
+
+.. code::
+
+   git clone https://github.com/pyansys/pyfluent.git
+   cd pyfluent
+   pip install -e .
+
+This will allow you to install the PyFluent ``ansys-fluent-core`` module
+and modify it locally and have the changes reflected in your setup
+after restarting the Python kernel.
 
 ****************
 Launching Fluent
@@ -31,8 +54,7 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
-  session = pyfluent.launch_fluent()
+  session = pyfluent.launch_fluent(precision="double", processor_count=2)
   session.check_health()
   session.start_transcript() # Streaming the transcript locally
 
@@ -57,6 +79,12 @@ following environment variable:
 
 .. code::
 
-        set PYFLUENT_SHOW_SERVER_GUI=1    # Windows
-        export PYFLUENT_SHOW_SERVER_GUI=1 # Linux (bash)
+  set PYFLUENT_SHOW_SERVER_GUI=1    # Windows
+  export PYFLUENT_SHOW_SERVER_GUI=1 # Linux (bash)
 
+If you want to print the debug information for development, set the following
+environment variable:
+
+.. code:: python
+
+  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
