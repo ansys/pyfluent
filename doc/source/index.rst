@@ -27,7 +27,7 @@ your mesh based on the flow solution.
 You can read your mesh into Ansys Fluent, or, for 3D geometries, create your
 mesh using the meshing mode of Fluent. All other operations are performed within
 the solution mode of Fluent, including setting boundary conditions, defining
-fluid properties, executing the solution, refining the mesh, parametric study, 
+fluid properties, executing the solution, refining the mesh, running a parametric study, 
 and postprocessing and viewing the results.
 
 Python is a portable, dynamically typed, interpreted programming language that
@@ -59,7 +59,7 @@ The primary package, ``ansys-fluent``, provides features such as:
   for more information.
 - Scripting using Fluent's TUI commands. See the :ref:`ref_solver_tui`  module for
   more information about the available commands.
-- Scripring of parametric study using Fluent.
+- Scripring of a parametric study using Fluent.
 - Script post processing using Fluent's in-built post processing capabilities.
   See the :ref:`ref_postprocessing` module for more information.
 - Plotting of Fluent geometry and meshes using `PyVista
