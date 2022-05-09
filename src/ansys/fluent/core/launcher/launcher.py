@@ -128,16 +128,17 @@ def launch_fluent(
     port: int = None,
     cleanup_on_exit: bool = True,
 ) -> Session:
-    """Start Fluent locally in server mode.
+    """Start Fluent locally in server mode or connect to a running Fluent
+    server instance.
 
     Parameters
     ----------
     version : str, optional
-        Whether to use the ``"2d"`` or ``"3d"`` version of Fluent.
+        Selects either the ``"2d"`` or ``"3d"`` version of Fluent.
         Default is ``"3d"``.
 
     precision : str, optional
-        Whether to use the ``"single"`` precision or ``"double"``
+        Selects either the ``"single"`` precision or ``"double"``
         precision version of Fluent. Default is ``"double"`` precision.
 
     processor_count : int, optional
@@ -162,20 +163,19 @@ def launch_fluent(
 
     start_instance : bool, optional
         When False, connect to an existing Fluent instance at ``ip``
-        and ``port``, which default to ``'127.0.0.1'`` at 63084.
-        Otherwise, launch a local instance of Fluent. Default is True
-        which can be overwritten by the environment variable
+        and ``port``. Otherwise, launch a local instance of Fluent.
+        Defaults to True and can also be set by the environment variable
         ``PYFLUENT_START_INSTANCE=<0 or 1>``.
 
     ip : str, optional
         IP address to connect to existing Fluent instance. Used only
         when ``start_instance`` is ``False``.  Defaults to
-        ``'127.0.0.1'`` which can be overwritten by the environment
-        variable ``PYFLUENT_FLUENT_IP=<ip>``.
+        ``"127.0.0.1"`` and can also be set by the environment variable
+        ``PYFLUENT_FLUENT_IP=<ip>``.
 
     port : int, optional
-        Port to connect to existing Fluent instance. Used only
-        when ``start_instance`` is ``False``.  Defaults value can be set
+        Port to connect to existing Fluent instance. Used only when
+        ``start_instance`` is ``False``. Default value can be set
         by the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
 
     cleanup_on_exit : bool, optional
