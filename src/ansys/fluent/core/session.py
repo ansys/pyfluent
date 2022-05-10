@@ -150,8 +150,8 @@ class Session:
         ----------
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
-            when ``channel`` is ``None``.  Defaults to ``'127.0.0.1'``
-            which can be overwritten by the environment variable
+            when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
+            and can also be set by the environment variable
             ``PYFLUENT_FLUENT_IP=<ip>``.
         port : int, optional
             Port to connect to existing Fluent instance. Used only
