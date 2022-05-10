@@ -32,3 +32,11 @@ unittest:
 	@echo "Running unittest"
 	@pip install -r requirements_test.txt
 	@pytest -v --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+
+api-codegen:
+	@echo "Running API codegen"
+	@pip install -r requirements_codegen.txt
+	@python codegen/pyprotogen.py
+	@python codegen/tuigen.py
+	@python codegen/settingsgen.py
+	@python codegen/datamodelgen.py
