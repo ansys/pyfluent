@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_mesh</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon_mesh" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-2" fill="#121212" fill-rule="nonzero" x="9" y="1" width="1" height="2"></rect>
+        <rect id="Rectangle-2" fill="#121212" fill-rule="nonzero" x="5" y="1" width="1" height="2"></rect>
+        <rect id="Rectangle-2" fill="#121212" fill-rule="nonzero" x="13" y="1" width="1" height="2"></rect>
+        <rect id="Rectangle-3" fill="#121212" fill-rule="nonzero" x="0" y="9" width="3" height="1"></rect>
+        <rect id="Rectangle-3" fill="#121212" fill-rule="nonzero" x="0" y="13" width="3" height="1"></rect>
+        <rect id="Rectangle-3" fill="#121212" fill-rule="nonzero" x="0" y="5" width="3" height="1"></rect>
+        <polygon id="Path-4" fill="#121212" fill-rule="nonzero" points="3.00445459 17 3.00445459 18 0 18 0 0 18 0 18 3.00480652 17 3.00480652 17 1 1 1 1 17"></polygon>
+        <g id="Group" transform="translate(3.000000, 3.000000)" fill-rule="nonzero">
+            <path d="M0.667067076,0.728398931 L16.4447936,16.4053648" id="Path-187" stroke="#CD930C"></path>
+            <path d="M0.642100681,0.57757077 L16.4407313,16.359881" id="Path-187" stroke="#CD930C" transform="translate(8.541416, 8.468726) scale(-1, 1) translate(-8.541416, -8.468726) "></path>
+            <polygon id="Path-3" stroke="#CD930C" points="7.66635816 16.170265 0.865090182 8.5 0.865090182 7.6733355 7.66635816 0.856615483 8.50319888 0.856615483 16.1413076 7.6733355 16.1413076 8.21003653 8.50487556 16.170265"></polygon>
+            <path d="M0.5,0.5 L0.5,16.5 L16.5,16.5 L16.5,0.5 L0.5,0.5 Z" id="Rectangle" stroke="#121212"></path>
+            <polygon id="Path-2" fill="#121212" points="8 0 8.99848471 0 8.99848471 17 8 17"></polygon>
+            <polygon id="Path-2" fill="#121212" transform="translate(8.500000, 8.500000) rotate(-270.000000) translate(-8.500000, -8.500000) " points="8 1.77635684e-15 8.99848471 1.77635684e-15 8.99848471 17 8 17"></polygon>
+            <circle id="Oval-12" fill="#CD930C" cx="4.25" cy="4.25" r="1"></circle>
+            <circle id="Oval-12" fill="#CD930C" cx="12.75" cy="4.25" r="1"></circle>
+            <circle id="Oval-12" fill="#CD930C" cx="12.3249542" cy="12.1286446" r="1"></circle>
+            <circle id="Oval-12" fill="#CD930C" cx="4.41879754" cy="12.4685433" r="1"></circle>
+        </g>
+    </g>
+</svg>
