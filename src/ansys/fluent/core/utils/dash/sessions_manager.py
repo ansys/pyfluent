@@ -3,6 +3,7 @@ from local_property_editor import (
     MonitorWindow,
     PlotWindowCollection,
     GraphicsWindowCollection,
+    PostWindowCollection,
 )
 import threading
 from ansys.fluent.post.pyvista import Graphics
@@ -50,6 +51,7 @@ class SessionsManager:
             self.static_info = self.session.get_settings_service().get_static_info()
             self.settings_root = self.session.get_settings_root()
             self.register_events()
+            PostWindowCollection._show_outline = True
         else:
             user_id, uuid_id = session_token.split(":")
             id_uuid_list = user_name_to_session_map[user_id]

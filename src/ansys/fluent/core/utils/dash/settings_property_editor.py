@@ -69,7 +69,7 @@ class SettingsPropertyEditor:
             kwargs = {}
             cmd_obj = getattr(obj, command_name)
             args_iter = iter(args_value)
-            args_info = static_info["commands"][cmd_obj.obj_name]["arguments"]
+            args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
             for arg_name, arg_info in args_info.items():
                 kwargs[to_python_name(arg_name)] = next(args_iter)
             print(kwargs)
@@ -132,9 +132,10 @@ class SettingsPropertyEditor:
 
         def store_all_buttons(obj, si_info):
             commands = si_info.get("commands", [])
+            print("commands", obj, commands)
             for command_name in commands:
                 try:
-                    cmd_obj = getattr(obj, command_name)
+                    cmd_obj = getattr(obj, to_python_name(command_name))
                 except AttributeError:
                     continue
                 if not cmd_obj.is_active():
@@ -143,12 +144,13 @@ class SettingsPropertyEditor:
                     self.get_label(command_name),
                     id={
                         "type": "settings-command-button",
-                        "index": command_name,
+                        "index": to_python_name(command_name),
                     },
                     n_clicks=0,
+                    size="sm",
                 )
                 si_info_command = si_info["commands"][cmd_obj.obj_name]
-                command_args = si_info_command["arguments"]
+                command_args = si_info_command.get("arguments", {})
                 for command_arg, arg_info in command_args.items():
                     if arg_info["type"] == "integer":
                         self._all_widgets[command_arg] = dcc.Input(
@@ -171,7 +173,7 @@ class SettingsPropertyEditor:
             connection_id, session_id, object_type, object_index
         )
         self._all_widgets = {}
-        print("update_stored_widgets", obj, obj.get_state())
+        # print("update_stored_widgets", obj, obj.get_state())
         if widget_type == "input":
             store_all_widgets(obj, static_info, obj.get_state())
         else:
@@ -185,7 +187,7 @@ class SettingsPropertyEditor:
         path,
         static_info,
     ):
-        print("get_widget", obj, name, path)
+        # print("get_widget", obj, name, path)
         widget = html.Div("Widget not found.")
         if static_info["type"] == "string":
             if static_info.get("has_allowed_values"):

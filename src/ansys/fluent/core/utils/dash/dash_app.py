@@ -47,14 +47,15 @@ import diskcache
 
 cache = diskcache.Cache("./cache")
 long_callback_manager = DiskcacheLongCallbackManager(cache)
-
+HEIGHT = "59rem"
 app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
     long_callback_manager=long_callback_manager,
+    title="Ansys PyFluent",
 )
-
+app._favicon = "assets/favicon.ico"
 auth = dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
 # from dash_component import TreeView as dash_treeview_antd
 # from  dash_treeview_antd import TreeView as dash_treeview_antd
@@ -70,7 +71,7 @@ SIDEBAR_STYLE = {
     "bottom": 0,
     "width": "18rem",
     "background-color": "#f8f9fa",
-    "height": "53rem",
+    "height": HEIGHT,
     "overflow-y": "auto",
 }
 
@@ -172,6 +173,19 @@ def serve_layout():
                             style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
+                            dcc.Clipboard(
+                                target_id="uuid-id",
+                                title="Share",
+                                style={
+                                    "display": "inline-block",
+                                    "fontSize": 20,
+                                    "verticalAlign": "top",
+                                },
+                            ),
+                            width="auto",
+                            align="end",
+                        ),
+                        dbc.Col(
                             dcc.Dropdown(
                                 id="session-id",
                                 # options=map(lambda x: x[0],user_name_to_session_map.get(connection_id, [])),
@@ -210,19 +224,6 @@ def serve_layout():
                             width="auto",
                             align="end",
                         ),
-                        dbc.Col(
-                            dcc.Clipboard(
-                                target_id="uuid-id",
-                                title="Share",
-                                style={
-                                    "display": "inline-block",
-                                    "fontSize": 20,
-                                    "verticalAlign": "top",
-                                },
-                            ),
-                            width="auto",
-                            align="end",
-                        ),
                     ],
                     style={
                         "font": "14px 'Segoe UI'",
@@ -250,7 +251,7 @@ def serve_layout():
                             "width": "20rem",
                             "background-color": "#f8f9fa",
                             "overflow-y": "auto",
-                            "height": "53rem",
+                            "height": HEIGHT,
                         },
                     ),
                     dbc.Col(
@@ -278,12 +279,12 @@ def serve_layout():
                                         # className="p-4",
                                     ),
                                 ],
-                                style={"height": "53rem"},
+                                style={"height": HEIGHT},
                             ),
                         ]
                     ),
                 ],
-                style={"font": "14px 'Segoe UI'", "padding": "4px"},
+                style={"font": "14px 'Segoe UI'", "padding": "4px 0px 4px 0px"},
             ),
             html.Div(
                 [
@@ -295,13 +296,14 @@ def serve_layout():
                             label="",
                             style={"height": "25px"},
                         ),
-                        style={"display": "block", "width": "100%"},
+                        style={"display": "block", "width": "80%"},
                     ),
                 ],
                 id="progress-container",
                 style={"font": "14px 'Segoe UI'"},
             ),
         ],
+        style={"font": "14px 'Segoe UI'", "border": "0px ridge lightgray"},
     )
 
 
@@ -341,6 +343,7 @@ def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to
         event_info = SessionsManager(app, connection_id, session_id).get_event_info(
             "CalculationsStartedEvent"
         )
+        print("interval-component", triggered_from_list, event_info)
         if event_info:
             if PostWindowCollection._is_executing == False:
                 PostWindowCollection._is_executing = True
@@ -411,7 +414,7 @@ def create_session(n_clicks, connection_id, session_token, options):
     if options is not None:
         sessions = options
     sessions.append(session_id)
-    PostWindowCollection._show_outline = True
+
     return [sessions, session_id]
 
 
@@ -607,8 +610,9 @@ def render_tab_content(active_tab, connection_id, session_id):
     """
     print("render_tab_content", active_tab, connection_id, session_id)
     if session_id is None:
-        return html.Pre(
-            """
+        return (
+            html.Pre(
+                """
               Welcome to ANSYS PyFluent Web Client 22.2.0
               
               Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
@@ -620,7 +624,9 @@ def render_tab_content(active_tab, connection_id, session_id):
               Please visit https://github.com/pyansys/pyfluent for more information.
               
               """,
-            style={"font": "14px 'Segoe UI'"},
+                style={"font": "14px 'Segoe UI'"},
+            ),
+            dash.no_update,
         )
 
     if active_tab == "graphics":

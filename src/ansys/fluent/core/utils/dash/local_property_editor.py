@@ -565,12 +565,12 @@ class PostWindowCollection:
                 ),
                 html.Div(
                     id=f"{self._unique_id}-tab-content",
-                    style={"padding": "4px 4px 0px 4px", "height": "745px"},
+                    style={"padding": "4px 4px 0px 4px", "height": "837px"},
                     children=self.get_content(),
                 ),
             ],
             style={
-                "height": "50rem",
+                "height": "57rem",
                 "overflow-y": "auto",
                 "overflow-x": "hidden",
             },
@@ -645,7 +645,7 @@ class GraphicsWindowCollection(PostWindowCollection):
                     id=f"post-viewer-{self._unique_id}",
                     pickingModes=["hover"],
                     children=self._get_graphics(),
-                    style={"height": "745px"},
+                    style={"height": "837px"},
                 )
             )
         ]
@@ -717,7 +717,7 @@ class GraphicsWindowCollection(PostWindowCollection):
         )
         fig.update_layout(
             width=150,
-            height=745,  # px
+            height=837,  # px
             margin={"b": 0, "l": 0, "r": 0, "t": 0},
             autosize=False,
             plot_bgcolor=bgnd,
@@ -835,5 +835,5 @@ class MonitorWindow:
                     style={"height": "100%"},
                 ),
             ],
-            style={"height": "43rem"},
+            style={"height": "837px"},
         )
