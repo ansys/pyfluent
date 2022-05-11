@@ -382,114 +382,6 @@ class PostWindowCollection:
             self._active_window = 0
             self._window_data = {}
             self._SessionsManager = SessionsManager
-
-            @self._app.callback(
-                Output(f"{self._unique_id}-tab-content", "children"),
-                Input("graphics-button-clicked", "value"),
-                Input("plot-button-clicked", "value"),
-                Input("connection-id", "data"),
-                Input(f"{self._unique_id}-tabs", "active_tab"),
-                Input("need-to-data-fetch", "value"),
-                State("session-id", "value"),
-                State("object-id", "value"),
-                prevent_initial_call=True,
-            )
-            def on_click_update(
-                n_graphics_clicks,
-                n_plot_clicks,
-                connection_id,
-                active_tab,
-                need_to_data_fetch,
-                session_id,
-                object_id,
-            ):
-                ctx = dash.callback_context
-                triggered_value = ctx.triggered[0]["value"]
-                triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-
-                print(
-                    "\n on_click_update:",
-                    triggered_from,
-                    triggered_value,
-                    self._active_window,
-                    session_id,
-                )
-                if triggered_value is None:
-                    print("triggered_value is None")
-                    raise PreventUpdate
-                post_window_collection = PostWindowCollection(
-                    app, connection_id, session_id, window_type, SessionsManager
-                )
-
-                if self._unique_id != post_window_collection._unique_id:
-                    print(
-                        "*************wrong trigger*********************",
-                        self._unique_id,
-                        post_window_collection._unique_id,
-                    )
-                    return dash.no_update
-
-                self._active_window = int(active_tab)
-                event_info = SessionsManager(
-                    app, connection_id, session_id
-                ).get_event_info("IterationEndedEvent")
-
-                if triggered_from in ("plot-button-clicked", "graphics-button-clicked"):
-                    if object_id is None or triggered_value == "0":
-                        raise PreventUpdate
-                    object_location, object_type, object_index = object_id.split(":")
-                    if object_location != "local":
-                        raise PreventUpdate
-                    if not self.is_type_supported(object_type):
-                        raise PreventUpdate
-                    self._window_data[self._active_window] = {
-                        "object_type": object_type,
-                        "object_index": object_index,
-                        "itr_index": event_info.index if event_info else None,
-                    }
-                    return self.get_viewer(
-                        connection_id, session_id, object_type, object_index
-                    )
-                elif triggered_from == "need-to-data-fetch":
-                    if need_to_data_fetch == "yes":
-
-                        window_data = self._window_data.get(self._active_window)
-                        if window_data is None:
-                            PostWindowCollection._is_executing = False
-                            return self.get_content()
-                        object_type = window_data["object_type"]
-                        object_index = window_data["object_index"]
-                        window_data["itr_index"] = (
-                            event_info.index if event_info else None
-                        )
-                        print(
-                            "get_viewer",
-                            connection_id,
-                            session_id,
-                            object_type,
-                            object_index,
-                        )
-                        viewer = self.get_viewer(
-                            connection_id, session_id, object_type, object_index
-                        )
-                        PostWindowCollection._is_executing = False
-                        return viewer
-                else:
-                    window_data = self._window_data.get(self._active_window)
-                    if (
-                        event_info
-                        and window_data
-                        and window_data["itr_index"] != event_info.index
-                    ):
-                        object_type = window_data["object_type"]
-                        object_index = window_data["object_index"]
-                        window_data["itr_index"] = event_info.index
-                        return self.get_viewer(
-                            connection_id, session_id, object_type, object_index
-                        )
-
-                return self.get_content()
-
         else:
             self.__dict__ = window_state
 
@@ -519,7 +411,7 @@ class PostWindowCollection:
                                     )
                                     for window in self._windows
                                 ],
-                                id=f"{self._unique_id}-tabs",
+                                id="post-window-tabs",
                                 active_tab=f"{self._active_window}",
                                 style={
                                     "margin": "10px 0px 0px 0px",
@@ -564,7 +456,7 @@ class PostWindowCollection:
                     ]
                 ),
                 html.Div(
-                    id=f"{self._unique_id}-tab-content",
+                    id="post-window-tab-content",
                     style={"padding": "4px 4px 0px 4px", "height": "837px"},
                     children=self.get_content(),
                 ),
@@ -638,7 +530,8 @@ class GraphicsWindowCollection(PostWindowCollection):
         ).is_type_supported(type)
 
     def get_content(self):
-        print("data updated")
+        print("get_content", self._active_window, list(self._state.keys()))
+        print("_get_graphics", self._get_graphics())
         content = [
             dbc.Col(
                 dash_vtk.View(
@@ -678,7 +571,6 @@ class GraphicsWindowCollection(PostWindowCollection):
             update_vtk_fun(obj, color_bar)[0],
             color_bar,
         )
-        print("data fetched")
         return self.get_content()
 
     def make_colorbar(self, title, rng, bgnd="rgb(51, 76, 102)"):
@@ -743,68 +635,6 @@ class MonitorWindow:
             self._session_id = session_id
             self.SessionsManager = SessionsManager
 
-            @app.callback(
-                Output(f"{self._unique_win_id}-tab-content", "children"),
-                Input(f"{self._unique_win_id}-tabs", "active_tab"),
-                Input("need-to-data-fetch", "value"),
-                # Input("interval-component", "n_intervals"),
-                Input("connection-id", "data"),
-                State("session-id", "value"),
-            )
-            def render_tab_content(
-                active_tab, need_to_data_fetch, connection_id, session_id
-            ):
-                """
-                This callback takes the 'active_tab' property as input, as well as the
-                stored graphs, and renders the tab content depending on what the value of
-                'active_tab' is.
-                """
-                ctx = dash.callback_context
-                triggered_value = ctx.triggered[0]["value"]
-                triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-
-                print(
-                    "\n render_tab_content:",
-                    triggered_from,
-                    triggered_value,
-                    active_tab,
-                )
-
-                session = self.SessionsManager(
-                    self._app, connection_id, session_id
-                ).session
-                fig = session.monitors_manager.get_monitor_set_data(active_tab)
-
-                if active_tab == "residual":
-                    fig.update_yaxes(type="log")
-
-                fig.update_layout(
-                    title={
-                        "text": session.monitors_manager.get_monitor_set_prop(
-                            active_tab, "title"
-                        ),
-                        "y": 0.95,
-                        "x": 0.5,
-                        "xanchor": "center",
-                        "yanchor": "top",
-                    },
-                    xaxis_title=session.monitors_manager.get_monitor_set_prop(
-                        active_tab, "xlabel"
-                    ),
-                    yaxis_title=session.monitors_manager.get_monitor_set_prop(
-                        active_tab, "ylabel"
-                    ),
-                    legend_title=session.monitors_manager.get_monitor_set_prop(
-                        active_tab, active_tab
-                    ),
-                    font=dict(family="Courier New, monospace", size=14, color="black"),
-                )
-                PostWindowCollection._is_executing = False
-                return dcc.Graph(
-                    figure=fig,
-                    style={"height": "100%"},
-                )
-
         else:
             self.__dict__ = window_state
 
@@ -823,7 +653,7 @@ class MonitorWindow:
                         dbc.Tab(label=monitor_set, tab_id=monitor_set)
                         for monitor_set in monitor_sets
                     ],
-                    id=f"{self._unique_win_id}-tabs",
+                    id=f"monitor-tabs",
                     active_tab=monitor_sets[0],
                     style={
                         "margin": "10px 0px 0px 0px",
@@ -831,7 +661,7 @@ class MonitorWindow:
                     },
                 ),
                 html.Div(
-                    id=f"{self._unique_win_id}-tab-content",
+                    id=f"monitor-tab-content",
                     style={"height": "100%"},
                 ),
             ],

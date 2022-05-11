@@ -16,7 +16,7 @@ app = dash.Dash(
 app._favicon = "assets/favicon.ico"
 dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
 app.layout = app_layout
-app_layout.app=app
+app_layout.app = app
 register_callbacks(app)
 
 if __name__ == "__main__":

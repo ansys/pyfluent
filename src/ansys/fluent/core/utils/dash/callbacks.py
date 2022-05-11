@@ -3,7 +3,7 @@ import uuid
 import dash
 from dash.exceptions import PreventUpdate
 from dash import Input, Output, State, ALL
-from dash import html
+from dash import html, dcc
 
 from sessions_manager import SessionsManager
 from local_property_editor import (
@@ -18,7 +18,185 @@ from dash_component import RCTree as dash_tree
 
 user_name_to_session_map = {}
 
+
 def register_callbacks(app):
+    @app.callback(
+        Output(f"monitor-tab-content", "children"),
+        Input(f"monitor-tabs", "active_tab"),
+        Input("need-to-data-fetch", "value"),
+        Input("connection-id", "data"),
+        State("session-id", "value"),
+    )
+    def render_tab_content(active_tab, need_to_data_fetch, connection_id, session_id):
+        """
+        This callback takes the 'active_tab' property as input, as well as the
+        stored graphs, and renders the tab content depending on what the value of
+        'active_tab' is.
+        """
+        ctx = dash.callback_context
+        triggered_value = ctx.triggered[0]["value"]
+        triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+        monitor_window = MonitorWindow(app, connection_id, session_id, SessionsManager)
+        self = monitor_window
+        print(
+            "\n render_tab_content:",
+            triggered_from,
+            triggered_value,
+            active_tab,
+        )
+
+        session = self.SessionsManager(self._app, connection_id, session_id).session
+        fig = session.monitors_manager.get_monitor_set_data(active_tab)
+
+        if active_tab == "residual":
+            fig.update_yaxes(type="log")
+
+        fig.update_layout(
+            title={
+                "text": session.monitors_manager.get_monitor_set_prop(
+                    active_tab, "title"
+                ),
+                "y": 0.95,
+                "x": 0.5,
+                "xanchor": "center",
+                "yanchor": "top",
+            },
+            xaxis_title=session.monitors_manager.get_monitor_set_prop(
+                active_tab, "xlabel"
+            ),
+            yaxis_title=session.monitors_manager.get_monitor_set_prop(
+                active_tab, "ylabel"
+            ),
+            legend_title=session.monitors_manager.get_monitor_set_prop(
+                active_tab, active_tab
+            ),
+            font=dict(family="Courier New, monospace", size=14, color="black"),
+        )
+        PostWindowCollection._is_executing = False
+        return dcc.Graph(
+            figure=fig,
+            style={"height": "100%"},
+        )
+
+    @app.callback(
+        Output("post-window-tab-content", "children"),
+        Input("graphics-button-clicked", "value"),
+        Input("plot-button-clicked", "value"),
+        Input("connection-id", "data"),
+        Input("post-window-tabs", "active_tab"),
+        Input("need-to-data-fetch", "value"),
+        State("session-id", "value"),
+        State("object-id", "value"),
+        State("tabs", "active_tab"),
+        prevent_initial_call=True,
+    )
+    def on_click_update(
+        n_graphics_clicks,
+        n_plot_clicks,
+        connection_id,
+        active_tab,
+        need_to_data_fetch,
+        session_id,
+        object_id,
+        main_active_tab,
+    ):
+        ctx = dash.callback_context
+        triggered_value = ctx.triggered[0]["value"]
+        triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+        if triggered_from in ("graphics-button-clicked", "plot-button-clicked"):
+            post_window_collection = (
+                GraphicsWindowCollection(
+                    app, connection_id, session_id, SessionsManager
+                )
+                if triggered_from == "graphics-button-clicked"
+                else PlotWindowCollection(
+                    app, connection_id, session_id, SessionsManager
+                )
+            )
+        elif main_active_tab == "graphics":
+            post_window_collection = GraphicsWindowCollection(
+                app, connection_id, session_id, SessionsManager
+            )
+        else:
+            post_window_collection = PlotWindowCollection(
+                app, connection_id, session_id, SessionsManager
+            )
+
+        print(
+            "\n on_click_update:",
+            triggered_from,
+            triggered_value,
+            post_window_collection._active_window,
+            session_id,
+        )
+        if triggered_value is None:
+            print("triggered_value is None")
+            raise PreventUpdate
+
+        post_window_collection._active_window = int(active_tab)
+        event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+            "IterationEndedEvent"
+        )
+
+        if triggered_from in ("plot-button-clicked", "graphics-button-clicked"):
+            if object_id is None or triggered_value == "0":
+                raise PreventUpdate
+            object_location, object_type, object_index = object_id.split(":")
+            if object_location != "local":
+                raise PreventUpdate
+            if not post_window_collection.is_type_supported(object_type):
+                raise PreventUpdate
+            post_window_collection._window_data[
+                post_window_collection._active_window
+            ] = {
+                "object_type": object_type,
+                "object_index": object_index,
+                "itr_index": event_info.index if event_info else None,
+            }
+            return post_window_collection.get_viewer(
+                connection_id, session_id, object_type, object_index
+            )
+        elif triggered_from == "need-to-data-fetch":
+            if need_to_data_fetch == "yes":
+
+                window_data = post_window_collection._window_data.get(
+                    post_window_collection._active_window
+                )
+                if window_data is None:
+                    PostWindowCollection._is_executing = False
+                    return post_window_collection.get_content()
+                object_type = window_data["object_type"]
+                object_index = window_data["object_index"]
+                window_data["itr_index"] = event_info.index if event_info else None
+                print(
+                    "get_viewer",
+                    connection_id,
+                    session_id,
+                    object_type,
+                    object_index,
+                )
+                viewer = post_window_collection.get_viewer(
+                    connection_id, session_id, object_type, object_index
+                )
+                PostWindowCollection._is_executing = False
+                return viewer
+        else:
+            window_data = post_window_collection._window_data.get(
+                post_window_collection._active_window
+            )
+            if (
+                event_info
+                and window_data
+                and window_data["itr_index"] != event_info.index
+            ):
+                object_type = window_data["object_type"]
+                object_index = window_data["object_index"]
+                window_data["itr_index"] = event_info.index
+                return post_window_collection.get_viewer(
+                    connection_id, session_id, object_type, object_index
+                )
+
+        return post_window_collection.get_content()
 
     @app.callback(
         Output("need-to-data-fetch", "value"),
@@ -37,7 +215,9 @@ def register_callbacks(app):
             and PostWindowCollection._show_outline
         ):
             PostWindowCollection._show_outline = False
-            graphics = GraphicsWindowCollection(app, user_id, session_id, SessionsManager)
+            graphics = GraphicsWindowCollection(
+                app, user_id, session_id, SessionsManager
+            )
             graphics._window_data[graphics._active_window] = {
                 "object_type": "Mesh",
                 "object_index": "outline",
@@ -48,7 +228,7 @@ def register_callbacks(app):
         elif "interval-component" in triggered_from_list:
             event_info = SessionsManager(app, user_id, session_id).get_event_info(
                 "CalculationsStartedEvent"
-            )           
+            )
             if event_info:
                 if PostWindowCollection._is_executing == False:
                     PostWindowCollection._is_executing = True
@@ -62,7 +242,6 @@ def register_callbacks(app):
                     raise PreventUpdate
 
         raise PreventUpdate
-
 
     @app.callback(
         Output("progress-container", "style"),
@@ -88,7 +267,6 @@ def register_callbacks(app):
             event_info.message,
         ]
 
-
     @app.callback(
         Output("session-id", "options"),
         Output("session-id", "value"),
@@ -105,7 +283,7 @@ def register_callbacks(app):
 
         if n_clicks == 0 or triggered_value is None:
             raise PreventUpdate
-       
+
         user_sessions = user_name_to_session_map.get(user_id)
         if not user_sessions:
             user_sessions = user_name_to_session_map[user_id] = []
@@ -121,7 +299,6 @@ def register_callbacks(app):
 
         return [sessions, session_id]
 
-
     @app.callback(
         Output("object-id", "value"),
         Input("connection-id", "data"),  #
@@ -129,7 +306,7 @@ def register_callbacks(app):
         Input("session-id", "value"),
     )
     def update_object(user_id, object_id, session_id):
-        
+
         if session_id is None:
             raise PreventUpdate
         ctx = dash.callback_context
@@ -146,7 +323,6 @@ def register_callbacks(app):
         else:
             PostWindowCollection._is_executing = False
             return None
-
 
     @app.callback(
         Output("tree-container", "children"),
@@ -182,9 +358,9 @@ def register_callbacks(app):
         tree_nodes, keys = TreeView(
             app, user_id, session_id, SessionsManager
         ).get_tree_nodes()
-        filtered = filter(lambda x: session_id == x[0], user_name_to_session_map[user_id])
-        print(keys)
-        print(tree_nodes)
+        filtered = filter(
+            lambda x: session_id == x[0], user_name_to_session_map[user_id]
+        )
         return (
             dash_tree(
                 id="tree-view",
@@ -194,7 +370,6 @@ def register_callbacks(app):
             ),
             list(filtered)[0][1],
         )
-
 
     @app.callback(
         Output("save-button-clicked", "value"),
@@ -206,7 +381,6 @@ def register_callbacks(app):
             raise PreventUpdate
         return str(save_n_clicks)
 
-
     @app.callback(
         Output("delete-button-clicked", "value"),
         Input("delete-button", "n_clicks"),
@@ -217,7 +391,6 @@ def register_callbacks(app):
             raise PreventUpdate
         return str(delete_n_clicks)
 
-
     @app.callback(
         Output("graphics-button-clicked", "value"),
         Input("graphics-button", "n_clicks"),
@@ -227,7 +400,6 @@ def register_callbacks(app):
             raise PreventUpdate
         return str(n_graphics_clicks)
 
-
     @app.callback(
         Output("plot-button-clicked", "value"),
         Input("plot-button", "n_clicks"),
@@ -236,7 +408,6 @@ def register_callbacks(app):
         if n_post_clicks is None:
             raise PreventUpdate
         return str(n_post_clicks)
-
 
     @app.callback(
         Output("tabs", "active_tab"),
@@ -298,7 +469,6 @@ def register_callbacks(app):
             window._active_window = new_index
 
         return "plots" if input_index == "plot" else "graphics"
-
 
     @app.callback(
         Output("tab-content", "children"),

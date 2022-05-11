@@ -3,6 +3,7 @@ from local_property_editor import LocalPropertyEditor
 import dash_html_components as html
 from dash_component import RCTree as dash_tree
 
+
 class TreeView:
 
     _tree_views = {}
@@ -30,17 +31,17 @@ class TreeView:
             remote = item_data.get("remote")
             local = item_data.get("local")
             index = item_data.get("index", "")
-            
+
             key = item_name
             if local:
-                key = f"local:{local}:{index}"                
-            elif remote:                
+                key = f"local:{local}:{index}"
+            elif remote:
                 key = f"remote:{remote}:{index}"
-            
+
             tree_data["key"] = key
             keys.append(key)
             tree_data["icon"] = icon
-            
+
             if item_data.get("children"):
                 tree_data["children"], child_keys = self.populate_tree(
                     item_data["children"]

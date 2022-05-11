@@ -1,5 +1,3 @@
-
-
 import dash
 import dash_auth
 from dash import dcc, html
@@ -25,7 +23,8 @@ HEIGHT = "59rem"
 MAX_SESSION_COUNT = 6
 pio.templates.default = "plotly_white"
 
-def get_side_bar(app, user_id, session_id):    
+
+def get_side_bar(app, user_id, session_id):
     tree_nodes_data = {"title": "Root", "key": "Root", "icon": None, "children": []}
     keys = ["Root"]
     if session_id:
@@ -67,24 +66,21 @@ def get_side_bar(app, user_id, session_id):
     )
 
 
-
-
-
 def app_layout():
     app = app_layout.app
     user_id = "user1"
     user_id = request.authorization["username"]
-    for session_id in range(MAX_SESSION_COUNT):
-        SessionsManager(app, user_id, f"session-{session_id}")
+    # for session_id in range(MAX_SESSION_COUNT):
+    # SessionsManager(app, user_id, "session-0")
     PropertyEditor(app, SessionsManager)
-  
+
     return dbc.Container(
         fluid=True,
         children=[
             dcc.Store(data=user_id, id="connection-id"),
             dcc.Interval(
                 id="interval-component",
-                interval=1 * 1000,  # in milliseconds
+                interval=1 * 1000,
                 n_intervals=0,
             ),
             html.Data(id="refresh-property-editor"),
@@ -115,20 +111,20 @@ def app_layout():
                                         html.B("PyFluent Web Client"),
                                         style={
                                             "font": "24px 'Segoe UI'",
-                                            "padding": "0px 0px 0px 20px",                                           
+                                            "padding": "0px 0px 0px 20px",
                                         },
                                     ),
                                 ],
                                 style={
                                     "display": "flex",
-                                    "flex-direction": "row",                                     
+                                    "flex-direction": "row",
                                 },
                             ),
                             style={"border-bottom": "3px solid gray"},
                         ),
-                        dbc.Col(                            
+                        dbc.Col(
                             dcc.Dropdown(
-                                id="session-id",                               
+                                id="session-id",
                                 options=list(
                                     map(
                                         lambda x: x[0],
@@ -183,19 +179,27 @@ def app_layout():
                             align="end",
                         ),
                     ],
-                    style={                      
+                    style={
                         "padding": "0px 0px 5px",
                         "border-bottom": "14px solid black",
                         "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19)",
                     },
                 ),
-               # style={                   
-               #     "font": "14px 'Segoe UI'"
-               # },
+                # style={
+                #     "font": "14px 'Segoe UI'"
+                # },
             ),
             dbc.Row(
                 children=[
-                    dbc.Col(get_side_bar(app, user_id,  user_name_to_session_map.get(user_id, [[None, None]])[0][0]), align="start", width="auto"),
+                    dbc.Col(
+                        get_side_bar(
+                            app,
+                            user_id,
+                            user_name_to_session_map.get(user_id, [[None, None]])[0][0],
+                        ),
+                        align="start",
+                        width="auto",
+                    ),
                     dbc.Col(
                         id="property-editor",
                         width="auto",
@@ -227,7 +231,7 @@ def app_layout():
                                         )
                                     ),
                                     html.Div(
-                                        id="tab-content",                                       
+                                        id="tab-content",
                                     ),
                                 ],
                                 style={"height": HEIGHT},
@@ -235,7 +239,7 @@ def app_layout():
                         ]
                     ),
                 ],
-                style={ "padding": "4px 0px 4px 0px"},
+                style={"padding": "4px 0px 4px 0px"},
             ),
             html.Div(
                 [
@@ -251,11 +255,8 @@ def app_layout():
                     ),
                 ],
                 id="progress-container",
-                #style={"font": "14px 'Segoe UI'"},
+                # style={"font": "14px 'Segoe UI'"},
             ),
         ],
         style={"font": "14px 'Segoe UI'"},
     )
-
-
-
