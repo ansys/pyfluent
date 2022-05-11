@@ -39,6 +39,7 @@ class TreeView:
                 keys.append(f"remote:{remote}:{index}")
             else:
                 tree_data["key"] = item_name
+                keys.append(item_name)
             tree_data["icon"] = icon
             if item_data.get("children"):
                 tree_data["children"], child_keys = self.populate_tree(

@@ -79,17 +79,19 @@ SIDEBAR_STYLE = {
 def get_side_bar(app, connection_id):
 
     session_id, uuid_id = user_name_to_session_map.get(connection_id, [[None, None]])[0]
-    tree_view = []
+    tree_nodes = {"title": "Root", "key": "Root", "icon": None, "children": []}
+    keys = ["Root"]
     if session_id:
         tree_nodes, keys = TreeView(
             app, connection_id, session_id, SessionsManager
         ).get_tree_nodes()
-        tree_view = dash_treeview_antd(
-            id="tree-view",
-            # multiple=False,
-            # expanded=keys,
-            data=tree_nodes,
-        )
+    tree_view = dash_treeview_antd(
+        id="tree-view",
+        # multiple=False,
+        expandedKeys=keys,
+        data=tree_nodes,
+        selected=[],
+    )
 
     return html.Div(
         [
@@ -99,7 +101,10 @@ def get_side_bar(app, connection_id):
                         [
                             "Welcome ",
                             dbc.Badge(
-                                html.I(f"{connection_id}", style={"font-size": "18px"}),
+                                html.I(
+                                    f"{connection_id.capitalize()}",
+                                    style={"font-size": "16px"},
+                                ),
                                 color="secondary",
                             ),
                         ]
@@ -173,19 +178,7 @@ def serve_layout():
                             style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
-                            dcc.Clipboard(
-                                target_id="uuid-id",
-                                title="Share",
-                                style={
-                                    "display": "inline-block",
-                                    "fontSize": 20,
-                                    "verticalAlign": "top",
-                                },
-                            ),
-                            width="auto",
-                            align="end",
-                        ),
-                        dbc.Col(
+                            # html.Div(
                             dcc.Dropdown(
                                 id="session-id",
                                 # options=map(lambda x: x[0],user_name_to_session_map.get(connection_id, [])),
@@ -200,7 +193,25 @@ def serve_layout():
                                 value=user_name_to_session_map.get(
                                     connection_id, [[None, None]]
                                 )[0][0],
-                                style={"width": "200px"},
+                                style={
+                                    "width": "200px",
+                                },
+                            ),
+                            # style={"height": "15px", 'display': 'inline'  },
+                            # ),
+                            width="auto",
+                            align="end",
+                        ),
+                        dbc.Col(
+                            dcc.Clipboard(
+                                target_id="uuid-id",
+                                title="Share",
+                                style={
+                                    "display": "inline-block",
+                                    "fontSize": 20,
+                                    "verticalAlign": "top",
+                                    "height": "30px",
+                                },
                             ),
                             width="auto",
                             align="end",
@@ -210,6 +221,7 @@ def serve_layout():
                                 placeholder="Session token to connect",
                                 id="session-token",
                                 style={"width": "200px"},
+                                size="sm",
                             ),
                             width="auto",
                             align="end",
@@ -220,6 +232,7 @@ def serve_layout():
                                 id="connect-session",
                                 n_clicks=0,
                                 style={"width": "200px"},
+                                size="sm",
                             ),
                             width="auto",
                             align="end",
@@ -343,7 +356,7 @@ def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to
         event_info = SessionsManager(app, connection_id, session_id).get_event_info(
             "CalculationsStartedEvent"
         )
-        print("interval-component", triggered_from_list, event_info)
+        # print("interval-component", triggered_from_list, event_info)
         if event_info:
             if PostWindowCollection._is_executing == False:
                 PostWindowCollection._is_executing = True
@@ -482,10 +495,14 @@ def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, objec
     filtered = filter(
         lambda x: session_id == x[0], user_name_to_session_map[connection_id]
     )
+    print(keys)
+    print(tree_nodes)
     return (
         dash_treeview_antd(
             id="tree-view",
             data=tree_nodes,
+            selected=[],
+            expandedKeys=keys.append("Root"),
         ),
         list(filtered)[0][1],
     )
