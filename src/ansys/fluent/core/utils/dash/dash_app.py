@@ -1,98 +1,60 @@
-"""
-A simple app demonstrating how to dynamically render tab content containing
-dcc.Graph components to ensure graphs get sized correctly. We also show how
-dcc.Store can be used to cache the results of an expensive graph generation
-process so that switching tabs is fast.
-"""
-import time
 import uuid
+
 import dash
-import dash_bootstrap_components as dbc
 import dash_auth
-import numpy as np
-import plotly.graph_objs as go
 from dash import Input, Output, State, dcc, html, ALL
 from dash.exceptions import PreventUpdate
-from tree_view import TreeView
-from local_property_editor import LocalPropertyEditor
-import plotly.io as pio
-from flask import request
+import dash_bootstrap_components as dbc
 from dash.long_callback import DiskcacheLongCallbackManager
 
-pio.templates.default = "plotly_white"
-from dash_component import DashComponent
-from local_property_editor import PostWindowCollection
-from ansys.fluent.core.utils.dash.sessions_manager import SessionsManager
+import plotly.graph_objs as go
+import plotly.io as pio
 
+from flask import request
+
+from sessions_manager import SessionsManager
 from local_property_editor import (
     MonitorWindow,
     PlotWindowCollection,
     GraphicsWindowCollection,
+    PostWindowCollection,
+    LocalPropertyEditor,
 )
 from PropertyEditor import PropertyEditor
+from tree_view import TreeView
+from dash_component import RCTree as dash_tree
 
+from users_info import VALID_USERNAME_PASSWORD_PAIRS
 
-VALID_USERNAME_PASSWORD_PAIRS = {
-    "user1": "abc",
-    "user2": "abc",
-    "user3": "abc",
-    "user4": "abc",
-}
 user_name_to_session_map = {}
-
-# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-# app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
-import diskcache
-
-cache = diskcache.Cache("./cache")
-long_callback_manager = DiskcacheLongCallbackManager(cache)
 HEIGHT = "59rem"
+MAX_SESSION_COUNT = 6
+pio.templates.default = "plotly_white"
+
+
 app = dash.Dash(
     __name__,
     external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
     suppress_callback_exceptions=True,
-    long_callback_manager=long_callback_manager,
     title="Ansys PyFluent",
 )
 app._favicon = "assets/favicon.ico"
-auth = dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
-# from dash_component import TreeView as dash_treeview_antd
-# from  dash_treeview_antd import TreeView as dash_treeview_antd
-from dash_component import RCTree as dash_treeview_antd
-
-app.config.suppress_callback_exceptions = True
-
-app.config["suppress_callback_exceptions"] = True
-
-SIDEBAR_STYLE = {
-    "top": 0,
-    "left": 0,
-    "bottom": 0,
-    "width": "18rem",
-    "background-color": "#f8f9fa",
-    "height": HEIGHT,
-    "overflow-y": "auto",
-}
+dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
 
 
-def get_side_bar(app, connection_id):
-
-    session_id, uuid_id = user_name_to_session_map.get(connection_id, [[None, None]])[0]
-    tree_nodes = {"title": "Root", "key": "Root", "icon": None, "children": []}
+def get_side_bar(app, user_id, session_id):    
+    tree_nodes_data = {"title": "Root", "key": "Root", "icon": None, "children": []}
     keys = ["Root"]
     if session_id:
-        tree_nodes, keys = TreeView(
-            app, connection_id, session_id, SessionsManager
+        tree_nodes_data, keys = TreeView(
+            app, user_id, session_id, SessionsManager
         ).get_tree_nodes()
-    tree_view = dash_treeview_antd(
+    tree = dash_tree(
         id="tree-view",
-        # multiple=False,
         expandedKeys=keys,
-        data=tree_nodes,
+        data=tree_nodes_data,
         selected=[],
     )
-
     return html.Div(
         [
             dbc.CardHeader(
@@ -102,7 +64,7 @@ def get_side_bar(app, connection_id):
                             "Welcome ",
                             dbc.Badge(
                                 html.I(
-                                    f"{connection_id.capitalize()}",
+                                    f"{user_id.capitalize()}",
                                     style={"font-size": "16px"},
                                 ),
                                 color="secondary",
@@ -111,27 +73,31 @@ def get_side_bar(app, connection_id):
                     ),
                 ]
             ),
-            html.Div(id="tree-view-container", children=tree_view),
+            html.Div(id="tree-container", children=tree),
         ],
-        style=SIDEBAR_STYLE,
+        style={
+            "width": "18rem",
+            "background-color": "#f8f9fa",
+            "height": HEIGHT,
+            "overflow-y": "auto",
+        },
     )
 
 
-_max_session_count = 6
+
 
 
 def serve_layout():
-    uuid_id = str(uuid.uuid4())
-    connection_id = uuid_id
-    connection_id = request.authorization["username"]
-    for session_id in range(_max_session_count):
-        SessionsManager(app, connection_id, f"session-{session_id}")
+    user_id = str(uuid.uuid4())
+    user_id = request.authorization["username"]
+    for session_id in range(MAX_SESSION_COUNT):
+        SessionsManager(app, user_id, f"session-{session_id}")
     PropertyEditor(app, SessionsManager)
-    print("connection_id********************", connection_id)
+  
     return dbc.Container(
         fluid=True,
         children=[
-            dcc.Store(data=connection_id, id="connection-id"),
+            dcc.Store(data=user_id, id="connection-id"),
             dcc.Interval(
                 id="interval-component",
                 interval=1 * 1000,  # in milliseconds
@@ -149,7 +115,7 @@ def serve_layout():
             html.Data(id="command-output"),
             html.Data(
                 id="uuid-id",
-                value=user_name_to_session_map.get(connection_id, [[None, ""]])[0][1],
+                value=user_name_to_session_map.get(user_id, [[None, ""]])[0][1],
             ),
             dbc.CardHeader(
                 dbc.Row(
@@ -165,40 +131,35 @@ def serve_layout():
                                         html.B("PyFluent Web Client"),
                                         style={
                                             "font": "24px 'Segoe UI'",
-                                            "padding": "0px 0px 0px 20px",
-                                            # "text-shadow": "0.5px 0.5px"
+                                            "padding": "0px 0px 0px 20px",                                           
                                         },
                                     ),
                                 ],
                                 style={
                                     "display": "flex",
-                                    "flex-direction": "row",  # "border-bottom": "5px solid darkgray"
+                                    "flex-direction": "row",                                     
                                 },
                             ),
                             style={"border-bottom": "3px solid gray"},
                         ),
-                        dbc.Col(
-                            # html.Div(
+                        dbc.Col(                            
                             dcc.Dropdown(
-                                id="session-id",
-                                # options=map(lambda x: x[0],user_name_to_session_map.get(connection_id, [])),
+                                id="session-id",                               
                                 options=list(
                                     map(
                                         lambda x: x[0],
-                                        user_name_to_session_map.get(connection_id),
+                                        user_name_to_session_map.get(user_id),
                                     )
                                 )
-                                if user_name_to_session_map.get(connection_id)
+                                if user_name_to_session_map.get(user_id)
                                 else [],
                                 value=user_name_to_session_map.get(
-                                    connection_id, [[None, None]]
+                                    user_id, [[None, None]]
                                 )[0][0],
                                 style={
                                     "width": "200px",
                                 },
                             ),
-                            # style={"height": "15px", 'display': 'inline'  },
-                            # ),
                             width="auto",
                             align="end",
                         ),
@@ -238,25 +199,19 @@ def serve_layout():
                             align="end",
                         ),
                     ],
-                    style={
-                        "font": "14px 'Segoe UI'",
+                    style={                      
                         "padding": "0px 0px 5px",
                         "border-bottom": "14px solid black",
                         "box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19)",
                     },
                 ),
-                style={
-                    #  "background-color": "#f8f9fa",
-                    #  "background-image": 'url("/assets/background.png")',
-                    #  "background-size": "contain",
-                    "font": "14px 'Segoe UI'"
-                },
+               # style={                   
+               #     "font": "14px 'Segoe UI'"
+               # },
             ),
             dbc.Row(
                 children=[
-                    dbc.Col(
-                        get_side_bar(app, connection_id), align="start", width="auto"
-                    ),
+                    dbc.Col(get_side_bar(app, user_id,  user_name_to_session_map.get(user_id, [[None, None]])[0][0]), align="start", width="auto"),
                     dbc.Col(
                         id="property-editor",
                         width="auto",
@@ -288,8 +243,7 @@ def serve_layout():
                                         )
                                     ),
                                     html.Div(
-                                        id="tab-content",
-                                        # className="p-4",
+                                        id="tab-content",                                       
                                     ),
                                 ],
                                 style={"height": HEIGHT},
@@ -297,7 +251,7 @@ def serve_layout():
                         ]
                     ),
                 ],
-                style={"font": "14px 'Segoe UI'", "padding": "4px 0px 4px 0px"},
+                style={ "padding": "4px 0px 4px 0px"},
             ),
             html.Div(
                 [
@@ -313,16 +267,14 @@ def serve_layout():
                     ),
                 ],
                 id="progress-container",
-                style={"font": "14px 'Segoe UI'"},
+                #style={"font": "14px 'Segoe UI'"},
             ),
         ],
-        style={"font": "14px 'Segoe UI'", "border": "0px ridge lightgray"},
+        style={"font": "14px 'Segoe UI'"},
     )
 
 
 app.layout = serve_layout
-
-print("serve_layout done")
 
 
 @app.callback(
@@ -333,7 +285,7 @@ print("serve_layout done")
     State("session-id", "value"),
     State("need-to-data-fetch", "value"),
 )
-def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to_fetch):
+def watcher(tab_content_created, n_intervals, user_id, session_id, need_to_fetch):
 
     ctx = dash.callback_context
     triggered_from_list = [v["prop_id"].split(".")[0] for v in ctx.triggered]
@@ -342,9 +294,7 @@ def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to
         and PostWindowCollection._show_outline
     ):
         PostWindowCollection._show_outline = False
-        graphics = GraphicsWindowCollection(
-            app, connection_id, session_id, SessionsManager
-        )
+        graphics = GraphicsWindowCollection(app, user_id, session_id, SessionsManager)
         graphics._window_data[graphics._active_window] = {
             "object_type": "Mesh",
             "object_index": "outline",
@@ -353,7 +303,7 @@ def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to
         return "yes"
 
     elif "interval-component" in triggered_from_list:
-        event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+        event_info = SessionsManager(app, user_id, session_id).get_event_info(
             "CalculationsStartedEvent"
         )
         # print("interval-component", triggered_from_list, event_info)
@@ -382,8 +332,8 @@ def watcher(tab_content_created, n_intervals, connection_id, session_id, need_to
     State("session-id", "value"),
     prevent_initial_call=True,
 )
-def on_progress_update(n_intervals, connection_id, session_id):
-    event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+def on_progress_update(n_intervals, user_id, session_id):
+    event_info = SessionsManager(app, user_id, session_id).get_event_info(
         "ProgressEvent"
     )
     if event_info is None:
@@ -405,7 +355,7 @@ def on_progress_update(n_intervals, connection_id, session_id):
     State("session-token", "value"),
     State("session-id", "options"),
 )
-def create_session(n_clicks, connection_id, session_token, options):
+def create_session(n_clicks, user_id, session_token, options):
 
     ctx = dash.callback_context
     triggered_value = ctx.triggered[0]["value"]
@@ -413,15 +363,14 @@ def create_session(n_clicks, connection_id, session_token, options):
 
     if n_clicks == 0 or triggered_value is None:
         raise PreventUpdate
-
-    print("\n\n*******************create_session", triggered_from, triggered_value)
-    user_sessions = user_name_to_session_map.get(connection_id)
+   
+    user_sessions = user_name_to_session_map.get(user_id)
     if not user_sessions:
-        user_sessions = user_name_to_session_map[connection_id] = []
+        user_sessions = user_name_to_session_map[user_id] = []
 
     session_id = f"session-{len(options)}"
-    user_sessions.append((session_id, connection_id + ":" + uuid.uuid4().hex))
-    sessions_manager = SessionsManager(app, connection_id, session_id)
+    user_sessions.append((session_id, user_id + ":" + uuid.uuid4().hex))
+    sessions_manager = SessionsManager(app, user_id, session_id)
     sessions_manager.add_session(session_token, user_name_to_session_map)
     sessions = []
     if options is not None:
@@ -437,14 +386,13 @@ def create_session(n_clicks, connection_id, session_token, options):
     Input("tree-view", "selected"),
     Input("session-id", "value"),
 )
-def update_object(connection_id, object_id, session_id):
-    print("\n\n update_object", connection_id, session_id, object_id)
-
+def update_object(user_id, object_id, session_id):
+    
     if session_id is None:
         raise PreventUpdate
     ctx = dash.callback_context
     triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-    print("update_object", connection_id, session_id, object_id, triggered_from)
+    print("update_object", user_id, session_id, object_id, triggered_from)
     if triggered_from == "tree-view":
         if object_id is None or len(object_id) == 0:
             raise PreventUpdate
@@ -459,7 +407,7 @@ def update_object(connection_id, object_id, session_id):
 
 
 @app.callback(
-    Output("tree-view-container", "children"),
+    Output("tree-container", "children"),
     Output("uuid-id", "value"),
     Input("connection-id", "data"),  #
     Input("session-id", "value"),
@@ -468,37 +416,35 @@ def update_object(connection_id, object_id, session_id):
     State("object-id", "value"),
     # prevent_initial_call=True,
 )
-def update_tree(connection_id, session_id, save_n_clicks, delete_n_clicks, object_id):
+def update_tree(user_id, session_id, save_n_clicks, delete_n_clicks, object_id):
     ctx = dash.callback_context
     triggered_value = ctx.triggered[0]["value"]
     triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
     print("update_tree", triggered_from, triggered_value)
-    if session_id is None or connection_id is None or triggered_value is None:
+    if session_id is None or user_id is None or triggered_value is None:
         raise PreventUpdate
 
     if triggered_from == "save-button-clicked":
         object_location, object_type, object_index = object_id.split(":")
         editor = LocalPropertyEditor(app, SessionsManager)
         new_object = editor.create_new_object(
-            connection_id, session_id, object_type, object_index
+            user_id, session_id, object_type, object_index
         )
     elif triggered_from == "delete-button-clicked":
         object_location, object_type, object_index = object_id.split(":")
         editor = LocalPropertyEditor(app, SessionsManager)
         new_object = editor.delete_object(
-            connection_id, session_id, object_type, object_index
+            user_id, session_id, object_type, object_index
         )
     print("update_tree", triggered_from, triggered_value)
     tree_nodes, keys = TreeView(
-        app, connection_id, session_id, SessionsManager
+        app, user_id, session_id, SessionsManager
     ).get_tree_nodes()
-    filtered = filter(
-        lambda x: session_id == x[0], user_name_to_session_map[connection_id]
-    )
+    filtered = filter(lambda x: session_id == x[0], user_name_to_session_map[user_id])
     print(keys)
     print(tree_nodes)
     return (
-        dash_treeview_antd(
+        dash_tree(
             id="tree-view",
             data=tree_nodes,
             selected=[],
@@ -564,9 +510,9 @@ def on_button_click(n_post_clicks):
     State("session-id", "value"),
     prevent_initial_call=True,
 )
-def add_remove_post_window(add_clicks, remove_clicks, connection_id, session_id):
+def add_remove_post_window(add_clicks, remove_clicks, user_id, session_id):
 
-    print("add_remove_window", add_clicks, remove_clicks, connection_id, session_id)
+    print("add_remove_window", add_clicks, remove_clicks, user_id, session_id)
     if not add_clicks or not remove_clicks:
         raise PreventUpdate
     ctx = dash.callback_context
@@ -580,9 +526,9 @@ def add_remove_post_window(add_clicks, remove_clicks, connection_id, session_id)
     input_index = input_data["index"]
     input_type = input_data["type"]
     window = (
-        PlotWindowCollection(app, connection_id, session_id, SessionsManager)
+        PlotWindowCollection(app, user_id, session_id, SessionsManager)
         if input_index == "plot"
-        else GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)
+        else GraphicsWindowCollection(app, user_id, session_id, SessionsManager)
     )
     opr = "add" if input_type.startswith("add") else "remove"
     print("add_remove_window", opr, input_index, input_value)
@@ -619,13 +565,13 @@ def add_remove_post_window(add_clicks, remove_clicks, connection_id, session_id)
     Input("connection-id", "data"),
     Input("session-id", "value"),
 )
-def render_tab_content(active_tab, connection_id, session_id):
+def render_tab_content(active_tab, user_id, session_id):
     """
     This callback takes the 'active_tab' property as input, as well as the
     stored graphs, and renders the tab content depending on what the value of
     'active_tab' is.
     """
-    print("render_tab_content", active_tab, connection_id, session_id)
+    print("render_tab_content", active_tab, user_id, session_id)
     if session_id is None:
         return (
             html.Pre(
@@ -648,18 +594,18 @@ def render_tab_content(active_tab, connection_id, session_id):
 
     if active_tab == "graphics":
         return (
-            GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)(),
+            GraphicsWindowCollection(app, user_id, session_id, SessionsManager)(),
             "yes",
         )
 
     elif active_tab == "plots":
         return (
-            PlotWindowCollection(app, connection_id, session_id, SessionsManager)(),
+            PlotWindowCollection(app, user_id, session_id, SessionsManager)(),
             "yes",
         )
 
     elif active_tab == "monitors":
-        return MonitorWindow(app, connection_id, session_id, SessionsManager)(), "yes"
+        return MonitorWindow(app, user_id, session_id, SessionsManager)(), "yes"
 
 
 if __name__ == "__main__":

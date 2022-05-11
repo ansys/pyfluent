@@ -1,22 +1,21 @@
 import yaml
 from local_property_editor import LocalPropertyEditor
 import dash_html_components as html
-
+from dash_component import RCTree as dash_tree
 
 class TreeView:
 
     _tree_views = {}
 
-    def __init__(self, app, connection_id, session_id, SessionsManager):
-        unique_id = f"tree-{connection_id}-{session_id}"
+    def __init__(self, app, user_id, session_id, SessionsManager):
+        unique_id = f"tree-{user_id}-{session_id}"
         tree_state = TreeView._tree_views.get(unique_id)
         if not tree_state:
             TreeView._tree_views[unique_id] = self.__dict__
-            self._state = {}
-            self.SessionsManager = SessionsManager
-            self._connection_id = connection_id
+            self._SessionsManager = SessionsManager
+            self._user_id = user_id
             self._unique_id = unique_id
-            self.session_id = session_id
+            self._session_id = session_id
             self._app = app
         else:
             self.__dict__ = tree_state
@@ -31,31 +30,30 @@ class TreeView:
             remote = item_data.get("remote")
             local = item_data.get("local")
             index = item_data.get("index", "")
+            
+            key = item_name
             if local:
-                tree_data["key"] = f"local:{local}:{index}"
-                keys.append(f"local:{local}:{index}")
-            elif remote:
-                tree_data["key"] = f"remote:{remote}:{index}"
-                keys.append(f"remote:{remote}:{index}")
-            else:
-                tree_data["key"] = item_name
-                keys.append(item_name)
+                key = f"local:{local}:{index}"                
+            elif remote:                
+                key = f"remote:{remote}:{index}"
+            
+            tree_data["key"] = key
+            keys.append(key)
             tree_data["icon"] = icon
+            
             if item_data.get("children"):
                 tree_data["children"], child_keys = self.populate_tree(
                     item_data["children"]
                 )
                 keys = keys + child_keys
             elif local:
-                editor = LocalPropertyEditor(self._app, self.SessionsManager)
+                editor = LocalPropertyEditor(self._app, self._SessionsManager)
                 indices = editor.get_child_indices(
-                    self._connection_id,
-                    self.session_id,
+                    self._user_id,
+                    self._session_id,
                     f"{local}-{index}" if index else local,
                 )
                 if indices:
-                    print("indices", indices, f"{local}-{index}" if index else local)
-                    # tree_data["key"] = ""
                     children_data = {
                         f"{local}-{index}": {
                             "local": f"{local}",
@@ -70,11 +68,11 @@ class TreeView:
                     )
                     keys = keys + child_keys
             elif remote:
-                static_info = self.SessionsManager(
-                    self._app, self._connection_id, self.session_id
+                static_info = self._SessionsManager(
+                    self._app, self._user_id, self._session_id
                 ).static_info
-                obj = self.SessionsManager(
-                    self._app, self._connection_id, self.session_id
+                obj = self._SessionsManager(
+                    self._app, self._user_id, self._session_id
                 ).settings_root
                 path_list = remote.split("/")
 
