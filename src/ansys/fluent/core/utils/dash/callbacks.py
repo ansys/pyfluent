@@ -14,7 +14,6 @@ from local_property_editor import (
     PostWindowCollection,
     LocalPropertyEditor,
 )
-from PropertyEditor import PropertyEditor
 from settings_property_editor import SettingsPropertyEditor
 from tree_view import TreeView
 from ansys.fluent.core.solver.flobject import to_python_name
@@ -94,11 +93,10 @@ def register_callbacks(app):
             raise PreventUpdate
         input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
         object_location, object_type, object_index = object_id.split(":")
-        self = PropertyEditor(app, SessionsManager)
         editor = (
-            self._local_property_editor
+            LocalPropertyEditor(app, SessionsManager)
             if object_location == "local"
-            else self._remote_property_editor
+            else SettingsPropertyEditor(app, SessionsManager)
         )
 
         print("value_changed", input_index, input_value)
@@ -142,17 +140,16 @@ def register_callbacks(app):
         if not object_id:
             return []
 
-        self = PropertyEditor(app, SessionsManager)
         object_location, object_type, object_index = object_id.split(":")
         editor = (
-            self._local_property_editor
+            LocalPropertyEditor(app, SessionsManager)
             if object_location == "local"
-            else self._remote_property_editor
+            else SettingsPropertyEditor(app, SessionsManager)
         )
-        self._all_input_widgets = editor.get_widgets(
+        editor._all_input_widgets = editor.get_widgets(
             connection_id, session_id, object_type, object_index, "input"
         )
-        self._all_command_widgets = editor.get_widgets(
+        editor._all_command_widgets = editor.get_widgets(
             connection_id, session_id, object_type, object_index, "command"
         )
 
@@ -167,9 +164,9 @@ def register_callbacks(app):
                         dbc.CardHeader(
                             object_name,
                         ),
-                        dbc.CardBody(list(self._all_input_widgets.values())),
+                        dbc.CardBody(list(editor._all_input_widgets.values())),
                         html.Div(
-                            list(self._all_command_widgets.values()),
+                            list(editor._all_command_widgets.values()),
                             className="d-grid gap-1",
                             style={"padding": "4px 4px 4px 4px"},
                         ),
