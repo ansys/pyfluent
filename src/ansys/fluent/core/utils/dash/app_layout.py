@@ -12,7 +12,7 @@ from flask import request
 
 from sessions_manager import SessionsManager
 
-from PropertyEditor import PropertyEditor
+
 from tree_view import TreeView
 from dash_component import RCTree as dash_tree
 from callbacks import user_name_to_session_map
@@ -68,11 +68,7 @@ def get_side_bar(app, user_id, session_id):
 
 def app_layout():
     app = app_layout.app
-    user_id = "user1"
     user_id = request.authorization["username"]
-    # for session_id in range(MAX_SESSION_COUNT):
-    # SessionsManager(app, user_id, "session-0")
-    PropertyEditor(app, SessionsManager)
 
     return dbc.Container(
         fluid=True,
