@@ -65,7 +65,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
         {
             "Context": 0,
             "CreateObjectPer": "Custom",
-            "FMDFileName": "import_filenamed",
+            "FMDFileName": "filename",
             "FileLoaded": "yes",
             "ObjectSetting": "DefaultObjectSetting",
             "Options": {

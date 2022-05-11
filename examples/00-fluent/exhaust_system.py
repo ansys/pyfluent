@@ -82,7 +82,7 @@ session.workflow.TaskObject["Import CAD and Part Management"].Arguments.setState
     {
         "Context": 0,
         "CreateObjectPer": "Custom",
-        "FMDFileName": "import_filenamed",
+        "FMDFileName": "import_filename",
         "FileLoaded": "yes",
         "ObjectSetting": "DefaultObjectSetting",
         "Options": {
