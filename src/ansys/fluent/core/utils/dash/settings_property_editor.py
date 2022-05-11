@@ -31,51 +31,6 @@ class SettingsPropertyEditor:
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
 
-        @self._app.callback(
-            Output(f"command-output", "value"),
-            Input({"type": "settings-command-button", "index": ALL}, "n_clicks"),
-            Input("connection-id", "data"),
-            State({"type": "settings-command-input", "index": ALL}, "value"),
-            State("session-id", "value"),
-            State("object-id", "value"),
-        )
-        def on_settings_command_execution(
-            commnads,
-            connection_id,
-            args_value,
-            session_id,
-            object_id,
-        ):
-            if object_id is None or session_id is None:
-                raise PreventUpdate
-            object_location, object_type, object_index = object_id.split(":")
-            if object_location != "remote":
-                raise PreventUpdate
-            ctx = dash.callback_context
-            n_clicks = ctx.triggered[0]["value"]
-            if not n_clicks:
-                raise PreventUpdate
-            command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
-            print(
-                "on_command_execution",
-                command_name,
-                n_clicks,
-                args_value,
-                ctx.triggered,
-            )
-            obj, static_info = self.get_object_and_static_info(
-                connection_id, session_id, object_type, object_index
-            )
-            kwargs = {}
-            cmd_obj = getattr(obj, command_name)
-            args_iter = iter(args_value)
-            args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
-            for arg_name, arg_info in args_info.items():
-                kwargs[to_python_name(arg_name)] = next(args_iter)
-            print(kwargs)
-            return_value = cmd_obj(**kwargs)
-            return f"{return_value}"
-
     def get_object_and_static_info(
         self, connection_id, session_id, object_type, object_index
     ):

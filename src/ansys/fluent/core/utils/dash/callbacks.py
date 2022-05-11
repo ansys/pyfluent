@@ -4,6 +4,7 @@ import dash
 from dash.exceptions import PreventUpdate
 from dash import Input, Output, State, ALL
 from dash import html, dcc
+import dash_bootstrap_components as dbc
 
 from sessions_manager import SessionsManager
 from local_property_editor import (
@@ -13,13 +14,170 @@ from local_property_editor import (
     PostWindowCollection,
     LocalPropertyEditor,
 )
+from PropertyEditor import PropertyEditor
+from settings_property_editor import SettingsPropertyEditor
 from tree_view import TreeView
+from ansys.fluent.core.solver.flobject import to_python_name
+
 from dash_component import RCTree as dash_tree
 
 user_name_to_session_map = {}
 
 
 def register_callbacks(app):
+    @app.callback(
+        Output("command-output", "value"),
+        Input({"type": "settings-command-button", "index": ALL}, "n_clicks"),
+        Input("connection-id", "data"),
+        State({"type": "settings-command-input", "index": ALL}, "value"),
+        State("session-id", "value"),
+        State("object-id", "value"),
+    )
+    def on_settings_command_execution(
+        commnads,
+        connection_id,
+        args_value,
+        session_id,
+        object_id,
+    ):
+        if object_id is None or session_id is None:
+            raise PreventUpdate
+        object_location, object_type, object_index = object_id.split(":")
+        if object_location != "remote":
+            raise PreventUpdate
+        ctx = dash.callback_context
+        n_clicks = ctx.triggered[0]["value"]
+        if not n_clicks:
+            raise PreventUpdate
+        command_name = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
+        print(
+            "on_command_execution",
+            command_name,
+            n_clicks,
+            args_value,
+            ctx.triggered,
+        )
+        obj, static_info = SettingsPropertyEditor(
+            app, SessionsManager
+        ).get_object_and_static_info(
+            connection_id, session_id, object_type, object_index
+        )
+        kwargs = {}
+        cmd_obj = getattr(obj, command_name)
+        args_iter = iter(args_value)
+        args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
+        for arg_name, arg_info in args_info.items():
+            kwargs[to_python_name(arg_name)] = next(args_iter)
+        print(kwargs)
+        return_value = cmd_obj(**kwargs)
+        return f"{return_value}"
+
+    @app.callback(
+        Output("refresh-property-editor", "value"),
+        Input(
+            {"type": f"input-widget", "index": ALL},
+            "value",
+        ),
+        Input("connection-id", "data"),
+        State("session-id", "value"),
+        State("object-id", "value"),
+    )
+    def on_value_changed(
+        input_values,
+        connection_id,
+        session_id,
+        object_id,
+    ):
+        ctx = dash.callback_context
+        input_value = ctx.triggered[0]["value"]
+        if input_value is None:
+            raise PreventUpdate
+        input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
+        object_location, object_type, object_index = object_id.split(":")
+        self = PropertyEditor(app, SessionsManager)
+        editor = (
+            self._local_property_editor
+            if object_location == "local"
+            else self._remote_property_editor
+        )
+
+        print("value_changed", input_index, input_value)
+        print("value_changed", object_type, connection_id, session_id, object_index)
+        obj, static_info = editor.get_object_and_static_info(
+            connection_id, session_id, object_type, object_index
+        )
+        path_list = input_index.split("/")[1:]
+        for path in path_list:
+            try:
+                obj = getattr(obj, path)
+                if static_info:
+                    static_info = static_info["children"][obj.obj_name]
+            except AttributeError:
+                obj = obj[path]
+                static_info = static_info["object-type"]
+            if obj is None:
+                raise PreventUpdate
+
+        if (static_info and static_info["type"] == "boolean") or isinstance(
+            obj(), bool
+        ):
+            input_value = True if input_value else False
+        if input_value == obj():
+            print("PreventUpdate")
+            raise PreventUpdate
+        obj.set_state(input_value)
+        return str(input_index) + str(input_value)
+
+    @app.callback(
+        Output("property-editor", "children"),
+        Input("refresh-property-editor", "value"),
+        Input("connection-id", "data"),
+        Input("object-id", "value"),
+        State("session-id", "value"),
+    )
+    def refresh_widgets(_, connection_id, object_id, session_id):
+        print("show hide", _, connection_id, object_id, session_id)
+        if object_id is None or session_id is None:
+            return []
+        if not object_id:
+            return []
+
+        self = PropertyEditor(app, SessionsManager)
+        object_location, object_type, object_index = object_id.split(":")
+        editor = (
+            self._local_property_editor
+            if object_location == "local"
+            else self._remote_property_editor
+        )
+        self._all_input_widgets = editor.get_widgets(
+            connection_id, session_id, object_type, object_index, "input"
+        )
+        self._all_command_widgets = editor.get_widgets(
+            connection_id, session_id, object_type, object_index, "command"
+        )
+
+        object_location, object_type, object_index = object_id.split(":")
+        object_type = object_type.split("/")[-1]
+        object_name = object_type + "-" + object_index if object_index else object_type
+        object_name = object_name.capitalize()
+        return dbc.Col(
+            [
+                dbc.Card(
+                    [
+                        dbc.CardHeader(
+                            object_name,
+                        ),
+                        dbc.CardBody(list(self._all_input_widgets.values())),
+                        html.Div(
+                            list(self._all_command_widgets.values()),
+                            className="d-grid gap-1",
+                            style={"padding": "4px 4px 4px 4px"},
+                        ),
+                    ],
+                ),
+            ]
+        )
+
     @app.callback(
         Output(f"monitor-tab-content", "children"),
         Input(f"monitor-tabs", "active_tab"),
