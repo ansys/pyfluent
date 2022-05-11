@@ -31,23 +31,18 @@ from ansys.fluent.parametric import ParametricStudy
 session = pyfluent.launch_fluent(precision="double", processor_count=4)
 
 ############################################################################
-# Enable the settings API (Beta)
-
-root = session.get_settings_root()
-
-############################################################################
 # Read the hopper/mixer case
 
 import_filename = examples.download_file(
     "Static_Mixer_main.cas.h5", "pyfluent/static_mixer"
 )
 
-session.tui.solver.file.read_case(case_file_name=import_filename)
+session.solver.tui.file.read_case(case_file_name=import_filename)
 
 ############################################################################
 # Set number of iterations to 100
 
-session.tui.solver.solve.set.number_of_iterations("100")
+session.solver.tui.solve.set.number_of_iterations("100")
 
 ############################################################################
 # Create input parameters after enabling parameter creation in the TUI:
@@ -55,61 +50,69 @@ session.tui.solver.solve.set.number_of_iterations("100")
 # Inlet1: velocity (inlet1_vel) 5 m/s and temperature (inlet1_temp) at 300 K
 # Inlet2: velocity (inlet2_vel) 10 m/s and temperature (inlet2_temp) at 350 K
 
-session.tui.solver.define.parameters.enable_in_TUI("yes")
+session.solver.tui.define.parameters.enable_in_TUI("yes")
 
-session.tui.solver.define.boundary_conditions.set.velocity_inlet(
+session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet1", (), "vmag", "yes", "inlet1_vel", 5, "quit"
 )
-session.tui.solver.define.boundary_conditions.set.velocity_inlet(
+session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit"
 )
 
-session.tui.solver.define.boundary_conditions.set.velocity_inlet(
+session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet2", (), "vmag", "yes", "no", "inlet2_vel", 10, "quit"
 )
-session.tui.solver.define.boundary_conditions.set.velocity_inlet(
+session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit"
 )
 
 ###########################################################################
 # Create output parameters using report definitions
 
-root.solution.report_definitions.surface["outlet-temp-avg"] = {}
-root.solution.report_definitions.surface[
+session.solver.root.solution.report_definitions.surface["outlet-temp-avg"] = {}
+session.solver.root.solution.report_definitions.surface[
     "outlet-temp-avg"
 ].report_type = "surface-areaavg"
-root.solution.report_definitions.surface["outlet-temp-avg"].field = "temperature"
-root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = ["outlet"]
+session.solver.root.solution.report_definitions.surface[
+    "outlet-temp-avg"
+].field = "temperature"
+session.solver.root.solution.report_definitions.surface[
+    "outlet-temp-avg"
+].surface_names = ["outlet"]
 
-root.solution.report_definitions.surface["outlet-vel-avg"] = {}
-root.solution.report_definitions.surface[
+session.solver.root.solution.report_definitions.surface["outlet-vel-avg"] = {}
+session.solver.root.solution.report_definitions.surface[
     "outlet-vel-avg"
 ].report_type = "surface-areaavg"
-root.solution.report_definitions.surface["outlet-vel-avg"].field = "velocity-magnitude"
-root.solution.report_definitions.surface["outlet-vel-avg"].surface_names = ["outlet"]
+session.solver.root.solution.report_definitions.surface[
+    "outlet-vel-avg"
+].field = "velocity-magnitude"
+session.solver.root.solution.report_definitions.surface[
+    "outlet-vel-avg"
+].surface_names = ["outlet"]
 
-session.tui.solver.define.parameters.enable_in_TUI("yes")
-session.tui.solver.define.parameters.output_parameters.create(
+session.solver.tui.define.parameters.enable_in_TUI("yes")
+session.solver.tui.define.parameters.output_parameters.create(
     "report-definition", "outlet-temp-avg"
 )
-session.tui.solver.define.parameters.output_parameters.create(
+session.solver.tui.define.parameters.output_parameters.create(
     "report-definition", "outlet-vel-avg"
 )
 
 ###########################################################################
 # Enable convergence condition check
 
-session.tui.solver.solve.monitors.residual.criterion_type("0")
+session.solver.tui.solve.monitors.residual.criterion_type("0")
 
 ###########################################################################
 # Write case with all the settings in place
 case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
-session.tui.solver.file.write_case(case_path)
+session.solver.tui.file.write_case(case_path)
 
 ###########################################################################
 # Instantiate a parametric study from a Fluent session
 
-study_1 = ParametricStudy(root.parametric_studies).initialize()
+study_1 = ParametricStudy(session.solver.root.parametric_studies).initialize()
 
 ###########################################################################
 # Access and modify input parameters of base DP
@@ -194,4 +197,4 @@ study_2 = study_1.duplicate()
 
 project_filepath = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
-session.tui.solver.file.parametric_project.save_as(project_filepath)
+session.solver.tui.file.parametric_project.save_as(project_filepath)

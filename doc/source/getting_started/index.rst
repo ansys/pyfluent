@@ -72,10 +72,10 @@ solver:
 
 .. code:: python
 
-  session.tui.solver.file.read_case(case_file_name='elbow.cas.h5')
-  session.tui.solver.define.models.unsteady_2nd_order("yes")
-  session.tui.solver.solve.initialize.initialize_flow()
-  session.tui.solver.solve.dual_time_iterate(2, 3)
+  session.solver.tui.file.read_case(case_file_name='elbow.cas.h5')
+  session.solver.tui.define.models.unsteady_2nd_order("yes")
+  session.solver.tui.solve.initialize.initialize_flow()
+  session.solver.tui.solve.dual_time_iterate(2, 3)
 
 In addition to all TUI commands being available there are the ``parametric`` and
 ``post`` packages.  The ``parametric`` package provides access to Fluent's

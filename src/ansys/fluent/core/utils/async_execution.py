@@ -15,15 +15,15 @@ def asynchronous(f: Callable) -> Callable:
     >>> # asynchronous execution using @asynchronous decorator
     >>> @asynchronous
     ... def asynchronous_solve(session, number_of_iterations):
-    ...     session.tui.solver.solve.iterate(number_of_iterations)
+    ...     session.solver.tui.solve.iterate(number_of_iterations)
     >>> asynchronous_solve(session1, 100)
 
     >>> # using the asynchronous function directly
-    >>> asynchronous(session2.tui.solver.solve.iterate)(100)
+    >>> asynchronous(session2.solver.tui.solve.iterate)(100)
 
     >>> # synchronous execution of above 2 calls
     >>> asynchronous_solve(session1, 100).result()
-    >>> asynchronous(session2.tui.solver.solve.iterate)(100).result()
+    >>> asynchronous(session2.solver.tui.solve.iterate)(100).result()
 
     .. _Future: https://docs.python.org/3/library/asyncio-future.html#future-object  # noqa: E501
     .. _result(): https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result  # noqa: E501

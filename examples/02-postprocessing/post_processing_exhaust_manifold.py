@@ -37,10 +37,9 @@ import_data = examples.download_file(
 )
 
 session = pyfluent.launch_fluent(precision="double", processor_count=4)
-root = session.get_settings_root()
 
-session.tui.solver.file.read_case(case_file_name=import_case)
-session.tui.solver.file.read_data(case_file_name=import_data)
+session.solver.tui.file.read_case(case_file_name=import_case)
+session.solver.tui.file.read_data(case_file_name=import_data)
 
 ###############################################################################
 # Get the graphics object for mesh display

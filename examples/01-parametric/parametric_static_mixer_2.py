@@ -24,7 +24,6 @@ from ansys.fluent.parametric import ParametricProject
 # Launch Fluent and enable the settings API (Beta)
 
 session = pyfluent.launch_fluent(precision="double", processor_count=4)
-root = session.get_settings_root()
 
 #########################################################################
 # Read the previously saved project - static_mixer_study.flprj
@@ -32,8 +31,8 @@ root = session.get_settings_root()
 project_filepath_read = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
 proj = ParametricProject(
-    root.file.parametric_project,
-    root.parametric_studies,
+    session.solver.root.file.parametric_project,
+    session.solver.root.parametric_studies,
     project_filepath_read,
 )
 

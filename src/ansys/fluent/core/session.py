@@ -98,18 +98,12 @@ class Session:
 
     Attributes
     ----------
-    tui : Session.Tui
-        Instance of Session.Tui on which Fluent's TUI methods can be
-        executed.
-    setup: flobject.Group
-        Instance of flobject.Group object from which setup related
-        settings can be accessed or modified.
-    solution: flobject.Group
-        Instance of flobject.Group object from which solution related
-        settings can be accessed or modified.
-    results: flobject.Group
-        Instance of flobject.Group object from which results related
-        settings can be accessed or modified.
+    meshing: Session.Meshing
+        Instance of Session.Meshing which holds the top-level objects
+        for meshing TUI and various meshing datamodel API calls.
+    solver: Session.Solver
+        Instance of Session.Solver which holds the top-level objects
+        for solver TUI and settings API calls.
     scheme_eval: SchemeEval
         Instance of SchemeEval on which Fluent's scheme code can be
         executed.
@@ -207,27 +201,19 @@ class Session:
         self._datamodel_service_tui = DatamodelService_TUI(
             self._channel, self._metadata
         )
+        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
+        self._settings_service = SettingsService(self._channel, self._metadata)
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service)
-        self.tui = Session.Tui(self._datamodel_service_tui)
 
-        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
-        if "meshing_root" in globals():
-            self.meshing = meshing_root(self._datamodel_service_se, "meshing", [])
-        if "workflow_root" in globals():
-            self.workflow = workflow_root(self._datamodel_service_se, "workflow", [])
-        if "PartManagement_root" in globals():
-            self.part_management = PartManagement_root(
-                self._datamodel_service_se, "PartManagement", []
-            )
-            self.PartManagement = self.part_management
-        if "PMFileManagement_root" in globals():
-            self.pm_file_management = PMFileManagement_root(
-                self._datamodel_service_se, "PMFileManagement", []
-            )
-            self.PMFileManagement = self.pm_file_management
+        self.meshing = Session.Meshing(
+            self._datamodel_service_tui, self._datamodel_service_se
+        )
+        self.solver = Session.Solver(
+            self._datamodel_service_tui, self._settings_service
+        )
 
         self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
@@ -270,17 +256,6 @@ class Session:
     def id(self) -> str:
         """Return the session id."""
         return self._id
-
-    def get_settings_service(self) -> SettingsService:
-        """Return an instance of SettingsService object."""
-        return SettingsService(self._channel, self._metadata)
-
-    def get_settings_root(self) -> root:
-        """Return root settings object."""
-        if self._settings_root is None:
-            LOG.warning("The settings API is currently experimental.")
-            self._settings_root = settings_get_root(flproxy=self.get_settings_service())
-        return self._settings_root
 
     def _process_transcript(self):
         responses = self._transcript_service.begin_streaming()
@@ -343,12 +318,82 @@ class Session:
         for cb in Session._on_exit_cbs:
             cb()
 
-    class Tui:
-        def __init__(self, service: DatamodelService_TUI):
-            if "MeshingMainMenu" in globals():
-                self.meshing = MeshingMainMenu([], service)
-            if "SolverMainMenu" in globals():
-                self.solver = SolverMainMenu([], service)
+    class Meshing:
+        def __init__(
+            self, tui_service: DatamodelService_TUI, se_service: DatamodelService_SE
+        ):
+            self._tui_service = tui_service
+            self._se_service = se_service
+            self._tui = None
+            self._meshing = None
+            self._workflow = None
+            self._part_management = None
+            self._pm_file_management = None
+
+        @property
+        def tui(self):
+            """Instance of ``main_menu`` on which Fluent's SolverTUI methods
+            can be executed."""
+            if self._tui is None:
+                self._tui = MeshingMainMenu([], self._tui_service)
+            return self._tui
+
+        @property
+        def meshing(self):
+            """meshing datamodel root."""
+            if self._meshing is None:
+                self._meshing = meshing_root(self._se_service, "meshing", [])
+            return self._meshing
+
+        @property
+        def workflow(self):
+            """workflow datamodel root."""
+            if self._workflow is None:
+                self._workflow = workflow_root(self._se_service, "workflow", [])
+            return self._workflow
+
+        @property
+        def PartManagement(self):
+            """PartManagement datamodel root."""
+            if self._part_management is None:
+                self._part_management = PartManagement_root(
+                    self._se_service, "PartManagement", []
+                )
+            return self._part_management
+
+        @property
+        def PMFileManagement(self):
+            """PMFileManagement datamodel root."""
+            if self._pm_file_management is None:
+                self._pm_file_management = PMFileManagement_root(
+                    self._se_service, "PMFileManagement", []
+                )
+            return self._pm_file_management
+
+    class Solver:
+        def __init__(
+            self, tui_service: DatamodelService_TUI, settings_service: SettingsService
+        ):
+            self._tui_service = tui_service
+            self._settings_service = settings_service
+            self._tui = None
+            self._settings_root = None
+
+        @property
+        def tui(self):
+            """Instance of ``main_menu`` on which Fluent's SolverTUI methods
+            can be executed."""
+            if self._tui is None:
+                self._tui = SolverMainMenu([], self._tui_service)
+            return self._tui
+
+        @property
+        def root(self):
+            """root settings object."""
+            if self._settings_root is None:
+                LOG.warning("The settings API is currently experimental.")
+                self._settings_root = settings_get_root(flproxy=self._settings_service)
+            return self._settings_root
 
 
 atexit.register(Session.exit_all)
