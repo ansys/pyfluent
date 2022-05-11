@@ -78,21 +78,20 @@ def register_callbacks(app):
             "value",
         ),
         Input("connection-id", "data"),
-        State("session-id", "value"),
-        State("object-id", "value"),
+        State("session-id", "value"),       
     )
     def on_value_changed(
         input_values,
         connection_id,
-        session_id,
-        object_id,
+        session_id,     
     ):
         ctx = dash.callback_context
         input_value = ctx.triggered[0]["value"]
         if input_value is None:
             raise PreventUpdate
         input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
-        object_location, object_type, object_index = object_id.split(":")
+        input_index, object_location, object_type, object_index = input_index.split(":")
+        print(input_index, object_location, object_type, object_index)
         editor = (
             LocalPropertyEditor(app, SessionsManager)
             if object_location == "local"

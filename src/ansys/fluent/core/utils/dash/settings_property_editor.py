@@ -74,7 +74,7 @@ class SettingsPropertyEditor(PropertyEditor):
                     widget = self.get_widget(
                         child_obj,
                         name,
-                        parent + "/" + name,
+                        f"{parent}/{name}:remote:{object_type}:{object_index}",
                         si_info_child,
                     )
                     self._all_widgets[name] = widget

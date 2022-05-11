@@ -145,7 +145,8 @@ class LocalPropertyEditor(PropertyEditor):
                             value,
                             value._type,
                             name,
-                            parent + "/" + name,
+                            f"{parent}/{name}:local:{object_type}:{object_index}",
+                            #parent + "/" + name+":local:"+object_type+":"+object_index,
                             getattr(value, "attributes", None),
                         )
                         self._all_widgets[name] = widget
