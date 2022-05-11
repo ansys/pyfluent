@@ -8,10 +8,7 @@ from dash.long_callback import DiskcacheLongCallbackManager
 import plotly.graph_objs as go
 import plotly.io as pio
 
-from flask import request
-
 from sessions_manager import SessionsManager
-
 
 from tree_view import TreeView
 from dash_component import RCTree as dash_tree
@@ -68,31 +65,11 @@ def get_side_bar(app, user_id, session_id):
 
 def app_layout():
     app = app_layout.app
-    user_id = request.authorization["username"]
+    user_id = app_layout.user_id
 
     return dbc.Container(
         fluid=True,
         children=[
-            dcc.Store(data=user_id, id="connection-id"),
-            dcc.Interval(
-                id="interval-component",
-                interval=1 * 1000,
-                n_intervals=0,
-            ),
-            html.Data(id="refresh-property-editor"),
-            html.Data(id="window-id", value="0"),
-            html.Data(id="need-to-data-fetch", value="no"),
-            html.Data(id="object-id"),
-            html.Data(id="graphics-button-clicked"),
-            html.Data(id="plot-button-clicked"),
-            html.Data(id="save-button-clicked"),
-            html.Data(id="delete-button-clicked"),
-            html.Data(id="tab-content-created"),
-            html.Data(id="command-output"),
-            html.Data(
-                id="uuid-id",
-                value=user_name_to_session_map.get(user_id, [[None, ""]])[0][1],
-            ),
             dbc.CardHeader(
                 dbc.Row(
                     [
