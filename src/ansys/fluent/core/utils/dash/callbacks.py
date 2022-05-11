@@ -98,9 +98,7 @@ def register_callbacks(app):
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
-
-        print("value_changed", input_index, input_value)
-        print("value_changed", object_type, connection_id, session_id, object_index)
+       
         obj, static_info = editor.get_object_and_static_info(
             connection_id, session_id, object_type, object_index
         )
@@ -139,41 +137,15 @@ def register_callbacks(app):
             return []
         if not object_id:
             return []
-
+        
         object_location, object_type, object_index = object_id.split(":")
         editor = (
             LocalPropertyEditor(app, SessionsManager)
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
-        editor._all_input_widgets = editor.get_widgets(
-            connection_id, session_id, object_type, object_index, "input"
-        )
-        editor._all_command_widgets = editor.get_widgets(
-            connection_id, session_id, object_type, object_index, "command"
-        )
+        return editor.fun(connection_id, session_id, object_id)
 
-        object_location, object_type, object_index = object_id.split(":")
-        object_type = object_type.split("/")[-1]
-        object_name = object_type + "-" + object_index if object_index else object_type
-        object_name = object_name.capitalize()
-        return dbc.Col(
-            [
-                dbc.Card(
-                    [
-                        dbc.CardHeader(
-                            object_name,
-                        ),
-                        dbc.CardBody(list(editor._all_input_widgets.values())),
-                        html.Div(
-                            list(editor._all_command_widgets.values()),
-                            className="d-grid gap-1",
-                            style={"padding": "4px 4px 4px 4px"},
-                        ),
-                    ],
-                ),
-            ]
-        )
 
     @app.callback(
         Output(f"monitor-tab-content", "children"),

@@ -19,6 +19,8 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
 )
 from ansys.fluent.post import set_config
 from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
+from property_editor import PropertyEditor
+
 
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "graphics-button"
@@ -27,9 +29,9 @@ SAVE_BUTTON_ID = "save-button"
 DELETE_BUTTON_ID = "delete-button"
 
 
-class LocalPropertyEditor:
+class LocalPropertyEditor(PropertyEditor):
     def __init__(self, app, SessionsManager):
-
+        super().__init__()
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager

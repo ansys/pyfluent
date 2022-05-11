@@ -19,14 +19,15 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
 from ansys.fluent.post import set_config
 from post_data import update_vtk_fun, update_graph_fun
 from ansys.fluent.core.solver.flobject import to_python_name
-
+from property_editor import PropertyEditor
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "display-graphics-button"
 PLOT_BUTTON_ID = "plot-graph-button"
 
 
-class SettingsPropertyEditor:
+class SettingsPropertyEditor(PropertyEditor):
     def __init__(self, app, SessionsManager):
+        super().__init__()
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
