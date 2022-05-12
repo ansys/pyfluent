@@ -1,13 +1,13 @@
-""".. _ref_mixing_elbow_settings_api:
+""".. _ref_mixing_elbow_settings_api_beta:
 
 Fluid Flow and Heat Transfer in a Mixing Elbow
 ----------------------------------------------
 This example illustrates the setup and solution of a three-dimensional
-turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
-elbow configuration is encountered in piping systems in power plants and
-process industries. It is often important to predict the flow field and
-temperature field in the area of the mixing region in order to properly design
-the junction.
+turbulent fluid flow and heat transfer problem in a mixing elbow using
+settings api (Beta). The mixing elbow configuration is encountered in
+piping systems in power plants and process industries. It is often
+important to predict the flow field and temperature field in the area
+of the mixing region in order to properly design the junction.
 
 This example demonstrates how to do the following:
 
@@ -36,28 +36,32 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.post import set_config
+from ansys.fluent.post.pyvista import Graphics
+
+set_config(blocking=True)
+set_config(blocking=True, set_view_on_display="isometric")
 
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
 session = pyfluent.launch_fluent(precision="double", processor_count=2)
-session.tui.solver.file.read_case(import_filename)
-###############################################################################
-# Perform mesh check:
-# The mesh check will list the minimum and maximum x, y, and z values from the
-# mesh in the default SI unit of meters. It will also report a number of other
-# mesh features that are checked. Any errors in the mesh will be reported at
-# this time. Ensure that the minimum volume is not negative, since Ansys Fluent
-# cannot begin a calculation when this is the case.
-
-session.tui.solver.mesh.check()
-
 ###############################################################################
 # The settings objects provide a natural way to access and modify settings.
 # The top-level settings object for a session can be accessed with the
 # get_settings_root() method of the session object.
 # Enabling the settings objects.
 
-root = session.get_settings_root()
+settings = session.get_settings_root()
+###############################################################################
+# Import mesh and perform mesh check:
+# The mesh check will list the minimum and maximum x, y, and z values from the
+# mesh in the default SI unit of meters. It will also report a number of other
+# mesh features that are checked. Any errors in the mesh will be reported at
+# this time. Ensure that the minimum volume is not negative, since Ansys Fluent
+# cannot begin a calculation when this is the case.
+
+settings.file.read(file_type="case", file_name=import_filename)
+session.tui.solver.mesh.check()
 
 ###############################################################################
 # Set the working units for the mesh:
@@ -72,42 +76,20 @@ session.tui.solver.define.units("length", "in")
 ###############################################################################
 # Enable heat transfer by activating the energy equation.
 
-root.setup.models.energy.enabled = True
+settings.setup.models.energy.enabled = True
 
 ###############################################################################
 # Create a new material called water-liquid.
 
-session.tui.solver.define.materials.copy("fluid", "water-liquid")
+settings.setup.materials.copy_database_material_by_name(
+    type="fluid", name="water-liquid"
+)
 
 ###############################################################################
 # Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
 # water-liquid from the Material list.
 
-session.tui.solver.define.boundary_conditions.fluid(
-    "elbow-fluid",
-    "yes",
-    "water-liquid",
-    "no",
-    "no",
-    "no",
-    "no",
-    "0",
-    "no",
-    "0",
-    "no",
-    "0",
-    "no",
-    "0",
-    "no",
-    "0",
-    "no",
-    "1",
-    "no",
-    "no",
-    "no",
-    "no",
-    "no",
-)
+settings.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 
 ###############################################################################
 # Set up the boundary conditions for the inlets, outlet, and walls for your CFD
@@ -120,18 +102,18 @@ session.tui.solver.define.boundary_conditions.fluid(
 # Hydraulic Diameter: 4 [inch]
 # Temperature: 293.15 [K]
 
-root.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
+settings.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
     "option": "constant or expression",
     "constant": 0.4,
 }
-root.setup.boundary_conditions.velocity_inlet[
+settings.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].ke_spec = "Intensity and Hydraulic Diameter"
-root.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 5
-root.setup.boundary_conditions.velocity_inlet[
+settings.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 5
+settings.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].turb_hydraulic_diam = "4 [in]"
-root.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
+settings.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
     "option": "constant or expression",
     "constant": 293.15,
 }
@@ -145,17 +127,17 @@ root.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
 # Hydraulic Diameter: 1 [inch]
 # Temperature: 313.15 [K]
 
-root.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = {
+settings.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = {
     "option": "constant or expression",
     "constant": 1.2,
 }
-root.setup.boundary_conditions.velocity_inlet[
+settings.setup.boundary_conditions.velocity_inlet[
     "hot-inlet"
 ].ke_spec = "Intensity and Hydraulic Diameter"
-root.setup.boundary_conditions.velocity_inlet[
+settings.setup.boundary_conditions.velocity_inlet[
     "hot-inlet"
 ].turb_hydraulic_diam = "1 [in]"
-root.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
+settings.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
     "option": "constant or expression",
     "constant": 313.15,
 }
@@ -165,7 +147,7 @@ root.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
 # Backflow Turbulent Intensity: 5 [%]
 # Backflow Turbulent Viscosity Ratio: 4
 
-root.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
+settings.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
 ###############################################################################
 # Enable the plotting of residuals during the calculation.
@@ -176,117 +158,85 @@ session.tui.solver.solve.monitors.residual.plot("yes")
 # Create a surface report definition of average temperature at the outlet
 # (outlet) called outlet-temp-avg
 
-root.solution.report_definitions.surface["outlet-temp-avg"] = {}
-root.solution.report_definitions.surface[
-    "outlet-temp-avg"
+settings.solution.report_definitions.surface["temperature_outlet"] = {}
+settings.solution.report_definitions.surface[
+    "temperature_outlet"
 ].report_type = "surface-massavg"
-root.solution.report_definitions.surface["outlet-temp-avg"].field = "temperature"
-root.solution.report_definitions.surface["outlet-temp-avg"].surface_names = ["outlet"]
-root.solution.report_definitions.compute(report_defs=["outlet-temp-avg"])
-
-###############################################################################
-# Create a convergence condition for outlet-temp-avg:
-# Provide con-outlet-temp-avg for Conditions. Select outlet-temp-avg Report
-# Definition. Provide 1e-5 for Stop Criterion. Provide 20 for Ignore Iterations
-# Before. Provide 15 for Use Iterations. Enable Print. Set Every Iteration to
-# 3.
-# These settings will cause Fluent to consider the solution converged when the
-# surface report definition value for each of the previous 15 iterations is
-# within 0.001% of the current value. Convergence of the values will be checked
-# every 3 iterations. The first 20 iterations will be ignored, allowing for any
-# initial solution dynamics to settle out. Note that the value printed to the
-# console is the deviation between the current and previous iteration values
-# only.
-# Change Convergence Conditions
-
-session.tui.solver.solve.convergence_conditions(
-    "conv-reports",
-    "add",
-    "con-outlet-temp-avg",
-    "initial-values-to-ignore",
-    "20",
-    "previous-values-to-consider",
-    "15",
-    "print?",
-    "yes",
-    "report-defs",
-    "outlet-temp-avg",
-    "stop-criterion",
-    "1e-05",
-    "quit",
-    "quit",
-    "condition",
-    "1",
-    "frequency",
-    "3",
-    "quit",
-)
-session.tui.solver.solve.convergence_conditions("frequency", "3", "quit")
+settings.solution.report_definitions.surface["temperature_outlet"].field = "temperature"
+settings.solution.report_definitions.surface["temperature_outlet"].surface_names = [
+    "outlet"
+]
+settings.solution.report_definitions.compute(report_defs=["temperature_outlet"])
 
 ###############################################################################
 # Initialize the flow field using the Hybrid Initialization
 
-session.tui.solver.solve.initialize.hyb_initialization()
+settings.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Solve for 150 Iterations.
 
-session.tui.solver.solve.iterate(150)
-
-###############################################################################
-# Save the case and data file (mixing_elbow1.cas.h5 and mixing_elbow1.dat.h5).
-# session.tui.solver.file.write_case_data('mixing_elbow1.cas.h5')
+settings.solution.run_calculation.iterate.get_attr("arguments")
+settings.solution.run_calculation.iterate(number_of_iterations=150)
 
 ###############################################################################
 # Examine the mass flux report for convergence: Select cold-inlet, hot-inlet,
 # and outlet from the Boundaries selection list.
 # Compute a Mass Flux Report for convergence
 
-root.solution.report_definitions.flux[
-    "report_mfr"
+settings.solution.report_definitions.flux[
+    "mass_flow_rate"
 ] = {}  # Create a default report flux report
-root.solution.report_definitions.flux["report_mfr"].zone_names = [
+settings.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
     "cold-inlet",
     "hot-inlet",
     "outlet",
 ]
-root.solution.report_definitions.compute(report_defs=["report_mfr"])
+settings.solution.report_definitions.compute(report_defs=["mass_flow_rate"])
 
 ###############################################################################
 # Create and display a definition for velocity magnitude contours on the
 # symmetry plane:
-# Provide contour-vel for Contour Name. Select velocity magnitude. Select
-# symmetry-xyplane from the Surfaces list. Display contour-vel contour.
+# Provide velocity_contour_symmetry for Contour Name. Select velocity magnitude. Select
+# symmetry-xyplane from the Surfaces list. Display velocity_contour_symmetry contour.
 
-root.results.graphics.contour["contour-vel"] = {}
-root.results.graphics.contour["contour-vel"].print_state()
-root.results.graphics.contour["contour-vel"].field = "velocity-magnitude"
-root.results.graphics.contour["contour-vel"].surfaces_list = ["symmetry-xyplane"]
-# root.results.graphics.contour["contour-vel"].display()
+settings.results.graphics.contour["velocity_contour_symmetry"] = {}
+settings.results.graphics.contour["velocity_contour_symmetry"].print_state()
+settings.results.graphics.contour[
+    "velocity_contour_symmetry"
+].field = "velocity-magnitude"
+settings.results.graphics.contour["velocity_contour_symmetry"].surfaces_list = [
+    "symmetry-xyplane"
+]
+# settings.results.graphics.contour["velocity_contour_symmetry"].display()
 
 ###############################################################################
 # Create and display a definition for temperature contours on the symmetry
 # plane:
-# Provide contour-temp for Contour Name. Select temperature. Select
-# symmetry-xyplane from the Surfaces list. Display contour-temp contour.
+# Provide temperature_contour_symmetry for Contour Name. Select temperature. Select
+# symmetry-xyplane from the Surfaces list. Display temperature_contour_symmetry contour.
 
-root.results.graphics.contour["contour-temp"] = {}
-root.results.graphics.contour["contour-temp"].print_state()
-root.results.graphics.contour["contour-temp"].field = "temperature"
-root.results.graphics.contour["contour-temp"].surfaces_list = ["symmetry-xyplane"]
-# root.results.graphics.contour["contour-temp"].display()
+settings.results.graphics.contour["temperature_contour_symmetry"] = {}
+settings.results.graphics.contour["temperature_contour_symmetry"].print_state()
+settings.results.graphics.contour["temperature_contour_symmetry"].field = "temperature"
+settings.results.graphics.contour["temperature_contour_symmetry"].surfaces_list = [
+    "symmetry-xyplane"
+]
+# settings.results.graphics.contour["temperature_contour_symmetry"].display()
 
 ###############################################################################
 # Create and display velocity vectors on the symmetry-xyplane plane:
-# Provide vector-vel for Vector Name. Select arrow for the Style. Select
+# Provide velocity_vector_symmetry for Vector Name. Select arrow for the Style. Select
 # symmetry-xyplane from the Surfaces selection list.
-root.results.graphics.vector["vector-vel"] = {}
-root.results.graphics.vector["vector-vel"].print_state()
-root.results.graphics.vector["vector-vel"].field = "temperature"
-root.results.graphics.vector["vector-vel"].surfaces_list = ["symmetry-xyplane"]
-root.results.graphics.vector["vector-vel"].scale.scale_f = 4
-root.results.graphics.vector["vector-vel"].style = "arrow"
-# root.results.graphics.vector["vector-vel"].display()
+settings.results.graphics.vector["velocity_vector_symmetry"] = {}
+settings.results.graphics.vector["velocity_vector_symmetry"].print_state()
+settings.results.graphics.vector["velocity_vector_symmetry"].field = "temperature"
+settings.results.graphics.vector["velocity_vector_symmetry"].surfaces_list = [
+    "symmetry-xyplane"
+]
+settings.results.graphics.vector["velocity_vector_symmetry"].scale.scale_f = 4
+settings.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
+# settings.results.graphics.vector["velocity_vector_symmetry"].display()
 
 ###############################################################################
 # Create an iso-surface representing the intersection of the plane z=0 and the
@@ -299,11 +249,15 @@ session.tui.solver.surface.iso_surface(
 ###############################################################################
 # Create Contour on the iso-surface
 
-root.results.graphics.contour["contour-z_0_outlet"] = {}
-root.results.graphics.contour["contour-z_0_outlet"].print_state()
-root.results.graphics.contour["contour-z_0_outlet"].field = "temperature"
-root.results.graphics.contour["contour-z_0_outlet"].surfaces_list = ["z=0_outlet"]
-# root.results.graphics.contour["contour-z_0_outlet"].display()
+settings.results.graphics.contour["temperature_contour_isosurface"] = {}
+settings.results.graphics.contour["temperature_contour_isosurface"].print_state()
+settings.results.graphics.contour[
+    "temperature_contour_isosurface"
+].field = "temperature"
+settings.results.graphics.contour["temperature_contour_isosurface"].surfaces_list = [
+    "z=0_outlet"
+]
+# settings.results.graphics.contour["temperature_contour_isosurface"].display()
 
 ###############################################################################
 # session.tui.solver.file.write_case_data("mixing_elbow1_set.cas.h5")
@@ -322,7 +276,25 @@ session.tui.solver.display.objects.create(
 )
 
 ###############################################################################
-# Write final case and data.
+# Mesh display using PyVista
+
+graphics_session = Graphics(session)
+mesh_1 = graphics_session.Meshes["mesh-1"]
+mesh_1.show_edges = True
+mesh_1.surfaces_list = [
+    "cold-inlet",
+    "hot-inlet",
+    "wall-elbow",
+    "wall-inlet",
+    "symmetry-xyplane",
+    "outlet",
+]
+
+mesh_1.display()
+
+###############################################################################
+# Write final case and data. Exit.
 # session.tui.solver.file.write_case_data('mixing_elbow2_set.cas.h5')
+session.exit()
 
 ###############################################################################
