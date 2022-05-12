@@ -87,7 +87,7 @@ session.meshing.workflow.TaskObject[
     {
         "Context": 0,
         "CreateObjectPer": "Custom",
-        "FMDFileName": "import_filenamed",
+        "FMDFileName": import_filename,
         "FileLoaded": "yes",
         "ObjectSetting": "DefaultObjectSetting",
         "Options": {
