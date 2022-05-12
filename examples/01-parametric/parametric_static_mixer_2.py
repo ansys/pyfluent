@@ -23,7 +23,11 @@ from ansys.fluent.parametric import ParametricProject
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)
 
+<<<<<<< HEAD
 session = pyfluent.launch_fluent(precision="double", processor_count=4)
+=======
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
+>>>>>>> b6939bb (Resolving git conflicts)
 root = session.get_settings_root()
 
 #########################################################################
