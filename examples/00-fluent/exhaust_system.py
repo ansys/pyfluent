@@ -1,8 +1,7 @@
 """.. _ref_exhaust_system_tui_api:
 
-Exhaust System: Fault-tolerant Meshing
+End-to-end Fault-tolerant Meshing Workflow
 ----------------------------------------------
-
 This tutorial illustrates the setup and solution of a three-dimensional
 turbulent fluid flow in a manifold exhaust system. The manifold configuration
 is encountered in the automotive industry. It is often important to predict
@@ -11,8 +10,7 @@ the junction. You will use the Fault-tolerant Meshing guided workflow, which
 unlike the watertight workflow used in Fluid Flow in a Mixing Elbow, is
 appropriate for geometries with imperfections, such as gaps and leakages.
 
-This tutorial demonstrates how to do the following in Ansys Fluent:
-
+End-to-end Fault Tolerant Meshing example demonstrating use of 'tui' modules:
 
 - Use the Fault-tolerant Meshing guided workflow to:
     - Import a CAD geometry and manage individual parts
@@ -37,10 +35,15 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
 
 ###############################################################################
-# First, connect with a Fluent server
+# First, download the geometry file and start Fluent as a service with
+# Meshing Mode, Double Precision, Number of Processors 2
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.post import set_config
+from ansys.fluent.post.pyvista import Graphics
+
+set_config(blocking=True, set_view_on_display="isometric")
 
 import_filename = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
@@ -50,7 +53,7 @@ import_filename = examples.download_file(
 # Start Fluent in double precision running on 2 processors
 
 session = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count=4
+    meshing_mode=True, precision="double", processor_count=2
 )
 
 ###############################################################################
@@ -84,7 +87,7 @@ session.meshing.workflow.TaskObject[
     {
         "Context": 0,
         "CreateObjectPer": "Custom",
-        "FMDFileName": import_filename,
+        "FMDFileName": "import_filenamed",
         "FileLoaded": "yes",
         "ObjectSetting": "DefaultObjectSetting",
         "Options": {
@@ -650,6 +653,25 @@ session.solver.tui.display.objects.create(
 )
 # session.solver.tui.display.objects.display("scene-1")
 
+###############################################################################
+# Mesh display using PyVista
+
+graphics_session = Graphics(session)
+mesh_1 = graphics_session.Meshes["mesh-1"]
+mesh_1.show_edges = True
+mesh_1.surfaces_list = [
+    "inlet-1",
+    "inlet-2",
+    "inlet-3",
+    "outlet-1",
+    "flow-pipe",
+    "main.1",
+    "object1.1",
+    "object2.1",
+    "outpipe3.1",
+]
+
+mesh_1.display()
 ###############################################################################
 # Save case, data and exit.
 # session.solver.tui.file.write_case_data("exhaust_system.cas.h5")

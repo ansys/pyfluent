@@ -1,7 +1,7 @@
 """.. _ref_mixing_elbow_tui_api:
 
-Fluid Flow and Heat Transfer in a Mixing Elbow
-----------------------------------------------
+End-to-end Watertight Meshing Workflow
+---------------------------------------
 This example illustrates the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and
@@ -9,7 +9,7 @@ processindustries. It is often important to predict the flow field and
 temperature field in the area of the mixing regionin order to properly design
 the junction.
 
-This example demonstrates how to do the following:
+End-to-end Watertight Meshing example demonstrating use of 'tui' modules:
 
 - Use the Watertight Geometry guided workflow to:
     - Import a CAD geometry
@@ -43,12 +43,12 @@ from ansys.fluent.core import examples
 from ansys.fluent.post import set_config
 from ansys.fluent.post.pyvista import Graphics
 
-set_config(blocking=True)
+set_config(blocking=True, set_view_on_display="isometric")
 
 import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
 session = pyfluent.launch_fluent(
-    meshing_mode=True, precision="double", processor_count=4
+    meshing_mode=True, precision="double", processor_count=2
 )
 
 ###############################################################################
