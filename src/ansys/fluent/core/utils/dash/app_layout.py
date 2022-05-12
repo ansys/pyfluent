@@ -25,9 +25,7 @@ def get_side_bar(app, user_id, session_id):
     tree_nodes_data = {"title": "Root", "key": "Root", "icon": None, "children": []}
     keys = ["Root"]
     if session_id:
-        tree_nodes_data, keys = TreeView(
-            app, user_id, session_id, SessionsManager
-        ).get_tree_nodes()
+        tree_nodes_data, keys = TreeView(app, user_id, session_id, SessionsManager).get_tree_nodes()
     tree = dash_tree(
         id="tree-view",
         expandedKeys=keys,
@@ -106,9 +104,7 @@ def app_layout():
                                 )
                                 if user_name_to_session_map.get(user_id)
                                 else [],
-                                value=user_name_to_session_map.get(
-                                    user_id, [[None, None]]
-                                )[0][0],
+                                value=user_name_to_session_map.get(user_id, [[None, None]])[0][0],
                                 style={
                                     "width": "200px",
                                 },
@@ -195,9 +191,7 @@ def app_layout():
                                                     tab_id="graphics",
                                                 ),
                                                 dbc.Tab(label="Plots", tab_id="plots"),
-                                                dbc.Tab(
-                                                    label="Monitors", tab_id="monitors"
-                                                ),
+                                                dbc.Tab(label="Monitors", tab_id="monitors"),
                                             ],
                                             id="tabs",
                                             active_tab="graphics",

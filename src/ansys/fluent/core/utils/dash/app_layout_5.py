@@ -16,29 +16,31 @@ setting2 = SettingsPropertyEditor(app, SessionsManager)
 setting3 = SettingsPropertyEditor(app, SessionsManager)
 local_editor = LocalPropertyEditor(app, SessionsManager)
 
+
 def get_post_objects(user_id, session_id):
-    return dbc.Row([
-        dbc.Col(
-            [
-                dcc.Dropdown(
-                    id="post-object-type",
-                    options=["Mesh", "Surface", "Contour", "Vector"],
-                    value="Contour",
-                    style={"padding": "10px 5px 5px 5px"},
-                ),
-                html.Div(id="post-object-container"),
-            ],
-            width="auto",
-            style={"width": "350px"},
-        ),
-        dbc.Col(
-            [GraphicsWindowCollection(app, user_id, session_id, SessionsManager)()]
-        ),
-    ])
+    return dbc.Row(
+        [
+            dbc.Col(
+                [
+                    dcc.Dropdown(
+                        id="post-object-type",
+                        options=["Mesh", "Surface", "Contour", "Vector"],
+                        value="Contour",
+                        style={"padding": "10px 5px 5px 5px"},
+                    ),
+                    html.Div(id="post-object-container"),
+                ],
+                width="auto",
+                style={"width": "350px"},
+            ),
+            dbc.Col([GraphicsWindowCollection(app, user_id, session_id, SessionsManager)()]),
+        ]
+    )
 
 
 def get_setup_objects(user_id, session_id):
-    return dbc.Row([
+    return dbc.Row(
+        [
             dbc.Col(
                 [
                     setting1(user_id, session_id, "remote:setup/models/viscous:"),
@@ -59,8 +61,8 @@ def get_setup_objects(user_id, session_id):
                 style={"width": "350px"},
             ),
             dbc.Col([MonitorWindow(app, user_id, session_id, SessionsManager)()]),
-        ])
-    
+        ]
+    )
 
 
 def app_layout():

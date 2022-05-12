@@ -30,13 +30,7 @@ def app_layout():
                         width="auto",
                         style={"width": "350px"},
                     ),
-                    dbc.Col(
-                        [
-                            GraphicsWindowCollection(
-                                app, user_id, session_id, SessionsManager
-                            )()
-                        ]
-                    ),
+                    dbc.Col([GraphicsWindowCollection(app, user_id, session_id, SessionsManager)()]),
                 ],
             ),
         ],

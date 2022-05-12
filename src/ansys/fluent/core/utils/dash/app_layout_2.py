@@ -27,9 +27,7 @@ def app_layout():
                 children=[
                     dbc.Col(
                         [
-                            setting1(
-                                user_id, session_id, "remote:setup/models/viscous:"
-                            ),
+                            setting1(user_id, session_id, "remote:setup/models/viscous:"),
                             setting2(
                                 user_id,
                                 session_id,
@@ -46,9 +44,7 @@ def app_layout():
                         width="auto",
                         style={"width": "350px"},
                     ),
-                    dbc.Col(
-                        [MonitorWindow(app, user_id, session_id, SessionsManager)()]
-                    ),
+                    dbc.Col([MonitorWindow(app, user_id, session_id, SessionsManager)()]),
                 ],
             ),
         ],

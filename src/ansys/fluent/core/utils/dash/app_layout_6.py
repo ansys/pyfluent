@@ -18,28 +18,29 @@ local_editor = LocalPropertyEditor(app, SessionsManager)
 
 
 def get_post_objects(user_id, session_id):
-    return dbc.Row([
-        dbc.Col(
-            [
-                dcc.Dropdown(
-                    id="post-object-type",
-                    options=["Mesh", "Surface", "Contour", "Vector"],
-                    value="Contour",
-                    style={"padding": "10px 5px 5px 5px"},
-                ),
-                html.Div(id="post-object-container"),
-            ],
-            width="auto",
-            style={"width": "350px"},
-        ),
-        dbc.Col(
-            [GraphicsWindowCollection(app, user_id, session_id, SessionsManager)()]
-        ),
-    ])
+    return dbc.Row(
+        [
+            dbc.Col(
+                [
+                    dcc.Dropdown(
+                        id="post-object-type",
+                        options=["Mesh", "Surface", "Contour", "Vector"],
+                        value="Contour",
+                        style={"padding": "10px 5px 5px 5px"},
+                    ),
+                    html.Div(id="post-object-container"),
+                ],
+                width="auto",
+                style={"width": "350px"},
+            ),
+            dbc.Col([GraphicsWindowCollection(app, user_id, session_id, SessionsManager)()]),
+        ]
+    )
 
 
 def get_setup_objects(user_id, session_id):
-    return dbc.Row([
+    return dbc.Row(
+        [
             dbc.Col(
                 [
                     setting1(user_id, session_id, "remote:setup/models/viscous:"),
@@ -57,13 +58,12 @@ def get_setup_objects(user_id, session_id):
                     ),
                 ],
                 width="auto",
-                style={"width": "350px", "padding":"10px"},
+                style={"width": "350px", "padding": "10px"},
             ),
             dbc.Col([MonitorWindow(app, user_id, session_id, SessionsManager)()]),
         ],
-        style={"padding":"10px"},
-        )
-    
+        style={"padding": "10px"},
+    )
 
 
 def app_layout():
@@ -91,12 +91,8 @@ def app_layout():
                             },
                         ),
                     ],
-                    style={
-                        "display": "flex",
-                        "flex-direction": "row",
-                        "border" : "1px soild lightgray"                        
-                    },
-                ),            
+                    style={"display": "flex", "flex-direction": "row", "border": "1px soild lightgray"},
+                ),
             ),
             dbc.Row(
                 [
@@ -117,10 +113,7 @@ def app_layout():
                 ],
             ),
         ],
-        style={
-             "font": "14px 'Segoe UI'",
-             "border" : "1px soild lightgray"  
-        },        
+        style={"font": "14px 'Segoe UI'", "border": "1px soild lightgray"},
     )
 
 
