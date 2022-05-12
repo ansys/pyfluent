@@ -1,15 +1,17 @@
 from ansys.fluent.core.session import Session
-from local_property_editor import (
+
+from local_property_editor import LocalPropertyEditor
+from post_windows import (
     MonitorWindow,
     PlotWindowCollection,
     GraphicsWindowCollection,
     PostWindowCollection,
 )
+
 import threading
 from ansys.fluent.post.pyvista import Graphics
 
-# from ansys.fluent.core.utils.dash.settings_widgets import SettingsWidget
-from local_property_editor import LocalPropertyEditor
+
 
 
 class SessionsManager:
@@ -82,7 +84,7 @@ class SessionsManager:
                 if event_name == "CalculationsEndedEvent":
                     if "ProgressEvent" in self._events_info_map:
                         del self._events_info_map["ProgressEvent"]
-                    if "CalculationsStartedEvent" in self._events_info_map:    
+                    if "CalculationsStartedEvent" in self._events_info_map:
                         del self._events_info_map["CalculationsStartedEvent"]
                 if event_name == "InitializedEvent":
                     itrEndedEvent = self._events_info_map.get("IterationEndedEvent")

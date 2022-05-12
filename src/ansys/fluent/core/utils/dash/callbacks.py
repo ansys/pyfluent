@@ -7,12 +7,12 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 
 from sessions_manager import SessionsManager
-from local_property_editor import (
+from local_property_editor import LocalPropertyEditor
+from post_windows import (
     MonitorWindow,
     PlotWindowCollection,
     GraphicsWindowCollection,
     PostWindowCollection,
-    LocalPropertyEditor,
 )
 from settings_property_editor import SettingsPropertyEditor
 from tree_view import TreeView
@@ -29,7 +29,7 @@ def register_callbacks(app):
         Input({"type": "settings-command-button", "index": ALL}, "n_clicks"),
         Input("connection-id", "data"),
         State({"type": "settings-command-input", "index": ALL}, "value"),
-        State("session-id", "value"),       
+        State("session-id", "value"),
     )
     def on_settings_command_execution(
         commnads,
@@ -37,14 +37,16 @@ def register_callbacks(app):
         args_value,
         session_id,
     ):
-        if  session_id is None:
+        if session_id is None:
             raise PreventUpdate
-                
+
         ctx = dash.callback_context
         n_clicks = ctx.triggered[0]["value"]
         if not n_clicks:
             raise PreventUpdate
-        command_name,object_location, object_type, object_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"].split(":")
+        command_name, object_location, object_type, object_index = eval(
+            ctx.triggered[0]["prop_id"].split(".")[0]
+        )["index"].split(":")
         print(
             "on_command_execution",
             command_name,
@@ -67,33 +69,29 @@ def register_callbacks(app):
         return_value = cmd_obj(**kwargs)
         return f"{return_value}"
 
-
     @app.callback(
         Output("property-editor-container", "children"),
         Input("object-id", "value"),
         Input("connection-id", "data"),
-        State("session-id", "value"),       
+        State("session-id", "value"),
     )
     def show_property_editor(object_id, connection_id, session_id):
-        
+
         print("\nrefresh_widgets from tree", connection_id, object_id, session_id)
         if object_id is None or session_id is None:
-            return [] 
-        object_location, object_type, object_index = object_id.split(":")    
+            return []
+        object_location, object_type, object_index = object_id.split(":")
         editor = (
             LocalPropertyEditor(app, SessionsManager)
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
-        )                
-        return editor.fun(connection_id, session_id, object_id) 
-
-
-
+        )
+        return editor.fun(connection_id, session_id, object_id)
 
     def on_value_changed(
         input_values,
         connection_id,
-        session_id,     
+        session_id,
     ):
         ctx = dash.callback_context
         input_value = ctx.triggered[0]["value"]
@@ -101,13 +99,19 @@ def register_callbacks(app):
             raise PreventUpdate
         input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
         input_index, object_location, object_type, object_index = input_index.split(":")
-        print('\n on_value_changed', input_index, object_location, object_type, object_index)
+        print(
+            "\n on_value_changed",
+            input_index,
+            object_location,
+            object_type,
+            object_index,
+        )
         editor = (
             LocalPropertyEditor(app, SessionsManager)
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
-       
+
         obj, static_info = editor.get_object_and_static_info(
             connection_id, session_id, object_type, object_index
         )
@@ -131,14 +135,11 @@ def register_callbacks(app):
         if input_value == obj():
             print("PreventUpdate")
             raise PreventUpdate
-        print('set_state', obj, input_value)
-        print(f"{object_location}:{object_type}:{object_index}")        
+        print("set_state", obj, input_value)
+        print(f"{object_location}:{object_type}:{object_index}")
         obj.set_state(input_value)
         object_id = f"{object_location}:{object_type}:{object_index}"
         return object_id, object_id
-
-
-
 
     @app.callback(
         Output(f"monitor-tab-content", "children"),
@@ -168,7 +169,12 @@ def register_callbacks(app):
         session = self.SessionsManager(self._app, connection_id, session_id).session
         fig = session.monitors_manager.get_monitor_set_data(active_tab)
         if fig is None:
-            return dash.no_update
+            PostWindowCollection._is_executing = False
+            print("return blank")
+            return dcc.Graph(
+                figure={},
+                style={"height": "100%"},
+            )
 
         if active_tab == "residual":
             fig.update_yaxes(type="log")
@@ -195,7 +201,7 @@ def register_callbacks(app):
             font=dict(family="Courier New, monospace", size=14, color="black"),
         )
         PostWindowCollection._is_executing = False
-        print('return Graph')
+        print("return Graph")
         return dcc.Graph(
             figure=fig,
             style={"height": "100%"},
@@ -210,7 +216,7 @@ def register_callbacks(app):
         Input("need-to-data-fetch", "value"),
         State("session-id", "value"),
         State("object-id", "value"),
-        State("tabs", "active_tab"),
+        State("tab-content-created", "value"),
         prevent_initial_call=True,
     )
     def on_click_update(
@@ -333,7 +339,7 @@ def register_callbacks(app):
 
         ctx = dash.callback_context
         triggered_from_list = [v["prop_id"].split(".")[0] for v in ctx.triggered]
-        #print('watcher', triggered_from_list)
+        # print('watcher', triggered_from_list)
         if (
             "tab-content-created" in triggered_from_list
             and PostWindowCollection._show_outline
@@ -354,6 +360,7 @@ def register_callbacks(app):
                 "CalculationsStartedEvent"
             )
             if event_info:
+                print(PostWindowCollection._is_executing)
                 if PostWindowCollection._is_executing == False:
                     PostWindowCollection._is_executing = True
                     return "yes"
@@ -422,18 +429,17 @@ def register_callbacks(app):
         sessions.append(session_id)
 
         return [sessions, session_id]
-        
-        
+
     @app.callback(
         Output("tree-view-selection", "value"),
-        Input("tree-view", "selected"),               
+        Input("tree-view", "selected"),
     )
     def on_tree_selection(tree_selection):
         if tree_selection and isinstance(tree_selection, list):
-            return  tree_selection[0]
+            return tree_selection[0]
         else:
-            raise PreventUpdate        
-        
+            raise PreventUpdate
+
     @app.callback(
         Output("refresh-property-editor", "value"),
         Output("object-id", "value"),
@@ -444,38 +450,46 @@ def register_callbacks(app):
         Input("tree-view-selection", "value"),
         Input("connection-id", "data"),
         Input("session-id", "value"),
-        prevent_initial_call=True,        
+        prevent_initial_call=True,
     )
     def on_value_changed(
         input_values,
         selected_node,
         connection_id,
-        session_id,     
+        session_id,
     ):
         ctx = dash.callback_context
         input_value = ctx.triggered[0]["value"]
         if input_value is None:
             raise PreventUpdate
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-        if triggered_from== "tree-view-selection":                        
+        if triggered_from == "tree-view-selection":
             if "local" in selected_node or "remote" in selected_node:
                 return selected_node, selected_node
             else:
-                raise PreventUpdate                    
-           
-        elif triggered_from== "session-id":    
+                raise PreventUpdate
+
+        elif triggered_from == "session-id":
             PostWindowCollection._is_executing = False
-            return None, None            
-        else:   
+            return None, None
+        else:
             input_index = eval(triggered_from)["index"]
-            input_index, object_location, object_type, object_index = input_index.split(":")
-            print('\n on_value_changed', input_index, object_location, object_type, object_index)
+            input_index, object_location, object_type, object_index = input_index.split(
+                ":"
+            )
+            print(
+                "\n on_value_changed",
+                input_index,
+                object_location,
+                object_type,
+                object_index,
+            )
             editor = (
                 LocalPropertyEditor(app, SessionsManager)
                 if object_location == "local"
                 else SettingsPropertyEditor(app, SessionsManager)
             )
-           
+
             obj, static_info = editor.get_object_and_static_info(
                 connection_id, session_id, object_type, object_index
             )
@@ -499,12 +513,11 @@ def register_callbacks(app):
             if input_value == obj():
                 print("PreventUpdate")
                 raise PreventUpdate
-            print('set_state', obj, input_value)
-            print(f"{object_location}:{object_type}:{object_index}")        
+            print("set_state", obj, input_value)
+            print(f"{object_location}:{object_type}:{object_index}")
             obj.set_state(input_value)
             object_id = f"{object_location}:{object_type}:{object_index}"
-            return object_id, object_id        
-
+            return object_id, object_id
 
     @app.callback(
         Output("tree-container", "children"),
@@ -689,14 +702,17 @@ def register_callbacks(app):
         if active_tab == "graphics":
             return (
                 GraphicsWindowCollection(app, user_id, session_id, SessionsManager)(),
-                "yes",
+                active_tab,
             )
 
         elif active_tab == "plots":
             return (
                 PlotWindowCollection(app, user_id, session_id, SessionsManager)(),
-                "yes",
+                active_tab,
             )
 
         elif active_tab == "monitors":
-            return MonitorWindow(app, user_id, session_id, SessionsManager)(), "yes"
+            return (
+                MonitorWindow(app, user_id, session_id, SessionsManager)(),
+                active_tab,
+            )

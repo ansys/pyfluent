@@ -20,6 +20,7 @@ from ansys.fluent.post import set_config
 from post_data import update_vtk_fun, update_graph_fun
 from ansys.fluent.core.solver.flobject import to_python_name
 from property_editor import PropertyEditor
+
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "display-graphics-button"
 PLOT_BUTTON_ID = "plot-graph-button"
@@ -109,7 +110,7 @@ class SettingsPropertyEditor(PropertyEditor):
                 command_args = si_info_command.get("arguments", {})
                 for command_arg, arg_info in command_args.items():
                     if arg_info["type"] == "integer":
-                        self._all_widgets[command_arg] = dcc.Input(
+                        self._all_widgets[command_name + ":" + command_arg] = dcc.Input(
                             id={
                                 "type": "settings-command-input",
                                 "index": command_name + ":" + command_arg,
@@ -117,7 +118,7 @@ class SettingsPropertyEditor(PropertyEditor):
                             type="number",
                         )
                     if arg_info["type"] == "real":
-                        self._all_widgets[command_arg] = dcc.Input(
+                        self._all_widgets[command_name + ":" + command_arg] = dcc.Input(
                             id={
                                 "type": "settings-command-input",
                                 "index": command_name + ":" + command_arg,
