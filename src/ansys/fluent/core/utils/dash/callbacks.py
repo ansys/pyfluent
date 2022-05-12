@@ -33,31 +33,23 @@ def register_callbacks(app):
     )
     def on_settings_command_execution(
         commnads,
-        connection_id,
+        user_id,
         args_value,
         session_id,
     ):
-        if session_id is None:
-            raise PreventUpdate
-
+        """"Callback executed setting command button is pressed"""
         ctx = dash.callback_context
-        n_clicks = ctx.triggered[0]["value"]
-        if not n_clicks:
+        triggered_value = ctx.triggered[0]["value"]
+        if not triggered_value:
             raise PreventUpdate
         command_name, object_location, object_type, object_index = eval(
             ctx.triggered[0]["prop_id"].split(".")[0]
         )["index"].split(":")
-        print(
-            "on_command_execution",
-            command_name,
-            n_clicks,
-            args_value,
-            ctx.triggered,
-        )
+
         obj, static_info = SettingsPropertyEditor(
             app, SessionsManager
         ).get_object_and_static_info(
-            connection_id, session_id, object_type, object_index
+            user_id, session_id, object_type, object_index
         )
         kwargs = {}
         cmd_obj = getattr(obj, command_name)
@@ -65,7 +57,6 @@ def register_callbacks(app):
         args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
         for arg_name, arg_info in args_info.items():
             kwargs[to_python_name(arg_name)] = next(args_iter)
-        print(kwargs)
         return_value = cmd_obj(**kwargs)
         return f"{return_value}"
 
@@ -75,9 +66,8 @@ def register_callbacks(app):
         Input("connection-id", "data"),
         State("session-id", "value"),
     )
-    def show_property_editor(object_id, connection_id, session_id):
-
-        print("\nrefresh_widgets from tree", connection_id, object_id, session_id)
+    def show_property_editor(object_id, user_id, session_id):
+        
         if object_id is None or session_id is None:
             return []
         object_location, object_type, object_index = object_id.split(":")
@@ -86,11 +76,11 @@ def register_callbacks(app):
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
-        return editor(connection_id, session_id, object_id)
+        return editor(user_id, session_id, object_id)
 
     def on_value_changed(
         input_values,
-        connection_id,
+        user_id,
         session_id,
     ):
         ctx = dash.callback_context
@@ -113,7 +103,7 @@ def register_callbacks(app):
         )
 
         obj, static_info = editor.get_object_and_static_info(
-            connection_id, session_id, object_type, object_index
+            user_id, session_id, object_type, object_index
         )
         path_list = input_index.split("/")[1:]
         print(obj, path_list)
@@ -148,7 +138,7 @@ def register_callbacks(app):
         Input("connection-id", "data"),
         State("session-id", "value"),
     )
-    def render_tab_content(active_tab, need_to_data_fetch, connection_id, session_id):
+    def render_tab_content(active_tab, need_to_data_fetch, user_id, session_id):
         """
         This callback takes the 'active_tab' property as input, as well as the
         stored graphs, and renders the tab content depending on what the value of
@@ -157,7 +147,7 @@ def register_callbacks(app):
         ctx = dash.callback_context
         triggered_value = ctx.triggered[0]["value"]
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-        monitor_window = MonitorWindow(app, connection_id, session_id, SessionsManager)
+        monitor_window = MonitorWindow(app, user_id, session_id, SessionsManager)
         self = monitor_window
         print(
             "\n render_tab_content:",
@@ -166,7 +156,7 @@ def register_callbacks(app):
             active_tab,
         )
 
-        session = self.SessionsManager(self._app, connection_id, session_id).session
+        session = self.SessionsManager(self._app, user_id, session_id).session
         fig = session.monitors_manager.get_monitor_set_data(active_tab)
         if fig is None:
             PostWindowCollection._is_executing = False
@@ -222,7 +212,7 @@ def register_callbacks(app):
     def on_click_update(
         n_graphics_clicks,
         n_plot_clicks,
-        connection_id,
+        user_id,
         active_tab,
         need_to_data_fetch,
         session_id,
@@ -235,20 +225,20 @@ def register_callbacks(app):
         if triggered_from in ("graphics-button-clicked", "plot-button-clicked"):
             post_window_collection = (
                 GraphicsWindowCollection(
-                    app, connection_id, session_id, SessionsManager
+                    app, user_id, session_id, SessionsManager
                 )
                 if triggered_from == "graphics-button-clicked"
                 else PlotWindowCollection(
-                    app, connection_id, session_id, SessionsManager
+                    app, user_id, session_id, SessionsManager
                 )
             )
         elif main_active_tab == "graphics":
             post_window_collection = GraphicsWindowCollection(
-                app, connection_id, session_id, SessionsManager
+                app, user_id, session_id, SessionsManager
             )
         else:
             post_window_collection = PlotWindowCollection(
-                app, connection_id, session_id, SessionsManager
+                app, user_id, session_id, SessionsManager
             )
 
         print(
@@ -263,7 +253,7 @@ def register_callbacks(app):
             raise PreventUpdate
 
         post_window_collection._active_window = int(active_tab)
-        event_info = SessionsManager(app, connection_id, session_id).get_event_info(
+        event_info = SessionsManager(app, user_id, session_id).get_event_info(
             "IterationEndedEvent"
         )
 
@@ -283,7 +273,7 @@ def register_callbacks(app):
                 "itr_index": event_info.index if event_info else None,
             }
             return post_window_collection.get_viewer(
-                connection_id, session_id, object_type, object_index
+                user_id, session_id, object_type, object_index
             )
         elif triggered_from == "need-to-data-fetch":
             if need_to_data_fetch == "yes":
@@ -299,13 +289,13 @@ def register_callbacks(app):
                 window_data["itr_index"] = event_info.index if event_info else None
                 print(
                     "get_viewer",
-                    connection_id,
+                    user_id,
                     session_id,
                     object_type,
                     object_index,
                 )
                 viewer = post_window_collection.get_viewer(
-                    connection_id, session_id, object_type, object_index
+                    user_id, session_id, object_type, object_index
                 )
                 PostWindowCollection._is_executing = False
                 return viewer
@@ -322,7 +312,7 @@ def register_callbacks(app):
                 object_index = window_data["object_index"]
                 window_data["itr_index"] = event_info.index
                 return post_window_collection.get_viewer(
-                    connection_id, session_id, object_type, object_index
+                    user_id, session_id, object_type, object_index
                 )
 
         return post_window_collection.get_content()
@@ -455,7 +445,7 @@ def register_callbacks(app):
     def on_value_changed(
         input_values,
         selected_node,
-        connection_id,
+        user_id,
         session_id,
     ):
         ctx = dash.callback_context
@@ -491,7 +481,7 @@ def register_callbacks(app):
             )
 
             obj, static_info = editor.get_object_and_static_info(
-                connection_id, session_id, object_type, object_index
+                user_id, session_id, object_type, object_index
             )
             path_list = input_index.split("/")[1:]
             print(obj, path_list)
