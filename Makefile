@@ -41,3 +41,10 @@ api-codegen:
 	@python codegen/tuigen.py
 	@python codegen/settingsgen.py
 	@python codegen/datamodelgen.py
+
+build-doc:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@pip install -r requirements_docs.txt
+	@xvfb-run make -C doc html
+	@touch doc/_build/html/.nojekyll
+	@echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME

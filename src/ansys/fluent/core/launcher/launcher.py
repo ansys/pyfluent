@@ -232,7 +232,7 @@ def launch_fluent(
     else:
         import ansys.fluent.core as pyfluent
 
-        if pyfluent.BUILDING_GALLERY or pyfluent.RUNNING_PYTEST:
+        if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             args = _build_fluent_launch_args_string(**argvals).split()
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
