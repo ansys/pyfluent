@@ -153,6 +153,7 @@ jobs:
 
       - name: Build Documentation
         run: |
+          sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
           pip install -r requirements_docs.txt         
           xvfb-run make -C doc html
           touch doc/_build/html/.nojekyll
