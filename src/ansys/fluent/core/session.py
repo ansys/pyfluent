@@ -29,7 +29,17 @@ try:
     )
     from ansys.fluent.core.datamodel.PartManagement import Root as PartManagement_root
     from ansys.fluent.core.datamodel.meshing import Root as meshing_root
-    from ansys.fluent.core.datamodel.workflow import Root as workflow_root
+    from ansys.fluent.core.datamodel.workflow import Root as workflow_root   
+except ImportError:
+    pass
+
+try:    
+    from ansys.fluent.core.datamodel.flicing import Root as icing_root
+except ImportError:
+    pass
+
+try:    
+    from ansys.fluent.core.datamodel.flaero import Root as aero_root
 except ImportError:
     pass
 
@@ -213,11 +223,20 @@ class Session:
         self.field_data = FieldData(self._field_data_service)
         self.tui = Session.Tui(self._datamodel_service_tui)
 
+        self._health_check_service = HealthCheckService(self._channel, self._metadata)
+
+        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)        
+
         self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         if "meshing_root" in globals():
             self.meshing = meshing_root(self._datamodel_service_se, "meshing", [])
         if "workflow_root" in globals():
             self.workflow = workflow_root(self._datamodel_service_se, "workflow", [])
+        if "icing_root" in globals() and self.scheme_eval.scheme_eval("(dm-icing?)"):
+            self.icing = icing_root(self._datamodel_service_se, "flserver", [])
+        if "aero_root" in globals()and self.scheme_eval.scheme_eval("(dm-aero?)"):
+            self.aero = aero_root(self._datamodel_service_se, "flserver", [])
         if "PartManagement_root" in globals():
             self.part_management = PartManagement_root(
                 self._datamodel_service_se, "PartManagement", []
@@ -229,10 +248,6 @@ class Session:
             )
             self.PMFileManagement = self.pm_file_management
 
-        self._health_check_service = HealthCheckService(self._channel, self._metadata)
-
-        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)

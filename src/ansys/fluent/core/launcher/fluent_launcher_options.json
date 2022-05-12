@@ -38,5 +38,21 @@
             "false": ""
         },
         "fluent_format": "{}"
+    },
+    "fluent_icing": {
+        "type": "bool",
+        "fluent_map": {
+            "true": " -flicing",
+            "false": ""
+        },
+        "fluent_format": "{}"
+    },
+    "fluent_aero": {
+        "type": "bool",
+        "fluent_map": {
+            "true": " -flaero",
+            "false": ""
+        },
+        "fluent_format": "{}"
     }
 }
