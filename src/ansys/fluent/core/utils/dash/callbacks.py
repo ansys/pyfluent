@@ -86,7 +86,7 @@ def register_callbacks(app):
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
-        return editor.fun(connection_id, session_id, object_id)
+        return editor(connection_id, session_id, object_id)
 
     def on_value_changed(
         input_values,
