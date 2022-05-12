@@ -28,7 +28,7 @@ from ansys.fluent.parametric import ParametricStudy
 ############################################################################
 # Launch Fluent in 3D and double precision
 
-session = pyfluent.launch_fluent(precision="double", processor_count=2)
+session = pyfluent.launch_fluent(precision="double", processor_count=4)
 
 ############################################################################
 # Enable the settings API (Beta)

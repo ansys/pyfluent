@@ -92,7 +92,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v2
@@ -113,8 +113,8 @@ jobs:
 
       - name: Install OS packages
         run: |
-          sudo apt update
-          sudo apt install pandoc libegl1
+          sudo apt-get update
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Cache pip
         uses: actions/cache@v2
@@ -153,6 +153,7 @@ jobs:
 
       - name: Build Documentation
         run: |
+          sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
           pip install -r requirements_docs.txt         
           xvfb-run make -C doc html
           touch doc/_build/html/.nojekyll
