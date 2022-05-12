@@ -42,8 +42,9 @@ class MonitorsManager:
              return self._monitors_info.get(monitor_set_name,{}).get(prop)           
              
     def get_monitor_set_data(self, monitor_set_name):
-         with self._lock:             
-             return self._data_frames[monitor_set_name]["df"].plot()            
+         with self._lock: 
+            df = self._data_frames[monitor_set_name]["df"]         
+            return None if df.empty else df.plot()            
 
     def get_monitors_info(self):
         return self._monitors_service.get_monitors_info()    
@@ -116,7 +117,7 @@ class MonitorsManager:
         """    
         if not self._monitors_thread:                  
             self._monitors_info = self.get_monitors_info()
-            
+            print('reset dataframe')
             self._data_frames ={}
             for monitor_set_name, monitor_set_info in self._monitors_info.items():
                 self._data_frames[monitor_set_name] = {}
@@ -143,8 +144,9 @@ class MonitorsManager:
         """
         Stop Events manager.
         """
-        if self._monitors_thread:
-            print('monitor manager', 'stop')
-            self._monitors_service.end_streaming()
-            self._monitors_thread.join()
-            self._monitors_thread = None 
+        with self._lock:
+            if self._monitors_thread:
+                print('monitor manager', 'stop')
+                self._monitors_service.end_streaming()
+                self._monitors_thread.join()
+                self._monitors_thread = None 

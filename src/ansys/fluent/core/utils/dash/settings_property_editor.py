@@ -27,7 +27,7 @@ PLOT_BUTTON_ID = "plot-graph-button"
 
 class SettingsPropertyEditor(PropertyEditor):
     def __init__(self, app, SessionsManager):
-        super().__init__()
+        super().__init__(app)
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
@@ -100,7 +100,7 @@ class SettingsPropertyEditor(PropertyEditor):
                     self.get_label(command_name),
                     id={
                         "type": "settings-command-button",
-                        "index": to_python_name(command_name),
+                        "index": f"{to_python_name(command_name)}:remote:{object_type}:{object_index}",
                     },
                     n_clicks=0,
                     size="sm",

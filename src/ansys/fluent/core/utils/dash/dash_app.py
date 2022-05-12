@@ -4,19 +4,12 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 
 from users_info import VALID_USERNAME_PASSWORD_PAIRS
-from app_layout import app_layout
+from app_layout_2 import app_layout
 from callbacks import register_callbacks, user_name_to_session_map
 
 from flask import request
 
-app = dash.Dash(
-    __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP],
-    suppress_callback_exceptions=True,
-    title="Ansys PyFluent",
-)
-app._favicon = "assets/favicon.ico"
-dash_auth.BasicAuth(app, VALID_USERNAME_PASSWORD_PAIRS)
+from app_defn import app
 
 
 def get_storage():
@@ -31,6 +24,7 @@ def get_storage():
         html.Data(id="refresh-property-editor"),
         html.Data(id="window-id", value="0"),
         html.Data(id="need-to-data-fetch", value="no"),
+        html.Data(id="tree-view-selection"),
         html.Data(id="object-id"),
         html.Data(id="graphics-button-clicked"),
         html.Data(id="plot-button-clicked"),
@@ -46,10 +40,12 @@ def get_storage():
 
 
 def mod_app_layout():
+    
     user_id, storage = get_storage()
     app_layout.app = app
     app_layout.user_id = user_id
     container = app_layout()
+    
     container.children = storage + container.children
     return container
 

@@ -174,7 +174,7 @@ def app_layout():
                         width="auto",
                     ),
                     dbc.Col(
-                        id="property-editor",
+                        id="property-editor-container",
                         width="auto",
                         style={
                             "width": "20rem",

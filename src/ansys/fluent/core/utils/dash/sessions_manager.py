@@ -80,8 +80,10 @@ class SessionsManager:
             with self._lock:
                 self._events_info_map[event_name] = event_info
                 if event_name == "CalculationsEndedEvent":
-                    del self._events_info_map["ProgressEvent"]
-                    del self._events_info_map["CalculationsStartedEvent"]
+                    if "ProgressEvent" in self._events_info_map:
+                        del self._events_info_map["ProgressEvent"]
+                    if "CalculationsStartedEvent" in self._events_info_map:    
+                        del self._events_info_map["CalculationsStartedEvent"]
                 if event_name == "InitializedEvent":
                     itrEndedEvent = self._events_info_map.get("IterationEndedEvent")
                     if itrEndedEvent:

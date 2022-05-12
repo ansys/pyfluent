@@ -31,7 +31,7 @@ DELETE_BUTTON_ID = "delete-button"
 
 class LocalPropertyEditor(PropertyEditor):
     def __init__(self, app, SessionsManager):
-        super().__init__()
+        super().__init__(app)
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager
