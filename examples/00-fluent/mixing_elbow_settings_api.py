@@ -1,8 +1,15 @@
 """.. _ref_mixing_elbow_settings_api_beta:
 
-Fluent Setup and Solutoin using Beta Settings API
+Fluent Setup and Solutoin using Settings API (Beta)
 --------------------------------------------------
-This example demonstrates use of Beta Settings API.
+This example illustrates the setup and solution of a three-dimensional
+turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
+elbow configuration is encountered in piping systems in power plants and
+processindustries. It is often important to predict the flow field and
+temperature field in the area of the mixing regionin order to properly design
+the junction.
+
+This example demonstrates use of 'settings' modules (Beta):
 
 - Launch Ansys Fluent
 - Import Mesh
@@ -20,7 +27,7 @@ the elbow. The pipe dimensions are in inches and the fluid properties and
 boundary conditions are given in SI units. The Reynolds number for the flow at
 the larger inlet is 50, 800, so a turbulent flow model will be required.
 """
-
+# sphinx_gallery_thumbnail_number = 2
 
 ###############################################################################
 # First, download the mesh file and start Fluent as a service with
