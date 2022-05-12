@@ -11,7 +11,7 @@ This example demonstrates use of Beta Settings API.
 - Setup Boundary Conditions
 - Iniialize and Solve
 - Compute Mass Flow Rate and Temperature
-- Diplay Mesh and Contour using PyVista
+- Display Mesh and Contour using PyVista
 
 Problem Description:
 A cold fluid at 20 deg C flows into the pipe through a large inlet, and mixes
@@ -141,7 +141,7 @@ settings.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
 settings.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
 ###############################################################################
-# Disble the plotting of residuals during the calculation.
+# Disable the plotting of residuals during the calculation.
 
 session.tui.solver.solve.monitors.residual.plot("no")
 
