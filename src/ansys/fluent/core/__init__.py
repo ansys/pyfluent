@@ -88,4 +88,3 @@ except Exception:
     pass
 
 BUILDING_GALLERY = False
-RUNNING_PYTEST = False

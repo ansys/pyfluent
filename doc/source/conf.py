@@ -1,14 +1,15 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
 import os
+import platform
 import subprocess
-import sys
 
 import numpy as np
 from pyansys_sphinx_theme import pyansys_logo_black
 import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import __version__
 
 # Manage errors
@@ -27,6 +28,7 @@ if not os.path.exists(pyvista.FIGURE_PATH):
 
 # necessary when building the sphinx gallery
 pyvista.BUILDING_GALLERY = True
+pyfluent.BUILDING_GALLERY = True
 
 # -- Project information -----------------------------------------------------
 
@@ -118,32 +120,21 @@ copybutton_prompt_text = r">>> ?|\.\.\. "
 copybutton_prompt_is_regexp = True
 
 
-_THIS_DIR = os.path.dirname(__file__)
-_START_FLUENT_FILE = os.path.normpath(
-    os.path.join(_THIS_DIR, "..", "..", ".ci", "start_fluent.py")
-)
-_STOP_FLUENT_FILE = os.path.normpath(
-    os.path.join(_THIS_DIR, "..", "..", ".ci", "stop_fluent.py")
-)
-
-
-def _start_or_stop_fluent_container(gallery_conf, fname, when):
-    start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
-    if not start_instance:
-        if when == "before":
-            if fname in ["mixing_elbow.py", "exhaust_system.py"]:
-                args = ["3ddp", "-t2", "-meshing"]
-            elif fname in [
-                "parametric_static_mixer_1.py",
-                "parametric_static_mixer_2.py",
-                "parametric_static_mixer_3.py",
-            ]:
-                args = ["3ddp", "-t2"]
-            elif fname in ["post_processing_exhaust_manifold.py"]:
-                args = ["3ddp", "-t4"]
-            subprocess.run([sys.executable, _START_FLUENT_FILE] + args)
-        elif when == "after":
-            subprocess.run([sys.executable, _STOP_FLUENT_FILE])
+def _stop_fluent_container(gallery_conf, fname):
+    try:
+        is_linux = platform.system() == "Linux"
+        container_names = (
+            subprocess.check_output(
+                "docker container ls --format {{.Names}}", shell=is_linux
+            )
+            .decode("utf-8")
+            .strip()
+            .split()
+        )
+        for container_name in container_names:
+            subprocess.run(f"docker stop {container_name}", shell=is_linux)
+    except Exception:
+        pass
 
 
 # -- Sphinx Gallery Options ---------------------------------------------------
@@ -167,8 +158,8 @@ sphinx_gallery_conf = {
     "image_scrapers": ("pyvista", "matplotlib"),
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
-    "reset_modules_order": "both",
-    "reset_modules": (_start_or_stop_fluent_container),
+    "reset_modules_order": "after",
+    "reset_modules": (_stop_fluent_container),
 }
 
 
