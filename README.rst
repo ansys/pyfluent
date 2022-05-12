@@ -21,6 +21,8 @@ as well as broad access to Fluent features including:
 - Ability to use Fluent TUI commands for both meshing and solver features
 - Ability to use Fluent's in-built post processing capabilities
 
+This version of PyFluent is supported for Ansys optiSLang 2022 R2 release.
+
 Documentation and Issues
 ------------------------
 Please see the latest release `documentation <https://fluentdocs.pyansys.com>`_
