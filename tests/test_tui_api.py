@@ -7,4 +7,4 @@ def test_report_summary_tui(new_solver_session, capsys) -> None:
     new_solver_session.solver.tui.report.summary("no")
     new_solver_session.solver.tui.report.summary("no")
     captured = capsys.readouterr()
-    assert "Fluent" in captured.out
+    assert "Settings" in captured.out
