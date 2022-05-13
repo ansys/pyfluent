@@ -7,7 +7,7 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 
 from sessions_manager import SessionsManager
-from objects_handle import LocalObjectsHandle
+from objects_handle import LocalObjectsHandle, SettingsObjectsHandle
 from local_property_editor import LocalPropertyEditor
 from post_windows import (
     MonitorWindow,
@@ -46,12 +46,10 @@ def register_callbacks(app):
         command_name, object_location, object_type, object_index = eval(
             ctx.triggered[0]["prop_id"].split(".")[0]
         )["index"].split(":")
-
-        obj, static_info = SettingsPropertyEditor(
-            app, SessionsManager
-        ).get_object_and_static_info(
-            user_id, session_id, object_type, object_index
-        )
+                    
+           
+        obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(user_id, session_id, object_type, object_index)
+                
         kwargs = {}
         cmd_obj = getattr(obj, command_name)
         args_iter = iter(args_value)
@@ -73,9 +71,9 @@ def register_callbacks(app):
             return []
         object_location, object_type, object_index = object_id.split(":")
         editor = (
-            LocalPropertyEditor(SessionsManager)
+            LocalPropertyEditor()
             if object_location == "local"
-            else SettingsPropertyEditor(app, SessionsManager)
+            else SettingsPropertyEditor()
         )
         return editor(user_id, session_id, object_id)
 
@@ -97,15 +95,12 @@ def register_callbacks(app):
             object_type,
             object_index,
         )
-        editor = (
-            LocalObjectsHandle(SessionsManager)
-            if object_location == "local"
-            else SettingsPropertyEditor(app, SessionsManager)
-        )
-
-        obj, static_info = editor.get_object_and_static_info(
-            user_id, session_id, object_type, object_index
-        )
+        
+        if object_location == "local":
+            obj, static_info =  LocalObjectsHandle(SessionsManager)._get_object(user_id, session_id, object_type, object_index), None 
+        else:
+            obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(user_id, session_id, object_type, object_index)        
+        
         path_list = input_index.split("/")[1:]
         print(obj, path_list)
         for path in path_list:
@@ -478,15 +473,13 @@ def register_callbacks(app):
                 object_type,
                 object_index,
             )
-            editor = (
-                LocalObjectsHandle(SessionsManager)
-                if object_location == "local"
-                else SettingsPropertyEditor(app, SessionsManager)
-            )
+            
+            
+            if object_location == "local":
+                obj, static_info =  LocalObjectsHandle(SessionsManager)._get_object(user_id, session_id, object_type, object_index), None 
+            else:
+                obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(user_id, session_id, object_type, object_index) 
 
-            obj, static_info = editor.get_object_and_static_info(
-                user_id, session_id, object_type, object_index
-            )
             path_list = input_index.split("/")[1:]
             print(obj, path_list)
             for path in path_list:

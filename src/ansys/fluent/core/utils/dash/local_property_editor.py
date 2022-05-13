@@ -9,13 +9,12 @@ from app_defn import app
 from sessions_manager import SessionsManager
 
 class LocalPropertyEditor(PropertyEditor):
-    def __init__(self, SessionsManager):
+    def __init__(self):
         super().__init__()
-        self._all_widgets = {}
-        self.SessionsManager = SessionsManager
-        self._graphics_property_editor = GraphicsPropertyEditor(SessionsManager)
-        self._plot_property_editor = PlotPropertyEditor(SessionsManager)
-        self._get_objects_handle = LocalObjectsHandle(self.SessionsManager)
+        self._all_widgets = {}        
+        self._graphics_property_editor = GraphicsPropertyEditor()
+        self._plot_property_editor = PlotPropertyEditor()
+        self._get_objects_handle = LocalObjectsHandle(SessionsManager)
 
     def _get_editor(self, object_type):
         return (
@@ -23,10 +22,7 @@ class LocalPropertyEditor(PropertyEditor):
             if self._get_objects_handle.get_handle_type(object_type)=="graphics"
             else self._plot_property_editor
         )
-        
-    def get_label(self, name):
-        name_list = re.split("[^a-zA-Z]", name)
-        return " ".join([name.capitalize() for name in name_list])
+       
 
     def get_widgets(
         self, connection_id, session_id, object_type, object_index, widget_type
@@ -67,7 +63,7 @@ class LocalPropertyEditor(PropertyEditor):
                             parent_visible and visible,
                         )
 
-        obj, static_info = self._get_objects_handle.get_object_and_static_info(
+        obj = self._get_objects_handle._get_object(
             connection_id, session_id, object_type, object_index
         )
         
@@ -200,8 +196,7 @@ class LocalPropertyEditor(PropertyEditor):
 
 
 class GraphicsPropertyEditor:
-    def __init__(self, SessionsManager):
-        self.SessionsManager = SessionsManager
+
 
     def get_widgets(self, connection_id, session_id, object_type, object_index):
         return (
@@ -227,8 +222,6 @@ class GraphicsPropertyEditor:
 
 
 class PlotPropertyEditor:
-    def __init__(self, SessionsManager):
-        self.SessionsManager = SessionsManager
 
     def get_widgets(self, connection_id, session_id, object_type, object_index):
         return (

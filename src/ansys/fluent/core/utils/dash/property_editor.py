@@ -4,7 +4,7 @@ from dash import html
 import itertools
 from dash.exceptions import PreventUpdate
 from app_defn import app
-
+import re
 class PropertyEditor:
 
     _id_iter = itertools.count()
@@ -34,6 +34,10 @@ class PropertyEditor:
             children=self.render(user_id, session_id, object_id),
             id=f"property-editor-{self._id}",
         )
+        
+    def get_label(self, name):
+        name_list = re.split("[^a-zA-Z]", name)
+        return " ".join([name.capitalize() for name in name_list])        
 
     def render(self, user_id, session_id, object_id):
         object_location, object_type, object_index = object_id.split(":")

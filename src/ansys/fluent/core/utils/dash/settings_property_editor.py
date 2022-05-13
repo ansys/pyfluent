@@ -1,67 +1,26 @@
-from functools import partial
 import dash_bootstrap_components as dbc
 from dash import html
 import dash_core_components as dcc
-import dash_vtk
-from dash.dependencies import Input, Output, State, MATCH, ALL
-import dash
-from dash.exceptions import PreventUpdate
-import re
-from ansys.fluent.core.utils.generic import SingletonMeta
-from ansys.fluent.post.pyvista import Graphics
-from ansys.fluent.post.matplotlib import Plots
-from ansys.fluent.post.pyvista.pyvista_objects import (
-    Contour,
-    Mesh,
-    Surface,
-    Vector,
-)
-from ansys.fluent.post import set_config
-from post_data import update_vtk_fun, update_graph_fun
+
 from ansys.fluent.core.solver.flobject import to_python_name
 from property_editor import PropertyEditor
-
+from objects_handle import SettingsObjectsHandle
+from sessions_manager import SessionsManager
+from ansys.fluent.post import set_config
 set_config(blocking=False)
-DISPLAY_BUTTON_ID = "display-graphics-button"
-PLOT_BUTTON_ID = "plot-graph-button"
+
 
 
 class SettingsPropertyEditor(PropertyEditor):
-    def __init__(self, app, SessionsManager):
+    def __init__(self):
         super().__init__()
-        self._app = app
         self._all_widgets = {}
-        self.SessionsManager = SessionsManager
-
-    def get_object_and_static_info(
-        self, connection_id, session_id, object_type, object_index
-    ):
-        if object_type is not None:
-            path_list = object_type.split("/")
-            session = self.SessionsManager(self._app, connection_id, session_id).session
-            static_info = self.SessionsManager(
-                self._app, connection_id, session_id
-            ).static_info
-            obj = self.SessionsManager(
-                self._app, connection_id, session_id
-            ).settings_root
-            for path in path_list:
-                try:
-                    obj = getattr(obj, path)
-                    static_info = static_info["children"][obj.obj_name]
-                except AttributeError:
-                    obj = obj[path]
-                    static_info = static_info["object-type"]
-            return obj, static_info
-
-    def get_label(self, name):
-        name_list = re.split("[^a-zA-Z]", name)
-        return " ".join([name.capitalize() for name in name_list])
+        
 
     def get_widgets(
         self, connection_id, session_id, object_type, object_index, widget_type
     ):
-        def store_all_widgets(obj, si_info, state, parent=""):
+        def store_all_input_widgets(obj, si_info, state, parent=""):
             for name, value in obj.get_state().items():
                 if si_info["type"] == "named-object":
                     child_obj = obj[name]
@@ -80,14 +39,14 @@ class SettingsPropertyEditor(PropertyEditor):
                     )
                     self._all_widgets[name] = widget
                 else:
-                    store_all_widgets(
+                    store_all_input_widgets(
                         child_obj,
                         si_info_child,
                         state[name],
                         parent + "/" + name,
                     )
 
-        def store_all_buttons(obj, si_info):
+        def store_all_command_buttons(obj, si_info):
             commands = si_info.get("commands", [])
             print("commands", obj, commands)
             for command_name in commands:
@@ -126,15 +85,14 @@ class SettingsPropertyEditor(PropertyEditor):
                             type="number",
                         )
 
-        obj, static_info = self.get_object_and_static_info(
+        obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(
             connection_id, session_id, object_type, object_index
         )
-        self._all_widgets = {}
-        # print("update_stored_widgets", obj, obj.get_state())
+        self._all_widgets = {}       
         if widget_type == "input":
-            store_all_widgets(obj, static_info, obj.get_state())
+            store_all_input_widgets(obj, static_info, obj.get_state())
         else:
-            store_all_buttons(obj, static_info)
+            store_all_command_buttons(obj, static_info)
         return self._all_widgets
 
     def get_widget(

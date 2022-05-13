@@ -2,32 +2,17 @@ from functools import partial
 import dash_bootstrap_components as dbc
 from dash import html
 import dash_core_components as dcc
-import dash_vtk
-from dash.dependencies import Input, Output, State, MATCH, ALL
-import dash
+
+
 from dash.exceptions import PreventUpdate
-import re
-from ansys.fluent.core.utils.generic import SingletonMeta
-from ansys.fluent.post.pyvista import Graphics
-from ansys.fluent.post.matplotlib import Plots
 import plotly.graph_objs as go
-from ansys.fluent.post.pyvista.pyvista_objects import (
-    Contour,
-    Mesh,
-    Surface,
-    Vector,
-)
-from ansys.fluent.post import set_config
+import dash_vtk
 from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
-from property_editor import PropertyEditor
-from local_property_editor import GraphicsPropertyEditor, LocalPropertyEditor, PlotPropertyEditor
 from objects_handle import LocalObjectsHandle
 
+from ansys.fluent.post import set_config
 set_config(blocking=False)
-DISPLAY_BUTTON_ID = "graphics-button"
-PLOT_BUTTON_ID = "plot-button"
-SAVE_BUTTON_ID = "save-button"
-DELETE_BUTTON_ID = "delete-button"
+
 
 
 class PostWindowCollection:
