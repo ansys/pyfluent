@@ -208,7 +208,7 @@ def launch_fluent(
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
-            kwargs = _get_subprocess_kwargs_for_fluent(env)            
+            kwargs = _get_subprocess_kwargs_for_fluent(env)
             subprocess.Popen(launch_string, **kwargs)
             while True:
                 if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:

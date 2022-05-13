@@ -7,11 +7,10 @@ import os
 import threading
 from typing import Any, Callable, List, Optional, Tuple
 
-import grpc
-
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
+import grpc
 
 try:
     from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
@@ -29,16 +28,16 @@ try:
     )
     from ansys.fluent.core.datamodel.PartManagement import Root as PartManagement_root
     from ansys.fluent.core.datamodel.meshing import Root as meshing_root
-    from ansys.fluent.core.datamodel.workflow import Root as workflow_root   
+    from ansys.fluent.core.datamodel.workflow import Root as workflow_root
 except ImportError:
     pass
 
-try:    
+try:
     from ansys.fluent.core.datamodel.flicing import Root as icing_root
 except ImportError:
     pass
 
-try:    
+try:
     from ansys.fluent.core.datamodel.flaero import Root as aero_root
 except ImportError:
     pass
@@ -226,7 +225,7 @@ class Session:
         self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)        
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         if "meshing_root" in globals():
@@ -235,7 +234,7 @@ class Session:
             self.workflow = workflow_root(self._datamodel_service_se, "workflow", [])
         if "icing_root" in globals() and self.scheme_eval.scheme_eval("(dm-icing?)"):
             self.icing = icing_root(self._datamodel_service_se, "flserver", [])
-        if "aero_root" in globals()and self.scheme_eval.scheme_eval("(dm-aero?)"):
+        if "aero_root" in globals() and self.scheme_eval.scheme_eval("(dm-aero?)"):
             self.aero = aero_root(self._datamodel_service_se, "flserver", [])
         if "PartManagement_root" in globals():
             self.part_management = PartManagement_root(
@@ -247,7 +246,6 @@ class Session:
                 self._datamodel_service_se, "PMFileManagement", []
             )
             self.PMFileManagement = self.pm_file_management
-
 
         self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)

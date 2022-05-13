@@ -72,7 +72,7 @@ class DataModelGenerator:
             "workflow": DataModelStaticInfo("workflow", "meshing"),
             "meshing": DataModelStaticInfo("meshing", "meshing"),
             "PartManagement": DataModelStaticInfo("PartManagement", "meshing"),
-            "PMFileManagement": DataModelStaticInfo("PMFileManagement", "meshing"),            
+            "PMFileManagement": DataModelStaticInfo("PMFileManagement", "meshing"),
             "icing": DataModelStaticInfo("flserver", "flicing", "flicing"),
             "areo": DataModelStaticInfo("flserver", "flaero", "flaero"),
         }
@@ -91,16 +91,16 @@ class DataModelGenerator:
         )
         run_solver_mode = any(
             info.mode == "solver" for _, info in self._static_info.items()
-        )  
+        )
         run_icing_mode = any(
             info.mode == "flicing" for _, info in self._static_info.items()
-        ) 
+        )
         run_aero_mode = any(
             info.mode == "flaero" for _, info in self._static_info.items()
-        )         
+        )
         import ansys.fluent.core as pyfluent
 
-        if run_meshing_mode:            
+        if run_meshing_mode:
             session = pyfluent.launch_fluent(meshing_mode=True)
             for _, info in self._static_info.items():
                 if info.mode == "meshing":
@@ -108,7 +108,7 @@ class DataModelGenerator:
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
-        if run_solver_mode:            
+        if run_solver_mode:
             session = pyfluent.launch_fluent()
             for _, info in self._static_info.items():
                 if info.mode == "solver":
@@ -116,7 +116,7 @@ class DataModelGenerator:
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
-        if run_icing_mode:            
+        if run_icing_mode:
             session = pyfluent.launch_fluent(fluent_icing=True)
             for _, info in self._static_info.items():
                 if info.mode == "flicing":
@@ -124,7 +124,7 @@ class DataModelGenerator:
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
-        if run_aero_mode:            
+        if run_aero_mode:
             session = pyfluent.launch_fluent(fluent_aero=True)
             for _, info in self._static_info.items():
                 if info.mode == "flaero":
@@ -188,7 +188,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
 
-    def write_static_info(self) -> None:        
+    def write_static_info(self) -> None:
         for _, info in self._static_info.items():
             print(f"Updated: {info.filepath}")
             with open(info.filepath, "w", encoding="utf8") as f:
