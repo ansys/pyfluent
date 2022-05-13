@@ -14,8 +14,8 @@ from tree_view import TreeView
 from dash_component import RCTree as dash_tree
 from callbacks import user_name_to_session_map
 from users_info import VALID_USERNAME_PASSWORD_PAIRS
-
-
+from app_defn import app
+from flask import request
 HEIGHT = "59rem"
 MAX_SESSION_COUNT = 6
 pio.templates.default = "plotly_white"
@@ -62,8 +62,7 @@ def get_side_bar(app, user_id, session_id):
 
 
 def app_layout():
-    app = app_layout.app
-    user_id = app_layout.user_id
+    user_id = request.authorization["username"]
 
     return dbc.Container(
         fluid=True,

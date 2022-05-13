@@ -2,8 +2,10 @@ from functools import partial
 import dash_bootstrap_components as dbc
 from dash import html
 import dash_core_components as dcc
+from dash import Input, Output, State, ALL
 
 
+import itertools
 from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 import dash_vtk
@@ -11,7 +13,7 @@ from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
 from objects_handle import LocalObjectsHandle
 
 from sessions_manager import SessionsManager
-
+from app_defn import app
 from ansys.fluent.post import set_config
 set_config(blocking=False)
 
@@ -268,30 +270,84 @@ class GraphicsWindowCollection(PostWindowCollection):
 
 
 class MonitorWindow:
+    
 
+    _id_iter = itertools.count()    
     _windows = {}
+   
 
-    def __init__(self, connection_id, session_id):
-        unique_win_id = f"monitor-{connection_id}-{session_id}"
-        window_state = MonitorWindow._windows.get(unique_win_id)
+    def __init__(self, user_id, session_id, index=None):
+        unique_id = f"monitor-{user_id}-{session_id}{'' if index is None else index}"
+        window_state = MonitorWindow._windows.get(unique_id)
         if not window_state:
-            MonitorWindow._windows[unique_win_id] = self.__dict__
-
-            self._unique_win_id = unique_win_id
-            self._connection_id = connection_id
-            self._session_id = session_id            
-
+            MonitorWindow._windows[unique_id] = self.__dict__   
+            self._id = next(MonitorWindow._id_iter)
+            self._user_id = user_id
+            self._session_id = session_id
+            
+            if self._id>=0:
+                @app.callback(
+                    Output(f"monitor-tab-content-{self._id if self._id>=0 else 'main'}", "children"),
+                    Input(f"monitor-tabs-{self._id if self._id>=0 else 'main'}", "active_tab"),
+                    Input("need-to-data-fetch", "value"),           
+                )
+                def refresh_monitor(active_tab, fetch_data):           
+                    return MonitorWindow.get_graph(active_tab, self._user_id, self._session_id)            
         else:
-            self.__dict__ = window_state
+            self.__dict__ = window_state    
+        
 
-    def __call__(self):
-        session = SessionsManager(
-            self._connection_id, self._session_id
-        ).session
+    @classmethod
+    def get_graph(cls, active_tab, user_id, session_id):             
+        session = SessionsManager(user_id, session_id).session
+        fig = session.monitors_manager.get_monitor_set_data(active_tab)
+        if fig is None:
+            PostWindowCollection._is_executing = False
+            print("return blank", active_tab)
+            return dcc.Graph(
+                figure={},
+                style={"height": "100%"},
+            )
 
+        if active_tab == "residual":
+            fig.update_yaxes(type="log")
+
+        fig.update_layout(
+            title={
+                "text": session.monitors_manager.get_monitor_set_prop(
+                    active_tab, "title"
+                ),
+                "y": 0.95,
+                "x": 0.5,
+                "xanchor": "center",
+                "yanchor": "top",
+            },
+            xaxis_title=session.monitors_manager.get_monitor_set_prop(
+                active_tab, "xlabel"
+            ),
+            yaxis_title=session.monitors_manager.get_monitor_set_prop(
+                active_tab, "ylabel"
+            ),
+            legend_title=session.monitors_manager.get_monitor_set_prop(
+                active_tab, active_tab
+            ),
+            font=dict(family="Courier New, monospace", size=14, color="black"),
+        )
+        PostWindowCollection._is_executing = False
+        print("return Graph")
+        return dcc.Graph(
+            figure=fig,
+            style={"height": "100%"},
+            )
+
+
+
+    def __call__(self):       
+        session = SessionsManager(self._user_id, self._session_id).session
         monitor_sets = session.monitors_manager.get_monitor_sets_name()
         if len(monitor_sets) == 0:
             return []
+        print(f"monitor-tab-content-{self._id if self._id>=0 else 'main'}")    
         return dbc.Col(
             [
                 dbc.Tabs(
@@ -299,7 +355,7 @@ class MonitorWindow:
                         dbc.Tab(label=monitor_set, tab_id=monitor_set)
                         for monitor_set in monitor_sets
                     ],
-                    id=f"monitor-tabs",
+                    f"monitor-tabs-{self._id if self._id>=0 else 'main'}",
                     active_tab=monitor_sets[0],
                     style={
                         "margin": "10px 0px 0px 0px",
@@ -307,8 +363,9 @@ class MonitorWindow:
                     },
                 ),
                 html.Div(
-                    id=f"monitor-tab-content",
+                    id=f"monitor-tab-content-{self._id if self._id>=0 else 'main'}",
                     style={"height": "100%"},
+                    children = MonitorWindow.get_graph(monitor_sets[0], self._user_id, self._session_id)
                 ),
             ],
             style={"height": "837px"},

@@ -20,7 +20,7 @@ from tree_view import TreeView
 from ansys.fluent.core.solver.flobject import to_python_name
 from state_manager import StateManager
 from dash_component import RCTree as dash_tree
-
+import itertools
 user_name_to_session_map = {}
 
 
@@ -77,113 +77,19 @@ def register_callbacks(app):
         )
         return editor(user_id, session_id, object_id)
 
-    def on_value_changed(
-        input_values,
-        user_id,
-        session_id,
-    ):
-        ctx = dash.callback_context
-        input_value = ctx.triggered[0]["value"]
-        if input_value is None:
-            raise PreventUpdate
-        input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
-        input_index, object_location, object_type, object_index = input_index.split(":")
-        print(
-            "\n on_value_changed",
-            input_index,
-            object_location,
-            object_type,
-            object_index,
-        )
-        
-        if object_location == "local":
-            obj, static_info =  LocalObjectsHandle(SessionsManager)._get_object(user_id, session_id, object_type, object_index), None 
-        else:
-            obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(user_id, session_id, object_type, object_index)        
-        
-        path_list = input_index.split("/")[1:]
-        print(obj, path_list)
-        for path in path_list:
-            try:
-                obj = getattr(obj, path)
-                if static_info:
-                    static_info = static_info["children"][obj.obj_name]
-            except AttributeError:
-                obj = obj[path]
-                static_info = static_info["object-type"]
-            if obj is None:
-                raise PreventUpdate
-
-        if (static_info and static_info["type"] == "boolean") or isinstance(
-            obj(), bool
-        ):
-            input_value = True if input_value else False
-        if input_value == obj():
-            print("PreventUpdate")
-            raise PreventUpdate
-        print("set_state", obj, input_value)
-        print(f"{object_location}:{object_type}:{object_index}")
-        obj.set_state(input_value)
-        object_id = f"{object_location}:{object_type}:{object_index}"
-        return object_id, object_id
 
     @app.callback(
-        Output(f"monitor-tab-content", "children"),
-        Input(f"monitor-tabs", "active_tab"),
+        Output("monitor-tab-content-main", "children"),
+        Input("monitor-tabs-main", "active_tab"),
         Input("need-to-data-fetch", "value"),
         Input("connection-id", "data"),
         State("session-id", "value"),
+        prevent_initial_call=True,
     )
-    def render_tab_content(active_tab, need_to_data_fetch, user_id, session_id):
-        """
-        This callback takes the 'active_tab' property as input, as well as the
-        stored graphs, and renders the tab content depending on what the value of
-        'active_tab' is.
-        """
-        ctx = dash.callback_context
-        triggered_value = ctx.triggered[0]["value"]
-        triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]              
-        session = SessionsManager(user_id, session_id).session
-        fig = session.monitors_manager.get_monitor_set_data(active_tab)
-        if fig is None:
-            PostWindowCollection._is_executing = False
-            print("return blank")
-            return dcc.Graph(
-                figure={},
-                style={"height": "100%"},
-            )
-
-        if active_tab == "residual":
-            fig.update_yaxes(type="log")
-
-        fig.update_layout(
-            title={
-                "text": session.monitors_manager.get_monitor_set_prop(
-                    active_tab, "title"
-                ),
-                "y": 0.95,
-                "x": 0.5,
-                "xanchor": "center",
-                "yanchor": "top",
-            },
-            xaxis_title=session.monitors_manager.get_monitor_set_prop(
-                active_tab, "xlabel"
-            ),
-            yaxis_title=session.monitors_manager.get_monitor_set_prop(
-                active_tab, "ylabel"
-            ),
-            legend_title=session.monitors_manager.get_monitor_set_prop(
-                active_tab, active_tab
-            ),
-            font=dict(family="Courier New, monospace", size=14, color="black"),
-        )
-        PostWindowCollection._is_executing = False
-        print("return Graph")
-        return dcc.Graph(
-            figure=fig,
-            style={"height": "100%"},
-        )
-
+    def update_monitor_graph(active_tab, need_to_data_fetch, user_id, session_id):
+        return MonitorWindow.get_graph(active_tab, user_id, session_id)
+                
+        
     @app.callback(
         Output("post-window-tab-content", "children"),
         Input("graphics-button-clicked", "value"),
@@ -319,7 +225,7 @@ def register_callbacks(app):
         triggered_value = ctx.triggered[0]["value"]
         if user_id is None or session_id is None:
             raise PreventUpdate
-        print('watcher', user_id, session_id, triggered_from_list, StateManager(user_id, session_id, SessionsManager).get_var_value("show-outline"))
+        #print('watcher', user_id, session_id, triggered_from_list, StateManager(user_id, session_id, SessionsManager).get_var_value("show-outline"))
         if (
             "tab-content-created" in triggered_from_list
             and StateManager(user_id, session_id, SessionsManager).get_var_value("show-outline")
@@ -689,7 +595,8 @@ def register_callbacks(app):
             )
 
         elif active_tab == "monitors":
+            MonitorWindow._id_iter = itertools.count(-1)
             return (
-                MonitorWindow( user_id, session_id)(),
+                MonitorWindow(user_id, session_id)(),
                 active_tab,
             )

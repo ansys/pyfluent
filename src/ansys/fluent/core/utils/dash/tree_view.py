@@ -69,10 +69,10 @@ class TreeView:
                     keys = keys + child_keys
             elif remote:
                 static_info = self._SessionsManager(
-                    self._app, self._user_id, self._session_id
+                    self._user_id, self._session_id
                 ).static_info
                 obj = self._SessionsManager(
-                    self._app, self._user_id, self._session_id
+                    self._user_id, self._session_id
                 ).settings_root
                 path_list = remote.split("/")
 

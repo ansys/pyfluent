@@ -17,6 +17,7 @@ setting3 = SettingsPropertyEditor()
 local_editor = LocalPropertyEditor()
 
 
+
 def get_post_objects(user_id, session_id):
     return dbc.Row(
         [
@@ -60,7 +61,15 @@ def get_setup_objects(user_id, session_id):
                 width="auto",
                 style={"width": "350px"},
             ),
-            dbc.Col([MonitorWindow(user_id, session_id)()]),
+            dbc.Col([
+            
+            MonitorWindow(user_id, session_id)(),
+            MonitorWindow(user_id, session_id, 1)()
+            
+            ]
+            
+            
+            ),
         ]
     )
 
@@ -70,7 +79,8 @@ def app_layout():
     session_id = "session-0"
     sessions_manager = SessionsManager(user_id, session_id)
     sessions_manager.add_session("53583", None)
-
+    MonitorWindow(user_id, session_id)
+    MonitorWindow(user_id, session_id, 1)
     return dbc.Container(
         children=[
             html.Data(id="session-id", value="session-0"),
