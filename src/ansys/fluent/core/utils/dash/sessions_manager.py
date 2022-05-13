@@ -8,7 +8,7 @@ from objects_handle import LocalObjectsHandle
 class SessionsManager:
     _sessions_state = {}
 
-    def __init__(self, app, connection_id, session_id):
+    def __init__(self, connection_id, session_id):
 
         complete_session_id = f"{connection_id}-{session_id}"
 
@@ -16,7 +16,6 @@ class SessionsManager:
 
         if not session_state:
             SessionsManager._sessions_state[complete_session_id] = self.__dict__            
-            self._app = app
             self._complete_session_id = complete_session_id
             self._events_info_map = {}
             self._lock = threading.Lock()

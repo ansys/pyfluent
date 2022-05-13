@@ -11,10 +11,10 @@ from settings_property_editor import SettingsPropertyEditor
 from local_property_editor import LocalPropertyEditor
 from post_windows import MonitorWindow, GraphicsWindowCollection
 
-setting1 = SettingsPropertyEditor(app, SessionsManager)
-setting2 = SettingsPropertyEditor(app, SessionsManager)
-setting3 = SettingsPropertyEditor(app, SessionsManager)
-local_editor = LocalPropertyEditor(SessionsManager)
+setting1 = SettingsPropertyEditor()
+setting2 = SettingsPropertyEditor()
+setting3 = SettingsPropertyEditor()
+local_editor = LocalPropertyEditor()
 
 
 def get_post_objects(user_id, session_id):
@@ -33,7 +33,7 @@ def get_post_objects(user_id, session_id):
                 width="auto",
                 style={"width": "350px"},
             ),
-            dbc.Col([GraphicsWindowCollection(app, user_id, session_id, SessionsManager)()]),
+            dbc.Col([GraphicsWindowCollection(user_id, session_id)()]),
         ]
     )
 
@@ -60,7 +60,7 @@ def get_setup_objects(user_id, session_id):
                 width="auto",
                 style={"width": "350px"},
             ),
-            dbc.Col([MonitorWindow(app, user_id, session_id, SessionsManager)()]),
+            dbc.Col([MonitorWindow(user_id, session_id)()]),
         ]
     )
 
@@ -68,7 +68,7 @@ def get_setup_objects(user_id, session_id):
 def app_layout():
     user_id = request.authorization["username"]
     session_id = "session-0"
-    sessions_manager = SessionsManager(app, app_layout.user_id, session_id)
+    sessions_manager = SessionsManager(user_id, session_id)
     sessions_manager.add_session("53583", None)
 
     return dbc.Container(

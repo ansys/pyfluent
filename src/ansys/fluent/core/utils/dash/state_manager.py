@@ -1,6 +1,6 @@
 
-from post_windows import PlotWindowCollection, GraphicsWindowCollection
-from app_defn import app
+
+
 class StateManager:
     _states = {}
 
@@ -12,7 +12,7 @@ class StateManager:
             self._user_id = user_id
             self._session_id = session_id
             self._sessions_manager = SessionsManager
-            self._session_handle = SessionsManager(app, user_id, session_id)
+            self._session_handle = SessionsManager(user_id, session_id)
             self._var_state = {}
         else:
             self.__dict__ = state
@@ -24,18 +24,19 @@ class StateManager:
         return self._var_state.get(var_name)          
             
     def copy_from(self, user_id, session_id):
+        from post_windows import PlotWindowCollection, GraphicsWindowCollection
         PlotWindowCollection(
-            app, self._user_id, self._session_id, self._sessions_manager
+            self._user_id, self._session_id, self._sessions_manager
         ).copy_from(user_id, session_id)
         
         GraphicsWindowCollection(
-            app, self._user_id, self._session_id, self._sessions_manager
+            self._user_id, self._session_id, self._sessions_manager
         ).copy_from(user_id, session_id)
 
         self._sessions_manager._sessions_state[
             self._session_handle._complete_session_id
         ] = self._sessions_manager._sessions_state[
-            self._sessions_manager(app, user_id, session_id)._complete_session_id
+            self._sessions_manager(user_id, session_id)._complete_session_id
         ]    
 
   

@@ -142,17 +142,8 @@ def register_callbacks(app):
         """
         ctx = dash.callback_context
         triggered_value = ctx.triggered[0]["value"]
-        triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-        monitor_window = MonitorWindow(app, user_id, session_id, SessionsManager)
-        self = monitor_window
-        print(
-            "\n render_tab_content:",
-            triggered_from,
-            triggered_value,
-            active_tab,
-        )
-
-        session = self.SessionsManager(self._app, user_id, session_id).session
+        triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]              
+        session = SessionsManager(user_id, session_id).session
         fig = session.monitors_manager.get_monitor_set_data(active_tab)
         if fig is None:
             PostWindowCollection._is_executing = False
@@ -221,20 +212,20 @@ def register_callbacks(app):
         if triggered_from in ("graphics-button-clicked", "plot-button-clicked"):
             post_window_collection = (
                 GraphicsWindowCollection(
-                    app, user_id, session_id, SessionsManager
+                    user_id, session_id
                 )
                 if triggered_from == "graphics-button-clicked"
                 else PlotWindowCollection(
-                    app, user_id, session_id, SessionsManager
+                    user_id, session_id
                 )
             )
         elif main_active_tab == "graphics":
             post_window_collection = GraphicsWindowCollection(
-                app, user_id, session_id, SessionsManager
+                user_id, session_id
             )
         else:
             post_window_collection = PlotWindowCollection(
-                app, user_id, session_id, SessionsManager
+                user_id, session_id
             )
 
         print(
@@ -249,7 +240,7 @@ def register_callbacks(app):
             raise PreventUpdate
 
         post_window_collection._active_window = int(active_tab)
-        event_info = SessionsManager(app, user_id, session_id).get_event_info(
+        event_info = SessionsManager(user_id, session_id).get_event_info(
             "IterationEndedEvent"
         )
 
@@ -335,7 +326,7 @@ def register_callbacks(app):
         ):
             StateManager(user_id, session_id, SessionsManager).set_var_value("show-outline", False)
             graphics = GraphicsWindowCollection(
-                app, user_id, session_id, SessionsManager
+                user_id, session_id
             )
             graphics._window_data[graphics._active_window] = {
                 "object_type": "Mesh",
@@ -345,7 +336,7 @@ def register_callbacks(app):
             return "yes"
 
         elif "interval-component" in triggered_from_list:
-            event_info = SessionsManager(app, user_id, session_id).get_event_info(
+            event_info = SessionsManager(user_id, session_id).get_event_info(
                 "CalculationsStartedEvent"
             )
             if event_info:
@@ -374,7 +365,7 @@ def register_callbacks(app):
         prevent_initial_call=True,
     )
     def on_progress_update(n_intervals, user_id, session_id):
-        event_info = SessionsManager(app, user_id, session_id).get_event_info(
+        event_info = SessionsManager(user_id, session_id).get_event_info(
             "ProgressEvent"
         )
         if event_info is None:
@@ -410,7 +401,7 @@ def register_callbacks(app):
 
         session_id = f"session-{len(options)}"
         user_sessions.append((session_id, user_id + ":" + uuid.uuid4().hex))
-        sessions_manager = SessionsManager(app, user_id, session_id)
+        sessions_manager = SessionsManager(user_id, session_id)
         sessions_manager.add_session(session_token, user_name_to_session_map)
         sessions = []
         if options is not None:
@@ -479,10 +470,7 @@ def register_callbacks(app):
                 obj, static_info =  LocalObjectsHandle(SessionsManager)._get_object(user_id, session_id, object_type, object_index), None 
             else:
                 obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(user_id, session_id, object_type, object_index) 
-
-
-            #obj, static_info = SettingsObjectsHandle(SessionsManager).extract_object_and_static_info(obj, static_info, input_index[1:])
-            
+                       
             path_list = input_index.split("/")[1:]            
             for path in path_list:
                 try:
@@ -623,9 +611,9 @@ def register_callbacks(app):
         input_index = input_data["index"]
         input_type = input_data["type"]
         window = (
-            PlotWindowCollection(app, user_id, session_id, SessionsManager)
+            PlotWindowCollection(user_id, session_id)
             if input_index == "plot"
-            else GraphicsWindowCollection(app, user_id, session_id, SessionsManager)
+            else GraphicsWindowCollection(user_id, session_id)
         )
         opr = "add" if input_type.startswith("add") else "remove"
         print("add_remove_window", opr, input_index, input_value)
@@ -690,18 +678,18 @@ def register_callbacks(app):
 
         if active_tab == "graphics":
             return (
-                GraphicsWindowCollection(app, user_id, session_id, SessionsManager)(),
+                GraphicsWindowCollection( user_id, session_id)(),
                 active_tab,
             )
 
         elif active_tab == "plots":
             return (
-                PlotWindowCollection(app, user_id, session_id, SessionsManager)(),
+                PlotWindowCollection( user_id, session_id)(),
                 active_tab,
             )
 
         elif active_tab == "monitors":
             return (
-                MonitorWindow(app, user_id, session_id, SessionsManager)(),
+                MonitorWindow( user_id, session_id)(),
                 active_tab,
             )

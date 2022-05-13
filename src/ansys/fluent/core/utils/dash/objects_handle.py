@@ -7,10 +7,6 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
     Vector,
 )
 
-
-from app_defn import app
-
-
 class SettingsObjectsHandle:
     def __init__(self, session_manager):     
         self._session_manager = session_manager
@@ -18,7 +14,7 @@ class SettingsObjectsHandle:
     def get_object_and_static_info(
         self, connection_id, session_id, object_type, object_index
     ):  
-        session_handle =  self._session_manager(app, connection_id, session_id)                   
+        session_handle =  self._session_manager(connection_id, session_id)                   
         static_info = session_handle.static_info
         settings_root = session_handle.settings_root
         return self.extract_object_and_static_info(settings_root, static_info, object_type)
@@ -43,13 +39,13 @@ class LocalObjectsHandle:
         self._plots_object_handle = PlotsObjectHandle(session_manager) 
 
     def _get_name(self, connection_id, session_id, object_type, object_index):
-        return f"{self._session_manager(app, connection_id, session_id)._complete_session_id}-{object_type}-{object_index}" 
+        return f"{self._session_manager(connection_id, session_id)._complete_session_id}-{object_type}-{object_index}" 
         
     def add_outline_mesh(self, user_id, session_id):        
         outline_mesh = self._get_object(
             user_id, session_id, "Mesh", "outline"
         )
-        outline_mesh.update(Graphics(self._session_manager(app, user_id, session_id).session).add_outline_mesh()())
+        outline_mesh.update(Graphics(self._session_manager(user_id, session_id).session).add_outline_mesh()())
         outline_mesh.show_edges = True    
 
     def get_handle(self, object_type):
@@ -135,7 +131,7 @@ class GraphicsObjectHandle:
         return type in ("Contour", "Mesh", "Vector", "Surface")
 
     def get_collection(self, connection_id, session_id, object_type):
-        session = self.session_manager(app, connection_id, session_id).session
+        session = self.session_manager(connection_id, session_id).session
         graphics_session = Graphics(session)
         if object_type == "Contour":
             return graphics_session.Contours
@@ -157,7 +153,7 @@ class PlotsObjectHandle:
         return "plot"        
 
     def get_collection(self, connection_id, session_id, object_type):
-        session = self.session_manager(app, connection_id, session_id).session
+        session = self.session_manager(connection_id, session_id).session
         plots_session = Plots(session)
         if object_type == "XYPlot":
             return plots_session.XYPlots           

@@ -10,6 +10,8 @@ import dash_vtk
 from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
 from objects_handle import LocalObjectsHandle
 
+from sessions_manager import SessionsManager
+
 from ansys.fluent.post import set_config
 set_config(blocking=False)
 
@@ -21,7 +23,7 @@ class PostWindowCollection:
     _is_executing = False
     _show_outline = False
 
-    def __init__(self, app, connection_id, session_id, window_type, SessionsManager):
+    def __init__(self, connection_id, session_id, window_type):
         unique_id = f"{window_type}-{connection_id}-{session_id}"
         window_state = PostWindowCollection._windows.get(unique_id)
         if not window_state:
@@ -29,21 +31,17 @@ class PostWindowCollection:
             self._window_type = window_type
             self._state = {}
             self._unique_id = unique_id
-            self._app = app
             self._windows = [0]
             self._active_window = 0
             self._window_data = {}
-            self._SessionsManager = SessionsManager
         else:
             self.__dict__ = window_state
 
     def copy_from(self, connection_id, session_id):
         source = PostWindowCollection(
-            self._app,
             connection_id,
             session_id,
             self._window_type,
-            self._SessionsManager,
         )
         self._windows = source._windows
         self._window_data = source._window_data
@@ -122,8 +120,8 @@ class PostWindowCollection:
 
 
 class PlotWindowCollection(PostWindowCollection):
-    def __init__(self, app, connection_id, session_id, SessionsManager):
-        super().__init__(app, connection_id, session_id, "plot", SessionsManager)
+    def __init__(self, connection_id, session_id):
+        super().__init__(connection_id, session_id, "plot")
 
     def _get_graph(self):
         return [
@@ -134,7 +132,7 @@ class PlotWindowCollection(PostWindowCollection):
         ]
 
     def is_type_supported(self, type):
-        return LocalObjectsHandle(self._SessionsManager).get_handle_type(type)=="plot"
+        return LocalObjectsHandle(SessionsManager).get_handle_type(type)=="plot"
        
 
     def get_content(self):
@@ -148,7 +146,7 @@ class PlotWindowCollection(PostWindowCollection):
         ]
 
     def get_viewer(self, connection_id, session_id, object_type, object_index):
-        handle = LocalObjectsHandle(self._SessionsManager)
+        handle = LocalObjectsHandle(SessionsManager)
         obj = handle._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             raise PreventUpdate
@@ -158,8 +156,8 @@ class PlotWindowCollection(PostWindowCollection):
 
 
 class GraphicsWindowCollection(PostWindowCollection):
-    def __init__(self, app, connection_id, session_id, SessionsManager):
-        super().__init__(app, connection_id, session_id, "graphics", SessionsManager)
+    def __init__(self, connection_id, session_id):
+        super().__init__(connection_id, session_id, "graphics")
 
     def _get_graphics(self):
         return self._state.get(self._active_window, [[]])[0]
@@ -176,7 +174,7 @@ class GraphicsWindowCollection(PostWindowCollection):
             return go.Figure()
 
     def is_type_supported(self, type):
-        return LocalObjectsHandle(self._SessionsManager).get_handle_type(type)=="graphics"
+        return LocalObjectsHandle(SessionsManager).get_handle_type(type)=="graphics"
         
 
     def get_content(self):
@@ -211,7 +209,7 @@ class GraphicsWindowCollection(PostWindowCollection):
         ]
 
     def get_viewer(self, connection_id, session_id, object_type, object_index):
-        handle = LocalObjectsHandle(self._SessionsManager)
+        handle = LocalObjectsHandle(SessionsManager)
         obj = handle._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             print("state not updated")
@@ -273,24 +271,22 @@ class MonitorWindow:
 
     _windows = {}
 
-    def __init__(self, app, connection_id, session_id, SessionsManager):
+    def __init__(self, connection_id, session_id):
         unique_win_id = f"monitor-{connection_id}-{session_id}"
         window_state = MonitorWindow._windows.get(unique_win_id)
         if not window_state:
             MonitorWindow._windows[unique_win_id] = self.__dict__
 
             self._unique_win_id = unique_win_id
-            self._app = app
             self._connection_id = connection_id
-            self._session_id = session_id
-            self.SessionsManager = SessionsManager
+            self._session_id = session_id            
 
         else:
             self.__dict__ = window_state
 
     def __call__(self):
-        session = self.SessionsManager(
-            self._app, self._connection_id, self._session_id
+        session = SessionsManager(
+            self._connection_id, self._session_id
         ).session
 
         monitor_sets = session.monitors_manager.get_monitor_sets_name()
