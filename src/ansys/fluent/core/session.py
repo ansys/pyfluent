@@ -7,10 +7,11 @@ import os
 import threading
 from typing import Any, Callable, List, Optional, Tuple
 
+import grpc
+
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
-import grpc
 
 try:
     from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
@@ -206,19 +207,19 @@ class Session:
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service)
 
-        self._health_check_service = HealthCheckService(self._channel, self._metadata)
-
-        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
-
-        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
-
         self.meshing = Session.Meshing(
             self._datamodel_service_tui, self._datamodel_service_se
         )
         self.solver = Session.Solver(
             self._datamodel_service_tui, self._settings_service
         )
+
+        self._health_check_service = HealthCheckService(self._channel, self._metadata)
+
+        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)
+
+        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
 
         if self.scheme_eval.scheme_eval("(dm-icing?)"):
             try:
