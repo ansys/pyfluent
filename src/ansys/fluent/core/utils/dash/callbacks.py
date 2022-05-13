@@ -480,8 +480,10 @@ def register_callbacks(app):
             else:
                 obj, static_info = SettingsObjectsHandle(SessionsManager).get_object_and_static_info(user_id, session_id, object_type, object_index) 
 
-            path_list = input_index.split("/")[1:]
-            print(obj, path_list)
+
+            #obj, static_info = SettingsObjectsHandle(SessionsManager).extract_object_and_static_info(obj, static_info, input_index[1:])
+            
+            path_list = input_index.split("/")[1:]            
             for path in path_list:
                 try:
                     obj = getattr(obj, path)
@@ -490,18 +492,16 @@ def register_callbacks(app):
                 except AttributeError:
                     obj = obj[path]
                     static_info = static_info["object-type"]
-                if obj is None:
-                    raise PreventUpdate
+            if obj is None:
+                raise PreventUpdate
 
             if (static_info and static_info["type"] == "boolean") or isinstance(
                 obj(), bool
             ):
                 input_value = True if input_value else False
-            if input_value == obj():
-                print("PreventUpdate")
+            if input_value == obj():               
                 raise PreventUpdate
-            print("set_state", obj, input_value)
-            print(f"{object_location}:{object_type}:{object_index}")
+            print("set_state \n", obj, input_value)            
             obj.set_state(input_value)
             object_id = f"{object_location}:{object_type}:{object_index}"
             return object_id, object_id
