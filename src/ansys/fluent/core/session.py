@@ -186,7 +186,6 @@ class Session:
             [("password", password)] if password else []
         )
         self._id = f"session-{next(Session._id_iter)}"
-        self._settings_root = None
 
         if not Session._monitor_thread:
             Session._monitor_thread = MonitorThread()
