@@ -17,24 +17,24 @@ class SettingsObjectsHandle:
 
     def get_object_and_static_info(
         self, connection_id, session_id, object_type, object_index
+    ):  
+        session_handle =  self._session_manager(app, connection_id, session_id)                   
+        static_info = session_handle.static_info
+        settings_root = session_handle.settings_root
+        return self.extract_object_and_static_info(settings_root, static_info, object_type)
+            
+    def extract_object_and_static_info(
+        self, obj, static_info, path
     ):
-        if object_type is not None:
-            path_list = object_type.split("/")
-            session = self._session_manager(app, connection_id, session_id).session
-            static_info = self._session_manager(
-               app, connection_id, session_id
-            ).static_info
-            obj = self._session_manager(
-                app, connection_id, session_id
-            ).settings_root
-            for path in path_list:
-                try:
-                    obj = getattr(obj, path)
-                    static_info = static_info["children"][obj.obj_name]
-                except AttributeError:
-                    obj = obj[path]
-                    static_info = static_info["object-type"]
-            return obj, static_info
+        path_list = path.split("/")           
+        for path in path_list:
+            try:
+                obj = getattr(obj, path)
+                static_info = static_info["children"][obj.obj_name]
+            except AttributeError:
+                obj = obj[path]
+                static_info = static_info["object-type"]
+        return obj, static_info            
 
 class LocalObjectsHandle:
     def __init__(self, session_manager):     
