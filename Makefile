@@ -23,8 +23,8 @@ install-pyvistaqt-requirements:
 	@sudo apt install libegl1 -y
 
 docker-pull:
-	@docker image rm -f ghcr.io/pyansys/pyfluent:latest
-	@docker pull ghcr.io/pyansys/pyfluent:latest
+	@pip install docker
+	@python .ci/pull_fluent_image.py
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
