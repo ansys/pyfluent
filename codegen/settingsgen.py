@@ -307,7 +307,7 @@ if __name__ == "__main__":
         os.makedirs(parent_dir)
 
     session = launch_fluent()
-    sinfo = session.get_settings_service().get_static_info()
+    sinfo = session._settings_service.get_static_info()
     cls = flobject.get_cls("", sinfo)
 
     _populate_hash_dict("", sinfo, cls)

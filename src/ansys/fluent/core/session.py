@@ -201,6 +201,7 @@ class Session:
             self._channel, self._metadata
         )
         self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
+        self._settings_service = SettingsService(self._channel, self._metadata)
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
@@ -210,7 +211,7 @@ class Session:
             self._datamodel_service_tui, self._datamodel_service_se
         )
         self.solver = Session.Solver(
-            self._datamodel_service_tui, self.get_settings_service()
+            self._datamodel_service_tui, self._settings_service
         )
 
         self._health_check_service = HealthCheckService(self._channel, self._metadata)
@@ -254,10 +255,6 @@ class Session:
     def id(self) -> str:
         """Return the session id."""
         return self._id
-
-    def get_settings_service(self) -> SettingsService:
-        """Return an instance of SettingsService object."""
-        return SettingsService(self._channel, self._metadata)
 
     def _process_transcript(self):
         responses = self._transcript_service.begin_streaming()
