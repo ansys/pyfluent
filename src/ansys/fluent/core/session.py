@@ -32,16 +32,6 @@ try:
 except ImportError:
     pass
 
-try:
-    from ansys.fluent.core.datamodel.flicing import Root as icing_root
-except ImportError:
-    pass
-
-try:
-    from ansys.fluent.core.datamodel.flaero import Root as aero_root
-except ImportError:
-    pass
-
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -232,10 +222,22 @@ class Session:
             self.meshing = meshing_root(self._datamodel_service_se, "meshing", [])
         if "workflow_root" in globals():
             self.workflow = workflow_root(self._datamodel_service_se, "workflow", [])
-        if "icing_root" in globals() and self.scheme_eval.scheme_eval("(dm-icing?)"):
-            self.icing = icing_root(self._datamodel_service_se, "flserver", [])
-        if "aero_root" in globals() and self.scheme_eval.scheme_eval("(dm-aero?)"):
-            self.aero = aero_root(self._datamodel_service_se, "flserver", [])
+        if self.scheme_eval.scheme_eval("(dm-icing?)"):
+            try:
+                from ansys.fluent.core.datamodel.flicing import Root as icing_root
+
+                self.flserver = icing_root(self._datamodel_service_se, "flserver", [])
+                self.icing = self.flserver.Case.App
+            except ImportError:
+                pass
+        if self.scheme_eval.scheme_eval("(dm-aero?)"):
+            try:
+                from ansys.fluent.core.datamodel.flaero import Root as aero_root
+
+                self.flserver = aero_root(self._datamodel_service_se, "flserver", [])
+                self.aero = self.flserver.Case.App
+            except ImportError:
+                pass
         if "PartManagement_root" in globals():
             self.part_management = PartManagement_root(
                 self._datamodel_service_se, "PartManagement", []
