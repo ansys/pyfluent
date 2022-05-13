@@ -1,14 +1,7 @@
+import threading
+
 from ansys.fluent.core.session import Session
 
-from post_windows import (
-    #MonitorWindow,
-    #PlotWindowCollection,
-    #GraphicsWindowCollection,
-    PostWindowCollection,
-)
-
-import threading
-#from ansys.fluent.post.pyvista import Graphics
 from state_manager import StateManager
 from objects_handle import LocalObjectsHandle
 
@@ -22,10 +15,7 @@ class SessionsManager:
         session_state = SessionsManager._sessions_state.get(complete_session_id)
 
         if not session_state:
-            SessionsManager._sessions_state[complete_session_id] = self.__dict__
-            #MonitorWindow(app, connection_id, session_id, SessionsManager)
-            #PlotWindowCollection(app, connection_id, session_id, SessionsManager)
-            #GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)
+            SessionsManager._sessions_state[complete_session_id] = self.__dict__            
             self._app = app
             self._complete_session_id = complete_session_id
             self._events_info_map = {}
@@ -43,11 +33,13 @@ class SessionsManager:
                 "10.18.44.30", int(session_token), cleanup_on_exit=False
             )
             self.session.monitors_manager.start()
-            outline_mesh = LocalObjectsHandle(SessionsManager).add_outline_mesh(self._connection_id, self._session_id)
+            
             self.static_info = self.session.get_settings_service().get_static_info()
             self.settings_root = self.session.get_settings_root()
             self.register_events()
-            PostWindowCollection._show_outline = True
+            outline_mesh = LocalObjectsHandle(SessionsManager).add_outline_mesh(self._connection_id, self._session_id)
+            print("show-outline", self._connection_id, self._session_id)
+            self._state_manager.set_var_value("show-outline", True)            
         else:
             user_id, uuid_id = session_token.split(":")
             id_uuid_list = user_name_to_session_map[user_id]

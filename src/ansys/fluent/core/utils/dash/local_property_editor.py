@@ -6,7 +6,7 @@ import dash_bootstrap_components as dbc
 from property_editor import PropertyEditor
 from objects_handle import LocalObjectsHandle
 from app_defn import app
-
+from sessions_manager import SessionsManager
 
 class LocalPropertyEditor(PropertyEditor):
     def __init__(self, SessionsManager):

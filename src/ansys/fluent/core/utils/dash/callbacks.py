@@ -18,7 +18,7 @@ from post_windows import (
 from settings_property_editor import SettingsPropertyEditor
 from tree_view import TreeView
 from ansys.fluent.core.solver.flobject import to_python_name
-
+from state_manager import StateManager
 from dash_component import RCTree as dash_tree
 
 user_name_to_session_map = {}
@@ -330,12 +330,15 @@ def register_callbacks(app):
 
         ctx = dash.callback_context
         triggered_from_list = [v["prop_id"].split(".")[0] for v in ctx.triggered]
-        # print('watcher', triggered_from_list)
+        triggered_value = ctx.triggered[0]["value"]
+        if user_id is None or session_id is None:
+            raise PreventUpdate
+        print('watcher', user_id, session_id, triggered_from_list, StateManager(user_id, session_id, SessionsManager).get_var_value("show-outline"))
         if (
             "tab-content-created" in triggered_from_list
-            and PostWindowCollection._show_outline
+            and StateManager(user_id, session_id, SessionsManager).get_var_value("show-outline")
         ):
-            PostWindowCollection._show_outline = False
+            StateManager(user_id, session_id, SessionsManager).set_var_value("show-outline", False)
             graphics = GraphicsWindowCollection(
                 app, user_id, session_id, SessionsManager
             )
