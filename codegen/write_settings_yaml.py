@@ -35,7 +35,7 @@ if "__main__" == __name__:
         print("Usage: write_settings_yaml.py [outfile]")
     else:
         session = pyfluent.launch_fluent()
-        settings = session.get_settings_service().get_obj_static_info()
+        settings = session._settings_service.get_obj_static_info()
         if len(sys.argv) == 2:
             with open(sys.argv[1], "w") as f:
                 write_yaml(f, settings)
