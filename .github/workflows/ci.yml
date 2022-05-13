@@ -20,7 +20,7 @@ env:
   # You should go up in number, if you go down (or repeat a previous value)
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
-  RESET_EXAMPLES_CACHE: 0
+  RESET_EXAMPLES_CACHE: 1
 
 jobs:
   stylecheck:
@@ -92,7 +92,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v2
@@ -113,8 +113,8 @@ jobs:
 
       - name: Install OS packages
         run: |
-          sudo apt update
-          sudo apt install pandoc libegl1
+          sudo apt-get update
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Cache pip
         uses: actions/cache@v2
@@ -152,14 +152,9 @@ jobs:
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ hashFiles('examples/**') }}
 
       - name: Build Documentation
-        run: |
-          pip install -r requirements_docs.txt         
-          xvfb-run make -C doc html
-          touch doc/_build/html/.nojekyll
-          echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME
+        run: make build-doc
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_FLUENT_PORT: 63084
           PYFLUENT_START_INSTANCE: 0
 
       - name: Upload HTML Documentation

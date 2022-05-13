@@ -44,14 +44,9 @@ jobs:
         run: make docker-pull
 
       - name: Build Documentation
-        run: |
-          pip install -r requirements_docs.txt
-          xvfb-run make -C doc html
-          touch doc/_build/html/.nojekyll
-          echo "dev.fluentdocs.pyansys.com" >> doc/_build/html/CNAME
+        run: make build-doc
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_FLUENT_PORT: 63084
           PYFLUENT_START_INSTANCE: 0
 
       - name: Deploy

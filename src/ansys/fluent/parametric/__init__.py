@@ -2,12 +2,11 @@
 
 Example
 -------
->>> root = session.get_settings_root()
 >>> from ansys.fluent.parametric import ParametricStudy
 
 Instantiate the study from a Fluent session which has already read a case
 
->>> study1 = ParametricStudy(root.parametric_studies).initialize()
+>>> study1 = ParametricStudy(session.solver.root.parametric_studies).initialize()
 
 Access and modify the input parameters of base design point
 
@@ -38,9 +37,8 @@ Create, rename, delete parametric studies
 
 Project workflow
 
->>> root = session.get_settings_root()
 >>> from ansys.fluent.parametric import ParametricProject
->>> proj = ParametricProject(root.file.parametric_project, root.parametric_studies, "nozzle_para_named.flprj")  # noqa: E501
+>>> proj = ParametricProject(session.solver.root.file.parametric_project, session.solver.root.parametric_studies, "nozzle_para_named.flprj")  # noqa: E501
 >>> proj.save()
 >>> proj.save_as(project_filepath="nozzle_para_named1.flprj")
 >>> proj.export(project_filepath="nozzle_para_named2.flprj")
@@ -650,7 +648,7 @@ class ParametricSession:
         )
         if start_transcript:
             self.start_transcript()
-        self._root = self._session.get_settings_root()
+        self._root = self._session.solver.root
         if case_filepath is not None:
             self._root.file.read(file_name=case_filepath, file_type="case")
             study = ParametricStudy(self._root.parametric_studies).initialize()

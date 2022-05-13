@@ -23,7 +23,8 @@ install-pyvistaqt-requirements:
 	@sudo apt install libegl1 -y
 
 docker-pull:
-	@docker pull ghcr.io/pyansys/pyfluent:latest
+	@pip install docker
+	@python .ci/pull_fluent_image.py
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
@@ -35,8 +36,18 @@ unittest:
 
 api-codegen:
 	@echo "Running API codegen"
+	@python -m venv env
+	@source env/bin/activate
 	@pip install -r requirements_codegen.txt
 	@python codegen/pyprotogen.py
 	@python codegen/tuigen.py
 	@python codegen/settingsgen.py
 	@python codegen/datamodelgen.py
+	@deactivate
+
+build-doc:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@pip install -r requirements_docs.txt
+	@xvfb-run make -C doc html
+	@touch doc/_build/html/.nojekyll
+	@echo "fluentdocs.pyansys.com" >> doc/_build/html/CNAME

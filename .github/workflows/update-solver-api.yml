@@ -2,6 +2,8 @@ name: Update Solver API
 on:
   schedule:
     - cron:  '0 6 * * *'
+  workflow_dispatch:
+
 jobs:
   update-dep:
     runs-on: ubuntu-latest
@@ -36,6 +38,8 @@ jobs:
 
       - name: Run API codegen
         run: make api-codegen
+        env:
+          PYFLUENT_LAUNCH_CONTAINER: 1
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4

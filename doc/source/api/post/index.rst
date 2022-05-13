@@ -14,14 +14,14 @@ written to a file using standard Fluent commands.
 
 .. code:: python
 
-  session.tui.solver.display.objects.contour['contour-1'] = {'boundary_values': True, 'color_map': {'color': 'field-velocity', 'font_automatic': True, 'font_name': 'Helvetica', 'font_size': 0.032, 'format': '%0.2e', 'length': 0.54, 'log_scale': False, 'position': 1, 'show_all': True, 'size': 100, 'user_skip': 9, 'visible': True, 'width': 6.0}, 'coloring': {'smooth': False}, 'contour_lines': False, 'display_state_name': 'None', 'draw_mesh': False, 'field': 'pressure', 'filled': True, 'mesh_object': '', 'node_values': True, 'range_option': {'auto_range_on': {'global_range': True}}, 'surfaces_list': [2, 5]}
-  session.tui.solver.display.objects.contour['contour-1']()
-  session.tui.solver.display.objects.contour['contour-1'].field.set_state('velocity-magnitude')
-  session.tui.solver.display.objects.contour['contour-1'].field()
-  session.tui.solver.display.objects.contour['contour-1'].color_map.size.set_state(80.0)
-  session.tui.solver.display.objects.contour['contour-1'].color_map.size()
-  session.tui.solver.display.objects.contour['contour-1'].rename('my-contour')
-  del session.tui.solver.display.objects.contour['my-contour']
+  session.solver.tui.display.objects.contour['contour-1'] = {'boundary_values': True, 'color_map': {'color': 'field-velocity', 'font_automatic': True, 'font_name': 'Helvetica', 'font_size': 0.032, 'format': '%0.2e', 'length': 0.54, 'log_scale': False, 'position': 1, 'show_all': True, 'size': 100, 'user_skip': 9, 'visible': True, 'width': 6.0}, 'coloring': {'smooth': False}, 'contour_lines': False, 'display_state_name': 'None', 'draw_mesh': False, 'field': 'pressure', 'filled': True, 'mesh_object': '', 'node_values': True, 'range_option': {'auto_range_on': {'global_range': True}}, 'surfaces_list': [2, 5]}
+  session.solver.tui.display.objects.contour['contour-1']()
+  session.solver.tui.display.objects.contour['contour-1'].field.set_state('velocity-magnitude')
+  session.solver.tui.display.objects.contour['contour-1'].field()
+  session.solver.tui.display.objects.contour['contour-1'].color_map.size.set_state(80.0)
+  session.solver.tui.display.objects.contour['contour-1'].color_map.size()
+  session.solver.tui.display.objects.contour['contour-1'].rename('my-contour')
+  del session.solver.tui.display.objects.contour['my-contour']
 
 PyVista Example (Graphics)
 --------------------------

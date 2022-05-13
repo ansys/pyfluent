@@ -36,11 +36,10 @@ import_data = examples.download_file(
     filename="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
 )
 
-session = pyfluent.launch_fluent(precision="double", processor_count=2)
-root = session.get_settings_root()
+session = pyfluent.launch_fluent(precision="double", processor_count=4)
 
-session.tui.solver.file.read_case(case_file_name=import_case)
-session.tui.solver.file.read_data(case_file_name=import_data)
+session.solver.tui.file.read_case(case_file_name=import_case)
+session.solver.tui.file.read_data(case_file_name=import_data)
 
 ###############################################################################
 # Get the graphics object for mesh display

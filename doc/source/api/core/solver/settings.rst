@@ -12,18 +12,17 @@ issue commands with a hierarchy of objects.
 Top-level Objects
 -----------------
 
-The top-level settings object can be accessed by executing the
-``get_settings_root`` method on a session object.
+The top-level settings object is available as the ``root`` property of session.solver.
 
 .. code-block::
 
   >>> import ansys.fluent.core as pyfluent
   >>> session = pyfluent.launch_fluent()
-  >>> root = session.get_settings_root()
+  >>> root = session.solver.root
 
-The root object contains attributes such as ``file``, ``setup``, ``solution``
-and ``results``.  These objects are also instances of 'settings' objects and
-roughly mirror the outline view in Fluent.
+The root object contains attributes such as ``file``, ``setup``,
+``solution`` and ``results``.  These objects are also instances of 'settings'
+objects and roughly mirror the outline view in Fluent.
 
 Types of Settings Objects
 -------------------------
