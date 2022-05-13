@@ -22,7 +22,7 @@ class LocalObjectDataExtractor:
             return "_dummy_surface_for_pyfluent:" + local_surface_name
 
         def _get_api_handle(self):
-            return self.obj._get_top_most_parent().session.tui.solver.surface
+            return self.obj._get_top_most_parent().session.solver.tui.surface
 
         def _delete_if_exist_on_server(self):
             field_info = self.obj._data_extractor.field_info()
