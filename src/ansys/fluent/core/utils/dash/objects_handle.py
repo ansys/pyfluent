@@ -11,13 +11,20 @@ from ansys.fluent.post.pyvista.pyvista_objects import (
 from app_defn import app
 
 class LocalObjectsHandle:
-    def __init__(self, SessionsManager):     
-        self.SessionsManager = SessionsManager
-        self._graphics_object_handle = GraphicsObjectHandle(SessionsManager)
-        self._plots_object_handle = PlotsObjectHandle(SessionsManager) 
+    def __init__(self, session_manager):     
+        self._session_manager = session_manager
+        self._graphics_object_handle = GraphicsObjectHandle(session_manager)
+        self._plots_object_handle = PlotsObjectHandle(session_manager) 
 
     def _get_name(self, connection_id, session_id, object_type, object_index):
-        return f"{self.SessionsManager(app, connection_id, session_id)._complete_session_id}-{object_type}-{object_index}" 
+        return f"{self._session_manager(app, connection_id, session_id)._complete_session_id}-{object_type}-{object_index}" 
+        
+    def add_outline_mesh(self, user_id, session_id):        
+        outline_mesh = self._get_object(
+            user_id, session_id, "Mesh", "outline"
+        )
+        outline_mesh.update(Graphics(self._session_manager(app, user_id, session_id).session).add_outline_mesh()())
+        outline_mesh.show_edges = True    
 
     def get_handle(self, object_type):
         return (
@@ -96,10 +103,12 @@ class LocalObjectsHandle:
             self._get_object(connection_id, session_id, object_type, object_index),
             None,
         )
+        
+        
 
 class GraphicsObjectHandle:
-    def __init__(self, SessionsManager):       
-        self.SessionsManager = SessionsManager
+    def __init__(self, session_manager):       
+        self.session_manager = session_manager
         
     def get_handle_type(self):
         return "graphics"
@@ -108,7 +117,7 @@ class GraphicsObjectHandle:
         return type in ("Contour", "Mesh", "Vector", "Surface")
 
     def get_collection(self, connection_id, session_id, object_type):
-        session = self.SessionsManager(app, connection_id, session_id).session
+        session = self.session_manager(app, connection_id, session_id).session
         graphics_session = Graphics(session)
         if object_type == "Contour":
             return graphics_session.Contours
@@ -120,8 +129,8 @@ class GraphicsObjectHandle:
             return graphics_session.Surfaces 
 
 class PlotsObjectHandle:
-    def __init__(self, SessionsManager):       
-        self.SessionsManager = SessionsManager
+    def __init__(self, session_manager):       
+        self.session_manager = session_manager
 
     def is_type_supported(self, type):
         return type in ("XYPlot")
@@ -130,7 +139,7 @@ class PlotsObjectHandle:
         return "plot"        
 
     def get_collection(self, connection_id, session_id, object_type):
-        session = self.SessionsManager(app, connection_id, session_id).session
+        session = self.session_manager(app, connection_id, session_id).session
         plots_session = Plots(session)
         if object_type == "XYPlot":
             return plots_session.XYPlots           

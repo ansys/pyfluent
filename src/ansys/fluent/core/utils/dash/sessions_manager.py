@@ -1,15 +1,15 @@
 from ansys.fluent.core.session import Session
 
 from post_windows import (
-    MonitorWindow,
-    PlotWindowCollection,
-    GraphicsWindowCollection,
+    #MonitorWindow,
+    #PlotWindowCollection,
+    #GraphicsWindowCollection,
     PostWindowCollection,
 )
 
 import threading
-from ansys.fluent.post.pyvista import Graphics
-
+#from ansys.fluent.post.pyvista import Graphics
+from state_manager import StateManager
 from objects_handle import LocalObjectsHandle
 
 class SessionsManager:
@@ -23,31 +23,27 @@ class SessionsManager:
 
         if not session_state:
             SessionsManager._sessions_state[complete_session_id] = self.__dict__
-            MonitorWindow(app, connection_id, session_id, SessionsManager)
-            PlotWindowCollection(app, connection_id, session_id, SessionsManager)
-            GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)
+            #MonitorWindow(app, connection_id, session_id, SessionsManager)
+            #PlotWindowCollection(app, connection_id, session_id, SessionsManager)
+            #GraphicsWindowCollection(app, connection_id, session_id, SessionsManager)
             self._app = app
             self._complete_session_id = complete_session_id
             self._events_info_map = {}
             self._lock = threading.Lock()
             self._connection_id = connection_id
             self._session_id = session_id
+            self._state_manager = StateManager(connection_id, session_id, SessionsManager)
         else:
             self.__dict__ = session_state
 
     def add_session(self, session_token, user_name_to_session_map):
         session_token = session_token.strip()
         if len(session_token.split(":")) == 1:
-
             self.session = Session(
                 "10.18.44.30", int(session_token), cleanup_on_exit=False
             )
             self.session.monitors_manager.start()
-            outline_mesh = LocalObjectsHandle(SessionsManager)._get_object(
-                self._connection_id, self._session_id, "Mesh", "outline"
-            )
-            outline_mesh.update(Graphics(self.session).add_outline_mesh()())
-            outline_mesh.show_edges = True
+            outline_mesh = LocalObjectsHandle(SessionsManager).add_outline_mesh(self._connection_id, self._session_id)
             self.static_info = self.session.get_settings_service().get_static_info()
             self.settings_root = self.session.get_settings_root()
             self.register_events()
@@ -58,18 +54,8 @@ class SessionsManager:
             session_id = list(filter(lambda x: x[1] == session_token, id_uuid_list))[0][
                 0
             ]
-            PlotWindowCollection(
-                self._app, self._connection_id, self._session_id, SessionsManager
-            ).copy_from(user_id, session_id)
-            GraphicsWindowCollection(
-                self._app, self._connection_id, self._session_id, SessionsManager
-            ).copy_from(user_id, session_id)
-
-            SessionsManager._sessions_state[
-                self._complete_session_id
-            ] = SessionsManager._sessions_state[
-                SessionsManager(self._app, user_id, session_id)._complete_session_id
-            ]
+            self._state_manager.copy_from(user_id, session_id)
+                        
 
     def get_event_info(self, event_name):
         with self._lock:
