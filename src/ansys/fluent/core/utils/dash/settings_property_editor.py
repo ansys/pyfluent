@@ -28,7 +28,7 @@ PLOT_BUTTON_ID = "plot-graph-button"
 
 class SettingsPropertyEditor(PropertyEditor):
     def __init__(self, app, SessionsManager):
-        super().__init__(app)
+        super().__init__()
         self._app = app
         self._all_widgets = {}
         self.SessionsManager = SessionsManager

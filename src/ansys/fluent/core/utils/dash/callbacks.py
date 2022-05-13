@@ -7,6 +7,7 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 
 from sessions_manager import SessionsManager
+from objects_handle import LocalObjectsHandle
 from local_property_editor import LocalPropertyEditor
 from post_windows import (
     MonitorWindow,
@@ -72,7 +73,7 @@ def register_callbacks(app):
             return []
         object_location, object_type, object_index = object_id.split(":")
         editor = (
-            LocalPropertyEditor(app, SessionsManager)
+            LocalPropertyEditor(SessionsManager)
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
@@ -97,7 +98,7 @@ def register_callbacks(app):
             object_index,
         )
         editor = (
-            LocalPropertyEditor(app, SessionsManager)
+            LocalObjectsHandle(SessionsManager)
             if object_location == "local"
             else SettingsPropertyEditor(app, SessionsManager)
         )
@@ -475,7 +476,7 @@ def register_callbacks(app):
                 object_index,
             )
             editor = (
-                LocalPropertyEditor(app, SessionsManager)
+                LocalObjectsHandle(SessionsManager)
                 if object_location == "local"
                 else SettingsPropertyEditor(app, SessionsManager)
             )
@@ -529,14 +530,14 @@ def register_callbacks(app):
 
         if triggered_from == "save-button-clicked":
             object_location, object_type, object_index = object_id.split(":")
-            editor = LocalPropertyEditor(app, SessionsManager)
-            new_object = editor.create_new_object(
+            handle = LocalObjectsHandle(SessionsManager)
+            new_object = handle.create_new_object(
                 user_id, session_id, object_type, object_index
             )
         elif triggered_from == "delete-button-clicked":
             object_location, object_type, object_index = object_id.split(":")
-            editor = LocalPropertyEditor(app, SessionsManager)
-            new_object = editor.delete_object(
+            handle = LocalObjectsHandle(SessionsManager)
+            new_object = handle.delete_object(
                 user_id, session_id, object_type, object_index
             )
         print("update_tree", triggered_from, triggered_value)
@@ -579,6 +580,7 @@ def register_callbacks(app):
     @app.callback(
         Output("graphics-button-clicked", "value"),
         Input("graphics-button", "n_clicks"),
+        prevent_initial_call=True,
     )
     def on_button_click(n_graphics_clicks):
         if n_graphics_clicks is None:
@@ -588,6 +590,7 @@ def register_callbacks(app):
     @app.callback(
         Output("plot-button-clicked", "value"),
         Input("plot-button", "n_clicks"),
+        prevent_initial_call=True,
     )
     def on_button_click(n_post_clicks):
         if n_post_clicks is None:

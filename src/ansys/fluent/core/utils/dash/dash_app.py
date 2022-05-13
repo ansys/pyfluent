@@ -4,7 +4,7 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 
 from users_info import VALID_USERNAME_PASSWORD_PAIRS
-from app_layout_2 import app_layout
+from app_layout import app_layout
 from callbacks import register_callbacks, user_name_to_session_map
 
 from flask import request

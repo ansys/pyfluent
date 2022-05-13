@@ -14,7 +14,7 @@ from post_windows import MonitorWindow, GraphicsWindowCollection
 setting1 = SettingsPropertyEditor(app, SessionsManager)
 setting2 = SettingsPropertyEditor(app, SessionsManager)
 setting3 = SettingsPropertyEditor(app, SessionsManager)
-local_editor = LocalPropertyEditor(app, SessionsManager)
+local_editor = LocalPropertyEditor(SessionsManager)
 
 
 def get_post_objects(user_id, session_id):

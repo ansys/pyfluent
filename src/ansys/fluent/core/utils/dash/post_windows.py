@@ -21,6 +21,7 @@ from ansys.fluent.post import set_config
 from post_data import update_vtk_fun, update_graph_fun, update_graph_fun_xyplot
 from property_editor import PropertyEditor
 from local_property_editor import GraphicsPropertyEditor, LocalPropertyEditor, PlotPropertyEditor
+from objects_handle import LocalObjectsHandle
 
 set_config(blocking=False)
 DISPLAY_BUTTON_ID = "graphics-button"
@@ -148,9 +149,8 @@ class PlotWindowCollection(PostWindowCollection):
         ]
 
     def is_type_supported(self, type):
-        return PlotPropertyEditor(self._app, self._SessionsManager).is_type_supported(
-            type
-        )
+        return LocalObjectsHandle(self._SessionsManager).get_handle_type(type)=="plot"
+       
 
     def get_content(self):
         print("data updated")
@@ -163,8 +163,8 @@ class PlotWindowCollection(PostWindowCollection):
         ]
 
     def get_viewer(self, connection_id, session_id, object_type, object_index):
-        editor = LocalPropertyEditor(self._app, self._SessionsManager)
-        obj = editor._get_object(connection_id, session_id, object_type, object_index)
+        handle = LocalObjectsHandle(self._SessionsManager)
+        obj = handle._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             raise PreventUpdate
         self._state[self._active_window] = update_graph_fun(obj)
@@ -191,9 +191,8 @@ class GraphicsWindowCollection(PostWindowCollection):
             return go.Figure()
 
     def is_type_supported(self, type):
-        return GraphicsPropertyEditor(
-            self._app, self._SessionsManager
-        ).is_type_supported(type)
+        return LocalObjectsHandle(self._SessionsManager).get_handle_type(type)=="graphics"
+        
 
     def get_content(self):
         print("get_content", self._active_window, list(self._state.keys()))
@@ -227,8 +226,8 @@ class GraphicsWindowCollection(PostWindowCollection):
         ]
 
     def get_viewer(self, connection_id, session_id, object_type, object_index):
-        editor = LocalPropertyEditor(self._app, self._SessionsManager)
-        obj = editor._get_object(connection_id, session_id, object_type, object_index)
+        handle = LocalObjectsHandle(self._SessionsManager)
+        obj = handle._get_object(connection_id, session_id, object_type, object_index)
         if obj is None:
             print("state not updated")
             raise PreventUpdate

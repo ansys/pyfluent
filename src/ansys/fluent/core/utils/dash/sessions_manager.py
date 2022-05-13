@@ -1,6 +1,5 @@
 from ansys.fluent.core.session import Session
 
-from local_property_editor import LocalPropertyEditor
 from post_windows import (
     MonitorWindow,
     PlotWindowCollection,
@@ -11,8 +10,7 @@ from post_windows import (
 import threading
 from ansys.fluent.post.pyvista import Graphics
 
-
-
+from objects_handle import LocalObjectsHandle
 
 class SessionsManager:
     _sessions_state = {}
@@ -45,7 +43,7 @@ class SessionsManager:
                 "10.18.44.30", int(session_token), cleanup_on_exit=False
             )
             self.session.monitors_manager.start()
-            outline_mesh = LocalPropertyEditor(self._app, SessionsManager)._get_object(
+            outline_mesh = LocalObjectsHandle(SessionsManager)._get_object(
                 self._connection_id, self._session_id, "Mesh", "outline"
             )
             outline_mesh.update(Graphics(self.session).add_outline_mesh()())

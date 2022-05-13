@@ -1,8 +1,7 @@
 import yaml
-from local_property_editor import LocalPropertyEditor
 import dash_html_components as html
 from dash_component import RCTree as dash_tree
-
+from objects_handle import LocalObjectsHandle
 
 class TreeView:
 
@@ -48,8 +47,8 @@ class TreeView:
                 )
                 keys = keys + child_keys
             elif local:
-                editor = LocalPropertyEditor(self._app, self._SessionsManager)
-                indices = editor.get_child_indices(
+                handle = LocalObjectsHandle(self._SessionsManager)
+                indices = handle.get_child_indices(
                     self._user_id,
                     self._session_id,
                     f"{local}-{index}" if index else local,
