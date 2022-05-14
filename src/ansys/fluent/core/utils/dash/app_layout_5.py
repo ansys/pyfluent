@@ -16,28 +16,57 @@ from post_windows import MonitorWindow, GraphicsWindowCollection
 
 
 def get_post_objects(user_id, session_id):
-    return dbc.Row(
-        [
-            dbc.Col(
-                [
-                    dcc.Dropdown(
-                        id="post-object-type",
-                        options=["Mesh", "Surface", "Contour", "Vector"],
-                        value="Contour",
-                        style={"padding": "10px 5px 5px 5px"},
-                    ),
-                    html.Div(id="post-object-container"),
-                ],
-                width="auto",
-                style={"width": "350px"},
-            ),
-            dbc.Col([GraphicsWindowCollection(user_id, session_id, 1)()]),
-        ]
-    )
+    return [
+      dbc.Row(
+          [
+              dbc.Col(
+                  [
+                      dcc.Dropdown(
+                          id="post-object-type",
+                          options=["Mesh", "Surface", "Contour", "Vector"],
+                          value="Contour",
+                          style={"padding": "10px 5px 5px 5px"},
+                      ),
+                      html.Div(id="post-object-container"),
+                  ],
+                  width="auto",
+                  style={"width": "350px"},
+              ),
+              dbc.Col([GraphicsWindowCollection(user_id, session_id, 1)()]),
+          ]
+      ),
+      
+      dbc.Row(
+          [
+              dbc.Col(
+                  [
+                     LocalPropertyEditor(user_id, session_id, 2)(f"local:Contour:1") 
+                  ],
+                  width="auto",
+                  style={"width": "350px"},
+              ),
+              dbc.Col([GraphicsWindowCollection(user_id, session_id, 2)()]),
+          ]
+      ),
+
+      dbc.Row(
+          [
+              dbc.Col(
+                  [
+                      LocalPropertyEditor(user_id, "session-1", 2)(f"local:Contour:1")
+                  ],
+                  width="auto",
+                  style={"width": "350px"},
+              ),
+              dbc.Col([GraphicsWindowCollection(user_id, "session-1", 2)()]),
+          ]
+      )      
+    ]  
 
 
 def get_setup_objects(user_id, session_id):
-    return dbc.Row(
+    return [
+    dbc.Row(
         [
             dbc.Col(
                 [
@@ -55,15 +84,45 @@ def get_setup_objects(user_id, session_id):
             ),
             dbc.Col([
             
-            MonitorWindow(user_id, session_id)(),
-            #MonitorWindow(user_id, "session-1")()
+            MonitorWindow(user_id, session_id, 1)(),
+            MonitorWindow(user_id, session_id, 2)(),
             
             ]
             
             
             ),
         ]
-    )
+    ),
+    
+    dbc.Row(
+        [
+            dbc.Col(
+                [
+                    SettingsPropertyEditor(user_id, "session-1", 1)("remote:setup/models/viscous:"),                   
+                    SettingsPropertyEditor(user_id, "session-1", 2)("remote:solution/initialization:",
+                        ["standard-initialize"],
+                    ),
+                    SettingsPropertyEditor(user_id, "session-1", 3)(                       
+                        "remote:solution/run_calculation:",
+                        ["iterate"],
+                    ),                    
+                ],
+                width="auto",
+                style={"width": "350px"},
+            ),
+            dbc.Col([
+            
+            MonitorWindow(user_id, "session-1", 1)(),
+            MonitorWindow(user_id, "session-1", 2)(),
+            
+            ]
+            
+            
+            ),
+        ]
+    )    
+    
+    ]
 
 
 def app_layout():
@@ -71,13 +130,13 @@ def app_layout():
     session_id = "session-0"
     sessions_manager = SessionsManager(user_id, session_id)
     sessions_manager.add_session("53583", None)
-    MonitorWindow(user_id, session_id)
+    
    
     
     #session_id = "session-1"
-    #sessions_manager = SessionsManager(user_id, session_id)
-    #sessions_manager.add_session("59801", None)    
-    #MonitorWindow(user_id, "session-1")    
+    sessions_manager = SessionsManager(user_id, "session-1")
+    sessions_manager.add_session("59801", None)    
+     
     
     
     SettingsPropertyEditor(user_id, session_id, 1)
@@ -85,9 +144,23 @@ def app_layout():
     SettingsPropertyEditor(user_id, session_id, 3)
     SettingsPropertyEditor(user_id, session_id, 4)
     LocalPropertyEditor(user_id, session_id, 1)
+    LocalPropertyEditor(user_id, session_id, 2)
+    LocalPropertyEditor(user_id, session_id, 3)    
     GraphicsWindowCollection(user_id, session_id, 1)
-    MonitorWindow(user_id, session_id)
+    GraphicsWindowCollection(user_id, session_id, 2)
+    GraphicsWindowCollection(user_id, session_id, 3)
+    MonitorWindow(user_id, session_id, 1)
+    MonitorWindow(user_id, session_id, 2)
+    
 
+    LocalPropertyEditor(user_id, "session-1", 2)
+    GraphicsWindowCollection(user_id, "session-1", 2)
+    SettingsPropertyEditor(user_id, "session-1", 1)
+    SettingsPropertyEditor(user_id, "session-1", 2)
+    SettingsPropertyEditor(user_id, "session-1", 3)    
+    MonitorWindow(user_id, "session-1", 1)
+    MonitorWindow(user_id, "session-1", 2)
+    
     return dbc.Container(
         children=[
             html.Data(id="session-id", value="session-0"),
