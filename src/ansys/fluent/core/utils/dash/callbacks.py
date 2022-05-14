@@ -28,22 +28,18 @@ def register_callbacks(app):
     @app.callback(
         Output("command-output", "value"),
         Input({"type": "settings-command-button", "index": ALL}, "n_clicks"),
-        Input("connection-id", "data"),
         State({"type": "settings-command-input", "index": ALL}, "value"),
-        State("session-id", "value"),
     )
     def on_settings_command_execution(
         commnads,
-        user_id,
         args_value,
-        session_id,
     ):
         """"Callback executed setting command button is pressed"""
         ctx = dash.callback_context
         triggered_value = ctx.triggered[0]["value"]
         if not triggered_value:
             raise PreventUpdate
-        command_name, object_location, object_type, object_index = eval(
+        command_name, user_id, session_id, object_location, object_type, object_index = eval(
             ctx.triggered[0]["prop_id"].split(".")[0]
         )["index"].split(":")
                     
@@ -91,7 +87,7 @@ def register_callbacks(app):
                 
         
     @app.callback(
-        Output("post-window-tab-content", "children"),
+        Output("post-window-tab-content1", "children"),
         Input("graphics-button-clicked", "value"),
         Input("plot-button-clicked", "value"),
         Input("connection-id", "data"),
@@ -242,9 +238,11 @@ def register_callbacks(app):
             return "yes"
 
         elif "interval-component" in triggered_from_list:
-            event_info = SessionsManager(user_id, session_id).get_event_info(
+            sessions =  SessionsManager.get_sessions(user_id) 
+            
+            event_info =  any([SessionsManager(user_id, session_id).get_event_info(
                 "CalculationsStartedEvent"
-            )
+            ) for session_id in sessions])
             if event_info:
                 print(PostWindowCollection._is_executing)
                 if PostWindowCollection._is_executing == False:
@@ -360,12 +358,14 @@ def register_callbacks(app):
             return None, None
         else:
             input_index = eval(triggered_from)["index"]
-            input_index, object_location, object_type, object_index = input_index.split(
+            input_index, user_id, session_id, object_location, object_type, object_index = input_index.split(
                 ":"
             )
             print(
                 "\n on_value_changed",
                 input_index,
+                user_id,
+                session_id,
                 object_location,
                 object_type,
                 object_index,
@@ -402,35 +402,32 @@ def register_callbacks(app):
 
     @app.callback(
         Output("tree-container", "children"),
-        Output("uuid-id", "value"),
-        Input("connection-id", "data"),  #
+        Output("uuid-id", "value"),        
         Input("session-id", "value"),
-        Input("save-button-clicked", "value"),
-        Input("delete-button-clicked", "value"),
-        State("object-id", "value"),
-        # prevent_initial_call=True,
+        Input(
+            {"type": "graphics-button", "index": ALL},
+            "value",
+        ),        
+        State("connection-id", "data"), 
+        prevent_initial_call = True
     )
-    def update_tree(user_id, session_id, save_n_clicks, delete_n_clicks, object_id):
+    def update_tree(session_id, graphics_button_clicks, user_id):
         ctx = dash.callback_context
         triggered_value = ctx.triggered[0]["value"]
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-        print("update_tree", triggered_from, triggered_value)
-        if session_id is None or user_id is None or triggered_value is None:
-            raise PreventUpdate
-
-        if triggered_from == "save-button-clicked":
-            object_location, object_type, object_index = object_id.split(":")
-            handle = LocalObjectsHandle(SessionsManager)
-            new_object = handle.create_new_object(
-                user_id, session_id, object_type, object_index
-            )
-        elif triggered_from == "delete-button-clicked":
-            object_location, object_type, object_index = object_id.split(":")
-            handle = LocalObjectsHandle(SessionsManager)
-            new_object = handle.delete_object(
-                user_id, session_id, object_type, object_index
-            )
-        print("update_tree", triggered_from, triggered_value)
+        if triggered_from!="session-id":
+            triggered_data = eval(ctx.triggered[0]["prop_id"].split(".")[0])
+            user_id, session_id, object_location, object_type, object_index, opr, editor_id = triggered_data["index"].split(":")                   
+            if opr == "new":                
+                handle = LocalObjectsHandle(SessionsManager)
+                new_object = handle.create_new_object(
+                    user_id, session_id, object_type, object_index
+                )
+            elif opr == "delete":               
+                handle = LocalObjectsHandle(SessionsManager)
+                new_object = handle.delete_object(
+                    user_id, session_id, object_type, object_index
+                )       
         tree_nodes, keys = TreeView(
             app, user_id, session_id, SessionsManager
         ).get_tree_nodes()
@@ -486,6 +483,10 @@ def register_callbacks(app):
         if n_post_clicks is None:
             raise PreventUpdate
         return str(n_post_clicks)
+        
+        
+        
+        
 
     @app.callback(
         Output("tabs", "active_tab"),

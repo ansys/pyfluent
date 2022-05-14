@@ -8,8 +8,8 @@ from objects_handle import LocalObjectsHandle
 from sessions_manager import SessionsManager
 
 class LocalPropertyEditor(PropertyEditor):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, user_id, session_id, index=None):
+        super().__init__(user_id, session_id, "local", index)
         self._all_widgets = {}        
         self._graphics_property_editor = GraphicsPropertyEditor()
         self._plot_property_editor = PlotPropertyEditor()
@@ -49,7 +49,7 @@ class LocalPropertyEditor(PropertyEditor):
                             value,
                             value._type,
                             name,
-                            f"{parent}/{name}:local:{object_type}:{object_index}",
+                            f"{parent}/{name}:{self._user_id}:{self._session_id}:local:{object_type}:{object_index}",
                             # parent + "/" + name+":local:"+object_type+":"+object_index,
                             getattr(value, "attributes", None),
                         )
@@ -73,7 +73,7 @@ class LocalPropertyEditor(PropertyEditor):
             return self._all_widgets
         else:
             return self._get_editor(object_type).get_widgets(
-                connection_id, session_id, object_type, object_index
+                connection_id, session_id, object_type, object_index, self._index
             )
 
         
@@ -197,23 +197,46 @@ class LocalPropertyEditor(PropertyEditor):
 class GraphicsPropertyEditor:
 
 
-    def get_widgets(self, connection_id, session_id, object_type, object_index):
+    def get_widgets(self, connection_id, session_id, object_type, object_index, editor_index):
         return (
             {
                 "display-button": dbc.Button(
-                    "Display", id="graphics-button", n_clicks=0, size="sm"
+                    "Display", 
+                    id={
+                        "type": "post-render-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:{editor_index}",
+                    },                                                           
+                    n_clicks=0, 
+                    size="sm"
                 ),
                 "delete-button": dbc.Button(
-                    "Delete", id="delete-button", n_clicks=0, size="sm"
+                    "Delete", 
+                    id={
+                        "type": "graphics-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:delete:{editor_index}",
+                    },                                      
+                    n_clicks=0, 
+                    size="sm"
                 ),
             }
             if object_index
             else {
                 "display-button": dbc.Button(
-                    "Display", id="graphics-button", n_clicks=0, size="sm"
+                    "Display", 
+                    id={
+                        "type": "post-render-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:{editor_index}",
+                    },                   
+                    n_clicks=0, 
+                    size="sm"
                 ),
-                "save-button": dbc.Button(
-                    "New", id="save-button", n_clicks=0, size="sm"
+                "new-button": dbc.Button(
+                    "New", 
+                    id={
+                        "type": "graphics-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:new:{editor_index}",
+                    },
+                    n_clicks=0, size="sm"
                 ),
             }
         )
@@ -222,23 +245,47 @@ class GraphicsPropertyEditor:
 
 class PlotPropertyEditor:
 
-    def get_widgets(self, connection_id, session_id, object_type, object_index):
+    def get_widgets(self, connection_id, session_id, object_type, object_index, editor_index):
         return (
             {
                 "plot-button": dbc.Button(
-                    "Plot", id="plot-button", n_clicks=0, size="sm"
+                    "Plot", 
+                    id={
+                        "type": "post-render-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:{editor_index}",
+                    },                                                           
+                    n_clicks=0, 
+                    size="sm"
                 ),
                 "delete-button": dbc.Button(
-                    "Delete", id="delete-button", n_clicks=0, size="sm"
+                    "Delete", 
+                    id={
+                        "type": "graphics-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:delete:{editor_index}",
+                    },                                      
+                    n_clicks=0, 
+                    size="sm"
                 ),
             }
             if object_index
             else {
                 "plot-button": dbc.Button(
-                    "Plot", id="plot-button", n_clicks=0, size="sm"
+                    "Plot", 
+                    id={
+                        "type": "post-render-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:{editor_index}",
+                    },                   
+                    n_clicks=0, 
+                    size="sm"
                 ),
-                "save-button": dbc.Button(
-                    "New", id="save-button", n_clicks=0, size="sm"
+                "new-button": dbc.Button(
+                    "New", 
+                    id={
+                        "type": "graphics-button",
+                        "index": f"{connection_id}:{session_id}:local:{object_type}:{object_index}:new:{editor_index}",
+                    },
+                    n_clicks=0, size="sm"
                 ),
             }
-        )
+        )    
+

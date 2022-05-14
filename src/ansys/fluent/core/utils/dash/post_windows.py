@@ -1,9 +1,9 @@
 from functools import partial
 import dash_bootstrap_components as dbc
-from dash import html
+from dash import html, no_update
 import dash_core_components as dcc
 from dash import Input, Output, State, ALL
-
+import dash
 
 import itertools
 from dash.exceptions import PreventUpdate
@@ -22,11 +22,12 @@ set_config(blocking=False)
 class PostWindowCollection:
 
     _windows = {}
+    _id_iter = itertools.count()    
     _is_executing = False
     _show_outline = False
 
-    def __init__(self, connection_id, session_id, window_type):
-        unique_id = f"{window_type}-{connection_id}-{session_id}"
+    def __init__(self, connection_id, session_id, window_type, index):
+        unique_id = f"{window_type}-{connection_id}-{session_id}{'default' if index is None else index}"
         window_state = PostWindowCollection._windows.get(unique_id)
         if not window_state:
             PostWindowCollection._windows[unique_id] = self.__dict__
@@ -36,8 +37,99 @@ class PostWindowCollection:
             self._windows = [0]
             self._active_window = 0
             self._window_data = {}
+            self._index = index 
+            self._user_id =  connection_id           
+            self._session_id =  session_id
+            
+            @app.callback(
+                Output("post-window-container", "children"),
+                Input(
+                    {"type": "post-window-tabs-updated", "index": ALL},
+                    "n_clicks",
+                ),                                
+                prevent_initial_call=True,
+            )
+            def update_tabs(
+                n_clicks,                          
+            ):
+                ctx = dash.callback_context
+                triggered_value = ctx.triggered[0]["value"]
+                triggered_from = eval(ctx.triggered[0]["prop_id"].split(".")[0])
+                if not triggered_value :
+                    raise PreventUpdate
+                unique_id, opr = triggered_from["index"].split(":") 
+                if  unique_id!=self._unique_id:
+                    raise PreventUpdate
+                if opr == "add":
+                    id = 0
+                    while True:
+                        if id not in self._windows:
+                            break
+                        id = id + 1
+                    self._active_window = id
+                    self._windows.append(id)                    
+                elif opr == "remove":
+                    if len(self._windows) == 1:
+                        raise PreventUpdate
+                    if self._state.get(self._active_window):
+                        del self._state[self._active_window]
+                    if self._window_data.get(self._active_window):
+                        del self._window_data[self._active_window]                        
+                    index = self._windows.index(self._active_window)
+                    new_index = (
+                        self._windows[index + 1] if index == 0 else self._windows[index - 1]
+                    )
+                    self._windows.remove(self._active_window)
+                    self._active_window = new_index  
+                return self.get_widgets()                    
+                                    
+                    
+                                                    
+            @app.callback(
+                Output("post-window-tab-content", "children"),
+                Input(
+                    {"type": "post-render-button", "index": ALL},
+                    "n_clicks",
+                ),                
+                Input("post-window-tabs", "active_tab"),
+                Input("need-to-data-fetch", "value"),                                   
+                prevent_initial_call=True,
+            )
+            def refresh(
+                n_clicks,          
+                active_tab,
+                refresh,                          
+            ):
+                ctx = dash.callback_context
+                triggered_value = ctx.triggered[0]["value"]
+                triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+                if not triggered_value :
+                    raise PreventUpdate
+                                    
+                event_info = SessionsManager(self._user_id, self._session_id).get_event_info(
+                    "IterationEndedEvent"
+                )
+                if triggered_from not in ("post-window-tabs", "need-to-data-fetch"):
+                    triggered_data = eval(triggered_from)                  
+                    user_id, session_id, object_location, object_type, object_index, editor_index = triggered_data["index"].split(":")                                       
+                    if int(editor_index) != self._index or not self.is_type_supported(object_type) or user_id!=self._user_id or  session_id!=self._session_id:                       
+                        raise PreventUpdate                        
+                    handle = LocalObjectsHandle(SessionsManager)
+                    self._window_data[int(active_tab)] = {
+                        "object" : handle._get_object(user_id, session_id, object_type, object_index),
+                        "index" : event_info.index if event_info else None                                       
+                    }                    
+                self._active_window =  int(active_tab)
+                obj = self._window_data.get(int(active_tab),{}).get("object")
+                index = self._window_data.get(int(active_tab),{}).get("index")
+                if triggered_from=="post-window-tabs":
+                    return self.get_content() 
+                else:
+                    if triggered_from=="need-to-data-fetch" and index== event_info.index if event_info else None:
+                        return no_update    
+                    return self.get_viewer(obj)                                                                              
         else:
-            self.__dict__ = window_state
+            self.__dict__ = window_state                
 
     def copy_from(self, connection_id, session_id):
         source = PostWindowCollection(
@@ -48,11 +140,10 @@ class PostWindowCollection:
         self._windows = source._windows
         self._window_data = source._window_data
         self._state = source._state
+        
+    def get_widgets(self):
 
-    def __call__(self):
-
-        return html.Div(
-            [
+        return [
                 dbc.Row(
                     [
                         dbc.Col(
@@ -77,8 +168,8 @@ class PostWindowCollection:
                                     dbc.Button(
                                         "Add Window",
                                         id={
-                                            "type": "add-post-window",
-                                            "index": self._window_type,
+                                            "type": "post-window-tabs-updated",
+                                            "index": f"{self._unique_id}:add",
                                         },
                                         size="sm",
                                         n_clicks=0,
@@ -89,8 +180,8 @@ class PostWindowCollection:
                                     dbc.Button(
                                         "Remove Window",
                                         id={
-                                            "type": "remove-post-window",
-                                            "index": self._window_type,
+                                            "type": "post-window-tabs-updated",
+                                            "index": f"{self._unique_id}:remove",
                                         },
                                         size="sm",
                                         n_clicks=0,
@@ -112,18 +203,26 @@ class PostWindowCollection:
                     style={"padding": "4px 4px 0px 4px", "height": "837px"},
                     children=self.get_content(),
                 ),
-            ],
+            ]
+            
+               
+
+    def __call__(self):
+
+        return html.Div(
+            self.get_widgets() ,
             style={
                 "height": "57rem",
                 "overflow-y": "auto",
                 "overflow-x": "hidden",
             },
+          id="post-window-container"  
         )
 
 
 class PlotWindowCollection(PostWindowCollection):
-    def __init__(self, connection_id, session_id):
-        super().__init__(connection_id, session_id, "plot")
+    def __init__(self, connection_id, session_id, index=None):
+        super().__init__(connection_id, session_id, "plot", index)
 
     def _get_graph(self):
         return [
@@ -147,9 +246,7 @@ class PlotWindowCollection(PostWindowCollection):
             )
         ]
 
-    def get_viewer(self, connection_id, session_id, object_type, object_index):
-        handle = LocalObjectsHandle(SessionsManager)
-        obj = handle._get_object(connection_id, session_id, object_type, object_index)
+    def get_viewer(self,obj):       
         if obj is None:
             raise PreventUpdate
         self._state[self._active_window] = update_graph_fun(obj)
@@ -158,8 +255,8 @@ class PlotWindowCollection(PostWindowCollection):
 
 
 class GraphicsWindowCollection(PostWindowCollection):
-    def __init__(self, connection_id, session_id):
-        super().__init__(connection_id, session_id, "graphics")
+    def __init__(self, connection_id, session_id, index=None):
+        super().__init__(connection_id, session_id, "graphics", index)
 
     def _get_graphics(self):
         return self._state.get(self._active_window, [[]])[0]
@@ -179,9 +276,7 @@ class GraphicsWindowCollection(PostWindowCollection):
         return LocalObjectsHandle(SessionsManager).get_handle_type(type)=="graphics"
         
 
-    def get_content(self):
-        print("get_content", self._active_window, list(self._state.keys()))
-        print("_get_graphics", self._get_graphics())
+    def get_content(self):       
         content = [
             dbc.Col(
                 dash_vtk.View(
@@ -210,9 +305,7 @@ class GraphicsWindowCollection(PostWindowCollection):
             )
         ]
 
-    def get_viewer(self, connection_id, session_id, object_type, object_index):
-        handle = LocalObjectsHandle(SessionsManager)
-        obj = handle._get_object(connection_id, session_id, object_type, object_index)
+    def get_viewer(self, obj):        
         if obj is None:
             print("state not updated")
             raise PreventUpdate
@@ -291,7 +384,8 @@ class MonitorWindow:
                     Input(f"monitor-tabs-{self._id if self._id>=0 else 'main'}", "active_tab"),
                     Input("need-to-data-fetch", "value"),           
                 )
-                def refresh_monitor(active_tab, fetch_data):           
+                def refresh_monitor(active_tab, fetch_data):  
+                    print(active_tab, self._user_id, self._session_id)                
                     return MonitorWindow.get_graph(active_tab, self._user_id, self._session_id)            
         else:
             self.__dict__ = window_state    

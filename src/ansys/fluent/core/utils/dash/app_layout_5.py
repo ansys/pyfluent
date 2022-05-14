@@ -11,10 +11,7 @@ from settings_property_editor import SettingsPropertyEditor
 from local_property_editor import LocalPropertyEditor
 from post_windows import MonitorWindow, GraphicsWindowCollection
 
-setting1 = SettingsPropertyEditor()
-setting2 = SettingsPropertyEditor()
-setting3 = SettingsPropertyEditor()
-local_editor = LocalPropertyEditor()
+
 
 
 
@@ -34,7 +31,7 @@ def get_post_objects(user_id, session_id):
                 width="auto",
                 style={"width": "350px"},
             ),
-            dbc.Col([GraphicsWindowCollection(user_id, session_id)()]),
+            dbc.Col([GraphicsWindowCollection(user_id, session_id, 1)()]),
         ]
     )
 
@@ -44,19 +41,14 @@ def get_setup_objects(user_id, session_id):
         [
             dbc.Col(
                 [
-                    setting1(user_id, session_id, "remote:setup/models/viscous:"),
-                    setting2(
-                        user_id,
-                        session_id,
-                        "remote:solution/initialization:",
+                    SettingsPropertyEditor(user_id, session_id, 1)("remote:setup/models/viscous:"),                   
+                    SettingsPropertyEditor(user_id, session_id, 2)("remote:solution/initialization:",
                         ["standard-initialize"],
                     ),
-                    setting3(
-                        user_id,
-                        session_id,
+                    SettingsPropertyEditor(user_id, session_id, 3)(                       
                         "remote:solution/run_calculation:",
                         ["iterate"],
-                    ),
+                    ),                    
                 ],
                 width="auto",
                 style={"width": "350px"},
@@ -64,7 +56,7 @@ def get_setup_objects(user_id, session_id):
             dbc.Col([
             
             MonitorWindow(user_id, session_id)(),
-            MonitorWindow(user_id, session_id, 1)()
+            #MonitorWindow(user_id, "session-1")()
             
             ]
             
@@ -80,7 +72,22 @@ def app_layout():
     sessions_manager = SessionsManager(user_id, session_id)
     sessions_manager.add_session("53583", None)
     MonitorWindow(user_id, session_id)
-    MonitorWindow(user_id, session_id, 1)
+   
+    
+    #session_id = "session-1"
+    #sessions_manager = SessionsManager(user_id, session_id)
+    #sessions_manager.add_session("59801", None)    
+    #MonitorWindow(user_id, "session-1")    
+    
+    
+    SettingsPropertyEditor(user_id, session_id, 1)
+    SettingsPropertyEditor(user_id, session_id, 2)
+    SettingsPropertyEditor(user_id, session_id, 3)
+    SettingsPropertyEditor(user_id, session_id, 4)
+    LocalPropertyEditor(user_id, session_id, 1)
+    GraphicsWindowCollection(user_id, session_id, 1)
+    MonitorWindow(user_id, session_id)
+
     return dbc.Container(
         children=[
             html.Data(id="session-id", value="session-0"),
@@ -113,7 +120,7 @@ def app_layout():
     State("session-id", "value"),
 )
 def render_widget(post_object_type, user_id, session_id):
-    return local_editor(user_id, session_id, f"local:{post_object_type}:0")
+    return LocalPropertyEditor(user_id, session_id, 1)(f"local:{post_object_type}:0")
 
 
 @app.callback(

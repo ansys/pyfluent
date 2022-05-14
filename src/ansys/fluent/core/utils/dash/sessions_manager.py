@@ -10,7 +10,7 @@ class SessionsManager:
 
     def __init__(self, connection_id, session_id):
 
-        complete_session_id = f"{connection_id}-{session_id}"
+        complete_session_id = f"{connection_id}:{session_id}"
 
         session_state = SessionsManager._sessions_state.get(complete_session_id)
 
@@ -24,6 +24,10 @@ class SessionsManager:
             self._state_manager = StateManager(connection_id, session_id, SessionsManager)
         else:
             self.__dict__ = session_state
+           
+    @classmethod           
+    def get_sessions(cls, user_id):
+        return map(lambda x: x.split(":")[1] ,  [session_name for session_name, session_state in  cls._sessions_state.items() if session_name.startswith(user_id)])        
 
     def add_session(self, session_token, user_name_to_session_map):
         session_token = session_token.strip()

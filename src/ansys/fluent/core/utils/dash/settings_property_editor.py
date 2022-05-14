@@ -12,8 +12,8 @@ set_config(blocking=False)
 
 
 class SettingsPropertyEditor(PropertyEditor):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, user_id, session_id, index=None):
+        super().__init__(user_id, session_id, "settings", index)
         self._all_widgets = {}
         
 
@@ -34,7 +34,7 @@ class SettingsPropertyEditor(PropertyEditor):
                     widget = self.get_widget(
                         child_obj,
                         name,
-                        f"{parent}/{name}:remote:{object_type}:{object_index}",
+                        f"{parent}/{name}:{self._user_id}:{self._session_id}:remote:{object_type}:{object_index}",
                         si_info_child,
                     )
                     self._all_widgets[name] = widget
@@ -60,7 +60,7 @@ class SettingsPropertyEditor(PropertyEditor):
                     self.get_label(command_name),
                     id={
                         "type": "settings-command-button",
-                        "index": f"{to_python_name(command_name)}:remote:{object_type}:{object_index}",
+                        "index": f"{to_python_name(command_name)}:{self._user_id}:{self._session_id}:remote:{object_type}:{object_index}",
                     },
                     n_clicks=0,
                     size="sm",

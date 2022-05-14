@@ -7,31 +7,37 @@ from app_defn import app
 import re
 class PropertyEditor:
 
-    _id_iter = itertools.count()
 
-    def __init__(self):
-        self._id = next(PropertyEditor._id_iter)
-        self._object_id = None
-        self._filter_list = []
+    _editors = {}
+    def __init__(self, user_id, session_id, editor_type, index):
+        unique_id = f"{user_id}-{session_id}-{editor_type}-{'default' if index is None else index}"
+        editor = PropertyEditor._editors.get(unique_id)
+        if not editor:
+            PropertyEditor._editors[unique_id] = self.__dict__    
+            self._id = unique_id
+            self._user_id =   user_id
+            self._session_id = session_id          
+            self._object_id = None
+            self._filter_list = [] 
+            self._index =  index           
 
-        @app.callback(
-            Output(f"property-editor-{self._id}", "children"),
-            Input("object-id", "value"),
-            Input("connection-id", "data"),
-            State("session-id", "value"),
-            prevent_initial_call=True,
-        )
-        def refresh_widgets(object_id, connection_id, session_id):
-            if object_id != self._object_id:
-                raise PreventUpdate
-            object_location, object_type, object_index = object_id.split(":")
-            return self.render(connection_id, session_id, object_id)
+            @app.callback(
+                Output(f"property-editor-{self._id}", "children"),
+                Input("object-id", "value"),           
+                prevent_initial_call=True,
+            )
+            def refresh_widgets(object_id):
+                if object_id != self._object_id:
+                    raise PreventUpdate            
+                return self.render(self._user_id, self._session_id , object_id)
+        else:
+            self.__dict__ = editor         
 
-    def __call__(self, user_id, session_id, object_id, filter_list=[]):
+    def __call__(self, object_id, filter_list=[]):
         self._object_id = object_id
-        self._filter_list = filter_list       
+        self._filter_list = filter_list              
         return html.Div(
-            children=self.render(user_id, session_id, object_id),
+            children=self.render(self._user_id, self._session_id, self._object_id),
             id=f"property-editor-{self._id}",
         )
         
