@@ -13,3 +13,4 @@ Solver
   
    settings
    tui/index
+   fielddata
