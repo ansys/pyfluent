@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-dep:
+  update-api:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,6 +39,8 @@ jobs:
       - name: Run API codegen
         run: make api-codegen
         env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
           PYFLUENT_LAUNCH_CONTAINER: 1
 
       - name: Create Pull Request

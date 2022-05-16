@@ -37,13 +37,14 @@ unittest:
 api-codegen:
 	@echo "Running API codegen"
 	@python -m venv env
-	@source env/bin/activate
+	@. env/bin/activate
 	@pip install -r requirements_codegen.txt
 	@python codegen/pyprotogen.py
 	@python codegen/tuigen.py
 	@python codegen/settingsgen.py
 	@python codegen/datamodelgen.py
 	@deactivate
+	@rm -rf env
 
 build-doc:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
