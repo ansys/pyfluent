@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .shell_conduction_child import shell_conduction_child
 
-
 class shell_conduction(ListObject[shell_conduction_child]):
-    """'shell_conduction' child."""
+    """
+    'shell_conduction' child.
+    """
 
     fluent_name = "shell-conduction"
 

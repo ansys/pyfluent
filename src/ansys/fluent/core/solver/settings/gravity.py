@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class gravity(Boolean):
-    """Set gravitational acceleration."""
+    """
+    Set gravitational acceleration.
+    """
 
     fluent_name = "gravity?"
+

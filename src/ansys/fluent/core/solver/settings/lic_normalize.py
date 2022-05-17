@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class lic_normalize(Boolean):
-    """'lic_normalize' child."""
+    """
+    'lic_normalize' child.
+    """
 
     fluent_name = "lic-normalize?"
+

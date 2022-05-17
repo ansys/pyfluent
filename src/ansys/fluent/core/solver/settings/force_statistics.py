@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class force_statistics(Boolean):
-    """Enable/Disable force statistics."""
+    """
+    Enable/Disable force statistics.
+    """
 
     fluent_name = "force-statistics?"
+

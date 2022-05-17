@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pole(Real):
-    """'pole' child."""
+    """
+    'pole' child.
+    """
 
     fluent_name = "pole"
+

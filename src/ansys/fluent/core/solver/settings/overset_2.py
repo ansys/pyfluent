@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class overset(Boolean):
-    """'overset' child."""
+    """
+    'overset' child.
+    """
 
     fluent_name = "overset?"
+

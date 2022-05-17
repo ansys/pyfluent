@@ -33,44 +33,22 @@ from .shadow import shadow
 from .symmetry import symmetry
 from .velocity_inlet import velocity_inlet
 from .wall import wall
-
-
 class boundary_conditions(Group):
-    """'boundary_conditions' child."""
+    """
+    'boundary_conditions' child.
+    """
 
     fluent_name = "boundary-conditions"
 
-    child_names = [
-        "axis",
-        "degassing",
-        "exhaust_fan",
-        "fan",
-        "geometry",
-        "inlet_vent",
-        "intake_fan",
-        "interface",
-        "interior",
-        "mass_flow_inlet",
-        "mass_flow_outlet",
-        "network",
-        "network_end",
-        "outflow",
-        "outlet_vent",
-        "overset",
-        "periodic",
-        "porous_jump",
-        "pressure_far_field",
-        "pressure_inlet",
-        "pressure_outlet",
-        "radiator",
-        "rans_les_interface",
-        "recirculation_inlet",
-        "recirculation_outlet",
-        "shadow",
-        "symmetry",
-        "velocity_inlet",
-        "wall",
-    ]
+    child_names = \
+        ['axis', 'degassing', 'exhaust_fan', 'fan', 'geometry', 'inlet_vent',
+         'intake_fan', 'interface', 'interior', 'mass_flow_inlet',
+         'mass_flow_outlet', 'network', 'network_end', 'outflow',
+         'outlet_vent', 'overset', 'periodic', 'porous_jump',
+         'pressure_far_field', 'pressure_inlet', 'pressure_outlet',
+         'radiator', 'rans_les_interface', 'recirculation_inlet',
+         'recirculation_outlet', 'shadow', 'symmetry', 'velocity_inlet',
+         'wall']
 
     axis: axis = axis
     """

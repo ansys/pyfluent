@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class fixes(NamedObject[child_object_type_child]):
-    """'fixes' child."""
+    """
+    'fixes' child.
+    """
 
     fluent_name = "fixes"
 

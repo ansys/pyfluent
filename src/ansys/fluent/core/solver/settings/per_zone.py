@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class per_zone(Boolean):
-    """'per_zone' child."""
+    """
+    'per_zone' child.
+    """
 
     fluent_name = "per-zone?"
+

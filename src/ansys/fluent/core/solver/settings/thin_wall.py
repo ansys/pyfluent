@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .shell_conduction_child import shell_conduction_child
 
-
 class thin_wall(ListObject[shell_conduction_child]):
-    """'thin_wall' child."""
+    """
+    'thin_wall' child.
+    """
 
     fluent_name = "thin-wall"
 

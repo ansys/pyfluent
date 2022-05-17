@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .field import field
 from .scalefactor import scalefactor
-
-
 class ribbon(Group):
-    """'ribbon' child."""
+    """
+    'ribbon' child.
+    """
 
     fluent_name = "ribbon"
 
-    child_names = ["field", "scalefactor"]
+    child_names = \
+        ['field', 'scalefactor']
 
     field: field = field
     """

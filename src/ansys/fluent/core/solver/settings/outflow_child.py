@@ -4,93 +4,65 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .band_q_irrad import band_q_irrad
-from .band_q_irrad_diffuse import band_q_irrad_diffuse
-from .coll_dphi import coll_dphi
-from .coll_dtheta import coll_dtheta
-from .dpm_bc_collision_partner import dpm_bc_collision_partner
-from .dpm_bc_type import dpm_bc_type
-from .dpm_bc_udf import dpm_bc_udf
-from .dual_potential_type import dual_potential_type
-from .dual_potential_value import dual_potential_value
-from .elec_potential_type import elec_potential_type
-from .flowrate_frac import flowrate_frac
-from .geom_bgthread import geom_bgthread
+from .phase_12 import phase
+from .geom_disable import geom_disable
 from .geom_dir_spec import geom_dir_spec
 from .geom_dir_x import geom_dir_x
 from .geom_dir_y import geom_dir_y
 from .geom_dir_z import geom_dir_z
-from .geom_disable import geom_disable
 from .geom_levels import geom_levels
-from .in_emiss import in_emiss
-from .parallel_collimated_beam import parallel_collimated_beam
-from .phase_12 import phase
+from .geom_bgthread import geom_bgthread
+from .flowrate_frac import flowrate_frac
+from .elec_potential_type import elec_potential_type
 from .potential_value import potential_value
-from .radiating_s2s_surface import radiating_s2s_surface
-from .radiation_bc import radiation_bc
-from .reinj_inj import reinj_inj
-from .solar_direction import solar_direction
-from .solar_fluxes import solar_fluxes
-from .solar_irradiation import solar_irradiation
-from .solar_shining_factor import solar_shining_factor
-from .t_b_b import t_b_b
-from .t_b_b_spec import t_b_b_spec
-from .uds import uds
-from .uds_bc import uds_bc
+from .dual_potential_type import dual_potential_type
+from .dual_potential_value import dual_potential_value
 from .x_displacement_type import x_displacement_type
 from .x_displacement_value import x_displacement_value
 from .y_displacement_type import y_displacement_type
 from .y_displacement_value import y_displacement_value
 from .z_displacement_type import z_displacement_type
 from .z_displacement_value import z_displacement_value
-
-
+from .uds_bc import uds_bc
+from .uds import uds
+from .radiation_bc import radiation_bc
+from .coll_dtheta import coll_dtheta
+from .coll_dphi import coll_dphi
+from .band_q_irrad import band_q_irrad
+from .band_q_irrad_diffuse import band_q_irrad_diffuse
+from .parallel_collimated_beam import parallel_collimated_beam
+from .solar_direction import solar_direction
+from .solar_irradiation import solar_irradiation
+from .t_b_b_spec import t_b_b_spec
+from .t_b_b import t_b_b
+from .in_emiss import in_emiss
+from .dpm_bc_type import dpm_bc_type
+from .dpm_bc_collision_partner import dpm_bc_collision_partner
+from .reinj_inj import reinj_inj
+from .dpm_bc_udf import dpm_bc_udf
+from .solar_fluxes import solar_fluxes
+from .solar_shining_factor import solar_shining_factor
+from .radiating_s2s_surface import radiating_s2s_surface
 class outflow_child(Group):
-    """'child_object_type' of outflow."""
+    """
+    'child_object_type' of outflow
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "phase",
-        "geom_disable",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-        "geom_levels",
-        "geom_bgthread",
-        "flowrate_frac",
-        "elec_potential_type",
-        "potential_value",
-        "dual_potential_type",
-        "dual_potential_value",
-        "x_displacement_type",
-        "x_displacement_value",
-        "y_displacement_type",
-        "y_displacement_value",
-        "z_displacement_type",
-        "z_displacement_value",
-        "uds_bc",
-        "uds",
-        "radiation_bc",
-        "coll_dtheta",
-        "coll_dphi",
-        "band_q_irrad",
-        "band_q_irrad_diffuse",
-        "parallel_collimated_beam",
-        "solar_direction",
-        "solar_irradiation",
-        "t_b_b_spec",
-        "t_b_b",
-        "in_emiss",
-        "dpm_bc_type",
-        "dpm_bc_collision_partner",
-        "reinj_inj",
-        "dpm_bc_udf",
-        "solar_fluxes",
-        "solar_shining_factor",
-        "radiating_s2s_surface",
-    ]
+    child_names = \
+        ['phase', 'geom_disable', 'geom_dir_spec', 'geom_dir_x', 'geom_dir_y',
+         'geom_dir_z', 'geom_levels', 'geom_bgthread', 'flowrate_frac',
+         'elec_potential_type', 'potential_value', 'dual_potential_type',
+         'dual_potential_value', 'x_displacement_type',
+         'x_displacement_value', 'y_displacement_type',
+         'y_displacement_value', 'z_displacement_type',
+         'z_displacement_value', 'uds_bc', 'uds', 'radiation_bc',
+         'coll_dtheta', 'coll_dphi', 'band_q_irrad', 'band_q_irrad_diffuse',
+         'parallel_collimated_beam', 'solar_direction', 'solar_irradiation',
+         't_b_b_spec', 't_b_b', 'in_emiss', 'dpm_bc_type',
+         'dpm_bc_collision_partner', 'reinj_inj', 'dpm_bc_udf',
+         'solar_fluxes', 'solar_shining_factor', 'radiating_s2s_surface']
 
     phase: phase = phase
     """
@@ -196,9 +168,7 @@ class outflow_child(Group):
     """
     band_q_irrad_diffuse child of outflow_child
     """
-    parallel_collimated_beam: parallel_collimated_beam = (
-        parallel_collimated_beam
-    )
+    parallel_collimated_beam: parallel_collimated_beam = parallel_collimated_beam
     """
     parallel_collimated_beam child of outflow_child
     """
@@ -226,9 +196,7 @@ class outflow_child(Group):
     """
     dpm_bc_type child of outflow_child
     """
-    dpm_bc_collision_partner: dpm_bc_collision_partner = (
-        dpm_bc_collision_partner
-    )
+    dpm_bc_collision_partner: dpm_bc_collision_partner = dpm_bc_collision_partner
     """
     dpm_bc_collision_partner child of outflow_child
     """

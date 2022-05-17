@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class omega_min_lim(Real):
-    """Set minimum allowable omega."""
+    """
+    Set minimum allowable omega.
+    """
 
     fluent_name = "omega-min-lim"
+

@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .lift_child import lift_child
 
-
 class lift(NamedObject[lift_child]):
-    """'lift' child."""
+    """
+    'lift' child.
+    """
 
     fluent_name = "lift"
 

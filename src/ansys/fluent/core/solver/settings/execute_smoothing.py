@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class execute_smoothing(Command):
-    """Execute volumetric smoothing for volume fraction."""
+    """
+    Execute volumetric smoothing for volume fraction.
+    """
 
     fluent_name = "execute-smoothing"
+

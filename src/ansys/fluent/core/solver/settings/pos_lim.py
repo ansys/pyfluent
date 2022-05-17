@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pos_lim(Real):
-    """Set positivity Rate Limit."""
+    """
+    Set positivity Rate Limit.
+    """
 
     fluent_name = "pos-lim"
+

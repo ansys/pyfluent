@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class max_time_step_size(Real):
-    """Set Maximum Time Step Size."""
+    """
+    Set Maximum Time Step Size.
+    """
 
     fluent_name = "max-time-step-size"
+

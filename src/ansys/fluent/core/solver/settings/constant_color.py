@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .color import color
 from .enabled_2 import enabled
-
-
+from .color import color
 class constant_color(Group):
-    """'constant_color' child."""
+    """
+    'constant_color' child.
+    """
 
     fluent_name = "constant-color"
 
-    child_names = ["enabled", "color"]
+    child_names = \
+        ['enabled', 'color']
 
     enabled: enabled = enabled
     """

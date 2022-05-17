@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscosity_ratio(Real):
-    """Set viscosity ratio."""
+    """
+    Set viscosity ratio.
+    """
 
     fluent_name = "viscosity-ratio"
+

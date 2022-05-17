@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .constant_color import constant_color
-from .length_to_head_ratio import length_to_head_ratio
-from .scale_1 import scale
 from .style import style
 from .vector_length import vector_length
+from .constant_color import constant_color
 from .vector_of import vector_of
-
-
+from .scale_1 import scale
+from .length_to_head_ratio import length_to_head_ratio
 class vector_settings(Group):
-    """'vector_settings' child."""
+    """
+    'vector_settings' child.
+    """
 
     fluent_name = "vector-settings"
 
-    child_names = [
-        "style",
-        "vector_length",
-        "constant_color",
-        "vector_of",
-        "scale",
-        "length_to_head_ratio",
-    ]
+    child_names = \
+        ['style', 'vector_length', 'constant_color', 'vector_of', 'scale',
+         'length_to_head_ratio']
 
     style: style = style
     """

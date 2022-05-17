@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class output_parameters(Map):
-    """Output Parameter Values of Design Point."""
+    """
+    Output Parameter Values of Design Point.
+    """
 
     fluent_name = "output-parameters"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class species_list(StringList):
-    """Enable/Disable statistics for sps."""
+    """
+    Enable/Disable statistics for sps.
+    """
 
     fluent_name = "species-list"
+

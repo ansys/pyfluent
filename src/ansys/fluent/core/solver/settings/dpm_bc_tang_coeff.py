@@ -4,29 +4,23 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coefficients import coefficients
-from .constant import constant
-from .function_of import function_of
 from .method import method
 from .number_of_coeff import number_of_coeff
-from .piecewise_linear import piecewise_linear
+from .function_of import function_of
+from .coefficients import coefficients
+from .constant import constant
 from .piecewise_polynomial import piecewise_polynomial
-
-
+from .piecewise_linear import piecewise_linear
 class dpm_bc_tang_coeff(Group):
-    """'dpm_bc_tang_coeff' child."""
+    """
+    'dpm_bc_tang_coeff' child.
+    """
 
     fluent_name = "dpm-bc-tang-coeff"
 
-    child_names = [
-        "method",
-        "number_of_coeff",
-        "function_of",
-        "coefficients",
-        "constant",
-        "piecewise_polynomial",
-        "piecewise_linear",
-    ]
+    child_names = \
+        ['method', 'number_of_coeff', 'function_of', 'coefficients',
+         'constant', 'piecewise_polynomial', 'piecewise_linear']
 
     method: method = method
     """

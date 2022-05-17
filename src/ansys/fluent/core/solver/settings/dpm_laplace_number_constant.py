@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_laplace_number_constant(Real):
-    """'dpm_laplace_number_constant' child."""
+    """
+    'dpm_laplace_number_constant' child.
+    """
 
     fluent_name = "dpm-laplace-number-constant"
+

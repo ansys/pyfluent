@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class subspace_size(Integer):
-    """Set subspace size."""
+    """
+    Set subspace size.
+    """
 
     fluent_name = "subspace-size"
+

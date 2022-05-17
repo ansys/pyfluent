@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rough_data(Boolean):
-    """'rough_data' child."""
+    """
+    'rough_data' child.
+    """
 
     fluent_name = "rough-data?"
+

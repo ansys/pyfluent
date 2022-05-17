@@ -4,35 +4,27 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .average_over import average_over
 from .geometry_1 import geometry
-from .old_props import old_props
-from .per_zone import per_zone
-from .phase_25 import phase
 from .physics import physics
-from .report_type import report_type
 from .retain_instantaneous_values import retain_instantaneous_values
-from .zone_ids import zone_ids
+from .report_type import report_type
+from .phase_25 import phase
+from .average_over import average_over
+from .per_zone import per_zone
+from .old_props import old_props
 from .zone_names import zone_names
-
-
+from .zone_ids import zone_ids
 class flux_child(Group):
-    """'child_object_type' of flux."""
+    """
+    'child_object_type' of flux
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "geometry",
-        "physics",
-        "retain_instantaneous_values",
-        "report_type",
-        "phase",
-        "average_over",
-        "per_zone",
-        "old_props",
-        "zone_names",
-        "zone_ids",
-    ]
+    child_names = \
+        ['geometry', 'physics', 'retain_instantaneous_values', 'report_type',
+         'phase', 'average_over', 'per_zone', 'old_props', 'zone_names',
+         'zone_ids']
 
     geometry: geometry = geometry
     """
@@ -42,9 +34,7 @@ class flux_child(Group):
     """
     physics child of flux_child
     """
-    retain_instantaneous_values: retain_instantaneous_values = (
-        retain_instantaneous_values
-    )
+    retain_instantaneous_values: retain_instantaneous_values = retain_instantaneous_values
     """
     retain_instantaneous_values child of flux_child
     """

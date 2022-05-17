@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .fluid_child import fluid_child
 
-
 class droplet_particle(NamedObject[fluid_child]):
-    """'droplet_particle' child."""
+    """
+    'droplet_particle' child.
+    """
 
     fluent_name = "droplet-particle"
 

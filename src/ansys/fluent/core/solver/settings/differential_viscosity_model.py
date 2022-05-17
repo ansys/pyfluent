@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class differential_viscosity_model(Boolean):
-    """Enable/disable the differential-viscosity model."""
+    """
+    Enable/disable the differential-viscosity model.
+    """
 
     fluent_name = "differential-viscosity-model"
+

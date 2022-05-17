@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class udf_cf_names(StringList):
-    """'udf_cf_names' child."""
+    """
+    'udf_cf_names' child.
+    """
 
     fluent_name = "udf-cf-names"
+

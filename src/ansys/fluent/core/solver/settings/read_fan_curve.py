@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class read_fan_curve(String):
-    """'read_fan_curve' child."""
+    """
+    'read_fan_curve' child.
+    """
 
     fluent_name = "read-fan-curve"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscous_dissipation(Boolean):
-    """'viscous_dissipation' child."""
+    """
+    'viscous_dissipation' child.
+    """
 
     fluent_name = "viscous-dissipation"
+

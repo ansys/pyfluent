@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class normal(Boolean):
-    """'normal' child."""
+    """
+    'normal' child.
+    """
 
     fluent_name = "normal"
+

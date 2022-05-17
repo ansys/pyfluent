@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class scaled(Boolean):
-    """'scaled' child."""
+    """
+    'scaled' child.
+    """
 
     fluent_name = "scaled?"
+

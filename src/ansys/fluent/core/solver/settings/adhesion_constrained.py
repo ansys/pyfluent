@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class adhesion_constrained(Boolean):
-    """'adhesion_constrained' child."""
+    """
+    'adhesion_constrained' child.
+    """
 
     fluent_name = "adhesion-constrained?"
+

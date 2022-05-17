@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class outline(Boolean):
-    """'outline' child."""
+    """
+    'outline' child.
+    """
 
     fluent_name = "outline"
+

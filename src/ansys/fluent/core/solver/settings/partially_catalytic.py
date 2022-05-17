@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class partially_catalytic(Boolean):
-    """'partially_catalytic' child."""
+    """
+    'partially_catalytic' child.
+    """
 
     fluent_name = "partially-catalytic?"
+

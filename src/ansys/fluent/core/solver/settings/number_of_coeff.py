@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class number_of_coeff(Integer):
-    """'number_of_coeff' child."""
+    """
+    'number_of_coeff' child.
+    """
 
     fluent_name = "number-of-coeff"
+

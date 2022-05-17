@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .local_dt_child import local_dt_child
 
-
 class local_dt(NamedObject[local_dt_child]):
-    """'local_dt' child."""
+    """
+    'local_dt' child.
+    """
 
     fluent_name = "local-dt"
 

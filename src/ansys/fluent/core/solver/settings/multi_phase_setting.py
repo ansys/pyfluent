@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .enable_2 import enable
 from .options_3 import options
-
-
 class multi_phase_setting(Group):
-    """'multi_phase_setting' child."""
+    """
+    'multi_phase_setting' child.
+    """
 
     fluent_name = "multi-phase-setting"
 
-    child_names = ["enable", "options"]
+    child_names = \
+        ['enable', 'options']
 
     enable: enable = enable
     """

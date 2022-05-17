@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class scheme(Integer):
-    """Set advection scheme for contact event stability."""
+    """
+    Set advection scheme for contact event stability.
+    """
 
     fluent_name = "scheme"
+

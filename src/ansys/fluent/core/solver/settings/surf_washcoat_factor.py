@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class surf_washcoat_factor(Real):
-    """'surf_washcoat_factor' child."""
+    """
+    'surf_washcoat_factor' child.
+    """
 
     fluent_name = "surf-washcoat-factor"
+

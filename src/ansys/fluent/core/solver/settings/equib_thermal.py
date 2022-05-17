@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class equib_thermal(Boolean):
-    """'equib_thermal' child."""
+    """
+    'equib_thermal' child.
+    """
 
     fluent_name = "equib-thermal?"
+

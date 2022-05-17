@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_bc_erosion_finnie(Boolean):
-    """'dpm_bc_erosion_finnie' child."""
+    """
+    'dpm_bc_erosion_finnie' child.
+    """
 
     fluent_name = "dpm-bc-erosion-finnie?"
+

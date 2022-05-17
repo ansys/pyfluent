@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class explicit_pressure_under_relaxation(Real):
-    """Set explicit pressure under-relaxation."""
+    """
+    Set explicit pressure under-relaxation.
+    """
 
     fluent_name = "explicit-pressure-under-relaxation"
+

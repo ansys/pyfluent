@@ -5,20 +5,21 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .separate_journals import separate_journals
-
-
 class save_journals(Command):
-    """Save Journals.
-
+    """
+    Save Journals.
+    
     Parameters
     ----------
         separate_journals : bool
             'separate_journals' child.
+    
     """
 
     fluent_name = "save-journals"
 
-    argument_names = ["separate_journals"]
+    argument_names = \
+        ['separate_journals']
 
     separate_journals: separate_journals = separate_journals
     """

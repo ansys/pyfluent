@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class turb_visc_based_damping(Boolean):
-    """Enable/disable turbulence damping based on turbulent viscosity."""
+    """
+    Enable/disable turbulence damping based on turbulent viscosity.
+    """
 
     fluent_name = "turb-visc-based-damping?"
+

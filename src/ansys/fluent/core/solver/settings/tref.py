@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class tref(Real):
-    """'tref' child."""
+    """
+    'tref' child.
+    """
 
     fluent_name = "tref"
+

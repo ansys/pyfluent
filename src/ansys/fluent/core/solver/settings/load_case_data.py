@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class load_case_data(Command):
-    """Loads relevant case/data file for current design point."""
+    """
+    Loads relevant case/data file for current design point.
+    """
 
     fluent_name = "load-case-data"
+

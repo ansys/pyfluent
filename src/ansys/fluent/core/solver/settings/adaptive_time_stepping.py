@@ -5,32 +5,25 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .enabled_2 import enabled
+from .user_defined_timestep import user_defined_timestep
 from .error_tolerance import error_tolerance
-from .fixed_time_steps import fixed_time_steps
-from .max_step_change_factor import max_step_change_factor
+from .time_end import time_end
+from .min_time_step import min_time_step
 from .max_time_step import max_time_step
 from .min_step_change_factor import min_step_change_factor
-from .min_time_step import min_time_step
-from .time_end import time_end
-from .user_defined_timestep import user_defined_timestep
-
-
+from .max_step_change_factor import max_step_change_factor
+from .fixed_time_steps import fixed_time_steps
 class adaptive_time_stepping(Group):
-    """'adaptive_time_stepping' child."""
+    """
+    'adaptive_time_stepping' child.
+    """
 
     fluent_name = "adaptive-time-stepping"
 
-    child_names = [
-        "enabled",
-        "user_defined_timestep",
-        "error_tolerance",
-        "time_end",
-        "min_time_step",
-        "max_time_step",
-        "min_step_change_factor",
-        "max_step_change_factor",
-        "fixed_time_steps",
-    ]
+    child_names = \
+        ['enabled', 'user_defined_timestep', 'error_tolerance', 'time_end',
+         'min_time_step', 'max_time_step', 'min_step_change_factor',
+         'max_step_change_factor', 'fixed_time_steps']
 
     enabled: enabled = enabled
     """

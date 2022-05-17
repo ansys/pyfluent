@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class echem_reaction(Boolean):
-    """'echem_reaction' child."""
+    """
+    'echem_reaction' child.
+    """
 
     fluent_name = "echem-reaction?"
+

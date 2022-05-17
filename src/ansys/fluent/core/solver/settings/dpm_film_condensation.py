@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_film_condensation(Boolean):
-    """'dpm_film_condensation' child."""
+    """
+    'dpm_film_condensation' child.
+    """
 
     fluent_name = "dpm-film-condensation?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rhie_chow_method(Integer):
-    """Enter the rhie-chow flux method."""
+    """
+    Enter the rhie-chow flux method.
+    """
 
     fluent_name = "rhie-chow-method"
+

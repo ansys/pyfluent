@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class stab_method(String):
-    """'stab_method' child."""
+    """
+    'stab_method' child.
+    """
 
     fluent_name = "stab-method"
+

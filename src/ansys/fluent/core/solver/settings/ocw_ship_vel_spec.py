@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ocw_ship_vel_spec(String):
-    """'ocw_ship_vel_spec' child."""
+    """
+    'ocw_ship_vel_spec' child.
+    """
 
     fluent_name = "ocw-ship-vel-spec"
+

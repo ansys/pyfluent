@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .display import display
 from .lic_child import lic_child
 
-
 class lic(NamedObject[lic_child]):
-    """'lic' child."""
+    """
+    'lic' child.
+    """
 
     fluent_name = "lic"
 
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

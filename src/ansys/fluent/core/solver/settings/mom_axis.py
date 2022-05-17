@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class mom_axis(RealList):
-    """'mom_axis' child."""
+    """
+    'mom_axis' child.
+    """
 
     fluent_name = "mom-axis"
+

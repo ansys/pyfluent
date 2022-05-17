@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class extrapolate_vars(Boolean):
-    """Enter the extrapolation menu."""
+    """
+    Enter the extrapolation menu.
+    """
 
     fluent_name = "extrapolate-vars"
+

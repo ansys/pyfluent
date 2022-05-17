@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class film_contact_angle(Boolean):
-    """'film_contact_angle' child."""
+    """
+    'film_contact_angle' child.
+    """
 
     fluent_name = "film-contact-angle?"
+

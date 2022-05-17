@@ -4,36 +4,27 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coloring import coloring
-from .display_1 import display
-from .display_state_name import display_state_name
-from .edge_type import edge_type
-from .geometry_1 import geometry
 from .name import name
 from .options_4 import options
-from .physics import physics
+from .edge_type import edge_type
 from .shrink_factor import shrink_factor
-from .surfaces import surfaces
 from .surfaces_list import surfaces_list
-
-
+from .coloring import coloring
+from .display_state_name import display_state_name
+from .physics import physics
+from .geometry_1 import geometry
+from .surfaces import surfaces
+from .display_1 import display
 class mesh_child(Group):
-    """'child_object_type' of mesh."""
+    """
+    'child_object_type' of mesh
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "name",
-        "options",
-        "edge_type",
-        "shrink_factor",
-        "surfaces_list",
-        "coloring",
-        "display_state_name",
-        "physics",
-        "geometry",
-        "surfaces",
-    ]
+    child_names = \
+        ['name', 'options', 'edge_type', 'shrink_factor', 'surfaces_list',
+         'coloring', 'display_state_name', 'physics', 'geometry', 'surfaces']
 
     name: name = name
     """
@@ -75,7 +66,8 @@ class mesh_child(Group):
     """
     surfaces child of mesh_child
     """
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

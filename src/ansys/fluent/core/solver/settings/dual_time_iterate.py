@@ -4,19 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .incremental_time import incremental_time
-from .max_iteration_per_step import max_iteration_per_step
-from .num_of_post_iter_per_timestep import num_of_post_iter_per_timestep
-from .number_of_time_steps import number_of_time_steps
 from .number_of_total_periods import number_of_total_periods
-from .postprocess import postprocess
+from .number_of_time_steps import number_of_time_steps
 from .total_number_of_time_steps import total_number_of_time_steps
 from .total_time import total_time
-
-
+from .incremental_time import incremental_time
+from .max_iteration_per_step import max_iteration_per_step
+from .postprocess import postprocess
+from .num_of_post_iter_per_timestep import num_of_post_iter_per_timestep
 class dual_time_iterate(Command):
-    """Perform unsteady iterations.
-
+    """
+    Perform unsteady iterations.
+    
     Parameters
     ----------
         number_of_total_periods : int
@@ -35,20 +34,16 @@ class dual_time_iterate(Command):
             Enable/Disable Postprocess pollutant solution?.
         num_of_post_iter_per_timestep : int
             Set Number of post-processing iterations per time step.
+    
     """
 
     fluent_name = "dual-time-iterate"
 
-    argument_names = [
-        "number_of_total_periods",
-        "number_of_time_steps",
-        "total_number_of_time_steps",
-        "total_time",
-        "incremental_time",
-        "max_iteration_per_step",
-        "postprocess",
-        "num_of_post_iter_per_timestep",
-    ]
+    argument_names = \
+        ['number_of_total_periods', 'number_of_time_steps',
+         'total_number_of_time_steps', 'total_time', 'incremental_time',
+         'max_iteration_per_step', 'postprocess',
+         'num_of_post_iter_per_timestep']
 
     number_of_total_periods: number_of_total_periods = number_of_total_periods
     """
@@ -58,9 +53,7 @@ class dual_time_iterate(Command):
     """
     number_of_time_steps argument of dual_time_iterate
     """
-    total_number_of_time_steps: total_number_of_time_steps = (
-        total_number_of_time_steps
-    )
+    total_number_of_time_steps: total_number_of_time_steps = total_number_of_time_steps
     """
     total_number_of_time_steps argument of dual_time_iterate
     """
@@ -80,9 +73,7 @@ class dual_time_iterate(Command):
     """
     postprocess argument of dual_time_iterate
     """
-    num_of_post_iter_per_timestep: num_of_post_iter_per_timestep = (
-        num_of_post_iter_per_timestep
-    )
+    num_of_post_iter_per_timestep: num_of_post_iter_per_timestep = num_of_post_iter_per_timestep
     """
     num_of_post_iter_per_timestep argument of dual_time_iterate
     """

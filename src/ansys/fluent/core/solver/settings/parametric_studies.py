@@ -4,28 +4,24 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .duplicate import duplicate
-from .export_design_table import export_design_table
-from .import_design_table import import_design_table
 from .initialize import initialize
-from .parametric_studies_child import parametric_studies_child
+from .duplicate import duplicate
 from .set_as_current import set_as_current
 from .use_base_data import use_base_data
-
+from .export_design_table import export_design_table
+from .import_design_table import import_design_table
+from .parametric_studies_child import parametric_studies_child
 
 class parametric_studies(NamedObject[parametric_studies_child]):
-    """'parametric_studies' child."""
+    """
+    'parametric_studies' child.
+    """
 
     fluent_name = "parametric-studies"
 
-    command_names = [
-        "initialize",
-        "duplicate",
-        "set_as_current",
-        "use_base_data",
-        "export_design_table",
-        "import_design_table",
-    ]
+    command_names = \
+        ['initialize', 'duplicate', 'set_as_current', 'use_base_data',
+         'export_design_table', 'import_design_table']
 
     initialize: initialize = initialize
     """

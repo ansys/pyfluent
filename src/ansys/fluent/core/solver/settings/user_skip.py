@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class user_skip(Integer):
-    """'user_skip' child."""
+    """
+    'user_skip' child.
+    """
 
     fluent_name = "user-skip"
+

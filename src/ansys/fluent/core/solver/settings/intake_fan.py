@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .intake_fan_child import intake_fan_child
 
-
 class intake_fan(NamedObject[intake_fan_child]):
-    """'intake_fan' child."""
+    """
+    'intake_fan' child.
+    """
 
     fluent_name = "intake-fan"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

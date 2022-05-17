@@ -9,24 +9,18 @@ from .set_cfl_limit import set_cfl_limit
 from .set_cfl_type import set_cfl_type
 from .set_velocity_limit import set_velocity_limit
 from .unstable_event_outer_iterations import unstable_event_outer_iterations
-
-
 class instability_detector(Group):
-    """'instability_detector' child."""
+    """
+    'instability_detector' child.
+    """
 
     fluent_name = "instability-detector"
 
-    child_names = [
-        "enable_instability_detector",
-        "set_cfl_limit",
-        "set_cfl_type",
-        "set_velocity_limit",
-        "unstable_event_outer_iterations",
-    ]
+    child_names = \
+        ['enable_instability_detector', 'set_cfl_limit', 'set_cfl_type',
+         'set_velocity_limit', 'unstable_event_outer_iterations']
 
-    enable_instability_detector: enable_instability_detector = (
-        enable_instability_detector
-    )
+    enable_instability_detector: enable_instability_detector = enable_instability_detector
     """
     enable_instability_detector child of instability_detector
     """
@@ -42,9 +36,7 @@ class instability_detector(Group):
     """
     set_velocity_limit child of instability_detector
     """
-    unstable_event_outer_iterations: unstable_event_outer_iterations = (
-        unstable_event_outer_iterations
-    )
+    unstable_event_outer_iterations: unstable_event_outer_iterations = unstable_event_outer_iterations
     """
     unstable_event_outer_iterations child of instability_detector
     """

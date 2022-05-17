@@ -4,39 +4,29 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .average_over import average_over
-from .expr_list import expr_list
-from .field import field
 from .geometry_1 import geometry
-from .old_props import old_props
-from .per_zone import per_zone
-from .phase_25 import phase
 from .physics import physics
-from .report_type import report_type
+from .field import field
 from .retain_instantaneous_values import retain_instantaneous_values
-from .zone_list import zone_list
+from .report_type import report_type
+from .phase_25 import phase
+from .average_over import average_over
+from .per_zone import per_zone
+from .old_props import old_props
 from .zone_names import zone_names
-
-
+from .expr_list import expr_list
+from .zone_list import zone_list
 class volume_child(Group):
-    """'child_object_type' of volume."""
+    """
+    'child_object_type' of volume
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "geometry",
-        "physics",
-        "field",
-        "retain_instantaneous_values",
-        "report_type",
-        "phase",
-        "average_over",
-        "per_zone",
-        "old_props",
-        "zone_names",
-        "expr_list",
-        "zone_list",
-    ]
+    child_names = \
+        ['geometry', 'physics', 'field', 'retain_instantaneous_values',
+         'report_type', 'phase', 'average_over', 'per_zone', 'old_props',
+         'zone_names', 'expr_list', 'zone_list']
 
     geometry: geometry = geometry
     """
@@ -50,9 +40,7 @@ class volume_child(Group):
     """
     field child of volume_child
     """
-    retain_instantaneous_values: retain_instantaneous_values = (
-        retain_instantaneous_values
-    )
+    retain_instantaneous_values: retain_instantaneous_values = retain_instantaneous_values
     """
     retain_instantaneous_values child of volume_child
     """

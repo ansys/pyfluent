@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class uds_bc_child(String):
-    """'child_object_type' of uds_bc."""
+    """
+    'child_object_type' of uds_bc
+    """
 
     fluent_name = "child-object-type"
+

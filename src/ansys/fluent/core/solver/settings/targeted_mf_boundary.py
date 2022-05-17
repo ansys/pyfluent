@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class targeted_mf_boundary(Boolean):
-    """'targeted_mf_boundary' child."""
+    """
+    'targeted_mf_boundary' child.
+    """
 
     fluent_name = "targeted-mf-boundary?"
+

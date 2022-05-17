@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class solution_status(Boolean):
-    """Activate the simulation status panel."""
+    """
+    Activate the simulation status panel.
+    """
 
     fluent_name = "solution-status"
+

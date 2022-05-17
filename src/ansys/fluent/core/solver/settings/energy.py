@@ -5,24 +5,20 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .enabled import enabled
-from .inlet_diffusion import inlet_diffusion
-from .kinetic_energy import kinetic_energy
-from .pressure_work import pressure_work
 from .viscous_dissipation import viscous_dissipation
-
-
+from .pressure_work import pressure_work
+from .kinetic_energy import kinetic_energy
+from .inlet_diffusion import inlet_diffusion
 class energy(Group):
-    """'energy' child."""
+    """
+    'energy' child.
+    """
 
     fluent_name = "energy"
 
-    child_names = [
-        "enabled",
-        "viscous_dissipation",
-        "pressure_work",
-        "kinetic_energy",
-        "inlet_diffusion",
-    ]
+    child_names = \
+        ['enabled', 'viscous_dissipation', 'pressure_work', 'kinetic_energy',
+         'inlet_diffusion']
 
     enabled: enabled = enabled
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class injections_list(StringList):
-    """'injections_list' child."""
+    """
+    'injections_list' child.
+    """
 
     fluent_name = "injections-list"
+

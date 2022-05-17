@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .inside import inside
 from .option import option
+from .inside import inside
 from .outside import outside
-
-
 class options(Group):
-    """'options' child."""
+    """
+    'options' child.
+    """
 
     fluent_name = "options"
 
-    child_names = ["option", "inside", "outside"]
+    child_names = \
+        ['option', 'inside', 'outside']
 
     option: option = option
     """

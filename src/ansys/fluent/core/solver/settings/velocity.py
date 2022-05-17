@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class velocity(Real):
-    """Set reference velocity for normalization."""
+    """
+    Set reference velocity for normalization.
+    """
 
     fluent_name = "velocity"
+

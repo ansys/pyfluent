@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .force_child import force_child
 
-
 class force(NamedObject[force_child]):
-    """'force' child."""
+    """
+    'force' child.
+    """
 
     fluent_name = "force"
 

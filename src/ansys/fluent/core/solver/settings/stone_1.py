@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class stone_1(Boolean):
-    """'stone_1' child."""
+    """
+    'stone_1' child.
+    """
 
     fluent_name = "stone-1?"
+

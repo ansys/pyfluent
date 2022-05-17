@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class select_variables(String):
-    """Select variables for high order term relaxation."""
+    """
+    Select variables for high order term relaxation.
+    """
 
     fluent_name = "select-variables"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dir(Integer):
-    """'dir' child."""
+    """
+    'dir' child.
+    """
 
     fluent_name = "dir"
+

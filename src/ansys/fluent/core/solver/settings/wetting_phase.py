@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class wetting_phase(String):
-    """'wetting_phase' child."""
+    """
+    'wetting_phase' child.
+    """
 
     fluent_name = "wetting-phase"
+

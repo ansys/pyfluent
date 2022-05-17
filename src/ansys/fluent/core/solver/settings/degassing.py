@@ -4,16 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .axis_child import axis_child
 from .change_type import change_type
-
+from .axis_child import axis_child
 
 class degassing(NamedObject[axis_child]):
-    """'degassing' child."""
+    """
+    'degassing' child.
+    """
 
     fluent_name = "degassing"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

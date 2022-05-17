@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class smoother(String):
-    """'smoother' child."""
+    """
+    'smoother' child.
+    """
 
     fluent_name = "smoother"
+

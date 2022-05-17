@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class cylindrical_fixed_var(Boolean):
-    """'cylindrical_fixed_var' child."""
+    """
+    'cylindrical_fixed_var' child.
+    """
 
     fluent_name = "cylindrical-fixed-var?"
+

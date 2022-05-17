@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class specified_shear(Boolean):
-    """'specified_shear' child."""
+    """
+    'specified_shear' child.
+    """
 
     fluent_name = "specified-shear?"
+

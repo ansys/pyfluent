@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .auto_range_off import auto_range_off
-from .auto_range_on import auto_range_on
 from .option import option
-
-
+from .auto_range_on import auto_range_on
+from .auto_range_off import auto_range_off
 class range_option(Group):
-    """'range_option' child."""
+    """
+    'range_option' child.
+    """
 
     fluent_name = "range-option"
 
-    child_names = ["option", "auto_range_on", "auto_range_off"]
+    child_names = \
+        ['option', 'auto_range_on', 'auto_range_off']
 
     option: option = option
     """

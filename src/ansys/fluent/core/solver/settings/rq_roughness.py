@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rq_roughness(Real):
-    """'rq_roughness' child."""
+    """
+    'rq_roughness' child.
+    """
 
     fluent_name = "rq-roughness"
+

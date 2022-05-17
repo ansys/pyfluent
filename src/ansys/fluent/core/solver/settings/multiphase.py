@@ -4,31 +4,24 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .bubble_number_density import bubble_number_density
-from .liquid_surface_tension import liquid_surface_tension
 from .models import models
-from .non_condensable_gas import non_condensable_gas
-from .number_of_eulerian_discrete_phases import (
-    number_of_eulerian_discrete_phases,
-)
-from .number_of_phases import number_of_phases
 from .vaporization_pressure import vaporization_pressure
-
-
+from .non_condensable_gas import non_condensable_gas
+from .liquid_surface_tension import liquid_surface_tension
+from .bubble_number_density import bubble_number_density
+from .number_of_phases import number_of_phases
+from .number_of_eulerian_discrete_phases import number_of_eulerian_discrete_phases
 class multiphase(Group):
-    """'multiphase' child."""
+    """
+    'multiphase' child.
+    """
 
     fluent_name = "multiphase"
 
-    child_names = [
-        "models",
-        "vaporization_pressure",
-        "non_condensable_gas",
-        "liquid_surface_tension",
-        "bubble_number_density",
-        "number_of_phases",
-        "number_of_eulerian_discrete_phases",
-    ]
+    child_names = \
+        ['models', 'vaporization_pressure', 'non_condensable_gas',
+         'liquid_surface_tension', 'bubble_number_density',
+         'number_of_phases', 'number_of_eulerian_discrete_phases']
 
     models: models = models
     """
@@ -54,9 +47,7 @@ class multiphase(Group):
     """
     number_of_phases child of multiphase
     """
-    number_of_eulerian_discrete_phases: number_of_eulerian_discrete_phases = (
-        number_of_eulerian_discrete_phases
-    )
+    number_of_eulerian_discrete_phases: number_of_eulerian_discrete_phases = number_of_eulerian_discrete_phases
     """
     number_of_eulerian_discrete_phases child of multiphase
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class post_sweeps(Integer):
-    """Coupled:number of post-relaxations for fixed cycles."""
+    """
+    Coupled:number of post-relaxations for fixed cycles.
+    """
 
     fluent_name = "post-sweeps"
+

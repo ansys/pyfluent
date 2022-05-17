@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class solid_motion(Boolean):
-    """'solid_motion' child."""
+    """
+    'solid_motion' child.
+    """
 
     fluent_name = "solid-motion?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class radial(Boolean):
-    """'radial' child."""
+    """
+    'radial' child.
+    """
 
     fluent_name = "radial?"
+

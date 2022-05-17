@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class update_all(Command):
-    """Update All Design Point."""
+    """
+    Update All Design Point.
+    """
 
     fluent_name = "update-all"
+

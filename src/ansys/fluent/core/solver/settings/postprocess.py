@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class postprocess(Boolean):
-    """Enable/Disable Postprocess pollutant solution?."""
+    """
+    Enable/Disable Postprocess pollutant solution?.
+    """
 
     fluent_name = "postprocess?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fan_zone_list(String):
-    """'fan_zone_list' child."""
+    """
+    'fan_zone_list' child.
+    """
 
     fluent_name = "fan-zone-list"
+

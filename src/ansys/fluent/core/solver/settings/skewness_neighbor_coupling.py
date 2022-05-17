@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class skewness_neighbor_coupling(Boolean):
-    """Set Skewness-Neighbor Coupling?."""
+    """
+    Set Skewness-Neighbor Coupling?.
+    """
 
     fluent_name = "skewness-neighbor-coupling"
+

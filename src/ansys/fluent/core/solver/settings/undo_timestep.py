@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class undo_timestep(Boolean):
-    """Undo the previous time step."""
+    """
+    Undo the previous time step.
+    """
 
     fluent_name = "undo-timestep?"
+

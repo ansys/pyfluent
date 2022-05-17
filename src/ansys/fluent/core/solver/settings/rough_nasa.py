@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rough_nasa(Boolean):
-    """'rough_nasa' child."""
+    """
+    'rough_nasa' child.
+    """
 
     fluent_name = "rough-nasa?"
+

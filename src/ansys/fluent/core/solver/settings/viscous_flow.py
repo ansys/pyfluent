@@ -4,25 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .viscosity_averaging import viscosity_averaging
+from .turb_visc_based_damping import turb_visc_based_damping
 from .density_func_expo import density_func_expo
 from .density_ratio_cutoff import density_ratio_cutoff
 from .interfacial_artificial_viscosity import interfacial_artificial_viscosity
-from .turb_visc_based_damping import turb_visc_based_damping
-from .viscosity_averaging import viscosity_averaging
-
-
 class viscous_flow(Group):
-    """'viscous_flow' child."""
+    """
+    'viscous_flow' child.
+    """
 
     fluent_name = "viscous-flow"
 
-    child_names = [
-        "viscosity_averaging",
-        "turb_visc_based_damping",
-        "density_func_expo",
-        "density_ratio_cutoff",
-        "interfacial_artificial_viscosity",
-    ]
+    child_names = \
+        ['viscosity_averaging', 'turb_visc_based_damping',
+         'density_func_expo', 'density_ratio_cutoff',
+         'interfacial_artificial_viscosity']
 
     viscosity_averaging: viscosity_averaging = viscosity_averaging
     """
@@ -40,9 +37,7 @@ class viscous_flow(Group):
     """
     density_ratio_cutoff child of viscous_flow
     """
-    interfacial_artificial_viscosity: interfacial_artificial_viscosity = (
-        interfacial_artificial_viscosity
-    )
+    interfacial_artificial_viscosity: interfacial_artificial_viscosity = interfacial_artificial_viscosity
     """
     interfacial_artificial_viscosity child of viscous_flow
     """

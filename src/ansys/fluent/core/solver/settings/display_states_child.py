@@ -4,43 +4,32 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .anti_aliasing import anti_aliasing
-from .axes import axes
-from .boundary_marker import boundary_marker
-from .dynamic_shadows import dynamic_shadows
 from .front_faces_transparent import front_faces_transparent
+from .projection_1 import projection
+from .axes import axes
+from .ruler import ruler
+from .title import title
+from .boundary_marker import boundary_marker
+from .anti_aliasing import anti_aliasing
+from .reflections import reflections
+from .static_shadows import static_shadows
+from .dynamic_shadows import dynamic_shadows
 from .grid_plane import grid_plane
 from .headlights import headlights
 from .lighting import lighting
-from .projection_1 import projection
-from .reflections import reflections
-from .ruler import ruler
-from .static_shadows import static_shadows
-from .title import title
 from .view_name import view_name
-
-
 class display_states_child(Group):
-    """'child_object_type' of display_states."""
+    """
+    'child_object_type' of display_states
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "front_faces_transparent",
-        "projection",
-        "axes",
-        "ruler",
-        "title",
-        "boundary_marker",
-        "anti_aliasing",
-        "reflections",
-        "static_shadows",
-        "dynamic_shadows",
-        "grid_plane",
-        "headlights",
-        "lighting",
-        "view_name",
-    ]
+    child_names = \
+        ['front_faces_transparent', 'projection', 'axes', 'ruler', 'title',
+         'boundary_marker', 'anti_aliasing', 'reflections', 'static_shadows',
+         'dynamic_shadows', 'grid_plane', 'headlights', 'lighting',
+         'view_name']
 
     front_faces_transparent: front_faces_transparent = front_faces_transparent
     """

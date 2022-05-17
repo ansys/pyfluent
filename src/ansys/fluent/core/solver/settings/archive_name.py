@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class archive_name(String):
-    """'archive_name' child."""
+    """
+    'archive_name' child.
+    """
 
     fluent_name = "archive-name"
+

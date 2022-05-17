@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class in_plane(Boolean):
-    """'in_plane' child."""
+    """
+    'in_plane' child.
+    """
 
     fluent_name = "in-plane?"
+

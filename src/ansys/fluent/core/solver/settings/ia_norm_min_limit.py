@@ -4,9 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ia_norm_min_limit(Real):
-    """Minimum normalized area density below which mass transfer rate is set to
-    zero."""
+    """
+    Minimum normalized area density below which mass transfer rate is set to zero.
+    """
 
     fluent_name = "ia-norm-min-limit"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class conical(Boolean):
-    """'conical' child."""
+    """
+    'conical' child.
+    """
 
     fluent_name = "conical?"
+

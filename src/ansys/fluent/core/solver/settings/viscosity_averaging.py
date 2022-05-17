@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscosity_averaging(Boolean):
-    """Enable/disable use of harmonic averaging for viscosity."""
+    """
+    Enable/disable use of harmonic averaging for viscosity.
+    """
 
     fluent_name = "viscosity-averaging?"
+

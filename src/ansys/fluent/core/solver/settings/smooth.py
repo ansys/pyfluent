@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class smooth(Boolean):
-    """'smooth' child."""
+    """
+    'smooth' child.
+    """
 
     fluent_name = "smooth"
+

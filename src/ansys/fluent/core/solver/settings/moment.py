@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .moment_child import moment_child
 
-
 class moment(NamedObject[moment_child]):
-    """'moment' child."""
+    """
+    'moment' child.
+    """
 
     fluent_name = "moment"
 

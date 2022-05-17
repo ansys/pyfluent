@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .flux_child import flux_child
 
-
 class flux(NamedObject[flux_child]):
-    """'flux' child."""
+    """
+    'flux' child.
+    """
 
     fluent_name = "flux"
 

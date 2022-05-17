@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enable_velocity_limiting(Boolean):
-    """Enable/disable velocity limiting treatment."""
+    """
+    Enable/disable velocity limiting treatment.
+    """
 
     fluent_name = "enable-velocity-limiting?"
+

@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .components import components
 from .gravity import gravity
-
-
+from .components import components
 class gravity(Group):
-    """'gravity' child."""
+    """
+    'gravity' child.
+    """
 
     fluent_name = "gravity"
 
-    child_names = ["gravity", "components"]
+    child_names = \
+        ['gravity', 'components']
 
     gravity: gravity = gravity
     """

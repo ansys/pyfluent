@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .const_velocity import const_velocity
-from .explicit_urf import explicit_urf
-from .external_aero import external_aero
-from .initial_pressure import initial_pressure
 from .number_of_iterations import number_of_iterations
+from .explicit_urf import explicit_urf
 from .reference_frame_1 import reference_frame
-
-
+from .initial_pressure import initial_pressure
+from .external_aero import external_aero
+from .const_velocity import const_velocity
 class general_settings(Group):
-    """Enter the general settings menu."""
+    """
+    Enter the general settings menu.
+    """
 
     fluent_name = "general-settings"
 
-    child_names = [
-        "number_of_iterations",
-        "explicit_urf",
-        "reference_frame",
-        "initial_pressure",
-        "external_aero",
-        "const_velocity",
-    ]
+    child_names = \
+        ['number_of_iterations', 'explicit_urf', 'reference_frame',
+         'initial_pressure', 'external_aero', 'const_velocity']
 
     number_of_iterations: number_of_iterations = number_of_iterations
     """

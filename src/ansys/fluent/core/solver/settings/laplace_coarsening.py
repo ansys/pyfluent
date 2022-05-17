@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class laplace_coarsening(Boolean):
-    """Set AMG laplace coarsening options."""
+    """
+    Set AMG laplace coarsening options.
+    """
 
     fluent_name = "laplace-coarsening?"
+

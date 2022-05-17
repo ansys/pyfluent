@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fensapice_drop_vrh_1(Real):
-    """'fensapice_drop_vrh' child."""
+    """
+    'fensapice_drop_vrh' child.
+    """
 
     fluent_name = "fensapice-drop-vrh"
+

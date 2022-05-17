@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class function_name(String):
-    """'function_name' child."""
+    """
+    'function_name' child.
+    """
 
     fluent_name = "function-name"
+

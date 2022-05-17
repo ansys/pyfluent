@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fensapice_ice_icing_mode(Integer):
-    """'fensapice_ice_icing_mode' child."""
+    """
+    'fensapice_ice_icing_mode' child.
+    """
 
     fluent_name = "fensapice-ice-icing-mode"
+

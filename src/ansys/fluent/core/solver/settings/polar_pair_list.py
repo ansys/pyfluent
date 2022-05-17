@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .polar_pair_list_child import polar_pair_list_child
 
-
 class polar_pair_list(ListObject[polar_pair_list_child]):
-    """'polar_pair_list' child."""
+    """
+    'polar_pair_list' child.
+    """
 
     fluent_name = "polar-pair-list"
 

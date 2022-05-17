@@ -4,25 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .enabled_2 import enabled
 from .field import field
-from .filter_maximum import filter_maximum
-from .filter_minimum import filter_minimum
 from .options_7 import options
-
-
+from .enabled_2 import enabled
+from .filter_minimum import filter_minimum
+from .filter_maximum import filter_maximum
 class filter_settings(Group):
-    """'filter_settings' child."""
+    """
+    'filter_settings' child.
+    """
 
     fluent_name = "filter-settings"
 
-    child_names = [
-        "field",
-        "options",
-        "enabled",
-        "filter_minimum",
-        "filter_maximum",
-    ]
+    child_names = \
+        ['field', 'options', 'enabled', 'filter_minimum', 'filter_maximum']
 
     field: field = field
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coefficient(Real):
-    """Multi-stage coefficient."""
+    """
+    Multi-stage coefficient.
+    """
 
     fluent_name = "coefficient"
+

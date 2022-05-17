@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class buoyancy_force_linearization(Boolean):
-    """Enable/disable linearized buoyancy force."""
+    """
+    Enable/disable linearized buoyancy force.
+    """
 
     fluent_name = "buoyancy-force-linearization?"
+

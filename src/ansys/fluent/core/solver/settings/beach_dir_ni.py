@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class beach_dir_ni(Real):
-    """'beach_dir_ni' child."""
+    """
+    'beach_dir_ni' child.
+    """
 
     fluent_name = "beach-dir-ni"
+

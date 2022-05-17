@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .impedance_2_child import impedance_2_child
 
-
 class impedance_2(ListObject[impedance_2_child]):
-    """'impedance_2' child."""
+    """
+    'impedance_2' child.
+    """
 
     fluent_name = "impedance-2"
 

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class maximum(Real):
-    """'maximum' child."""
+    """
+    'maximum' child.
+    """
 
     fluent_name = "maximum"
+

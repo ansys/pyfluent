@@ -4,14 +4,13 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .in_ import in_
 from .right import right
 from .up import up
-
-
+from .in_ import in_
 class dolly(Command):
-    """Adjust the camera position and target.
-
+    """
+    Adjust the camera position and target.
+    
     Parameters
     ----------
         right : real
@@ -20,11 +19,13 @@ class dolly(Command):
             'up' child.
         in_ : real
             'in' child.
+    
     """
 
     fluent_name = "dolly"
 
-    argument_names = ["right", "up", "in_"]
+    argument_names = \
+        ['right', 'up', 'in_']
 
     right: right = right
     """

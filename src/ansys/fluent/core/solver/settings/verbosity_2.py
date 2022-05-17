@@ -4,9 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class verbosity(Boolean):
-    """Enable verbosity to print number of velocity limited cells during
-    iterations."""
+    """
+    Enable verbosity to print number of velocity limited cells during iterations.
+    """
 
     fluent_name = "verbosity?"
+

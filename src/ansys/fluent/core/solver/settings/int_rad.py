@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class int_rad(Boolean):
-    """'int_rad' child."""
+    """
+    'int_rad' child.
+    """
 
     fluent_name = "int-rad?"
+

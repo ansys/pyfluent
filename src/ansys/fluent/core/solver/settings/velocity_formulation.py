@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class velocity_formulation(String):
-    """Set velocity formulation."""
+    """
+    Set velocity formulation.
+    """
 
     fluent_name = "velocity-formulation"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class radiating(Boolean):
-    """'radiating' child."""
+    """
+    'radiating' child.
+    """
 
     fluent_name = "radiating?"
+

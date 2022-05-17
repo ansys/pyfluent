@@ -5,20 +5,17 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .coupled_solver import coupled_solver
-from .density_based_solver import density_based_solver
 from .segregated_solver import segregated_solver
-
-
+from .density_based_solver import density_based_solver
 class formulation(Group):
-    """'formulation' child."""
+    """
+    'formulation' child.
+    """
 
     fluent_name = "formulation"
 
-    child_names = [
-        "coupled_solver",
-        "segregated_solver",
-        "density_based_solver",
-    ]
+    child_names = \
+        ['coupled_solver', 'segregated_solver', 'density_based_solver']
 
     coupled_solver: coupled_solver = coupled_solver
     """

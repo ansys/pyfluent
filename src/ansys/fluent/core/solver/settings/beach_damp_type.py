@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class beach_damp_type(String):
-    """'beach_damp_type' child."""
+    """
+    'beach_damp_type' child.
+    """
 
     fluent_name = "beach-damp-type"
+

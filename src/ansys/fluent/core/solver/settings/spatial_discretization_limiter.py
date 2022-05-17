@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .limiter_type import limiter_type
 from .cell_to_limiting import cell_to_limiting
 from .limiter_filter import limiter_filter
-from .limiter_type import limiter_type
-
-
 class spatial_discretization_limiter(Group):
-    """'spatial_discretization_limiter' child."""
+    """
+    'spatial_discretization_limiter' child.
+    """
 
     fluent_name = "spatial-discretization-limiter"
 
-    child_names = ["limiter_type", "cell_to_limiting", "limiter_filter"]
+    child_names = \
+        ['limiter_type', 'cell_to_limiting', 'limiter_filter']
 
     limiter_type: limiter_type = limiter_type
     """

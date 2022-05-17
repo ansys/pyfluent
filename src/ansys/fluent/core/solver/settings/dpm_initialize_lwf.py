@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_initialize_lwf(Boolean):
-    """'dpm_initialize_lwf' child."""
+    """
+    'dpm_initialize_lwf' child.
+    """
 
     fluent_name = "dpm-initialize-lwf?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class banded(Group):
-    """'banded' child."""
+    """
+    'banded' child.
+    """
 
     fluent_name = "banded"
+

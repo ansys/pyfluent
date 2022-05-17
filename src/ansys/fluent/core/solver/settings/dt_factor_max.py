@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dt_factor_max(Real):
-    """Set maximum time step size change factor."""
+    """
+    Set maximum time step size change factor.
+    """
 
     fluent_name = "dt-factor-max"
+

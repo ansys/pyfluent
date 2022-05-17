@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class design_points(StringList):
-    """'design_points' child."""
+    """
+    'design_points' child.
+    """
 
     fluent_name = "design-points"
+

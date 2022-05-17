@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class list(Command):
-    """'list' command."""
+    """
+    'list' command.
+    """
 
     fluent_name = "list"
+

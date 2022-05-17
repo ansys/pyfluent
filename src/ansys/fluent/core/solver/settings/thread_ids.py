@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class thread_ids(StringList):
-    """'thread_ids' child."""
+    """
+    'thread_ids' child.
+    """
 
     fluent_name = "thread-ids"
+

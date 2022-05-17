@@ -4,48 +4,35 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .color_map import color_map
-from .display_1 import display
-from .display_state_name import display_state_name
-from .draw_mesh import draw_mesh
-from .field import field
-from .geometry_1 import geometry
-from .mesh_object import mesh_object
 from .name import name
-from .physics import physics
-from .range_option import range_option
-from .scale import scale
-from .skip import skip
-from .style import style
-from .surfaces import surfaces
-from .surfaces_list import surfaces_list
+from .field import field
 from .vector_field import vector_field
+from .surfaces_list import surfaces_list
+from .scale import scale
+from .style import style
+from .skip import skip
 from .vector_opt import vector_opt
-
-
+from .range_option import range_option
+from .color_map import color_map
+from .draw_mesh import draw_mesh
+from .mesh_object import mesh_object
+from .display_state_name import display_state_name
+from .physics import physics
+from .geometry_1 import geometry
+from .surfaces import surfaces
+from .display_1 import display
 class vector_child(Group):
-    """'child_object_type' of vector."""
+    """
+    'child_object_type' of vector
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "name",
-        "field",
-        "vector_field",
-        "surfaces_list",
-        "scale",
-        "style",
-        "skip",
-        "vector_opt",
-        "range_option",
-        "color_map",
-        "draw_mesh",
-        "mesh_object",
-        "display_state_name",
-        "physics",
-        "geometry",
-        "surfaces",
-    ]
+    child_names = \
+        ['name', 'field', 'vector_field', 'surfaces_list', 'scale', 'style',
+         'skip', 'vector_opt', 'range_option', 'color_map', 'draw_mesh',
+         'mesh_object', 'display_state_name', 'physics', 'geometry',
+         'surfaces']
 
     name: name = name
     """
@@ -111,7 +98,8 @@ class vector_child(Group):
     """
     surfaces child of vector_child
     """
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

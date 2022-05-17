@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .phase_child_10 import phase_child
 
-
 class custom(NamedObject[phase_child]):
-    """'custom' child."""
+    """
+    'custom' child.
+    """
 
     fluent_name = "custom"
 

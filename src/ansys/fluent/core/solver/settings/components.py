@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class components(RealVector):
-    """'components' child."""
+    """
+    'components' child.
+    """
 
     fluent_name = "components"
+

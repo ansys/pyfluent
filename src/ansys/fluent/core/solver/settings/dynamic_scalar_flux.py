@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dynamic_scalar_flux(Boolean):
-    """Enable/Disable dynamic Schmidt Number."""
+    """
+    Enable/Disable dynamic Schmidt Number.
+    """
 
     fluent_name = "dynamic-scalar-flux"
+

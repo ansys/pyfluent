@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class update_current(Command):
-    """Update Current Design Point."""
+    """
+    Update Current Design Point.
+    """
 
     fluent_name = "update-current"
+

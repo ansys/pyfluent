@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .wall_child import wall_child
 
-
 class wall(NamedObject[wall_child]):
-    """'wall' child."""
+    """
+    'wall' child.
+    """
 
     fluent_name = "wall"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

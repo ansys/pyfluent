@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class data_sampling(Boolean):
-    """'data_sampling' child."""
+    """
+    'data_sampling' child.
+    """
 
     fluent_name = "data-sampling?"
+

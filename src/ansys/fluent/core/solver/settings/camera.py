@@ -14,25 +14,16 @@ from .roll import roll
 from .target import target
 from .up_vector import up_vector
 from .zoom import zoom
-
-
 class camera(Group):
-    """'camera' child."""
+    """
+    'camera' child.
+    """
 
     fluent_name = "camera"
 
-    command_names = [
-        "dolly",
-        "field",
-        "orbit",
-        "pan",
-        "position",
-        "projection",
-        "roll",
-        "target",
-        "up_vector",
-        "zoom",
-    ]
+    command_names = \
+        ['dolly', 'field', 'orbit', 'pan', 'position', 'projection', 'roll',
+         'target', 'up_vector', 'zoom']
 
     dolly: dolly = dolly
     """

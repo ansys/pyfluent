@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class visible(Boolean):
-    """'visible' child."""
+    """
+    'visible' child.
+    """
 
     fluent_name = "visible?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class casm_cutoff_multiplier(Real):
-    """Enter CASM cut-off multiplier :."""
+    """
+    Enter CASM cut-off multiplier :.
+    """
 
     fluent_name = "casm-cutoff-multiplier"
+

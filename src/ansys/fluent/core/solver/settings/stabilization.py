@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class stabilization(String):
-    """'stabilization' child."""
+    """
+    'stabilization' child.
+    """
 
     fluent_name = "stabilization"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class upstream_torque(Real):
-    """'upstream_torque' child."""
+    """
+    'upstream_torque' child.
+    """
 
     fluent_name = "upstream-torque"
+

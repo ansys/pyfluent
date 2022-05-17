@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class time_step_size_scale_factor(Real):
-    """Set time step size scale factor for solid zones."""
+    """
+    Set time step size scale factor for solid zones.
+    """
 
     fluent_name = "time-step-size-scale-factor"
+

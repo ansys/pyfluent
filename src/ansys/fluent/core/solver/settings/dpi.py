@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpi(Integer):
-    """'dpi' child."""
+    """
+    'dpi' child.
+    """
 
     fluent_name = "dpi"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class arrow_space(Real):
-    """'arrow_space' child."""
+    """
+    'arrow_space' child.
+    """
 
     fluent_name = "arrow-space"
+

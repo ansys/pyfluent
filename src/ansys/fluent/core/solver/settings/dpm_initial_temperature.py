@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_initial_temperature(Real):
-    """'dpm_initial_temperature' child."""
+    """
+    'dpm_initial_temperature' child.
+    """
 
     fluent_name = "dpm-initial-temperature"
+

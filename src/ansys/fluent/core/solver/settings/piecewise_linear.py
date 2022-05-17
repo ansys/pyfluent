@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .piecewise_linear_child import piecewise_linear_child
 
-
 class piecewise_linear(ListObject[piecewise_linear_child]):
-    """'piecewise_linear' child."""
+    """
+    'piecewise_linear' child.
+    """
 
     fluent_name = "piecewise-linear"
 

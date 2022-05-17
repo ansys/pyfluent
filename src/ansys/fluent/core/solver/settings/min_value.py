@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class min_value(Real):
-    """'min_value' child."""
+    """
+    'min_value' child.
+    """
 
     fluent_name = "min-value"
+

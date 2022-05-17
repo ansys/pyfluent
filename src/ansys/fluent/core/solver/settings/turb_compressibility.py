@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class turb_compressibility(Boolean):
-    """Enable/disable the compressibility correction option."""
+    """
+    Enable/disable the compressibility correction option.
+    """
 
     fluent_name = "turb-compressibility"
+

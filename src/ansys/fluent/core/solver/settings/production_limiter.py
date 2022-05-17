@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class production_limiter(Boolean):
-    """'production_limiter' child."""
+    """
+    'production_limiter' child.
+    """
 
     fluent_name = "production-limiter"
+

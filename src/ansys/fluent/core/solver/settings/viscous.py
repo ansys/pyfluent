@@ -4,45 +4,35 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .enhanced_wall_treatment_options import enhanced_wall_treatment_options
+from .model import model
+from .options import options
+from .spalart_allmaras_production import spalart_allmaras_production
 from .k_epsilon_model import k_epsilon_model
 from .k_omega_model import k_omega_model
 from .k_omega_options import k_omega_options
-from .les_model_options import les_model_options
-from .model import model
-from .near_wall_treatment import near_wall_treatment
-from .options import options
-from .rans_model import rans_model
-from .reynolds_stress_model import reynolds_stress_model
-from .reynolds_stress_options import reynolds_stress_options
 from .rng_options import rng_options
-from .spalart_allmaras_production import spalart_allmaras_production
-from .subgrid_scale_model import subgrid_scale_model
+from .near_wall_treatment import near_wall_treatment
 from .transition_sst_options import transition_sst_options
-
-
+from .reynolds_stress_model import reynolds_stress_model
+from .subgrid_scale_model import subgrid_scale_model
+from .les_model_options import les_model_options
+from .reynolds_stress_options import reynolds_stress_options
+from .enhanced_wall_treatment_options import enhanced_wall_treatment_options
+from .rans_model import rans_model
 class viscous(Group):
-    """'viscous' child."""
+    """
+    'viscous' child.
+    """
 
     fluent_name = "viscous"
 
-    child_names = [
-        "model",
-        "options",
-        "spalart_allmaras_production",
-        "k_epsilon_model",
-        "k_omega_model",
-        "k_omega_options",
-        "rng_options",
-        "near_wall_treatment",
-        "transition_sst_options",
-        "reynolds_stress_model",
-        "subgrid_scale_model",
-        "les_model_options",
-        "reynolds_stress_options",
-        "enhanced_wall_treatment_options",
-        "rans_model",
-    ]
+    child_names = \
+        ['model', 'options', 'spalart_allmaras_production', 'k_epsilon_model',
+         'k_omega_model', 'k_omega_options', 'rng_options',
+         'near_wall_treatment', 'transition_sst_options',
+         'reynolds_stress_model', 'subgrid_scale_model', 'les_model_options',
+         'reynolds_stress_options', 'enhanced_wall_treatment_options',
+         'rans_model']
 
     model: model = model
     """
@@ -52,9 +42,7 @@ class viscous(Group):
     """
     options child of viscous
     """
-    spalart_allmaras_production: spalart_allmaras_production = (
-        spalart_allmaras_production
-    )
+    spalart_allmaras_production: spalart_allmaras_production = spalart_allmaras_production
     """
     spalart_allmaras_production child of viscous
     """
@@ -98,9 +86,7 @@ class viscous(Group):
     """
     reynolds_stress_options child of viscous
     """
-    enhanced_wall_treatment_options: enhanced_wall_treatment_options = (
-        enhanced_wall_treatment_options
-    )
+    enhanced_wall_treatment_options: enhanced_wall_treatment_options = enhanced_wall_treatment_options
     """
     enhanced_wall_treatment_options child of viscous
     """

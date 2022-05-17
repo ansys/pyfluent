@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class report_type(String):
-    """'report_type' child."""
+    """
+    'report_type' child.
+    """
 
     fluent_name = "report-type"
+

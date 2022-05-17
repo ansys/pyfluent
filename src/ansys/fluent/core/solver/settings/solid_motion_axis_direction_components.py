@@ -6,11 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
-class solid_motion_axis_direction_components(
-    ListObject[child_object_type_child]
-):
-    """'solid_motion_axis_direction_components' child."""
+class solid_motion_axis_direction_components(ListObject[child_object_type_child]):
+    """
+    'solid_motion_axis_direction_components' child.
+    """
 
     fluent_name = "solid-motion-axis-direction-components"
 

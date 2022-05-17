@@ -14,29 +14,20 @@ from .p_v_controls import p_v_controls
 from .relaxation_factor_1 import relaxation_factor
 from .set_controls_to_default import set_controls_to_default
 from .under_relaxation import under_relaxation
-
-
 class controls(Group):
-    """'controls' child."""
+    """
+    'controls' child.
+    """
 
     fluent_name = "controls"
 
-    child_names = [
-        "acoustics_wave_equation_controls",
-        "advanced",
-        "contact_solution_controls",
-        "courant_number",
-        "equations",
-        "limits",
-        "p_v_controls",
-        "relaxation_factor",
-        "set_controls_to_default",
-        "under_relaxation",
-    ]
+    child_names = \
+        ['acoustics_wave_equation_controls', 'advanced',
+         'contact_solution_controls', 'courant_number', 'equations', 'limits',
+         'p_v_controls', 'relaxation_factor', 'set_controls_to_default',
+         'under_relaxation']
 
-    acoustics_wave_equation_controls: acoustics_wave_equation_controls = (
-        acoustics_wave_equation_controls
-    )
+    acoustics_wave_equation_controls: acoustics_wave_equation_controls = acoustics_wave_equation_controls
     """
     acoustics_wave_equation_controls child of controls
     """
@@ -44,9 +35,7 @@ class controls(Group):
     """
     advanced child of controls
     """
-    contact_solution_controls: contact_solution_controls = (
-        contact_solution_controls
-    )
+    contact_solution_controls: contact_solution_controls = contact_solution_controls
     """
     contact_solution_controls child of controls
     """

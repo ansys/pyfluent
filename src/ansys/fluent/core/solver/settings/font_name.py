@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class font_name(String):
-    """'font_name' child."""
+    """
+    'font_name' child.
+    """
 
     fluent_name = "font-name"
+

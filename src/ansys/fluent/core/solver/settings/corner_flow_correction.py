@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class corner_flow_correction(Boolean):
-    """Enable/disable the corner flow correction."""
+    """
+    Enable/disable the corner flow correction.
+    """
 
     fluent_name = "corner-flow-correction"
+

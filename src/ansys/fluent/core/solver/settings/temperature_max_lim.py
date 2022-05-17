@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class temperature_max_lim(Real):
-    """Set maximum allowable temperature."""
+    """
+    Set maximum allowable temperature.
+    """
 
     fluent_name = "temperature-max-lim"
+

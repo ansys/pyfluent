@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class phase(String):
-    """'phase' child."""
+    """
+    'phase' child.
+    """
 
     fluent_name = "phase"
+

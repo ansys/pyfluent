@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class mp_boiling_zone(Boolean):
-    """'mp_boiling_zone' child."""
+    """
+    'mp_boiling_zone' child.
+    """
 
     fluent_name = "mp-boiling-zone?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class max_cycle(Integer):
-    """Maximum number of cycles."""
+    """
+    Maximum number of cycles.
+    """
 
     fluent_name = "max-cycle"
+

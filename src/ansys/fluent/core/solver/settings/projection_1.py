@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class projection(String):
-    """'projection' child."""
+    """
+    'projection' child.
+    """
 
     fluent_name = "projection"
+

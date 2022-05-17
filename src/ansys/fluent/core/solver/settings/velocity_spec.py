@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class velocity_spec(String):
-    """'velocity_spec' child."""
+    """
+    'velocity_spec' child.
+    """
 
     fluent_name = "velocity-spec"
+

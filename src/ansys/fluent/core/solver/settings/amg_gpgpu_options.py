@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .amg_gpgpu_options_child import amg_gpgpu_options_child
 
-
 class amg_gpgpu_options(NamedObject[amg_gpgpu_options_child]):
-    """'amg_gpgpu_options' child."""
+    """
+    'amg_gpgpu_options' child.
+    """
 
     fluent_name = "amg-gpgpu-options"
 

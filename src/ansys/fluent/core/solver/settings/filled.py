@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class filled(Boolean):
-    """'filled' child."""
+    """
+    'filled' child.
+    """
 
     fluent_name = "filled?"
+

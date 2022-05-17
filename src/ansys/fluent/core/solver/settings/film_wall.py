@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class film_wall(Boolean):
-    """'film_wall' child."""
+    """
+    'film_wall' child.
+    """
 
     fluent_name = "film-wall?"
+

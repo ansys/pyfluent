@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_bc_erosion_mclaury_y(Real):
-    """'dpm_bc_erosion_mclaury_y' child."""
+    """
+    'dpm_bc_erosion_mclaury_y' child.
+    """
 
     fluent_name = "dpm-bc-erosion-mclaury-y"
+

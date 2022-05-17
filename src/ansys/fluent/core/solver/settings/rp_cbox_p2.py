@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rp_cbox_p2(String):
-    """'rp_cbox_p2' child."""
+    """
+    'rp_cbox_p2' child.
+    """
 
     fluent_name = "rp-cbox-p2"
+

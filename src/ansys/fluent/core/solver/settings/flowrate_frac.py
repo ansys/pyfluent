@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class flowrate_frac(Real):
-    """'flowrate_frac' child."""
+    """
+    'flowrate_frac' child.
+    """
 
     fluent_name = "flowrate-frac"
+

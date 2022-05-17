@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class elec_potential_type(String):
-    """'elec_potential_type' child."""
+    """
+    'elec_potential_type' child.
+    """
 
     fluent_name = "elec-potential-type"
+

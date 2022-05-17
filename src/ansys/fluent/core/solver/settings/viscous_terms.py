@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscous_terms(Boolean):
-    """Enable viscous terms during FMG initialization."""
+    """
+    Enable viscous terms during FMG initialization.
+    """
 
     fluent_name = "viscous-terms?"
+

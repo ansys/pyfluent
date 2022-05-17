@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .range import range
 from .size_by import size_by
-
-
+from .range import range
 class variable(Group):
-    """'variable' child."""
+    """
+    'variable' child.
+    """
 
     fluent_name = "variable"
 
-    child_names = ["size_by", "range"]
+    child_names = \
+        ['size_by', 'range']
 
     size_by: size_by = size_by
     """

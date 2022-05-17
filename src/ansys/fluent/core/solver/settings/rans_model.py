@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rans_model(String):
-    """'rans_model' child."""
+    """
+    'rans_model' child.
+    """
 
     fluent_name = "rans-model"
+

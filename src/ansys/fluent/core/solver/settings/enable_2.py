@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enable(Boolean):
-    """Enable/disable hybrid nita settings."""
+    """
+    Enable/disable hybrid nita settings.
+    """
 
     fluent_name = "enable?"
+

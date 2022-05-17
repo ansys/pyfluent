@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .current_parametric_study import current_parametric_study
 from .file import file
-from .parametric_studies import parametric_studies
-from .results import results
 from .setup import setup
 from .solution import solution
-
-
+from .results import results
+from .parametric_studies import parametric_studies
+from .current_parametric_study import current_parametric_study
 class root(Group):
-    """'root' object."""
+    """
+    'root' object.
+    """
 
     fluent_name = ""
 
-    child_names = [
-        "file",
-        "setup",
-        "solution",
-        "results",
-        "parametric_studies",
-        "current_parametric_study",
-    ]
+    child_names = \
+        ['file', 'setup', 'solution', 'results', 'parametric_studies',
+         'current_parametric_study']
 
     file: file = file
     """
@@ -46,9 +41,7 @@ class root(Group):
     """
     parametric_studies child of root
     """
-    current_parametric_study: current_parametric_study = (
-        current_parametric_study
-    )
+    current_parametric_study: current_parametric_study = current_parametric_study
     """
     current_parametric_study child of root
     """

@@ -4,18 +4,19 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .time import time
-from .two_dim_space import two_dim_space
 from .type import type
+from .two_dim_space import two_dim_space
 from .velocity_formulation import velocity_formulation
-
-
+from .time import time
 class solver(Group):
-    """'solver' child."""
+    """
+    'solver' child.
+    """
 
     fluent_name = "solver"
 
-    child_names = ["type", "two_dim_space", "velocity_formulation", "time"]
+    child_names = \
+        ['type', 'two_dim_space', 'velocity_formulation', 'time']
 
     type: type = type
     """

@@ -4,19 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .constant import constant
-from .field_name import field_name
 from .option import option
+from .constant import constant
 from .profile_name import profile_name
+from .field_name import field_name
 from .udf import udf
-
-
 class supersonic_or_initial_gauge_pressure(Group):
-    """'supersonic_or_initial_gauge_pressure' child."""
+    """
+    'supersonic_or_initial_gauge_pressure' child.
+    """
 
     fluent_name = "supersonic-or-initial-gauge-pressure"
 
-    child_names = ["option", "constant", "profile_name", "field_name", "udf"]
+    child_names = \
+        ['option', 'constant', 'profile_name', 'field_name', 'udf']
 
     option: option = option
     """

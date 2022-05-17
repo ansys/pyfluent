@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class solid_material(String):
-    """'solid_material' child."""
+    """
+    'solid_material' child.
+    """
 
     fluent_name = "solid-material"
+

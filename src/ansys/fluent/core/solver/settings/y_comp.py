@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class y_comp(Boolean):
-    """'y_comp' child."""
+    """
+    'y_comp' child.
+    """
 
     fluent_name = "y-comp?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class boundary_marker(String):
-    """'boundary_marker' child."""
+    """
+    'boundary_marker' child.
+    """
 
     fluent_name = "boundary-marker"
+

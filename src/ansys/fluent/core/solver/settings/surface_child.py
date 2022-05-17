@@ -4,41 +4,31 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .average_over import average_over
 from .custom_vector import custom_vector
 from .field import field
-from .geometry_1 import geometry
-from .old_props import old_props
-from .per_surface import per_surface
-from .phase_25 import phase
-from .physics import physics
-from .report_type import report_type
-from .retain_instantaneous_values import retain_instantaneous_values
-from .surface_ids import surface_ids
-from .surface_names import surface_names
 from .surfaces import surfaces
-
-
+from .geometry_1 import geometry
+from .physics import physics
+from .retain_instantaneous_values import retain_instantaneous_values
+from .report_type import report_type
+from .phase_25 import phase
+from .average_over import average_over
+from .per_surface import per_surface
+from .old_props import old_props
+from .surface_names import surface_names
+from .surface_ids import surface_ids
 class surface_child(Group):
-    """'child_object_type' of surface."""
+    """
+    'child_object_type' of surface
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "custom_vector",
-        "field",
-        "surfaces",
-        "geometry",
-        "physics",
-        "retain_instantaneous_values",
-        "report_type",
-        "phase",
-        "average_over",
-        "per_surface",
-        "old_props",
-        "surface_names",
-        "surface_ids",
-    ]
+    child_names = \
+        ['custom_vector', 'field', 'surfaces', 'geometry', 'physics',
+         'retain_instantaneous_values', 'report_type', 'phase',
+         'average_over', 'per_surface', 'old_props', 'surface_names',
+         'surface_ids']
 
     custom_vector: custom_vector = custom_vector
     """
@@ -60,9 +50,7 @@ class surface_child(Group):
     """
     physics child of surface_child
     """
-    retain_instantaneous_values: retain_instantaneous_values = (
-        retain_instantaneous_values
-    )
+    retain_instantaneous_values: retain_instantaneous_values = retain_instantaneous_values
     """
     retain_instantaneous_values child of surface_child
     """

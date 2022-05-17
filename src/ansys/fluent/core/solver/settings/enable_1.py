@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enable(Boolean):
-    """Enable advanced automatic time stepping for better stability."""
+    """
+    Enable advanced automatic time stepping for better stability.
+    """
 
     fluent_name = "enable?"
+

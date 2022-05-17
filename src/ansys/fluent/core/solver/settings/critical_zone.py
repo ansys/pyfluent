@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class critical_zone(Boolean):
-    """'critical_zone' child."""
+    """
+    'critical_zone' child.
+    """
 
     fluent_name = "critical-zone?"
+

@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .thickness import thickness
 from .material import material
 from .qdot import qdot
-from .thickness import thickness
-
-
 class shell_conduction_child(Group):
-    """'child_object_type' of shell_conduction."""
+    """
+    'child_object_type' of shell_conduction
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = ["thickness", "material", "qdot"]
+    child_names = \
+        ['thickness', 'material', 'qdot']
 
     thickness: thickness = thickness
     """

@@ -4,16 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .axis_child import axis_child
 from .change_type import change_type
-
+from .axis_child import axis_child
 
 class shadow(NamedObject[axis_child]):
-    """'shadow' child."""
+    """
+    'shadow' child.
+    """
 
     fluent_name = "shadow"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class inlet_diffusion(Boolean):
-    """'inlet_diffusion' child."""
+    """
+    'inlet_diffusion' child.
+    """
 
     fluent_name = "inlet-diffusion"
+

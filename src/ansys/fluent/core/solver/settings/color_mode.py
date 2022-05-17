@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class color_mode(String):
-    """'color_mode' child."""
+    """
+    'color_mode' child.
+    """
 
     fluent_name = "color-mode"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class species_in_mole_fractions(Boolean):
-    """'species_in_mole_fractions' child."""
+    """
+    'species_in_mole_fractions' child.
+    """
 
     fluent_name = "species-in-mole-fractions?"
+

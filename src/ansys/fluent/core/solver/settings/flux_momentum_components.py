@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class flux_momentum_components(ListObject[child_object_type_child]):
-    """'flux_momentum_components' child."""
+    """
+    'flux_momentum_components' child.
+    """
 
     fluent_name = "flux-momentum-components"
 

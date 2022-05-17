@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fan_pre_jump(Real):
-    """'fan_pre_jump' child."""
+    """
+    'fan_pre_jump' child.
+    """
 
     fluent_name = "fan-pre-jump"
+

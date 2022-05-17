@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class avg_press_spec(Boolean):
-    """'avg_press_spec' child."""
+    """
+    'avg_press_spec' child.
+    """
 
     fluent_name = "avg-press-spec?"
+

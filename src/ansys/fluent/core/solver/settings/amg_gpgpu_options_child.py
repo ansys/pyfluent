@@ -4,31 +4,24 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coarsen_by_size import coarsen_by_size
 from .enable_gpu import enable_gpu
-from .max_num_cycle import max_num_cycle
-from .post_sweep import post_sweep
-from .pre_sweep import pre_sweep
-from .smoother import smoother
-from .solver_1 import solver
 from .term_criterion import term_criterion
-
-
+from .solver_1 import solver
+from .max_num_cycle import max_num_cycle
+from .coarsen_by_size import coarsen_by_size
+from .pre_sweep import pre_sweep
+from .post_sweep import post_sweep
+from .smoother import smoother
 class amg_gpgpu_options_child(Group):
-    """'child_object_type' of amg_gpgpu_options."""
+    """
+    'child_object_type' of amg_gpgpu_options
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "enable_gpu",
-        "term_criterion",
-        "solver",
-        "max_num_cycle",
-        "coarsen_by_size",
-        "pre_sweep",
-        "post_sweep",
-        "smoother",
-    ]
+    child_names = \
+        ['enable_gpu', 'term_criterion', 'solver', 'max_num_cycle',
+         'coarsen_by_size', 'pre_sweep', 'post_sweep', 'smoother']
 
     enable_gpu: enable_gpu = enable_gpu
     """

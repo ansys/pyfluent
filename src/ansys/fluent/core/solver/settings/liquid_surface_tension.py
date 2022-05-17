@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class liquid_surface_tension(Real):
-    """Set liquid surface tension."""
+    """
+    Set liquid surface tension.
+    """
 
     fluent_name = "liquid-surface-tension"
+

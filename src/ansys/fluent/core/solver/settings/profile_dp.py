@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class profile_dp(Boolean):
-    """'profile_dp' child."""
+    """
+    'profile_dp' child.
+    """
 
     fluent_name = "profile-dp?"
+

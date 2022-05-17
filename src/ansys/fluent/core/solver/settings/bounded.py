@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class bounded(Boolean):
-    """'bounded' child."""
+    """
+    'bounded' child.
+    """
 
     fluent_name = "bounded?"
+

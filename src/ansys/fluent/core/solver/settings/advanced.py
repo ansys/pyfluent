@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .correction_tolerance import correction_tolerance
-from .expert_1 import expert
-from .fast_transient_settings import fast_transient_settings
 from .multi_grid import multi_grid
 from .multi_stage import multi_stage
+from .expert_1 import expert
+from .fast_transient_settings import fast_transient_settings
 from .relaxation_method import relaxation_method
-
-
+from .correction_tolerance import correction_tolerance
 class advanced(Group):
-    """'advanced' child."""
+    """
+    'advanced' child.
+    """
 
     fluent_name = "advanced"
 
-    child_names = [
-        "multi_grid",
-        "multi_stage",
-        "expert",
-        "fast_transient_settings",
-        "relaxation_method",
-        "correction_tolerance",
-    ]
+    child_names = \
+        ['multi_grid', 'multi_stage', 'expert', 'fast_transient_settings',
+         'relaxation_method', 'correction_tolerance']
 
     multi_grid: multi_grid = multi_grid
     """

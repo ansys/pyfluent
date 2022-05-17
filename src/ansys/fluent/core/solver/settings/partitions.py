@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class partitions(Boolean):
-    """'partitions' child."""
+    """
+    'partitions' child.
+    """
 
     fluent_name = "partitions?"
+

@@ -4,19 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .constant import constant
-from .field_name import field_name
 from .option import option
+from .constant import constant
 from .profile_name import profile_name
+from .field_name import field_name
 from .udf import udf
-
-
 class volume_fraction(Group):
-    """'volume_fraction' child."""
+    """
+    'volume_fraction' child.
+    """
 
     fluent_name = "volume-fraction"
 
-    child_names = ["option", "constant", "profile_name", "field_name", "udf"]
+    child_names = \
+        ['option', 'constant', 'profile_name', 'field_name', 'udf']
 
     option: option = option
     """

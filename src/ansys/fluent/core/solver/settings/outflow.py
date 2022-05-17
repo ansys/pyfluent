@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .outflow_child import outflow_child
 
-
 class outflow(NamedObject[outflow_child]):
-    """'outflow' child."""
+    """
+    'outflow' child.
+    """
 
     fluent_name = "outflow"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

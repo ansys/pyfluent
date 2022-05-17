@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class les_embedded_mom_scheme(String):
-    """'les_embedded_mom_scheme' child."""
+    """
+    'les_embedded_mom_scheme' child.
+    """
 
     fluent_name = "les-embedded-mom-scheme"
+

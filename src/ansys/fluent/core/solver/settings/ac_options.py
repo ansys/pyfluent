@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ac_options(String):
-    """'ac_options' child."""
+    """
+    'ac_options' child.
+    """
 
     fluent_name = "ac-options"
+

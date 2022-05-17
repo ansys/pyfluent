@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ocw_pp_ref_ht(Real):
-    """'ocw_pp_ref_ht' child."""
+    """
+    'ocw_pp_ref_ht' child.
+    """
 
     fluent_name = "ocw-pp-ref-ht"
+

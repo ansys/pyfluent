@@ -5,24 +5,20 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .controls import controls
-from .initialization import initialization
 from .methods_1 import methods
 from .report_definitions import report_definitions
+from .initialization import initialization
 from .run_calculation import run_calculation
-
-
 class solution(Group):
-    """'solution' child."""
+    """
+    'solution' child.
+    """
 
     fluent_name = "solution"
 
-    child_names = [
-        "controls",
-        "methods",
-        "report_definitions",
-        "initialization",
-        "run_calculation",
-    ]
+    child_names = \
+        ['controls', 'methods', 'report_definitions', 'initialization',
+         'run_calculation']
 
     controls: controls = controls
     """

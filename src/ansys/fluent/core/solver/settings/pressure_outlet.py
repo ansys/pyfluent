@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .pressure_outlet_child import pressure_outlet_child
 
-
 class pressure_outlet(NamedObject[pressure_outlet_child]):
-    """'pressure_outlet' child."""
+    """
+    'pressure_outlet' child.
+    """
 
     fluent_name = "pressure-outlet"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

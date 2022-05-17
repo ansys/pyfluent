@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class position(Integer):
-    """'position' child."""
+    """
+    'position' child.
+    """
 
     fluent_name = "position"
+

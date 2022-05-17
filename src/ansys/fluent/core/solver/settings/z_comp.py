@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class z_comp(Boolean):
-    """'z_comp' child."""
+    """
+    'z_comp' child.
+    """
 
     fluent_name = "z-comp?"
+

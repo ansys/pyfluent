@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class list_materials(Command):
-    """'list_materials' command."""
+    """
+    'list_materials' command.
+    """
 
     fluent_name = "list-materials"
+

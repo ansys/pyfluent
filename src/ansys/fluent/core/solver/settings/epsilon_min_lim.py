@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class epsilon_min_lim(Real):
-    """Set minimum allowable epsilon."""
+    """
+    Set minimum allowable epsilon.
+    """
 
     fluent_name = "epsilon-min-lim"
+

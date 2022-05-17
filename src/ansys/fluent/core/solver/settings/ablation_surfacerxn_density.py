@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ablation_surfacerxn_density(Real):
-    """'ablation_surfacerxn_density' child."""
+    """
+    'ablation_surfacerxn_density' child.
+    """
 
     fluent_name = "ablation-surfacerxn-density"
+

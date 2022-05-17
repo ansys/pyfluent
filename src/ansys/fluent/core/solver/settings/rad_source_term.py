@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rad_source_term(Boolean):
-    """'rad_source_term' child."""
+    """
+    'rad_source_term' child.
+    """
 
     fluent_name = "rad-source-term"
+

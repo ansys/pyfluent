@@ -4,27 +4,21 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .choice import choice
-from .columns import columns
 from .ecad_name import ecad_name
-from .pwr_names import pwr_names
-from .ref_frame import ref_frame
+from .choice import choice
 from .rows import rows
-
-
+from .columns import columns
+from .ref_frame import ref_frame
+from .pwr_names import pwr_names
 class pcb_zone_info(Group):
-    """'pcb_zone_info' child."""
+    """
+    'pcb_zone_info' child.
+    """
 
     fluent_name = "pcb-zone-info"
 
-    child_names = [
-        "ecad_name",
-        "choice",
-        "rows",
-        "columns",
-        "ref_frame",
-        "pwr_names",
-    ]
+    child_names = \
+        ['ecad_name', 'choice', 'rows', 'columns', 'ref_frame', 'pwr_names']
 
     ecad_name: ecad_name = ecad_name
     """

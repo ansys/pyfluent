@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ksgs_spec(String):
-    """'ksgs_spec' child."""
+    """
+    'ksgs_spec' child.
+    """
 
     fluent_name = "ksgs-spec"
+

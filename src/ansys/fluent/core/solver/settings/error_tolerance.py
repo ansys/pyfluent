@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class error_tolerance(Real):
-    """Set Truncation Error Tolerance."""
+    """
+    Set Truncation Error Tolerance.
+    """
 
     fluent_name = "error-tolerance"
+

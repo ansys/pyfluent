@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class species_correction_reduction(Real):
-    """Species relaxation factor."""
+    """
+    Species relaxation factor.
+    """
 
     fluent_name = "species-correction-reduction"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class non_condensable_gas(Real):
-    """Set non condensable gas."""
+    """
+    Set non condensable gas.
+    """
 
     fluent_name = "non-condensable-gas"
+

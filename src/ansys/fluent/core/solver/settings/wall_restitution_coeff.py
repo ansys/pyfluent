@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class wall_restitution_coeff(Real):
-    """'wall_restitution_coeff' child."""
+    """
+    'wall_restitution_coeff' child.
+    """
 
     fluent_name = "wall-restitution-coeff"
+

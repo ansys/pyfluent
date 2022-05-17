@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .display import display
 from .pathlines_child import pathlines_child
 
-
 class pathlines(NamedObject[pathlines_child]):
-    """'pathlines' child."""
+    """
+    'pathlines' child.
+    """
 
     fluent_name = "pathlines"
 
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

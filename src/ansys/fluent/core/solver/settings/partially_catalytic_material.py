@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class partially_catalytic_material(String):
-    """'partially_catalytic_material' child."""
+    """
+    'partially_catalytic_material' child.
+    """
 
     fluent_name = "partially-catalytic-material"
+

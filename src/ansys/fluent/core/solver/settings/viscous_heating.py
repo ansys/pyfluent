@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscous_heating(Boolean):
-    """Compute viscous energy dissipation."""
+    """
+    Compute viscous energy dissipation.
+    """
 
     fluent_name = "viscous-heating"
+

@@ -4,41 +4,30 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .color import color
-from .font_automatic import font_automatic
-from .font_name import font_name
-from .font_size import font_size
-from .format import format
-from .length import length
-from .log_scale import log_scale
-from .position import position
-from .show_all import show_all
-from .size import size
-from .user_skip import user_skip
 from .visible import visible
+from .size import size
+from .color import color
+from .log_scale import log_scale
+from .format import format
+from .user_skip import user_skip
+from .show_all import show_all
+from .position import position
+from .font_name import font_name
+from .font_automatic import font_automatic
+from .font_size import font_size
+from .length import length
 from .width import width
-
-
 class color_map(Group):
-    """'color_map' child."""
+    """
+    'color_map' child.
+    """
 
     fluent_name = "color-map"
 
-    child_names = [
-        "visible",
-        "size",
-        "color",
-        "log_scale",
-        "format",
-        "user_skip",
-        "show_all",
-        "position",
-        "font_name",
-        "font_automatic",
-        "font_size",
-        "length",
-        "width",
-    ]
+    child_names = \
+        ['visible', 'size', 'color', 'log_scale', 'format', 'user_skip',
+         'show_all', 'position', 'font_name', 'font_automatic', 'font_size',
+         'length', 'width']
 
     visible: visible = visible
     """

@@ -4,103 +4,68 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coordinate_system import coordinate_system
-from .direction_spec import direction_spec
-from .direction_vector_components import direction_vector_components
-from .e import e
-from .flow_direction_component import flow_direction_component
-from .geom_bgthread import geom_bgthread
+from .phase_21 import phase
+from .geom_disable import geom_disable
 from .geom_dir_spec import geom_dir_spec
 from .geom_dir_x import geom_dir_x
 from .geom_dir_y import geom_dir_y
 from .geom_dir_z import geom_dir_z
-from .geom_disable import geom_disable
 from .geom_levels import geom_levels
-from .hc import hc
+from .geom_bgthread import geom_bgthread
+from .pid import pid
+from .temperature_spec import temperature_spec
+from .temperature_rise import temperature_rise
 from .heat_source import heat_source
+from .tinf import tinf
+from .hc import hc
+from .direction_spec import direction_spec
+from .coordinate_system import coordinate_system
+from .flow_direction_component import flow_direction_component
+from .direction_vector_components import direction_vector_components
+from .ke_spec import ke_spec
+from .nut import nut
+from .kl import kl
 from .intermit import intermit
 from .k import k
-from .ke_spec import ke_spec
-from .kl import kl
-from .ksgs import ksgs
-from .ksgs_spec import ksgs_spec
-from .mass_flow_multiplier import mass_flow_multiplier
-from .nut import nut
+from .e import e
 from .o import o
-from .phase_21 import phase
-from .pid import pid
-from .rst_spec import rst_spec
-from .sgs_turb_intensity import sgs_turb_intensity
-from .solar_fluxes import solar_fluxes
-from .solar_shining_factor import solar_shining_factor
-from .temperature_rise import temperature_rise
-from .temperature_spec import temperature_spec
-from .tinf import tinf
-from .turb_hydraulic_diam import turb_hydraulic_diam
+from .v2 import v2
 from .turb_intensity import turb_intensity
 from .turb_length_scale import turb_length_scale
+from .turb_hydraulic_diam import turb_hydraulic_diam
 from .turb_viscosity_ratio import turb_viscosity_ratio
 from .turb_viscosity_ratio_profile import turb_viscosity_ratio_profile
+from .rst_spec import rst_spec
 from .uu import uu
-from .uv import uv
-from .uw import uw
-from .v2 import v2
 from .vv import vv
-from .vw import vw
 from .ww import ww
-
-
+from .uv import uv
+from .vw import vw
+from .uw import uw
+from .ksgs_spec import ksgs_spec
+from .ksgs import ksgs
+from .sgs_turb_intensity import sgs_turb_intensity
+from .mass_flow_multiplier import mass_flow_multiplier
+from .solar_fluxes import solar_fluxes
+from .solar_shining_factor import solar_shining_factor
 class recirculation_inlet_child(Group):
-    """'child_object_type' of recirculation_inlet."""
+    """
+    'child_object_type' of recirculation_inlet
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "phase",
-        "geom_disable",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-        "geom_levels",
-        "geom_bgthread",
-        "pid",
-        "temperature_spec",
-        "temperature_rise",
-        "heat_source",
-        "tinf",
-        "hc",
-        "direction_spec",
-        "coordinate_system",
-        "flow_direction_component",
-        "direction_vector_components",
-        "ke_spec",
-        "nut",
-        "kl",
-        "intermit",
-        "k",
-        "e",
-        "o",
-        "v2",
-        "turb_intensity",
-        "turb_length_scale",
-        "turb_hydraulic_diam",
-        "turb_viscosity_ratio",
-        "turb_viscosity_ratio_profile",
-        "rst_spec",
-        "uu",
-        "vv",
-        "ww",
-        "uv",
-        "vw",
-        "uw",
-        "ksgs_spec",
-        "ksgs",
-        "sgs_turb_intensity",
-        "mass_flow_multiplier",
-        "solar_fluxes",
-        "solar_shining_factor",
-    ]
+    child_names = \
+        ['phase', 'geom_disable', 'geom_dir_spec', 'geom_dir_x', 'geom_dir_y',
+         'geom_dir_z', 'geom_levels', 'geom_bgthread', 'pid',
+         'temperature_spec', 'temperature_rise', 'heat_source', 'tinf', 'hc',
+         'direction_spec', 'coordinate_system', 'flow_direction_component',
+         'direction_vector_components', 'ke_spec', 'nut', 'kl', 'intermit',
+         'k', 'e', 'o', 'v2', 'turb_intensity', 'turb_length_scale',
+         'turb_hydraulic_diam', 'turb_viscosity_ratio',
+         'turb_viscosity_ratio_profile', 'rst_spec', 'uu', 'vv', 'ww', 'uv',
+         'vw', 'uw', 'ksgs_spec', 'ksgs', 'sgs_turb_intensity',
+         'mass_flow_multiplier', 'solar_fluxes', 'solar_shining_factor']
 
     phase: phase = phase
     """
@@ -166,15 +131,11 @@ class recirculation_inlet_child(Group):
     """
     coordinate_system child of recirculation_inlet_child
     """
-    flow_direction_component: flow_direction_component = (
-        flow_direction_component
-    )
+    flow_direction_component: flow_direction_component = flow_direction_component
     """
     flow_direction_component child of recirculation_inlet_child
     """
-    direction_vector_components: direction_vector_components = (
-        direction_vector_components
-    )
+    direction_vector_components: direction_vector_components = direction_vector_components
     """
     direction_vector_components child of recirculation_inlet_child
     """
@@ -226,9 +187,7 @@ class recirculation_inlet_child(Group):
     """
     turb_viscosity_ratio child of recirculation_inlet_child
     """
-    turb_viscosity_ratio_profile: turb_viscosity_ratio_profile = (
-        turb_viscosity_ratio_profile
-    )
+    turb_viscosity_ratio_profile: turb_viscosity_ratio_profile = turb_viscosity_ratio_profile
     """
     turb_viscosity_ratio_profile child of recirculation_inlet_child
     """

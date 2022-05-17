@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class scale(Real):
-    """'scale' child."""
+    """
+    'scale' child.
+    """
 
     fluent_name = "scale"
+

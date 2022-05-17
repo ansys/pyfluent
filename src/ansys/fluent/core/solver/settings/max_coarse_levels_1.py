@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class max_coarse_levels(Integer):
-    """Coupled:maximum number of coarse grid levels."""
+    """
+    Coupled:maximum number of coarse grid levels.
+    """
 
     fluent_name = "max-coarse-levels"
+

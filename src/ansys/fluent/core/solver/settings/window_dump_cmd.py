@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class window_dump_cmd(String):
-    """'window_dump_cmd' child."""
+    """
+    'window_dump_cmd' child.
+    """
 
     fluent_name = "window-dump-cmd"
+

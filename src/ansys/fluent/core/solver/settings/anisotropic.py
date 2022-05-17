@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .conductivity import conductivity
 from .matrix_component import matrix_component
-
-
+from .conductivity import conductivity
 class anisotropic(Group):
-    """'anisotropic' child."""
+    """
+    'anisotropic' child.
+    """
 
     fluent_name = "anisotropic"
 
-    child_names = ["matrix_component", "conductivity"]
+    child_names = \
+        ['matrix_component', 'conductivity']
 
     matrix_component: matrix_component = matrix_component
     """

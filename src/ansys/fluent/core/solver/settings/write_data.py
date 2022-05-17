@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class write_data(Boolean):
-    """'write_data' child."""
+    """
+    'write_data' child.
+    """
 
     fluent_name = "write-data"
+

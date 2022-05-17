@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class auto_scale(Boolean):
-    """'auto_scale' child."""
+    """
+    'auto_scale' child.
+    """
 
     fluent_name = "auto-scale?"
+

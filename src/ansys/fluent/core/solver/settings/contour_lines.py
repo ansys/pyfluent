@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class contour_lines(Boolean):
-    """'contour_lines' child."""
+    """
+    'contour_lines' child.
+    """
 
     fluent_name = "contour-lines?"
+

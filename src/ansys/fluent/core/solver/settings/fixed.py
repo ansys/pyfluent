@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fixed(Boolean):
-    """'fixed' child."""
+    """
+    'fixed' child.
+    """
 
     fluent_name = "fixed?"
+

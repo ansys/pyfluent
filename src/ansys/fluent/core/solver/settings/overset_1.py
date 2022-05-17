@@ -4,23 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .expert_3 import expert
 from .high_order_pressure import high_order_pressure
 from .interpolation_method import interpolation_method
 from .orphan_cell_treatment import orphan_cell_treatment
-
-
+from .expert_3 import expert
 class overset(Group):
-    """'overset' child."""
+    """
+    'overset' child.
+    """
 
     fluent_name = "overset"
 
-    child_names = [
-        "high_order_pressure",
-        "interpolation_method",
-        "orphan_cell_treatment",
-        "expert",
-    ]
+    child_names = \
+        ['high_order_pressure', 'interpolation_method',
+         'orphan_cell_treatment', 'expert']
 
     high_order_pressure: high_order_pressure = high_order_pressure
     """

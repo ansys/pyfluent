@@ -6,21 +6,17 @@ from ansys.fluent.core.solver.flobject import *
 
 from .model_ramping import model_ramping
 from .ramp_flow import ramp_flow
-from .ramp_scalars import ramp_scalars
 from .ramp_turbulence import ramp_turbulence
-
-
+from .ramp_scalars import ramp_scalars
 class models(Group):
-    """'models' child."""
+    """
+    'models' child.
+    """
 
     fluent_name = "models"
 
-    child_names = [
-        "model_ramping",
-        "ramp_flow",
-        "ramp_turbulence",
-        "ramp_scalars",
-    ]
+    child_names = \
+        ['model_ramping', 'ramp_flow', 'ramp_turbulence', 'ramp_scalars']
 
     model_ramping: model_ramping = model_ramping
     """

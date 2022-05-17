@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class film_boundary_separation(Boolean):
-    """'film_boundary_separation' child."""
+    """
+    'film_boundary_separation' child.
+    """
 
     fluent_name = "film-boundary-separation?"
+

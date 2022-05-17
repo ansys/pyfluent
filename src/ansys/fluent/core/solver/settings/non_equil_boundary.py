@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class non_equil_boundary(Boolean):
-    """'non_equil_boundary' child."""
+    """
+    'non_equil_boundary' child.
+    """
 
     fluent_name = "non-equil-boundary?"
+

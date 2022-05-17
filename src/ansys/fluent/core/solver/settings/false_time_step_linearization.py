@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class false_time_step_linearization(Boolean):
-    """Set false time-step linearization for added stability."""
+    """
+    Set false time-step linearization for added stability.
+    """
 
     fluent_name = "false-time-step-linearization?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class font_automatic(Boolean):
-    """'font_automatic' child."""
+    """
+    'font_automatic' child.
+    """
 
     fluent_name = "font-automatic"
+

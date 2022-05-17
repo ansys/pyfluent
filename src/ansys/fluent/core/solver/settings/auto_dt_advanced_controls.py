@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .dt_factor_max import dt_factor_max
-from .dt_factor_min import dt_factor_min
+from .enable_1 import enable
 from .dt_init_limit import dt_init_limit
 from .dt_max import dt_max
-from .enable_1 import enable
+from .dt_factor_min import dt_factor_min
+from .dt_factor_max import dt_factor_max
 from .max_velocity_ratio import max_velocity_ratio
-
-
 class auto_dt_advanced_controls(Group):
-    """'auto_dt_advanced_controls' child."""
+    """
+    'auto_dt_advanced_controls' child.
+    """
 
     fluent_name = "auto-dt-advanced-controls"
 
-    child_names = [
-        "enable",
-        "dt_init_limit",
-        "dt_max",
-        "dt_factor_min",
-        "dt_factor_max",
-        "max_velocity_ratio",
-    ]
+    child_names = \
+        ['enable', 'dt_init_limit', 'dt_max', 'dt_factor_min',
+         'dt_factor_max', 'max_velocity_ratio']
 
     enable: enable = enable
     """

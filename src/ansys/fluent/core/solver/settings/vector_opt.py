@@ -4,29 +4,23 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .color import color
-from .fixed_length import fixed_length
 from .in_plane import in_plane
-from .scale_head import scale_head
+from .fixed_length import fixed_length
 from .x_comp import x_comp
 from .y_comp import y_comp
 from .z_comp import z_comp
-
-
+from .scale_head import scale_head
+from .color import color
 class vector_opt(Group):
-    """'vector_opt' child."""
+    """
+    'vector_opt' child.
+    """
 
     fluent_name = "vector-opt"
 
-    child_names = [
-        "in_plane",
-        "fixed_length",
-        "x_comp",
-        "y_comp",
-        "z_comp",
-        "scale_head",
-        "color",
-    ]
+    child_names = \
+        ['in_plane', 'fixed_length', 'x_comp', 'y_comp', 'z_comp',
+         'scale_head', 'color']
 
     in_plane: in_plane = in_plane
     """

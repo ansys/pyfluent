@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class alternative_energy_treatment(Boolean):
-    """Alternative treatment of latent heat source due to mass transfer."""
+    """
+    Alternative treatment of latent heat source due to mass transfer.
+    """
 
     fluent_name = "alternative-energy-treatment?"
+

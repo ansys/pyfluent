@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class open_channel(Boolean):
-    """'open_channel' child."""
+    """
+    'open_channel' child.
+    """
 
     fluent_name = "open-channel?"
+

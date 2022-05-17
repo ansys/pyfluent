@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class separate_journals(Boolean):
-    """'separate_journals' child."""
+    """
+    'separate_journals' child.
+    """
 
     fluent_name = "separate-journals"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class view_list(StringList):
-    """'view_list' child."""
+    """
+    'view_list' child.
+    """
 
     fluent_name = "view-list"
+

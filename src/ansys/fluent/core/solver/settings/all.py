@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class all(Boolean):
-    """'all' child."""
+    """
+    'all' child.
+    """
 
     fluent_name = "all"
+

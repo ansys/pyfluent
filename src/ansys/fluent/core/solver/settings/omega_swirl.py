@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class omega_swirl(Real):
-    """'omega_swirl' child."""
+    """
+    'omega_swirl' child.
+    """
 
     fluent_name = "omega-swirl"
+

@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .aeromechanics_child import aeromechanics_child
 
-
 class aeromechanics(NamedObject[aeromechanics_child]):
-    """'aeromechanics' child."""
+    """
+    'aeromechanics' child.
+    """
 
     fluent_name = "aeromechanics"
 

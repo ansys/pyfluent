@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .interface_child import interface_child
 
-
 class interface(NamedObject[interface_child]):
-    """'interface' child."""
+    """
+    'interface' child.
+    """
 
     fluent_name = "interface"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

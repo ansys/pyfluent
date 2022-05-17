@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class none(Boolean):
-    """'none' child."""
+    """
+    'none' child.
+    """
 
     fluent_name = "none?"
+

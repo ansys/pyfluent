@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class swirl_factor(Real):
-    """'swirl_factor' child."""
+    """
+    'swirl_factor' child.
+    """
 
     fluent_name = "swirl-factor"
+

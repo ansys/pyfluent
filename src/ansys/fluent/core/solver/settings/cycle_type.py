@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class cycle_type(String):
-    """'cycle_type' child."""
+    """
+    'cycle_type' child.
+    """
 
     fluent_name = "cycle-type"
+

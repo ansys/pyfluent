@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class statistics_level(Integer):
-    """Set level of detail for solution statistics."""
+    """
+    Set level of detail for solution statistics.
+    """
 
     fluent_name = "statistics-level"
+

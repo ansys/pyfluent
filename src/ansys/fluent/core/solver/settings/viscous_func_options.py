@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscous_func_options(Integer):
-    """Viscous function option."""
+    """
+    Viscous function option.
+    """
 
     fluent_name = "viscous-func-options"
+

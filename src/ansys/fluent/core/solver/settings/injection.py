@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .phase_child_10 import phase_child
 
-
 class injection(NamedObject[phase_child]):
-    """'injection' child."""
+    """
+    'injection' child.
+    """
 
     fluent_name = "injection"
 

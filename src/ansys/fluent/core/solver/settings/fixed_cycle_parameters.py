@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .max_cycle import max_cycle
-from .post_sweeps import post_sweeps
 from .pre_sweeps import pre_sweeps
-
-
+from .post_sweeps import post_sweeps
+from .max_cycle import max_cycle
 class fixed_cycle_parameters(Group):
-    """'fixed_cycle_parameters' child."""
+    """
+    'fixed_cycle_parameters' child.
+    """
 
     fluent_name = "fixed-cycle-parameters"
 
-    child_names = ["pre_sweeps", "post_sweeps", "max_cycle"]
+    child_names = \
+        ['pre_sweeps', 'post_sweeps', 'max_cycle']
 
     pre_sweeps: pre_sweeps = pre_sweeps
     """

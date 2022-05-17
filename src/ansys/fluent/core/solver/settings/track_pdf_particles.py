@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class track_pdf_particles(Boolean):
-    """'track_pdf_particles' child."""
+    """
+    'track_pdf_particles' child.
+    """
 
     fluent_name = "track-pdf-particles?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class wall_statistics(Boolean):
-    """Enable/Disable wall statistics."""
+    """
+    Enable/Disable wall statistics.
+    """
 
     fluent_name = "wall-statistics?"
+

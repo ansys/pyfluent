@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class cell_to_limiting(String):
-    """Cell to face limiting ([no] for cell to cell limiting) ."""
+    """
+    Cell to face limiting ([no] for cell to cell limiting) .
+    """
 
     fluent_name = "cell-to-limiting"
+

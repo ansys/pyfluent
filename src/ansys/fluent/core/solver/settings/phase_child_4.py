@@ -4,81 +4,56 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .average_dp import average_dp
-from .axis_direction_component_1 import axis_direction_component
-from .axis_origin_component_1 import axis_origin_component
-from .c import c
-from .dir import dir
-from .dp_profile import dp_profile
-from .dpm_bc_collision_partner import dpm_bc_collision_partner
-from .dpm_bc_type import dpm_bc_type
-from .dpm_bc_udf import dpm_bc_udf
-from .fan_vr import fan_vr
-from .fr import fr
-from .geom_bgthread import geom_bgthread
+from .geom_disable import geom_disable
 from .geom_dir_spec import geom_dir_spec
 from .geom_dir_x import geom_dir_x
 from .geom_dir_y import geom_dir_y
 from .geom_dir_z import geom_dir_z
-from .geom_disable import geom_disable
 from .geom_levels import geom_levels
-from .hub import hub
-from .limit_range import limit_range
-from .new_fan_definition import new_fan_definition
+from .geom_bgthread import geom_bgthread
 from .porous_jump_turb_wall_treatment import porous_jump_turb_wall_treatment
-from .profile_dp import profile_dp
-from .profile_vr import profile_vr
-from .profile_vt import profile_vt
-from .reinj_inj import reinj_inj
-from .strength import strength
-from .swirl_factor import swirl_factor
-from .swirl_model import swirl_model
-from .v_max import v_max
+from .dir import dir
+from .average_dp import average_dp
+from .c import c
+from .limit_range import limit_range
 from .v_min import v_min
-from .vr_profile import vr_profile
+from .v_max import v_max
+from .strength import strength
+from .profile_dp import profile_dp
+from .dp_profile import dp_profile
+from .swirl_model import swirl_model
+from .fan_vr import fan_vr
+from .fr import fr
+from .hub import hub
+from .axis_origin_component_1 import axis_origin_component
+from .axis_direction_component_1 import axis_direction_component
+from .profile_vt import profile_vt
 from .vt_profile import vt_profile
-
-
+from .profile_vr import profile_vr
+from .vr_profile import vr_profile
+from .swirl_factor import swirl_factor
+from .dpm_bc_type import dpm_bc_type
+from .dpm_bc_collision_partner import dpm_bc_collision_partner
+from .reinj_inj import reinj_inj
+from .dpm_bc_udf import dpm_bc_udf
+from .new_fan_definition import new_fan_definition
 class phase_child(Group):
-    """'child_object_type' of phase."""
+    """
+    'child_object_type' of phase
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "geom_disable",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-        "geom_levels",
-        "geom_bgthread",
-        "porous_jump_turb_wall_treatment",
-        "dir",
-        "average_dp",
-        "c",
-        "limit_range",
-        "v_min",
-        "v_max",
-        "strength",
-        "profile_dp",
-        "dp_profile",
-        "swirl_model",
-        "fan_vr",
-        "fr",
-        "hub",
-        "axis_origin_component",
-        "axis_direction_component",
-        "profile_vt",
-        "vt_profile",
-        "profile_vr",
-        "vr_profile",
-        "swirl_factor",
-        "dpm_bc_type",
-        "dpm_bc_collision_partner",
-        "reinj_inj",
-        "dpm_bc_udf",
-        "new_fan_definition",
-    ]
+    child_names = \
+        ['geom_disable', 'geom_dir_spec', 'geom_dir_x', 'geom_dir_y',
+         'geom_dir_z', 'geom_levels', 'geom_bgthread',
+         'porous_jump_turb_wall_treatment', 'dir', 'average_dp', 'c',
+         'limit_range', 'v_min', 'v_max', 'strength', 'profile_dp',
+         'dp_profile', 'swirl_model', 'fan_vr', 'fr', 'hub',
+         'axis_origin_component', 'axis_direction_component', 'profile_vt',
+         'vt_profile', 'profile_vr', 'vr_profile', 'swirl_factor',
+         'dpm_bc_type', 'dpm_bc_collision_partner', 'reinj_inj', 'dpm_bc_udf',
+         'new_fan_definition']
 
     geom_disable: geom_disable = geom_disable
     """
@@ -108,9 +83,7 @@ class phase_child(Group):
     """
     geom_bgthread child of phase_child
     """
-    porous_jump_turb_wall_treatment: porous_jump_turb_wall_treatment = (
-        porous_jump_turb_wall_treatment
-    )
+    porous_jump_turb_wall_treatment: porous_jump_turb_wall_treatment = porous_jump_turb_wall_treatment
     """
     porous_jump_turb_wall_treatment child of phase_child
     """
@@ -170,9 +143,7 @@ class phase_child(Group):
     """
     axis_origin_component child of phase_child
     """
-    axis_direction_component: axis_direction_component = (
-        axis_direction_component
-    )
+    axis_direction_component: axis_direction_component = axis_direction_component
     """
     axis_direction_component child of phase_child
     """
@@ -200,9 +171,7 @@ class phase_child(Group):
     """
     dpm_bc_type child of phase_child
     """
-    dpm_bc_collision_partner: dpm_bc_collision_partner = (
-        dpm_bc_collision_partner
-    )
+    dpm_bc_collision_partner: dpm_bc_collision_partner = dpm_bc_collision_partner
     """
     dpm_bc_collision_partner child of phase_child
     """

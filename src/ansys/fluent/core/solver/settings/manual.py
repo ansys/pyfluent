@@ -4,18 +4,19 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .edges_1 import edges
 from .faces_1 import faces
-from .material_color import material_color
+from .edges_1 import edges
 from .nodes_1 import nodes
-
-
+from .material_color import material_color
 class manual(Group):
-    """'manual' child."""
+    """
+    'manual' child.
+    """
 
     fluent_name = "manual"
 
-    child_names = ["faces", "edges", "nodes", "material_color"]
+    child_names = \
+        ['faces', 'edges', 'nodes', 'material_color']
 
     faces: faces = faces
     """

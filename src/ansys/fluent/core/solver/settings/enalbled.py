@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enalbled(Boolean):
-    """'enalbled' child."""
+    """
+    'enalbled' child.
+    """
 
     fluent_name = "enalbled?"
+

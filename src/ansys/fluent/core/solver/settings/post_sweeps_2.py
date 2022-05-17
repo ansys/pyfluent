@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class post_sweeps(Integer):
-    """Number of relaxations after interpolation."""
+    """
+    Number of relaxations after interpolation.
+    """
 
     fluent_name = "post-sweeps"
+

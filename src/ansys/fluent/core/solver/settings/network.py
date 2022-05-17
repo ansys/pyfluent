@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .network_child import network_child
 
-
 class network(NamedObject[network_child]):
-    """'network' child."""
+    """
+    'network' child.
+    """
 
     fluent_name = "network"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

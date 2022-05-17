@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class nodal_diam(Integer):
-    """'nodal_diam' child."""
+    """
+    'nodal_diam' child.
+    """
 
     fluent_name = "nodal-diam"
+

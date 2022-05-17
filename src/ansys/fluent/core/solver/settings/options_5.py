@@ -4,18 +4,19 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .node_values_1 import node_values
 from .oil_flow import oil_flow
-from .relative_1 import relative
 from .reverse import reverse
-
-
+from .node_values_1 import node_values
+from .relative_1 import relative
 class options(Group):
-    """'options' child."""
+    """
+    'options' child.
+    """
 
     fluent_name = "options"
 
-    child_names = ["oil_flow", "reverse", "node_values", "relative"]
+    child_names = \
+        ['oil_flow', 'reverse', 'node_values', 'relative']
 
     oil_flow: oil_flow = oil_flow
     """

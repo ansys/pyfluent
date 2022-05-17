@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pre_sweeps(Integer):
-    """Coupled:number of pre-relaxations for fixed cycles."""
+    """
+    Coupled:number of pre-relaxations for fixed cycles.
+    """
 
     fluent_name = "pre-sweeps"
+

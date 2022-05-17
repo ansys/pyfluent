@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class kinetic_energy(Boolean):
-    """'kinetic_energy' child."""
+    """
+    'kinetic_energy' child.
+    """
 
     fluent_name = "kinetic-energy"
+

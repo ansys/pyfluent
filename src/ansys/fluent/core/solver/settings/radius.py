@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class radius(Real):
-    """'radius' child."""
+    """
+    'radius' child.
+    """
 
     fluent_name = "radius"
+

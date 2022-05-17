@@ -5,20 +5,21 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .project_filename import project_filename
-
-
 class save_as(Command):
-    """Save As Project.
-
+    """
+    Save As Project.
+    
     Parameters
     ----------
         project_filename : str
             'project_filename' child.
+    
     """
 
     fluent_name = "save-as"
 
-    argument_names = ["project_filename"]
+    argument_names = \
+        ['project_filename']
 
     project_filename: project_filename = project_filename
     """

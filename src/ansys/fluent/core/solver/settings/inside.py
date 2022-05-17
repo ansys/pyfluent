@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class inside(Boolean):
-    """'inside' child."""
+    """
+    'inside' child.
+    """
 
     fluent_name = "inside"
+

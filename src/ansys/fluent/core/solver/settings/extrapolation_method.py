@@ -4,9 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class extrapolation_method(String):
-    """Solution extrapolation method for cells changing status from contact to
-    non-contact."""
+    """
+    Solution extrapolation method for cells changing status from contact to non-contact.
+    """
 
     fluent_name = "extrapolation-method"
+

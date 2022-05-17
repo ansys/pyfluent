@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .option import option
 from .auto_range import auto_range
 from .clip_to_range_1 import clip_to_range
-from .option import option
-
-
 class range(Group):
-    """'range' child."""
+    """
+    'range' child.
+    """
 
     fluent_name = "range"
 
-    child_names = ["option", "auto_range", "clip_to_range"]
+    child_names = \
+        ['option', 'auto_range', 'clip_to_range']
 
     option: option = option
     """

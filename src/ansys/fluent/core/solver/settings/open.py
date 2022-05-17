@@ -4,24 +4,25 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .load_case import load_case
 from .project_filename import project_filename
-
-
+from .load_case import load_case
 class open(Command):
-    """Open project.
-
+    """
+    Open project.
+    
     Parameters
     ----------
         project_filename : str
             'project_filename' child.
         load_case : bool
             'load_case' child.
+    
     """
 
     fluent_name = "open"
 
-    argument_names = ["project_filename", "load_case"]
+    argument_names = \
+        ['project_filename', 'load_case']
 
     project_filename: project_filename = project_filename
     """

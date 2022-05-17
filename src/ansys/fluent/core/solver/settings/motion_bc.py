@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class motion_bc(String):
-    """'motion_bc' child."""
+    """
+    'motion_bc' child.
+    """
 
     fluent_name = "motion-bc"
+

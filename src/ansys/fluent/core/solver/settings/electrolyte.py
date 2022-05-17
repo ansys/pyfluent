@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class electrolyte(Boolean):
-    """'electrolyte' child."""
+    """
+    'electrolyte' child.
+    """
 
     fluent_name = "electrolyte?"
+

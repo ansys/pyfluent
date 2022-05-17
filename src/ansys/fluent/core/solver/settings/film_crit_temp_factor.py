@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class film_crit_temp_factor(Real):
-    """'film_crit_temp_factor' child."""
+    """
+    'film_crit_temp_factor' child.
+    """
 
     fluent_name = "film-crit-temp-factor"
+

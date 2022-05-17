@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class shrink_factor(Real):
-    """'shrink_factor' child."""
+    """
+    'shrink_factor' child.
+    """
 
     fluent_name = "shrink-factor"
+

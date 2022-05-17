@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class size(Integer):
-    """'size' child."""
+    """
+    'size' child.
+    """
 
     fluent_name = "size"
+

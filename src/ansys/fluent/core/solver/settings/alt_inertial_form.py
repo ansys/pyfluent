@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class alt_inertial_form(Boolean):
-    """'alt_inertial_form' child."""
+    """
+    'alt_inertial_form' child.
+    """
 
     fluent_name = "alt-inertial-form?"
+

@@ -4,9 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class persistence_fixed_duration(Real):
-    """Specify fixed time for solution stabilization persistence after
-    trigger."""
+    """
+    Specify fixed time for solution stabilization persistence after trigger.
+    """
 
     fluent_name = "persistence-fixed-duration"
+

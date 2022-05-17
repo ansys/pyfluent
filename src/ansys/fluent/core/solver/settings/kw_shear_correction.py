@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class kw_shear_correction(Boolean):
-    """Enable/disable the k-omega shear-flow correction option."""
+    """
+    Enable/disable the k-omega shear-flow correction option.
+    """
 
     fluent_name = "kw-shear-correction"
+

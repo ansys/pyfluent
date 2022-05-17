@@ -4,19 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .constant import constant
-from .field_name import field_name
 from .option import option
+from .constant import constant
 from .profile_name import profile_name
+from .field_name import field_name
 from .udf import udf
-
-
 class mass_flux(Group):
-    """'mass_flux' child."""
+    """
+    'mass_flux' child.
+    """
 
     fluent_name = "mass-flux"
 
-    child_names = ["option", "constant", "profile_name", "field_name", "udf"]
+    child_names = \
+        ['option', 'constant', 'profile_name', 'field_name', 'udf']
 
     option: option = option
     """

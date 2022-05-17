@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class hybrid_initialize(Command):
-    """Initialize using the hybrid initialization method."""
+    """
+    Initialize using the hybrid initialization method.
+    """
 
     fluent_name = "hybrid-initialize"
+

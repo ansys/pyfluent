@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fwd(Boolean):
-    """'fwd' child."""
+    """
+    'fwd' child.
+    """
 
     fluent_name = "fwd?"
+

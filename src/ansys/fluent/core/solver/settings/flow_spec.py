@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class flow_spec(String):
-    """'flow_spec' child."""
+    """
+    'flow_spec' child.
+    """
 
     fluent_name = "flow-spec"
+

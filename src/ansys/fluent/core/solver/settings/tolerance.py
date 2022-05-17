@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class tolerance(Real):
-    """'tolerance' child."""
+    """
+    'tolerance' child.
+    """
 
     fluent_name = "tolerance"
+

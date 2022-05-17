@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class exclude_transient_term_in_face_pressure_calc(Boolean):
-    """Enable/disable transient terms in face pressure calculation."""
+    """
+    Enable/disale transient terms in face pressure calculation.
+    """
 
     fluent_name = "exclude-transient-term-in-face-pressure-calc"
+

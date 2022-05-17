@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class inlet_number(Integer):
-    """'inlet_number' child."""
+    """
+    'inlet_number' child.
+    """
 
     fluent_name = "inlet-number"
+

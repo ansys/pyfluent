@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class marker_size(Real):
-    """'marker_size' child."""
+    """
+    'marker_size' child.
+    """
 
     fluent_name = "marker-size"
+

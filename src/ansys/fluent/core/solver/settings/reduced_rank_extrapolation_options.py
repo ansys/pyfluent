@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .skip_itr import skip_itr
 from .subspace_size import subspace_size
-
-
+from .skip_itr import skip_itr
 class reduced_rank_extrapolation_options(Group):
-    """'reduced_rank_extrapolation_options' child."""
+    """
+    'reduced_rank_extrapolation_options' child.
+    """
 
     fluent_name = "reduced-rank-extrapolation-options"
 
-    child_names = ["subspace_size", "skip_itr"]
+    child_names = \
+        ['subspace_size', 'skip_itr']
 
     subspace_size: subspace_size = subspace_size
     """

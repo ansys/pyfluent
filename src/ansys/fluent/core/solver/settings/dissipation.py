@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dissipation(Boolean):
-    """Update artificial dissipation at stage."""
+    """
+    Update artificial dissipation at stage.
+    """
 
     fluent_name = "dissipation"
+

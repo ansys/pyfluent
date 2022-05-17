@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .banded import banded
 from .option import option
 from .smooth import smooth
-
-
+from .banded import banded
 class coloring(Group):
-    """'coloring' child."""
+    """
+    'coloring' child.
+    """
 
     fluent_name = "coloring"
 
-    child_names = ["option", "smooth", "banded"]
+    child_names = \
+        ['option', 'smooth', 'banded']
 
     option: option = option
     """

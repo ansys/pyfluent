@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class cone_angle(Real):
-    """'cone_angle' child."""
+    """
+    'cone_angle' child.
+    """
 
     fluent_name = "cone-angle"
+

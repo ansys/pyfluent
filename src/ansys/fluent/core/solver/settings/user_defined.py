@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .user_defined_child import user_defined_child
 
-
 class user_defined(NamedObject[user_defined_child]):
-    """'user_defined' child."""
+    """
+    'user_defined' child.
+    """
 
     fluent_name = "user-defined"
 

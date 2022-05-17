@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class point_normal(RealList):
-    """'point_normal' child."""
+    """
+    'point_normal' child.
+    """
 
     fluent_name = "point-normal"
+

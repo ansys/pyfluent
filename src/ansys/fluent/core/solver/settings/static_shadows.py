@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class static_shadows(String):
-    """'static_shadows' child."""
+    """
+    'static_shadows' child.
+    """
 
     fluent_name = "static-shadows"
+

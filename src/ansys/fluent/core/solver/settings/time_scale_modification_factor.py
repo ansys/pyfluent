@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class time_scale_modification_factor(Real):
-    """Set time-scale modification factor."""
+    """
+    Set time-scale modification factor.
+    """
 
     fluent_name = "time-scale-modification-factor"
+

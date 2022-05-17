@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class gradient_scheme(String):
-    """Set gradient scheme."""
+    """
+    Set gradient scheme.
+    """
 
     fluent_name = "gradient-scheme"
+

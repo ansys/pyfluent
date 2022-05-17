@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class sample_point(Boolean):
-    """'sample_point' child."""
+    """
+    'sample_point' child.
+    """
 
     fluent_name = "sample-point?"
+

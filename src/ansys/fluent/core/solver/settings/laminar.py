@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class laminar(Boolean):
-    """'laminar' child."""
+    """
+    'laminar' child.
+    """
 
     fluent_name = "laminar?"
+

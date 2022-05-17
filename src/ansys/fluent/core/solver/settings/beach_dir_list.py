@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .beach_dir_list_child import beach_dir_list_child
 
-
 class beach_dir_list(ListObject[beach_dir_list_child]):
-    """'beach_dir_list' child."""
+    """
+    'beach_dir_list' child.
+    """
 
     fluent_name = "beach-dir-list"
 

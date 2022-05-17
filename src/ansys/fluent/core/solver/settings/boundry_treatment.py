@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class boundry_treatment(Boolean):
-    """Enable/disable boundary treatment."""
+    """
+    Enable/disable boundary treatment.
+    """
 
     fluent_name = "boundry-treatment?"
+

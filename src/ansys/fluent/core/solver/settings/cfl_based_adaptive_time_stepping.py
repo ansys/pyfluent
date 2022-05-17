@@ -4,37 +4,29 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .desired_cfl import desired_cfl
 from .enalbled import enalbled
+from .user_defined_timestep import user_defined_timestep
+from .desired_cfl import desired_cfl
+from .time_end import time_end
 from .initial_time_step import initial_time_step
 from .max_fixed_time_step import max_fixed_time_step
-from .max_step_change_factor import max_step_change_factor
+from .update_interval_time_step_size import update_interval_time_step_size
+from .min_time_step import min_time_step
 from .max_time_step import max_time_step
 from .min_step_change_factor import min_step_change_factor
-from .min_time_step import min_time_step
-from .time_end import time_end
-from .update_interval_time_step_size import update_interval_time_step_size
-from .user_defined_timestep import user_defined_timestep
-
-
+from .max_step_change_factor import max_step_change_factor
 class cfl_based_adaptive_time_stepping(Group):
-    """'cfl_based_adaptive_time_stepping' child."""
+    """
+    'cfl_based_adaptive_time_stepping' child.
+    """
 
     fluent_name = "cfl-based-adaptive-time-stepping"
 
-    child_names = [
-        "enalbled",
-        "user_defined_timestep",
-        "desired_cfl",
-        "time_end",
-        "initial_time_step",
-        "max_fixed_time_step",
-        "update_interval_time_step_size",
-        "min_time_step",
-        "max_time_step",
-        "min_step_change_factor",
-        "max_step_change_factor",
-    ]
+    child_names = \
+        ['enalbled', 'user_defined_timestep', 'desired_cfl', 'time_end',
+         'initial_time_step', 'max_fixed_time_step',
+         'update_interval_time_step_size', 'min_time_step', 'max_time_step',
+         'min_step_change_factor', 'max_step_change_factor']
 
     enalbled: enalbled = enalbled
     """
@@ -60,9 +52,7 @@ class cfl_based_adaptive_time_stepping(Group):
     """
     max_fixed_time_step child of cfl_based_adaptive_time_stepping
     """
-    update_interval_time_step_size: update_interval_time_step_size = (
-        update_interval_time_step_size
-    )
+    update_interval_time_step_size: update_interval_time_step_size = update_interval_time_step_size
     """
     update_interval_time_step_size child of cfl_based_adaptive_time_stepping
     """

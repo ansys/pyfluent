@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class image_to_display(String):
-    """'image_to_display' child."""
+    """
+    'image_to_display' child.
+    """
 
     fluent_name = "image-to-display"
+

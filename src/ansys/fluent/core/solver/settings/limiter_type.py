@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class limiter_type(String):
-    """New slope limiter."""
+    """
+    New slope limiter.
+    """
 
     fluent_name = "limiter-type"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class onzone(StringList):
-    """'onzone' child."""
+    """
+    'onzone' child.
+    """
 
     fluent_name = "onzone"
+

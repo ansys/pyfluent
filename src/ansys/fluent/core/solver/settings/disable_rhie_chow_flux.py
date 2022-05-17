@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class disable_rhie_chow_flux(Boolean):
-    """Use low order velocity interpolation in flux calculation."""
+    """
+    Use low order velocity interpolation in flux calculation.
+    """
 
     fluent_name = "disable-rhie-chow-flux?"
+

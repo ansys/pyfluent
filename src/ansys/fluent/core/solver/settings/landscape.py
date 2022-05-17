@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class landscape(Boolean):
-    """'landscape' child."""
+    """
+    'landscape' child.
+    """
 
     fluent_name = "landscape?"
+

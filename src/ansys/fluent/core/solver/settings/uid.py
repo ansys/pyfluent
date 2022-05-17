@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class uid(String):
-    """'uid' child."""
+    """
+    'uid' child.
+    """
 
     fluent_name = "uid"
+

@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .nb_gradient import nb_gradient
 from .nb_gradient_dbns import nb_gradient_dbns
-
-
 class nb_gradient_boundary_option(Group):
-    """'nb_gradient_boundary_option' child."""
+    """
+    'nb_gradient_boundary_option' child.
+    """
 
     fluent_name = "nb-gradient-boundary-option?"
 
-    child_names = ["nb_gradient", "nb_gradient_dbns"]
+    child_names = \
+        ['nb_gradient', 'nb_gradient_dbns']
 
     nb_gradient: nb_gradient = nb_gradient
     """

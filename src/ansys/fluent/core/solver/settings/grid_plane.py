@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class grid_plane(String):
-    """'grid_plane' child."""
+    """
+    'grid_plane' child.
+    """
 
     fluent_name = "grid-plane"
+

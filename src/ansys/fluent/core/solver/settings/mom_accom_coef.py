@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class mom_accom_coef(Real):
-    """'mom_accom_coef' child."""
+    """
+    'mom_accom_coef' child.
+    """
 
     fluent_name = "mom-accom-coef"
+

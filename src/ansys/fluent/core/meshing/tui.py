@@ -8992,71 +8992,11 @@ class main_menu(TUIMenu):
                     self.path = path
                     self.service = service
                     super().__init__(path, service)
-                def cell_quality(self, *args, **kwargs):
-                    """
-                    Indicates cells within the specified cell quality range. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/cell_quality").execute(*args, **kwargs)
-                def cell_size(self, *args, **kwargs):
-                    """
-                    Indicates cells within the specified cell size range. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/cell_size").execute(*args, **kwargs)
                 def dummy(self, *args, **kwargs):
                     """
                     .
                     """
                     return PyMenu(self.service, "/display/set/styles/dummy").execute(*args, **kwargs)
-                def face_quality(self, *args, **kwargs):
-                    """
-                    Indicates faces within the specified face quality range. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/face_quality").execute(*args, **kwargs)
-                def face_size(self, *args, **kwargs):
-                    """
-                    Indicates faces within the specified face size range. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/face_size").execute(*args, **kwargs)
-                def free(self, *args, **kwargs):
-                    """
-                    Indicates free nodes or faces. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/free").execute(*args, **kwargs)
-                def left_handed(self, *args, **kwargs):
-                    """
-                    Indicates faces that do not follow the right-hand rule with respect to their cell neighbors. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/left_handed").execute(*args, **kwargs)
-                def mark(self, *args, **kwargs):
-                    """
-                    Indicates marked objects (for expert users). 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/mark").execute(*args, **kwargs)
-                def multi(self, *args, **kwargs):
-                    """
-                    Indicates multiply-connected nodes or faces. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/multi").execute(*args, **kwargs)
-                def refine(self, *args, **kwargs):
-                    """
-                    Indicates boundary faces to be refined. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/refine").execute(*args, **kwargs)
-                def tag(self, *args, **kwargs):
-                    """
-                    Indicates tagged objects (for expert users). 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/tag").execute(*args, **kwargs)
-                def unmeshed(self, *args, **kwargs):
-                    """
-                    Indicates unmeshed nodes or faces. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/unmeshed").execute(*args, **kwargs)
-                def unused(self, *args, **kwargs):
-                    """
-                    Indicates unused nodes or faces. 
-                    """
-                    return PyMenu(self.service, "/display/set/styles/unused").execute(*args, **kwargs)
 
             class windows(TUIMenu):
                 """

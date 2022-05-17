@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class adhesion_angle(NamedObject[child_object_type_child]):
-    """'adhesion_angle' child."""
+    """
+    'adhesion_angle' child.
+    """
 
     fluent_name = "adhesion-angle"
 

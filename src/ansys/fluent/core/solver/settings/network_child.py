@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .phase_10 import phase
-
-
 class network_child(Group):
-    """'child_object_type' of network."""
+    """
+    'child_object_type' of network
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = ["phase"]
+    child_names = \
+        ['phase']
 
     phase: phase = phase
     """

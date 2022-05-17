@@ -4,19 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .heading_angle import heading_angle
-from .offset import offset
 from .theory import theory
 from .wave_ht import wave_ht
 from .wave_len import wave_len
-
-
+from .offset import offset
+from .heading_angle import heading_angle
 class wave_list_shallow_child(Group):
-    """'child_object_type' of wave_list_shallow."""
+    """
+    'child_object_type' of wave_list_shallow
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = ["theory", "wave_ht", "wave_len", "offset", "heading_angle"]
+    child_names = \
+        ['theory', 'wave_ht', 'wave_len', 'offset', 'heading_angle']
 
     theory: theory = theory
     """

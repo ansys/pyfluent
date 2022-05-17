@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class init_flow_statistics(Command):
-    """Initialize statistics."""
+    """
+    Initialize statistics.
+    """
 
     fluent_name = "init-flow-statistics"
+

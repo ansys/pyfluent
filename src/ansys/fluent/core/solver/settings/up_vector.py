@@ -5,20 +5,21 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .xyz import xyz
-
-
 class up_vector(Command):
-    """Set the camera up-vector.
-
+    """
+    Set the camera up-vector.
+    
     Parameters
     ----------
         xyz : typing.List[real]
             'xyz' child.
+    
     """
 
     fluent_name = "up-vector"
 
-    argument_names = ["xyz"]
+    argument_names = \
+        ['xyz']
 
     xyz: xyz = xyz
     """

@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .multi_grid_controls_child import multi_grid_controls_child
 
-
 class multi_grid_controls(NamedObject[multi_grid_controls_child]):
-    """'multi_grid_controls' child."""
+    """
+    'multi_grid_controls' child.
+    """
 
     fluent_name = "multi-grid-controls"
 

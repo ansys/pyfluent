@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class const_velocity(Boolean):
-    """Enable/Disable constant velocity magnitude."""
+    """
+    Enable/Disable constant velocity magnitude.
+    """
 
     fluent_name = "const-velocity?"
+

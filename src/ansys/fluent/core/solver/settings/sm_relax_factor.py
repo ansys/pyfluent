@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class sm_relax_factor(Real):
-    """Smoothing relaxation factor."""
+    """
+    Smoothing relaxation factor.
+    """
 
     fluent_name = "sm-relax-factor"
+

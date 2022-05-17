@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class gap(Boolean):
-    """'gap' child."""
+    """
+    'gap' child.
+    """
 
     fluent_name = "gap?"
+

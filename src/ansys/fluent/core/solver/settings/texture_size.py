@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class texture_size(Integer):
-    """'texture_size' child."""
+    """
+    'texture_size' child.
+    """
 
     fluent_name = "texture-size"
+

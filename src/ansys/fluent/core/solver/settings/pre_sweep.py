@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pre_sweep(Integer):
-    """'pre_sweep' child."""
+    """
+    'pre_sweep' child.
+    """
 
     fluent_name = "pre-sweep"
+

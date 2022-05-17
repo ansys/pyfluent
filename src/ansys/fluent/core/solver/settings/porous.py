@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class porous(Boolean):
-    """'porous' child."""
+    """
+    'porous' child.
+    """
 
     fluent_name = "porous?"
+

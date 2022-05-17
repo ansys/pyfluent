@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enable_memory_saving_mode(Boolean):
-    """Enable/disable use of Memory Saving Mode."""
+    """
+    Enable/disable use of Memory Saving Mode.
+    """
 
     fluent_name = "enable-memory-saving-mode"
+

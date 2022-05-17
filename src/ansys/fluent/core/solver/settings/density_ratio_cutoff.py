@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class density_ratio_cutoff(Real):
-    """Density ratio cut-off."""
+    """
+    Density ratio cut-off.
+    """
 
     fluent_name = "density-ratio-cutoff"
+

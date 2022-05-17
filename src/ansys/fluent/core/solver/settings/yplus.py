@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class yplus(Real):
-    """Set reference yplus for normalization."""
+    """
+    Set reference yplus for normalization.
+    """
 
     fluent_name = "yplus"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class models(String):
-    """Specify multiphase model."""
+    """
+    Specify multiphase model.
+    """
 
     fluent_name = "models"
+

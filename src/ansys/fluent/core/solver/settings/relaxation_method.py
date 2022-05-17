@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class relaxation_method(String):
-    """Set the solver relaxation method."""
+    """
+    Set the solver relaxation method.
+    """
 
     fluent_name = "relaxation-method"
+

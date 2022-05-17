@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class temperature(Real):
-    """Set reference temperature for normalization."""
+    """
+    Set reference temperature for normalization.
+    """
 
     fluent_name = "temperature"
+

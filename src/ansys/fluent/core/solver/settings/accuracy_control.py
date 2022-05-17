@@ -7,14 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .option import option
 from .step_size import step_size
 from .tolerance import tolerance
-
-
 class accuracy_control(Group):
-    """'accuracy_control' child."""
+    """
+    'accuracy_control' child.
+    """
 
     fluent_name = "accuracy-control"
 
-    child_names = ["option", "step_size", "tolerance"]
+    child_names = \
+        ['option', 'step_size', 'tolerance']
 
     option: option = option
     """

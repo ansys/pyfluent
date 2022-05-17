@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .options_8 import options
 from .scale_1 import scale
 from .sphere_lod import sphere_lod
-
-
+from .options_8 import options
 class sphere_settings(Group):
-    """'sphere_settings' child."""
+    """
+    'sphere_settings' child.
+    """
 
     fluent_name = "sphere-settings"
 
-    child_names = ["scale", "sphere_lod", "options"]
+    child_names = \
+        ['scale', 'sphere_lod', 'options']
 
     scale: scale = scale
     """

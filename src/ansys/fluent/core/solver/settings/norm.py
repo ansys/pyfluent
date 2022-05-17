@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class norm(Boolean):
-    """'norm' child."""
+    """
+    'norm' child.
+    """
 
     fluent_name = "norm?"
+

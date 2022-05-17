@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class mc_poldfun_p(Boolean):
-    """'mc_poldfun_p' child."""
+    """
+    'mc_poldfun_p' child.
+    """
 
     fluent_name = "mc-poldfun-p?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fensapice_drop_cy(Real):
-    """'fensapice_drop_cy' child."""
+    """
+    'fensapice_drop_cy' child.
+    """
 
     fluent_name = "fensapice-drop-cy"
+

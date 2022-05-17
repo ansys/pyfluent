@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class texture_spacing(Integer):
-    """'texture_spacing' child."""
+    """
+    'texture_spacing' child.
+    """
 
     fluent_name = "texture-spacing"
+

@@ -4,28 +4,23 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .copy import copy
-from .display_states_child import display_states_child
 from .list import list
-from .read_1 import read
-from .restore_state import restore_state
 from .use_active import use_active
+from .restore_state import restore_state
+from .copy import copy
+from .read_1 import read
 from .write_1 import write
-
+from .display_states_child import display_states_child
 
 class display_states(NamedObject[display_states_child]):
-    """'display_states' child."""
+    """
+    'display_states' child.
+    """
 
     fluent_name = "display-states"
 
-    command_names = [
-        "list",
-        "use_active",
-        "restore_state",
-        "copy",
-        "read",
-        "write",
-    ]
+    command_names = \
+        ['list', 'use_active', 'restore_state', 'copy', 'read', 'write']
 
     list: list = list
     """

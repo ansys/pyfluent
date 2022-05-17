@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class flux_type(String):
-    """Set Flux Type."""
+    """
+    Set Flux Type.
+    """
 
     fluent_name = "flux-type"
+

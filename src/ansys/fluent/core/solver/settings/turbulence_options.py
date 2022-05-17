@@ -4,12 +4,12 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class turbulence_options(String):
     """
-    Options:
-    Legacy computations
-    New computations .
+     Options:
+     Legacy computations 
+     New computations .
     """
 
     fluent_name = "turbulence-options"
+

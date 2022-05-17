@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class post_format(String):
-    """Produce PostScript output for hardcopies."""
+    """
+    Produce PostScript output for hardcopies.
+    """
 
     fluent_name = "post-format"
+

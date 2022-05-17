@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscous(Boolean):
-    """Update viscous stresses at stage."""
+    """
+    Update viscous stresses at stage.
+    """
 
     fluent_name = "viscous"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class filepath(String):
-    """'filepath' child."""
+    """
+    'filepath' child.
+    """
 
     fluent_name = "filepath"
+

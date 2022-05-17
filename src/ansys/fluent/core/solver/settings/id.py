@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class id(Boolean):
-    """'id' child."""
+    """
+    'id' child.
+    """
 
     fluent_name = "id"
+

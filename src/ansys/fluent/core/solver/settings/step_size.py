@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class step_size(Real):
-    """'step_size' child."""
+    """
+    'step_size' child.
+    """
 
     fluent_name = "step-size"
+

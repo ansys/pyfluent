@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .uds_bc_child import uds_bc_child
 
-
 class discretization_scheme(NamedObject[uds_bc_child]):
-    """'discretization_scheme' child."""
+    """
+    'discretization_scheme' child.
+    """
 
     fluent_name = "discretization-scheme"
 

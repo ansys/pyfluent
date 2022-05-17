@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pwr_names(StringList):
-    """'pwr_names' child."""
+    """
+    'pwr_names' child.
+    """
 
     fluent_name = "pwr-names"
+

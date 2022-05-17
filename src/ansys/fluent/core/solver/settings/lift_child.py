@@ -4,39 +4,29 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .average_over import average_over
-from .force_vector import force_vector
 from .geometry_1 import geometry
-from .old_props import old_props
-from .per_zone import per_zone
 from .physics import physics
-from .reference_frame import reference_frame
-from .report_type import report_type
 from .retain_instantaneous_values import retain_instantaneous_values
 from .scaled import scaled
-from .thread_ids import thread_ids
+from .report_type import report_type
+from .average_over import average_over
+from .per_zone import per_zone
 from .thread_names import thread_names
-
-
+from .thread_ids import thread_ids
+from .old_props import old_props
+from .reference_frame import reference_frame
+from .force_vector import force_vector
 class lift_child(Group):
-    """'child_object_type' of lift."""
+    """
+    'child_object_type' of lift
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "geometry",
-        "physics",
-        "retain_instantaneous_values",
-        "scaled",
-        "report_type",
-        "average_over",
-        "per_zone",
-        "thread_names",
-        "thread_ids",
-        "old_props",
-        "reference_frame",
-        "force_vector",
-    ]
+    child_names = \
+        ['geometry', 'physics', 'retain_instantaneous_values', 'scaled',
+         'report_type', 'average_over', 'per_zone', 'thread_names',
+         'thread_ids', 'old_props', 'reference_frame', 'force_vector']
 
     geometry: geometry = geometry
     """
@@ -46,9 +36,7 @@ class lift_child(Group):
     """
     physics child of lift_child
     """
-    retain_instantaneous_values: retain_instantaneous_values = (
-        retain_instantaneous_values
-    )
+    retain_instantaneous_values: retain_instantaneous_values = retain_instantaneous_values
     """
     retain_instantaneous_values child of lift_child
     """

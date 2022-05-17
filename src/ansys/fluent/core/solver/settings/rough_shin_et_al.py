@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rough_shin_et_al(Boolean):
-    """'rough_shin_et_al' child."""
+    """
+    'rough_shin_et_al' child.
+    """
 
     fluent_name = "rough-shin-et-al?"
+

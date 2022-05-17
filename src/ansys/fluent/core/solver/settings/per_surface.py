@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class per_surface(Boolean):
-    """'per_surface' child."""
+    """
+    'per_surface' child.
+    """
 
     fluent_name = "per-surface?"
+

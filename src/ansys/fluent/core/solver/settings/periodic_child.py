@@ -4,35 +4,26 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .angular import angular
-from .geom_bgthread import geom_bgthread
+from .phase_14 import phase
+from .geom_disable import geom_disable
 from .geom_dir_spec import geom_dir_spec
 from .geom_dir_x import geom_dir_x
 from .geom_dir_y import geom_dir_y
 from .geom_dir_z import geom_dir_z
-from .geom_disable import geom_disable
 from .geom_levels import geom_levels
+from .geom_bgthread import geom_bgthread
+from .angular import angular
 from .p_jump import p_jump
-from .phase_14 import phase
-
-
 class periodic_child(Group):
-    """'child_object_type' of periodic."""
+    """
+    'child_object_type' of periodic
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "phase",
-        "geom_disable",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-        "geom_levels",
-        "geom_bgthread",
-        "angular",
-        "p_jump",
-    ]
+    child_names = \
+        ['phase', 'geom_disable', 'geom_dir_spec', 'geom_dir_x', 'geom_dir_y',
+         'geom_dir_z', 'geom_levels', 'geom_bgthread', 'angular', 'p_jump']
 
     phase: phase = phase
     """

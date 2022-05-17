@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class anti_aliasing(String):
-    """'anti_aliasing' child."""
+    """
+    'anti_aliasing' child.
+    """
 
     fluent_name = "anti-aliasing"
+

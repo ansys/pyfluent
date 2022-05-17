@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class single_phase_setting(String):
-    """Set hybrid nita option."""
+    """
+    Set hybrid nita option.
+    """
 
     fluent_name = "single-phase-setting"
+

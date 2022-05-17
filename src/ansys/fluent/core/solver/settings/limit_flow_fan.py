@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class limit_flow_fan(Boolean):
-    """'limit_flow_fan' child."""
+    """
+    'limit_flow_fan' child.
+    """
 
     fluent_name = "limit-flow-fan"
+

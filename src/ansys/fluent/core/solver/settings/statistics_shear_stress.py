@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class statistics_shear_stress(Boolean):
-    """Enable/Disable statistics for flow shear stresses."""
+    """
+    Enable/Disable statistics for flow shear stresses.
+    """
 
     fluent_name = "statistics-shear-stress?"
+

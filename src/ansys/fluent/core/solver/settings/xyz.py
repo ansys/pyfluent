@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class xyz(RealList):
-    """'xyz' child."""
+    """
+    'xyz' child.
+    """
 
     fluent_name = "xyz"
+

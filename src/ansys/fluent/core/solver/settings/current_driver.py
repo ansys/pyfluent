@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class current_driver(Command):
-    """'current_driver' command."""
+    """
+    'current_driver' command.
+    """
 
     fluent_name = "current-driver"
+

@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class band_q_irrad(NamedObject[child_object_type_child]):
-    """'band_q_irrad' child."""
+    """
+    'band_q_irrad' child.
+    """
 
     fluent_name = "band-q-irrad"
 

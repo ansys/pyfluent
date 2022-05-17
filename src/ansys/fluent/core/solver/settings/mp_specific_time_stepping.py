@@ -5,32 +5,26 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .enabled_2 import enabled
-from .fixed_time_step_size import fixed_time_step_size
 from .global_courant_number import global_courant_number
 from .initial_time_step_size import initial_time_step_size
-from .max_step_change_factor import max_step_change_factor
+from .fixed_time_step_size import fixed_time_step_size
+from .min_time_step_size import min_time_step_size
 from .max_time_step_size import max_time_step_size
 from .min_step_change_factor import min_step_change_factor
-from .min_time_step_size import min_time_step_size
+from .max_step_change_factor import max_step_change_factor
 from .update_interval import update_interval
-
-
 class mp_specific_time_stepping(Group):
-    """'mp_specific_time_stepping' child."""
+    """
+    'mp_specific_time_stepping' child.
+    """
 
     fluent_name = "mp-specific-time-stepping"
 
-    child_names = [
-        "enabled",
-        "global_courant_number",
-        "initial_time_step_size",
-        "fixed_time_step_size",
-        "min_time_step_size",
-        "max_time_step_size",
-        "min_step_change_factor",
-        "max_step_change_factor",
-        "update_interval",
-    ]
+    child_names = \
+        ['enabled', 'global_courant_number', 'initial_time_step_size',
+         'fixed_time_step_size', 'min_time_step_size', 'max_time_step_size',
+         'min_step_change_factor', 'max_step_change_factor',
+         'update_interval']
 
     enabled: enabled = enabled
     """

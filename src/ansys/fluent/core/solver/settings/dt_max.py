@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dt_max(Real):
-    """Set maximum pseudo time step size."""
+    """
+    Set maximum pseudo time step size.
+    """
 
     fluent_name = "dt-max"
+

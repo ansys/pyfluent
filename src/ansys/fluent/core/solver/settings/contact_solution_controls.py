@@ -4,34 +4,26 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .amg import amg
-from .methods import methods
-from .miscellaneous import miscellaneous
-from .models_2 import models
-from .parameters import parameters
-from .set_settings_to_default import set_settings_to_default
 from .solution_stabilization import solution_stabilization
+from .verbosity_1 import verbosity
+from .parameters import parameters
 from .spatial import spatial
 from .transient import transient
-from .verbosity_1 import verbosity
-
-
+from .amg import amg
+from .models_2 import models
+from .methods import methods
+from .miscellaneous import miscellaneous
+from .set_settings_to_default import set_settings_to_default
 class contact_solution_controls(Group):
-    """'contact_solution_controls' child."""
+    """
+    'contact_solution_controls' child.
+    """
 
     fluent_name = "contact-solution-controls"
 
-    child_names = [
-        "solution_stabilization",
-        "verbosity",
-        "parameters",
-        "spatial",
-        "transient",
-        "amg",
-        "models",
-        "methods",
-        "miscellaneous",
-    ]
+    child_names = \
+        ['solution_stabilization', 'verbosity', 'parameters', 'spatial',
+         'transient', 'amg', 'models', 'methods', 'miscellaneous']
 
     solution_stabilization: solution_stabilization = solution_stabilization
     """
@@ -69,7 +61,8 @@ class contact_solution_controls(Group):
     """
     miscellaneous child of contact_solution_controls
     """
-    command_names = ["set_settings_to_default"]
+    command_names = \
+        ['set_settings_to_default']
 
     set_settings_to_default: set_settings_to_default = set_settings_to_default
     """

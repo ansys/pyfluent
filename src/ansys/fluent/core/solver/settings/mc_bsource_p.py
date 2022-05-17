@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class mc_bsource_p(Boolean):
-    """'mc_bsource_p' child."""
+    """
+    'mc_bsource_p' child.
+    """
 
     fluent_name = "mc-bsource-p?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class ref_frame(String):
-    """'ref_frame' child."""
+    """
+    'ref_frame' child.
+    """
 
     fluent_name = "ref-frame"
+

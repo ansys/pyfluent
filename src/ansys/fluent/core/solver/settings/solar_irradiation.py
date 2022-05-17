@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class solar_irradiation(Boolean):
-    """'solar_irradiation' child."""
+    """
+    'solar_irradiation' child.
+    """
 
     fluent_name = "solar-irradiation?"
+

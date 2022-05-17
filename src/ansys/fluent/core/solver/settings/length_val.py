@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class length_val(Real):
-    """Set reference length for normalization."""
+    """
+    Set reference length for normalization.
+    """
 
     fluent_name = "length-val"
+

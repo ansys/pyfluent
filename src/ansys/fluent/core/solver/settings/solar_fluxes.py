@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class solar_fluxes(Boolean):
-    """'solar_fluxes' child."""
+    """
+    'solar_fluxes' child.
+    """
 
     fluent_name = "solar-fluxes?"
+

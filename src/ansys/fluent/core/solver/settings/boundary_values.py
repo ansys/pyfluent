@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class boundary_values(Boolean):
-    """'boundary_values' child."""
+    """
+    'boundary_values' child.
+    """
 
     fluent_name = "boundary-values?"
+

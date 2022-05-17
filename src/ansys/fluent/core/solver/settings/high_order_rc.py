@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class high_order_rc(Boolean):
-    """Use low order velocity interpolation in flux calculation."""
+    """
+    Use low order velocity interpolation in flux calculation.
+    """
 
     fluent_name = "high-order-rc?"
+

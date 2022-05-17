@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enabled(Boolean):
-    """Enable/disable localized initialization of turbulent flow variables."""
+    """
+    Enable/disable localized initialization of turbulent flow variables.
+    """
 
     fluent_name = "enabled?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fensapice_drop_icc(Real):
-    """'fensapice_drop_icc' child."""
+    """
+    'fensapice_drop_icc' child.
+    """
 
     fluent_name = "fensapice-drop-icc"
+

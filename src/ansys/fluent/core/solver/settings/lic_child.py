@@ -4,62 +4,45 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .color_map import color_map
-from .display_1 import display
-from .display_state_name import display_state_name
-from .draw_mesh import draw_mesh
+from .name import name
 from .field import field
-from .gray_scale import gray_scale
-from .image_to_display import image_to_display
-from .lic_color import lic_color
+from .vector_field import vector_field
+from .surfaces_list import surfaces_list
 from .lic_color_by_field import lic_color_by_field
-from .lic_fast import lic_fast
+from .lic_color import lic_color
+from .lic_oriented import lic_oriented
+from .lic_normalize import lic_normalize
+from .lic_pixel_interpolation import lic_pixel_interpolation
+from .lic_max_steps import lic_max_steps
+from .texture_spacing import texture_spacing
+from .texture_size import texture_size
+from .lic_intensity_factor import lic_intensity_factor
 from .lic_image_filter import lic_image_filter
 from .lic_intensity_alpha import lic_intensity_alpha
-from .lic_intensity_factor import lic_intensity_factor
-from .lic_max_steps import lic_max_steps
-from .lic_normalize import lic_normalize
-from .lic_oriented import lic_oriented
-from .lic_pixel_interpolation import lic_pixel_interpolation
-from .mesh_object import mesh_object
-from .name import name
+from .lic_fast import lic_fast
+from .gray_scale import gray_scale
+from .image_to_display import image_to_display
 from .range_option import range_option
-from .surfaces_list import surfaces_list
-from .texture_size import texture_size
-from .texture_spacing import texture_spacing
-from .vector_field import vector_field
-
-
+from .color_map import color_map
+from .draw_mesh import draw_mesh
+from .mesh_object import mesh_object
+from .display_state_name import display_state_name
+from .display_1 import display
 class lic_child(Group):
-    """'child_object_type' of lic."""
+    """
+    'child_object_type' of lic
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "name",
-        "field",
-        "vector_field",
-        "surfaces_list",
-        "lic_color_by_field",
-        "lic_color",
-        "lic_oriented",
-        "lic_normalize",
-        "lic_pixel_interpolation",
-        "lic_max_steps",
-        "texture_spacing",
-        "texture_size",
-        "lic_intensity_factor",
-        "lic_image_filter",
-        "lic_intensity_alpha",
-        "lic_fast",
-        "gray_scale",
-        "image_to_display",
-        "range_option",
-        "color_map",
-        "draw_mesh",
-        "mesh_object",
-        "display_state_name",
-    ]
+    child_names = \
+        ['name', 'field', 'vector_field', 'surfaces_list',
+         'lic_color_by_field', 'lic_color', 'lic_oriented', 'lic_normalize',
+         'lic_pixel_interpolation', 'lic_max_steps', 'texture_spacing',
+         'texture_size', 'lic_intensity_factor', 'lic_image_filter',
+         'lic_intensity_alpha', 'lic_fast', 'gray_scale', 'image_to_display',
+         'range_option', 'color_map', 'draw_mesh', 'mesh_object',
+         'display_state_name']
 
     name: name = name
     """
@@ -153,7 +136,8 @@ class lic_child(Group):
     """
     display_state_name child of lic_child
     """
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

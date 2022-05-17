@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class band_in_emiss(NamedObject[child_object_type_child]):
-    """'band_in_emiss' child."""
+    """
+    'band_in_emiss' child.
+    """
 
     fluent_name = "band-in-emiss"
 

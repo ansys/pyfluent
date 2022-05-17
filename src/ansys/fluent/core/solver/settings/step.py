@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class step(Integer):
-    """'step' child."""
+    """
+    'step' child.
+    """
 
     fluent_name = "step"
+

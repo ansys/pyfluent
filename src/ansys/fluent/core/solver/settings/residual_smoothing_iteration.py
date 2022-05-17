@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class residual_smoothing_iteration(Integer):
-    """Set number of implicit iterations."""
+    """
+    Set number of implicit iterations.
+    """
 
     fluent_name = "residual-smoothing-iteration"
+

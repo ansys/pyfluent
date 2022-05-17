@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class number_of_coefficients(Integer):
-    """'number_of_coefficients' child."""
+    """
+    'number_of_coefficients' child.
+    """
 
     fluent_name = "number-of-coefficients"
+

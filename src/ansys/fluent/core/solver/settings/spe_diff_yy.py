@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class spe_diff_yy(Real):
-    """'spe_diff_yy' child."""
+    """
+    'spe_diff_yy' child.
+    """
 
     fluent_name = "spe-diff-yy"
+

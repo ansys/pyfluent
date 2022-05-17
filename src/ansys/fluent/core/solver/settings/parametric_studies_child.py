@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .current_design_point import current_design_point
 from .design_points_1 import design_points
-
-
+from .current_design_point import current_design_point
 class parametric_studies_child(Group):
-    """'child_object_type' of parametric_studies."""
+    """
+    'child_object_type' of parametric_studies
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = ["design_points", "current_design_point"]
+    child_names = \
+        ['design_points', 'current_design_point']
 
     design_points: design_points = design_points
     """

@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .diameter import diameter
-
-
 class constant(Group):
-    """'constant' child."""
+    """
+    'constant' child.
+    """
 
     fluent_name = "constant"
 
-    child_names = ["diameter"]
+    child_names = \
+        ['diameter']
 
     diameter: diameter = diameter
     """

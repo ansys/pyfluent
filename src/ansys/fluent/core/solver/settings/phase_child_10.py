@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class phase_child(Group):
-    """'child_object_type' of phase."""
+    """
+    'child_object_type' of phase
+    """
 
     fluent_name = "child-object-type"
+

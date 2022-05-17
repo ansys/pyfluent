@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class sgs_turb_intensity(Real):
-    """'sgs_turb_intensity' child."""
+    """
+    'sgs_turb_intensity' child.
+    """
 
     fluent_name = "sgs-turb-intensity"
+

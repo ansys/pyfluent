@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class headlights(String):
-    """'headlights' child."""
+    """
+    'headlights' child.
+    """
 
     fluent_name = "headlights"
+

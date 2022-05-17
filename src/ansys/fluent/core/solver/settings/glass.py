@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class glass(Boolean):
-    """'glass' child."""
+    """
+    'glass' child.
+    """
 
     fluent_name = "glass?"
+

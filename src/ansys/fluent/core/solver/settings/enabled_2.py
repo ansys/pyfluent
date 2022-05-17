@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enabled(Boolean):
-    """'enabled' child."""
+    """
+    'enabled' child.
+    """
 
     fluent_name = "enabled?"
+

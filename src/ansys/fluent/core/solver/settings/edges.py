@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class edges(Boolean):
-    """'edges' child."""
+    """
+    'edges' child.
+    """
 
     fluent_name = "edges?"
+

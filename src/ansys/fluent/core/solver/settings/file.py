@@ -4,18 +4,19 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .parametric_project import parametric_project
 from .read import read
 from .replace_mesh import replace_mesh
 from .write import write
-
-
+from .parametric_project import parametric_project
 class file(Group):
-    """'file' child."""
+    """
+    'file' child.
+    """
 
     fluent_name = "file"
 
-    command_names = ["read", "replace_mesh", "write", "parametric_project"]
+    command_names = \
+        ['read', 'replace_mesh', 'write', 'parametric_project']
 
     read: read = read
     """

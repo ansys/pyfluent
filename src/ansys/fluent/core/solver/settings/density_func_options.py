@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class density_func_options(Integer):
-    """Density function option."""
+    """
+    Density function option.
+    """
 
     fluent_name = "density-func-options"
+

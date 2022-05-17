@@ -5,24 +5,20 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .cycle_type import cycle_type
-from .method import method
-from .residual_reduction_tolerance import residual_reduction_tolerance
-from .stabilization import stabilization
 from .termination_criteria import termination_criteria
-
-
+from .residual_reduction_tolerance import residual_reduction_tolerance
+from .method import method
+from .stabilization import stabilization
 class multi_grid_controls_child(Group):
-    """'child_object_type' of multi_grid_controls."""
+    """
+    'child_object_type' of multi_grid_controls
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "cycle_type",
-        "termination_criteria",
-        "residual_reduction_tolerance",
-        "method",
-        "stabilization",
-    ]
+    child_names = \
+        ['cycle_type', 'termination_criteria', 'residual_reduction_tolerance',
+         'method', 'stabilization']
 
     cycle_type: cycle_type = cycle_type
     """
@@ -32,9 +28,7 @@ class multi_grid_controls_child(Group):
     """
     termination_criteria child of multi_grid_controls_child
     """
-    residual_reduction_tolerance: residual_reduction_tolerance = (
-        residual_reduction_tolerance
-    )
+    residual_reduction_tolerance: residual_reduction_tolerance = residual_reduction_tolerance
     """
     residual_reduction_tolerance child of multi_grid_controls_child
     """

@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .verbosity import verbosity
-
-
 class options(Group):
-    """'options' child."""
+    """
+    'options' child.
+    """
 
     fluent_name = "options"
 
-    child_names = ["verbosity"]
+    child_names = \
+        ['verbosity']
 
     verbosity: verbosity = verbosity
     """

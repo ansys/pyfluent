@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class function_of(String):
-    """'function_of' child."""
+    """
+    'function_of' child.
+    """
 
     fluent_name = "function-of"
+

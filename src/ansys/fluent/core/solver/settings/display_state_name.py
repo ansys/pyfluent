@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class display_state_name(String):
-    """'display_state_name' child."""
+    """
+    'display_state_name' child.
+    """
 
     fluent_name = "display-state-name"
+

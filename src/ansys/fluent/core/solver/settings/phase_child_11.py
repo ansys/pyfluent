@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .q import q
-from .temperature import temperature
 from .thermal_bc import thermal_bc
-
-
+from .temperature import temperature
+from .q import q
 class phase_child(Group):
-    """'child_object_type' of phase."""
+    """
+    'child_object_type' of phase
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = ["thermal_bc", "temperature", "q"]
+    child_names = \
+        ['thermal_bc', 'temperature', 'q']
 
     thermal_bc: thermal_bc = thermal_bc
     """

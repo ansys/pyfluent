@@ -4,16 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .contour_child import contour_child
 from .display import display
-
+from .contour_child import contour_child
 
 class contour(NamedObject[contour_child]):
-    """'contour' child."""
+    """
+    'contour' child.
+    """
 
     fluent_name = "contour"
 
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

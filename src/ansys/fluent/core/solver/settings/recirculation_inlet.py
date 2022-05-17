@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .recirculation_inlet_child import recirculation_inlet_child
 
-
 class recirculation_inlet(NamedObject[recirculation_inlet_child]):
-    """'recirculation_inlet' child."""
+    """
+    'recirculation_inlet' child.
+    """
 
     fluent_name = "recirculation-inlet"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fpsc(Integer):
-    """'fpsc' child."""
+    """
+    'fpsc' child.
+    """
 
     fluent_name = "fpsc"
+

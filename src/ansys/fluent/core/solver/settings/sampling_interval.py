@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class sampling_interval(Integer):
-    """Set Sampling interval."""
+    """
+    Set Sampling interval.
+    """
 
     fluent_name = "sampling-interval"
+

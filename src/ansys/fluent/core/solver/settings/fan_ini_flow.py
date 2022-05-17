@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fan_ini_flow(Real):
-    """'fan_ini_flow' child."""
+    """
+    'fan_ini_flow' child.
+    """
 
     fluent_name = "fan-ini-flow"
+

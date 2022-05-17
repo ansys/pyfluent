@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .velocity_inlet_child import velocity_inlet_child
 
-
 class velocity_inlet(NamedObject[velocity_inlet_child]):
-    """'velocity_inlet' child."""
+    """
+    'velocity_inlet' child.
+    """
 
     fluent_name = "velocity-inlet"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

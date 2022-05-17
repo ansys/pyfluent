@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class low_pressure_slip(Boolean):
-    """Enable/Disable Low Pressure Boundary Slip."""
+    """
+    Enable/Disable Low Pressure Boundry Slip.
+    """
 
     fluent_name = "low-pressure-slip?"
+

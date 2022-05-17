@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class y_displacement_type(String):
-    """'y_displacement_type' child."""
+    """
+    'y_displacement_type' child.
+    """
 
     fluent_name = "y-displacement-type"
+

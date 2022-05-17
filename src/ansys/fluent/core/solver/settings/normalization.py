@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class normalization(Real):
-    """'normalization' child."""
+    """
+    'normalization' child.
+    """
 
     fluent_name = "normalization"
+

@@ -4,18 +4,19 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .option import option
 from .all import all
 from .feature import feature
-from .option import option
 from .outline import outline
-
-
 class edge_type(Group):
-    """'edge_type' child."""
+    """
+    'edge_type' child.
+    """
 
     fluent_name = "edge-type"
 
-    child_names = ["option", "all", "feature", "outline"]
+    child_names = \
+        ['option', 'all', 'feature', 'outline']
 
     option: option = option
     """

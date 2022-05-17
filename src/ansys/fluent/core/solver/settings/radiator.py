@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .radiator_child import radiator_child
 
-
 class radiator(NamedObject[radiator_child]):
-    """'radiator' child."""
+    """
+    'radiator' child.
+    """
 
     fluent_name = "radiator"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

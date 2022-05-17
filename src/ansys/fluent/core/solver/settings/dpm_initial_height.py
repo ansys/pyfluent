@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_initial_height(Real):
-    """'dpm_initial_height' child."""
+    """
+    'dpm_initial_height' child.
+    """
 
     fluent_name = "dpm-initial-height"
+

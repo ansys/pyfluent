@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fan_thickness(Real):
-    """'fan_thickness' child."""
+    """
+    'fan_thickness' child.
+    """
 
     fluent_name = "fan-thickness"
+

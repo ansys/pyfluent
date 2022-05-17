@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class statistics_heat_flux(Boolean):
-    """Enable/Disable statistics for flow heat fluxes."""
+    """
+    Enable/Disable statistics for flow heat fluxes.
+    """
 
     fluent_name = "statistics-heat-flux?"
+

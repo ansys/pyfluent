@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class user_defined_timestep(String):
-    """'user_defined_timestep' child."""
+    """
+    'user_defined_timestep' child.
+    """
 
     fluent_name = "user-defined-timestep"
+

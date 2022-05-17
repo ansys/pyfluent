@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class diameter(Real):
-    """'diameter' child."""
+    """
+    'diameter' child.
+    """
 
     fluent_name = "diameter"
+

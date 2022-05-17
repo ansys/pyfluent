@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class geom_dir_z(Real):
-    """'geom_dir_z' child."""
+    """
+    'geom_dir_z' child.
+    """
 
     fluent_name = "geom-dir-z"
+

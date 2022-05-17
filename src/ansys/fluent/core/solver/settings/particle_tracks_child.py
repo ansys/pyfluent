@@ -4,56 +4,41 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coarsen import coarsen
-from .color_map import color_map
-from .display_1 import display
-from .display_state_name import display_state_name
-from .draw_mesh import draw_mesh
-from .field import field
-from .filter_settings import filter_settings
-from .free_stream_particles import free_stream_particles
-from .injections_list import injections_list
-from .mesh_object import mesh_object
 from .name import name
-from .options_6 import options
-from .plot import plot
-from .range import range
-from .skip import skip
-from .style_attribute_1 import style_attribute
-from .track_pdf_particles import track_pdf_particles
-from .track_single_particle_stream import track_single_particle_stream
 from .uid import uid
+from .options_6 import options
+from .filter_settings import filter_settings
+from .range import range
+from .style_attribute_1 import style_attribute
 from .vector_settings import vector_settings
+from .plot import plot
+from .track_single_particle_stream import track_single_particle_stream
+from .skip import skip
+from .coarsen import coarsen
+from .field import field
+from .injections_list import injections_list
+from .free_stream_particles import free_stream_particles
 from .wall_film_particles import wall_film_particles
-
-
+from .track_pdf_particles import track_pdf_particles
+from .color_map import color_map
+from .draw_mesh import draw_mesh
+from .mesh_object import mesh_object
+from .display_state_name import display_state_name
+from .display_1 import display
 class particle_tracks_child(Group):
-    """'child_object_type' of particle_tracks."""
+    """
+    'child_object_type' of particle_tracks
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "name",
-        "uid",
-        "options",
-        "filter_settings",
-        "range",
-        "style_attribute",
-        "vector_settings",
-        "plot",
-        "track_single_particle_stream",
-        "skip",
-        "coarsen",
-        "field",
-        "injections_list",
-        "free_stream_particles",
-        "wall_film_particles",
-        "track_pdf_particles",
-        "color_map",
-        "draw_mesh",
-        "mesh_object",
-        "display_state_name",
-    ]
+    child_names = \
+        ['name', 'uid', 'options', 'filter_settings', 'range',
+         'style_attribute', 'vector_settings', 'plot',
+         'track_single_particle_stream', 'skip', 'coarsen', 'field',
+         'injections_list', 'free_stream_particles', 'wall_film_particles',
+         'track_pdf_particles', 'color_map', 'draw_mesh', 'mesh_object',
+         'display_state_name']
 
     name: name = name
     """
@@ -87,9 +72,7 @@ class particle_tracks_child(Group):
     """
     plot child of particle_tracks_child
     """
-    track_single_particle_stream: track_single_particle_stream = (
-        track_single_particle_stream
-    )
+    track_single_particle_stream: track_single_particle_stream = track_single_particle_stream
     """
     track_single_particle_stream child of particle_tracks_child
     """
@@ -137,7 +120,8 @@ class particle_tracks_child(Group):
     """
     display_state_name child of particle_tracks_child
     """
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

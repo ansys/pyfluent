@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class reverse(Boolean):
-    """'reverse' child."""
+    """
+    'reverse' child.
+    """
 
     fluent_name = "reverse"
+

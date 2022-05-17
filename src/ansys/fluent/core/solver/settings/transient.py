@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .time_scale_modification_factor import time_scale_modification_factor
-from .time_scale_modification_method import time_scale_modification_method
 from .transient_parameters_specify import transient_parameters_specify
 from .transient_scheme import transient_scheme
-
-
+from .time_scale_modification_method import time_scale_modification_method
+from .time_scale_modification_factor import time_scale_modification_factor
 class transient(Group):
-    """'transient' child."""
+    """
+    'transient' child.
+    """
 
     fluent_name = "transient"
 
-    child_names = [
-        "transient_parameters_specify",
-        "transient_scheme",
-        "time_scale_modification_method",
-        "time_scale_modification_factor",
-    ]
+    child_names = \
+        ['transient_parameters_specify', 'transient_scheme',
+         'time_scale_modification_method', 'time_scale_modification_factor']
 
-    transient_parameters_specify: transient_parameters_specify = (
-        transient_parameters_specify
-    )
+    transient_parameters_specify: transient_parameters_specify = transient_parameters_specify
     """
     transient_parameters_specify child of transient
     """
@@ -32,15 +27,11 @@ class transient(Group):
     """
     transient_scheme child of transient
     """
-    time_scale_modification_method: time_scale_modification_method = (
-        time_scale_modification_method
-    )
+    time_scale_modification_method: time_scale_modification_method = time_scale_modification_method
     """
     time_scale_modification_method child of transient
     """
-    time_scale_modification_factor: time_scale_modification_factor = (
-        time_scale_modification_factor
-    )
+    time_scale_modification_factor: time_scale_modification_factor = time_scale_modification_factor
     """
     time_scale_modification_factor child of transient
     """

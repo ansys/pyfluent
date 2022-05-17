@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class max_vol_mag(Real):
-    """'max_vol_mag' child."""
+    """
+    'max_vol_mag' child.
+    """
 
     fluent_name = "max-vol-mag"
+

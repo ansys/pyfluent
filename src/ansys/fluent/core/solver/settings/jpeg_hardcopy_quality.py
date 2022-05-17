@@ -4,7 +4,6 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class jpeg_hardcopy_quality(Integer):
     """
     0  : Saves lowest quality jpeg image, but with the least file size.
@@ -12,3 +11,4 @@ class jpeg_hardcopy_quality(Integer):
     """
 
     fluent_name = "jpeg-hardcopy-quality"
+

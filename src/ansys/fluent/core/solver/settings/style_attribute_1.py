@@ -4,35 +4,27 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .arrow_scale import arrow_scale
-from .arrow_space import arrow_space
+from .style import style
 from .line_width import line_width
+from .arrow_space import arrow_space
+from .arrow_scale import arrow_scale
 from .marker_size import marker_size
+from .sphere_size import sphere_size
+from .sphere_lod import sphere_lod
 from .radius import radius
 from .ribbon_settings import ribbon_settings
-from .sphere_lod import sphere_lod
 from .sphere_settings import sphere_settings
-from .sphere_size import sphere_size
-from .style import style
-
-
 class style_attribute(Group):
-    """'style_attribute' child."""
+    """
+    'style_attribute' child.
+    """
 
     fluent_name = "style-attribute"
 
-    child_names = [
-        "style",
-        "line_width",
-        "arrow_space",
-        "arrow_scale",
-        "marker_size",
-        "sphere_size",
-        "sphere_lod",
-        "radius",
-        "ribbon_settings",
-        "sphere_settings",
-    ]
+    child_names = \
+        ['style', 'line_width', 'arrow_space', 'arrow_scale', 'marker_size',
+         'sphere_size', 'sphere_lod', 'radius', 'ribbon_settings',
+         'sphere_settings']
 
     style: style = style
     """

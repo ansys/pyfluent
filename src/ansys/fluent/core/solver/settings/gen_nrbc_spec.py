@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class gen_nrbc_spec(String):
-    """'gen_nrbc_spec' child."""
+    """
+    'gen_nrbc_spec' child.
+    """
 
     fluent_name = "gen-nrbc-spec"
+

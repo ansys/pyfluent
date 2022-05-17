@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class correction_smoothing(Real):
-    """Correction smoothing factor."""
+    """
+    Correction smoothing factor.
+    """
 
     fluent_name = "correction-smoothing"
+

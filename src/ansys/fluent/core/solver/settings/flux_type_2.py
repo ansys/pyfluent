@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .dbns_cases import dbns_cases
 from .pbns_cases import pbns_cases
-
-
 class flux_type(Group):
-    """'flux_type' child."""
+    """
+    'flux_type' child.
+    """
 
     fluent_name = "flux-type"
 
-    child_names = ["dbns_cases", "pbns_cases"]
+    child_names = \
+        ['dbns_cases', 'pbns_cases']
 
     dbns_cases: dbns_cases = dbns_cases
     """

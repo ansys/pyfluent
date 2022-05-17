@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class thermal_effects(Boolean):
-    """Enable/disable wall function thermal effects."""
+    """
+    Enable/disable wall function thermal effects.
+    """
 
     fluent_name = "thermal-effects"
+

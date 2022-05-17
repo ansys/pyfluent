@@ -4,59 +4,44 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .cfl_based_time_stepping import cfl_based_time_stepping
-from .cfl_type import cfl_type
-from .control_time_step_size_variation import control_time_step_size_variation
-from .error_based_time_stepping import error_based_time_stepping
-from .extrapolate_vars import extrapolate_vars
-from .incremental_time import incremental_time
-from .max_flow_time import max_flow_time
-from .max_iterations_per_time_step import max_iterations_per_time_step
+from .type_1 import type
 from .method import method
-from .mp_specific_time_stepping import mp_specific_time_stepping
-from .number_of_time_steps import number_of_time_steps
-from .predict_next import predict_next
-from .rotating_mesh_flow_predictor import rotating_mesh_flow_predictor
-from .solution_status import solution_status
 from .specified_time_step import specified_time_step
-from .time_step_size import time_step_size
+from .incremental_time import incremental_time
+from .max_iterations_per_time_step import max_iterations_per_time_step
+from .number_of_time_steps import number_of_time_steps
 from .total_number_of_time_steps import total_number_of_time_steps
 from .total_time import total_time
-from .type_1 import type
-from .udf_hook import udf_hook
-from .undo_timestep import undo_timestep
+from .time_step_size import time_step_size
+from .solution_status import solution_status
+from .extrapolate_vars import extrapolate_vars
+from .max_flow_time import max_flow_time
+from .control_time_step_size_variation import control_time_step_size_variation
 from .use_average_cfl import use_average_cfl
-
-
+from .cfl_type import cfl_type
+from .cfl_based_time_stepping import cfl_based_time_stepping
+from .error_based_time_stepping import error_based_time_stepping
+from .undo_timestep import undo_timestep
+from .predict_next import predict_next
+from .rotating_mesh_flow_predictor import rotating_mesh_flow_predictor
+from .mp_specific_time_stepping import mp_specific_time_stepping
+from .udf_hook import udf_hook
 class transient_controls(Group):
-    """'transient_controls' child."""
+    """
+    'transient_controls' child.
+    """
 
     fluent_name = "transient-controls"
 
-    child_names = [
-        "type",
-        "method",
-        "specified_time_step",
-        "incremental_time",
-        "max_iterations_per_time_step",
-        "number_of_time_steps",
-        "total_number_of_time_steps",
-        "total_time",
-        "time_step_size",
-        "solution_status",
-        "extrapolate_vars",
-        "max_flow_time",
-        "control_time_step_size_variation",
-        "use_average_cfl",
-        "cfl_type",
-        "cfl_based_time_stepping",
-        "error_based_time_stepping",
-        "undo_timestep",
-        "predict_next",
-        "rotating_mesh_flow_predictor",
-        "mp_specific_time_stepping",
-        "udf_hook",
-    ]
+    child_names = \
+        ['type', 'method', 'specified_time_step', 'incremental_time',
+         'max_iterations_per_time_step', 'number_of_time_steps',
+         'total_number_of_time_steps', 'total_time', 'time_step_size',
+         'solution_status', 'extrapolate_vars', 'max_flow_time',
+         'control_time_step_size_variation', 'use_average_cfl', 'cfl_type',
+         'cfl_based_time_stepping', 'error_based_time_stepping',
+         'undo_timestep', 'predict_next', 'rotating_mesh_flow_predictor',
+         'mp_specific_time_stepping', 'udf_hook']
 
     type: type = type
     """
@@ -74,9 +59,7 @@ class transient_controls(Group):
     """
     incremental_time child of transient_controls
     """
-    max_iterations_per_time_step: max_iterations_per_time_step = (
-        max_iterations_per_time_step
-    )
+    max_iterations_per_time_step: max_iterations_per_time_step = max_iterations_per_time_step
     """
     max_iterations_per_time_step child of transient_controls
     """
@@ -84,9 +67,7 @@ class transient_controls(Group):
     """
     number_of_time_steps child of transient_controls
     """
-    total_number_of_time_steps: total_number_of_time_steps = (
-        total_number_of_time_steps
-    )
+    total_number_of_time_steps: total_number_of_time_steps = total_number_of_time_steps
     """
     total_number_of_time_steps child of transient_controls
     """
@@ -110,9 +91,7 @@ class transient_controls(Group):
     """
     max_flow_time child of transient_controls
     """
-    control_time_step_size_variation: control_time_step_size_variation = (
-        control_time_step_size_variation
-    )
+    control_time_step_size_variation: control_time_step_size_variation = control_time_step_size_variation
     """
     control_time_step_size_variation child of transient_controls
     """
@@ -128,9 +107,7 @@ class transient_controls(Group):
     """
     cfl_based_time_stepping child of transient_controls
     """
-    error_based_time_stepping: error_based_time_stepping = (
-        error_based_time_stepping
-    )
+    error_based_time_stepping: error_based_time_stepping = error_based_time_stepping
     """
     error_based_time_stepping child of transient_controls
     """
@@ -142,15 +119,11 @@ class transient_controls(Group):
     """
     predict_next child of transient_controls
     """
-    rotating_mesh_flow_predictor: rotating_mesh_flow_predictor = (
-        rotating_mesh_flow_predictor
-    )
+    rotating_mesh_flow_predictor: rotating_mesh_flow_predictor = rotating_mesh_flow_predictor
     """
     rotating_mesh_flow_predictor child of transient_controls
     """
-    mp_specific_time_stepping: mp_specific_time_stepping = (
-        mp_specific_time_stepping
-    )
+    mp_specific_time_stepping: mp_specific_time_stepping = mp_specific_time_stepping
     """
     mp_specific_time_stepping child of transient_controls
     """

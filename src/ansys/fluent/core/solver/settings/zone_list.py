@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class zone_list(StringList):
-    """'zone_list' child."""
+    """
+    'zone_list' child.
+    """
 
     fluent_name = "zone-list"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class hardcopy_format(String):
-    """Set hardcopy file format."""
+    """
+    Set hardcopy file format.
+    """
 
     fluent_name = "hardcopy-format"
+

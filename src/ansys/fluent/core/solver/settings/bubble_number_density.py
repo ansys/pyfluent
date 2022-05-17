@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class bubble_number_density(Real):
-    """Set bubble number density."""
+    """
+    Set bubble number density.
+    """
 
     fluent_name = "bubble-number-density"
+

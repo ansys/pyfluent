@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class reynolds_stress_model(String):
-    """'reynolds_stress_model' child."""
+    """
+    'reynolds_stress_model' child.
+    """
 
     fluent_name = "reynolds-stress-model"
+

@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .rk2 import rk2
-
-
 class fast_transient_settings(Group):
-    """'fast_transient_settings' child."""
+    """
+    'fast_transient_settings' child.
+    """
 
     fluent_name = "fast-transient-settings"
 
-    child_names = ["rk2"]
+    child_names = \
+        ['rk2']
 
     rk2: rk2 = rk2
     """

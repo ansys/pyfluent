@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rotating(Boolean):
-    """'rotating' child."""
+    """
+    'rotating' child.
+    """
 
     fluent_name = "rotating?"
+

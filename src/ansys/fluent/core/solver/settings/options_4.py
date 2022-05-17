@@ -4,20 +4,21 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .nodes import nodes
 from .edges import edges
 from .faces import faces
-from .gap import gap
-from .nodes import nodes
-from .overset_2 import overset
 from .partitions import partitions
-
-
+from .overset_2 import overset
+from .gap import gap
 class options(Group):
-    """'options' child."""
+    """
+    'options' child.
+    """
 
     fluent_name = "options"
 
-    child_names = ["nodes", "edges", "faces", "partitions", "overset", "gap"]
+    child_names = \
+        ['nodes', 'edges', 'faces', 'partitions', 'overset', 'gap']
 
     nodes: nodes = nodes
     """

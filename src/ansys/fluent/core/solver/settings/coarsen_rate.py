@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coarsen_rate(Integer):
-    """Set AMG coarsening rate."""
+    """
+    Set AMG coarsening rate.
+    """
 
     fluent_name = "coarsen-rate"
+

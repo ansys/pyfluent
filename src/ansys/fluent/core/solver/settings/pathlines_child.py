@@ -4,58 +4,41 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .accuracy_control import accuracy_control
-from .coarsen import coarsen
-from .color_map import color_map
-from .display_1 import display
-from .display_state_name import display_state_name
-from .draw_mesh import draw_mesh
-from .field import field
-from .geometry_1 import geometry
-from .mesh_object import mesh_object
 from .name import name
-from .onzone import onzone
-from .options_5 import options
-from .physics import physics
-from .plot import plot
-from .range import range
-from .skip import skip
-from .step import step
-from .style_attribute import style_attribute
-from .surfaces import surfaces
-from .surfaces_list import surfaces_list
 from .uid import uid
+from .options_5 import options
+from .range import range
+from .style_attribute import style_attribute
+from .accuracy_control import accuracy_control
+from .plot import plot
+from .step import step
+from .skip import skip
+from .coarsen import coarsen
+from .onzone import onzone
+from .field import field
+from .surfaces_list import surfaces_list
 from .velocity_domain import velocity_domain
-
-
+from .color_map import color_map
+from .draw_mesh import draw_mesh
+from .mesh_object import mesh_object
+from .display_state_name import display_state_name
+from .physics import physics
+from .geometry_1 import geometry
+from .surfaces import surfaces
+from .display_1 import display
 class pathlines_child(Group):
-    """'child_object_type' of pathlines."""
+    """
+    'child_object_type' of pathlines
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "name",
-        "uid",
-        "options",
-        "range",
-        "style_attribute",
-        "accuracy_control",
-        "plot",
-        "step",
-        "skip",
-        "coarsen",
-        "onzone",
-        "field",
-        "surfaces_list",
-        "velocity_domain",
-        "color_map",
-        "draw_mesh",
-        "mesh_object",
-        "display_state_name",
-        "physics",
-        "geometry",
-        "surfaces",
-    ]
+    child_names = \
+        ['name', 'uid', 'options', 'range', 'style_attribute',
+         'accuracy_control', 'plot', 'step', 'skip', 'coarsen', 'onzone',
+         'field', 'surfaces_list', 'velocity_domain', 'color_map',
+         'draw_mesh', 'mesh_object', 'display_state_name', 'physics',
+         'geometry', 'surfaces']
 
     name: name = name
     """
@@ -141,7 +124,8 @@ class pathlines_child(Group):
     """
     surfaces child of pathlines_child
     """
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

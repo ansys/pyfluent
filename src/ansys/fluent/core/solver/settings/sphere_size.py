@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class sphere_size(Real):
-    """'sphere_size' child."""
+    """
+    'sphere_size' child.
+    """
 
     fluent_name = "sphere-size"
+

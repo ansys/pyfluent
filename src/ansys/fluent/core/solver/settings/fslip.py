@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fslip(Real):
-    """'fslip' child."""
+    """
+    'fslip' child.
+    """
 
     fluent_name = "fslip"
+

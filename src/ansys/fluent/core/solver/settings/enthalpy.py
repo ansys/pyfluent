@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enthalpy(Real):
-    """Set reference enthalpy for enthalpy damping and normalization."""
+    """
+    Set reference enthalpy for enthalpy damping and normalization.
+    """
 
     fluent_name = "enthalpy"
+

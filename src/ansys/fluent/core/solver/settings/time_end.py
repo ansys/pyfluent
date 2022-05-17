@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class time_end(Real):
-    """Set Total Simulation Time."""
+    """
+    Set Total Simulation Time.
+    """
 
     fluent_name = "time-end"
+

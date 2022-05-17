@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class averaged_turbulent_parameters(Boolean):
-    """Enable/Disable averaged turbulent parameters."""
+    """
+    Enable/Disable averaged turbulent parameters.
+    """
 
     fluent_name = "averaged-turbulent-parameters?"
+

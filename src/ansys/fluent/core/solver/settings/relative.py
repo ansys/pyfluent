@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class relative(Boolean):
-    """'relative' child."""
+    """
+    'relative' child.
+    """
 
     fluent_name = "relative?"
+

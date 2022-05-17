@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pcb_model(Boolean):
-    """'pcb_model' child."""
+    """
+    'pcb_model' child.
+    """
 
     fluent_name = "pcb-model"
+

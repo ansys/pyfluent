@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class standard_resolution(String):
-    """Select from pre-defined resolution list."""
+    """
+    Select from pre-defined resolution list.
+    """
 
     fluent_name = "standard-resolution"
+

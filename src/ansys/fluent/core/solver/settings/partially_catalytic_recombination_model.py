@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class partially_catalytic_recombination_model(String):
-    """'partially_catalytic_recombination_model' child."""
+    """
+    'partially_catalytic_recombination_model' child.
+    """
 
     fluent_name = "partially-catalytic-recombination-model"
+

@@ -4,421 +4,270 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .ac_options import ac_options
-from .ac_wave import ac_wave
-from .avg_flow_velocity import avg_flow_velocity
-from .axis_direction_component_1 import axis_direction_component
-from .axis_origin_component_1 import axis_origin_component
-from .band_q_irrad import band_q_irrad
-from .band_q_irrad_diffuse import band_q_irrad_diffuse
-from .coll_dphi import coll_dphi
-from .coll_dtheta import coll_dtheta
-from .coordinate_system import coordinate_system
-from .dpm_bc_collision_partner import dpm_bc_collision_partner
-from .dpm_bc_type import dpm_bc_type
-from .dpm_bc_udf import dpm_bc_udf
-from .dual_potential_type import dual_potential_type
-from .dual_potential_value import dual_potential_value
-from .e import e
-from .ecfm_sigma import ecfm_sigma
-from .elec_potential_type import elec_potential_type
-from .equ_required import equ_required
-from .fensapice_dpm_inj_nstream import fensapice_dpm_inj_nstream
-from .fensapice_dpm_surface_injection import fensapice_dpm_surface_injection
-from .fensapice_drop_bccustom import fensapice_drop_bccustom
-from .fensapice_drop_cdiam import fensapice_drop_cdiam
-from .fensapice_drop_ctemp import fensapice_drop_ctemp
-from .fensapice_drop_cv import fensapice_drop_cv
-from .fensapice_drop_cx import fensapice_drop_cx
-from .fensapice_drop_cy import fensapice_drop_cy
-from .fensapice_drop_cz import fensapice_drop_cz
-from .fensapice_drop_ddiam import fensapice_drop_ddiam
-from .fensapice_drop_dtemp import fensapice_drop_dtemp
-from .fensapice_drop_dv import fensapice_drop_dv
-from .fensapice_drop_dx import fensapice_drop_dx
-from .fensapice_drop_dy import fensapice_drop_dy
-from .fensapice_drop_dz import fensapice_drop_dz
-from .fensapice_drop_icc import fensapice_drop_icc
-from .fensapice_drop_lwc import fensapice_drop_lwc
-from .fensapice_drop_vc import fensapice_drop_vc
-from .fensapice_drop_vrh import fensapice_drop_vrh
-from .fensapice_drop_vrh_1 import fensapice_drop_vrh_1
-from .fensapice_flow_bc_subtype import fensapice_flow_bc_subtype
-from .flow_direction_component import flow_direction_component
-from .fmean2 import fmean2
-from .fmean import fmean
-from .frame_of_reference import frame_of_reference
-from .fvar2 import fvar2
-from .fvar import fvar
-from .geom_bgthread import geom_bgthread
+from .geom_disable import geom_disable
 from .geom_dir_spec import geom_dir_spec
 from .geom_dir_x import geom_dir_x
 from .geom_dir_y import geom_dir_y
 from .geom_dir_z import geom_dir_z
-from .geom_disable import geom_disable
 from .geom_levels import geom_levels
-from .granular_temperature import granular_temperature
-from .ht_bottom import ht_bottom
-from .ht_local import ht_local
-from .iac import iac
-from .impedance_0 import impedance_0
-from .impedance_1 import impedance_1
-from .impedance_2 import impedance_2
-from .in_emiss import in_emiss
-from .inert import inert
-from .intermit import intermit
-from .k import k
-from .ke_spec import ke_spec
-from .kl import kl
-from .ksgs import ksgs
-from .ksgs_spec import ksgs_spec
-from .les_spec import les_spec
-from .les_spec_name import les_spec_name
-from .lsfun import lsfun
-from .mf import mf
-from .mixing_plane_thread import mixing_plane_thread
-from .moving_object_direction_components import (
-    moving_object_direction_components,
-)
-from .non_equil_boundary import non_equil_boundary
-from .nut import nut
-from .o import o
-from .ocw_pp_power_coeff import ocw_pp_power_coeff
-from .ocw_pp_ref_ht import ocw_pp_ref_ht
-from .ocw_pp_vel_spec import ocw_pp_vel_spec
-from .ocw_pp_vmag import ocw_pp_vmag
-from .ocw_pp_vmag_ref import ocw_pp_vmag_ref
+from .geom_bgthread import geom_bgthread
+from .open_channel_wave_bc import open_channel_wave_bc
+from .ocw_vel_segregated import ocw_vel_segregated
+from .velocity_spec import velocity_spec
+from .frame_of_reference import frame_of_reference
+from .vmag import vmag
+from .wave_velocity_spec import wave_velocity_spec
+from .avg_flow_velocity import avg_flow_velocity
 from .ocw_ship_vel_spec import ocw_ship_vel_spec
 from .ocw_ship_vmag import ocw_ship_vmag
+from .moving_object_direction_components import moving_object_direction_components
 from .ocw_sp_vel_spec import ocw_sp_vel_spec
 from .ocw_sp_vmag import ocw_sp_vmag
-from .ocw_vel_segregated import ocw_vel_segregated
-from .omega_swirl import omega_swirl
-from .open_channel_wave_bc import open_channel_wave_bc
-from .p import p
+from .secondary_phase_direction_components import secondary_phase_direction_components
+from .ocw_pp_vel_spec import ocw_pp_vel_spec
+from .ocw_pp_ref_ht import ocw_pp_ref_ht
+from .ocw_pp_power_coeff import ocw_pp_power_coeff
+from .ocw_pp_vmag import ocw_pp_vmag
+from .ocw_pp_vmag_ref import ocw_pp_vmag_ref
+from .primary_phase_direction_components import primary_phase_direction_components
 from .p_sup import p_sup
-from .parallel_collimated_beam import parallel_collimated_beam
-from .pb_disc_1 import pb_disc
-from .pb_disc_bc import pb_disc_bc
-from .pb_dqmom import pb_dqmom
-from .pb_dqmom_bc import pb_dqmom_bc
-from .pb_qmom import pb_qmom
-from .pb_qmom_bc import pb_qmom_bc
-from .pb_smm import pb_smm
-from .pb_smm_bc import pb_smm_bc
-from .phase_spec import phase_spec
-from .pollut_cl2 import pollut_cl2
-from .pollut_cl import pollut_cl
-from .pollut_ctar import pollut_ctar
-from .pollut_h2s import pollut_h2s
-from .pollut_hcl import pollut_hcl
-from .pollut_hcn import pollut_hcn
-from .pollut_hg import pollut_hg
-from .pollut_hgcl2 import pollut_hgcl2
-from .pollut_hgcl import pollut_hgcl
-from .pollut_hgo import pollut_hgo
-from .pollut_hnco import pollut_hnco
-from .pollut_hocl import pollut_hocl
-from .pollut_n2o import pollut_n2o
-from .pollut_nco import pollut_nco
-from .pollut_nh3 import pollut_nh3
-from .pollut_no import pollut_no
-from .pollut_nuclei import pollut_nuclei
-from .pollut_sh import pollut_sh
-from .pollut_so2 import pollut_so2
-from .pollut_so3 import pollut_so3
-from .pollut_so import pollut_so
-from .pollut_soot import pollut_soot
-from .pollut_urea import pollut_urea
-from .potential_value import potential_value
-from .premixc import premixc
-from .premixc_var import premixc_var
-from .primary_phase_direction_components import (
-    primary_phase_direction_components,
-)
-from .prob_mode_1 import prob_mode_1
-from .prob_mode_2 import prob_mode_2
-from .prob_mode_3 import prob_mode_3
-from .radial_direction_component import radial_direction_component
-from .radiating_s2s_surface import radiating_s2s_surface
-from .radiation_bc import radiation_bc
-from .reinj_inj import reinj_inj
-from .rfg_number_of_modes import rfg_number_of_modes
-from .rst_spec import rst_spec
-from .secondary_phase_direction_components import (
-    secondary_phase_direction_components,
-)
-from .sgs_turb_intensity import sgs_turb_intensity
-from .solar_direction import solar_direction
-from .solar_fluxes import solar_fluxes
-from .solar_irradiation import solar_irradiation
-from .solar_shining_factor import solar_shining_factor
-from .species_in_mole_fractions import species_in_mole_fractions
-from .t import t
-from .t_b_b import t_b_b
-from .t_b_b_spec import t_b_b_spec
-from .tss_scalar import tss_scalar
-from .turb_hydraulic_diam import turb_hydraulic_diam
-from .turb_intensity import turb_intensity
-from .turb_length_scale import turb_length_scale
-from .turb_viscosity_ratio import turb_viscosity_ratio
-from .turb_viscosity_ratio_profile import turb_viscosity_ratio_profile
-from .tve import tve
-from .uds import uds
-from .uds_bc import uds_bc
-from .uu import uu
-from .uv import uv
-from .uw import uw
-from .v2 import v2
+from .coordinate_system import coordinate_system
 from .velocity_component import velocity_component
-from .velocity_spec import velocity_spec
-from .vm_mass_conservation import vm_mass_conservation
-from .vm_number_of_vortices import vm_number_of_vortices
-from .vm_streamwise_fluct import vm_streamwise_fluct
-from .vmag import vmag
-from .volume_fraction import volume_fraction
-from .volumetric_synthetic_turbulence_generator import (
-    volumetric_synthetic_turbulence_generator,
-)
-from .volumetric_synthetic_turbulence_generator_option import (
-    volumetric_synthetic_turbulence_generator_option,
-)
-from .volumetric_synthetic_turbulence_generator_option_thickness import (
-    volumetric_synthetic_turbulence_generator_option_thickness,
-)
-from .vv import vv
-from .vw import vw
+from .flow_direction_component import flow_direction_component
+from .axis_direction_component_1 import axis_direction_component
+from .axis_origin_component_1 import axis_origin_component
+from .omega_swirl import omega_swirl
+from .phase_spec import phase_spec
 from .wave_bc_type import wave_bc_type
+from .ht_local import ht_local
+from .ht_bottom import ht_bottom
 from .wave_dir_spec import wave_dir_spec
+from .wave_modeling_type import wave_modeling_type
 from .wave_list import wave_list
 from .wave_list_shallow import wave_list_shallow
-from .wave_modeling_type import wave_modeling_type
+from .wave_spect_method_freq import wave_spect_method_freq
+from .wave_spect_factor import wave_spect_factor
+from .wave_spect_sig_wave_ht import wave_spect_sig_wave_ht
+from .wave_spect_peak_freq import wave_spect_peak_freq
+from .wave_spect_min_freq import wave_spect_min_freq
+from .wave_spect_max_freq import wave_spect_max_freq
+from .wave_spect_freq_components import wave_spect_freq_components
+from .wave_spect_method_dir import wave_spect_method_dir
+from .wave_spect_s import wave_spect_s
+from .wave_spect_mean_angle import wave_spect_mean_angle
 from .wave_spect_deviation import wave_spect_deviation
 from .wave_spect_dir_components import wave_spect_dir_components
-from .wave_spect_factor import wave_spect_factor
-from .wave_spect_freq_components import wave_spect_freq_components
-from .wave_spect_max_freq import wave_spect_max_freq
-from .wave_spect_mean_angle import wave_spect_mean_angle
-from .wave_spect_method_dir import wave_spect_method_dir
-from .wave_spect_method_freq import wave_spect_method_freq
-from .wave_spect_min_freq import wave_spect_min_freq
-from .wave_spect_peak_freq import wave_spect_peak_freq
-from .wave_spect_s import wave_spect_s
-from .wave_spect_sig_wave_ht import wave_spect_sig_wave_ht
-from .wave_velocity_spec import wave_velocity_spec
+from .t import t
+from .non_equil_boundary import non_equil_boundary
+from .tve import tve
+from .les_spec_name import les_spec_name
+from .rfg_number_of_modes import rfg_number_of_modes
+from .vm_number_of_vortices import vm_number_of_vortices
+from .vm_streamwise_fluct import vm_streamwise_fluct
+from .vm_mass_conservation import vm_mass_conservation
+from .volumetric_synthetic_turbulence_generator import volumetric_synthetic_turbulence_generator
+from .volumetric_synthetic_turbulence_generator_option import volumetric_synthetic_turbulence_generator_option
+from .volumetric_synthetic_turbulence_generator_option_thickness import volumetric_synthetic_turbulence_generator_option_thickness
+from .ke_spec import ke_spec
+from .nut import nut
+from .kl import kl
+from .intermit import intermit
+from .k import k
+from .e import e
+from .o import o
+from .v2 import v2
+from .turb_intensity import turb_intensity
+from .turb_length_scale import turb_length_scale
+from .turb_hydraulic_diam import turb_hydraulic_diam
+from .turb_viscosity_ratio import turb_viscosity_ratio
+from .turb_viscosity_ratio_profile import turb_viscosity_ratio_profile
+from .rst_spec import rst_spec
+from .uu import uu
+from .vv import vv
 from .ww import ww
+from .uv import uv
+from .vw import vw
+from .uw import uw
+from .ksgs_spec import ksgs_spec
+from .ksgs import ksgs
+from .sgs_turb_intensity import sgs_turb_intensity
+from .granular_temperature import granular_temperature
+from .iac import iac
+from .lsfun import lsfun
+from .volume_fraction import volume_fraction
+from .species_in_mole_fractions import species_in_mole_fractions
+from .mf import mf
+from .elec_potential_type import elec_potential_type
+from .potential_value import potential_value
+from .dual_potential_type import dual_potential_type
+from .dual_potential_value import dual_potential_value
 from .x_displacement_type import x_displacement_type
 from .x_displacement_value import x_displacement_value
 from .y_displacement_type import y_displacement_type
 from .y_displacement_value import y_displacement_value
 from .z_displacement_type import z_displacement_type
 from .z_displacement_value import z_displacement_value
-
-
+from .prob_mode_1 import prob_mode_1
+from .prob_mode_2 import prob_mode_2
+from .prob_mode_3 import prob_mode_3
+from .equ_required import equ_required
+from .uds_bc import uds_bc
+from .uds import uds
+from .pb_disc_bc import pb_disc_bc
+from .pb_disc_1 import pb_disc
+from .pb_qmom_bc import pb_qmom_bc
+from .pb_qmom import pb_qmom
+from .pb_smm_bc import pb_smm_bc
+from .pb_smm import pb_smm
+from .pb_dqmom_bc import pb_dqmom_bc
+from .pb_dqmom import pb_dqmom
+from .p import p
+from .premixc import premixc
+from .premixc_var import premixc_var
+from .ecfm_sigma import ecfm_sigma
+from .inert import inert
+from .pollut_no import pollut_no
+from .pollut_hcn import pollut_hcn
+from .pollut_nh3 import pollut_nh3
+from .pollut_n2o import pollut_n2o
+from .pollut_urea import pollut_urea
+from .pollut_hnco import pollut_hnco
+from .pollut_nco import pollut_nco
+from .pollut_so2 import pollut_so2
+from .pollut_h2s import pollut_h2s
+from .pollut_so3 import pollut_so3
+from .pollut_sh import pollut_sh
+from .pollut_so import pollut_so
+from .pollut_soot import pollut_soot
+from .pollut_nuclei import pollut_nuclei
+from .pollut_ctar import pollut_ctar
+from .pollut_hg import pollut_hg
+from .pollut_hgcl2 import pollut_hgcl2
+from .pollut_hcl import pollut_hcl
+from .pollut_hgo import pollut_hgo
+from .pollut_cl import pollut_cl
+from .pollut_cl2 import pollut_cl2
+from .pollut_hgcl import pollut_hgcl
+from .pollut_hocl import pollut_hocl
+from .radiation_bc import radiation_bc
+from .radial_direction_component import radial_direction_component
+from .coll_dtheta import coll_dtheta
+from .coll_dphi import coll_dphi
+from .band_q_irrad import band_q_irrad
+from .band_q_irrad_diffuse import band_q_irrad_diffuse
+from .parallel_collimated_beam import parallel_collimated_beam
+from .solar_direction import solar_direction
+from .solar_irradiation import solar_irradiation
+from .t_b_b_spec import t_b_b_spec
+from .t_b_b import t_b_b
+from .in_emiss import in_emiss
+from .fmean import fmean
+from .fvar import fvar
+from .fmean2 import fmean2
+from .fvar2 import fvar2
+from .tss_scalar import tss_scalar
+from .dpm_bc_type import dpm_bc_type
+from .dpm_bc_collision_partner import dpm_bc_collision_partner
+from .reinj_inj import reinj_inj
+from .dpm_bc_udf import dpm_bc_udf
+from .fensapice_flow_bc_subtype import fensapice_flow_bc_subtype
+from .fensapice_drop_bccustom import fensapice_drop_bccustom
+from .fensapice_drop_lwc import fensapice_drop_lwc
+from .fensapice_drop_dtemp import fensapice_drop_dtemp
+from .fensapice_drop_ddiam import fensapice_drop_ddiam
+from .fensapice_drop_dv import fensapice_drop_dv
+from .fensapice_drop_dx import fensapice_drop_dx
+from .fensapice_drop_dy import fensapice_drop_dy
+from .fensapice_drop_dz import fensapice_drop_dz
+from .fensapice_dpm_surface_injection import fensapice_dpm_surface_injection
+from .fensapice_dpm_inj_nstream import fensapice_dpm_inj_nstream
+from .fensapice_drop_icc import fensapice_drop_icc
+from .fensapice_drop_ctemp import fensapice_drop_ctemp
+from .fensapice_drop_cdiam import fensapice_drop_cdiam
+from .fensapice_drop_cv import fensapice_drop_cv
+from .fensapice_drop_cx import fensapice_drop_cx
+from .fensapice_drop_cy import fensapice_drop_cy
+from .fensapice_drop_cz import fensapice_drop_cz
+from .fensapice_drop_vrh import fensapice_drop_vrh
+from .fensapice_drop_vrh_1 import fensapice_drop_vrh_1
+from .fensapice_drop_vc import fensapice_drop_vc
+from .mixing_plane_thread import mixing_plane_thread
+from .solar_fluxes import solar_fluxes
+from .solar_shining_factor import solar_shining_factor
+from .radiating_s2s_surface import radiating_s2s_surface
+from .ac_options import ac_options
+from .impedance_0 import impedance_0
+from .impedance_1 import impedance_1
+from .impedance_2 import impedance_2
+from .ac_wave import ac_wave
+from .les_spec import les_spec
 class phase_child(Group):
-    """'child_object_type' of phase."""
+    """
+    'child_object_type' of phase
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "geom_disable",
-        "geom_dir_spec",
-        "geom_dir_x",
-        "geom_dir_y",
-        "geom_dir_z",
-        "geom_levels",
-        "geom_bgthread",
-        "open_channel_wave_bc",
-        "ocw_vel_segregated",
-        "velocity_spec",
-        "frame_of_reference",
-        "vmag",
-        "wave_velocity_spec",
-        "avg_flow_velocity",
-        "ocw_ship_vel_spec",
-        "ocw_ship_vmag",
-        "moving_object_direction_components",
-        "ocw_sp_vel_spec",
-        "ocw_sp_vmag",
-        "secondary_phase_direction_components",
-        "ocw_pp_vel_spec",
-        "ocw_pp_ref_ht",
-        "ocw_pp_power_coeff",
-        "ocw_pp_vmag",
-        "ocw_pp_vmag_ref",
-        "primary_phase_direction_components",
-        "p_sup",
-        "coordinate_system",
-        "velocity_component",
-        "flow_direction_component",
-        "axis_direction_component",
-        "axis_origin_component",
-        "omega_swirl",
-        "phase_spec",
-        "wave_bc_type",
-        "ht_local",
-        "ht_bottom",
-        "wave_dir_spec",
-        "wave_modeling_type",
-        "wave_list",
-        "wave_list_shallow",
-        "wave_spect_method_freq",
-        "wave_spect_factor",
-        "wave_spect_sig_wave_ht",
-        "wave_spect_peak_freq",
-        "wave_spect_min_freq",
-        "wave_spect_max_freq",
-        "wave_spect_freq_components",
-        "wave_spect_method_dir",
-        "wave_spect_s",
-        "wave_spect_mean_angle",
-        "wave_spect_deviation",
-        "wave_spect_dir_components",
-        "t",
-        "non_equil_boundary",
-        "tve",
-        "les_spec_name",
-        "rfg_number_of_modes",
-        "vm_number_of_vortices",
-        "vm_streamwise_fluct",
-        "vm_mass_conservation",
-        "volumetric_synthetic_turbulence_generator",
-        "volumetric_synthetic_turbulence_generator_option",
-        "volumetric_synthetic_turbulence_generator_option_thickness",
-        "ke_spec",
-        "nut",
-        "kl",
-        "intermit",
-        "k",
-        "e",
-        "o",
-        "v2",
-        "turb_intensity",
-        "turb_length_scale",
-        "turb_hydraulic_diam",
-        "turb_viscosity_ratio",
-        "turb_viscosity_ratio_profile",
-        "rst_spec",
-        "uu",
-        "vv",
-        "ww",
-        "uv",
-        "vw",
-        "uw",
-        "ksgs_spec",
-        "ksgs",
-        "sgs_turb_intensity",
-        "granular_temperature",
-        "iac",
-        "lsfun",
-        "volume_fraction",
-        "species_in_mole_fractions",
-        "mf",
-        "elec_potential_type",
-        "potential_value",
-        "dual_potential_type",
-        "dual_potential_value",
-        "x_displacement_type",
-        "x_displacement_value",
-        "y_displacement_type",
-        "y_displacement_value",
-        "z_displacement_type",
-        "z_displacement_value",
-        "prob_mode_1",
-        "prob_mode_2",
-        "prob_mode_3",
-        "equ_required",
-        "uds_bc",
-        "uds",
-        "pb_disc_bc",
-        "pb_disc",
-        "pb_qmom_bc",
-        "pb_qmom",
-        "pb_smm_bc",
-        "pb_smm",
-        "pb_dqmom_bc",
-        "pb_dqmom",
-        "p",
-        "premixc",
-        "premixc_var",
-        "ecfm_sigma",
-        "inert",
-        "pollut_no",
-        "pollut_hcn",
-        "pollut_nh3",
-        "pollut_n2o",
-        "pollut_urea",
-        "pollut_hnco",
-        "pollut_nco",
-        "pollut_so2",
-        "pollut_h2s",
-        "pollut_so3",
-        "pollut_sh",
-        "pollut_so",
-        "pollut_soot",
-        "pollut_nuclei",
-        "pollut_ctar",
-        "pollut_hg",
-        "pollut_hgcl2",
-        "pollut_hcl",
-        "pollut_hgo",
-        "pollut_cl",
-        "pollut_cl2",
-        "pollut_hgcl",
-        "pollut_hocl",
-        "radiation_bc",
-        "radial_direction_component",
-        "coll_dtheta",
-        "coll_dphi",
-        "band_q_irrad",
-        "band_q_irrad_diffuse",
-        "parallel_collimated_beam",
-        "solar_direction",
-        "solar_irradiation",
-        "t_b_b_spec",
-        "t_b_b",
-        "in_emiss",
-        "fmean",
-        "fvar",
-        "fmean2",
-        "fvar2",
-        "tss_scalar",
-        "dpm_bc_type",
-        "dpm_bc_collision_partner",
-        "reinj_inj",
-        "dpm_bc_udf",
-        "fensapice_flow_bc_subtype",
-        "fensapice_drop_bccustom",
-        "fensapice_drop_lwc",
-        "fensapice_drop_dtemp",
-        "fensapice_drop_ddiam",
-        "fensapice_drop_dv",
-        "fensapice_drop_dx",
-        "fensapice_drop_dy",
-        "fensapice_drop_dz",
-        "fensapice_dpm_surface_injection",
-        "fensapice_dpm_inj_nstream",
-        "fensapice_drop_icc",
-        "fensapice_drop_ctemp",
-        "fensapice_drop_cdiam",
-        "fensapice_drop_cv",
-        "fensapice_drop_cx",
-        "fensapice_drop_cy",
-        "fensapice_drop_cz",
-        "fensapice_drop_vrh",
-        "fensapice_drop_vrh_1",
-        "fensapice_drop_vc",
-        "mixing_plane_thread",
-        "solar_fluxes",
-        "solar_shining_factor",
-        "radiating_s2s_surface",
-        "ac_options",
-        "impedance_0",
-        "impedance_1",
-        "impedance_2",
-        "ac_wave",
-        "les_spec",
-    ]
+    child_names = \
+        ['geom_disable', 'geom_dir_spec', 'geom_dir_x', 'geom_dir_y',
+         'geom_dir_z', 'geom_levels', 'geom_bgthread', 'open_channel_wave_bc',
+         'ocw_vel_segregated', 'velocity_spec', 'frame_of_reference', 'vmag',
+         'wave_velocity_spec', 'avg_flow_velocity', 'ocw_ship_vel_spec',
+         'ocw_ship_vmag', 'moving_object_direction_components',
+         'ocw_sp_vel_spec', 'ocw_sp_vmag',
+         'secondary_phase_direction_components', 'ocw_pp_vel_spec',
+         'ocw_pp_ref_ht', 'ocw_pp_power_coeff', 'ocw_pp_vmag',
+         'ocw_pp_vmag_ref', 'primary_phase_direction_components', 'p_sup',
+         'coordinate_system', 'velocity_component',
+         'flow_direction_component', 'axis_direction_component',
+         'axis_origin_component', 'omega_swirl', 'phase_spec', 'wave_bc_type',
+         'ht_local', 'ht_bottom', 'wave_dir_spec', 'wave_modeling_type',
+         'wave_list', 'wave_list_shallow', 'wave_spect_method_freq',
+         'wave_spect_factor', 'wave_spect_sig_wave_ht',
+         'wave_spect_peak_freq', 'wave_spect_min_freq', 'wave_spect_max_freq',
+         'wave_spect_freq_components', 'wave_spect_method_dir',
+         'wave_spect_s', 'wave_spect_mean_angle', 'wave_spect_deviation',
+         'wave_spect_dir_components', 't', 'non_equil_boundary', 'tve',
+         'les_spec_name', 'rfg_number_of_modes', 'vm_number_of_vortices',
+         'vm_streamwise_fluct', 'vm_mass_conservation',
+         'volumetric_synthetic_turbulence_generator',
+         'volumetric_synthetic_turbulence_generator_option',
+         'volumetric_synthetic_turbulence_generator_option_thickness',
+         'ke_spec', 'nut', 'kl', 'intermit', 'k', 'e', 'o', 'v2',
+         'turb_intensity', 'turb_length_scale', 'turb_hydraulic_diam',
+         'turb_viscosity_ratio', 'turb_viscosity_ratio_profile', 'rst_spec',
+         'uu', 'vv', 'ww', 'uv', 'vw', 'uw', 'ksgs_spec', 'ksgs',
+         'sgs_turb_intensity', 'granular_temperature', 'iac', 'lsfun',
+         'volume_fraction', 'species_in_mole_fractions', 'mf',
+         'elec_potential_type', 'potential_value', 'dual_potential_type',
+         'dual_potential_value', 'x_displacement_type',
+         'x_displacement_value', 'y_displacement_type',
+         'y_displacement_value', 'z_displacement_type',
+         'z_displacement_value', 'prob_mode_1', 'prob_mode_2', 'prob_mode_3',
+         'equ_required', 'uds_bc', 'uds', 'pb_disc_bc', 'pb_disc',
+         'pb_qmom_bc', 'pb_qmom', 'pb_smm_bc', 'pb_smm', 'pb_dqmom_bc',
+         'pb_dqmom', 'p', 'premixc', 'premixc_var', 'ecfm_sigma', 'inert',
+         'pollut_no', 'pollut_hcn', 'pollut_nh3', 'pollut_n2o', 'pollut_urea',
+         'pollut_hnco', 'pollut_nco', 'pollut_so2', 'pollut_h2s',
+         'pollut_so3', 'pollut_sh', 'pollut_so', 'pollut_soot',
+         'pollut_nuclei', 'pollut_ctar', 'pollut_hg', 'pollut_hgcl2',
+         'pollut_hcl', 'pollut_hgo', 'pollut_cl', 'pollut_cl2', 'pollut_hgcl',
+         'pollut_hocl', 'radiation_bc', 'radial_direction_component',
+         'coll_dtheta', 'coll_dphi', 'band_q_irrad', 'band_q_irrad_diffuse',
+         'parallel_collimated_beam', 'solar_direction', 'solar_irradiation',
+         't_b_b_spec', 't_b_b', 'in_emiss', 'fmean', 'fvar', 'fmean2',
+         'fvar2', 'tss_scalar', 'dpm_bc_type', 'dpm_bc_collision_partner',
+         'reinj_inj', 'dpm_bc_udf', 'fensapice_flow_bc_subtype',
+         'fensapice_drop_bccustom', 'fensapice_drop_lwc',
+         'fensapice_drop_dtemp', 'fensapice_drop_ddiam', 'fensapice_drop_dv',
+         'fensapice_drop_dx', 'fensapice_drop_dy', 'fensapice_drop_dz',
+         'fensapice_dpm_surface_injection', 'fensapice_dpm_inj_nstream',
+         'fensapice_drop_icc', 'fensapice_drop_ctemp', 'fensapice_drop_cdiam',
+         'fensapice_drop_cv', 'fensapice_drop_cx', 'fensapice_drop_cy',
+         'fensapice_drop_cz', 'fensapice_drop_vrh', 'fensapice_drop_vrh_1',
+         'fensapice_drop_vc', 'mixing_plane_thread', 'solar_fluxes',
+         'solar_shining_factor', 'radiating_s2s_surface', 'ac_options',
+         'impedance_0', 'impedance_1', 'impedance_2', 'ac_wave', 'les_spec']
 
     geom_disable: geom_disable = geom_disable
     """
@@ -484,9 +333,7 @@ class phase_child(Group):
     """
     ocw_ship_vmag child of phase_child
     """
-    moving_object_direction_components: moving_object_direction_components = (
-        moving_object_direction_components
-    )
+    moving_object_direction_components: moving_object_direction_components = moving_object_direction_components
     """
     moving_object_direction_components child of phase_child
     """
@@ -498,9 +345,7 @@ class phase_child(Group):
     """
     ocw_sp_vmag child of phase_child
     """
-    secondary_phase_direction_components: secondary_phase_direction_components = (
-        secondary_phase_direction_components
-    )
+    secondary_phase_direction_components: secondary_phase_direction_components = secondary_phase_direction_components
     """
     secondary_phase_direction_components child of phase_child
     """
@@ -524,9 +369,7 @@ class phase_child(Group):
     """
     ocw_pp_vmag_ref child of phase_child
     """
-    primary_phase_direction_components: primary_phase_direction_components = (
-        primary_phase_direction_components
-    )
+    primary_phase_direction_components: primary_phase_direction_components = primary_phase_direction_components
     """
     primary_phase_direction_components child of phase_child
     """
@@ -542,15 +385,11 @@ class phase_child(Group):
     """
     velocity_component child of phase_child
     """
-    flow_direction_component: flow_direction_component = (
-        flow_direction_component
-    )
+    flow_direction_component: flow_direction_component = flow_direction_component
     """
     flow_direction_component child of phase_child
     """
-    axis_direction_component: axis_direction_component = (
-        axis_direction_component
-    )
+    axis_direction_component: axis_direction_component = axis_direction_component
     """
     axis_direction_component child of phase_child
     """
@@ -618,9 +457,7 @@ class phase_child(Group):
     """
     wave_spect_max_freq child of phase_child
     """
-    wave_spect_freq_components: wave_spect_freq_components = (
-        wave_spect_freq_components
-    )
+    wave_spect_freq_components: wave_spect_freq_components = wave_spect_freq_components
     """
     wave_spect_freq_components child of phase_child
     """
@@ -640,9 +477,7 @@ class phase_child(Group):
     """
     wave_spect_deviation child of phase_child
     """
-    wave_spect_dir_components: wave_spect_dir_components = (
-        wave_spect_dir_components
-    )
+    wave_spect_dir_components: wave_spect_dir_components = wave_spect_dir_components
     """
     wave_spect_dir_components child of phase_child
     """
@@ -678,21 +513,15 @@ class phase_child(Group):
     """
     vm_mass_conservation child of phase_child
     """
-    volumetric_synthetic_turbulence_generator: volumetric_synthetic_turbulence_generator = (
-        volumetric_synthetic_turbulence_generator
-    )
+    volumetric_synthetic_turbulence_generator: volumetric_synthetic_turbulence_generator = volumetric_synthetic_turbulence_generator
     """
     volumetric_synthetic_turbulence_generator child of phase_child
     """
-    volumetric_synthetic_turbulence_generator_option: volumetric_synthetic_turbulence_generator_option = (
-        volumetric_synthetic_turbulence_generator_option
-    )
+    volumetric_synthetic_turbulence_generator_option: volumetric_synthetic_turbulence_generator_option = volumetric_synthetic_turbulence_generator_option
     """
     volumetric_synthetic_turbulence_generator_option child of phase_child
     """
-    volumetric_synthetic_turbulence_generator_option_thickness: volumetric_synthetic_turbulence_generator_option_thickness = (
-        volumetric_synthetic_turbulence_generator_option_thickness
-    )
+    volumetric_synthetic_turbulence_generator_option_thickness: volumetric_synthetic_turbulence_generator_option_thickness = volumetric_synthetic_turbulence_generator_option_thickness
     """
     volumetric_synthetic_turbulence_generator_option_thickness child of phase_child
     """
@@ -744,9 +573,7 @@ class phase_child(Group):
     """
     turb_viscosity_ratio child of phase_child
     """
-    turb_viscosity_ratio_profile: turb_viscosity_ratio_profile = (
-        turb_viscosity_ratio_profile
-    )
+    turb_viscosity_ratio_profile: turb_viscosity_ratio_profile = turb_viscosity_ratio_profile
     """
     turb_viscosity_ratio_profile child of phase_child
     """
@@ -806,9 +633,7 @@ class phase_child(Group):
     """
     volume_fraction child of phase_child
     """
-    species_in_mole_fractions: species_in_mole_fractions = (
-        species_in_mole_fractions
-    )
+    species_in_mole_fractions: species_in_mole_fractions = species_in_mole_fractions
     """
     species_in_mole_fractions child of phase_child
     """
@@ -1028,9 +853,7 @@ class phase_child(Group):
     """
     radiation_bc child of phase_child
     """
-    radial_direction_component: radial_direction_component = (
-        radial_direction_component
-    )
+    radial_direction_component: radial_direction_component = radial_direction_component
     """
     radial_direction_component child of phase_child
     """
@@ -1050,9 +873,7 @@ class phase_child(Group):
     """
     band_q_irrad_diffuse child of phase_child
     """
-    parallel_collimated_beam: parallel_collimated_beam = (
-        parallel_collimated_beam
-    )
+    parallel_collimated_beam: parallel_collimated_beam = parallel_collimated_beam
     """
     parallel_collimated_beam child of phase_child
     """
@@ -1100,9 +921,7 @@ class phase_child(Group):
     """
     dpm_bc_type child of phase_child
     """
-    dpm_bc_collision_partner: dpm_bc_collision_partner = (
-        dpm_bc_collision_partner
-    )
+    dpm_bc_collision_partner: dpm_bc_collision_partner = dpm_bc_collision_partner
     """
     dpm_bc_collision_partner child of phase_child
     """
@@ -1114,9 +933,7 @@ class phase_child(Group):
     """
     dpm_bc_udf child of phase_child
     """
-    fensapice_flow_bc_subtype: fensapice_flow_bc_subtype = (
-        fensapice_flow_bc_subtype
-    )
+    fensapice_flow_bc_subtype: fensapice_flow_bc_subtype = fensapice_flow_bc_subtype
     """
     fensapice_flow_bc_subtype child of phase_child
     """
@@ -1152,15 +969,11 @@ class phase_child(Group):
     """
     fensapice_drop_dz child of phase_child
     """
-    fensapice_dpm_surface_injection: fensapice_dpm_surface_injection = (
-        fensapice_dpm_surface_injection
-    )
+    fensapice_dpm_surface_injection: fensapice_dpm_surface_injection = fensapice_dpm_surface_injection
     """
     fensapice_dpm_surface_injection child of phase_child
     """
-    fensapice_dpm_inj_nstream: fensapice_dpm_inj_nstream = (
-        fensapice_dpm_inj_nstream
-    )
+    fensapice_dpm_inj_nstream: fensapice_dpm_inj_nstream = fensapice_dpm_inj_nstream
     """
     fensapice_dpm_inj_nstream child of phase_child
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coupled_form(Boolean):
-    """'coupled_form' child."""
+    """
+    'coupled_form' child.
+    """
 
     fluent_name = "coupled-form"
+

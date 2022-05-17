@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class average_dp(Boolean):
-    """'average_dp' child."""
+    """
+    'average_dp' child.
+    """
 
     fluent_name = "average-dp?"
+

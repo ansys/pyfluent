@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pressure_gradient_effects(Boolean):
-    """Enable/disable wall function pressure-gradient effects."""
+    """
+    Enable/disable wall function pressure-gradient effects.
+    """
 
     fluent_name = "pressure-gradient-effects"
+

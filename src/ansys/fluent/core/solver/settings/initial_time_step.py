@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class initial_time_step(Real):
-    """Set Initial Time Step Size."""
+    """
+    Set Initial Time Step Size.
+    """
 
     fluent_name = "initial-time-step"
+

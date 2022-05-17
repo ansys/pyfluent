@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class alternate_bc_formulation(Boolean):
-    """Enable/disable use of alternate compressible bc formulation."""
+    """
+    Enable/disable use of alternate compressible bc formulation.
+    """
 
     fluent_name = "alternate-bc-formulation?"
+

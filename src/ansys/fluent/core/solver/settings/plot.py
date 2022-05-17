@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .enabled_2 import enabled
 from .x_axis_function import x_axis_function
-
-
+from .enabled_2 import enabled
 class plot(Group):
-    """'plot' child."""
+    """
+    'plot' child.
+    """
 
     fluent_name = "plot"
 
-    child_names = ["x_axis_function", "enabled"]
+    child_names = \
+        ['x_axis_function', 'enabled']
 
     x_axis_function: x_axis_function = x_axis_function
     """

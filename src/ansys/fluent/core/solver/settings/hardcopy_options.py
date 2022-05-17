@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class hardcopy_options(String):
-    """'hardcopy_options' child."""
+    """
+    'hardcopy_options' child.
+    """
 
     fluent_name = "hardcopy-options"
+

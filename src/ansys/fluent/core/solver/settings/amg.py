@@ -4,29 +4,23 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coarsen_rate import coarsen_rate
 from .enforce_laplace_coarsening import enforce_laplace_coarsening
 from .increase_pre_sweeps import increase_pre_sweeps
 from .pre_sweeps_3 import pre_sweeps
 from .specify_coarsening_rate import specify_coarsening_rate
-
-
+from .coarsen_rate import coarsen_rate
 class amg(Group):
-    """'amg' child."""
+    """
+    'amg' child.
+    """
 
     fluent_name = "amg"
 
-    child_names = [
-        "enforce_laplace_coarsening",
-        "increase_pre_sweeps",
-        "pre_sweeps",
-        "specify_coarsening_rate",
-        "coarsen_rate",
-    ]
+    child_names = \
+        ['enforce_laplace_coarsening', 'increase_pre_sweeps', 'pre_sweeps',
+         'specify_coarsening_rate', 'coarsen_rate']
 
-    enforce_laplace_coarsening: enforce_laplace_coarsening = (
-        enforce_laplace_coarsening
-    )
+    enforce_laplace_coarsening: enforce_laplace_coarsening = enforce_laplace_coarsening
     """
     enforce_laplace_coarsening child of amg
     """

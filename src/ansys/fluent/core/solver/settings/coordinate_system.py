@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coordinate_system(String):
-    """'coordinate_system' child."""
+    """
+    'coordinate_system' child.
+    """
 
     fluent_name = "coordinate-system"
+

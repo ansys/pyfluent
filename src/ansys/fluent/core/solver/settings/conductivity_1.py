@@ -4,27 +4,22 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .coefficients import coefficients
-from .constant import constant
-from .number_of_coefficients import number_of_coefficients
 from .option import option
+from .constant import constant
+from .coefficients import coefficients
+from .number_of_coefficients import number_of_coefficients
 from .piecewise_linear import piecewise_linear
 from .piecewise_polynomial import piecewise_polynomial
-
-
 class conductivity_1(Group):
-    """'conductivity_1' child."""
+    """
+    'conductivity_1' child.
+    """
 
     fluent_name = "conductivity-1"
 
-    child_names = [
-        "option",
-        "constant",
-        "coefficients",
-        "number_of_coefficients",
-        "piecewise_linear",
-        "piecewise_polynomial",
-    ]
+    child_names = \
+        ['option', 'constant', 'coefficients', 'number_of_coefficients',
+         'piecewise_linear', 'piecewise_polynomial']
 
     option: option = option
     """

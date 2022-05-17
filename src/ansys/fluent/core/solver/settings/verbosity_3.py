@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class verbosity(Integer):
-    """'verbosity' child."""
+    """
+    'verbosity' child.
+    """
 
     fluent_name = "verbosity"
+

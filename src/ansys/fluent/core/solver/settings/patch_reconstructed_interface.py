@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class patch_reconstructed_interface(Boolean):
-    """Enable/Disable patch reconstructed interface."""
+    """
+    Enable/Disable patch reconstructed interface.
+    """
 
     fluent_name = "patch-reconstructed-interface?"
+

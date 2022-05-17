@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class les_spec(String):
-    """'les_spec' child."""
+    """
+    'les_spec' child.
+    """
 
     fluent_name = "les-spec"
+

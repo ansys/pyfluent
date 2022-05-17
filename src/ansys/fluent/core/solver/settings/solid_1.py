@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .solid_child import solid_child
 
-
 class solid(NamedObject[solid_child]):
-    """'solid' child."""
+    """
+    'solid' child.
+    """
 
     fluent_name = "solid"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coll_dphi(Real):
-    """'coll_dphi' child."""
+    """
+    'coll_dphi' child.
+    """
 
     fluent_name = "coll-dphi"
+

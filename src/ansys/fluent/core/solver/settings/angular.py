@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class angular(Boolean):
-    """'angular' child."""
+    """
+    'angular' child.
+    """
 
     fluent_name = "angular?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class log_scale(Boolean):
-    """'log_scale' child."""
+    """
+    'log_scale' child.
+    """
 
     fluent_name = "log-scale?"
+

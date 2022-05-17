@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class vof_spec(String):
-    """'vof_spec' child."""
+    """
+    'vof_spec' child.
+    """
 
     fluent_name = "vof-spec"
+

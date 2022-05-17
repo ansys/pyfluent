@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class p_jump(Real):
-    """'p_jump' child."""
+    """
+    'p_jump' child.
+    """
 
     fluent_name = "p-jump"
+

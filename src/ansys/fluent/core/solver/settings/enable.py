@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class enable(Boolean):
-    """Enable/Disable."""
+    """
+    Enable/Disable.
+    """
 
     fluent_name = "enable?"
+

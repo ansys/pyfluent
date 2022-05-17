@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class oil_flow(Boolean):
-    """'oil_flow' child."""
+    """
+    'oil_flow' child.
+    """
 
     fluent_name = "oil-flow"
+

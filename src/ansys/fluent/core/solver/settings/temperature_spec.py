@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class temperature_spec(String):
-    """'temperature_spec' child."""
+    """
+    'temperature_spec' child.
+    """
 
     fluent_name = "temperature-spec"
+

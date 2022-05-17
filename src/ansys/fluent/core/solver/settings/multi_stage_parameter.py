@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class multi_stage_parameter(Command):
-    """'multi_stage_parameter' command."""
+    """
+    'multi_stage_parameter' command.
+    """
 
     fluent_name = "multi-stage-parameter"
+

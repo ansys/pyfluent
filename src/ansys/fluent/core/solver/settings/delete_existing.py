@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class delete_existing(Boolean):
-    """'delete_existing' child."""
+    """
+    'delete_existing' child.
+    """
 
     fluent_name = "delete-existing"
+

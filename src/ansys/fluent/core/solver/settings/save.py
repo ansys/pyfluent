@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class save(Command):
-    """Save Project."""
+    """
+    Save Project.
+    """
 
     fluent_name = "save"
+

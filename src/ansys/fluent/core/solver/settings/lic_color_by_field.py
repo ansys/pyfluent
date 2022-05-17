@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class lic_color_by_field(Boolean):
-    """'lic_color_by_field' child."""
+    """
+    'lic_color_by_field' child.
+    """
 
     fluent_name = "lic-color-by-field?"
+

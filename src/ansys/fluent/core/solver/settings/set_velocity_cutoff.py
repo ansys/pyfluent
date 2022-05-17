@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class set_velocity_cutoff(Real):
-    """Enter max velocity magnitude."""
+    """
+    Enter max velocity magnitude.
+    """
 
     fluent_name = "set-velocity-cutoff"
+

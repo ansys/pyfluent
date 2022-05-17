@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class font_size(Real):
-    """'font_size' child."""
+    """
+    'font_size' child.
+    """
 
     fluent_name = "font-size"
+

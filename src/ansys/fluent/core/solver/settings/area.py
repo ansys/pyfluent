@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class area(Real):
-    """Set reference area for normalization."""
+    """
+    Set reference area for normalization.
+    """
 
     fluent_name = "area"
+

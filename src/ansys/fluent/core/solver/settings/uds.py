@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class uds(NamedObject[child_object_type_child]):
-    """'uds' child."""
+    """
+    'uds' child.
+    """
 
     fluent_name = "uds"
 

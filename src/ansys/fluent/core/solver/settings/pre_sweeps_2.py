@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pre_sweeps(Integer):
-    """Number of fine grid relaxations."""
+    """
+    Number of fine grid relaxations.
+    """
 
     fluent_name = "pre-sweeps"
+

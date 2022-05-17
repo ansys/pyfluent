@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class rp_edit_p1(String):
-    """'rp_edit_p1' child."""
+    """
+    'rp_edit_p1' child.
+    """
 
     fluent_name = "rp-edit-p1"
+

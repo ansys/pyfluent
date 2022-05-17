@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .correction_tolerance_child import correction_tolerance_child
 
-
 class correction_tolerance(NamedObject[correction_tolerance_child]):
-    """'correction_tolerance' child."""
+    """
+    'correction_tolerance' child.
+    """
 
     fluent_name = "correction-tolerance"
 

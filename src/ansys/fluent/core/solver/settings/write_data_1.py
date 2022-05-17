@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class write_data(Boolean):
-    """WriteData option for Design Point."""
+    """
+    WriteData option for Design Point.
+    """
 
     fluent_name = "write-data"
+

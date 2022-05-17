@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class udf_zmotion_name(String):
-    """'udf_zmotion_name' child."""
+    """
+    'udf_zmotion_name' child.
+    """
 
     fluent_name = "udf-zmotion-name"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class direction_1(RealList):
-    """'direction_1' child."""
+    """
+    'direction_1' child.
+    """
 
     fluent_name = "direction-1"
+

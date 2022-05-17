@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class last_view(Command):
-    """Return to the camera position before the last manipulation."""
+    """
+    Return to the camera position before the last manipulation.
+    """
 
     fluent_name = "last-view"
+

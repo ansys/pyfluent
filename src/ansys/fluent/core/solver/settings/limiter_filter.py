@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class limiter_filter(Boolean):
-    """Enable limiter filter?."""
+    """
+    Enable limiter filter?.
+    """
 
     fluent_name = "limiter-filter?"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class constant_length(Real):
-    """'constant_length' child."""
+    """
+    'constant_length' child.
+    """
 
     fluent_name = "constant-length"
+

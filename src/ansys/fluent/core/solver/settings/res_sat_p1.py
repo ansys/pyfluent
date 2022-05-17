@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class res_sat_p1(Real):
-    """'res_sat_p1' child."""
+    """
+    'res_sat_p1' child.
+    """
 
     fluent_name = "res-sat-p1"
+

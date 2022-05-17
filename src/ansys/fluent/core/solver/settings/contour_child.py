@@ -4,48 +4,35 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .boundary_values import boundary_values
-from .color_map import color_map
-from .coloring_1 import coloring
-from .contour_lines import contour_lines
-from .display_1 import display
-from .display_state_name import display_state_name
-from .draw_mesh import draw_mesh
+from .name import name
 from .field import field
 from .filled import filled
-from .geometry_1 import geometry
-from .mesh_object import mesh_object
-from .name import name
+from .boundary_values import boundary_values
+from .contour_lines import contour_lines
 from .node_values import node_values
-from .physics import physics
-from .range_option import range_option
-from .surfaces import surfaces
 from .surfaces_list import surfaces_list
-
-
+from .range_option import range_option
+from .coloring_1 import coloring
+from .color_map import color_map
+from .draw_mesh import draw_mesh
+from .mesh_object import mesh_object
+from .display_state_name import display_state_name
+from .physics import physics
+from .geometry_1 import geometry
+from .surfaces import surfaces
+from .display_1 import display
 class contour_child(Group):
-    """'child_object_type' of contour."""
+    """
+    'child_object_type' of contour
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "name",
-        "field",
-        "filled",
-        "boundary_values",
-        "contour_lines",
-        "node_values",
-        "surfaces_list",
-        "range_option",
-        "coloring",
-        "color_map",
-        "draw_mesh",
-        "mesh_object",
-        "display_state_name",
-        "physics",
-        "geometry",
-        "surfaces",
-    ]
+    child_names = \
+        ['name', 'field', 'filled', 'boundary_values', 'contour_lines',
+         'node_values', 'surfaces_list', 'range_option', 'coloring',
+         'color_map', 'draw_mesh', 'mesh_object', 'display_state_name',
+         'physics', 'geometry', 'surfaces']
 
     name: name = name
     """
@@ -111,7 +98,8 @@ class contour_child(Group):
     """
     surfaces child of contour_child
     """
-    command_names = ["display"]
+    command_names = \
+        ['display']
 
     display: display = display
     """

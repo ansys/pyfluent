@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class standard_initialize(Command):
-    """Initialize the flow field with the current default values."""
+    """
+    Initialize the flow field with the current default values.
+    """
 
     fluent_name = "standard-initialize"
+

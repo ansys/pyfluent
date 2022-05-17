@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class velocity_component(ListObject[child_object_type_child]):
-    """'velocity_component' child."""
+    """
+    'velocity_component' child.
+    """
 
     fluent_name = "velocity-component"
 

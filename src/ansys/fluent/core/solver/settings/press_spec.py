@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class press_spec(String):
-    """'press_spec' child."""
+    """
+    'press_spec' child.
+    """
 
     fluent_name = "press-spec"
+

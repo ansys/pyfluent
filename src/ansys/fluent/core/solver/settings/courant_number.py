@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class courant_number(Real):
-    """Set Courant number."""
+    """
+    Set Courant number.
+    """
 
     fluent_name = "courant-number"
+

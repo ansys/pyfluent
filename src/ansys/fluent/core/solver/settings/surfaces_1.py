@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .plane_surface import plane_surface
-
-
 class surfaces(Group):
-    """'surfaces' child."""
+    """
+    'surfaces' child.
+    """
 
     fluent_name = "surfaces"
 
-    child_names = ["plane_surface"]
+    child_names = \
+        ['plane_surface']
 
     plane_surface: plane_surface = plane_surface
     """

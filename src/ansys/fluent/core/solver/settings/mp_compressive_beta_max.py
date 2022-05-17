@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class mp_compressive_beta_max(Real):
-    """'mp_compressive_beta_max' child."""
+    """
+    'mp_compressive_beta_max' child.
+    """
 
     fluent_name = "mp-compressive-beta-max"
+

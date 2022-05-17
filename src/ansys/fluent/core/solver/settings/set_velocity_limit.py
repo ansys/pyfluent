@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class set_velocity_limit(Real):
-    """Set velocity limit for detection of unstable event."""
+    """
+    Set velocity limit for detection of unstable event.
+    """
 
     fluent_name = "set-velocity-limit"
+

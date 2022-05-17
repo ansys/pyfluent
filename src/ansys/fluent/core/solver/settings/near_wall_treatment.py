@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class near_wall_treatment(String):
-    """'near_wall_treatment' child."""
+    """
+    'near_wall_treatment' child.
+    """
 
     fluent_name = "near-wall-treatment"
+

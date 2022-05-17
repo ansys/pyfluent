@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class wave_spect_s(Integer):
-    """'wave_spect_s' child."""
+    """
+    'wave_spect_s' child.
+    """
 
     fluent_name = "wave-spect-s"
+

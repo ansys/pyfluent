@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coarsen_by_interval(Integer):
-    """Coarsen by interval."""
+    """
+    Coarsen by interval.
+    """
 
     fluent_name = "coarsen-by-interval"
+

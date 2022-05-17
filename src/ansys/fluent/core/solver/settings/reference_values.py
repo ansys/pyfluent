@@ -6,37 +6,27 @@ from ansys.fluent.core.solver.flobject import *
 
 from .area import area
 from .compute_1 import compute
-from .density_1 import density
 from .depth import depth
+from .density_1 import density
 from .enthalpy import enthalpy
 from .length_val import length_val
-from .list_val import list_val
 from .pressure import pressure
 from .temperature_1 import temperature
+from .yplus import yplus
 from .velocity import velocity
 from .viscosity_1 import viscosity
-from .yplus import yplus
-
-
+from .list_val import list_val
 class reference_values(Group):
-    """'reference_values' child."""
+    """
+    'reference_values' child.
+    """
 
     fluent_name = "reference-values"
 
-    child_names = [
-        "area",
-        "compute",
-        "depth",
-        "density",
-        "enthalpy",
-        "length_val",
-        "pressure",
-        "temperature",
-        "yplus",
-        "velocity",
-        "viscosity",
-        "list_val",
-    ]
+    child_names = \
+        ['area', 'compute', 'depth', 'density', 'enthalpy', 'length_val',
+         'pressure', 'temperature', 'yplus', 'velocity', 'viscosity',
+         'list_val']
 
     area: area = area
     """

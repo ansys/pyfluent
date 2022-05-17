@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .feature_angle import feature_angle
-
-
 class feature(Group):
-    """'feature' child."""
+    """
+    'feature' child.
+    """
 
     fluent_name = "feature"
 
-    child_names = ["feature_angle"]
+    child_names = \
+        ['feature_angle']
 
     feature_angle: feature_angle = feature_angle
     """

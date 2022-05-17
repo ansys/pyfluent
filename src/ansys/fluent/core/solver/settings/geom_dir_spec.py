@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class geom_dir_spec(Boolean):
-    """'geom_dir_spec' child."""
+    """
+    'geom_dir_spec' child.
+    """
 
     fluent_name = "geom-dir-spec"
+

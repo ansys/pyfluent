@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class exponent_smoothing_func(Real):
-    """Exponent of smoothing function."""
+    """
+    Exponent of smoothing function.
+    """
 
     fluent_name = "exponent-smoothing-func"
+

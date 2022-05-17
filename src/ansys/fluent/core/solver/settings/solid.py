@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .fluid_child import fluid_child
 
-
 class solid(NamedObject[fluid_child]):
-    """'solid' child."""
+    """
+    'solid' child.
+    """
 
     fluent_name = "solid"
 

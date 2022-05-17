@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .enabled_2 import enabled
 from .stream_id import stream_id
-
-
 class track_single_particle_stream(Group):
-    """'track_single_particle_stream' child."""
+    """
+    'track_single_particle_stream' child.
+    """
 
     fluent_name = "track-single-particle-stream"
 
-    child_names = ["enabled", "stream_id"]
+    child_names = \
+        ['enabled', 'stream_id']
 
     enabled: enabled = enabled
     """

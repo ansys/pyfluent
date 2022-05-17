@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class expr_value(Real):
-    """'expr_value' child."""
+    """
+    'expr_value' child.
+    """
 
     fluent_name = "expr-value"
+

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class thickness(Real):
-    """'thickness' child."""
+    """
+    'thickness' child.
+    """
 
     fluent_name = "thickness"
+

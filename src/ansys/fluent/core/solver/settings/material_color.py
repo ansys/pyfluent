@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class material_color(String):
-    """'material_color' child."""
+    """
+    'material_color' child.
+    """
 
     fluent_name = "material-color"
+

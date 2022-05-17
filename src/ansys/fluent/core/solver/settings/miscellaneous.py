@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .compute_statistics import compute_statistics
 from .statistics_level import statistics_level
-
-
 class miscellaneous(Group):
-    """'miscellaneous' child."""
+    """
+    'miscellaneous' child.
+    """
 
     fluent_name = "miscellaneous"
 
-    child_names = ["compute_statistics", "statistics_level"]
+    child_names = \
+        ['compute_statistics', 'statistics_level']
 
     compute_statistics: compute_statistics = compute_statistics
     """

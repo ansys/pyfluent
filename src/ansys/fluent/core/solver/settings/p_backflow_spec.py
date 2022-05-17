@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class p_backflow_spec(String):
-    """'p_backflow_spec' child."""
+    """
+    'p_backflow_spec' child.
+    """
 
     fluent_name = "p-backflow-spec"
+

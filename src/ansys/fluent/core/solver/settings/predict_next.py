@@ -4,9 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class predict_next(Boolean):
-    """Applies a predictor algorithm for computing initial condition at time
-    step n+1."""
+    """
+    Applies a predictor algorithm for computing initial condition at time step n+1.
+    """
 
     fluent_name = "predict-next?"
+

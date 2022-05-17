@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class z_fan_origin(Real):
-    """'z_fan_origin' child."""
+    """
+    'z_fan_origin' child.
+    """
 
     fluent_name = "z-fan-origin"
+

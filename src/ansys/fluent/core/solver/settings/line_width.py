@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class line_width(Real):
-    """'line_width' child."""
+    """
+    'line_width' child.
+    """
 
     fluent_name = "line-width"
+

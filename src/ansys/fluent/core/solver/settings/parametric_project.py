@@ -4,27 +4,21 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .archive import archive
 from .new import new
 from .open import open
 from .save import save
 from .save_as import save_as
 from .save_as_copy import save_as_copy
-
-
+from .archive import archive
 class parametric_project(Group):
-    """'parametric_project' child."""
+    """
+    'parametric_project' child.
+    """
 
     fluent_name = "parametric-project"
 
-    command_names = [
-        "new",
-        "open",
-        "save",
-        "save_as",
-        "save_as_copy",
-        "archive",
-    ]
+    command_names = \
+        ['new', 'open', 'save', 'save_as', 'save_as_copy', 'archive']
 
     new: new = new
     """

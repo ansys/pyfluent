@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class contact_property(Boolean):
-    """'contact_property' child."""
+    """
+    'contact_property' child.
+    """
 
     fluent_name = "contact-property?"
+

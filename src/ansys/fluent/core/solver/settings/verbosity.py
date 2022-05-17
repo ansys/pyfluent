@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class verbosity(Integer):
-    """Multigrid verbosity."""
+    """
+    Multigrid verbosity.
+    """
 
     fluent_name = "verbosity"
+

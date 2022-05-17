@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .fluid_child import fluid_child
 
-
 class mixture_species(NamedObject[fluid_child]):
-    """'mixture_species' child."""
+    """
+    'mixture_species' child.
+    """
 
     fluent_name = "mixture-species"
 

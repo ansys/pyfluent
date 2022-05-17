@@ -6,14 +6,15 @@ from ansys.fluent.core.solver.flobject import *
 
 from .graphics import graphics
 from .surfaces_1 import surfaces
-
-
 class results(Group):
-    """'results' child."""
+    """
+    'results' child.
+    """
 
     fluent_name = "results"
 
-    child_names = ["graphics", "surfaces"]
+    child_names = \
+        ['graphics', 'surfaces']
 
     graphics: graphics = graphics
     """

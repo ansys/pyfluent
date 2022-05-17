@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .uds_bc_child import uds_bc_child
 
-
 class pb_smm_bc(NamedObject[uds_bc_child]):
-    """'pb_smm_bc' child."""
+    """
+    'pb_smm_bc' child.
+    """
 
     fluent_name = "pb-smm-bc"
 

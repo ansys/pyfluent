@@ -4,17 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .option import option
 from .automatic import automatic
 from .manual import manual
-from .option import option
-
-
 class coloring(Group):
-    """'coloring' child."""
+    """
+    'coloring' child.
+    """
 
     fluent_name = "coloring"
 
-    child_names = ["option", "automatic", "manual"]
+    child_names = \
+        ['option', 'automatic', 'manual']
 
     option: option = option
     """

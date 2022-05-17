@@ -4,24 +4,21 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .current_driver import current_driver
 from .hardcopy_format import hardcopy_format
 from .hardcopy_options import hardcopy_options
-from .post_format import post_format
 from .window_dump_cmd import window_dump_cmd
-
-
+from .post_format import post_format
+from .current_driver import current_driver
 class driver_options(Group):
-    """'driver_options' child."""
+    """
+    'driver_options' child.
+    """
 
     fluent_name = "driver-options"
 
-    child_names = [
-        "hardcopy_format",
-        "hardcopy_options",
-        "window_dump_cmd",
-        "post_format",
-    ]
+    child_names = \
+        ['hardcopy_format', 'hardcopy_options', 'window_dump_cmd',
+         'post_format']
 
     hardcopy_format: hardcopy_format = hardcopy_format
     """
@@ -39,7 +36,8 @@ class driver_options(Group):
     """
     post_format child of driver_options
     """
-    command_names = ["current_driver"]
+    command_names = \
+        ['current_driver']
 
     current_driver: current_driver = current_driver
     """

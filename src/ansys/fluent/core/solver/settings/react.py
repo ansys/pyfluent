@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class react(Boolean):
-    """'react' child."""
+    """
+    'react' child.
+    """
 
     fluent_name = "react?"
+

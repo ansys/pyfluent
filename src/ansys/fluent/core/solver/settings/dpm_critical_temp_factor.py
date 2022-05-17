@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_critical_temp_factor(Real):
-    """'dpm_critical_temp_factor' child."""
+    """
+    'dpm_critical_temp_factor' child.
+    """
 
     fluent_name = "dpm-critical-temp-factor"
+

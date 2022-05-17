@@ -4,24 +4,25 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .height import height
 from .width import width
-
-
+from .height import height
 class field(Command):
-    """Set the field of view (width and height).
-
+    """
+    Set the field of view (width and height).
+    
     Parameters
     ----------
         width : real
             'width' child.
         height : real
             'height' child.
+    
     """
 
     fluent_name = "field"
 
-    argument_names = ["width", "height"]
+    argument_names = \
+        ['width', 'height']
 
     width: width = width
     """

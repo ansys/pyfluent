@@ -4,43 +4,31 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .bounded import bounded
-from .compute_from_view_plane import compute_from_view_plane
-from .edges_2 import edges
 from .methods_2 import methods
-from .p0_1 import p0
-from .p1 import p1
-from .p2 import p2
-from .point_normal import point_normal
-from .point_vector import point_vector
-from .sample_point import sample_point
-from .surface_aligned_normal import surface_aligned_normal
 from .x import x
 from .y import y
 from .z import z
-
-
+from .point_vector import point_vector
+from .point_normal import point_normal
+from .compute_from_view_plane import compute_from_view_plane
+from .surface_aligned_normal import surface_aligned_normal
+from .p0_1 import p0
+from .p1 import p1
+from .p2 import p2
+from .bounded import bounded
+from .sample_point import sample_point
+from .edges_2 import edges
 class plane_surface_child(Group):
-    """'child_object_type' of plane_surface."""
+    """
+    'child_object_type' of plane_surface
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "methods",
-        "x",
-        "y",
-        "z",
-        "point_vector",
-        "point_normal",
-        "compute_from_view_plane",
-        "surface_aligned_normal",
-        "p0",
-        "p1",
-        "p2",
-        "bounded",
-        "sample_point",
-        "edges",
-    ]
+    child_names = \
+        ['methods', 'x', 'y', 'z', 'point_vector', 'point_normal',
+         'compute_from_view_plane', 'surface_aligned_normal', 'p0', 'p1',
+         'p2', 'bounded', 'sample_point', 'edges']
 
     methods: methods = methods
     """

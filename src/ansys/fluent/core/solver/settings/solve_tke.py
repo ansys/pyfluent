@@ -4,11 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class solve_tke(Boolean):
-    """Enable/disable the solution of T.K.E.
-
-    in RSM model.
+    """
+    Enable/disable the solution of T.K.E. in RSM model.
     """
 
     fluent_name = "solve-tke"
+

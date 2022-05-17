@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .piecewise_polynomial_child import piecewise_polynomial_child
 
-
 class piecewise_polynomial(ListObject[piecewise_polynomial_child]):
-    """'piecewise_polynomial' child."""
+    """
+    'piecewise_polynomial' child.
+    """
 
     fluent_name = "piecewise-polynomial"
 

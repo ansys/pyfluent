@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class scalefactor(Real):
-    """'scalefactor' child."""
+    """
+    'scalefactor' child.
+    """
 
     fluent_name = "scalefactor"
+

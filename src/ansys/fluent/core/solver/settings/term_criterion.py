@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class term_criterion(Real):
-    """'term_criterion' child."""
+    """
+    'term_criterion' child.
+    """
 
     fluent_name = "term-criterion"
+

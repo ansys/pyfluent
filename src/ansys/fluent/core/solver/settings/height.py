@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class height(Real):
-    """'height' child."""
+    """
+    'height' child.
+    """
 
     fluent_name = "height"
+

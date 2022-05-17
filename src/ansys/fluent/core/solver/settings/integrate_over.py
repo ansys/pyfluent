@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class integrate_over(Integer):
-    """'integrate_over' child."""
+    """
+    'integrate_over' child.
+    """
 
     fluent_name = "integrate-over"
+

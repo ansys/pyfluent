@@ -4,16 +4,18 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .axis_child import axis_child
 from .change_type import change_type
-
+from .axis_child import axis_child
 
 class symmetry(NamedObject[axis_child]):
-    """'symmetry' child."""
+    """
+    'symmetry' child.
+    """
 
     fluent_name = "symmetry"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .surface_child import surface_child
 
-
 class surface(NamedObject[surface_child]):
-    """'surface' child."""
+    """
+    'surface' child.
+    """
 
     fluent_name = "surface"
 

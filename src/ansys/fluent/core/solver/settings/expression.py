@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .expression_child import expression_child
 
-
 class expression(NamedObject[expression_child]):
-    """'expression' child."""
+    """
+    'expression' child.
+    """
 
     fluent_name = "expression"
 

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class amplitude_real(Real):
-    """'amplitude_real' child."""
+    """
+    'amplitude_real' child.
+    """
 
     fluent_name = "amplitude-real"
+

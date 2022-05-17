@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class vector_field(String):
-    """'vector_field' child."""
+    """
+    'vector_field' child.
+    """
 
     fluent_name = "vector-field"
+

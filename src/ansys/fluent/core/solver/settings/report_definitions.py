@@ -4,42 +4,31 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .aeromechanics import aeromechanics
-from .compute_2 import compute
-from .custom import custom
-from .drag import drag
-from .expression import expression
-from .flux import flux
-from .force import force
-from .injection import injection
-from .lift import lift
 from .mesh import mesh
-from .moment import moment
 from .surface import surface
-from .user_defined import user_defined
 from .volume import volume
-
-
+from .force import force
+from .lift import lift
+from .drag import drag
+from .moment import moment
+from .flux import flux
+from .injection import injection
+from .user_defined import user_defined
+from .aeromechanics import aeromechanics
+from .expression import expression
+from .custom import custom
+from .compute_2 import compute
 class report_definitions(Group):
-    """'report_definitions' child."""
+    """
+    'report_definitions' child.
+    """
 
     fluent_name = "report-definitions"
 
-    child_names = [
-        "mesh",
-        "surface",
-        "volume",
-        "force",
-        "lift",
-        "drag",
-        "moment",
-        "flux",
-        "injection",
-        "user_defined",
-        "aeromechanics",
-        "expression",
-        "custom",
-    ]
+    child_names = \
+        ['mesh', 'surface', 'volume', 'force', 'lift', 'drag', 'moment',
+         'flux', 'injection', 'user_defined', 'aeromechanics', 'expression',
+         'custom']
 
     mesh: mesh = mesh
     """
@@ -93,7 +82,8 @@ class report_definitions(Group):
     """
     custom child of report_definitions
     """
-    command_names = ["compute"]
+    command_names = \
+        ['compute']
 
     compute: compute = compute
     """

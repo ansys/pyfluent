@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class dpm_crit_temp_option(String):
-    """'dpm_crit_temp_option' child."""
+    """
+    'dpm_crit_temp_option' child.
+    """
 
     fluent_name = "dpm-crit-temp-option"
+

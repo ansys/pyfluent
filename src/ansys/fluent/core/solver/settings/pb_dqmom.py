@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class pb_dqmom(NamedObject[child_object_type_child]):
-    """'pb_dqmom' child."""
+    """
+    'pb_dqmom' child.
+    """
 
     fluent_name = "pb-dqmom"
 

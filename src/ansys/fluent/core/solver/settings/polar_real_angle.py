@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class polar_real_angle(Real):
-    """'polar_real_angle' child."""
+    """
+    'polar_real_angle' child.
+    """
 
     fluent_name = "polar-real-angle"
+

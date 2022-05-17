@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coefficients(RealList):
-    """'coefficients' child."""
+    """
+    'coefficients' child.
+    """
 
     fluent_name = "coefficients"
+

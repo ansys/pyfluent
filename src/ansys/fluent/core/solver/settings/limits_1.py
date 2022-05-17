@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class limits(Command):
-    """'limits' command."""
+    """
+    'limits' command.
+    """
 
     fluent_name = "limits"
+

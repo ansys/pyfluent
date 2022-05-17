@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class geometry(StringList):
-    """'geometry' child."""
+    """
+    'geometry' child.
+    """
 
     fluent_name = "geometry"
+

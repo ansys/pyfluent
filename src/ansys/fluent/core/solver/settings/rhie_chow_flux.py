@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .low_order_rhie_chow import low_order_rhie_chow
-
-
 class rhie_chow_flux(Group):
-    """'rhie_chow_flux' child."""
+    """
+    'rhie_chow_flux' child.
+    """
 
     fluent_name = "rhie-chow-flux"
 
-    child_names = ["low_order_rhie_chow"]
+    child_names = \
+        ['low_order_rhie_chow']
 
     low_order_rhie_chow: low_order_rhie_chow = low_order_rhie_chow
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class characteristic_length_cp(Real):
-    """'characteristic_length_cp' child."""
+    """
+    'characteristic_length_cp' child.
+    """
 
     fluent_name = "characteristic-length-cp"
+

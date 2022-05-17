@@ -1333,15 +1333,19 @@ class main_menu(TUIMenu):
                     def options(self, *args, **kwargs):
                         """
                         Set the hardcopy options. Available options are:
-                        \\n               	"no gamma correction", disables gamma correction of colors,
-                        \\n               	"physical size = (width,height)", where width and height
+                        
+                                       	"no gamma correction", disables gamma correction of colors,
+                        
+                                       	"physical size = (width,height)", where width and height
                                   are the actual measurements of the printable area of the page
                                   in centimeters.
-                        \\n               	"subscreen = (left,right,bottom,top)", where left,right,
+                        
+                                       	"subscreen = (left,right,bottom,top)", where left,right,
                                   bottom, and top are numbers in [-1,1] describing a subwindow on
                                   the page in which to place the hardcopy.
                         
-                        \\n          The options may be combined by separating them with commas.
+                        
+                                  The options may be combined by separating them with commas.
                         """
                         return PyMenu(self.service, "/display/set/picture/driver/options").execute(*args, **kwargs)
 
@@ -23889,15 +23893,19 @@ class main_menu(TUIMenu):
                             def options(self, *args, **kwargs):
                                 """
                                 Set the hardcopy options. Available options are:
-                                \\n               	"no gamma correction", disables gamma correction of colors,
-                                \\n               	"physical size = (width,height)", where width and height
+                                
+                                               	"no gamma correction", disables gamma correction of colors,
+                                
+                                               	"physical size = (width,height)", where width and height
                                           are the actual measurements of the printable area of the page
                                           in centimeters.
-                                \\n               	"subscreen = (left,right,bottom,top)", where left,right,
+                                
+                                               	"subscreen = (left,right,bottom,top)", where left,right,
                                           bottom, and top are numbers in [-1,1] describing a subwindow on
                                           the page in which to place the hardcopy.
                                 
-                                \\n          The options may be combined by separating them with commas.
+                                
+                                          The options may be combined by separating them with commas.
                                 """
                                 return PyMenu(self.service, "/results/graphics/expert/set/picture/driver/options").execute(*args, **kwargs)
 
@@ -26687,15 +26695,19 @@ class main_menu(TUIMenu):
                     def options(self, *args, **kwargs):
                         """
                         Set the hardcopy options. Available options are:
-                        \\n               	"no gamma correction", disables gamma correction of colors,
-                        \\n               	"physical size = (width,height)", where width and height
+                        
+                                       	"no gamma correction", disables gamma correction of colors,
+                        
+                                       	"physical size = (width,height)", where width and height
                                   are the actual measurements of the printable area of the page
                                   in centimeters.
-                        \\n               	"subscreen = (left,right,bottom,top)", where left,right,
+                        
+                                       	"subscreen = (left,right,bottom,top)", where left,right,
                                   bottom, and top are numbers in [-1,1] describing a subwindow on
                                   the page in which to place the hardcopy.
                         
-                        \\n          The options may be combined by separating them with commas.
+                        
+                                  The options may be combined by separating them with commas.
                         """
                         return PyMenu(self.service, "/results/graphics_window/picture/driver/options").execute(*args, **kwargs)
 
@@ -31106,15 +31118,19 @@ class main_menu(TUIMenu):
                         def options(self, *args, **kwargs):
                             """
                             Set the hardcopy options. Available options are:
-                            \\n               	"no gamma correction", disables gamma correction of colors,
-                            \\n               	"physical size = (width,height)", where width and height
+                            
+                                           	"no gamma correction", disables gamma correction of colors,
+                            
+                                           	"physical size = (width,height)", where width and height
                                       are the actual measurements of the printable area of the page
                                       in centimeters.
-                            \\n               	"subscreen = (left,right,bottom,top)", where left,right,
+                            
+                                           	"subscreen = (left,right,bottom,top)", where left,right,
                                       bottom, and top are numbers in [-1,1] describing a subwindow on
                                       the page in which to place the hardcopy.
                             
-                            \\n          The options may be combined by separating them with commas.
+                            
+                                      The options may be combined by separating them with commas.
                             """
                             return PyMenu(self.service, "/solve/animate/pulse/hardcopy/driver/options").execute(*args, **kwargs)
 

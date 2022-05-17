@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class aggressive_coarsening(Boolean):
-    """Enable aggressive AMG coarsening for coupled equation systems."""
+    """
+    Enable aggressive AMG coarsening for coupled equation systems.
+    """
 
     fluent_name = "aggressive-coarsening?"
+

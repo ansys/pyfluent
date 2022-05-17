@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class number_of_total_periods(Integer):
-    """Set number of total periods."""
+    """
+    Set number of total periods.
+    """
 
     fluent_name = "number-of-total-periods"
+

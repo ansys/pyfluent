@@ -7,14 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .energy import energy
 from .multiphase import multiphase
 from .viscous import viscous
-
-
 class models(Group):
-    """'models' child."""
+    """
+    'models' child.
+    """
 
     fluent_name = "models"
 
-    child_names = ["energy", "multiphase", "viscous"]
+    child_names = \
+        ['energy', 'multiphase', 'viscous']
 
     energy: energy = energy
     """

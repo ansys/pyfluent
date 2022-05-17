@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class anisotropic_spe_diff(Boolean):
-    """'anisotropic_spe_diff' child."""
+    """
+    'anisotropic_spe_diff' child.
+    """
 
     fluent_name = "anisotropic-spe-diff?"
+

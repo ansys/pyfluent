@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class turbulent_intensity(Real):
-    """Set turbulent intensity."""
+    """
+    Set turbulent intensity.
+    """
 
     fluent_name = "turbulent-intensity"
+

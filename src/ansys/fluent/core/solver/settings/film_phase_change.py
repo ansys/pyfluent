@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class film_phase_change(Boolean):
-    """'film_phase_change' child."""
+    """
+    'film_phase_change' child.
+    """
 
     fluent_name = "film-phase-change?"
+

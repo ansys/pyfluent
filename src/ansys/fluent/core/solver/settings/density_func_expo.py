@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class density_func_expo(Real):
-    """Density function exponent."""
+    """
+    Density function exponent.
+    """
 
     fluent_name = "density-func-expo"
+

@@ -5,14 +5,15 @@
 from ansys.fluent.core.solver.flobject import *
 
 from .compute import compute
-
-
 class compute(Group):
-    """'compute' child."""
+    """
+    'compute' child.
+    """
 
     fluent_name = "compute"
 
-    child_names = ["compute"]
+    child_names = \
+        ['compute']
 
     compute: compute = compute
     """

@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class correction_reduction(Real):
-    """Correction relaxation factor."""
+    """
+    Correction relaxation factor.
+    """
 
     fluent_name = "correction-reduction"
+

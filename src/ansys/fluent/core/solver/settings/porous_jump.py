@@ -7,13 +7,15 @@ from ansys.fluent.core.solver.flobject import *
 from .change_type import change_type
 from .porous_jump_child import porous_jump_child
 
-
 class porous_jump(NamedObject[porous_jump_child]):
-    """'porous_jump' child."""
+    """
+    'porous_jump' child.
+    """
 
     fluent_name = "porous-jump"
 
-    command_names = ["change_type"]
+    command_names = \
+        ['change_type']
 
     change_type: change_type = change_type
     """

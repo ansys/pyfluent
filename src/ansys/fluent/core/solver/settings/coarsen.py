@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class coarsen(Integer):
-    """'coarsen' child."""
+    """
+    'coarsen' child.
+    """
 
     fluent_name = "coarsen"
+

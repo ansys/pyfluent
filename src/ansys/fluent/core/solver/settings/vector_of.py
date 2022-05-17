@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class vector_of(String):
-    """'vector_of' child."""
+    """
+    'vector_of' child.
+    """
 
     fluent_name = "vector-of"
+

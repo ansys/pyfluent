@@ -4,16 +4,17 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .max_coarse_relaxations import max_coarse_relaxations
 from .max_fine_relaxations import max_fine_relaxations
-
-
+from .max_coarse_relaxations import max_coarse_relaxations
 class flexible_cycle_paramters(Group):
-    """'flexible_cycle_paramters' child."""
+    """
+    'flexible_cycle_paramters' child.
+    """
 
     fluent_name = "flexible-cycle-paramters"
 
-    child_names = ["max_fine_relaxations", "max_coarse_relaxations"]
+    child_names = \
+        ['max_fine_relaxations', 'max_coarse_relaxations']
 
     max_fine_relaxations: max_fine_relaxations = max_fine_relaxations
     """

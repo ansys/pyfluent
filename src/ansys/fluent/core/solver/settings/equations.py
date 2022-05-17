@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .equations_child import equations_child
 
-
 class equations(NamedObject[equations_child]):
-    """'equations' child."""
+    """
+    'equations' child.
+    """
 
     fluent_name = "equations"
 

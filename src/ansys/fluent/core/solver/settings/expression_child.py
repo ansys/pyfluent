@@ -4,25 +4,21 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .average_over import average_over
+from .list_valid_report_names import list_valid_report_names
 from .define import define
 from .expr_value import expr_value
-from .list_valid_report_names import list_valid_report_names
+from .average_over import average_over
 from .old_props import old_props
-
-
 class expression_child(Group):
-    """'child_object_type' of expression."""
+    """
+    'child_object_type' of expression
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "list_valid_report_names",
-        "define",
-        "expr_value",
-        "average_over",
-        "old_props",
-    ]
+    child_names = \
+        ['list_valid_report_names', 'define', 'expr_value', 'average_over',
+         'old_props']
 
     list_valid_report_names: list_valid_report_names = list_valid_report_names
     """

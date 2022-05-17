@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class planar_conduction(Boolean):
-    """'planar_conduction' child."""
+    """
+    'planar_conduction' child.
+    """
 
     fluent_name = "planar-conduction?"
+

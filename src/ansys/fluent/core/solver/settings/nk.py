@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class nk(Real):
-    """'nk' child."""
+    """
+    'nk' child.
+    """
 
     fluent_name = "nk"
+

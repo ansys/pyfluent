@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class lic_oriented(Boolean):
-    """'lic_oriented' child."""
+    """
+    'lic_oriented' child.
+    """
 
     fluent_name = "lic-oriented?"
+

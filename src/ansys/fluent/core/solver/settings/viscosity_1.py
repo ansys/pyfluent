@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class viscosity(Real):
-    """Set reference viscosity for normalization."""
+    """
+    Set reference viscosity for normalization.
+    """
 
     fluent_name = "viscosity"
+

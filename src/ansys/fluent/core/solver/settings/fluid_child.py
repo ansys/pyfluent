@@ -4,195 +4,136 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-from .absorption_coefficient import absorption_coefficient
-from .acentric_factor import acentric_factor
-from .atomic_number import atomic_number
-from .averaging_coefficient_t import averaging_coefficient_t
-from .averaging_coefficient_y import averaging_coefficient_y
-from .binary_diffusivity import binary_diffusivity
-from .boiling_point import boiling_point
-from .burn_hreact import burn_hreact
-from .burn_hreact_fraction import burn_hreact_fraction
-from .burn_stoichiometry import burn_stoichiometry
-from .characteristic_vibrational_temperature import (
-    characteristic_vibrational_temperature,
-)
-from .charge import charge
-from .charge_density import charge_density
-from .combustible_fraction import combustible_fraction
-from .combustion_model import combustion_model
-from .critical_pressure import critical_pressure
-from .critical_temperature import critical_temperature
-from .critical_volume import critical_volume
-from .degrees_of_freedom import degrees_of_freedom
+from .species import species
+from .reactions import reactions
+from .reaction_mechs import reaction_mechs
 from .density import density
-from .devolatilization_model import devolatilization_model
-from .diffusivity_reference_pressure import diffusivity_reference_pressure
-from .dpm_surften import dpm_surften
-from .dual_electric_conductivity import dual_electric_conductivity
-from .electric_conductivity import electric_conductivity
-from .emissivity import emissivity
-from .eutectic_mf import eutectic_mf
-from .eutectic_temp import eutectic_temp
+from .specific_heat import specific_heat
+from .thermal_conductivity import thermal_conductivity
+from .viscosity import viscosity
+from .molecular_weight import molecular_weight
+from .mass_diffusivity import mass_diffusivity
+from .thermal_diffusivity import thermal_diffusivity
 from .formation_enthalpy import formation_enthalpy
 from .formation_entropy import formation_entropy
-from .heat_of_pyrolysis import heat_of_pyrolysis
-from .latent_heat import latent_heat
-from .lennard_jones_energy import lennard_jones_energy
+from .characteristic_vibrational_temperature import characteristic_vibrational_temperature
+from .reference_temperature import reference_temperature
 from .lennard_jones_length import lennard_jones_length
-from .liquidus_slope import liquidus_slope
-from .lithium_diffusivity import lithium_diffusivity
-from .magnetic_permeability import magnetic_permeability
-from .mass_diffusivity import mass_diffusivity
-from .melting_heat import melting_heat
-from .molecular_weight import molecular_weight
-from .partition_coeff import partition_coeff
+from .lennard_jones_energy import lennard_jones_energy
+from .thermal_accom_coefficient import thermal_accom_coefficient
+from .velocity_accom_coefficient import velocity_accom_coefficient
+from .absorption_coefficient import absorption_coefficient
+from .scattering_coefficient import scattering_coefficient
+from .scattering_phase_function import scattering_phase_function
+from .therm_exp_coeff import therm_exp_coeff
+from .premix_unburnt_density import premix_unburnt_density
+from .premix_unburnt_temp import premix_unburnt_temp
 from .premix_adiabatic_temp import premix_adiabatic_temp
-from .premix_critical_strain import premix_critical_strain
-from .premix_heat_of_comb import premix_heat_of_comb
+from .premix_unburnt_cp import premix_unburnt_cp
 from .premix_heat_trans_coeff import premix_heat_trans_coeff
 from .premix_laminar_speed import premix_laminar_speed
 from .premix_laminar_thickness import premix_laminar_thickness
-from .premix_unburnt_cp import premix_unburnt_cp
-from .premix_unburnt_density import premix_unburnt_density
+from .premix_critical_strain import premix_critical_strain
+from .premix_heat_of_comb import premix_heat_of_comb
 from .premix_unburnt_fuel_mf import premix_unburnt_fuel_mf
-from .premix_unburnt_temp import premix_unburnt_temp
-from .reaction_mechs import reaction_mechs
-from .reactions import reactions
-from .reference_temperature import reference_temperature
 from .refractive_index import refractive_index
-from .saturation_pressure import saturation_pressure
-from .scattering_coefficient import scattering_coefficient
+from .latent_heat import latent_heat
+from .thermophoretic_co import thermophoretic_co
+from .vaporization_temperature import vaporization_temperature
+from .boiling_point import boiling_point
+from .volatile_fraction import volatile_fraction
+from .binary_diffusivity import binary_diffusivity
+from .diffusivity_reference_pressure import diffusivity_reference_pressure
+from .vapor_pressure import vapor_pressure
+from .degrees_of_freedom import degrees_of_freedom
+from .emissivity import emissivity
 from .scattering_factor import scattering_factor
-from .scattering_phase_function import scattering_phase_function
-from .solid_diffusion import solid_diffusion
+from .heat_of_pyrolysis import heat_of_pyrolysis
+from .swelling_coefficient import swelling_coefficient
+from .burn_stoichiometry import burn_stoichiometry
+from .combustible_fraction import combustible_fraction
+from .burn_hreact import burn_hreact
+from .burn_hreact_fraction import burn_hreact_fraction
+from .devolatilization_model import devolatilization_model
+from .combustion_model import combustion_model
+from .averaging_coefficient_t import averaging_coefficient_t
+from .averaging_coefficient_y import averaging_coefficient_y
+from .vaporization_model import vaporization_model
+from .thermolysis_model import thermolysis_model
+from .melting_heat import melting_heat
+from .tsolidus import tsolidus
+from .tliqidus import tliqidus
+from .tmelt import tmelt
+from .liquidus_slope import liquidus_slope
+from .partition_coeff import partition_coeff
+from .eutectic_mf import eutectic_mf
+from .eutectic_temp import eutectic_temp
 from .solut_exp_coeff import solut_exp_coeff
-from .species import species
-from .species_phase import species_phase
-from .specific_heat import specific_heat
+from .solid_diffusion import solid_diffusion
+from .uds_diffusivity import uds_diffusivity
+from .dpm_surften import dpm_surften
+from .electric_conductivity import electric_conductivity
+from .dual_electric_conductivity import dual_electric_conductivity
+from .lithium_diffusivity import lithium_diffusivity
+from .magnetic_permeability import magnetic_permeability
+from .charge_density import charge_density
+from .charge import charge
 from .speed_of_sound import speed_of_sound
-from .struct_damping_alpha import struct_damping_alpha
-from .struct_damping_beta import struct_damping_beta
+from .species_phase import species_phase
+from .vp_equilib import vp_equilib
+from .critical_temperature import critical_temperature
+from .critical_pressure import critical_pressure
+from .critical_volume import critical_volume
+from .acentric_factor import acentric_factor
+from .saturation_pressure import saturation_pressure
+from .struct_youngs_modulus import struct_youngs_modulus
 from .struct_poisson_ratio import struct_poisson_ratio
 from .struct_start_temperature import struct_start_temperature
 from .struct_thermal_expansion import struct_thermal_expansion
-from .struct_youngs_modulus import struct_youngs_modulus
-from .swelling_coefficient import swelling_coefficient
-from .therm_exp_coeff import therm_exp_coeff
-from .thermal_accom_coefficient import thermal_accom_coefficient
-from .thermal_conductivity import thermal_conductivity
-from .thermal_diffusivity import thermal_diffusivity
-from .thermolysis_model import thermolysis_model
-from .thermophoretic_co import thermophoretic_co
-from .tliqidus import tliqidus
-from .tmelt import tmelt
-from .tsolidus import tsolidus
-from .uds_diffusivity import uds_diffusivity
-from .vapor_pressure import vapor_pressure
-from .vaporization_model import vaporization_model
-from .vaporization_temperature import vaporization_temperature
-from .velocity_accom_coefficient import velocity_accom_coefficient
-from .viscosity import viscosity
-from .volatile_fraction import volatile_fraction
-from .vp_equilib import vp_equilib
-
-
+from .atomic_number import atomic_number
+from .struct_damping_alpha import struct_damping_alpha
+from .struct_damping_beta import struct_damping_beta
 class fluid_child(Group):
-    """'child_object_type' of fluid."""
+    """
+    'child_object_type' of fluid
+    """
 
     fluent_name = "child-object-type"
 
-    child_names = [
-        "species",
-        "reactions",
-        "reaction_mechs",
-        "density",
-        "specific_heat",
-        "thermal_conductivity",
-        "viscosity",
-        "molecular_weight",
-        "mass_diffusivity",
-        "thermal_diffusivity",
-        "formation_enthalpy",
-        "formation_entropy",
-        "characteristic_vibrational_temperature",
-        "reference_temperature",
-        "lennard_jones_length",
-        "lennard_jones_energy",
-        "thermal_accom_coefficient",
-        "velocity_accom_coefficient",
-        "absorption_coefficient",
-        "scattering_coefficient",
-        "scattering_phase_function",
-        "therm_exp_coeff",
-        "premix_unburnt_density",
-        "premix_unburnt_temp",
-        "premix_adiabatic_temp",
-        "premix_unburnt_cp",
-        "premix_heat_trans_coeff",
-        "premix_laminar_speed",
-        "premix_laminar_thickness",
-        "premix_critical_strain",
-        "premix_heat_of_comb",
-        "premix_unburnt_fuel_mf",
-        "refractive_index",
-        "latent_heat",
-        "thermophoretic_co",
-        "vaporization_temperature",
-        "boiling_point",
-        "volatile_fraction",
-        "binary_diffusivity",
-        "diffusivity_reference_pressure",
-        "vapor_pressure",
-        "degrees_of_freedom",
-        "emissivity",
-        "scattering_factor",
-        "heat_of_pyrolysis",
-        "swelling_coefficient",
-        "burn_stoichiometry",
-        "combustible_fraction",
-        "burn_hreact",
-        "burn_hreact_fraction",
-        "devolatilization_model",
-        "combustion_model",
-        "averaging_coefficient_t",
-        "averaging_coefficient_y",
-        "vaporization_model",
-        "thermolysis_model",
-        "melting_heat",
-        "tsolidus",
-        "tliqidus",
-        "tmelt",
-        "liquidus_slope",
-        "partition_coeff",
-        "eutectic_mf",
-        "eutectic_temp",
-        "solut_exp_coeff",
-        "solid_diffusion",
-        "uds_diffusivity",
-        "dpm_surften",
-        "electric_conductivity",
-        "dual_electric_conductivity",
-        "lithium_diffusivity",
-        "magnetic_permeability",
-        "charge_density",
-        "charge",
-        "speed_of_sound",
-        "species_phase",
-        "vp_equilib",
-        "critical_temperature",
-        "critical_pressure",
-        "critical_volume",
-        "acentric_factor",
-        "saturation_pressure",
-        "struct_youngs_modulus",
-        "struct_poisson_ratio",
-        "struct_start_temperature",
-        "struct_thermal_expansion",
-        "atomic_number",
-        "struct_damping_alpha",
-        "struct_damping_beta",
-    ]
+    child_names = \
+        ['species', 'reactions', 'reaction_mechs', 'density', 'specific_heat',
+         'thermal_conductivity', 'viscosity', 'molecular_weight',
+         'mass_diffusivity', 'thermal_diffusivity', 'formation_enthalpy',
+         'formation_entropy', 'characteristic_vibrational_temperature',
+         'reference_temperature', 'lennard_jones_length',
+         'lennard_jones_energy', 'thermal_accom_coefficient',
+         'velocity_accom_coefficient', 'absorption_coefficient',
+         'scattering_coefficient', 'scattering_phase_function',
+         'therm_exp_coeff', 'premix_unburnt_density', 'premix_unburnt_temp',
+         'premix_adiabatic_temp', 'premix_unburnt_cp',
+         'premix_heat_trans_coeff', 'premix_laminar_speed',
+         'premix_laminar_thickness', 'premix_critical_strain',
+         'premix_heat_of_comb', 'premix_unburnt_fuel_mf', 'refractive_index',
+         'latent_heat', 'thermophoretic_co', 'vaporization_temperature',
+         'boiling_point', 'volatile_fraction', 'binary_diffusivity',
+         'diffusivity_reference_pressure', 'vapor_pressure',
+         'degrees_of_freedom', 'emissivity', 'scattering_factor',
+         'heat_of_pyrolysis', 'swelling_coefficient', 'burn_stoichiometry',
+         'combustible_fraction', 'burn_hreact', 'burn_hreact_fraction',
+         'devolatilization_model', 'combustion_model',
+         'averaging_coefficient_t', 'averaging_coefficient_y',
+         'vaporization_model', 'thermolysis_model', 'melting_heat',
+         'tsolidus', 'tliqidus', 'tmelt', 'liquidus_slope', 'partition_coeff',
+         'eutectic_mf', 'eutectic_temp', 'solut_exp_coeff', 'solid_diffusion',
+         'uds_diffusivity', 'dpm_surften', 'electric_conductivity',
+         'dual_electric_conductivity', 'lithium_diffusivity',
+         'magnetic_permeability', 'charge_density', 'charge',
+         'speed_of_sound', 'species_phase', 'vp_equilib',
+         'critical_temperature', 'critical_pressure', 'critical_volume',
+         'acentric_factor', 'saturation_pressure', 'struct_youngs_modulus',
+         'struct_poisson_ratio', 'struct_start_temperature',
+         'struct_thermal_expansion', 'atomic_number', 'struct_damping_alpha',
+         'struct_damping_beta']
 
     species: species = species
     """
@@ -242,9 +183,7 @@ class fluid_child(Group):
     """
     formation_entropy child of fluid_child
     """
-    characteristic_vibrational_temperature: characteristic_vibrational_temperature = (
-        characteristic_vibrational_temperature
-    )
+    characteristic_vibrational_temperature: characteristic_vibrational_temperature = characteristic_vibrational_temperature
     """
     characteristic_vibrational_temperature child of fluid_child
     """
@@ -260,15 +199,11 @@ class fluid_child(Group):
     """
     lennard_jones_energy child of fluid_child
     """
-    thermal_accom_coefficient: thermal_accom_coefficient = (
-        thermal_accom_coefficient
-    )
+    thermal_accom_coefficient: thermal_accom_coefficient = thermal_accom_coefficient
     """
     thermal_accom_coefficient child of fluid_child
     """
-    velocity_accom_coefficient: velocity_accom_coefficient = (
-        velocity_accom_coefficient
-    )
+    velocity_accom_coefficient: velocity_accom_coefficient = velocity_accom_coefficient
     """
     velocity_accom_coefficient child of fluid_child
     """
@@ -280,9 +215,7 @@ class fluid_child(Group):
     """
     scattering_coefficient child of fluid_child
     """
-    scattering_phase_function: scattering_phase_function = (
-        scattering_phase_function
-    )
+    scattering_phase_function: scattering_phase_function = scattering_phase_function
     """
     scattering_phase_function child of fluid_child
     """
@@ -314,9 +247,7 @@ class fluid_child(Group):
     """
     premix_laminar_speed child of fluid_child
     """
-    premix_laminar_thickness: premix_laminar_thickness = (
-        premix_laminar_thickness
-    )
+    premix_laminar_thickness: premix_laminar_thickness = premix_laminar_thickness
     """
     premix_laminar_thickness child of fluid_child
     """
@@ -344,9 +275,7 @@ class fluid_child(Group):
     """
     thermophoretic_co child of fluid_child
     """
-    vaporization_temperature: vaporization_temperature = (
-        vaporization_temperature
-    )
+    vaporization_temperature: vaporization_temperature = vaporization_temperature
     """
     vaporization_temperature child of fluid_child
     """
@@ -362,9 +291,7 @@ class fluid_child(Group):
     """
     binary_diffusivity child of fluid_child
     """
-    diffusivity_reference_pressure: diffusivity_reference_pressure = (
-        diffusivity_reference_pressure
-    )
+    diffusivity_reference_pressure: diffusivity_reference_pressure = diffusivity_reference_pressure
     """
     diffusivity_reference_pressure child of fluid_child
     """
@@ -484,9 +411,7 @@ class fluid_child(Group):
     """
     electric_conductivity child of fluid_child
     """
-    dual_electric_conductivity: dual_electric_conductivity = (
-        dual_electric_conductivity
-    )
+    dual_electric_conductivity: dual_electric_conductivity = dual_electric_conductivity
     """
     dual_electric_conductivity child of fluid_child
     """
@@ -546,15 +471,11 @@ class fluid_child(Group):
     """
     struct_poisson_ratio child of fluid_child
     """
-    struct_start_temperature: struct_start_temperature = (
-        struct_start_temperature
-    )
+    struct_start_temperature: struct_start_temperature = struct_start_temperature
     """
     struct_start_temperature child of fluid_child
     """
-    struct_thermal_expansion: struct_thermal_expansion = (
-        struct_thermal_expansion
-    )
+    struct_thermal_expansion: struct_thermal_expansion = struct_thermal_expansion
     """
     struct_thermal_expansion child of fluid_child
     """

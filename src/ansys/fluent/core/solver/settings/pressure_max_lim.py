@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class pressure_max_lim(Real):
-    """Set maximum allowable absolute pressure."""
+    """
+    Set maximum allowable absolute pressure.
+    """
 
     fluent_name = "pressure-max-lim"
+

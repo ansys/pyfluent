@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class fan_opert_angvel(Real):
-    """'fan_opert_angvel' child."""
+    """
+    'fan_opert_angvel' child.
+    """
 
     fluent_name = "fan-opert-angvel"
+

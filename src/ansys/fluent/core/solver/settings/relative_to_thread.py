@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class relative_to_thread(String):
-    """'relative_to_thread' child."""
+    """
+    'relative_to_thread' child.
+    """
 
     fluent_name = "relative-to-thread"
+

@@ -4,23 +4,20 @@
 
 from ansys.fluent.core.solver.flobject import *
 
+from .dynamic_stress import dynamic_stress
 from .dynamic_energy_flux import dynamic_energy_flux
 from .dynamic_scalar_flux import dynamic_scalar_flux
-from .dynamic_stress import dynamic_stress
 from .subgrid_dynamic_fvar import subgrid_dynamic_fvar
-
-
 class les_model_options(Group):
-    """'les_model_options' child."""
+    """
+    'les_model_options' child.
+    """
 
     fluent_name = "les-model-options"
 
-    child_names = [
-        "dynamic_stress",
-        "dynamic_energy_flux",
-        "dynamic_scalar_flux",
-        "subgrid_dynamic_fvar",
-    ]
+    child_names = \
+        ['dynamic_stress', 'dynamic_energy_flux', 'dynamic_scalar_flux',
+         'subgrid_dynamic_fvar']
 
     dynamic_stress: dynamic_stress = dynamic_stress
     """

@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .child_object_type_child import child_object_type_child
 
-
 class mass_flow_multiplier(NamedObject[child_object_type_child]):
-    """'mass_flow_multiplier' child."""
+    """
+    'mass_flow_multiplier' child.
+    """
 
     fluent_name = "mass-flow-multiplier"
 

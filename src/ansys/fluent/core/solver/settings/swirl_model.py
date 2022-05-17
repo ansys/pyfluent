@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class swirl_model(Boolean):
-    """'swirl_model' child."""
+    """
+    'swirl_model' child.
+    """
 
     fluent_name = "swirl-model?"
+

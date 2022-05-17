@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class conservative_coarsening(Boolean):
-    """Use conservative AMG coarsening?."""
+    """
+    Use conservative AMG coarsening?.
+    """
 
     fluent_name = "conservative-coarsening?"
+

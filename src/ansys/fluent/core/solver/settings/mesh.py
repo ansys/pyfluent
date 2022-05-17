@@ -6,9 +6,10 @@ from ansys.fluent.core.solver.flobject import *
 
 from .mesh_child import mesh_child
 
-
 class mesh(NamedObject[mesh_child]):
-    """'mesh' child."""
+    """
+    'mesh' child.
+    """
 
     fluent_name = "mesh"
 

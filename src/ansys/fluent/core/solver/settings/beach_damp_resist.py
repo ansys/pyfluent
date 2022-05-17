@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class beach_damp_resist(Real):
-    """'beach_damp_resist' child."""
+    """
+    'beach_damp_resist' child.
+    """
 
     fluent_name = "beach-damp-resist"
+

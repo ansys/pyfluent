@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class cmplx(Boolean):
-    """'cmplx' child."""
+    """
+    'cmplx' child.
+    """
 
     fluent_name = "cmplx?"
+

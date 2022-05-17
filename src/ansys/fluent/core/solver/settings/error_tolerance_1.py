@@ -4,8 +4,10 @@
 
 from ansys.fluent.core.solver.flobject import *
 
-
 class error_tolerance(Real):
-    """Set Error Tolerance."""
+    """
+    Set Error Tolerance.
+    """
 
     fluent_name = "error-tolerance"
+
