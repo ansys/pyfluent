@@ -111,36 +111,40 @@ class DataModelGenerator:
         f.write(f"{indent}    {_build_singleton_docstring(name)}\n")
         f.write(f'{indent}    """\n')
         f.write(f"{indent}    def __init__(self, service, rules, path):\n")
-        for k in info.namedobjects:
+        named_objects = sorted(info.namedobjects)
+        singletons = sorted(info.singletons)
+        parameters = sorted(info.parameters)
+        commands = sorted(info.commands)
+        for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
-        for k in info.singletons:
+        for k in singletons:
             f.write(
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
-        for k in info.parameters:
+        for k in parameters:
             f.write(
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
-        for k in info.commands:
+        for k in commands:
             f.write(
                 f"{indent}        self.{k} = "
                 f'self.__class__.{k}(service, rules, "{k}", path)\n'
             )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
-        for k in info.namedobjects:
+        for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
             self._write_static_info(f"_{k}", info.namedobjects[k], f, level + 2)
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
-        for k in info.singletons:
+        for k in singletons:
             self._write_static_info(k, info.singletons[k], f, level + 1)
-        for k in info.parameters:
+        for k in parameters:
             f.write(f"{indent}    class {k}(PyMenu):\n")
             f.write(f'{indent}        """\n')
             f.write(
@@ -149,7 +153,7 @@ class DataModelGenerator:
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
-        for k in info.commands:
+        for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
             f.write(

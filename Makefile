@@ -39,11 +39,11 @@ api-codegen:
 	@python -m venv env
 	@. env/bin/activate
 	@pip install -r requirements_codegen.txt
+	@pip install -e .
 	@python codegen/pyprotogen.py
 	@python codegen/tuigen.py
 	@python codegen/settingsgen.py
 	@python codegen/datamodelgen.py
-	@deactivate
 	@rm -rf env
 
 build-doc:
