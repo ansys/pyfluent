@@ -75,7 +75,10 @@ def _get_max_c_int_limit() -> int:
     return 2 ** (sizeof(c_int) * 8 - 1) - 1
 
 
-_CODEGEN_MSG = "Please run `python codegen/allapigen.py` from the top-level pyfluent directory before calling Fluent's API."
+_CODEGEN_MSG = (
+    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
+    "directory before calling Fluent API methods."
+)
 
 
 class Session:
