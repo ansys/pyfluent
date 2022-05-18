@@ -59,7 +59,6 @@ from typing import Any, Dict, List, Optional
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
-from ansys.fluent.core.solver.settings import root
 
 BASE_DP_NAME = "Base DP"
 
@@ -184,7 +183,7 @@ class ParametricStudy:
 
     def __init__(
         self,
-        parametric_studies: root.parametric_studies,
+        parametric_studies,
         name: Optional[str] = None,
         design_points: Dict[str, DesignPoint] = None,
     ):
@@ -499,8 +498,8 @@ class ParametricProject:
 
     def __init__(
         self,
-        parametric_project: root.file.parametric_project,
-        parametric_studies: root.parametric_studies,
+        parametric_project,
+        parametric_studies,
         project_filepath: str,
         open_project: bool = True,
     ):
