@@ -118,8 +118,8 @@ class TUIGenerator:
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
-        self._session = pyfluent.launch_fluent(meshing_mode=meshing)
-        self._service = self._session._datamodel_service_tui
+        self.session = pyfluent.launch_fluent(meshing_mode=meshing)
+        self._service = self.session._datamodel_service_tui
         self._main_menu = _TUIMenu([])
 
     def _populate_menu(self, menu: _TUIMenu):
@@ -187,8 +187,10 @@ class TUIGenerator:
                 self._write_menu_to_tui_file(v, indent)
 
     def generate(self) -> None:
+        Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
+            self.session.exit()
             if self._tui_file == _SOLVER_TUI_FILE:
                 self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
                 self._main_menu.doc = "Fluent solver main menu."
@@ -207,7 +209,7 @@ class TUIGenerator:
             self._write_menu_to_tui_file(self._main_menu)
 
 
-if __name__ == "__main__":
+def generate():
     # pyfluent.set_log_level("WARNING")
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
@@ -218,3 +220,7 @@ if __name__ == "__main__":
     )
     for k, _ in _XML_HELPSTRINGS.items():
         LOG.warning(k)
+
+
+if __name__ == "__main__":
+    generate()

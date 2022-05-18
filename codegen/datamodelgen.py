@@ -52,16 +52,11 @@ class DataModelStaticInfo:
         self.rules = rules
         self.mode = mode
         self.static_info = None
-        self.filepath = (
-            _THIS_DIR
-            / ".."
-            / "src"
-            / "ansys"
-            / "fluent"
-            / "core"
-            / "datamodel"
-            / f"{rules}.py"
-        ).resolve()
+        datamodel_dir = (
+            _THIS_DIR / ".." / "src" / "ansys" / "fluent" / "core" / "datamodel"
+        )
+        datamodel_dir.mkdir(exist_ok=True)
+        self.filepath = (datamodel_dir / f"{rules}.py").resolve()
 
 
 class DataModelGenerator:
@@ -184,5 +179,9 @@ class DataModelGenerator:
                 info.filepath.unlink()
 
 
-if __name__ == "__main__":
+def generate():
     DataModelGenerator().write_static_info()
+
+
+if __name__ == "__main__":
+    generate()
