@@ -99,5 +99,9 @@ def build_python_grpc(
             f.write(module_source)
 
 
-if __name__ == "__main__":
+def generate():
     build_python_grpc()
+
+
+if __name__ == "__main__":
+    generate()

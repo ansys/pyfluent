@@ -47,11 +47,12 @@ with:
 
 .. code:: console
 
-    git clone https://github.com/pyansys/pyfluent.git
-    cd pyfluent
-    pip install pip -U
-    pip install -e .
-    pip install -e .[post]  # If you want to use pyvista
+   git clone https://github.com/pyansys/pyfluent.git
+   cd pyfluent
+   pip install pip -U
+   pip install -e .
+   pip install -e .[post]  # If you want to use pyvista
+   python codegen/allapigen.py  # Generates the API files, requires Fluent
 
 Dependencies
 ------------

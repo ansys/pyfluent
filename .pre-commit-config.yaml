@@ -66,7 +66,7 @@ repos:
   rev: v1.3.1
   hooks:
   - id: docformatter
-    exclude: ^(tests\/|src\/ansys\/api\/fluent\/v0\/|src\/ansys\/fluent\/core\/meshing\/tui.py|src\/ansys\/fluent\/core\/solver\/tui.py|src\/ansys\/fluent\/core\/solver\/settings.py|src\/ansys\/fluent\/core\/datamodel\/)
+    exclude: ^(tests\/|src\/ansys\/api\/fluent\/v0\/|src\/ansys\/fluent\/core\/meshing\/tui.py|src\/ansys\/fluent\/core\/solver\/tui.py|src\/ansys\/fluent\/core\/solver\/settings\/|src\/ansys\/fluent\/core\/datamodel\/)
     args: [-r, --in-place]
 
 #- repo: https://github.com/pycqa/pydocstyle

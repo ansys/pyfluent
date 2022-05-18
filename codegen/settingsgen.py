@@ -210,7 +210,7 @@ def _populate_classes(parent_dir):
             doc = cls.__doc__
             # Custom doc for child object type
             if cls.fluent_name == "child-object-type":
-                doc = f"'child_object_type' of {file_name[: file_name.find('_child')]}"
+                doc = f"'child_object_type' of {file_name[: file_name.find('_child')]}."
 
             doc = ("\n" + istr1).join(doc.split("\n"))
             f.write(f'{istr1}"""\n')
@@ -230,7 +230,7 @@ def _populate_classes(parent_dir):
                 for child in child_names:
                     f.write(f"{istr1}{child}: {child} = {child}\n")
                     f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{child} child of {cls_name}")
+                    f.write(f"{istr1}{child} child of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
 
             # write command objects
@@ -245,7 +245,7 @@ def _populate_classes(parent_dir):
                 for command in command_names:
                     f.write(f"{istr1}{command}: {command} = {command}\n")
                     f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{command} command of {cls_name}")
+                    f.write(f"{istr1}{command} command of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
 
             # write arguments
@@ -260,7 +260,7 @@ def _populate_classes(parent_dir):
                 for argument in arguments:
                     f.write(f"{istr1}{argument}: {argument} = {argument}\n")
                     f.write(f'{istr1}"""\n')
-                    f.write(f"{istr1}{argument} argument of {cls_name}")
+                    f.write(f"{istr1}{argument} argument of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
 
             # write object type
@@ -287,7 +287,7 @@ def _populate_init(parent_dir, sinfo):
         f.write(f"from .{root_class_path} import root")
 
 
-if __name__ == "__main__":
+def generate():
     from ansys.fluent.core.launcher.launcher import launch_fluent
 
     dirname = os.path.dirname(__file__)
@@ -308,8 +308,13 @@ if __name__ == "__main__":
 
     session = launch_fluent()
     sinfo = session._settings_service.get_static_info()
+    session.exit()
     cls = flobject.get_cls("", sinfo)
 
     _populate_hash_dict("", sinfo, cls)
     _populate_classes(parent_dir)
     _populate_init(parent_dir, sinfo)
+
+
+if __name__ == "__main__":
+    generate()
