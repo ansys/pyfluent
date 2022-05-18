@@ -9,30 +9,12 @@ from typing import Any, Callable, List, Optional, Tuple
 
 import grpc
 
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
-
-try:
-    from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
-    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-except ImportError:
-    pass
-
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
-
-try:
-    from ansys.fluent.core.datamodel.PMFileManagement import (
-        Root as PMFileManagement_root,
-    )
-    from ansys.fluent.core.datamodel.PartManagement import Root as PartManagement_root
-    from ansys.fluent.core.datamodel.meshing import Root as meshing_root
-    from ansys.fluent.core.datamodel.workflow import Root as workflow_root
-except ImportError:
-    pass
-
+from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService as DatamodelService_TUI,
+)
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -91,6 +73,9 @@ def _get_max_c_int_limit() -> int:
         The maximum limit of a C int
     """
     return 2 ** (sizeof(c_int) * 8 - 1) - 1
+
+
+_CODEGEN_MSG = "Please run `python codegen/allapigen.py` from the top-level pyfluent directory before calling Fluent's API."
 
 
 class Session:
@@ -334,6 +319,12 @@ class Session:
             """Instance of ``main_menu`` on which Fluent's SolverTUI methods
             can be executed."""
             if self._tui is None:
+                try:
+                    from ansys.fluent.core.meshing.tui import (
+                        main_menu as MeshingMainMenu,
+                    )
+                except ImportError:
+                    raise RuntimeError(_CODEGEN_MSG) from None
                 self._tui = MeshingMainMenu([], self._tui_service)
             return self._tui
 
@@ -341,6 +332,10 @@ class Session:
         def meshing(self):
             """meshing datamodel root."""
             if self._meshing is None:
+                try:
+                    from ansys.fluent.core.datamodel.meshing import Root as meshing_root
+                except ImportError:
+                    raise RuntimeError(_CODEGEN_MSG) from None
                 self._meshing = meshing_root(self._se_service, "meshing", [])
             return self._meshing
 
@@ -348,6 +343,12 @@ class Session:
         def workflow(self):
             """workflow datamodel root."""
             if self._workflow is None:
+                try:
+                    from ansys.fluent.core.datamodel.workflow import (
+                        Root as workflow_root,
+                    )
+                except ImportError:
+                    raise RuntimeError(_CODEGEN_MSG) from None
                 self._workflow = workflow_root(self._se_service, "workflow", [])
             return self._workflow
 
@@ -355,6 +356,12 @@ class Session:
         def PartManagement(self):
             """PartManagement datamodel root."""
             if self._part_management is None:
+                try:
+                    from ansys.fluent.core.datamodel.PartManagement import (
+                        Root as PartManagement_root,
+                    )
+                except ImportError:
+                    raise RuntimeError(_CODEGEN_MSG) from None
                 self._part_management = PartManagement_root(
                     self._se_service, "PartManagement", []
                 )
@@ -364,6 +371,12 @@ class Session:
         def PMFileManagement(self):
             """PMFileManagement datamodel root."""
             if self._pm_file_management is None:
+                try:
+                    from ansys.fluent.core.datamodel.PMFileManagement import (
+                        Root as PMFileManagement_root,
+                    )
+                except ImportError:
+                    raise RuntimeError(_CODEGEN_MSG) from None
                 self._pm_file_management = PMFileManagement_root(
                     self._se_service, "PMFileManagement", []
                 )
@@ -383,6 +396,10 @@ class Session:
             """Instance of ``main_menu`` on which Fluent's SolverTUI methods
             can be executed."""
             if self._tui is None:
+                try:
+                    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
+                except ImportError:
+                    raise RuntimeError(_CODEGEN_MSG) from None
                 self._tui = SolverMainMenu([], self._tui_service)
             return self._tui
 
