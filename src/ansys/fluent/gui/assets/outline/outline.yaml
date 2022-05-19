@@ -1,0 +1,81 @@
+Root:
+    children:
+        SetUp:
+            children:
+                Models:
+                    icon  : icon_model.svg
+                    children:                 
+                        Viscous:
+                            settings-path : setup/models/viscous
+                            icon  : rb_viscous.png
+                        Multiphase:
+                            settings-path : setup/models/multiphase
+                Boundary Conditions:
+                            icon  : icon_boundaries.svg 
+                            children: 
+                                Velocity Inlet:       
+                                    icon  : icon_inlet.svg                                       
+                                    settings-path : setup/boundary_conditions/velocity_inlet 
+                                Pressure Outlet: 
+                                    icon  : icon_outlet.svg                                
+                                    settings-path : setup/boundary_conditions/pressure_outlet
+                                Wall:                            
+                                    settings-path : setup/boundary_conditions/wall 
+                                    icon  : icon_wall.svg                                    
+        Solution:
+            children: 
+                Methods:
+                    settings-path: solution/methods
+                    icon  : icon_methods.svg 
+                Controls:
+                    settings-path: solution/controls 
+                    icon  : icon_controls.svg                     
+                Initialization:
+                    settings-path : solution/initialization
+                    icon  : icon_initialize.svg
+                Calculation:
+                    settings-path : solution/run_calculation
+                    icon  : icon_calculate.svg
+                ReportDefinitions:
+                    settings-path: solution/report_definitions
+                    children:
+                        Surface:
+                            settings-path: solution/report_definitions/surface  
+                        Volume:
+                            settings-path: solution/report_definitions/volume
+                        Flux:
+                            settings-path: solution/report_definitions/flux                            
+                        Lift:
+                            settings-path: solution/report_definitions/lift 
+                        Drag:
+                            settings-path: solution/report_definitions/drag
+                        Moment:
+                            settings-path: solution/report_definitions/moment  
+                        Force:
+                            settings-path: solution/report_definitions/force                              
+        Results:        
+            children:
+                Graphics:
+                    icon  : icon_graphic.svg
+                    children:                
+                        Contour:
+                            local-path : Contour
+                            icon  : icon_contours.svg
+                        Vector:
+                            local-path : Vector
+                            icon  : icon_vectors.svg
+                        Mesh:
+                            local-path : Mesh
+                            icon  : icon_mesh.svg
+                        Surface:
+                            local-path : Surface 
+                            icon  : icon_isosurf.svg
+                Plots:
+                    icon  : icon_plots.svg
+                    children:                
+                        XYPlot:
+                            local-path : XYPlot
+                            icon  : icon_plot.svg
+        
+        
+        

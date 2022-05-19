@@ -1,0 +1,13 @@
+
+.loading-visible  {
+    visibility: visible !important;
+}
+
+.dash-spinner.dash-default-spinner {
+
+}
+
+.button:active { 
+  box-shadow: 0 2px #f8f9fa;
+  transform: translateY(2px);
+}

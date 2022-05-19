@@ -1,6 +1,7 @@
 """Setup file for ansys-fluent-solver."""
 import os
 import shutil
+import sys
 
 from setuptools import find_namespace_packages, setup
 
@@ -21,20 +22,33 @@ _DOCS_FILE = os.path.join(
 )
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
+
+install_requires_gui_components = [
+    "pyfluent-dash-components @ git+https://github.com/pyansys/pyfluent-dash-components.git"
+]
+
 install_requires = [
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
     "protobuf==3.20.1",
     "appdirs>=1.4.0",
+    "pandas>=1.4.1" if sys.version_info.minor > 7 else "pandas==1.3.5",
 ]
 
 install_requires_post = [
-    "vtk==9.1.0",
-    "pyvista==0.33.2",
-    "pyvistaqt==0.7.0",
-    "pyside6==6.2.3",
-    "matplotlib==3.5.1",
+    "vtk>=9.1.0",
+    "pyvista>=0.33.2",
+    "pyvistaqt>=0.7.0",
+    "pyside6>=6.2.3",
+    "matplotlib>=3.5.1",
+]
+
+install_requires_gui = [
+    "dash>=2.1.0",
+    "dash-vtk>=0.0.9",
+    "dash-bootstrap-components>=1.1.0",
+    "pyyaml>=6.0",
 ]
 
 packages = []
@@ -69,5 +83,8 @@ setup(
     install_requires=install_requires,
     extras_require={
         "post": install_requires_post,
+        "gui": install_requires_post
+        + install_requires_gui
+        + install_requires_gui_components,
     },
 )

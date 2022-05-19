@@ -1,0 +1,71 @@
+//
+// Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
+//
+
+syntax = "proto3";
+
+package grpcRemoting;
+
+service Monitor {
+  rpc GetMonitors(GetMonitorsRequest) returns (GetMonitorsResponse) {}
+  rpc BeginStreaming(StreamingRequest) returns (stream StreamingResponse) {}
+}
+enum XAxisType {
+  Unset = 0;
+  Iteration = 1;
+  Time = 2;
+}
+
+message GetMonitorsRequest {
+}
+message UnitData {
+  string name = 1;
+  string unit = 2;
+  double factor = 3;
+  double offset = 4;
+  // will require label here too
+}
+enum MonitorType {
+  Residual = 0;
+  Solution = 1;
+}
+message MonitorSet {
+  string name = 1;
+  string title = 2;
+  string xlabel = 3;
+  string ylabel = 4;
+  sint64 frequency = 5;
+  MonitorType type = 6;
+  UnitData unitinfo = 7;
+  XAxisType axis = 8;
+  repeated string monitors = 9;
+}
+
+message GetMonitorsResponse {
+  repeated MonitorSet monitorset = 1;
+}
+
+message MonitorFilter {
+  XAxisType xaxistype = 1;
+  repeated string name = 2;
+  sint32 frequency = 3;
+}
+
+message StreamingRequest {
+  repeated MonitorFilter filter = 2;
+}
+
+message XAxisData {
+  XAxisType xaxistype = 1;
+  sint64 xaxisindex = 2;
+}
+
+message MonitorData {
+  string name = 1;
+  double value = 2;
+}
+
+message StreamingResponse {
+  XAxisData xaxisdata = 1;
+  repeated MonitorData yaxisvalues = 2;
+}

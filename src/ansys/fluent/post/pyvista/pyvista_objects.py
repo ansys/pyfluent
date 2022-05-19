@@ -53,6 +53,30 @@ class Graphics:
                     PyLocalContainer(self, cls),
                 )
 
+    def add_outline_mesh(self):
+        """Add mesh outline.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
+        meshes = getattr(self, "Meshes", None)
+        if meshes is not None:
+            outline_mesh_id = "Mesh-outline"
+            outline_mesh = meshes[outline_mesh_id]
+            outline_mesh.surfaces_list = [
+                k
+                for k, v in outline_mesh._data_extractor.field_info()
+                .get_surfaces_info()
+                .items()
+                if v["type"] == "zone-surf" and v["zone_type"] != "interior"
+            ]
+            return outline_mesh
+
 
 class Mesh(MeshDefn):
     """Mesh graphics."""
@@ -65,9 +89,7 @@ class Mesh(MeshDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        self._pre_display()
         pyvista_windows_manager.plot(self, window_id)
-        self._post_display()
 
 
 class Surface(SurfaceDefn):
@@ -95,9 +117,7 @@ class Contour(ContourDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        self._pre_display()
         pyvista_windows_manager.plot(self, window_id)
-        self._post_display()
 
 
 class Vector(VectorDefn):
@@ -111,6 +131,4 @@ class Vector(VectorDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        self._pre_display()
         pyvista_windows_manager.plot(self, window_id)
-        self._post_display()
