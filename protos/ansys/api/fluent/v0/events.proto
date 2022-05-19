@@ -60,6 +60,14 @@ message DataReadEvent {
 message InitializedEvent {
 }
 
+/**
+ * Event during solution progress.
+ */
+message ProgressEvent {
+  string message = 1;          // Progress Message.
+  sint32 percentComplete = 2;  // Percent completed.
+}
+
 message BeginStreamingResponse {
   oneof as {
     CaseReadEvent casereadevent = 2;
@@ -69,5 +77,6 @@ message BeginStreamingResponse {
     TimestepEndedEvent timestependedevent = 10;
     CalculationsStartedEvent calculationsstartedevent = 11;
     CalculationsEndedEvent calculationsendedevent = 12;
+    ProgressEvent progressevent = 20;
   }
 }
