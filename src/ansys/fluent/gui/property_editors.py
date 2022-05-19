@@ -5,7 +5,6 @@ from app_defn import app
 from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc
 from objects_handle import LocalObjectsHandle, SettingsObjectsHandle
 from sessions_handle import SessionsHandle
 

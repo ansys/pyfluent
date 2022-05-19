@@ -128,12 +128,12 @@ def register_callbacks(app):
         if triggered_value is None:
             raise PreventUpdate
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
+        print(
+            "update_tree", triggered_from, graphics_button_clicks, triggered_value
+        )        
         if triggered_from != "session-id":
             if triggered_value == 0:
                 raise PreventUpdate
-            print(
-                "update_tree", triggered_from, graphics_button_clicks, triggered_value
-            )
             triggered_data = eval(triggered_from)
             (
                 user_id,
@@ -157,13 +157,14 @@ def register_callbacks(app):
         tree_nodes, keys = TreeDataExtractor(user_id, session_id).get_tree_nodes()
         filtered = filter(
             lambda x: session_id == x[0], user_name_to_session_map[user_id]
-        )
+        )       
+        #print('update_tree', user_id, session_id, keys) 
         return (
             dash_tree(
                 id="tree-view",
                 data=tree_nodes,
                 selected=[],
-                expandedKeys=keys.append("Root"),
+                expandedKeys=["Root"]+keys,
             ),
             list(filtered)[0][1],
         )
@@ -172,14 +173,13 @@ def register_callbacks(app):
         Output("tab-content", "children"),
         Output("tab-content-created", "value"),
         Input("tabs", "active_tab"),
-        Input("user-id", "data"),
         Input("session-id", "value"),
+        State("user-id", "data"),        
     )
-    def render_tab_content(active_tab, user_id, session_id):
+    def render_tab_content(active_tab, session_id, user_id):
         """This callback takes the 'active_tab' property as input, as well as
         the stored graphs, and renders the tab content depending on what the
-        value of 'active_tab' is."""
-        print("render_tab_content", active_tab, user_id, session_id)
+        value of 'active_tab' is."""       
         if session_id is None:
             return (
                 html.Pre(

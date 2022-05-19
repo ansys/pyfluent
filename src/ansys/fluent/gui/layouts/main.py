@@ -3,7 +3,6 @@ from callbacks.main_app import register_callbacks, user_name_to_session_map
 import dash
 from dash import dcc, html
 from dash.long_callback import DiskcacheLongCallbackManager
-import dash_auth
 import dash_bootstrap_components as dbc
 from dash_component import RCTree as dash_tree
 import plotly.graph_objs as go
@@ -22,7 +21,7 @@ def get_side_bar(user_id, session_id):
     tree_nodes_data = {"title": "Root", "key": "Root", "icon": None, "children": []}
     keys = ["Root"]
     if session_id:
-        tree_nodes_data, keys = TreeDataExtractor(user_id, session_id).get_tree_nodes()
+        tree_nodes_data, keys = TreeDataExtractor(user_id, session_id).get_tree_nodes()      
     tree = dash_tree(
         id="tree-view",
         expandedKeys=keys,

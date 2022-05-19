@@ -145,7 +145,7 @@ def register_callbacks(app):
                 ).get_object_and_static_info(
                     user_id, session_id, object_type, object_index
                 )
-
+            #print(user_id, session_id, obj)
             path_list = input_index.split("/")[1:]
             for path in path_list:
                 try:
@@ -164,7 +164,7 @@ def register_callbacks(app):
                 input_value = True if input_value else False
             if input_value == obj():
                 raise PreventUpdate
-            print("set_state \n", obj, input_value)
+            #print("set_state \n", obj, input_value)
             obj.set_state(input_value)
             object_id = f"{object_location}:{object_type}:{object_index}"
             return object_id
