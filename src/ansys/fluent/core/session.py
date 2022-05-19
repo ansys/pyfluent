@@ -15,6 +15,7 @@ from ansys.fluent.core.services.datamodel_se import (
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
+from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -75,9 +76,15 @@ def _get_max_c_int_limit() -> int:
     return 2 ** (sizeof(c_int) * 8 - 1) - 1
 
 
-_CODEGEN_MSG = (
+_CODEGEN_MSG_DATAMODEL = (
     "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory before calling Fluent API methods."
+    "directory before calling Fluent datamodel API methods."
+)
+
+_CODEGEN_MSG_TUI = (
+    "Currently calling the TUI commands in a generic manner. "
+    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
+    "directory to generate the local TUI command classes."
 )
 
 
@@ -326,9 +333,11 @@ class Session:
                     from ansys.fluent.core.meshing.tui import (
                         main_menu as MeshingMainMenu,
                     )
+
+                    self._tui = MeshingMainMenu([], self._tui_service)
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG) from None
-                self._tui = MeshingMainMenu([], self._tui_service)
+                    LOG.warning(_CODEGEN_MSG_TUI)
+                    self._tui = TUIMenuGeneric([], self._tui_service)
             return self._tui
 
         @property
@@ -338,7 +347,7 @@ class Session:
                 try:
                     from ansys.fluent.core.datamodel.meshing import Root as meshing_root
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG) from None
+                    raise RuntimeError(_CODEGEN_MSG_DATAMODEL) from None
                 self._meshing = meshing_root(self._se_service, "meshing", [])
             return self._meshing
 
@@ -401,9 +410,11 @@ class Session:
             if self._tui is None:
                 try:
                     from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
+
+                    self._tui = SolverMainMenu([], self._tui_service)
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG) from None
-                self._tui = SolverMainMenu([], self._tui_service)
+                    LOG.warning(_CODEGEN_MSG_TUI)
+                    self._tui = TUIMenuGeneric([], self._tui_service)
             return self._tui
 
         @property
