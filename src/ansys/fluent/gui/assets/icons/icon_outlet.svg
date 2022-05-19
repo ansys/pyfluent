@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_outlet</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon_outlet" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M6.4979248,3.4934845 L6.4979248,1.49371338 L1.49731445,1.49371338 L1.49731445,5.49371338 L4.4791641,5.49371338 L4.43755288,3.4934845 L6.4979248,3.4934845 Z" id="Path-117" stroke="#121212" transform="translate(3.997620, 3.493713) scale(-1, 1) translate(-3.997620, -3.493713) "></path>
+        <path d="M6.4979248,16.4934845 L6.4979248,14.4937134 L1.49731445,14.4937134 L1.49731445,18.4937134 L4.4791641,18.4937134 L4.43755288,16.4934845 L6.4979248,16.4934845 Z" id="Path-117" stroke="#121212" transform="translate(3.997620, 16.493713) scale(-1, -1) translate(-3.997620, -16.493713) "></path>
+        <polygon id="Path-135" fill="#CD930C" fill-rule="nonzero" points="12 6.99736879 12 5.98667702 15 5.98667702 15 6.99736879"></polygon>
+        <polygon id="Path-135" fill="#CD930C" fill-rule="nonzero" points="7 6.99736879 7 5.98667702 11 5.98667702 11 6.99736879"></polygon>
+        <polygon id="Path-63" fill="#CD930C" points="15.0234829 4.01480288 19.0607918 6.52074036 15.0234829 9.02667785"></polygon>
+        <polygon id="Path-135" fill="#CD930C" fill-rule="nonzero" points="12 13.9973688 12 12.986677 15 12.986677 15 13.9973688"></polygon>
+        <polygon id="Path-135" fill="#CD930C" fill-rule="nonzero" points="7 13.9973688 7 12.986677 11 12.986677 11 13.9973688"></polygon>
+        <polygon id="Path-63" fill="#CD930C" points="15.0234829 11.0148029 19.0607918 13.5207404 15.0234829 16.0266779"></polygon>
+    </g>
+</svg>

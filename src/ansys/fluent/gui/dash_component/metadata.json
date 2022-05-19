@@ -1,0 +1,286 @@
+{
+  "src/lib/components/DashComponent.react.js": {
+    "description": "ExampleComponent is an example component.\r\nIt takes a property, `label`, and\r\ndisplays it.\r\nIt renders an input with the property `value`\r\nwhich is editable by the user.",
+    "displayName": "DashComponent",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks."
+      },
+      "label": {
+        "type": {
+          "name": "string"
+        },
+        "required": true,
+        "description": "A label that will be printed when this component is rendered."
+      },
+      "value": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The value displayed in the input."
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\r\nto Dash, to make them available for callbacks."
+      }
+    }
+  },
+  "src/lib/components/RCTree.react.js": {
+    "description": "",
+    "displayName": "RCTree",
+    "methods": [
+      {
+        "name": "onExpand",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "expandedKeys",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onSelect",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "selectedKeys",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onRightClick",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "info",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onMouseEnter",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "info",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "onMouseLeave",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "info",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "getContainer",
+        "docblock": null,
+        "modifiers": [],
+        "params": [],
+        "returns": null
+      },
+      {
+        "name": "renderCm",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "info",
+            "type": null
+          }
+        ],
+        "returns": null
+      },
+      {
+        "name": "renderTreeNode",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "nodeData",
+            "type": null
+          }
+        ],
+        "returns": null
+      }
+    ],
+    "props": {
+      "id": {
+        "type": {
+          "name": "custom",
+          "raw": "PropTypes.string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks"
+      },
+      "selected": {
+        "type": {
+          "name": "custom",
+          "raw": "PropTypes.arrayOf(PropTypes.string)"
+        },
+        "required": false,
+        "description": "List of keys of selected nodes."
+      },
+      "expandedKeys": {
+        "type": {
+          "name": "custom",
+          "raw": "PropTypes.arrayOf(PropTypes.string)"
+        },
+        "required": false,
+        "description": "List of keys of expanded nodes."
+      },
+      "data": {
+        "type": {
+          "name": "custom",
+          "raw": "PropTreeNode"
+        },
+        "required": false,
+        "description": "Tree data"
+      },
+      "setProps": {
+        "type": {
+          "name": "custom",
+          "raw": "PropTypes.func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called whenever any of the\r\nproperties change"
+      }
+    }
+  },
+  "src/lib/components/TreeView.react.js": {
+    "description": "TreeView component for Dash",
+    "displayName": "TreeView",
+    "methods": [
+      {
+        "name": "renderTreeNode",
+        "docblock": null,
+        "modifiers": [],
+        "params": [
+          {
+            "name": "nodeData",
+            "type": null
+          }
+        ],
+        "returns": null
+      }
+    ],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "The ID used to identify this component in Dash callbacks"
+      },
+      "checkable": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Adds a Checkbox before the treeNodes (Default - false)",
+        "defaultValue": {
+          "value": "false",
+          "computed": false
+        }
+      },
+      "multiple": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Allows selecting multiple treeNodes (Default - false)",
+        "defaultValue": {
+          "value": "true",
+          "computed": false
+        }
+      },
+      "data": {
+        "type": {
+          "name": "custom",
+          "raw": "PropTreeNode"
+        },
+        "required": false,
+        "description": "Tree data",
+        "defaultValue": {
+          "value": "{\r\n  title: 'Parent',\r\n  key: '0',\r\n  children: [{\r\n    title: 'Child',\r\n    key: '0-0',\r\n    children: [\r\n      { title: 'Subchild', key: '0-0-1' },\r\n      { title: 'Subchild', key: '0-0-2' },\r\n      { title: 'Subchild', key: '0-0-3' },\r\n    ],\r\n  }]\r\n}",
+          "computed": false
+        }
+      },
+      "checked": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "string"
+          }
+        },
+        "required": false,
+        "description": "List of keys of checked nodes.",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "selected": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "string"
+          }
+        },
+        "required": false,
+        "description": "List of keys of selected nodes.",
+        "defaultValue": {
+          "value": "[]",
+          "computed": false
+        }
+      },
+      "expanded": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "string"
+          }
+        },
+        "required": false,
+        "description": "List of keys of expanded nodes.",
+        "defaultValue": {
+          "value": "['0']",
+          "computed": false
+        }
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called whenever any of the\r\nproperties change"
+      }
+    }
+  }
+}

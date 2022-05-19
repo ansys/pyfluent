@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_writedata</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Remote_Client_Mitali" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Write-Data">
+            <path d="M10.5686715,5.20917548 L4.43449615,5.21120292" id="Path-184" stroke="#CD930C"></path>
+            <path d="M8.07075977,7.87584215 L5.32338504,7.87786959" id="Path-184" stroke="#CD930C"></path>
+            <path d="M8.90776318,10.5425088 L4.43449615,10.5445363" id="Path-184" stroke="#CD930C"></path>
+            <polyline id="Path-186" stroke="#121212" points="8.84135122 2 2 2 2 13.4760843 17.61293 13.4760843 17.61293 9.2510906"></polyline>
+            <polygon id="Shape" fill="#CD930C" fill-rule="nonzero" points="13.5947963 8.89332639 13.0519392 7.74751995 11.9499221 7.06341437 15.309082 3.56687478 15.709082 4.00042316 12.8927792 6.87760792 13.4805106 7.28300381 13.7662249 7.87139091 16.509082 4.86751995 16.909082 5.30106833"></polygon>
+            <path d="M17.309082,4.86751995 L15.6805106,3.10235865 L15.8805106,2.88558446 C16.109082,2.63784252 16.3947963,2.51397156 16.6805106,2.51397156 C16.9947963,2.51397156 17.2805106,2.63784252 17.4805106,2.88558446 C17.709082,3.13332639 17.8233677,3.44300381 17.8233677,3.75268124 C17.8233677,4.09332639 17.709082,4.40300381 17.4805106,4.61977801 L17.309082,4.86751995 Z" id="Shape" fill="#CD930C" fill-rule="nonzero"></path>
+            <polygon id="Shape" fill="#CD930C" fill-rule="nonzero" points="10.9431679 10.0752878 11.5376535 7.65461672 12.0805106 7.87139091 11.8737728 9.03678743 12.9376535 8.80042316 13.1376535 9.38881027"></polygon>
+            <path d="M10.1853642,13.5596423 L10.1853642,15.3242078" id="Path-187" stroke="#121212"></path>
+            <path d="M4.23710421,16.4702654 L16.0525309,16.4702654" id="Path-188" stroke="#121212"></path>
+            <polygon id="path-1" fill="#FFFFFF" points="8.42182728 18.5139715 11.9773828 18.5139715 11.9773828 14.9584159 8.42182728 14.9584159"></polygon>
+            <polygon id="Shape" stroke="#121212" points="8.86627172 18.069527 11.5329384 18.069527 11.5329384 15.4028604 8.86627172 15.4028604"></polygon>
+        </g>
+    </g>
+</svg>

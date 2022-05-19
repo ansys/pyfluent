@@ -62,6 +62,77 @@ class _ProcessPlotterHandle:
             pass
 
 
+def get_xy_plot_data(obj):
+    field = obj.y_axis_function()
+    node_values = obj.node_values()
+    boundary_values = obj.boundary_values()
+    direction_vector = obj.direction_vector()
+    surfaces_list = obj.surfaces_list()
+    field_info = obj._data_extractor.field_info()
+    field_data = obj._data_extractor.field_data()
+    surfaces_info = field_info.get_surfaces_info()
+    surface_ids = [
+        id
+        for surf in map(obj._data_extractor.remote_surface_name, obj.surfaces_list())
+        for id in surfaces_info[surf]["surface_id"]
+    ]
+
+    # get scalar field data
+    field_data.add_get_surfaces_request(
+        surface_ids,
+        provide_faces=False,
+        provide_vertices=True if node_values else False,
+        provide_faces_centroid=False if node_values else True,
+    )
+    field_data.add_get_scalar_fields_request(
+        surface_ids,
+        field,
+        node_values,
+        boundary_values,
+    )
+
+    location_tag = (
+        field_data._payloadTags[PayloadTag.NODE_LOCATION]
+        if node_values
+        else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
+    )
+    boundary_value_tag = (
+        field_data._payloadTags[PayloadTag.BOUNDARY_VALUES] if boundary_values else 0
+    )
+    surface_tag = 0
+    xyplot_payload_data = field_data.get_fields()
+    data_tag = location_tag | boundary_value_tag
+    xyplot_data = xyplot_payload_data[data_tag]
+    surface_data = xyplot_payload_data[surface_tag]
+
+    # loop over all meshes
+    xy_plots_data = {}
+    surfaces_list_iter = iter(surfaces_list)
+    for surface_id, mesh_data in surface_data.items():
+        mesh_data["vertices" if node_values else "centroid"].shape = (
+            mesh_data["vertices" if node_values else "centroid"].size // 3,
+            3,
+        )
+        y_values = xyplot_data[surface_id][field]
+        x_values = np.matmul(
+            mesh_data["vertices" if node_values else "centroid"],
+            direction_vector,
+        )
+        structured_data = np.empty(
+            x_values.size,
+            dtype={
+                "names": ("xvalues", "yvalues"),
+                "formats": ("f8", "f8"),
+            },
+        )
+        structured_data["xvalues"] = x_values
+        structured_data["yvalues"] = y_values
+        sort = np.argsort(structured_data, order=["xvalues"])
+        surface_name = next(surfaces_list_iter)
+        xy_plots_data[surface_name] = structured_data[sort]
+    return xy_plots_data
+
+
 class MatplotWindow(PostWindow):
     """Class for MatplotWindow."""
 
@@ -87,7 +158,13 @@ class MatplotWindow(PostWindow):
         """Draw plot."""
         if not self.post_object:
             return
-        xy_data = self._get_xy_plot_data()
+        self.properties = {
+            "curves": self.post_object.surfaces_list(),
+            "title": "XY Plot",
+            "xlabel": "position",
+            "ylabel": self.post_object.y_axis_function(),
+        }
+        xy_data = get_xy_plot_data(self.post_object)
         if in_notebook() or get_config()["blocking"]:
             self.plotter.set_properties(self.properties)
         else:
@@ -107,87 +184,6 @@ class MatplotWindow(PostWindow):
             if in_notebook() or get_config()["blocking"]
             else _ProcessPlotterHandle(self.id)
         )
-
-    def _get_xy_plot_data(self):
-        obj = self.post_object
-        field = obj.y_axis_function()
-        node_values = obj.node_values()
-        boundary_values = obj.boundary_values()
-        direction_vector = obj.direction_vector()
-        surfaces_list = obj.surfaces_list()
-        self.properties = {
-            "curves": surfaces_list,
-            "title": "XY Plot",
-            "xlabel": "position",
-            "ylabel": field,
-        }
-        field_info = obj._data_extractor.field_info()
-        field_data = obj._data_extractor.field_data()
-        surfaces_info = field_info.get_surfaces_info()
-        surface_ids = [
-            id
-            for surf in map(
-                obj._data_extractor.remote_surface_name, obj.surfaces_list()
-            )
-            for id in surfaces_info[surf]["surface_id"]
-        ]
-
-        # get scalar field data
-        field_data.add_get_surfaces_request(
-            surface_ids,
-            provide_faces=False,
-            provide_vertices=True if node_values else False,
-            provide_faces_centroid=False if node_values else True,
-        )
-        field_data.add_get_scalar_fields_request(
-            surface_ids,
-            field,
-            node_values,
-            boundary_values,
-        )
-
-        location_tag = (
-            field_data._payloadTags[PayloadTag.NODE_LOCATION]
-            if node_values
-            else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
-        )
-        boundary_value_tag = (
-            field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
-            if boundary_values
-            else 0
-        )
-        surface_tag = 0
-        xyplot_payload_data = field_data.get_fields()
-        data_tag = location_tag | boundary_value_tag
-        xyplot_data = xyplot_payload_data[data_tag]
-        surface_data = xyplot_payload_data[surface_tag]
-
-        # loop over all meshes
-        xy_plots_data = {}
-        surfaces_list_iter = iter(surfaces_list)
-        for surface_id, mesh_data in surface_data.items():
-            mesh_data["vertices" if node_values else "centroid"].shape = (
-                mesh_data["vertices" if node_values else "centroid"].size // 3,
-                3,
-            )
-            y_values = xyplot_data[surface_id][field]
-            x_values = np.matmul(
-                mesh_data["vertices" if node_values else "centroid"],
-                direction_vector,
-            )
-            structured_data = np.empty(
-                x_values.size,
-                dtype={
-                    "names": ("xvalues", "yvalues"),
-                    "formats": ("f8", "f8"),
-                },
-            )
-            structured_data["xvalues"] = x_values
-            structured_data["yvalues"] = y_values
-            sort = np.argsort(structured_data, order=["xvalues"])
-            surface_name = next(surfaces_list_iter)
-            xy_plots_data[surface_name] = structured_data[sort]
-        return xy_plots_data
 
 
 class MatplotWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta):

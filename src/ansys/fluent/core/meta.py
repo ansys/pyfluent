@@ -19,7 +19,7 @@ class LocalObjectDataExtractor:
 
         @staticmethod
         def surface_name_in_server(local_surface_name):
-            return "_dummy_surface_for_pyfluent:" + local_surface_name
+            return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
             return self.obj._get_top_most_parent().session.solver.tui.surface
@@ -58,6 +58,7 @@ class LocalObjectDataExtractor:
                 )
             field_info = self.obj._data_extractor.field_info()
             surfaces_list = list(field_info.get_surfaces_info().keys())
+            print(self._surface_name_on_server, surfaces_list)
             if self._surface_name_on_server not in surfaces_list:
                 raise RuntimeError("Surface creation failed.")
 
@@ -147,8 +148,10 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
             attrs = getattr(self, "attributes", None)
             if attrs:
                 for attr in attrs:
-                    if attr == "range" and (
-                        value < self.range[0] or value > self.range[1]
+                    if (
+                        attr == "range"
+                        and self.range
+                        and (value < self.range[0] or value > self.range[1])
                     ):
                         raise ValueError(
                             f"Value {value}, is not within valid range"
@@ -156,13 +159,15 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                         )
                     if attr == "allowed_values":
                         if isinstance(value, list):
-                            if not all(v in self.allowed_values for v in value):
+                            if not all(
+                                v is None or v in self.allowed_values for v in value
+                            ):
                                 raise ValueError(
                                     f"Not all values in {value}, are in the "
                                     "list of allowed values "
                                     f"{self.allowed_values}."
                                 )
-                        elif value not in self.allowed_values:
+                        elif value is not None and value not in self.allowed_values:
                             raise ValueError(
                                 f"Value {value}, is not in the list of "
                                 f"allowed values {self.allowed_values}."

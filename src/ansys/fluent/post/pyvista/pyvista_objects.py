@@ -53,6 +53,21 @@ class Graphics:
                     PyLocalContainer(self, cls),
                 )
 
+    def add_outline_mesh(self):
+        meshes = getattr(self, "Meshes", None)
+        if meshes is not None:
+            outline_mesh_id = "Mesh-outline"
+            outline_mesh = meshes[outline_mesh_id]
+            print(outline_mesh._data_extractor.field_info().get_surfaces_info())
+            outline_mesh.surfaces_list = [
+                k
+                for k, v in outline_mesh._data_extractor.field_info()
+                .get_surfaces_info()
+                .items()
+                if v["type"] == "zone-surf" and v["zone_type"] != "interior"
+            ]
+            return outline_mesh
+
 
 class Mesh(MeshDefn):
     """Mesh graphics."""

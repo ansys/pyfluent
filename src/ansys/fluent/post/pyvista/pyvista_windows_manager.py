@@ -15,6 +15,147 @@ from ansys.fluent.post.post_object_defns import GraphicsDefn, PlotDefn
 from ansys.fluent.post.post_windows_manager import PostWindow, PostWindowsManager
 
 
+class DataExtractor:
+    def __init__(self, post_object: Union[GraphicsDefn, PlotDefn]):
+        self._post_object: Union[GraphicsDefn, PlotDefn] = post_object
+
+    def fetch_data(self):
+        if self._post_object.__class__.__name__ == "Mesh":
+            return self._fetch_mesh_data(self._post_object)
+        elif self._post_object.__class__.__name__ == "Surface":
+            return self._fetch_surface_data(self._post_object)
+        elif self._post_object.__class__.__name__ == "Contour":
+            return self._fetch_contour_data(self._post_object)
+        elif self._post_object.__class__.__name__ == "Vector":
+            return self._fetch_vector_data(self._post_object)
+
+    def _fetch_mesh_data(self, obj):
+        if not obj.surfaces_list():
+            raise RuntimeError("Mesh definition is incomplete.")
+        obj._pre_display()
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
+        surfaces_info = field_info.get_surfaces_info()
+        surface_ids = [
+            id
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
+            for id in surfaces_info[surf]["surface_id"]
+        ]
+
+        field_data.add_get_surfaces_request(surface_ids)
+        surface_tag = 0
+
+        surfaces_data = field_data.get_fields()[surface_tag]
+        obj._post_display()
+        return surfaces_data
+
+    def _fetch_surface_data(self, obj):
+        surface_api = obj._data_extractor.surface_api
+        surface_api.create_surface_on_server()
+        dummy_object = "dummy_object"
+        post_session = obj._get_top_most_parent()
+        scalar_field_data = None
+        if (
+            obj.surface.type() == "iso-surface"
+            and obj.surface.iso_surface.rendering() == "contour"
+        ):
+            contour = post_session.Contours[dummy_object]
+            contour.field = obj.surface.iso_surface.field()
+            contour.surfaces_list = [obj._name]
+            contour.show_edges = True
+            contour.range.auto_range_on.global_range = True
+            mesh_data, scalar_field_data = self._fetch_contour_data(contour)
+            del post_session.Contours[dummy_object]
+        else:
+            mesh = post_session.Meshes[dummy_object]
+            mesh.surfaces_list = [obj._name]
+            mesh.show_edges = True
+            mesh_data = self._fetch_mesh_data(mesh)
+        surface_api.delete_surface_on_server()
+        return mesh_data, scalar_field_data
+
+    def _fetch_contour_data(self, obj):
+        if not obj.surfaces_list() or not obj.field():
+            raise RuntimeError("Contour definition is incomplete.")
+
+        # contour properties
+        obj._pre_display()
+        field = obj.field()
+        range_option = obj.range.option()
+        filled = obj.filled()
+        contour_lines = obj.contour_lines()
+        node_values = obj.node_values()
+        boundary_values = obj.boundary_values()
+
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
+        surfaces_info = field_info.get_surfaces_info()
+        surface_ids = [
+            id
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
+            for id in surfaces_info[surf]["surface_id"]
+        ]
+        # get scalar field data
+        field_data.add_get_surfaces_request(surface_ids)
+        field_data.add_get_scalar_fields_request(
+            surface_ids,
+            field,
+            node_values,
+            boundary_values,
+        )
+
+        location_tag = (
+            field_data._payloadTags[PayloadTag.NODE_LOCATION]
+            if node_values
+            else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
+        )
+        boundary_value_tag = (
+            field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
+            if boundary_values
+            else 0
+        )
+        surface_tag = 0
+
+        scalar_field_payload_data = field_data.get_fields()
+        data_tag = location_tag | boundary_value_tag
+        scalar_field_data = scalar_field_payload_data[data_tag]
+        surface_data = scalar_field_payload_data[surface_tag]
+        obj._post_display()
+        return surface_data, scalar_field_data
+
+    def _fetch_vector_data(self, obj):
+
+        if not obj.surfaces_list():
+            raise RuntimeError("Vector definition is incomplete.")
+
+        obj._pre_display()
+        field_info = obj._data_extractor.field_info()
+        field_data = obj._data_extractor.field_data()
+
+        # surface ids
+        surfaces_info = field_info.get_surfaces_info()
+        surface_ids = [
+            id
+            for surf in map(
+                obj._data_extractor.remote_surface_name, obj.surfaces_list()
+            )
+            for id in surfaces_info[surf]["surface_id"]
+        ]
+
+        field_data.add_get_surfaces_request(
+            surface_ids, provide_faces_centroid=True, provide_faces_normal=True
+        )
+        field_data.add_get_vector_fields_request(surface_ids, obj.vectors_of())
+        vector_field_tag = 0
+        fields = field_data.get_fields()[vector_field_tag]
+        obj._post_display()
+        return fields
+
+
 class PyVistaWindow(PostWindow):
     """Class for PyVista window."""
 
@@ -102,11 +243,8 @@ class PyVistaWindow(PostWindow):
 
     def _display_vector(self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]):
 
-        if not obj.surfaces_list():
-            raise RuntimeError("Vector definition is incomplete.")
-
+        vector_field_data = DataExtractor(obj).fetch_data()
         field_info = obj._data_extractor.field_info()
-        field_data = obj._data_extractor.field_data()
 
         # surface ids
         surfaces_info = field_info.get_surfaces_info()
@@ -118,16 +256,12 @@ class PyVistaWindow(PostWindow):
             for id in surfaces_info[surf]["surface_id"]
         ]
 
-        # field
-        field = "velocity-magnitude"
-
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
 
-        field_data.add_get_surfaces_request(surface_ids)
-        field_data.add_get_vector_fields_request(surface_ids, obj.vectors_of())
-        vector_field_tag = 0
-        vector_field_data = field_data.get_fields()[vector_field_tag]
+        # field
+        field = "velocity-magnitude"
+
         for surface_id, mesh_data in vector_field_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             mesh_data[obj.vectors_of()].shape = (
@@ -184,9 +318,6 @@ class PyVistaWindow(PostWindow):
                 plotter.add_mesh(mesh, show_edges=True, color="white")
 
     def _display_contour(self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]):
-        if not obj.surfaces_list() or not obj.field():
-            raise RuntimeError("Contour definition is incomplete.")
-
         # contour properties
         field = obj.field()
         range_option = obj.range.option()
@@ -197,42 +328,7 @@ class PyVistaWindow(PostWindow):
 
         # scalar bar properties
         scalar_bar_args = self._scalar_bar_default_properties()
-
-        field_info = obj._data_extractor.field_info()
-        field_data = obj._data_extractor.field_data()
-        surfaces_info = field_info.get_surfaces_info()
-        surface_ids = [
-            id
-            for surf in map(
-                obj._data_extractor.remote_surface_name, obj.surfaces_list()
-            )
-            for id in surfaces_info[surf]["surface_id"]
-        ]
-        # get scalar field data
-        field_data.add_get_surfaces_request(surface_ids)
-        field_data.add_get_scalar_fields_request(
-            surface_ids,
-            field,
-            node_values,
-            boundary_values,
-        )
-
-        location_tag = (
-            field_data._payloadTags[PayloadTag.NODE_LOCATION]
-            if node_values
-            else field_data._payloadTags[PayloadTag.ELEMENT_LOCATION]
-        )
-        boundary_value_tag = (
-            field_data._payloadTags[PayloadTag.BOUNDARY_VALUES]
-            if boundary_values
-            else 0
-        )
-        surface_tag = 0
-
-        scalar_field_payload_data = field_data.get_fields()
-        data_tag = location_tag | boundary_value_tag
-        scalar_field_data = scalar_field_payload_data[data_tag]
-        surface_data = scalar_field_payload_data[surface_tag]
+        surface_data, scalar_field_data = DataExtractor(obj).fetch_data()
 
         # loop over all meshes
         for surface_id, mesh_data in surface_data.items():
@@ -299,6 +395,7 @@ class PyVistaWindow(PostWindow):
                 auto_range_on = obj.range.auto_range_on
                 if auto_range_on.global_range():
                     if filled:
+                        field_info = obj._data_extractor.field_info()
                         plotter.add_mesh(
                             mesh,
                             clim=field_info.get_range(field, False),
@@ -349,23 +446,8 @@ class PyVistaWindow(PostWindow):
         surface_api.delete_surface_on_server()
 
     def _display_mesh(self, obj, plotter: Union[BackgroundPlotter, pv.Plotter]):
-        if not obj.surfaces_list():
-            raise RuntimeError("Mesh definition is incomplete.")
-        field_info = obj._data_extractor.field_info()
-        field_data = obj._data_extractor.field_data()
-        surfaces_info = field_info.get_surfaces_info()
-        surface_ids = [
-            id
-            for surf in map(
-                obj._data_extractor.remote_surface_name, obj.surfaces_list()
-            )
-            for id in surfaces_info[surf]["surface_id"]
-        ]
 
-        field_data.add_get_surfaces_request(surface_ids)
-        surface_tag = 0
-
-        surfaces_data = field_data.get_fields()[surface_tag]
+        surfaces_data = DataExtractor(obj).fetch_data()
         for surface_id, mesh_data in surfaces_data.items():
             mesh_data["vertices"].shape = mesh_data["vertices"].size // 3, 3
             topology = "line" if mesh_data["faces"][0] == 2 else "face"

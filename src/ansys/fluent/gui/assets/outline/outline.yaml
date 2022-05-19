@@ -1,0 +1,64 @@
+Root:
+    children:
+        SetUp:
+            children:
+                Models:
+                    icon  : icon_model.svg
+                    children:                 
+                        Viscous:
+                            remote : setup/models/viscous
+                            icon  : rb_viscous.png
+                        Multiphase:
+                            remote : setup/models/multiphase
+                Boundary Conditions:
+                            icon  : icon_boundaries.svg 
+                            children: 
+                                Velocity Inlet:       
+                                    icon  : icon_inlet.svg                                       
+                                    remote : setup/boundary_conditions/velocity_inlet 
+                                Pressure Outlet: 
+                                    icon  : icon_outlet.svg                                
+                                    remote : setup/boundary_conditions/pressure_outlet
+                                Wall:                            
+                                    remote : setup/boundary_conditions/wall 
+                                    icon  : icon_wall.svg                                    
+        Solution:
+            children: 
+                Methods:
+                    remote: solution/methods
+                    icon  : icon_methods.svg 
+                Controls:
+                    remote: solution/controls 
+                    icon  : icon_controls.svg                     
+                Initialization:
+                    remote : solution/initialization
+                    icon  : icon_initialize.svg
+                Calculation:
+                    remote : solution/run_calculation
+                    icon  : icon_calculate.svg
+        Results:        
+            children:
+                Graphics:
+                    icon  : icon_graphic.svg
+                    children:                
+                        Contour:
+                            local : Contour
+                            icon  : icon_contours.svg
+                        Vector:
+                            local : Vector
+                            icon  : icon_vectors.svg
+                        Mesh:
+                            local : Mesh
+                            icon  : icon_mesh.svg
+                        Surface:
+                            local : Surface 
+                            icon  : icon_isosurf.svg
+                Plots:
+                    icon  : icon_plots.svg
+                    children:                
+                        XYPlot:
+                            local : XYPlot
+                            icon  : icon_plot.svg
+        
+        
+        

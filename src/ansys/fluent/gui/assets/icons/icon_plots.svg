@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_plots</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon_plots" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path-9" fill="#121212" fill-rule="nonzero" points="18.9967634 18.0047455 18.9967634 18.9965156 1.0138634 18.9965156 0.988106368 0.998245239 1.99613249 0.996810913 1.99631949 18.0047455"></polygon>
+        <path d="M10.9458522,9.13317303 C11.3394225,5.19514518 12.2448577,3.01207566 15.6000531,3.01207566 L18.9971637,3.01207566 L18.9971637,3.99416465 L15.6000531,3.99416465 C13.1164353,3.99416465 12.4098638,6.13059771 12.0934493,9.29661144 C11.7042145,13.1912587 10.1521469,15.4391016 6.86767776,15.9900783 L6.73943399,16.000763 L3.00358146,16.000763 L3.00358146,14.9990266 L6.67311558,14.9990266 C9.16874874,14.5563717 10.6277238,12.3163369 10.9458522,9.13317303 Z" id="Path-166" fill="#CD930C" fill-rule="nonzero"></path>
+    </g>
+</svg>

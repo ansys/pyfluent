@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_calculate</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon_calculate" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Rectangle-50" fill="#CD930C" fill-rule="nonzero" points="6 7 14 7 14 9 6 9"></polygon>
+        <polygon id="Rectangle-50" fill="#CD930C" fill-rule="nonzero" points="6 11 14 11 14 13 6 13"></polygon>
+        <circle id="Oval-2" stroke="#121212" fill-rule="nonzero" cx="10" cy="10" r="8.5"></circle>
+    </g>
+</svg>

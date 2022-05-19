@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_plane</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icon_plane" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-27" stroke="#121212" fill="#CD930C" transform="translate(10.418239, 10.273083) rotate(-33.000000) translate(-10.418239, -10.273083) " x="3.91823947" y="3.77308255" width="13" height="13"></rect>
+        <path d="M11.9099078,17.1087737 L4.86323591,6.1842868" id="Path-91" stroke="#121212"></path>
+        <path d="M15.6894979,14.811582 L8.64282599,3.88709505" id="Path-91" stroke="#121212"></path>
+        <path d="M3.98197928,12.0989234 L14.9064662,5.05225148" id="Path-91" stroke="#121212"></path>
+        <path d="M6.42502595,15.5997594 L17.3495129,8.5530875" id="Path-91" stroke="#121212"></path>
+    </g>
+</svg>

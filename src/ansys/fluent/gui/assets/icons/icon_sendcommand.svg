@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_sendcommand</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Remote_Client_Mitali" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Send-Command">
+            <path d="M17.9694078,6.58309976 C14.8816088,8.10202299 14.0363417,10.469927 15.4336066,13.6868119" id="Path-143" stroke="#CD930C" stroke-dasharray="1" transform="translate(16.375032, 10.134956) scale(-1, 1) rotate(-5.000000) translate(-16.375032, -10.134956) "></path>
+            <path d="M6.93717284,3.4 C6.62158155,3.4 6.36574427,3.66862915 6.36574427,4 L6.36574427,7 C6.36574427,7.33137085 6.62158155,7.6 6.93717284,7.6 L12.3333333,7.6 C12.6489246,7.6 12.9047619,7.33137085 12.9047619,7 L12.9047619,4 C12.9047619,3.66862915 12.6489246,3.4 12.3333333,3.4 L6.93717284,3.4 Z" id="Rectangle-34" stroke="#121212" stroke-width="0.8"></path>
+            <path d="M6.64380389,9.42406959 L5.38980003,11.2930522 L13.8928449,11.2930522 L12.740867,9.45109272 C12.5647905,9.16955449 12.2655642,9 11.9447877,9 L7.4223741,9 C7.11261362,9 6.82220436,9.15817936 6.64380389,9.42406959 Z" id="Path-140" stroke="#121212" stroke-width="0.8"></path>
+            <polygon id="Path" stroke="#CD930C" points="5.552003 17.5 14.624985 17.5 13.3478258 14.4613321 6.9206054 14.4613321"></polygon>
+            <polyline id="Path-193" stroke="#CD930C" transform="translate(17.064626, 13.247057) scale(-1, 1) rotate(107.000000) translate(-17.064626, -13.247057) " points="15.649895 11.9318359 18.479358 11.9318359 18.479358 14.5622783"></polyline>
+            <path d="M4.56795411,8.69241204 C1.6448982,11.0171038 0.646914689,13.4713892 1.57400356,16.0552684" id="Path-143" stroke="#CD930C" stroke-dasharray="1" transform="translate(2.903551, 12.373840) rotate(-34.000000) translate(-2.903551, -12.373840) "></path>
+            <polyline id="Path-193" stroke="#CD930C" points="0.932441733 7.33887742 3.76190476 7.33887742 3.76190476 9.96931984"></polyline>
+        </g>
+    </g>
+</svg>

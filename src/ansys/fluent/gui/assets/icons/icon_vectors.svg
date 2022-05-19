@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_vectorsaim</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="51.8638492%" y1="-3.18336994%" x2="51.8638492%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#EF4136" offset="0%"></stop>
+            <stop stop-color="#F38235" offset="17.2358826%"></stop>
+            <stop stop-color="#F7EC32" offset="40.59002%"></stop>
+            <stop stop-color="#ADD23B" offset="60.4587161%"></stop>
+            <stop stop-color="#76AA53" offset="80.3210747%"></stop>
+            <stop stop-color="#284994" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icon_vectorsaim" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_contours_aim" transform="translate(16.000000, 1.000000)">
+            <polygon id="Rectangle-2" fill="#414042" points="1.99110079 16 3.00494322 16 3.00494322 16.9990547 1.99110079 16.9990547"></polygon>
+            <polygon id="Rectangle-2" fill="#414042" points="1.99110079 12 3.00494322 12 3.00494322 12.9990547 1.99110079 12.9990547"></polygon>
+            <polygon id="Rectangle-2" fill="#414042" points="1.99110079 8 3.00494322 8 3.00494322 8.99905473 1.99110079 8.99905473"></polygon>
+            <polygon id="Rectangle-2" fill="#414042" points="1.99110079 4 3.00494322 4 3.00494322 4.99905473 1.99110079 4.99905473"></polygon>
+            <polygon id="Rectangle-2" fill="#414042" points="1.99755859 1.15685239e-13 3.00494322 1.99840144e-15 3.00494322 0.999054727 1.99755859 0.999054727"></polygon>
+            <polygon id="Rectangle" fill="url(#linearGradient-1)" points="0.997390747 0.00372314453 1.99834198 0.00372314453 1.99834198 16.9939117 0.997390747 16.9939117"></polygon>
+        </g>
+        <polygon id="Rectangle-4" fill="#424142" points="8.98979091 11.7717088 10.9990807 12.881769 10.9990807 18.2932178 9.03331474 17.2489422"></polygon>
+        <polygon id="Rectangle-5" fill="#424142" points="12.0391332 12.9108285 15.9477082 12.0815593 15.9477082 17.0869495 12.0344126 18.2992731"></polygon>
+        <polygon id="Rectangle-6" fill="#424142" points="9.18620067 11.2121846 13.3366711 10.3862786 15.7225137 11.4715846 11.3523855 12.4957897"></polygon>
+        <polygon id="Path-4" fill="#009444" points="4.80918923 14.6965559 1.25348914 16.4145173 7.73554049 16.4145173"></polygon>
+        <polygon id="Path-4" fill="#EF4136" transform="translate(3.070137, 8.206864) rotate(32.000000) translate(-3.070137, -8.206864) " points="4.65445275 6.38952203 1.1994144 8.41935917 4.94085887 10.0242062"></polygon>
+        <polygon id="Path-5" fill="#009444" fill-rule="nonzero" points="6.23649494 15.694698 5.26030201 15.1427117 9.94779743 14.1866188 11.0674733 14.7610211"></polygon>
+        <polygon id="Path-6" fill="#EF4136" fill-rule="nonzero" points="10.2918915 11.7453329 9.85336687 12.5872025 4.07869528 9.46516867 4.52454762 8.64981778"></polygon>
+        <polygon id="Path-8" fill="#0A79BF" points="10.8800027 4.62559982 14.1421257 6.4584138 12.9105897 1.64907738"></polygon>
+        <polygon id="Path-40" fill="#0A79BF" fill-rule="nonzero" points="12.0375683 4.94198739 13.0303966 5.30568063 13.0272838 10.8220533 12.0358745 10.3022474"></polygon>
+    </g>
+</svg>

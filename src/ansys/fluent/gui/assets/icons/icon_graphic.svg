@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_graphic</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Ansys_1280x720_1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-39.000000, -621.000000)">
+        <g id="icon_graphic" transform="translate(39.000000, 621.000000)">
+            <path d="M6.0699,11.14035 C8.86995,11.14035 11.1398,8.8705 11.1398,6.07045 L6.0699,6.07045 L6.0699,1 C3.26985,1 1,3.26985 1,6.0699 C1,8.86995 3.26985,11.14035 6.0699,11.14035 Z" id="Shape" fill="#CD930C" fill-rule="nonzero"></path>
+            <path d="M7.27838261,1 L7.27838261,5 L11.3063598,5 C11.139231,3.94192615 10.6375919,3.02185383 9.80144258,2.23978304 C8.96529322,1.45771224 8.12427323,1.04445123 7.27838261,1 Z" id="Path-51" stroke="#121212"></path>
+        </g>
+    </g>
+</svg>

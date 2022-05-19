@@ -34,6 +34,13 @@ install_requires_post = [
     "pyvistaqt==0.7.0",
     "pyside6==6.2.3",
     "matplotlib==3.5.1",
+    "pandas==1.4.1",
+]
+
+install_requires_gui = [
+    "dash==2.1.0",
+    "dash-vtk==0.0.9",
+    "dash-bootstrap-components==1.1.0",
 ]
 
 packages = []
@@ -68,5 +75,6 @@ setup(
     install_requires=install_requires,
     extras_require={
         "post": install_requires_post,
+        "gui": install_requires_post + install_requires_gui,
     },
 )
