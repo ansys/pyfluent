@@ -19,7 +19,7 @@ class LocalObjectDataExtractor:
 
         @staticmethod
         def surface_name_in_server(local_surface_name):
-            return "_dummy_surface_for_pyfluent:" + local_surface_name
+            return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
             return self.obj._get_top_most_parent().session.solver.tui.surface
@@ -68,6 +68,9 @@ class LocalObjectDataExtractor:
         self.obj = obj
         self.field_info = lambda: obj._get_top_most_parent().session.field_info
         self.field_data = lambda: obj._get_top_most_parent().session.field_data
+        self.monitors_manager = (
+            lambda: obj._get_top_most_parent().session.monitors_manager
+        )
         self.id = lambda: obj._get_top_most_parent().session.id
         if obj.__class__.__name__ == "Surface":
             self.surface_api = LocalObjectDataExtractor._SurfaceAPI(obj)
@@ -147,22 +150,25 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
             attrs = getattr(self, "attributes", None)
             if attrs:
                 for attr in attrs:
-                    if attr == "range" and (
-                        value < self.range[0] or value > self.range[1]
-                    ):
-                        raise ValueError(
-                            f"Value {value}, is not within valid range"
-                            f" {self.range}."
-                        )
-                    if attr == "allowed_values":
+                    if attr == "range":
+                        if self.range and (
+                            value < self.range[0] or value > self.range[1]
+                        ):
+                            raise ValueError(
+                                f"Value {value}, is not within valid range"
+                                f" {self.range}."
+                            )
+                    elif attr == "allowed_values":
                         if isinstance(value, list):
-                            if not all(v in self.allowed_values for v in value):
+                            if not all(
+                                v is None or v in self.allowed_values for v in value
+                            ):
                                 raise ValueError(
                                     f"Not all values in {value}, are in the "
                                     "list of allowed values "
                                     f"{self.allowed_values}."
                                 )
-                        elif value not in self.allowed_values:
+                        elif value is not None and value not in self.allowed_values:
                             raise ValueError(
                                 f"Value {value}, is not in the list of "
                                 f"allowed values {self.allowed_values}."

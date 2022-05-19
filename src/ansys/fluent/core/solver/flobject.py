@@ -86,15 +86,13 @@ class Base:
     def __init__(self, name: str = None, parent=None):
         """__init__ of Base class."""
         self._parent = weakref.proxy(parent) if parent is not None else None
+        self._flproxy = None
         if name is not None:
             self._name = name
 
-    _flproxy = None
-
-    @classmethod
-    def set_flproxy(cls, flproxy):
+    def set_flproxy(self, flproxy):
         """Set flproxy object."""
-        cls._flproxy = flproxy
+        self._flproxy = flproxy
 
     @property
     def flproxy(self):
@@ -619,6 +617,15 @@ class Map(SettingsBase[DictStateType]):
 class Command(Base):
     """Command object."""
 
+    def __init__(self, name: str = None, parent=None):
+        """__init__ of Group class."""
+        super().__init__(name, parent)
+        if hasattr(self, "argument_names"):
+            for argument in self.argument_names:
+                cls = getattr(self.__class__, argument)
+                setattr(self, argument, cls(None, self))
+        self._initialized = True
+
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         newkwds = {}
@@ -804,5 +811,7 @@ def get_root(flproxy) -> Group:
     except Exception:
         cls = get_cls("", obj_info)
     # pylint: disable=no-member
-    cls.set_flproxy(flproxy)
-    return cls()
+    root = cls()
+    root.set_flproxy(flproxy)
+    root._static_info = obj_info
+    return root

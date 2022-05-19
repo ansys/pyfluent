@@ -1,6 +1,7 @@
 """Setup file for ansys-fluent-solver."""
 import os
 import shutil
+import sys
 
 from setuptools import find_namespace_packages, setup
 
@@ -21,13 +22,16 @@ _DOCS_FILE = os.path.join(
 )
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
+
 install_requires = [
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
     "protobuf==3.20.1",
     "appdirs>=1.4.0",
+    "pandas>=1.4.1" if sys.version_info.minor > 7 else "pandas==1.3.5",
 ]
+
 
 packages = []
 for package in find_namespace_packages(where="src", include="ansys*"):
