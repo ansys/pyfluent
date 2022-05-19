@@ -198,7 +198,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -207,7 +206,7 @@ class DataModel(object):
             datamodel__se__pb2.DataModelRequest.SerializeToString,
             datamodel__se__pb2.DataModelResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def initDatamodel(request,
@@ -215,7 +214,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -224,7 +222,7 @@ class DataModel(object):
             datamodel__se__pb2.InitDatamodelRequest.SerializeToString,
             datamodel__se__pb2.InitDatamodelResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getState(request,
@@ -232,7 +230,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -241,7 +238,7 @@ class DataModel(object):
             datamodel__se__pb2.GetStateRequest.SerializeToString,
             datamodel__se__pb2.GetStateResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def setState(request,
@@ -249,7 +246,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -258,7 +254,7 @@ class DataModel(object):
             datamodel__se__pb2.SetStateRequest.SerializeToString,
             datamodel__se__pb2.SetStateResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def updateDict(request,
@@ -266,7 +262,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -275,7 +270,7 @@ class DataModel(object):
             datamodel__se__pb2.UpdateDictRequest.SerializeToString,
             datamodel__se__pb2.UpdateDictResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def deleteObject(request,
@@ -283,7 +278,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -292,7 +286,7 @@ class DataModel(object):
             datamodel__se__pb2.DeleteObjectRequest.SerializeToString,
             datamodel__se__pb2.DeleteObjectResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getAttributeValue(request,
@@ -300,7 +294,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -309,7 +302,7 @@ class DataModel(object):
             datamodel__se__pb2.GetAttributeValueRequest.SerializeToString,
             datamodel__se__pb2.GetAttributeValueResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def executeCommand(request,
@@ -317,7 +310,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -326,7 +318,7 @@ class DataModel(object):
             datamodel__se__pb2.ExecuteCommandRequest.SerializeToString,
             datamodel__se__pb2.ExecuteCommandResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getSpecs(request,
@@ -334,7 +326,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -343,7 +334,7 @@ class DataModel(object):
             datamodel__se__pb2.GetSpecsRequest.SerializeToString,
             datamodel__se__pb2.GetSpecsResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def getStaticInfo(request,
@@ -351,7 +342,6 @@ class DataModel(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -360,4 +350,4 @@ class DataModel(object):
             datamodel__se__pb2.GetStaticInfoRequest.SerializeToString,
             datamodel__se__pb2.GetStaticInfoResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)

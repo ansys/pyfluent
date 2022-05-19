@@ -87,7 +87,6 @@ class SchemeEval(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -96,7 +95,7 @@ class SchemeEval(object):
             scheme__pointer__pb2.SchemePointer.SerializeToString,
             scheme__pointer__pb2.SchemePointer.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Exec(request,
@@ -104,7 +103,6 @@ class SchemeEval(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -113,7 +111,7 @@ class SchemeEval(object):
             scheme__eval__pb2.ExecRequest.SerializeToString,
             scheme__eval__pb2.ExecResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def StringEval(request,
@@ -121,7 +119,6 @@ class SchemeEval(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
-            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -130,4 +127,4 @@ class SchemeEval(object):
             scheme__eval__pb2.StringEvalRequest.SerializeToString,
             scheme__eval__pb2.StringEvalResponse.FromString,
             options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            call_credentials, compression, wait_for_ready, timeout, metadata)
