@@ -1,0 +1,6 @@
+{
+  "Viscous": "setup.models.viscous",
+  "Energy": "setup.models.energy",
+  "BCs": "setup.boundary_conditions",
+  "VelocityInlet": "setup.boundary_conditions.velocity_inlet"
+}
