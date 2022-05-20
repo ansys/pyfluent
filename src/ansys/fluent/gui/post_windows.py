@@ -3,10 +3,9 @@ import itertools
 
 from app_defn import app
 import dash
-from dash import ALL, Input, Output, State, html, no_update
+from dash import ALL, Input, Output, State, dcc, html, no_update
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
-from dash import dcc
 import dash_vtk
 from objects_handle import LocalObjectsHandle
 import plotly.graph_objs as go

@@ -1,8 +1,8 @@
 import os
-import yaml
+
 from objects_handle import LocalObjectsHandle
 from sessions_handle import SessionsHandle
-
+import yaml
 
 
 class TreeDataExtractor:
@@ -92,7 +92,7 @@ class TreeDataExtractor:
     def get_tree_nodes(
         self,
         yaml_file="outline.yaml",
-    ):       
+    ):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         with open(os.path.join(dir_path, "assets", "outline", yaml_file)) as f:
             data = yaml.load(f, Loader=yaml.SafeLoader)

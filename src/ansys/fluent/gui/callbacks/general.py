@@ -1,20 +1,18 @@
 import itertools
 import uuid
 
+from config import async_commands
 import dash
 from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
-
-from ansys.fluent.core.solver.flobject import to_python_name
-from ansys.fluent.core.utils.async_execution import asynchronous 
-
 from objects_handle import LocalObjectsHandle, SettingsObjectsHandle
 from property_editors import LocalPropertyEditor, SettingsPropertyEditor
 from sessions_handle import SessionsHandle
 from state_manager import StateManager
-from config import async_commands
 
+from ansys.fluent.core.solver.flobject import to_python_name
+from ansys.fluent.core.utils.async_execution import asynchronous
 
 
 def register_callbacks(app):
@@ -45,19 +43,21 @@ def register_callbacks(app):
             SessionsHandle
         ).get_object_and_static_info(user_id, session_id, object_type, object_index)
 
-        kwargs = {}    
-        exec_async =  obj.path in async_commands and command_name in async_commands[obj.path]
+        kwargs = {}
+        exec_async = (
+            obj.path in async_commands and command_name in async_commands[obj.path]
+        )
         cmd_obj = getattr(obj, command_name)
         args_iter = iter(args_value)
         args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
         for arg_name, arg_info in args_info.items():
             kwargs[to_python_name(arg_name)] = next(args_iter)
-            
+
         @asynchronous
         def run_async(f, **kwargs):
-            print('running async')
+            print("running async")
             f(**kwargs)
-            
+
         return_value = run_async(cmd_obj, **kwargs) if exec_async else cmd_obj(**kwargs)
         return f"{return_value}"
 
@@ -156,7 +156,7 @@ def register_callbacks(app):
                 ).get_object_and_static_info(
                     user_id, session_id, object_type, object_index
                 )
-            #print(user_id, session_id, obj)
+            # print(user_id, session_id, obj)
             path_list = input_index.split("/")[1:]
             for path in path_list:
                 try:
@@ -175,7 +175,7 @@ def register_callbacks(app):
                 input_value = True if input_value else False
             if input_value == obj():
                 raise PreventUpdate
-            #print("set_state \n", obj, input_value)
+            # print("set_state \n", obj, input_value)
             obj.set_state(input_value)
             object_id = f"{object_location}:{object_type}:{object_index}"
             return object_id

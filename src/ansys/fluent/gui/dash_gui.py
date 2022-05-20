@@ -17,20 +17,20 @@ def get_default_components():
         ),
         dcc.Store(data="AnsysUser", id="user-id"),
         dcc.Loading(
-                    id="loading-session",
-                    type="default",
-                    children= html.Data(id="session-id", value="session-0"),
+            id="loading-session",
+            type="default",
+            children=html.Data(id="session-id", value="session-0"),
         ),
         html.Data(id="object-id"),
         html.Data(id="tree-view-selection"),
         html.Data(id="tab-content-created"),
         html.Data(id="need-to-data-fetch", value="no"),
         dcc.Loading(
-                     className =  "dcc_loader", 
-                    id="loading-command",
-                    type="default",
-                    children= 
-        html.Data(id="command-output")),
+            className="dcc_loader",
+            id="loading-command",
+            type="default",
+            children=html.Data(id="command-output"),
+        ),
     ]
 
 

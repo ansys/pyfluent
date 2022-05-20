@@ -90,9 +90,6 @@ class Base:
         if name is not None:
             self._name = name
 
-    
-
-
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
         self._flproxy = flproxy

@@ -21,7 +21,7 @@ def get_side_bar(user_id, session_id):
     tree_nodes_data = {"title": "Root", "key": "Root", "icon": None, "children": []}
     keys = ["Root"]
     if session_id:
-        tree_nodes_data, keys = TreeDataExtractor(user_id, session_id).get_tree_nodes()      
+        tree_nodes_data, keys = TreeDataExtractor(user_id, session_id).get_tree_nodes()
     tree = dash_tree(
         id="tree-view",
         expandedKeys=keys,
@@ -99,27 +99,27 @@ def app_layout():
                             style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
-                         dcc.Loading(
-                         parent_className='loading_wrapper',
-                    id="loading-sessions-list",                   
-                    type="default",
-                    children=        dcc.Dropdown(
-                                id="sessions-list",
-                                options=list(
-                                    map(
-                                        lambda x: x[0],
-                                        user_name_to_session_map.get(user_id),
+                            dcc.Loading(
+                                parent_className="loading_wrapper",
+                                id="loading-sessions-list",
+                                type="default",
+                                children=dcc.Dropdown(
+                                    id="sessions-list",
+                                    options=list(
+                                        map(
+                                            lambda x: x[0],
+                                            user_name_to_session_map.get(user_id),
+                                        )
                                     )
-                                )
-                                if user_name_to_session_map.get(user_id)
-                                else [],
-                                value=user_name_to_session_map.get(
-                                    user_id, [[None, None]]
-                                )[0][0],
-                                style={
-                                    "width": "200px",
-                                },
-                            )
+                                    if user_name_to_session_map.get(user_id)
+                                    else [],
+                                    value=user_name_to_session_map.get(
+                                        user_id, [[None, None]]
+                                    )[0][0],
+                                    style={
+                                        "width": "200px",
+                                    },
+                                ),
                             ),
                             width="auto",
                             align="end",
@@ -191,38 +191,42 @@ def app_layout():
                         },
                     ),
                     dbc.Col(
-                    html.Div(
-                    dcc.Loading(
-                    id="loading-tabs",
-                    type="default",
-                    parent_className='loading_wrapper',                   
-                    children=    [
-                            dbc.Card(
-                                [
-                                    dbc.CardHeader(
-                                        dbc.Tabs(
-                                            [
-                                                dbc.Tab(
-                                                    label="Graphics",
-                                                    tab_id="graphics",
-                                                ),
-                                                dbc.Tab(label="Plots", tab_id="plots"),
-                                                dbc.Tab(
-                                                    label="Monitors", tab_id="monitors"
-                                                ),
-                                            ],
-                                            id="tabs",
-                                            active_tab="graphics",
-                                        )
-                                    ),
-                                    html.Div(
-                                        id="tab-content",
+                        html.Div(
+                            dcc.Loading(
+                                id="loading-tabs",
+                                type="default",
+                                parent_className="loading_wrapper",
+                                children=[
+                                    dbc.Card(
+                                        [
+                                            dbc.CardHeader(
+                                                dbc.Tabs(
+                                                    [
+                                                        dbc.Tab(
+                                                            label="Graphics",
+                                                            tab_id="graphics",
+                                                        ),
+                                                        dbc.Tab(
+                                                            label="Plots",
+                                                            tab_id="plots",
+                                                        ),
+                                                        dbc.Tab(
+                                                            label="Monitors",
+                                                            tab_id="monitors",
+                                                        ),
+                                                    ],
+                                                    id="tabs",
+                                                    active_tab="graphics",
+                                                )
+                                            ),
+                                            html.Div(
+                                                id="tab-content",
+                                            ),
+                                        ],
+                                        style={"height": HEIGHT},
                                     ),
                                 ],
-                                style={"height": HEIGHT},
-                            ),
-                        ]
-                        )                      
+                            )
                         )
                     ),
                 ],

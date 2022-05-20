@@ -45,7 +45,7 @@ class SessionsHandle:
                 "localhost", int(session_token), cleanup_on_exit=False
             )
             self.session.monitors_manager.start()
-            #self.static_info = self.session.solver._settings_service.get_static_info()
+            # self.static_info = self.session.solver._settings_service.get_static_info()
             self.settings_root = self.session.solver.root
             self.static_info = self.settings_root._static_info
             self.register_events()
