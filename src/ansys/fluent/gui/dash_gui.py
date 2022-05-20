@@ -16,12 +16,21 @@ def get_default_components():
             n_intervals=0,
         ),
         dcc.Store(data="AnsysUser", id="user-id"),
-        html.Data(id="session-id", value="session-0"),
+        dcc.Loading(
+                    id="loading-session",
+                    type="default",
+                    children= html.Data(id="session-id", value="session-0"),
+        ),
         html.Data(id="object-id"),
         html.Data(id="tree-view-selection"),
         html.Data(id="tab-content-created"),
         html.Data(id="need-to-data-fetch", value="no"),
-        html.Data(id="command-output"),
+        dcc.Loading(
+                     className =  "dcc_loader", 
+                    id="loading-command",
+                    type="default",
+                    children= 
+        html.Data(id="command-output")),
     ]
 
 

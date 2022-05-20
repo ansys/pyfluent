@@ -99,7 +99,11 @@ def app_layout():
                             style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
-                            dcc.Dropdown(
+                         dcc.Loading(
+                         parent_className='loading_wrapper',
+                    id="loading-sessions-list",                   
+                    type="default",
+                    children=        dcc.Dropdown(
                                 id="sessions-list",
                                 options=list(
                                     map(
@@ -115,6 +119,7 @@ def app_layout():
                                 style={
                                     "width": "200px",
                                 },
+                            )
                             ),
                             width="auto",
                             align="end",
@@ -186,7 +191,12 @@ def app_layout():
                         },
                     ),
                     dbc.Col(
-                        [
+                    html.Div(
+                    dcc.Loading(
+                    id="loading-tabs",
+                    type="default",
+                    parent_className='loading_wrapper',                   
+                    children=    [
                             dbc.Card(
                                 [
                                     dbc.CardHeader(
@@ -212,6 +222,8 @@ def app_layout():
                                 style={"height": HEIGHT},
                             ),
                         ]
+                        )                      
+                        )
                     ),
                 ],
                 style={"padding": "4px 0px 4px 0px"},

@@ -5,12 +5,16 @@ import dash
 from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
+
+from ansys.fluent.core.solver.flobject import to_python_name
+from ansys.fluent.core.utils.async_execution import asynchronous 
+
 from objects_handle import LocalObjectsHandle, SettingsObjectsHandle
 from property_editors import LocalPropertyEditor, SettingsPropertyEditor
 from sessions_handle import SessionsHandle
 from state_manager import StateManager
+from config import async_commands
 
-from ansys.fluent.core.solver.flobject import to_python_name
 
 
 def register_callbacks(app):
@@ -41,13 +45,20 @@ def register_callbacks(app):
             SessionsHandle
         ).get_object_and_static_info(user_id, session_id, object_type, object_index)
 
-        kwargs = {}
+        kwargs = {}    
+        exec_async =  obj.path in async_commands and command_name in async_commands[obj.path]
         cmd_obj = getattr(obj, command_name)
         args_iter = iter(args_value)
         args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
         for arg_name, arg_info in args_info.items():
             kwargs[to_python_name(arg_name)] = next(args_iter)
-        return_value = cmd_obj(**kwargs)
+            
+        @asynchronous
+        def run_async(f, **kwargs):
+            print('running async')
+            f(**kwargs)
+            
+        return_value = run_async(cmd_obj, **kwargs) if exec_async else cmd_obj(**kwargs)
         return f"{return_value}"
 
     @app.callback(
