@@ -2,5 +2,6 @@
   "Viscous": "setup.models.viscous",
   "Energy": "setup.models.energy",
   "BCs": "setup.boundary_conditions",
-  "VelocityInlet": "setup.boundary_conditions.velocity_inlet"
+  "VelocityInlet": "setup.boundary_conditions.velocity_inlet",
+  "Contour": "results.graphics.contour"
 }
