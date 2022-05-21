@@ -103,13 +103,11 @@ def register_callbacks(app):
         Input(
             {"type": f"input-widget", "index": ALL},
             "value",
-        ),
-        State("user-id", "data"),
+        ),      
         prevent_initial_call=True,
     )
     def on_value_changed(
         input_values,
-        user_id,
     ):
         ctx = dash.callback_context
         input_value = ctx.triggered[0]["value"]

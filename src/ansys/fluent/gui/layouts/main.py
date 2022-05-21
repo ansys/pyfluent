@@ -73,6 +73,8 @@ def app_layout():
     return dbc.Container(
         fluid=True,
         children=[
+            dcc.Store(data="AnsysUser", id="user-id"),        
+            html.Data(id="session-id"),            
             dbc.CardHeader(
                 dbc.Row(
                     [
@@ -99,7 +101,10 @@ def app_layout():
                             style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
-                            children=dcc.Dropdown(
+                            dcc.Loading(
+                                id="loading-sessions-list",
+                                type="default",
+                                children=dcc.Dropdown(
                                 id="sessions-list",
                                 options=list(
                                     map(
@@ -115,7 +120,7 @@ def app_layout():
                                 style={
                                     "width": "200px",
                                 },
-                            ),
+                            )),
                             width="auto",
                             align="end",
                         ),

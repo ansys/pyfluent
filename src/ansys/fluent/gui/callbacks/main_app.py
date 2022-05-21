@@ -18,15 +18,6 @@ user_name_to_session_map = {}
 
 
 def register_callbacks(app):
-    @app.callback(
-        Output("tree-view-selection", "value"),
-        Input("tree-view", "selected"),
-    )
-    def on_tree_selection(tree_selection):
-        if tree_selection and isinstance(tree_selection, list):
-            return tree_selection[0]
-        else:
-            raise PreventUpdate
 
     @app.callback(
         Output("session-id", "value"),
@@ -37,26 +28,27 @@ def register_callbacks(app):
 
     @app.callback(
         Output("property-editor-container", "children"),
-        Input("tree-view-selection", "value"),
+        Input("tree-view", "selected"),
         Input("session-id", "value"),
         State("user-id", "data"),
     )
-    def show_property_editor(selected_node, session_id, user_id):
-        if selected_node is None or session_id is None:
+    def show_property_editor(tree_selection, session_id, user_id):
+        if tree_selection is None or session_id is None:
             return []
         ctx = dash.callback_context
-        triggered_value = ctx.triggered[0]["value"]
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
         if triggered_from == "session-id":
             return []
-        if "local" in selected_node or "remote" in selected_node:
-            object_location, object_type, object_index = selected_node.split(":")
-            editor = (
-                LocalPropertyEditor(user_id, session_id, 1)
-                if object_location == "local"
-                else SettingsPropertyEditor(user_id, session_id, 1)
-            )
-            return editor(selected_node)
+        if tree_selection and isinstance(tree_selection, list):  
+            selected_node = tree_selection[0]        
+            if "local" in selected_node or "remote" in selected_node:
+                object_location, object_type, object_index = selected_node.split(":")
+                editor = (
+                    LocalPropertyEditor(user_id, session_id, 1)
+                    if object_location == "local"
+                    else SettingsPropertyEditor(user_id, session_id, 1)
+                )
+                return editor(selected_node)
         return []
 
     @app.callback(
@@ -84,7 +76,6 @@ def register_callbacks(app):
     @app.callback(
         Output("sessions-list", "options"),
         Output("sessions-list", "value"),
-        Output("new-session", "value"),
         Input("connect-session", "n_clicks"),
         Input("user-id", "data"),
         State("session-token", "value"),
@@ -112,7 +103,7 @@ def register_callbacks(app):
             sessions = options
         sessions.append(session_id)
 
-        return [sessions, session_id, session_id]
+        return [sessions, session_id]
 
     @app.callback(
         Output("tree-container", "children"),
@@ -172,7 +163,6 @@ def register_callbacks(app):
 
     @app.callback(
         Output("tab-content", "children"),
-        Output("tab-content-created", "value"),
         Input("tabs", "active_tab"),
         Input("session-id", "value"),
         State("user-id", "data"),
@@ -182,8 +172,7 @@ def register_callbacks(app):
         the stored graphs, and renders the tab content depending on what the
         value of 'active_tab' is."""
         if session_id is None:
-            return (
-                html.Pre(
+            return html.Pre(
                     """
                   Welcome to ANSYS PyFluent Web Client 22.2.0
                   
@@ -197,26 +186,20 @@ def register_callbacks(app):
                   
                   """,
                     style={"font": "14px 'Segoe UI'"},
-                ),
-                dash.no_update,
-            )
+                )
+               
+            
 
         if active_tab == "graphics":
-            return (
-                GraphicsWindow(user_id, session_id, 1)(
+            return GraphicsWindow(user_id, session_id, 1)(
                     init_data={0: ("Mesh", "outline")}
-                ),
-                active_tab,
-            )
+                )
+           
 
         elif active_tab == "plots":
-            return (
-                PlotWindow(user_id, session_id, 1)(),
-                active_tab,
-            )
+            return PlotWindow(user_id, session_id, 1)()            
 
         elif active_tab == "monitors":
-            return (
-                MonitorWindow(user_id, session_id, 1)(),
-                active_tab,
-            )
+            return MonitorWindow(user_id, session_id, 1)()
+                
+            
