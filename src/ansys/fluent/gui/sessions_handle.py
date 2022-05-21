@@ -39,7 +39,6 @@ class SessionsHandle:
             ],
         )
 
-
     def add_session(self, session_token, user_name_to_session_map):
         session_token = session_token.strip()
         if len(session_token.split(":")) == 1:

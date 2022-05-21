@@ -10,7 +10,7 @@ def get_default_components():
         html.Data(
             id="uuid-id",
             # value=user_name_to_session_map.get(user_id, [[None, ""]])[0][1],
-        ),        
+        ),
         html.Data(id="session-id", value="session-0"),
         dcc.Loading(
             id="loading-object",

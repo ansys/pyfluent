@@ -26,6 +26,7 @@ class PropertyEditor:
             self._object_id = None
             self._filter_list = []
             self._index = index
+
             @app.callback(
                 Output(f"property-editor-{self._id}", "children"),
                 Input("object-id", "value"),
