@@ -99,27 +99,22 @@ def app_layout():
                             style={"border-bottom": "3px solid gray"},
                         ),
                         dbc.Col(
-                            dcc.Loading(
-                                parent_className="loading_wrapper",
-                                id="loading-sessions-list",
-                                type="default",
-                                children=dcc.Dropdown(
-                                    id="sessions-list",
-                                    options=list(
-                                        map(
-                                            lambda x: x[0],
-                                            user_name_to_session_map.get(user_id),
-                                        )
+                            children=dcc.Dropdown(
+                                id="sessions-list",
+                                options=list(
+                                    map(
+                                        lambda x: x[0],
+                                        user_name_to_session_map.get(user_id),
                                     )
-                                    if user_name_to_session_map.get(user_id)
-                                    else [],
-                                    value=user_name_to_session_map.get(
-                                        user_id, [[None, None]]
-                                    )[0][0],
-                                    style={
-                                        "width": "200px",
-                                    },
-                                ),
+                                )
+                                if user_name_to_session_map.get(user_id)
+                                else [],
+                                value=user_name_to_session_map.get(
+                                    user_id, [[None, None]]
+                                )[0][0],
+                                style={
+                                    "width": "200px",
+                                },
                             ),
                             width="auto",
                             align="end",
@@ -181,21 +176,30 @@ def app_layout():
                         width="auto",
                     ),
                     dbc.Col(
-                        id="property-editor-container",
+                        dcc.Loading(
+                            className="dcc_loader",
+                            id="loading-property-editor-container",
+                            type="default",
+                            parent_className="loading_wrapper",
+                            children=html.Div(
+                                id="property-editor-container",
+                                style={
+                                    "width": "20rem",
+                                    "background-color": "#f8f9fa",
+                                    "overflow-y": "auto",
+                                    "height": HEIGHT,
+                                },
+                            ),
+                        ),
                         width="auto",
-                        style={
-                            "width": "20rem",
-                            "background-color": "#f8f9fa",
-                            "overflow-y": "auto",
-                            "height": HEIGHT,
-                        },
                     ),
                     dbc.Col(
-                        html.Div(
-                            dcc.Loading(
-                                id="loading-tabs",
-                                type="default",
-                                parent_className="loading_wrapper",
+                        dcc.Loading(
+                            className="dcc_loader",
+                            id="loading-tab-contents",
+                            type="default",
+                            parent_className="loading_wrapper",
+                            children=html.Div(
                                 children=[
                                     dbc.Card(
                                         [
@@ -226,7 +230,7 @@ def app_layout():
                                         style={"height": HEIGHT},
                                     ),
                                 ],
-                            )
+                            ),
                         )
                     ),
                 ],

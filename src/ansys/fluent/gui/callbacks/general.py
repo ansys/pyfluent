@@ -104,27 +104,19 @@ def register_callbacks(app):
             {"type": f"input-widget", "index": ALL},
             "value",
         ),
-        Input("tree-view-selection", "value"),
         State("user-id", "data"),
         prevent_initial_call=True,
     )
     def on_value_changed(
         input_values,
-        selected_node,
         user_id,
     ):
         ctx = dash.callback_context
         input_value = ctx.triggered[0]["value"]
         if input_value is None:
             raise PreventUpdate
-        triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
-        if triggered_from == "tree-view-selection":
-            if "local" in selected_node or "remote" in selected_node:
-                return selected_node
-            else:
-                raise PreventUpdate
         else:
-            input_index = eval(triggered_from)["index"]
+            input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
             (
                 input_index,
                 user_id,

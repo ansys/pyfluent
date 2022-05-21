@@ -26,7 +26,6 @@ class PropertyEditor:
             self._object_id = None
             self._filter_list = []
             self._index = index
-
             @app.callback(
                 Output(f"property-editor-{self._id}", "children"),
                 Input("object-id", "value"),
@@ -46,6 +45,16 @@ class PropertyEditor:
         return html.Div(
             children=self.render(self._user_id, self._session_id, self._object_id),
             id=f"property-editor-{self._id}",
+        )
+
+        return dcc.Loading(
+            className="dcc_loader",
+            id=f"loading-property-editor-{self._id}",
+            type="default",
+            children=html.Div(
+                children=self.render(self._user_id, self._session_id, self._object_id),
+                id=f"property-editor-{self._id}",
+            ),
         )
 
     def get_label(self, name):
@@ -382,7 +391,12 @@ class SettingsPropertyEditor(PropertyEditor):
         self, connection_id, session_id, object_type, object_index, widget_type
     ):
         def store_all_input_widgets(obj, si_info, state, parent=""):
-            for name, value in obj.get_state().items():
+            try:
+                items = obj.get_state().items()
+            except AttributeError:
+                print(obj.path, "State is empty")
+                return
+            for name, value in items:
                 if si_info["type"] == "named-object":
                     child_obj = obj[name]
                     si_info_child = si_info["object-type"]
@@ -466,9 +480,10 @@ class SettingsPropertyEditor(PropertyEditor):
         widget = html.Div("Widget not found.")
         if static_info["type"] == "string":
             if static_info.get("has_allowed_values"):
+                options = obj.get_attr("allowed-values")
                 widget = dcc.Dropdown(
                     id={"type": "input-widget", "index": path},
-                    options=obj.get_attr("allowed-values"),
+                    options=options if isinstance(options, list) else [options],
                     value=obj(),
                 )
             else:
@@ -478,9 +493,10 @@ class SettingsPropertyEditor(PropertyEditor):
                     value=obj(),
                 )
         elif static_info["type"] == "string-list":
+            options = (obj.get_attr("allowed-values"),)
             widget = dcc.Dropdown(
                 id={"type": "input-widget", "index": path},
-                options=obj.get_attr("allowed-values"),
+                options=options if isinstance(options, list) else [options],
                 value=obj(),
                 multi=True,
             )

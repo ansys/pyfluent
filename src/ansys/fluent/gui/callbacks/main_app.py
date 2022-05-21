@@ -37,25 +37,27 @@ def register_callbacks(app):
 
     @app.callback(
         Output("property-editor-container", "children"),
-        Input("object-id", "value"),
+        Input("tree-view-selection", "value"),
         Input("session-id", "value"),
         State("user-id", "data"),
     )
-    def show_property_editor(object_id, session_id, user_id):
-        if object_id is None or session_id is None:
+    def show_property_editor(selected_node, session_id, user_id):
+        if selected_node is None or session_id is None:
             return []
         ctx = dash.callback_context
         triggered_value = ctx.triggered[0]["value"]
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
         if triggered_from == "session-id":
             return []
-        object_location, object_type, object_index = object_id.split(":")
-        editor = (
-            LocalPropertyEditor(user_id, session_id, 1)
-            if object_location == "local"
-            else SettingsPropertyEditor(user_id, session_id, 1)
-        )
-        return editor(object_id)
+        if "local" in selected_node or "remote" in selected_node:
+            object_location, object_type, object_index = selected_node.split(":")
+            editor = (
+                LocalPropertyEditor(user_id, session_id, 1)
+                if object_location == "local"
+                else SettingsPropertyEditor(user_id, session_id, 1)
+            )
+            return editor(selected_node)
+        return []
 
     @app.callback(
         Output("progress-container", "style"),
@@ -82,6 +84,7 @@ def register_callbacks(app):
     @app.callback(
         Output("sessions-list", "options"),
         Output("sessions-list", "value"),
+        Output("new-session", "value"),
         Input("connect-session", "n_clicks"),
         Input("user-id", "data"),
         State("session-token", "value"),
@@ -109,7 +112,7 @@ def register_callbacks(app):
             sessions = options
         sessions.append(session_id)
 
-        return [sessions, session_id]
+        return [sessions, session_id, session_id]
 
     @app.callback(
         Output("tree-container", "children"),

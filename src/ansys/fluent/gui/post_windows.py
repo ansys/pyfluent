@@ -79,7 +79,7 @@ class PostWindow:
                     )
                     self._windows.remove(self._active_window)
                     self._active_window = new_index
-                return self.get_widgets()
+                return self.get_widgets()  # , self._unique_id
 
             @app.callback(
                 Output(f"post-window-tab-content-{self._unique_id}", "children"),
