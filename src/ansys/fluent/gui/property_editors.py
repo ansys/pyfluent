@@ -1,15 +1,19 @@
 import itertools
 import re
 
-from app_defn import app
+
+import dash
 from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 from objects_handle import LocalObjectsHandle, SettingsObjectsHandle
 from sessions_handle import SessionsHandle
 
-from ansys.fluent.core.solver.flobject import to_python_name
 
+from ansys.fluent.core.solver.flobject import to_python_name
+from ansys.fluent.core.utils.async_execution import asynchronous
+from config import async_commands
+from app_defn import app
 
 class PropertyEditor:
 
@@ -25,17 +29,137 @@ class PropertyEditor:
             self._session_id = session_id
             self._object_id = None
             self._filter_list = []
-            self._index = index
-
+            self._index = index            
             @app.callback(
                 Output(f"property-editor-{self._id}", "children"),
-                Input("object-id", "value"),
+                Input(f"object-id-{self._id}", "value"),
                 prevent_initial_call=True,
             )
             def refresh_widgets(object_id):
                 if object_id != self._object_id:
                     raise PreventUpdate
                 return self.render(self._user_id, self._session_id, object_id)
+                
+                               
+            @app.callback(
+                Output(f"object-id-{self._id}", "value"),
+                Input(
+                    {"type": f"input-widget", "index": ALL},
+                    "value",
+                ),      
+                prevent_initial_call=True,
+            )
+            def on_value_changed(
+                input_values,
+            ):
+                print('on_value_changed..', input_values)
+                ctx = dash.callback_context
+                input_value = ctx.triggered[0]["value"]
+                if input_value is None:
+                    raise PreventUpdate
+                else:
+                    input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"]
+                    (
+                        input_index,
+                        user_id,
+                        session_id,
+                        object_location,
+                        object_type,
+                        object_index,
+                    ) = input_index.split(":")
+                    print(
+                        "\n on_value_changed",
+                        input_index,
+                        user_id,
+                        session_id,
+                        object_location,
+                        object_type,
+                        object_index,
+                    )
+
+                    if object_location == "local":
+                        obj, static_info = (
+                            LocalObjectsHandle(SessionsHandle).get_object(
+                                user_id, session_id, object_type, object_index
+                            ),
+                            None,
+                        )
+                    else:
+                        obj, static_info = SettingsObjectsHandle(
+                            SessionsHandle
+                        ).get_object_and_static_info(
+                            user_id, session_id, object_type, object_index
+                        )
+                    # print(user_id, session_id, obj)
+                    path_list = input_index.split("/")[1:]
+                    for path in path_list:
+                        try:
+                            obj = getattr(obj, path)
+                            if static_info:
+                                static_info = static_info["children"][obj.obj_name]
+                        except AttributeError:
+                            obj = obj[path]
+                            static_info = static_info["object-type"]
+                    if obj is None:
+                        raise PreventUpdate
+
+                    if (static_info and static_info["type"] == "boolean") or isinstance(
+                        obj(), bool
+                    ):
+                        input_value = True if input_value else False
+                    if input_value == obj():
+                        raise PreventUpdate
+                    # print("set_state \n", obj, input_value)
+                    obj.set_state(input_value)
+                    object_id = f"{object_location}:{object_type}:{object_index}"
+                    return object_id 
+
+            if editor_type == "settings":
+                @app.callback(
+                    Output(f"command-output-{self._id}", "value"),
+                    Input({"type": "settings-command-button", "index": ALL}, "n_clicks"),
+                    State({"type": "settings-command-input", "index": ALL}, "value"),
+                )
+                def on_settings_command_execution(
+                    commnads,
+                    args_value,
+                ):
+                    """"Callback executed setting command button is pressed."""
+                    print('on_settings_command_execution')
+                    ctx = dash.callback_context
+                    triggered_value = ctx.triggered[0]["value"]
+                    if not triggered_value:
+                        raise PreventUpdate
+                    (
+                        command_name,
+                        user_id,
+                        session_id,
+                        object_location,
+                        object_type,
+                        object_index,
+                    ) = eval(ctx.triggered[0]["prop_id"].split(".")[0])["index"].split(":")
+
+                    obj, static_info = SettingsObjectsHandle(
+                        SessionsHandle
+                    ).get_object_and_static_info(user_id, session_id, object_type, object_index)
+
+                    kwargs = {}
+                    exec_async = (
+                        obj.path in async_commands and command_name in async_commands[obj.path]
+                    )
+                    cmd_obj = getattr(obj, command_name)
+                    args_iter = iter(args_value)
+                    args_info = static_info["commands"][cmd_obj.obj_name].get("arguments", {})
+                    for arg_name, arg_info in args_info.items():
+                        kwargs[to_python_name(arg_name)] = next(args_iter)
+
+                    @asynchronous
+                    def run_async(f, **kwargs):
+                        print("running async")
+                        f(**kwargs)
+
+                    return_value = run_async(cmd_obj, **kwargs) if exec_async else cmd_obj(**kwargs)
+                    return f"{return_value}"                     
 
         else:
             self.__dict__ = editor
@@ -48,15 +172,6 @@ class PropertyEditor:
             id=f"property-editor-{self._id}",
         )
 
-        return dcc.Loading(
-            className="dcc_loader",
-            id=f"loading-property-editor-{self._id}",
-            type="default",
-            children=html.Div(
-                children=self.render(self._user_id, self._session_id, self._object_id),
-                id=f"property-editor-{self._id}",
-            ),
-        )
 
     def get_label(self, name):
         name_list = re.split("[^a-zA-Z]", name)
@@ -94,7 +209,7 @@ class PropertyEditor:
                                     for k, v in all_command_widgets.items()
                                     if not self._filter_list
                                     or k.split(":")[0] in self._filter_list
-                                ],
+                                ]+[html.Data(id=f"object-id-{self._id}")],
                                 className="d-grid gap-1",
                                 style={"padding": "4px 4px 4px 4px"},
                             ),
@@ -107,11 +222,11 @@ class PropertyEditor:
 
 class LocalPropertyEditor(PropertyEditor):
     def __init__(self, user_id, session_id, index=None):
-        super().__init__(user_id, session_id, "local", index)
-        self._all_widgets = {}
+        super().__init__(user_id, session_id, "local", index)        
         self._graphics_property_editor = GraphicsPropertyEditor()
         self._plot_property_editor = PlotPropertyEditor()
         self._get_objects_handle = LocalObjectsHandle(SessionsHandle)
+        self._all_widgets = {}
 
     def _get_editor(self, object_type):
         return (
@@ -386,8 +501,8 @@ class PlotPropertyEditor:
 class SettingsPropertyEditor(PropertyEditor):
     def __init__(self, user_id, session_id, index=None):
         super().__init__(user_id, session_id, "settings", index)
-        self._all_widgets = {}
-
+        self._all_widgets = {}       
+                       
     def get_widgets(
         self, connection_id, session_id, object_type, object_index, widget_type
     ):
@@ -457,6 +572,7 @@ class SettingsPropertyEditor(PropertyEditor):
                             },
                             type="number",
                         )
+            self._all_widgets["command_output"] = html.Data(id=f"command-output-{self._id}")       
 
         obj, static_info = SettingsObjectsHandle(
             SessionsHandle

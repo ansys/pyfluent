@@ -1,27 +1,16 @@
+from dash import ALL, Input, Output, State, dcc, html
+from dash.exceptions import PreventUpdate
 from app_defn import app
-from callbacks.general import register_callbacks
-from dash import dcc, html
-from layouts.main import app_layout
 from sessions_handle import SessionsHandle
 
+from layouts.main import app_layout
 
 def get_default_components():
     return [
         html.Data(
             id="uuid-id",
             # value=user_name_to_session_map.get(user_id, [[None, ""]])[0][1],
-        ),        
-        dcc.Loading(
-            id="loading-object",
-            type="default",
-            children=html.Data(id="object-id"),
-        ),
-        dcc.Loading(
-            className="dcc_loader",
-            id="loading-command",
-            type="default",
-            children=html.Data(id="command-output"),
-        ),       
+        ),              
         dcc.Interval(
             id="interval-component",
             interval=1 * 1000,
@@ -39,7 +28,42 @@ def mod_app_layout():
 
 app.layout = mod_app_layout
 
-register_callbacks(app)
+@app.callback(
+    Output("need-to-data-fetch", "value"),
+    Input("interval-component", "n_intervals"),
+    State("user-id", "data"),
+    State("need-to-data-fetch", "value"),
+)
+def event_loop(n_intervals, user_id, need_to_fetch):
+    sessions = SessionsHandle.get_sessions(user_id)
+    event_info = any(
+        [
+            SessionsHandle(user_id, session_id).get_event_info(
+                "CalculationsStartedEvent"
+            )
+            for session_id in sessions
+        ]
+    )
+    if event_info:
+        if any(
+            map(
+                lambda session: StateManager(
+                    user_id, session, SessionsHandle
+                ).is_busy(),
+                sessions,
+            )
+        ):
+            print("Busy..")
+            raise PreventUpdate
+        else:
+            return "yes"
+    else:
+        if need_to_fetch == "yes":
+            return "no"
+        else:
+            raise PreventUpdate
+
+    raise PreventUpdate
 
 if __name__ == "__main__":
     app.run_server(debug=True, port=8800)
