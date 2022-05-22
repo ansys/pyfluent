@@ -87,12 +87,17 @@ class PostWindow:
                     {"type": "post-render-button", "index": ALL},
                     "n_clicks",
                 ),
+                Input(
+                    {"type": "refresh-button", "index": ALL},
+                    "n_clicks",
+                ),                
                 Input(f"post-window-tabs-{self._unique_id}", "active_tab"),
                 Input("need-to-data-fetch", "value"),
                 prevent_initial_call=True,
             )
             def refresh_post_window(
                 n_clicks,
+                refresh_clicks,
                 active_tab,
                 refresh,
             ):
@@ -112,6 +117,8 @@ class PostWindow:
                     except NameError:
                         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
 
+                    if self._window_type== "graphics" and  triggered_from=="need-to-data-fetch":
+                        raise PreventUpdate
                     event_info = SessionsHandle(
                         self._user_id, self._session_id
                     ).get_event_info("IterationEndedEvent")
@@ -138,6 +145,8 @@ class PostWindow:
                             ),
                             "index": event_info.index if event_info else None,
                         }
+                    if triggered_from == "refresh-button" and triggered_data["index"]!=self._unique_id:
+                        raise PreventUpdate                   
                     self._active_window = int(active_tab)
                     data = self.refresh_tab(self._active_window, triggered_from)
                     return data
@@ -157,7 +166,7 @@ class PostWindow:
             )           
             obj = self._window_data.get(active_tab, {}).get("object")
             index = self._window_data.get(active_tab, {}).get("index")
-            if triggered_from == "post-render-button":
+            if triggered_from in ( "post-render-button", "refresh-button"):
                 return self.get_updated_post_data(obj)
             elif triggered_from == "need-to-data-fetch":
                 if index == event_info.index if event_info else None:
@@ -203,6 +212,17 @@ class PostWindow:
                     dbc.Col(
                         html.Div(
                             [
+
+                                html.Img(
+                                    src="/assets/icons/refresh.ico",
+                                    style={"height": "35px"},
+                                    id={
+                                    
+                                      "type": "refresh-button",
+                                      "index": f"{self._unique_id}",                                    
+                                    } 
+                                ),                            
+                            
                                 dbc.Button(
                                     "Add Window",
                                     id={
