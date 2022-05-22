@@ -16,7 +16,6 @@ class BasePostObjectDefn:
     def _pre_display(self):
         local_surfaces_provider = self._get_top_most_parent()._local_surfaces_provider()
         for surf_name in self.surfaces_list():
-            print(surf_name, list(local_surfaces_provider))
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
                 surf_api = surf_obj._data_extractor.surface_api
@@ -28,7 +27,6 @@ class BasePostObjectDefn:
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
                 surf_api = surf_obj._data_extractor.surface_api
-                print("delete_surface_on_server", surf_name)
                 surf_api.delete_surface_on_server()
 
 

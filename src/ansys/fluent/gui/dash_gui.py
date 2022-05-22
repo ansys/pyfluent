@@ -3,6 +3,7 @@ from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
 from layouts.main import app_layout
 from sessions_handle import SessionsHandle
+from state_manager import StateManager
 
 def get_default_components():
     return [
@@ -14,12 +15,15 @@ def get_default_components():
         html.Data(id="need-to-data-fetch", value="no"),
     ]
 
+
 def mod_app_layout():
     layout = app_layout()
     layout.children = get_default_components() + layout.children
     return layout
 
+
 app.layout = mod_app_layout
+
 
 @app.callback(
     Output("need-to-data-fetch", "value"),
@@ -43,7 +47,7 @@ def event_loop(n_intervals, user_id, need_to_fetch):
                 lambda session: StateManager(
                     user_id, session, SessionsHandle
                 ).is_busy(),
-                sessions,
+                sessions
             )
         ):
             print("Busy..")

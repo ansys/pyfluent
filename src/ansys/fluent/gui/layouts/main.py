@@ -78,7 +78,7 @@ def app_layout():
             html.Data(
                 id="uuid-id",
                 # value=user_name_to_session_map.get(user_id, [[None, ""]])[0][1],
-            ),            
+            ),
             dbc.CardHeader(
                 dbc.Row(
                     [

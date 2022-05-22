@@ -30,13 +30,18 @@ class SessionsHandle:
 
     @classmethod
     def get_sessions(cls, user_id):
-        return map(
-            lambda x: x.split(":")[1],
-            [
-                session_name
-                for session_name, session_state in cls._sessions_state.items()
-                if session_name.startswith(user_id)
-            ],
+        return list(
+            filter(
+                lambda x: x != "None",
+                map(
+                    lambda x: x.split(":")[1],
+                    [
+                        session_name
+                        for session_name in cls._sessions_state.keys()
+                        if session_name.startswith(user_id)
+                    ],
+                ),
+            )
         )
 
     def add_session(self, session_token, user_name_to_session_map):

@@ -154,7 +154,7 @@ class PostWindow:
         ):
             event_info = SessionsHandle(self._user_id, self._session_id).get_event_info(
                 "IterationEndedEvent"
-            )
+            )           
             obj = self._window_data.get(active_tab, {}).get("object")
             index = self._window_data.get(active_tab, {}).get("index")
             if triggered_from == "post-render-button":

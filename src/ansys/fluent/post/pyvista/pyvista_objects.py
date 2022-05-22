@@ -58,7 +58,6 @@ class Graphics:
         if meshes is not None:
             outline_mesh_id = "Mesh-outline"
             outline_mesh = meshes[outline_mesh_id]
-            print(outline_mesh._data_extractor.field_info().get_surfaces_info())
             outline_mesh.surfaces_list = [
                 k
                 for k, v in outline_mesh._data_extractor.field_info()
