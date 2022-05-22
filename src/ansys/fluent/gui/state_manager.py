@@ -31,7 +31,7 @@ class StateManager:
                 self._user_id, self._session_id, self._sessions_handle
             ).set_free(self._index)
 
-    def is_busy(self):       
+    def is_busy(self):
         return any(map(lambda x: x == "busy", self._var_state.values()))
 
     def set_busy(self, var_name):

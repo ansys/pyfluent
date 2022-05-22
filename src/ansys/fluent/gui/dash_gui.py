@@ -5,6 +5,7 @@ from layouts.main import app_layout
 from sessions_handle import SessionsHandle
 from state_manager import StateManager
 
+
 def get_default_components():
     return [
         dcc.Interval(
@@ -47,7 +48,7 @@ def event_loop(n_intervals, user_id, need_to_fetch):
                 lambda session: StateManager(
                     user_id, session, SessionsHandle
                 ).is_busy(),
-                sessions
+                sessions,
             )
         ):
             print("Busy..")
