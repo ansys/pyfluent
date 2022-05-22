@@ -1,7 +1,7 @@
 from app_defn import app
 from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
-from layouts.main import app_layout
+from layouts.test1 import app_layout
 from sessions_handle import SessionsHandle
 from state_manager import StateManager
 

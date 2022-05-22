@@ -2,10 +2,9 @@ from app_defn import app
 import dash
 from dash import ALL, Input, Output, State, dcc, html
 import dash_bootstrap_components as dbc
-from local_property_editor import LocalPropertyEditor
-from post_windows import GraphicsWindowCollection, MonitorWindow
-from sessions_manager import SessionsManager
-from settings_property_editor import SettingsPropertyEditor
+from post_windows import GraphicsWindow, MonitorWindow
+from property_editors import LocalPropertyEditor, SettingsPropertyEditor
+from sessions_handle import SessionsHandle
 
 
 def get_post_objects(user_id, session_id):
@@ -27,7 +26,7 @@ def get_post_objects(user_id, session_id):
                 ),
                 dbc.Col(
                     [
-                        GraphicsWindowCollection(user_id, session_id, 1)(
+                        GraphicsWindow(user_id, session_id, 1)(
                             init_data={0: ("Mesh", "outline")}
                         )
                     ]
@@ -41,7 +40,7 @@ def get_post_objects(user_id, session_id):
                     width="auto",
                     style={"width": "350px"},
                 ),
-                dbc.Col([GraphicsWindowCollection(user_id, session_id, 2)()]),
+                dbc.Col([GraphicsWindow(user_id, session_id, 2)()]),
             ]
         ),
         dbc.Row(
@@ -51,7 +50,7 @@ def get_post_objects(user_id, session_id):
                     width="auto",
                     style={"width": "350px"},
                 ),
-                dbc.Col([GraphicsWindowCollection(user_id, "session-1", 2)()]),
+                dbc.Col([GraphicsWindow(user_id, "session-1", 2)()]),
             ]
         ),
     ]
@@ -117,14 +116,15 @@ def get_setup_objects(user_id, session_id):
 
 
 def app_layout():
-    user_id = "Ansys User"
+
+    user_id = "AnsysUser"
     session_id = "session-0"
-    sessions_manager = SessionsManager(user_id, session_id)
-    sessions_manager.add_session("56386", None)
+    sessions_manager = SessionsHandle(user_id, session_id)
+    sessions_manager.add_session("51357", None)
 
     # session_id = "session-1"
-    sessions_manager = SessionsManager(user_id, "session-1")
-    sessions_manager.add_session("59801", None)
+    sessions_manager = SessionsHandle(user_id, "session-1")
+    sessions_manager.add_session("55424", None)
 
     SettingsPropertyEditor(user_id, session_id, 1)
     SettingsPropertyEditor(user_id, session_id, 2)
@@ -133,14 +133,14 @@ def app_layout():
     LocalPropertyEditor(user_id, session_id, 1)
     LocalPropertyEditor(user_id, session_id, 2)
     LocalPropertyEditor(user_id, session_id, 3)
-    GraphicsWindowCollection(user_id, session_id, 1)
-    GraphicsWindowCollection(user_id, session_id, 2)
-    GraphicsWindowCollection(user_id, session_id, 3)
+    GraphicsWindow(user_id, session_id, 1)
+    GraphicsWindow(user_id, session_id, 2)
+    GraphicsWindow(user_id, session_id, 3)
     MonitorWindow(user_id, session_id, 1)
     MonitorWindow(user_id, session_id, 2)
 
     LocalPropertyEditor(user_id, "session-1", 2)
-    GraphicsWindowCollection(user_id, "session-1", 2)
+    GraphicsWindow(user_id, "session-1", 2)
     SettingsPropertyEditor(user_id, "session-1", 1)
     SettingsPropertyEditor(user_id, "session-1", 2)
     SettingsPropertyEditor(user_id, "session-1", 3)
@@ -149,6 +149,8 @@ def app_layout():
 
     return dbc.Container(
         children=[
+            dcc.Store(data="AnsysUser", id="user-id"),
+            html.Data(id="session-id", value="session-0"),
             dbc.Col(
                 [
                     dbc.Tabs(
