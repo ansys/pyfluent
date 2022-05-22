@@ -38,7 +38,7 @@ class PropertyEditor:
             def refresh_widgets(object_id):
                 if object_id != self._object_id:
                     raise PreventUpdate
-                return self.render(self._user_id, self._session_id, object_id)
+                return self.render()
 
             @app.callback(
                 Output(f"object-id-{self._id}", "value"),
@@ -50,14 +50,13 @@ class PropertyEditor:
             )
             def on_value_changed(
                 input_values,
-            ):
-                print("on_value_changed..", input_values)
+            ):              
                 ctx = dash.callback_context
                 input_value = ctx.triggered[0]["value"]
                 if input_value is None:
                     raise PreventUpdate
                 else:
-                    input_index = eval(ctx.triggered[0]["prop_id"].split(".")[0])[
+                    prop_id = eval(ctx.triggered[0]["prop_id"].split(".")[0])[
                         "index"
                     ]
                     (
@@ -67,17 +66,7 @@ class PropertyEditor:
                         object_location,
                         object_type,
                         object_index,
-                    ) = input_index.split(":")
-                    print(
-                        "\n on_value_changed",
-                        input_index,
-                        user_id,
-                        session_id,
-                        object_location,
-                        object_type,
-                        object_index,
-                    )
-
+                    ) = prop_id.split(":")
                     if object_location == "local":
                         obj, static_info = (
                             LocalObjectsHandle(SessionsHandle).get_object(
@@ -110,7 +99,6 @@ class PropertyEditor:
                         input_value = True if input_value else False
                     if input_value == obj():
                         raise PreventUpdate
-                    # print("set_state \n", obj, input_value)
                     obj.set_state(input_value)
                     object_id = f"{object_location}:{object_type}:{object_index}"
                     return object_id
@@ -165,8 +153,7 @@ class PropertyEditor:
                         kwargs[to_python_name(arg_name)] = next(args_iter)
 
                     @asynchronous
-                    def run_async(f, **kwargs):
-                        print("running async")
+                    def run_async(f, **kwargs):                       
                         f(**kwargs)
 
                     return_value = (
@@ -183,7 +170,7 @@ class PropertyEditor:
         self._object_id = object_id
         self._filter_list = filter_list
         return html.Div(
-            children=self.render(self._user_id, self._session_id, self._object_id),
+            children=self.render(),
             id=f"property-editor-{self._id}",
         )
 
@@ -191,13 +178,13 @@ class PropertyEditor:
         name_list = re.split("[^a-zA-Z]", name)
         return " ".join([name.capitalize() for name in name_list])
 
-    def render(self, user_id, session_id, object_id):
-        object_location, object_type, object_index = object_id.split(":")
+    def render(self):
+        object_location, object_type, object_index = self._object_id.split(":")
         all_input_widgets = self.get_widgets(
-            user_id, session_id, object_type, object_index, "input"
+            self._user_id, self._session_id, object_type, object_index, "input"
         )
         all_command_widgets = self.get_widgets(
-            user_id, session_id, object_type, object_index, "command"
+            self._user_id, self._session_id, object_type, object_index, "command"
         )
         object_type = object_type.split("/")[-1]
         object_name = object_type + "-" + object_index if object_index else object_type
@@ -272,10 +259,8 @@ class LocalPropertyEditor(PropertyEditor):
                     if value.__class__.__class__.__name__ == "PyLocalPropertyMeta":
                         widget = self.get_widget(
                             value,
-                            value._type,
                             name,
-                            f"{parent}/{name}:{self._user_id}:{self._session_id}:local:{object_type}:{object_index}",
-                            # parent + "/" + name+":local:"+object_type+":"+object_index,
+                            f"{parent}/{name}:{self._user_id}:{self._session_id}:local:{object_type}:{object_index}",                            
                             getattr(value, "attributes", None),
                         )
                         self._all_widgets[name] = widget
@@ -302,18 +287,18 @@ class LocalPropertyEditor(PropertyEditor):
     def get_widget(
         self,
         obj,
-        type,
         name,
-        unique_name,
+        unique_index,
         attributes,
     ):
         widget = html.Div(f"Widget not found for {name}.")
+        type = obj._type
         if str(type) == "<class 'str'>":
             if attributes and "allowed_values" in attributes:
                 widget = dcc.Dropdown(
                     id={
                         "type": f"input-widget",
-                        "index": unique_name,
+                        "index": unique_index,
                     },
                     options=getattr(obj, "allowed_values"),
                     value=obj(),
@@ -322,7 +307,7 @@ class LocalPropertyEditor(PropertyEditor):
                 widget = dcc.Input(
                     id={
                         "type": f"input-widget",
-                        "index": unique_name,
+                        "index": unique_index,
                     },
                     type="text",
                     value=obj(),
@@ -331,7 +316,7 @@ class LocalPropertyEditor(PropertyEditor):
             widget = dcc.Dropdown(
                 id={
                     "type": f"input-widget",
-                    "index": unique_name,
+                    "index": unique_index,
                 },
                 options=getattr(obj, "allowed_values"),
                 value=obj(),
@@ -342,7 +327,7 @@ class LocalPropertyEditor(PropertyEditor):
             widget = dcc.Checklist(
                 id={
                     "type": f"input-widget",
-                    "index": unique_name,
+                    "index": unique_index,
                 },
                 options={
                     "selected": self.get_label(name),
@@ -358,7 +343,7 @@ class LocalPropertyEditor(PropertyEditor):
                 widget = dcc.Input(
                     id={
                         "type": f"input-widget",
-                        "index": unique_name,
+                        "index": unique_index,
                     },
                     type="number",
                     value=obj(),
@@ -369,7 +354,7 @@ class LocalPropertyEditor(PropertyEditor):
                 widget = dcc.Input(
                     id={
                         "type": f"input-widget",
-                        "index": unique_name,
+                        "index": unique_index,
                     },
                     type="number",
                     value=obj(),
@@ -379,7 +364,7 @@ class LocalPropertyEditor(PropertyEditor):
                 widget = dcc.Input(
                     id={
                         "type": f"input-widget",
-                        "index": unique_name,
+                        "index": unique_index,
                     },
                     type="number",
                     value=obj(),
@@ -390,7 +375,7 @@ class LocalPropertyEditor(PropertyEditor):
                 widget = dcc.Input(
                     id={
                         "type": f"input-widget",
-                        "index": unique_name,
+                        "index": unique_index,
                     },
                     type="number",
                     value=obj(),
