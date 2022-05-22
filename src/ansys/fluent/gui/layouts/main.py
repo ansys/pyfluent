@@ -73,8 +73,12 @@ def app_layout():
     return dbc.Container(
         fluid=True,
         children=[
-            dcc.Store(data="AnsysUser", id="user-id"),        
-            html.Data(id="session-id"),            
+            dcc.Store(data="AnsysUser", id="user-id"),
+            html.Data(id="session-id"),
+            html.Data(
+                id="uuid-id",
+                # value=user_name_to_session_map.get(user_id, [[None, ""]])[0][1],
+            ),            
             dbc.CardHeader(
                 dbc.Row(
                     [
@@ -105,22 +109,23 @@ def app_layout():
                                 id="loading-sessions-list",
                                 type="default",
                                 children=dcc.Dropdown(
-                                id="sessions-list",
-                                options=list(
-                                    map(
-                                        lambda x: x[0],
-                                        user_name_to_session_map.get(user_id),
+                                    id="sessions-list",
+                                    options=list(
+                                        map(
+                                            lambda x: x[0],
+                                            user_name_to_session_map.get(user_id),
+                                        )
                                     )
-                                )
-                                if user_name_to_session_map.get(user_id)
-                                else [],
-                                value=user_name_to_session_map.get(
-                                    user_id, [[None, None]]
-                                )[0][0],
-                                style={
-                                    "width": "200px",
-                                },
-                            )),
+                                    if user_name_to_session_map.get(user_id)
+                                    else [],
+                                    value=user_name_to_session_map.get(
+                                        user_id, [[None, None]]
+                                    )[0][0],
+                                    style={
+                                        "width": "200px",
+                                    },
+                                ),
+                            ),
                             width="auto",
                             align="end",
                         ),

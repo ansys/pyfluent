@@ -18,7 +18,6 @@ user_name_to_session_map = {}
 
 
 def register_callbacks(app):
-
     @app.callback(
         Output("session-id", "value"),
         Input("sessions-list", "value"),
@@ -39,8 +38,8 @@ def register_callbacks(app):
         triggered_from = ctx.triggered[0]["prop_id"].split(".")[0]
         if triggered_from == "session-id":
             return []
-        if tree_selection and isinstance(tree_selection, list):  
-            selected_node = tree_selection[0]        
+        if tree_selection and isinstance(tree_selection, list):
+            selected_node = tree_selection[0]
             if "local" in selected_node or "remote" in selected_node:
                 object_location, object_type, object_index = selected_node.split(":")
                 editor = (
@@ -173,7 +172,7 @@ def register_callbacks(app):
         value of 'active_tab' is."""
         if session_id is None:
             return html.Pre(
-                    """
+                """
                   Welcome to ANSYS PyFluent Web Client 22.2.0
                   
                   Copyright 1987-2022 ANSYS, Inc. All Rights Reserved.
@@ -185,21 +184,16 @@ def register_callbacks(app):
                   Please visit https://github.com/pyansys/pyfluent for more information.
                   
                   """,
-                    style={"font": "14px 'Segoe UI'"},
-                )
-               
-            
+                style={"font": "14px 'Segoe UI'"},
+            )
 
         if active_tab == "graphics":
             return GraphicsWindow(user_id, session_id, 1)(
-                    init_data={0: ("Mesh", "outline")}
-                )
-           
+                init_data={0: ("Mesh", "outline")}
+            )
 
         elif active_tab == "plots":
-            return PlotWindow(user_id, session_id, 1)()            
+            return PlotWindow(user_id, session_id, 1)()
 
         elif active_tab == "monitors":
             return MonitorWindow(user_id, session_id, 1)()
-                
-            
