@@ -1,6 +1,7 @@
 """Wrappers over StateEngine based datamodel grpc service of Fluent."""
 
 from enum import Enum
+import itertools
 from typing import Any, Dict, Iterator, List, Tuple
 
 import grpc
@@ -363,7 +364,7 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
-    def __get_child_object_names(self):
+    def _get_child_object_names(self):
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
         parent_path = self.path[0:-1]
@@ -379,9 +380,9 @@ class PyNamedObjectContainer:
                         child_object_names.append(member[len(child_type_suffix) :])
         return child_object_names
 
-    def __get_child_object_display_names(self):
+    def _get_child_object_display_names(self):
         child_object_display_names = []
-        for name in self.__get_child_object_names():
+        for name in self._get_child_object_names():
             name_path = self.path[0:-1]
             name_path.append((self.path[-1][0], name))
             name_path.append(("_name_", ""))
@@ -398,7 +399,7 @@ class PyNamedObjectContainer:
         int
             count
         """
-        return len(self.__get_child_object_display_names())
+        return len(self._get_child_object_display_names())
 
     def __iter__(self) -> Iterator[PyMenu]:
         """Returns the next child object.
@@ -408,15 +409,15 @@ class PyNamedObjectContainer:
         Iterator[PyMenu]
             iterator of child objects
         """
-        for name in self.__get_child_object_display_names():
+        for name in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
             yield getattr(self.__class__, f"_{self.__class__.__name__}")(
                 self.service, self.rules, child_path
             )
 
-    def __get_item(self, key: str):
-        if key in self.__get_child_object_display_names():
+    def _get_item(self, key: str):
+        if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             return getattr(self.__class__, f"_{self.__class__.__name__}")(
@@ -427,8 +428,8 @@ class PyNamedObjectContainer:
                 f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
             )
 
-    def __del_item(self, key: str):
-        if key in self.__get_child_object_display_names():
+    def _del_item(self, key: str):
+        if key in self._get_child_object_display_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             request = DataModelProtoModule.DeleteObjectRequest()
@@ -453,7 +454,7 @@ class PyNamedObjectContainer:
         PyMenu
             child object
         """
-        return self.__get_item(key)
+        return self._get_item(key)
 
     def __setitem__(self, key: str, value: Any):
         """Set state of the child object by name.
@@ -478,7 +479,7 @@ class PyNamedObjectContainer:
         key : str
             child name
         """
-        self.__del_item(key)
+        self._del_item(key)
 
 
 class PyCommand:
@@ -537,3 +538,67 @@ class PyCommand:
             response.member, response.member.WhichOneof("as")
         ).common.helpstring
         print(help_string)
+
+
+class PyMenuGeneric(PyMenu):
+    attrs = ("service", "rules", "path")
+
+    def _get_child_names(self):
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        singleton_names = []
+        creatable_type_names = []
+        command_names = []
+        for struct_type in ("singleton", "namedobject"):
+            if response.member.HasField(struct_type):
+                struct_field = getattr(response.member, struct_type)
+                for member in struct_field.members:
+                    if ":" not in member:
+                        singleton_names.append(member)
+                creatable_type_names = struct_field.creatabletypes
+                command_names = [x.name for x in struct_field.commands]
+        return singleton_names, creatable_type_names, command_names
+
+    def _get_child(self, name: str):
+        singletons, creatable_types, commands = self._get_child_names()
+        if name in singletons:
+            child_path = self.path + [(name, "")]
+            return PyMenuGeneric(self.service, self.rules, child_path)
+        elif name in creatable_types:
+            child_path = self.path + [(name, "")]
+            return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
+        elif name in commands:
+            return PyCommand(self.service, self.rules, name, self.path)
+        else:
+            raise LookupError(
+                f"{name} is not found at path " f"{_convert_path_to_se_path(self.path)}"
+            )
+
+    def __dir__(self):
+        return list(itertools.chain(*self._get_child_names()))
+
+    def __getattr__(self, name: str):
+        if name in PyMenuGeneric.attrs:
+            return super().__getattr__(name)
+        else:
+            return self._get_child(name)
+
+
+class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
+    def __iter__(self):
+        for name in self._get_child_object_display_names():
+            child_path = self.path[:-1]
+            child_path.append((self.path[-1][0], name))
+            yield PyMenuGeneric(self.service, self.rules, child_path)
+
+    def _get_item(self, key: str):
+        if key in self._get_child_object_display_names():
+            child_path = self.path[:-1]
+            child_path.append((self.path[-1][0], key))
+            return PyMenuGeneric(self.service, self.rules, child_path)
+        else:
+            raise LookupError(
+                f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
+            )

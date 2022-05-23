@@ -93,7 +93,7 @@ class _TUIMenu:
 
     def __init__(self, path: str):
         self.path = path
-        self.tui_name = path[-1][0] if path else ""
+        self.tui_name = path[-1] if path else ""
         self.name = convert_tui_menu_to_func_name(self.tui_name)
         tui_path = convert_path_to_grpc_path(path)
         self.doc = _XML_HELPSTRINGS.get(tui_path, None)
@@ -103,7 +103,7 @@ class _TUIMenu:
         self.is_command = False
 
     def get_command_path(self, command: str) -> str:
-        return convert_path_to_grpc_path(self.path + [(command, None)])
+        return convert_path_to_grpc_path(self.path + [command])
 
 
 class TUIGenerator:
@@ -131,7 +131,7 @@ class TUIGenerator:
         if child_names:
             for child_name in child_names:
                 if child_name:
-                    child_menu = _TUIMenu(menu.path + [(child_name, None)])
+                    child_menu = _TUIMenu(menu.path + [child_name])
                     menu.children[child_menu.name] = child_menu
                     self._populate_menu(child_menu)
         else:
@@ -157,7 +157,7 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_code_to_tui_file(
                     f"self.{k} = self.__class__.{k}"
-                    f'(path + [("{v.tui_name}", None)], service)\n',
+                    f'(path + ["{v.tui_name}"], service)\n',
                     indent,
                 )
         self._write_code_to_tui_file("super().__init__(path, service)\n", indent)

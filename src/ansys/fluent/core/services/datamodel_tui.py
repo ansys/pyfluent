@@ -11,7 +11,7 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
-Path = List[Tuple[str, str]]
+Path = List[str]
 
 
 class DatamodelService:
@@ -205,7 +205,33 @@ class TUIMenu:
         self.service = service
 
     def __dir__(self) -> Iterable[str]:
-        return PyMenu(self.service, self.path).get_child_names()
+        return [
+            convert_tui_menu_to_func_name(x)
+            for x in PyMenu(self.service, self.path).get_child_names()
+        ]
+
+
+class TUIMenuGeneric(TUIMenu):
+    """Generic menu class for when the explicit menu classes aren't
+    available."""
+
+    def __getattribute__(self, name):
+        if name in ["path", "service"]:
+            return super().__getattribute__(name)
+        name = convert_func_name_to_tui_menu(name)
+        path = self.path + [name]
+        if PyMenu(self.service, path).get_child_names():
+            return TUIMenuGeneric(path, self.service)
+        else:
+            return TUICommandGeneric(path, self.service)
+
+
+class TUICommandGeneric(TUIMenu):
+    """Generic command class for when the explicit menu classes aren't
+    available."""
+
+    def __call__(self, *args, **kwargs):
+        return PyMenu(self.service, self.path).execute(*args, **kwargs)
 
 
 def convert_func_name_to_tui_menu(func_name: str) -> str:
@@ -257,9 +283,4 @@ def convert_path_to_grpc_path(path: Path) -> str:
     str
         grpc path
     """
-    grpc_path = ""
-    for comp in path:
-        grpc_path += "/" + convert_func_name_to_tui_menu(comp[0])
-        if comp[1]:
-            grpc_path += ":" + comp[1]
-    return grpc_path
+    return "/" + "/".join(convert_func_name_to_tui_menu(x) for x in path)
