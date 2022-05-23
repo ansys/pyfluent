@@ -222,8 +222,11 @@ contour_1.surfaces_list = ["symmetry-xyplane"]
 contour_1.display()
 
 ###############################################################################
-# Write final case and data. Exit.
+# Write final case and data.
 # session.solver.tui.file.write_case_data('mixing_elbow2_set.cas.h5')
-# session.exit()
 
-###############################################################################
+#########################################################################
+# Close Fluent
+
+session.exit()
+

@@ -516,4 +516,10 @@ mesh_1.display()
 # Write final case and data.
 # session.solver.tui.file.write_case_data("mixing_elbow2_tui.cas.h5")
 
+#########################################################################
+# Close Fluent
+
+session.exit()
+
+
 ###############################################################################

@@ -17,6 +17,10 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricSession
+from ansys.fluent.post import set_config
+from ansys.fluent.post.pyvista import Graphics
+
+set_config(blocking=True, set_view_on_display="isometric")
 
 #########################################################################
 # Launch parametric session using the hopper/mixer case File
@@ -73,3 +77,8 @@ project_session_filepath = str(
     Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
 )
 new_session = ParametricSession(project_filepath=project_session_filepath)
+
+#########################################################################
+# Close Fluent
+
+session.exit()

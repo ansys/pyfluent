@@ -673,7 +673,11 @@ mesh_1.surfaces_list = [
 
 mesh_1.display()
 ###############################################################################
-# Save case, data and exit.
+# Save case, data.
 # session.solver.tui.file.write_case_data("exhaust_system.cas.h5")
 
-# session.exit()
+#########################################################################
+# Close Fluent
+
+session.exit()
+
