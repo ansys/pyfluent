@@ -229,4 +229,3 @@ contour_1.display()
 # Close Fluent
 
 session.exit()
-

@@ -17,10 +17,6 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricSession
-from ansys.fluent.post import set_config
-from ansys.fluent.post.pyvista import Graphics
-
-set_config(blocking=True, set_view_on_display="isometric")
 
 #########################################################################
 # Launch parametric session using the hopper/mixer case File

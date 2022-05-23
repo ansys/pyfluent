@@ -18,10 +18,6 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.parametric import ParametricProject
-from ansys.fluent.post import set_config
-from ansys.fluent.post.pyvista import Graphics
-
-set_config(blocking=True, set_view_on_display="isometric")
 
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)
