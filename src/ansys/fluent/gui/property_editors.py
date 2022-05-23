@@ -2,7 +2,7 @@ import itertools
 import re
 
 from app_defn import app
-from config import async_commands
+from config import async_commands, commands_output
 import dash
 from dash import ALL, Input, Output, State, dcc, html
 from dash.exceptions import PreventUpdate
@@ -106,6 +106,7 @@ class PropertyEditor:
 
                 @app.callback(
                     Output(f"command-output-{self._id}", "value"),
+                    Output(f"command-output-{self._id}", "style"),
                     Input(
                         {"type": "settings-command-button", "index": ALL}, "n_clicks"
                     ),
@@ -120,6 +121,8 @@ class PropertyEditor:
                     triggered_value = ctx.triggered[0]["value"]
                     if not triggered_value:
                         raise PreventUpdate
+                        
+                     
                     (
                         command_name,
                         user_id,
@@ -136,11 +139,16 @@ class PropertyEditor:
                     ).get_object_and_static_info(
                         user_id, session_id, object_type, object_index
                     )
+                    print('on_settings_command_execution',  obj.path)   
 
                     kwargs = {}
                     exec_async = (
                         obj.path in async_commands
                         and command_name in async_commands[obj.path]
+                    )
+                    show_output =  (
+                        obj.path in commands_output
+                        and command_name in commands_output[obj.path]                    
                     )
                     cmd_obj = getattr(obj, command_name)
                     #args_value is not correct.Will not work for multiple commands.
@@ -163,7 +171,9 @@ class PropertyEditor:
                         if exec_async
                         else cmd_obj(**kwargs)
                     )
-                    return f"{return_value}"
+                    if show_output:
+                        return commands_output[obj.path][command_name]["output"](f"{return_value}"), commands_output[obj.path][command_name]["style"]    
+                    return f"{return_value}",{"display": "none"}
 
         else:
             self.__dict__ = editor
@@ -608,9 +618,9 @@ class SettingsPropertyEditor(PropertyEditor):
                             multi=True,
                         )
             
-            self._all_widgets["command_output"] = dcc.Input(
-                id=f"command-output-{self._id}",
-                type="text",
+            self._all_widgets["command_output"] = dcc.Textarea(
+                id=f"command-output-{self._id}",  
+                style={"display":"none"}                 
             )
 
         obj, static_info = SettingsObjectsHandle(

@@ -74,7 +74,7 @@ class TreeDataExtractor:
                 if static_info["type"] == "named-object":
                     if not obj.is_active():
                         continue
-                    children_name = list(obj.get_state().keys())
+                    children_name = obj.get_object_names()
                     if children_name:
                         tree_data["key"] = item_name
                         children_data = {

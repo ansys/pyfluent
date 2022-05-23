@@ -40,7 +40,19 @@ Root:
                     remote: solution/report_definitions
                     children:
                         Surface:
-                            remote: solution/report_definitions/surface                        
+                            remote: solution/report_definitions/surface  
+                        Volume:
+                            remote: solution/report_definitions/volume
+                        Flux:
+                            remote: solution/report_definitions/flux                            
+                        Lift:
+                            remote: solution/report_definitions/lift 
+                        Drag:
+                            remote: solution/report_definitions/drag
+                        Moment:
+                            remote: solution/report_definitions/moment  
+                        Force:
+                            remote: solution/report_definitions/force                              
         Results:        
             children:
                 Graphics:
