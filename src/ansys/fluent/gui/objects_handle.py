@@ -20,12 +20,12 @@ class SettingsObjectsHandle:
     def extract_object_and_static_info(self, obj, static_info, path):
         path_list = path.split("/")
         for path in path_list:
-            try:
-                obj = getattr(obj, path)
-                static_info = static_info["children"][obj.obj_name]
-            except AttributeError:
+            if static_info["type"] == "named-object":
                 obj = obj[path]
                 static_info = static_info["object-type"]
+            else:
+                obj = getattr(obj, path)
+                static_info = static_info["children"][obj.obj_name]                               
         return obj, static_info
 
 

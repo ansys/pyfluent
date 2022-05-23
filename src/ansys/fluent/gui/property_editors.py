@@ -548,8 +548,8 @@ class SettingsPropertyEditor(PropertyEditor):
                     )
 
         def is_container(static_info):
-            children =  static_info["children"]
-            return children[next(iter(children))]['type']=='named-object'
+            children =  static_info.get("children")             
+            return children and children[next(iter(children))]['type']=='named-object'
         
         def store_all_command_buttons(obj, si_info):
             commands = si_info.get("commands", [])
@@ -623,6 +623,7 @@ class SettingsPropertyEditor(PropertyEditor):
                 style={"display":"none"}                 
             )
 
+        print('get_widgets', connection_id, session_id, object_type, object_index)
         obj, static_info = SettingsObjectsHandle(
             SessionsHandle
         ).get_object_and_static_info(

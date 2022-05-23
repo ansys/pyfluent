@@ -1,6 +1,6 @@
 import os
 
-from objects_handle import LocalObjectsHandle
+from objects_handle import LocalObjectsHandle, SettingsObjectsHandle
 from sessions_handle import SessionsHandle
 import yaml
 
@@ -58,25 +58,19 @@ class TreeDataExtractor:
                     )
                     keys = keys + child_keys
             elif remote:
-                static_info = SessionsHandle(
+                session_handle = SessionsHandle(
                     self._user_id, self._session_id
-                ).static_info
-                obj = SessionsHandle(self._user_id, self._session_id).settings_root
-                path_list = remote.split("/")
-
-                for path in path_list:
-                    try:
-                        obj = getattr(obj, path)
-                        static_info = static_info["children"][obj.obj_name]
-                    except AttributeError:
-                        obj = obj[path]
-                        static_info = static_info["object-type"]
+                )
+                static_info = session_handle.static_info
+                root = session_handle.settings_root                           
+                handle = SettingsObjectsHandle(SessionsHandle)
+                obj, static_info = handle.extract_object_and_static_info(root, static_info, remote)  
                 if static_info["type"] == "named-object":
+                    tree_data["key"] = item_name
                     if not obj.is_active():
                         continue
                     children_name = obj.get_object_names()
-                    if children_name:
-                        tree_data["key"] = item_name
+                    if children_name:                   
                         children_data = {
                             child: {"remote": f"{remote}/{child}", "icon": icon}
                             for child in children_name
