@@ -1,11 +1,11 @@
+from sessions_handle import SessionsHandle
+
 from ansys.fluent.post.matplotlib import Plots
 from ansys.fluent.post.pyvista import Graphics
 from ansys.fluent.post.pyvista.pyvista_objects import Contour, Mesh, Surface, Vector
 
-from sessions_handle import SessionsHandle
 
 class SettingsObjectsHandle:
-
     def get_object_and_static_info(
         self, user_id, session_id, object_type, object_index
     ):
@@ -24,12 +24,12 @@ class SettingsObjectsHandle:
                 static_info = static_info["object-type"]
             else:
                 obj = getattr(obj, path)
-                static_info = static_info["children"][obj.obj_name]                               
+                static_info = static_info["children"][obj.obj_name]
         return obj, static_info
 
 
 class LocalObjectsHandle:
-    def __init__(self):        
+    def __init__(self):
         self._graphics_object_handle = GraphicsObjectHandle()
         self._plots_object_handle = PlotsObjectHandle()
 
@@ -39,9 +39,7 @@ class LocalObjectsHandle:
     def add_outline_mesh(self, user_id, session_id):
         outline_mesh = self.get_object(user_id, session_id, "Mesh", "outline")
         outline_mesh.update(
-            Graphics(
-                SessionsHandle(user_id, session_id).session
-            ).add_outline_mesh()()
+            Graphics(SessionsHandle(user_id, session_id).session).add_outline_mesh()()
         )
         outline_mesh.show_edges = True
 
@@ -105,7 +103,6 @@ class LocalObjectsHandle:
 
 
 class GraphicsObjectHandle:
-
     @property
     def type(self):
         return "graphics"
@@ -128,7 +125,6 @@ class GraphicsObjectHandle:
 
 
 class PlotsObjectHandle:
-
     def is_type_supported(self, type):
         return type in ("XYPlot")
 

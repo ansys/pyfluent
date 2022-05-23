@@ -58,19 +58,19 @@ class TreeDataExtractor:
                     )
                     keys = keys + child_keys
             elif remote:
-                session_handle = SessionsHandle(
-                    self._user_id, self._session_id
-                )
+                session_handle = SessionsHandle(self._user_id, self._session_id)
                 static_info = session_handle.static_info
-                root = session_handle.settings_root                           
+                root = session_handle.settings_root
                 handle = SettingsObjectsHandle()
-                obj, static_info = handle.extract_object_and_static_info(root, static_info, remote)  
+                obj, static_info = handle.extract_object_and_static_info(
+                    root, static_info, remote
+                )
                 if static_info["type"] == "named-object":
                     tree_data["key"] = item_name
                     if not obj.is_active():
                         continue
                     children_name = obj.get_object_names()
-                    if children_name:                   
+                    if children_name:
                         children_data = {
                             child: {"remote": f"{remote}/{child}", "icon": icon}
                             for child in children_name

@@ -35,11 +35,11 @@ class StateManager:
         return any(map(lambda x: x == "busy", self._var_state.values()))
 
     def set_busy(self, var_name):
-        #print("set_busy", var_name)
+        # print("set_busy", var_name)
         self._var_state[var_name] = "busy"
 
     def set_free(self, var_name):
-        #print("set_free", var_name)
+        # print("set_free", var_name)
         del self._var_state[var_name]
 
     def copy_from(self, user_id, session_id):

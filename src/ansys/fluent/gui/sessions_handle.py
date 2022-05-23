@@ -1,9 +1,8 @@
 import threading
 
 from dash import dcc, html
-
-import objects_handle #import LocalObjectsHandle
-import state_manager #import StateManager
+import objects_handle  # import LocalObjectsHandle
+import state_manager  # import StateManager
 
 from ansys.fluent.core.session import Session
 
@@ -25,7 +24,9 @@ class SessionsHandle:
             self._lock = threading.Lock()
             self._user_id = user_id
             self._session_id = session_id
-            self._state_manager = state_manager.StateManager(user_id, session_id, SessionsHandle)
+            self._state_manager = state_manager.StateManager(
+                user_id, session_id, SessionsHandle
+            )
         else:
             self.__dict__ = session_state
 
@@ -51,7 +52,7 @@ class SessionsHandle:
             self.session = Session(
                 "localhost", int(session_token), cleanup_on_exit=False
             )
-            self.session.monitors_manager.start()            
+            self.session.monitors_manager.start()
             self.settings_root = self.session.solver.root
             self.static_info = self.settings_root._static_info
             self.register_events()

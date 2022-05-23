@@ -74,11 +74,14 @@ class PropertyEditor:
                         )
                         path_list = input_index.split("/")[1:]
                         for path in path_list:
-                            obj = getattr(obj, path)                        
+                            obj = getattr(obj, path)
                     else:
-                        obj, static_info = SettingsObjectsHandle().get_object_and_static_info(
+                        (
+                            obj,
+                            static_info,
+                        ) = SettingsObjectsHandle().get_object_and_static_info(
                             user_id, session_id, object_type, object_index
-                        )                                              
+                        )
                         path_list = input_index.split("/")[1:]
                         for path in path_list:
                             if static_info["type"] == "named-object":
@@ -86,7 +89,7 @@ class PropertyEditor:
                                 static_info = static_info["object-type"]
                             else:
                                 obj = getattr(obj, path)
-                                static_info = static_info["children"][obj.obj_name]                     
+                                static_info = static_info["children"][obj.obj_name]
                     if obj is None:
                         raise PreventUpdate
 
@@ -114,13 +117,12 @@ class PropertyEditor:
                     commnads,
                     args_value,
                 ):
-                    """"Callback executed setting command button is pressed."""                   
+                    """"Callback executed setting command button is pressed."""
                     ctx = dash.callback_context
                     triggered_value = ctx.triggered[0]["value"]
                     if not triggered_value:
                         raise PreventUpdate
-                        
-                     
+
                     (
                         command_name,
                         user_id,
@@ -132,29 +134,34 @@ class PropertyEditor:
                         ":"
                     )
 
-                    obj, static_info = SettingsObjectsHandle().get_object_and_static_info(
+                    (
+                        obj,
+                        static_info,
+                    ) = SettingsObjectsHandle().get_object_and_static_info(
                         user_id, session_id, object_type, object_index
                     )
-                    print('on_settings_command_execution',  obj.path)   
+                    print("on_settings_command_execution", obj.path)
 
                     kwargs = {}
                     exec_async = (
                         obj.path in async_commands
                         and command_name in async_commands[obj.path]
                     )
-                    show_output =  (
+                    show_output = (
                         obj.path in commands_output
-                        and command_name in commands_output[obj.path]                    
+                        and command_name in commands_output[obj.path]
                     )
                     cmd_obj = getattr(obj, command_name)
-                    #args_value is not correct.Will not work for multiple commands.
+                    # args_value is not correct.Will not work for multiple commands.
                     args_iter = iter(args_value)
                     args_info = static_info["commands"][cmd_obj.obj_name].get(
                         "arguments", {}
                     )
                     for arg_name, arg_info in args_info.items():
                         if arg_info["type"] == "boolean":
-                            kwargs[to_python_name(arg_name)] = True if next(args_iter) else False
+                            kwargs[to_python_name(arg_name)] = (
+                                True if next(args_iter) else False
+                            )
                         else:
                             kwargs[to_python_name(arg_name)] = next(args_iter)
 
@@ -168,8 +175,13 @@ class PropertyEditor:
                         else cmd_obj(**kwargs)
                     )
                     if show_output:
-                        return commands_output[obj.path][command_name]["output"](f"{return_value}"), commands_output[obj.path][command_name]["style"]    
-                    return f"{return_value}",{"display": "none"}
+                        return (
+                            commands_output[obj.path][command_name]["output"](
+                                f"{return_value}"
+                            ),
+                            commands_output[obj.path][command_name]["style"],
+                        )
+                    return f"{return_value}", {"display": "none"}
 
         else:
             self.__dict__ = editor
@@ -542,7 +554,7 @@ class SettingsPropertyEditor(PropertyEditor):
                         state[name],
                         parent + "/" + name,
                     )
-        
+
         def store_all_command_buttons(obj, si_info):
             commands = si_info.get("commands", [])
             for command_name in commands:
@@ -590,39 +602,41 @@ class SettingsPropertyEditor(PropertyEditor):
                             type="text",
                         )
                     elif arg_info["type"] == "boolean":
-                        self._all_widgets[command_name + ":" + command_arg] = dcc.Checklist(
+                        self._all_widgets[
+                            command_name + ":" + command_arg
+                        ] = dcc.Checklist(
                             id={
                                 "type": "settings-command-input",
                                 "index": command_name + ":" + command_arg,
                             },
                             options={
                                 "selected": self.get_label(command_arg),
-                            },                            
-                        ) 
+                            },
+                        )
                     elif arg_info["type"] == "string-list":
-                        options = command_arg_obj.get_attr("allowed-values") 
-                        self._all_widgets[command_name + ":" + command_arg] =  dcc.Dropdown(
+                        options = command_arg_obj.get_attr("allowed-values")
+                        self._all_widgets[
+                            command_name + ":" + command_arg
+                        ] = dcc.Dropdown(
                             id={
                                 "type": "settings-command-input",
                                 "index": command_name + ":" + command_arg,
                             },
-                            options=options if isinstance(options, list) else [options],                            
+                            options=options if isinstance(options, list) else [options],
                             multi=True,
                         )
-            
+
             self._all_widgets["command_output"] = dcc.Textarea(
-                id=f"command-output-{self._id}",  
-                style={"display":"none"}                 
+                id=f"command-output-{self._id}", style={"display": "none"}
             )
 
-        
         obj, static_info = SettingsObjectsHandle().get_object_and_static_info(
             connection_id, session_id, object_type, object_index
         )
         self._all_widgets = {}
-        if widget_type == "input":            
+        if widget_type == "input":
             store_all_input_widgets(obj, static_info, obj.get_state())
-        else:           
+        else:
             store_all_command_buttons(obj, static_info)
         return self._all_widgets
 
