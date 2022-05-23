@@ -1,6 +1,7 @@
 """Wrappers over StateEngine based datamodel grpc service of Fluent."""
 
 from enum import Enum
+import itertools
 from typing import Any, Dict, Iterator, List, Tuple
 
 import grpc
@@ -542,21 +543,33 @@ class PyCommand:
 class PyMenuGeneric(PyMenu):
     attrs = ("service", "rules", "path")
 
-    def _get_static_info(self):
-        request = DataModelProtoModule.GetStaticInfoRequest()
-        request.rules = rules
-        response = session._datamodel_service_se.get_static_info(request)
-        return response.info
+    def _get_child_names(self):
+        request = DataModelProtoModule.GetSpecsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        response = self.service.get_specs(request)
+        singleton_names = []
+        creatable_type_names = []
+        command_names = []
+        for struct_type in ("singleton", "namedobject"):
+            if response.member.HasField(struct_type):
+                struct_field = getattr(response.member, struct_type)
+                for member in struct_field.members:
+                    if ":" not in member:
+                        singleton_names.append(member)
+                creatable_type_names = struct_field.creatabletypes
+                command_names = [x.name for x in struct_field.commands]
+        return singleton_names, creatable_type_names, command_names
 
-    def __get_child(self, name: str):
-        info = self._get_static_info()
-        if name in info.singletons or name in info.parameters:
+    def _get_child(self, name: str):
+        singletons, creatable_types, commands = self._get_child_names()
+        if name in singletons:
             child_path = self.path + [(name, "")]
             return PyMenuGeneric(self.service, self.rules, child_path)
-        elif name in info.namedobjects:
+        elif name in creatable_types:
             child_path = self.path + [(name, "")]
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
-        elif name in info.commands:
+        elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
@@ -564,13 +577,7 @@ class PyMenuGeneric(PyMenu):
             )
 
     def __dir__(self):
-        info = self._get_static_info()
-        return sorted(
-            info.singletons.keys()
-            + info.parameters.keys()
-            + info.namedobjects.keys()
-            + info.commands.keys()
-        )
+        return list(itertools.chain(*self._get_child_names()))
 
     def __getattr__(self, name: str):
         if name in PyMenuGeneric.attrs:

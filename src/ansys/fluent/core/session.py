@@ -367,7 +367,7 @@ class Session:
                     self._workflow = workflow_root(self._se_service, "workflow", [])
                 except ImportError:
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self.meshing = PyMenuGeneric(self._se_service, "workflow")
+                    self._workflow = PyMenuGeneric(self._se_service, "workflow")
             return self._workflow
 
         @property
@@ -384,7 +384,9 @@ class Session:
                     )
                 except ImportError:
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self.meshing = PyMenuGeneric(self._se_service, "PartManagement")
+                    self._part_management = PyMenuGeneric(
+                        self._se_service, "PartManagement"
+                    )
             return self._part_management
 
         @property
@@ -401,7 +403,9 @@ class Session:
                     )
                 except ImportError:
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self.meshing = PyMenuGeneric(self._se_service, "PMFileManagement")
+                    self._pm_file_management = PyMenuGeneric(
+                        self._se_service, "PMFileManagement"
+                    )
             return self._pm_file_management
 
     class Solver:
@@ -424,7 +428,7 @@ class Session:
                     self._tui = SolverMainMenu([], self._tui_service)
                 except ImportError:
                     LOG.warning(_CODEGEN_MSG_TUI)
-                    self._tui = PyMenuGeneric([], self._tui_service)
+                    self._tui = TUIMenuGeneric([], self._tui_service)
             return self._tui
 
         @property
