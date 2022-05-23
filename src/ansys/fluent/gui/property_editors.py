@@ -67,7 +67,7 @@ class PropertyEditor:
                     ) = prop_id.split(":")
                     if object_location == "local":
                         obj, static_info = (
-                            LocalObjectsHandle(SessionsHandle).get_object(
+                            LocalObjectsHandle().get_object(
                                 user_id, session_id, object_type, object_index
                             ),
                             None,
@@ -76,9 +76,7 @@ class PropertyEditor:
                         for path in path_list:
                             obj = getattr(obj, path)                        
                     else:
-                        obj, static_info = SettingsObjectsHandle(
-                            SessionsHandle
-                        ).get_object_and_static_info(
+                        obj, static_info = SettingsObjectsHandle().get_object_and_static_info(
                             user_id, session_id, object_type, object_index
                         )                                              
                         path_list = input_index.split("/")[1:]
@@ -134,9 +132,7 @@ class PropertyEditor:
                         ":"
                     )
 
-                    obj, static_info = SettingsObjectsHandle(
-                        SessionsHandle
-                    ).get_object_and_static_info(
+                    obj, static_info = SettingsObjectsHandle().get_object_and_static_info(
                         user_id, session_id, object_type, object_index
                     )
                     print('on_settings_command_execution',  obj.path)   
@@ -239,7 +235,7 @@ class LocalPropertyEditor(PropertyEditor):
         super().__init__(user_id, session_id, "local", index)
         self._graphics_property_editor = GraphicsPropertyEditor()
         self._plot_property_editor = PlotPropertyEditor()
-        self._get_objects_handle = LocalObjectsHandle(SessionsHandle)
+        self._get_objects_handle = LocalObjectsHandle()
         self._all_widgets = {}
 
     def _get_editor(self, object_type):
@@ -539,17 +535,13 @@ class SettingsPropertyEditor(PropertyEditor):
                         si_info_child,
                     )
                     self._all_widgets[name] = widget
-                else:
+                elif si_info_child["type"] not in ("named-object"):
                     store_all_input_widgets(
                         child_obj,
                         si_info_child,
                         state[name],
                         parent + "/" + name,
                     )
-
-        def is_container(static_info):
-            children =  static_info.get("children")             
-            return children and children[next(iter(children))]['type']=='named-object'
         
         def store_all_command_buttons(obj, si_info):
             commands = si_info.get("commands", [])
@@ -623,16 +615,13 @@ class SettingsPropertyEditor(PropertyEditor):
                 style={"display":"none"}                 
             )
 
-        print('get_widgets', connection_id, session_id, object_type, object_index)
-        obj, static_info = SettingsObjectsHandle(
-            SessionsHandle
-        ).get_object_and_static_info(
+        
+        obj, static_info = SettingsObjectsHandle().get_object_and_static_info(
             connection_id, session_id, object_type, object_index
         )
         self._all_widgets = {}
-        if widget_type == "input":
-            if not is_container(static_info):
-               store_all_input_widgets(obj, static_info, obj.get_state())
+        if widget_type == "input":            
+            store_all_input_widgets(obj, static_info, obj.get_state())
         else:           
             store_all_command_buttons(obj, static_info)
         return self._all_widgets

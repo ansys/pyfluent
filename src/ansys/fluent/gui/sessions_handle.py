@@ -1,8 +1,9 @@
 import threading
 
 from dash import dcc, html
-from objects_handle import LocalObjectsHandle
-from state_manager import StateManager
+
+import objects_handle #import LocalObjectsHandle
+import state_manager #import StateManager
 
 from ansys.fluent.core.session import Session
 
@@ -12,19 +13,19 @@ class SessionsHandle:
 
     def __init__(self, user_id, session_id):
 
-        complete_session_id = f"{user_id}:{session_id}"
+        unique_id = f"{user_id}:{session_id}"
 
-        session_state = SessionsHandle._sessions_state.get(complete_session_id)
+        session_state = SessionsHandle._sessions_state.get(unique_id)
 
         if not session_state:
-            SessionsHandle._sessions_state[complete_session_id] = self.__dict__
+            SessionsHandle._sessions_state[unique_id] = self.__dict__
             self.session = None
-            self._complete_session_id = complete_session_id
+            self._complete_session_id = unique_id
             self._events_info_map = {}
             self._lock = threading.Lock()
             self._user_id = user_id
             self._session_id = session_id
-            self._state_manager = StateManager(user_id, session_id, SessionsHandle)
+            self._state_manager = state_manager.StateManager(user_id, session_id, SessionsHandle)
         else:
             self.__dict__ = session_state
 
@@ -50,12 +51,11 @@ class SessionsHandle:
             self.session = Session(
                 "localhost", int(session_token), cleanup_on_exit=False
             )
-            self.session.monitors_manager.start()
-            # self.static_info = self.session.solver._settings_service.get_static_info()
+            self.session.monitors_manager.start()            
             self.settings_root = self.session.solver.root
             self.static_info = self.settings_root._static_info
             self.register_events()
-            LocalObjectsHandle(SessionsHandle).add_outline_mesh(
+            objects_handle.LocalObjectsHandle().add_outline_mesh(
                 self._user_id, self._session_id
             )
         else:

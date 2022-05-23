@@ -141,7 +141,7 @@ class PostWindow:
                             or session_id != self._session_id
                         ):
                             raise PreventUpdate
-                        handle = LocalObjectsHandle(SessionsHandle)
+                        handle = LocalObjectsHandle()
                         self._window_data[int(active_tab)] = {
                             "object": handle.get_object(
                                 user_id, session_id, object_type, object_index
@@ -267,7 +267,7 @@ class PostWindow:
         ]
 
     def __call__(self, init_data={}):
-        handle = LocalObjectsHandle(SessionsHandle)
+        handle = LocalObjectsHandle()
         for tab_id, object_data in init_data.items():
             if tab_id != 0:
                 self._windows.append(tab_id)
@@ -303,7 +303,7 @@ class PlotWindow(PostWindow):
         ]
 
     def is_type_supported(self, type):
-        return LocalObjectsHandle(SessionsHandle).get_handle(type).type == "plot"
+        return LocalObjectsHandle().get_handle(type).type == "plot"
 
     def get_stored_post_data(self):
         return [
@@ -342,7 +342,7 @@ class GraphicsWindow(PostWindow):
             return go.Figure()
 
     def is_type_supported(self, type):
-        return LocalObjectsHandle(SessionsHandle).get_handle(type).type == "graphics"
+        return LocalObjectsHandle().get_handle(type).type == "graphics"
 
     def get_stored_post_data(self):
         content = [

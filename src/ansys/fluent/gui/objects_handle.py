@@ -2,15 +2,14 @@ from ansys.fluent.post.matplotlib import Plots
 from ansys.fluent.post.pyvista import Graphics
 from ansys.fluent.post.pyvista.pyvista_objects import Contour, Mesh, Surface, Vector
 
+from sessions_handle import SessionsHandle
 
 class SettingsObjectsHandle:
-    def __init__(self, sessions_handle):
-        self._sessions_handle = sessions_handle
 
     def get_object_and_static_info(
         self, user_id, session_id, object_type, object_index
     ):
-        session_handle = self._sessions_handle(user_id, session_id)
+        session_handle = SessionsHandle(user_id, session_id)
         static_info = session_handle.static_info
         settings_root = session_handle.settings_root
         return self.extract_object_and_static_info(
@@ -30,19 +29,18 @@ class SettingsObjectsHandle:
 
 
 class LocalObjectsHandle:
-    def __init__(self, sessions_handle):
-        self._sessions_handle = sessions_handle
-        self._graphics_object_handle = GraphicsObjectHandle(sessions_handle)
-        self._plots_object_handle = PlotsObjectHandle(sessions_handle)
+    def __init__(self):        
+        self._graphics_object_handle = GraphicsObjectHandle()
+        self._plots_object_handle = PlotsObjectHandle()
 
     def _get_name(self, user_id, session_id, object_type, object_index):
-        return f"{self._sessions_handle(user_id, session_id)._complete_session_id}-{object_type}-{object_index}"
+        return f"{SessionsHandle(user_id, session_id)._complete_session_id}-{object_type}-{object_index}"
 
     def add_outline_mesh(self, user_id, session_id):
         outline_mesh = self.get_object(user_id, session_id, "Mesh", "outline")
         outline_mesh.update(
             Graphics(
-                self._sessions_handle(user_id, session_id).session
+                SessionsHandle(user_id, session_id).session
             ).add_outline_mesh()()
         )
         outline_mesh.show_edges = True
@@ -107,8 +105,6 @@ class LocalObjectsHandle:
 
 
 class GraphicsObjectHandle:
-    def __init__(self, sessions_handle):
-        self.sessions_handle = sessions_handle
 
     @property
     def type(self):
@@ -118,7 +114,7 @@ class GraphicsObjectHandle:
         return type in ("Contour", "Mesh", "Vector", "Surface")
 
     def get_collection(self, user_id, session_id, object_type):
-        session = self.sessions_handle(user_id, session_id).session
+        session = SessionsHandle(user_id, session_id).session
         if session:
             graphics_session = Graphics(session)
             if object_type == "Contour":
@@ -132,8 +128,6 @@ class GraphicsObjectHandle:
 
 
 class PlotsObjectHandle:
-    def __init__(self, sessions_handle):
-        self.sessions_handle = sessions_handle
 
     def is_type_supported(self, type):
         return type in ("XYPlot")
@@ -143,7 +137,7 @@ class PlotsObjectHandle:
         return "plot"
 
     def get_collection(self, user_id, session_id, object_type):
-        session = self.sessions_handle(user_id, session_id).session
+        session = SessionsHandle(user_id, session_id).session
         plots_session = Plots(session)
         if object_type == "XYPlot":
             return plots_session.XYPlots
