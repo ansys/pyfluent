@@ -12,6 +12,7 @@ import grpc
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
+from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
@@ -77,14 +78,15 @@ def _get_max_c_int_limit() -> int:
 
 
 _CODEGEN_MSG_DATAMODEL = (
+    "Currently calling the datamodel API in a generic manner. "
     "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory before calling Fluent datamodel API methods."
+    "directory to generate the local datamodel API classes."
 )
 
 _CODEGEN_MSG_TUI = (
-    "Currently calling the TUI commands in a generic manner. "
+    "Currently calling the TUI API in a generic manner. "
     "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local TUI command classes."
+    "directory to generate the local TUI API classes."
 )
 
 
@@ -346,9 +348,11 @@ class Session:
             if self._meshing is None:
                 try:
                     from ansys.fluent.core.datamodel.meshing import Root as meshing_root
+
+                    self._meshing = meshing_root(self._se_service, "meshing", [])
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG_DATAMODEL) from None
-                self._meshing = meshing_root(self._se_service, "meshing", [])
+                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                    self.meshing = PyMenuGeneric(self._se_service, "meshing")
             return self._meshing
 
         @property
@@ -359,9 +363,11 @@ class Session:
                     from ansys.fluent.core.datamodel.workflow import (
                         Root as workflow_root,
                     )
+
+                    self._workflow = workflow_root(self._se_service, "workflow", [])
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG) from None
-                self._workflow = workflow_root(self._se_service, "workflow", [])
+                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                    self.meshing = PyMenuGeneric(self._se_service, "workflow")
             return self._workflow
 
         @property
@@ -372,11 +378,13 @@ class Session:
                     from ansys.fluent.core.datamodel.PartManagement import (
                         Root as PartManagement_root,
                     )
+
+                    self._part_management = PartManagement_root(
+                        self._se_service, "PartManagement", []
+                    )
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG) from None
-                self._part_management = PartManagement_root(
-                    self._se_service, "PartManagement", []
-                )
+                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                    self.meshing = PyMenuGeneric(self._se_service, "PartManagement")
             return self._part_management
 
         @property
@@ -387,11 +395,13 @@ class Session:
                     from ansys.fluent.core.datamodel.PMFileManagement import (
                         Root as PMFileManagement_root,
                     )
+
+                    self._pm_file_management = PMFileManagement_root(
+                        self._se_service, "PMFileManagement", []
+                    )
                 except ImportError:
-                    raise RuntimeError(_CODEGEN_MSG) from None
-                self._pm_file_management = PMFileManagement_root(
-                    self._se_service, "PMFileManagement", []
-                )
+                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                    self.meshing = PyMenuGeneric(self._se_service, "PMFileManagement")
             return self._pm_file_management
 
     class Solver:
@@ -414,7 +424,7 @@ class Session:
                     self._tui = SolverMainMenu([], self._tui_service)
                 except ImportError:
                     LOG.warning(_CODEGEN_MSG_TUI)
-                    self._tui = TUIMenuGeneric([], self._tui_service)
+                    self._tui = PyMenuGeneric([], self._tui_service)
             return self._tui
 
         @property
