@@ -36,6 +36,11 @@ Root:
                 Calculation:
                     remote : solution/run_calculation
                     icon  : icon_calculate.svg
+                ReportDefinitions:
+                    remote: solution/report_definitions
+                    children:
+                        Surface:
+                            remote: solution/report_definitions/surface                        
         Results:        
             children:
                 Graphics:

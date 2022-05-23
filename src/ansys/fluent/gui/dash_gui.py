@@ -51,7 +51,7 @@ def event_loop(n_intervals, user_id, need_to_fetch):
                 sessions,
             )
         ):
-            print("Busy..")
+           # print("Busy..")
             raise PreventUpdate
         else:
             return "yes"
