@@ -137,6 +137,7 @@ class Session:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        remote_instance=None,
     ):
         """Instantiate a Session.
 
@@ -165,6 +166,10 @@ class Session:
             The Fluent transcript is started in the client only when
             start_transcript is True. It can be started and stopped
             subsequently via method calls on the Session object.
+        remote_instance : ansys.platform.instancemanagement.Instance
+            The corresponding remote instance when Fluent is launched through
+            PyPIM. This instance will be deleted when calling
+            Session.exit().
         """
         if channel is not None:
             self._channel = channel
@@ -319,6 +324,9 @@ class Session:
             self.events_manager.stop()
             self._channel.close()
             self._channel = None
+
+        if self._remote_instance:
+            self._remote_instance.delete()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
