@@ -11,7 +11,7 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import Session
@@ -127,7 +127,7 @@ def launch_fluent(
     ip: str = None,
     port: int = None,
     cleanup_on_exit: bool = True,
-    show_gui: bool = False,
+    show_gui: Optional[bool] = None,
 ) -> Session:
     """Start Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -187,7 +187,10 @@ def launch_fluent(
     show_gui : bool, optional
         When True, the Fluent GUI will be displayed as long as start_instance
         is also True. Defaults to False and can also be set by the environment
-        variable PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``.
+        variable PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``. The show-gui argument has
+        the effect of overriding the PYFLUENT_SHOW_SERVER_GUI. E.g., if
+        PYFLUENT_SHOW_SERVER_GUI is set to 1, the gui is hidden if show-gui is
+        set to False.
 
     Returns
     -------
@@ -206,7 +209,9 @@ def launch_fluent(
             launch_string += f" {additional_arguments}"
             launch_string += f' -sifile="{server_info_filepath}"'
             launch_string += " -nm"
-            if not show_gui and not os.getenv("PYFLUENT_SHOW_SERVER_GUI"):
+            if (show_gui == False) or (
+                show_gui == None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
+            ):
                 launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
