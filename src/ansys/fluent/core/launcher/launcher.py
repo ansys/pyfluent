@@ -16,6 +16,7 @@ from typing import Any, Dict
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.logging import LOG
+import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -111,6 +112,48 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
     return launch_args_string
+
+
+def launch_remote_fluent(
+    product_version: str = None,
+    cleanup_on_exit: bool = True,
+    meshing_mode: bool = False,
+    dimensionality: str = None,
+):
+
+    """Start Fluent remotely using the product instance management API.
+    When calling this method, you need to ensure that you are in an
+    environment where PyPIM is configured. This can be verified with :func:
+    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`.
+    Parameters
+    ----------
+    version : str, optional
+        The Fluent version to run, in the 3 digits format, such as "212".
+        If unspecified, the version will be chosen by the server.
+    cleanup_on_exit : bool, optional
+        Exit Fluent when python exits or the mapdl Python instance is
+        garbage collected.
+        If unspecified, it will be cleaned up.
+    Returns
+    -------
+    ansys.mapdl.core.mapdl._MapdlCore
+        An instance of Mapdl.
+    """
+    pim = pypim.connect()
+    instance = pim.create_instance(
+        product_name="fluent-meshing"
+        if meshing_mode
+        else "fluent-2ddp"
+        if dimensionality == "2d"
+        else "fluent-3ddp",
+        product_version=product_version,
+    )
+    instance.wait_for_ready()
+    # nb pymapdl sets max msg len here:
+    channel = instance.build_grpc_channel()
+    return Session(
+        channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+    )
 
 
 #   pylint: disable=unused-argument
@@ -230,6 +273,17 @@ def launch_fluent(
             if server_info_file.exists():
                 server_info_file.unlink()
     else:
+        if pypim.is_configured():
+            LOG.info(
+                "Starting Fluent remotely." "The startup configuration will be ignored."
+            )
+            return launch_remote_fluent(
+                product_version="222",
+                cleanup_on_exit=cleanup_on_exit,
+                meshing_mode=meshing_mode,
+                dimensionality=version,
+            )
+
         import ansys.fluent.core as pyfluent
 
         if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
