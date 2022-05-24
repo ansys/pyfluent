@@ -186,11 +186,12 @@ def launch_fluent(
 
     show_gui : bool, optional
         When True, the Fluent GUI will be displayed as long as start_instance
-        is also True. Defaults to False and can also be set by the environment
+        is also True, which can also be set by the environment
         variable PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``. The show-gui argument has
         the effect of overriding the PYFLUENT_SHOW_SERVER_GUI. E.g., if
         PYFLUENT_SHOW_SERVER_GUI is set to 1, the gui is hidden if show-gui is
-        set to False.
+        set to False. The default is None so that explicit False settings can
+        be detected.
 
     Returns
     -------
