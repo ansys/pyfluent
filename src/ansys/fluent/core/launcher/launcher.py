@@ -11,7 +11,7 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import Session
@@ -127,7 +127,7 @@ def launch_fluent(
     ip: str = None,
     port: int = None,
     cleanup_on_exit: bool = True,
-    show_gui: Optional[bool] = None,
+    show_gui: bool = None,
 ) -> Session:
     """Start Fluent locally in server mode or connect to a running Fluent
     server instance.
