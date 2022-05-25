@@ -210,8 +210,8 @@ def launch_fluent(
             launch_string += f" {additional_arguments}"
             launch_string += f' -sifile="{server_info_filepath}"'
             launch_string += " -nm"
-            if (show_gui == False) or (
-                show_gui == None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
+            if (show_gui is False) or (
+                show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
             ):
                 launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
