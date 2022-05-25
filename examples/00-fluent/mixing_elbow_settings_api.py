@@ -37,6 +37,10 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.post import set_config
 from ansys.fluent.post.pyvista import Graphics
+from IPython.display import Image
+
+from ansys.fluent.post.pyvista import pyvista_windows_manager
+pyvista_windows_manager.save_graphic("plotter-1", "svg" )
 
 set_config(blocking=True, set_view_on_display="isometric")
 
@@ -157,10 +161,50 @@ session.solver.tui.solve.monitors.residual.plot("no")
 session.solver.root.solution.initialization.hybrid_initialize()
 
 ###############################################################################
+# Animation
+
+session.events_manager.events_list
+['CalculationsEndedEvent',
+ 'CalculationsStartedEvent',
+ 'CaseReadEvent',
+ 'DataReadEvent',
+ 'InitializedEvent',
+ 'IterationEndedEvent',
+ 'ProgressEvent',
+ 'TimestepEndedEvent']
+ 
+from ansys.fluent.core.utils.generic import execute_in_event_loop_threadsafe
+
+@execute_in_event_loop_threadsafe
+def auto_refersh_call_back_iteration(session_id, event_info):
+    if event_info.index%5==0:
+        pyvista_windows_manager.refresh_windows(session_id, ["plotter-1"])
+
+
+        
+@execute_in_event_loop_threadsafe
+def auto_refersh_call_back_time_step(session_id, event_info):    
+    pyvista_windows_manager.refresh_windows(session_id, ["plotter-1"])
+    
+@execute_in_event_loop_threadsafe    
+def initialize_call_back(session_id, event_info):
+    pyvista_windows_manager.refresh_windows(session_id) 
+    
+cb_init_id = session.events_manager.register_callback('InitializedEvent', initialize_call_back)
+cb_data_read_id = session.events_manager.register_callback('DataReadEvent', initialize_call_back)
+cb_itr_id = session.events_manager.register_callback('IterationEndedEvent', auto_refersh_call_back_iteration)
+
+pyvista_windows_manager.animate_windows("", ["plotter-1"])
+
+###############################################################################
 # Solve for 150 Iterations.
 
 session.solver.root.solution.run_calculation.iterate.get_attr("arguments")
 session.solver.root.solution.run_calculation.iterate(number_of_iterations=150)
+
+pyvista_windows_manager.close_windows()
+
+Image(filename="plotter-1.gif")
 
 ###############################################################################
 # Create and display velocity vectors on the symmetry-xyplane plane.
