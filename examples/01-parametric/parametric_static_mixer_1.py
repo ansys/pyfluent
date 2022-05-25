@@ -2,8 +2,7 @@
 
 Parametric Study Workflow
 ------------------------------
-This example for executing a parametric study workflow
-performs these steps:
+This parametric study workflow example performs these steps:
 
 - Reads a case file and data file
 - Creates input and output parameters
@@ -13,22 +12,24 @@ performs these steps:
 - Updates the current DP
 - Accesses output parameters of the base DP
 - Creates, updates, and deletes more DPs
-- Creates, renames, and deletes parametric studies
+- Creates, renames, duplicates and deletes parametric studies
 """
 
 ############################################################################
 from pathlib import Path
 
-import pandas as pd
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.parametric import ParametricStudy
+from ansys.fluent.post import set_config
+from ansys.fluent.post.pyvista import Graphics
+
+set_config(blocking=True, set_view_on_display="isometric")
 
 ############################################################################
 # Launch Fluent in 3D and double precision
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
 
 ############################################################################
 # Read the hopper/mixer case
@@ -47,20 +48,20 @@ session.solver.tui.solve.set.number_of_iterations("100")
 ############################################################################
 # Create input parameters after enabling parameter creation in the TUI:
 # Parameter values:
-# Inlet1: velocity (inlet1_vel) 5 m/s and temperature (inlet1_temp) at 300 K
-# Inlet2: velocity (inlet2_vel) 10 m/s and temperature (inlet2_temp) at 350 K
+# Inlet1: velocity (inlet1_vel) 0.5 m/s and temperature (inlet1_temp) at 300 K
+# Inlet2: velocity (inlet2_vel) 0.5 m/s and temperature (inlet2_temp) at 350 K
 
 session.solver.tui.define.parameters.enable_in_TUI("yes")
 
 session.solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet1", (), "vmag", "yes", "inlet1_vel", 5, "quit"
+    "inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit"
 )
 session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet1", (), "temperature", "yes", "inlet1_temp", 300, "quit"
 )
 
 session.solver.tui.define.boundary_conditions.set.velocity_inlet(
-    "inlet2", (), "vmag", "yes", "no", "inlet2_vel", 10, "quit"
+    "inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit"
 )
 session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit"
@@ -118,7 +119,7 @@ study_1 = ParametricStudy(session.solver.root.parametric_studies).initialize()
 # Access and modify input parameters of base DP
 
 input_parameters_update = study_1.design_points["Base DP"].input_parameters
-input_parameters_update["inlet1_vel"] = 15
+input_parameters_update["inlet1_vel"] = 0.5
 study_1.design_points["Base DP"].input_parameters = input_parameters_update
 
 ###########################################################################
@@ -132,8 +133,8 @@ study_1.update_current_design_point()
 design_point_1 = study_1.add_design_point()
 design_point_1_input_parameters = study_1.design_points["DP1"].input_parameters
 design_point_1_input_parameters["inlet1_temp"] = 450
-design_point_1_input_parameters["inlet1_vel"] = 30
-design_point_1_input_parameters["inlet2_vel"] = 20
+design_point_1_input_parameters["inlet1_vel"] = 0.25
+design_point_1_input_parameters["inlet2_vel"] = 0.25
 study_1.design_points["DP1"].input_parameters = design_point_1_input_parameters
 
 ###########################################################################
@@ -142,9 +143,10 @@ study_1.design_points["DP1"].input_parameters = design_point_1_input_parameters
 design_point_2 = study_1.add_design_point()
 design_point_2_input_parameters = study_1.design_points["DP2"].input_parameters
 design_point_2_input_parameters["inlet1_temp"] = 500
-design_point_2_input_parameters["inlet1_vel"] = 45
-design_point_2_input_parameters["inlet2_vel"] = 30
+design_point_2_input_parameters["inlet1_vel"] = 1
+design_point_2_input_parameters["inlet2_vel"] = 1
 study_1.design_points["DP2"].input_parameters = design_point_2_input_parameters
+
 
 ##########################################################################
 # Duplicate design points
@@ -157,18 +159,27 @@ design_point_3 = study_1.duplicate_design_point(design_point_2)
 study_1.update_all_design_points()
 
 #########################################################################
+# Mesh display using PyVista
+
+graphics_session = Graphics(session)
+mesh_1 = graphics_session.Meshes["mesh-1"]
+mesh_1.show_edges = True
+mesh_1.surfaces_list = [
+    "inlet1",
+    "inlet2",
+    "wall",
+    "outlet",
+]
+
+mesh_1.display()
+
+###############################################################################
 # Export design point table as a CSV table
 
 design_point_table = str(
     Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study_1.csv"
 )
 study_1.export_design_table(design_point_table)
-
-#########################################################################
-# Display CSV table as a pandas dataframe
-
-data_frame = pd.read_csv(design_point_table)
-print(data_frame)
 
 ##########################################################################
 # Delete design points
@@ -182,15 +193,13 @@ study_2 = study_1.duplicate()
 
 #########################################################################
 # Rename the newly created parametric study
-# Currently affected by issue # 249, hence commented out
 
-# study_2.rename("New Study")
+study_2.rename("New Study")
 
 #########################################################################
 # Delete the old parametric study
-# Currently affected by issue #249, hence commented out
 
-# study_1.delete()
+study_1.delete()
 
 #########################################################################
 # Save parametric project
@@ -198,3 +207,8 @@ study_2 = study_1.duplicate()
 project_filepath = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
 session.solver.tui.file.parametric_project.save_as(project_filepath)
+
+#########################################################################
+# Close Fluent
+
+session.exit()

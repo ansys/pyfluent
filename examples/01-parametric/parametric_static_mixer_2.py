@@ -2,8 +2,7 @@
 
 Parametric Project-Based Workflow
 ----------------------------------------------------
-This example for executing a parametric project-based workflow
-performs these steps:
+This parametric study workflow example performs these steps:
 
 - Instantiates a parametric study from a Fluent session
 - Reads the previously saved project ``- static_mixer_study.flprj``
@@ -23,7 +22,7 @@ from ansys.fluent.parametric import ParametricProject
 #########################################################################
 # Launch Fluent and enable the settings API (Beta)
 
-session = pyfluent.launch_fluent(precision="double", processor_count=4)
+session = pyfluent.launch_fluent(precision="double", processor_count=2)
 
 #########################################################################
 # Read the previously saved project - static_mixer_study.flprj
@@ -61,3 +60,8 @@ proj.export(project_filepath=project_filepath_export)
 # Archive the current project
 
 proj.archive()
+
+#########################################################################
+# Close Fluent
+
+session.exit()
