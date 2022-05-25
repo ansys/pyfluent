@@ -19,8 +19,7 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.parametric import ParametricStudy
-from ansys.fluent.parametric import ParametricProject
+from ansys.fluent.parametric import ParametricProject, ParametricStudy
 from ansys.fluent.post import set_config
 from ansys.fluent.post.pyvista import Graphics
 
@@ -173,7 +172,7 @@ study_1.export_design_table(design_point_table)
 ##########################################################################
 # Delete design points
 
-study_1.delete_design_points([design_point_1, design_point_2])
+study_1.delete_design_points([design_point_1])
 
 ##########################################################################
 # Create a new parametric study by duplicating the current one
