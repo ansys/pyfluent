@@ -180,12 +180,6 @@ def auto_refersh_call_back_iteration(session_id, event_info):
     if event_info.index%5==0:
         pyvista_windows_manager.refresh_windows(session_id, ["plotter-1"])
 
-
-        
-@execute_in_event_loop_threadsafe
-def auto_refersh_call_back_time_step(session_id, event_info):    
-    pyvista_windows_manager.refresh_windows(session_id, ["plotter-1"])
-    
 @execute_in_event_loop_threadsafe    
 def initialize_call_back(session_id, event_info):
     pyvista_windows_manager.refresh_windows(session_id) 
