@@ -253,6 +253,9 @@ class Session:
         """Return the session id."""
         return self._id
 
+    def foo(self):
+        pass
+
     def _process_transcript(self):
         responses = self._transcript_service.begin_streaming()
         transcript = ""
