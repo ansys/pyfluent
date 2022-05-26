@@ -225,6 +225,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -233,7 +234,7 @@ class FieldData(object):
             field__data__pb2.GetFieldsRequest.SerializeToString,
             field__data__pb2.GetFieldsResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetRange(request,
@@ -241,6 +242,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -249,7 +251,7 @@ class FieldData(object):
             field__data__pb2.GetRangeRequest.SerializeToString,
             field__data__pb2.GetRangeResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetSurfacesInfo(request,
@@ -257,6 +259,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -265,7 +268,7 @@ class FieldData(object):
             field__data__pb2.GetSurfacesInfoRequest.SerializeToString,
             field__data__pb2.GetSurfacesInfoResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetVectorFieldsInfo(request,
@@ -273,6 +276,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -281,7 +285,7 @@ class FieldData(object):
             field__data__pb2.GetVectorFieldsInfoRequest.SerializeToString,
             field__data__pb2.GetVectorFieldsInfoResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetFieldsInfo(request,
@@ -289,6 +293,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -297,7 +302,7 @@ class FieldData(object):
             field__data__pb2.GetFieldsInfoRequest.SerializeToString,
             field__data__pb2.GetFieldsInfoResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetSurfaces(request,
@@ -305,6 +310,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -313,7 +319,7 @@ class FieldData(object):
             field__data__pb2.GetSurfacesRequest.SerializeToString,
             field__data__pb2.GetSurfacesResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetScalarField(request,
@@ -321,6 +327,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -329,7 +336,7 @@ class FieldData(object):
             field__data__pb2.GetScalarFieldRequest.SerializeToString,
             field__data__pb2.GetScalarFieldResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetVectorField(request,
@@ -337,6 +344,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -345,7 +353,7 @@ class FieldData(object):
             field__data__pb2.GetVectorFieldRequest.SerializeToString,
             field__data__pb2.GetVectorFieldResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetPathlinesField(request,
@@ -353,6 +361,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -361,7 +370,7 @@ class FieldData(object):
             field__data__pb2.GetPathlinesFieldRequest.SerializeToString,
             field__data__pb2.GetPathlinesFieldResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetParticleTracksField(request,
@@ -369,6 +378,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -377,7 +387,7 @@ class FieldData(object):
             field__data__pb2.GetParticleTracksFieldRequest.SerializeToString,
             field__data__pb2.GetParticleTracksFieldResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def IsBoundaryValuesOn(request,
@@ -385,6 +395,7 @@ class FieldData(object):
             options=(),
             channel_credentials=None,
             call_credentials=None,
+            insecure=False,
             compression=None,
             wait_for_ready=None,
             timeout=None,
@@ -393,4 +404,4 @@ class FieldData(object):
             field__data__pb2.IsBoundaryValuesOnRequest.SerializeToString,
             field__data__pb2.IsBoundaryValuesOnResponse.FromString,
             options, channel_credentials,
-            call_credentials, compression, wait_for_ready, timeout, metadata)
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
