@@ -24,7 +24,7 @@ shutil.copy2(_README_FILE, _DOCS_FILE)
 install_requires = [
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
-    "protobuf>=3.19.0",
+    "protobuf>=3.20.1",
     "appdirs>=1.4.0",
 ]
 
