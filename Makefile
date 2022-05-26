@@ -41,6 +41,14 @@ api-codegen:
 	@pip install -e .
 	@python codegen/allapigen.py
 	@rm -rf env
+	
+api-codegen-doc:
+	@echo "Running API codegen"
+	@python -m venv env
+	@. env/bin/activate
+	@pip install -e .
+	@python codegen/allapigen_doc.py
+	@rm -rf env
 
 build-doc:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
