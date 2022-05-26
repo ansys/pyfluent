@@ -144,7 +144,7 @@ jobs:
         id: version
 
       - name: Run API codegen
-        run: make api-codegen
+        run: make api-codegen-doc
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
