@@ -18,8 +18,6 @@ help:
 #%: Makefile
 #	@python settings_rstgen.py
 #	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-%: Makefile
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 # customized clean due to examples gallery
 clean:
