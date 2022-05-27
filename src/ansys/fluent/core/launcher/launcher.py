@@ -16,7 +16,7 @@ from typing import Any, Dict
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.logging import LOG
-import ansys.platform.instancemanagement as pypim  # noqa: F401
+import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -114,7 +114,6 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     return launch_args_string
 
 
-'''
 def launch_remote_fluent(
     product_version: str = None,
     cleanup_on_exit: bool = True,
@@ -155,7 +154,7 @@ def launch_remote_fluent(
     return Session(
         channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
     )
-'''
+
 
 #   pylint: disable=unused-argument
 def launch_fluent(
@@ -279,10 +278,12 @@ def launch_fluent(
             LOG.info(
                 "Starting Fluent remotely." "The startup configuration will be ignored."
             )
-            return None
-            # return launch_remote_fluent(
-            #    product_version="222", cleanup_on_exit=cleanup_on_exit,
-            #    meshing_mode=meshing_mode, dimensionality=version, )
+            return launch_remote_fluent(
+                product_version="222",
+                cleanup_on_exit=cleanup_on_exit,
+                meshing_mode=meshing_mode,
+                dimensionality=version,
+            )
         import ansys.fluent.core as pyfluent
 
         if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
