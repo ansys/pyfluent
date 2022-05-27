@@ -235,7 +235,7 @@ def _populate_classes(parent_dir):
 
             # write command objects
             command_names = getattr(cls, "command_names", None)
-            if command_names:
+            if hasattr(command_names, "__iter__"):
                 f.write(f"{istr1}command_names = \\\n")
                 strout = io.StringIO()
                 pprint.pprint(command_names, stream=strout, compact=True, width=70)
