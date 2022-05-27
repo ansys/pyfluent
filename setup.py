@@ -14,7 +14,7 @@ with open(_VERSION_FILE, mode="r", encoding="utf8") as fd:
     # execute file from raw string
     exec(fd.read())
 
-# Copy README.rst file to docs folder in ansys.fluent.core
+# Copy README.rst file to docs folder in ansys.fluent.core xxx
 _README_FILE = os.path.join(_THIS_FILE, "README.rst")
 _DOCS_FILE = os.path.join(
     _THIS_FILE, "src", "ansys", "fluent", "core", "docs", "README.rst"
