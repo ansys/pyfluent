@@ -64,16 +64,11 @@ def _populate_hash_dict(name, info, cls):
     if commands:
         commands_hash = []
         for cname, cinfo in commands.items():
-            try:
-                for command in getattr(cls, "command_names", None):
-                    command_cls = getattr(cls, command)
-                    if cname == command_cls.fluent_name:
-                        commands_hash.append(
-                            _populate_hash_dict(cname, cinfo, command_cls)
-                        )
-                        break
-            except TypeError:
-                pass
+            for command in getattr(cls, "command_names", None):
+                command_cls = getattr(cls, command)
+                if cname == command_cls.fluent_name:
+                    commands_hash.append(_populate_hash_dict(cname, cinfo, command_cls))
+                    break
     else:
         commands_hash = None
 
@@ -240,7 +235,7 @@ def _populate_classes(parent_dir):
 
             # write command objects
             command_names = getattr(cls, "command_names", None)
-            if hasattr(command_names, "__iter__"):
+            if command_names:
                 f.write(f"{istr1}command_names = \\\n")
                 strout = io.StringIO()
                 pprint.pprint(command_names, stream=strout, compact=True, width=70)
