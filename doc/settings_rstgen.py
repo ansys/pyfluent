@@ -68,16 +68,13 @@ def _populate_parents_list(cls):
                 parents_dict[child_file].append(cls)
 
     if hasattr(cls, "command_names"):
-        try:
-            for child in cls.command_names:
-                child_cls = getattr(cls, child)
-                child_file = child_cls.__module__.split(".")[-1]
-                if not parents_dict.get(child_file):
-                    parents_dict[child_file] = []
-                if not cls in parents_dict[child_file]:
-                    parents_dict[child_file].append(cls)
-        except TypeError:
-            pass
+        for child in cls.command_names:
+            child_cls = getattr(cls, child)
+            child_file = child_cls.__module__.split(".")[-1]
+            if not parents_dict.get(child_file):
+                parents_dict[child_file] = []
+            if not cls in parents_dict[child_file]:
+                parents_dict[child_file].append(cls)
 
     if hasattr(cls, "argument_names"):
         for child in cls.argument_names:
@@ -101,11 +98,8 @@ def _populate_parents_list(cls):
             _populate_parents_list(getattr(cls, child))
 
     if hasattr(cls, "command_names"):
-        try:
-            for child in cls.command_names:
-                _populate_parents_list(getattr(cls, child))
-        except TypeError:
-            pass
+        for child in cls.command_names:
+            _populate_parents_list(getattr(cls, child))
 
     if hasattr(cls, "argument_names"):
         for child in cls.argument_names:
@@ -121,11 +115,7 @@ def _populate_rst_from_settings(rst_dir, cls):
     file_name = cls.__module__.split(".")[-1]
     rstpath = os.path.normpath(os.path.join(rst_dir, file_name + ".rst"))
     has_children = hasattr(cls, "child_names") and len(cls.child_names) > 0
-    has_commands = (
-        hasattr(cls, "command_names")
-        and hasattr(cls.command_names, "__iter__")
-        and len(cls.command_names) > 0
-    )
+    has_commands = hasattr(cls, "command_names") and len(cls.command_names) > 0
     has_arguments = hasattr(cls, "argument_names") and len(cls.argument_names) > 0
     has_named_object = hasattr(cls, "child_object_type")
     with open(rstpath, "w") as r:
