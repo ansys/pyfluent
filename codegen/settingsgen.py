@@ -64,11 +64,16 @@ def _populate_hash_dict(name, info, cls):
     if commands:
         commands_hash = []
         for cname, cinfo in commands.items():
-            for command in getattr(cls, "command_names", None):
-                command_cls = getattr(cls, command)
-                if cname == command_cls.fluent_name:
-                    commands_hash.append(_populate_hash_dict(cname, cinfo, command_cls))
-                    break
+            try:
+                for command in getattr(cls, "command_names", None):
+                    command_cls = getattr(cls, command)
+                    if cname == command_cls.fluent_name:
+                        commands_hash.append(
+                            _populate_hash_dict(cname, cinfo, command_cls)
+                        )
+                        break
+            except TypeError:
+                pass
     else:
         commands_hash = None
 
