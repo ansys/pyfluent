@@ -1,6 +1,6 @@
 import docker
 
-_IMAGE_NAME = "ghcr.io/pyansys/pyfluent:latest"
+_IMAGE_NAME = "ghcr.io/pyansys/pyfluent:solver-latest"
 
 
 def _is_newer_version_available(client: docker.DockerClient):
