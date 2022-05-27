@@ -54,7 +54,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"REMOTING_PORTS={port}/portspan=2",
                 "-e",
                 "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
-                "ghcr.io/pyansys/pyfluent:v22.2.0",
+                "ghcr.io/pyansys/pyfluent",
                 "-g",
                 f"-sifile={sifile}",
             ]
