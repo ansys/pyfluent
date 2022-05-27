@@ -1,4 +1,4 @@
-Post Processing Examples
+Postprocessing Examples
 ========================
-These examples demonstrate how to the PyVista package to post process Fluent
+These examples demonstrate how to use the PyVista package to postprocess Fluent
 results.
