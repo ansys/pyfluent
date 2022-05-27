@@ -134,7 +134,7 @@ class Session:
         password: str = None,
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
-        remote_instance=None,
+        # remote_instance=None,
     ):
         """Instantiate a Session.
 
@@ -224,6 +224,8 @@ class Session:
         self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)
 
+        # self._remote_instance = remote_instance
+
     @classmethod
     def create_from_server_info_file(
         cls, server_info_filepath: str, cleanup_on_exit: bool = True
@@ -303,8 +305,8 @@ class Session:
             self._channel.close()
             self._channel = None
 
-        if self._remote_instance:
-            self._remote_instance.delete()
+        # if self._remote_instance:
+        #    self._remote_instance.delete()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
