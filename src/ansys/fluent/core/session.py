@@ -137,7 +137,7 @@ class Session:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        remote_instance=None
+        remote_instance=None,
     ):
         """Instantiate a Session.
 
@@ -234,7 +234,7 @@ class Session:
         if start_transcript:
             self.start_transcript()
 
-        # self._remote_instance = remote_instance
+        self._remote_instance = remote_instance
 
 
     @classmethod
@@ -328,8 +328,8 @@ class Session:
             self._channel.close()
             self._channel = None
 
-        # if self._remote_instance:
-        #    self._remote_instance.delete()
+        if self._remote_instance:
+            self._remote_instance.delete()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
