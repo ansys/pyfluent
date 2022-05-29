@@ -6,7 +6,7 @@ module (Beta).
 
 TUI based infrastructure
 -------------------------
-Here’s a simple example of initilization using the TUI based infrastructure:
+Here’s a simple example of initialization using the TUI based infrastructure:
 
 .. code:: python
 
@@ -15,7 +15,7 @@ Here’s a simple example of initilization using the TUI based infrastructure:
 
 Settings module (Beta)
 -------------------------
-Here’s a simple example of initilization using the settings module:
+Here’s a simple example of initialization using the settings module:
 
 .. code:: python
 
