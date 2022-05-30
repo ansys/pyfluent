@@ -171,6 +171,7 @@ class Session:
             PyPIM. This instance will be deleted when calling
             Session.exit().
         """
+        self._channel_str = None
         if channel is not None:
             self._channel = channel
         else:
@@ -178,6 +179,7 @@ class Session:
                 ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
             if not port:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
+            self._channel_str = f"{ip}:{port}"
             if not port:
                 raise ValueError(
                     "The port to connect to Fluent session is not provided."

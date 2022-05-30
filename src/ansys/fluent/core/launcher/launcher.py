@@ -249,7 +249,13 @@ def launch_fluent(
     """
     argvals = locals()
     if start_instance is None:
-        start_instance = bool(int(os.getenv("PYFLUENT_START_INSTANCE", "1")))
+        start_instance = bool(
+            int(
+                os.getenv(
+                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
+                )
+            )
+        )
     if start_instance:
         exe_path = _get_fluent_exe_path()
         launch_string = exe_path
