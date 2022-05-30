@@ -134,14 +134,14 @@ def launch_remote_fluent(
         The Fluent version to run, in the 3 digits format, such as "212".
         If unspecified, the version will be chosen by the server.
     cleanup_on_exit : bool, optional
-        Exit Fluent when python exits or the mapdl Python instance is
+        Exit Fluent when python exits or the Fluent Python instance is
         garbage collected.
         If unspecified, it will be cleaned up.
 
     Returns
     -------
-    ansys.mapdl.core.mapdl._MapdlCore
-        An instance of Mapdl.
+    ansys.fluent.core.session.Session
+        An instance of Session.
     """
     pim = pypim.connect()
     instance = pim.create_instance(
