@@ -9,8 +9,6 @@ def create_solver_session(*args, **kwargs):
 
 @pytest.fixture
 def new_solver_session(with_running_pytest):
-    # import time
-    # time.sleep(20)
     solver = create_solver_session()
     yield solver
     solver.exit()
