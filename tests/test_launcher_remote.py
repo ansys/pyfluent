@@ -10,7 +10,7 @@ import ansys.platform.instancemanagement as pypim
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     fluent = new_solver_session
-    # Create a mock pypim pretenting it is configured and returning a channel to an already running mapdl
+    # Create a mock pypim pretenting it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
         definition_name="definitions/fake-fluent",
         name="instances/fake-fluent",
@@ -38,11 +38,11 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     monkeypatch.setattr(pypim, "is_configured", mock_is_configured)
 
     # Start fluent with launch_fluent
-    # Note: This is mocking to start MAPDL, but actually reusing the common one
+    # Note: This is mocking to start Fluent, but actually reusing the common one
     # Thus cleanup_on_exit is set to false
     fluent = launcher.launch_fluent(cleanup_on_exit=False)
 
-    # Assert: pymapdl went through the pypim workflow
+    # Assert: PyFluent went through the pypim workflow
     assert mock_is_configured.called
     assert mock_connect.called
     mock_client.create_instance.assert_called_with(
