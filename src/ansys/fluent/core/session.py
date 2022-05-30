@@ -162,7 +162,7 @@ class Session:
         remote_instance : ansys.platform.instancemanagement.Instance
             The corresponding remote instance when Fluent is launched through
             PyPIM. This instance will be deleted when calling
-            Session.exit().
+            ``Session.exit()``.
         """
         self._channel_str = None
         if channel is not None:
