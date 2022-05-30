@@ -21,6 +21,7 @@ import ansys.platform.instancemanagement as pypim
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
+PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
 
 
 def _get_fluent_path():
@@ -298,12 +299,11 @@ def launch_fluent(
                 server_info_file.unlink()
     else:
         if pypim.is_configured():
-            print("Starting Fluent remotely.")
             LOG.info(
                 "Starting Fluent remotely." "The startup configuration will be ignored."
             )
             return launch_remote_fluent(
-                product_version="222",
+                product_version=PIM_FLUENT_PRODUCT_VERSION,
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
