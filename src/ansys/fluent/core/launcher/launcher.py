@@ -170,6 +170,7 @@ def launch_fluent(
     ip: str = None,
     port: int = None,
     cleanup_on_exit: bool = True,
+    show_gui: bool = None,
 ) -> Session:
     """Start Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -226,6 +227,15 @@ def launch_fluent(
         PyFluent is exited or exit() is called on the session instance,
         by default True.
 
+    show_gui : bool, optional
+        When True, the Fluent GUI will be displayed as long as start_instance
+        is also True, which can also be set by the environment
+        variable PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``. The show-gui argument has
+        the effect of overriding the PYFLUENT_SHOW_SERVER_GUI variable. E.g., if
+        PYFLUENT_SHOW_SERVER_GUI is set to 1, the gui is hidden if show-gui is
+        set to False. The default is None so that explicit False settings can
+        be detected.
+
     Returns
     -------
     ansys.fluent.session.Session
@@ -243,7 +253,9 @@ def launch_fluent(
             launch_string += f" {additional_arguments}"
             launch_string += f' -sifile="{server_info_filepath}"'
             launch_string += " -nm"
-            if not os.getenv("PYFLUENT_SHOW_SERVER_GUI"):
+            if (show_gui is False) or (
+                show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
+            ):
                 launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
