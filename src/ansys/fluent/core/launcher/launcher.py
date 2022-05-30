@@ -123,9 +123,11 @@ def launch_remote_fluent(
 ):
 
     """Start Fluent remotely using the product instance management API.
+
     When calling this method, you need to ensure that you are in an
     environment where PyPIM is configured. This can be verified with :func:
     `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`.
+
     Parameters
     ----------
     version : str, optional
@@ -135,6 +137,7 @@ def launch_remote_fluent(
         Exit Fluent when python exits or the mapdl Python instance is
         garbage collected.
         If unspecified, it will be cleaned up.
+
     Returns
     -------
     ansys.mapdl.core.mapdl._MapdlCore
