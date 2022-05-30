@@ -303,7 +303,7 @@ def launch_fluent(
     else:
         if pypim.is_configured():
             LOG.info(
-                "Starting Fluent remotely." "The startup configuration will be ignored."
+                "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(
                 product_version=PIM_FLUENT_PRODUCT_VERSION,
