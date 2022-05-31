@@ -127,6 +127,7 @@ def launch_fluent(
     ip: str = None,
     port: int = None,
     cleanup_on_exit: bool = True,
+    start_transcript: bool = True,
     show_gui: bool = None,
 ) -> Session:
     """Start Fluent locally in server mode or connect to a running Fluent
@@ -184,6 +185,11 @@ def launch_fluent(
         PyFluent is exited or exit() is called on the session instance,
         by default True.
 
+    start_transcript : bool, optional
+        The Fluent transcript is started in the client only when
+        start_transcript is True. It can be started and stopped
+        subsequently via method calls on the Session object.
+
     show_gui : bool, optional
         When True, the Fluent GUI will be displayed as long as start_instance
         is also True, which can also be set by the environment
@@ -235,7 +241,7 @@ def launch_fluent(
                     start_timeout,
                 )
             return Session.create_from_server_info_file(
-                server_info_filepath, cleanup_on_exit
+                server_info_filepath, cleanup_on_exit, start_transcript
             )
         finally:
             server_info_file = Path(server_info_filepath)
@@ -252,8 +258,17 @@ def launch_fluent(
             port = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
-            return Session(port=port, cleanup_on_exit=cleanup_on_exit)
+            return Session(
+                port=port,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+            )
         else:
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
-            return Session(ip=ip, port=port, cleanup_on_exit=cleanup_on_exit)
+            return Session(
+                ip=ip,
+                port=port,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+            )
