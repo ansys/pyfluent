@@ -107,7 +107,9 @@ class Session:
 
     Methods
     -------
-    create_from_server_info_file(server_info_filepath, cleanup_on_exit)
+    create_from_server_info_file(
+        server_info_filepath, cleanup_on_exit, start_transcript
+        )
         Create a Session instance from server-info file
 
     start_transcript()
@@ -134,6 +136,7 @@ class Session:
         password: str = None,
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
     ):
         """Instantiate a Session.
 
@@ -158,6 +161,10 @@ class Session:
             When True, the connected Fluent session will be shut down
             when PyFluent is exited or exit() is called on the session
             instance, by default True.
+        start_transcript : bool, optional
+            The Fluent transcript is started in the client only when
+            start_transcript is True. It can be started and stopped
+            subsequently via method calls on the Session object.
         """
         if channel is not None:
             self._channel = channel
@@ -219,9 +226,15 @@ class Session:
         self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)
 
+        if start_transcript:
+            self.start_transcript()
+
     @classmethod
     def create_from_server_info_file(
-        cls, server_info_filepath: str, cleanup_on_exit: bool = True
+        cls,
+        server_info_filepath: str,
+        cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
     ) -> "Session":
         """Create a Session instance from server-info file.
 
@@ -233,6 +246,11 @@ class Session:
             When True, the connected Fluent session will be shut down
             when PyFluent is exited or exit() is called on the session
             instance, by default True.
+        start_transcript : bool, optional
+            The Fluent transcript is started in the client only when
+            start_transcript is True. It can be started and stopped
+            subsequently via method calls on the Session object.
+            Defaults to true.
 
         Returns
         -------
@@ -245,6 +263,7 @@ class Session:
             port=port,
             password=password,
             cleanup_on_exit=cleanup_on_exit,
+            start_transcript=start_transcript,
         )
         return session
 
@@ -252,6 +271,9 @@ class Session:
     def id(self) -> str:
         """Return the session id."""
         return self._id
+
+    def _print_transcript(self, transcript: str):
+        print(transcript)
 
     def _process_transcript(self):
         responses = self._transcript_service.begin_streaming()
@@ -261,7 +283,7 @@ class Session:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    print(transcript[0:-1])
+                    self._print_transcript(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break
