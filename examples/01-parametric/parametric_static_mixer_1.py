@@ -190,7 +190,7 @@ study_2.rename("New Study")
 study_1.delete()
 
 #########################################################################
-# Save parametric project and close Fluent
+# Save the parametric project and close Fluent
 
 project_filepath = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
 
