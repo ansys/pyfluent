@@ -5,7 +5,7 @@ Usage:
 """
 import sys
 
-import ansys.fluent as pyfluent
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import settings
 
 indent_factor = 2
