@@ -137,6 +137,7 @@ class Session:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        remote_instance=None,
     ):
         """Instantiate a Session.
 
@@ -165,7 +166,12 @@ class Session:
             The Fluent transcript is started in the client only when
             start_transcript is True. It can be started and stopped
             subsequently via method calls on the Session object.
+        remote_instance : ansys.platform.instancemanagement.Instance
+            The corresponding remote instance when Fluent is launched through
+            PyPIM. This instance will be deleted when calling
+            ``Session.exit()``.
         """
+        self._channel_str = None
         if channel is not None:
             self._channel = channel
         else:
@@ -173,6 +179,7 @@ class Session:
                 ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
             if not port:
                 port = os.getenv("PYFLUENT_FLUENT_PORT")
+            self._channel_str = f"{ip}:{port}"
             if not port:
                 raise ValueError(
                     "The port to connect to Fluent session is not provided."
@@ -228,6 +235,10 @@ class Session:
 
         if start_transcript:
             self.start_transcript()
+
+        self._remote_instance = remote_instance
+
+        self._remote_instance = remote_instance
 
     @classmethod
     def create_from_server_info_file(
@@ -319,6 +330,9 @@ class Session:
             self.events_manager.stop()
             self._channel.close()
             self._channel = None
+
+        if self._remote_instance:
+            self._remote_instance.delete()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
