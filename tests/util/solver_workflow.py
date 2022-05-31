@@ -4,7 +4,7 @@ import ansys.fluent.core as pyfluent
 
 
 def create_solver_session(*args, **kwargs):
-    return pyfluent.launch_fluent(kwargs)
+    return pyfluent.launch_fluent(**kwargs)
 
 
 @pytest.fixture
