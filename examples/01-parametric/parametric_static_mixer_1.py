@@ -127,7 +127,7 @@ study_1.design_points["Base DP"].input_parameters = input_parameters_update
 study_1.update_current_design_point()
 
 ###########################################################################
-# Add a new design points
+# Add a new design point
 
 design_point_1 = study_1.add_design_point()
 design_point_1_input_parameters = study_1.design_points["DP1"].input_parameters
