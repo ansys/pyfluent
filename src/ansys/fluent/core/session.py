@@ -141,35 +141,38 @@ class Session:
     ):
         """Instantiate a Session.
 
-        Parameters
-        ----------
-        ip : str, optional
-            IP address to connect to existing Fluent instance. Used only
-            when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
-            and can also be set by the environment variable
-            ``PYFLUENT_FLUENT_IP=<ip>``.
-        port : int, optional
-            Port to connect to existing Fluent instance. Used only
-            when ``channel`` is ``None``.  Defaults value can be set by
-            the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
-        password : str, optional
-            Password to connect to existing Fluent instance.
-        channel : grpc.Channel, optional
-            Grpc channel to use to connect to existing Fluent instance.
-            ip and port arguments will be ignored when channel is
-            specified.
-        cleanup_on_exit : bool, optional
-            When True, the connected Fluent session will be shut down
-            when PyFluent is exited or exit() is called on the session
-            instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
-        remote_instance : ansys.platform.instancemanagement.Instance
-            The corresponding remote instance when Fluent is launched through
-            PyPIM. This instance will be deleted when calling
-            ``Session.exit()``.
+                Parameters
+                ----------
+                ip : str, optional
+                    IP address to connect to existing Fluent instance. Used only
+                    when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
+                    and can also be set by the environment variable
+                    ``PYFLUENT_FLUENT_IP=<ip>``.
+                port : int, optional
+                    Port to connect to existing Fluent instance. Used only
+                    when ``channel`` is ``None``.  Defaults value can be set by
+                    the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
+                password : str, optional
+                    Password to connect to existing Fluent instance.
+                channel : grpc.Channel, optional
+                    Grpc channel to use to connect to existing Fluent instance.
+                    ip and port arguments will be ignored when channel is
+                    specified.
+                cleanup_on_exit : bool, optional
+                    When True, the connected Fluent session will be shut down
+                    when PyFluent is exited or exit() is called on the session
+                    instance, by default True.
+        <<<<<<< HEAD
+                start_transcript : bool, optional
+                    The Fluent transcript is started in the client only when
+                    start_transcript is True. It can be started and stopped
+                    subsequently via method calls on the Session object.
+        =======
+        >>>>>>> 066b356fdb2848fe57c89e73a24b7cf68909623f
+                remote_instance : ansys.platform.instancemanagement.Instance
+                    The corresponding remote instance when Fluent is launched through
+                    PyPIM. This instance will be deleted when calling
+                    ``Session.exit()``.
         """
         self._channel_str = None
         if channel is not None:
@@ -232,12 +235,13 @@ class Session:
 
         self._cleanup_on_exit = cleanup_on_exit
         Session._monitor_thread.cbs.append(self.exit)
-        
+
         if start_transcript:
             self.start_transcript()
 
         self._remote_instance = remote_instance
 
+        self._remote_instance = remote_instance
 
     @classmethod
     def create_from_server_info_file(
