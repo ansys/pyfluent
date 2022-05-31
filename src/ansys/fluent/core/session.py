@@ -238,8 +238,6 @@ class Session:
 
         self._remote_instance = remote_instance
 
-        self._remote_instance = remote_instance
-
     @classmethod
     def create_from_server_info_file(
         cls,
