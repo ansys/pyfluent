@@ -22,6 +22,7 @@ _DOCS_FILE = os.path.join(
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
 install_requires = [
+    "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
     "protobuf==3.20.1",
