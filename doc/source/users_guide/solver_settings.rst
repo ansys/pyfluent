@@ -1,6 +1,7 @@
 Specifying Solver Settings
 ==========================
-PyFluent allows you to access Fluent Solver Settings options.
+PyFluent supports specifying solver settings using the TUI API and the
+Settings Module (Beta).
 
 Text User Interface (TUI) API
 -----------------------------

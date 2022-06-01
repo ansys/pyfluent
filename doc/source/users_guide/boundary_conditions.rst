@@ -1,8 +1,7 @@
 Defining Boundary Conditions
 ============================
-PyFluent allows you to define Fluent boundary conditions using the traditional
-Text User Interface (TUI) command-based infrastructure and the settings
-module (Beta).
+PyFluent supports defining boundary conditions using the TUI API and the
+Settings Module (Beta).
 
 Text User Interface (TUI) API
 -----------------------------

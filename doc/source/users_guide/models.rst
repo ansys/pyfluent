@@ -1,8 +1,7 @@
 Defining Your Models
 ====================
-PyFluent allows you to access Fluent Models using the traditional
-TUI Text User Interface command-based infrastructure and the settings
-module (Beta).
+PyFluent supports defining models using the TUI API and the 
+Settings Module (Beta).
 
 Text User Interface (TUI) API
 -----------------------------

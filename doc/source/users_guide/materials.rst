@@ -1,8 +1,7 @@
 Defining Materials
 ==================
-PyFluent allows you to access Fluent Materials using the traditional
-Text User Interface (TUI) command-based infrastructure and the settings
-module (Beta).
+PyFluent supports defining materials using TUI API and 
+Settings Module (Beta).
 
 Text User Interface (TUI) API
 -----------------------------

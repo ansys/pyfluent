@@ -1,5 +1,8 @@
 Applying Solution Settings
 ==========================
+PyFluent supports applying solution settings using the TUI API and the
+Settings Module (Beta).
+
 PyFluent allows you to initialize and solve using the traditional
 Text User Interface (TUI) command-based infrastructure and the settings
 module (Beta).

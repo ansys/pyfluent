@@ -1,7 +1,7 @@
 Applying General Settings
 =========================
-PyFluent allows you to access Fluent General Settings options using 
-the traditional Text User Interface (TUI) command-based infrastructure.
+PyFluent supports defining general settings using the TUI API and
+the Settings Module (Beta).
 
 Text User Interface (TUI) API
 -----------------------------
