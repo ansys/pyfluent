@@ -1,12 +1,13 @@
-Materials
-=========
+Defining Materials
+==================
 PyFluent allows you to access Fluent Materials using the traditional
 Text User Interface (TUI) command-based infrastructure and the settings
 module (Beta).
 
-TUI based infrastructure
--------------------------
-Here’s a simple example defining materials using the TUI based infrastructure:
+Text User Interface (TUI) API
+-----------------------------
+The following example demonstrates how you can define materials using
+the TUI API:
 
 .. code:: python
 
@@ -37,15 +38,12 @@ Here’s a simple example defining materials using the TUI based infrastructure:
         "no",
     )
 
-Settings module (Beta)
--------------------------
-Here’s a simple example defining materials using the settings module:
+Settings Module (Beta)
+----------------------
+The following example demonstrates how you can define materials using
+the settings module (Beta):
 
 .. code:: python
 
     session.solver.root.setup.materials.copy_database_material_by_name(type="fluid", name="water-liquid")
     session.solver.root.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
-
-API Reference
---------------
-For more details, please see the API Reference section. 

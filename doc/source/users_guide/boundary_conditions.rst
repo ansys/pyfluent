@@ -1,12 +1,13 @@
-Boundary Conditions
-====================
+Defining Boundary Conditions
+============================
 PyFluent allows you to define Fluent boundary conditions using the traditional
 Text User Interface (TUI) command-based infrastructure and the settings
 module (Beta).
 
-TUI based infrastructure
--------------------------
-Here’s a simple example defining boundary conditions using the TUI based infrastructure:
+Text User Interface (TUI) API
+-----------------------------
+The following example demonstrates how you can define boundary conditions using
+the TUI API:
 
 .. code:: python
 
@@ -26,9 +27,10 @@ Here’s a simple example defining boundary conditions using the TUI based infra
         "cold-inlet", [], "temperature", "no", 293.15, "quit"
     )
 
-Settings module (Beta)
--------------------------
-Here’s a simple example defining boundary conditions using the settings module:
+Settings Module (Beta)
+----------------------
+The following example demonstrates how you can define boundary conditions using
+the settings module (Beta):
 
 .. code:: python
 
@@ -49,7 +51,3 @@ Here’s a simple example defining boundary conditions using the settings module
         "option": "constant or expression",
         "constant": 293.15,
     }
-
-API Reference
---------------
-For more details, please see the API Reference section. 

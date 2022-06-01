@@ -1,13 +1,15 @@
-Parametric Workflows
-====================
-PyFluent is supporting parametric workflows in Fluent.
+Defining Parametric Workflows
+=============================
+PyFluent supports parametric workflows in Fluent.
 
 Parametric Study
 ----------------
 Here is a simple example:
 
-Create Input Parameters
-~~~~~~~~~~~~~~~~~~~~~~~
+Creating Input Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can create input parameters:
+inlet1_vel, inlet1_temp, inlet2_vel and inlet2_temp
 
 .. code:: python
 
@@ -20,8 +22,8 @@ Create Input Parameters
     import_filename = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer"
     )
-    session.solver.tui.file.read_case(case_file_name=import_filename)
-    session.solver.tui.solve.set.number_of_iterations("100")
+    session.solver.root.file.read(file_type="case", file_name=import_filename)
+    session.solver.root.solution.run_calculation.iterate(number_of_iterations=100)
     session.solver.tui.define.parameters.enable_in_TUI("yes")
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         "inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit"
@@ -36,8 +38,10 @@ Create Input Parameters
         "inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit"
     )
 
-Create Output Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Creating Output Parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can create output parameters:
+outlet-temp-avg and outlet-vel-avg
 
 .. code:: python
 
@@ -69,15 +73,17 @@ Create Output Parameters
         "report-definition", "outlet-vel-avg"
     )
 
-Instantiate a parametric study
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Instantiating a parametric study
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can instantiate a parametric study:
 
 .. code:: python
 
     study_1 = ParametricStudy(session.solver.root.parametric_studies).initialize()
 
-Access and modify input parameters of base DP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Accessing and Modifying Input Parameters of the Base Design Point
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can access and modify input parameters of the base design point:
 
 .. code:: python
 
@@ -85,15 +91,17 @@ Access and modify input parameters of base DP
     input_parameters_update["inlet1_vel"] = 0.5
     study_1.design_points["Base DP"].input_parameters = input_parameters_update
 
-Update current design point
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Updating the Current Design Point
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can update the current design point:
 
 .. code:: python
 
     study_1.update_current_design_point()
 
-Add new design points
-~~~~~~~~~~~~~~~~~~~~~~
+Adding New Design Points
+~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how to add new design points:
 
 .. code:: python
 
@@ -104,22 +112,25 @@ Add new design points
     design_point_1_input_parameters["inlet2_vel"] = 1
     study_1.design_points["DP1"].input_parameters = design_point_1_input_parameters
 
-Duplicate design points
-~~~~~~~~~~~~~~~~~~~~~~~~
+Duplicating Design Points
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can duplicate a design point:
 
 .. code:: python
 
     design_point_2 = study_1.duplicate_design_point(design_point_1)
 
-Update all design points
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Updating All Design Points
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can update all design points in your study:
 
 .. code:: python
 
     study_1.update_all_design_points()
 
-Export design point table as a CSV table
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Exporting the Design Point Table
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can export the design point table as a comma separated value (CSV) table:
 
 .. code:: python
 
@@ -128,36 +139,41 @@ Export design point table as a CSV table
     )
     study_1.export_design_table(design_point_table)
 
-Delete design points
-~~~~~~~~~~~~~~~~~~~~~
+Deleting Design Points
+~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can remove design points:
 
 .. code:: python
 
     study_1.delete_design_points([design_point_1])
 
-Duplicate a design point
+Duplicating Design Points
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can copy design points:
 
 .. code:: python
 
     study_2 = study_1.duplicate()
 
-Rename a parametric study
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Renaming Studies
+~~~~~~~~~~~~~~~~
+The following example demonstrates how you can change the name of your study:
 
 .. code:: python
 
     study_2.rename("New Study")
 
-Delete the old parametric study
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Deleting Studies
+~~~~~~~~~~~~~~~~
+The following example demonstrates how you can remove old parametric studies:
 
 .. code:: python
 
     study_1.delete()
 
-Save parametric project and close Fluent
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Saving Your Study and Closing Fluent
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can save your work and close the Fluent instance:
 
 .. code:: python
 
@@ -165,8 +181,9 @@ Save parametric project and close Fluent
     session.solver.tui.file.parametric_project.save_as(project_filepath)
     session.exit()
 
-Launch Fluent again and read the previously saved project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Resuming Your Work
+~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can re-start Fluent and read in a previously saved project:
 
 .. code:: python
 
@@ -178,15 +195,17 @@ Launch Fluent again and read the previously saved project
         project_filepath_read,
     )
 
-Save the current project
-~~~~~~~~~~~~~~~~~~~~~~~~
+Saving Your Work
+~~~~~~~~~~~~~~~~
+The following example demonstrates how you can save your current project:
 
 .. code:: python
 
     proj.save()
 
-Save the current project to a different file name
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Saving Your Work With a Different Name
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can save your current project to a different file name:
 
 .. code:: python
 
@@ -195,8 +214,9 @@ Save the current project to a different file name
     )
     proj.save_as(project_filepath=project_filepath_save_as)
 
-Export the current project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Exporting Your Work
+~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can export the current project:
 
 .. code:: python
 
@@ -205,20 +225,18 @@ Export the current project
     )
     proj.export(project_filepath=project_filepath_export)
 
-Archive the current project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Archiving Projects
+~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can archive your current project:
 
 .. code:: python
 
     proj.archive()
 
-Close Fluent
-~~~~~~~~~~~~
+Closing Fluent
+~~~~~~~~~~~~~~
+The following example demonstrates how you can end your Fluent session:
 
 .. code:: python
 
     session.exit()
-
-API Reference
---------------
-For more details, please see the API Reference section. 

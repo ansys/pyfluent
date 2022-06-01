@@ -1,27 +1,25 @@
-Solution
-=========
+Applying Solution Settings
+==========================
 PyFluent allows you to initialize and solve using the traditional
 Text User Interface (TUI) command-based infrastructure and the settings
 module (Beta).
 
-TUI based infrastructure
--------------------------
-Here’s a simple example of initialization using the TUI based infrastructure:
+Text User Interface (TUI) API
+-----------------------------
+The following example demonstrates how you can apply solution settings
+using the TUI API:
 
 .. code:: python
 
     session.solver.tui.solve.initialize.hyb_initialization()
     session.solver.tui.solve.iterate(100)
 
-Settings module (Beta)
--------------------------
-Here’s a simple example of initialization using the settings module:
+Settings Module (Beta)
+----------------------
+The following example demonstrates how you can apply solution settings
+using the settings module (Beta):
 
 .. code:: python
 
     session.solver.root.solution.initialization.hybrid_initialize()
     session.solver.root.solution.run_calculation.iterate(number_of_iterations=150)
-
-API Reference
---------------
-For more details, please see the API Reference section. 

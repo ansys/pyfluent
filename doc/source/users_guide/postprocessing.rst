@@ -1,16 +1,15 @@
-Postprocessing
-===============
-PyFluent postprocessing is supporting graphics and plotting.
+Analyzing Your Results
+======================
+PyFluent postprocessing supports graphics and plotting.
 
-Graphics
----------
+Rendering Graphics Objects
+--------------------------
 pyVista library is used for graphics. Followinb graphics operations are 
 supported.
 
-Mesh
-~~~~~
-
-Here’s a simple example of mesh object graphics:
+Displaying Mesh Objects
+~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can display the mesh object:
 
 .. code:: python
 
@@ -38,7 +37,6 @@ Here’s a simple example of mesh object graphics:
     graphics = Graphics(session=session)
     mesh1 = graphics.Meshes["mesh-1"]
     mesh1.show_edges = True
-    mesh1.show_faces = True
     mesh1.surfaces_list = [
         "in1",
         "in2",
@@ -50,10 +48,9 @@ Here’s a simple example of mesh object graphics:
     ]
     mesh1.display("window-1")
 
-Iso-surface
-~~~~~~~~~~~
-
-Here’s a simple example of mesh object graphics:
+Displaying Iso-Surfaces
+~~~~~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can display the iso-surface:
 
 .. code:: python
 
@@ -64,8 +61,9 @@ Here’s a simple example of mesh object graphics:
     iso_surf1.iso_value = -0.125017
     surf_outlet_plane.display("window-2")
 
-Contour
-~~~~~~~~
+Displaying Contours
+~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can display the contour object:
 
 .. code:: python
 
@@ -81,8 +79,9 @@ Contour
     ]
     temperature_contour_manifold.display("window-3")
 
-Vector
-~~~~~~~
+Displaying Vectors
+~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can display the vector object:
 
 .. code:: python
 
@@ -91,13 +90,14 @@ Vector
     velocity_vector.scale = 1
     velocity_vector.display("window-4")
 
-Plotting
----------
-matplotlib is used for plotting. Followinb plotting operations are 
+Plotting Your Data
+------------------
+matplotlib is used for plotting. The following plotting operations are 
 supported.
 
-XY Plots
-~~~~~~~~~
+Displaying XY Plots
+~~~~~~~~~~~~~~~~~~~
+The following example demonstrates how you can display the xy plot:
 
 .. code:: python
 
@@ -106,7 +106,3 @@ XY Plots
     plot_1.surfaces_list = ["outlet"]
     plot_1.y_axis_function = "temperature"
     plot_1.plot("window-5")
-
-API Reference
---------------
-For more details, please see the API Reference section. 

@@ -28,7 +28,7 @@ constituent modules and components.
 
 
 PyFluent Basic Overview
-========================
+=======================
 Session objects are the main entry point when using the PyFluent library, where
 one or more Fluent client sessions can be launched simulateously from the
 server. For example:

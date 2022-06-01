@@ -1,14 +1,14 @@
-Meshing Workflows
-==================
+Using the Meshing Workflows
+===========================
 PyFluent allows you to access all the Fluent Meshing functionalities including 
-the Meshing Workflows.
+the guided Meshing Workflows.
 
-Watertight Geometry
--------------------
-Here’s a simple example demonstrating the the Watertight Geometry Workflow usage:
+Using the Watertight Geometry Meshing Workflow
+----------------------------------------------
+Here is a simple example demonstrating the the Watertight Geometry Workflow usage:
 
-Import Geometry
-~~~~~~~~~~~~~~~
+Importing Your Geometry
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -25,16 +25,16 @@ Import Geometry
     )
     session.meshing.workflow.TaskObject["Import Geometry"].Execute()
 
-Add Local Sizing
-~~~~~~~~~~~~~~~~
+Adding Local Sizing
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
     session.meshing.workflow.TaskObject["Add Local Sizing"].Execute()
 
-Generate the Surface Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Generating the Surface Mesh
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -43,8 +43,8 @@ Generate the Surface Mesh
     }
     session.meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
-Describe Geometry
-~~~~~~~~~~~~~~~~~
+Describing the Geometry
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -59,8 +59,8 @@ Describe Geometry
     )
     session.meshing.workflow.TaskObject["Describe Geometry"].Execute()
 
-Update Boundaries
-~~~~~~~~~~~~~~~~~~
+Updating Boundaries
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -72,15 +72,15 @@ Update Boundaries
     }
     session.meshing.workflow.TaskObject["Update Boundaries"].Execute()
 
-Update Regions
-~~~~~~~~~~~~~~~
+Updating Regions
+~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject["Update Regions"].Execute()
 
-Add Boundary Layers
-~~~~~~~~~~~~~~~~~~~~
+Adding Boundary Layers
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -92,8 +92,8 @@ Add Boundary Layers
     session.meshing.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
     session.meshing.workflow.TaskObject["smooth-transition_1"].Execute()
 
-Generate Volume Mesh
-~~~~~~~~~~~~~~~~~~~~~
+Generating the Volume Mesh
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -105,19 +105,19 @@ Generate Volume Mesh
     }
     session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
-Switch to Solution
-~~~~~~~~~~~~~~~~~~~~
+Switching to Solution Mode
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.tui.switch_to_solution_mode("yes")
 
-Fault-tolerant Meshing
-----------------------
-Here’s a simple example demonstrating the the Fault-tolerant Meshing Workflow usage:
+Using the Fault-tolerant Meshing Workflow
+-----------------------------------------
+Here is a simple example demonstrating the the Fault-tolerant Meshing Workflow usage:
 
-Import CAD and Part Management
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Importing CAD and Part Management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -165,8 +165,8 @@ Import CAD and Part Management
     )
     session.meshing.workflow.TaskObject["Import CAD and Part Management"].Execute()
 
-Describe Geometry and Flow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Describing Geometry and Flow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -196,8 +196,8 @@ Describe Geometry and Flow
     )
     session.meshing.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 
-Enclose Fluid Regions (Capping)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enclosing Fluid Regions (Capping)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -358,8 +358,8 @@ Enclose Fluid Regions (Capping)
     ].Arguments.setState({})
     session.meshing.workflow.TaskObject["outlet-1"].Execute()
 
-Extract Edge Features
-~~~~~~~~~~~~~~~~~~~~~~
+Extracting Edge Features
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -384,8 +384,8 @@ Extract Edge Features
 
     session.meshing.workflow.TaskObject["edge-group-1"].Execute()
 
-Identify Regions
-~~~~~~~~~~~~~~~~~
+Identifying Regions
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -462,8 +462,8 @@ Identify Regions
 
     session.meshing.workflow.TaskObject["void-region-1"].Execute()
 
-Define Leakage Threshold
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Defining Leakage Threshold
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -496,8 +496,8 @@ Define Leakage Threshold
     )
     session.meshing.workflow.TaskObject["leakage-1"].Execute()
 
-Update Regions Settings
-~~~~~~~~~~~~~~~~~~~~~~~~
+Updating Regions Settings
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -538,29 +538,29 @@ Update Regions Settings
     session.meshing.workflow.TaskObject["Update Region Settings"].Execute()
 
 
-Choose Mesh Control Options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Choosing Mesh Control Options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
-Generate the Surface Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generating the Surface Mesh
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
-Update Boundaries
-~~~~~~~~~~~~~~~~~~
+Updating Boundaries
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject["Update Boundaries"].Execute()
 
-Add Boundary Layers
-~~~~~~~~~~~~~~~~~~~~
+Adding Boundary Layers
+~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -577,8 +577,8 @@ Add Boundary Layers
 
     session.meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
 
-Generate the Volume Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Generating the Volume Mesh
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -600,13 +600,9 @@ Generate the Volume Mesh
     )
     session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
-Switch to Solution
-~~~~~~~~~~~~~~~~~~~~
+Switching to Solution Mode
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.tui.switch_to_solution_mode("yes")
-
-API Reference
---------------
-For more details, please see the API Reference section. 
