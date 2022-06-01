@@ -52,7 +52,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
+    # "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
 ]
 
@@ -175,6 +175,7 @@ html_theme_options = {
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
+    "navigation_depth": -1,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
