@@ -197,7 +197,7 @@ Describing Geometry and Flow
     session.meshing.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 
 Enclosing Fluid Regions (Capping)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 

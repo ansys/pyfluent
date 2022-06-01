@@ -4,8 +4,8 @@ PyFluent postprocessing supports graphics and plotting.
 
 Rendering Graphics Objects
 --------------------------
-pyVista library is used for graphics. Followinb graphics operations are 
-supported.
+The post package library is used for rendering graphics objects.
+The following graphics operations are supported.
 
 Displaying Mesh Objects
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,8 +92,7 @@ The following example demonstrates how you can display the vector object:
 
 Plotting Your Data
 ------------------
-matplotlib is used for plotting. The following plotting operations are 
-supported.
+The following plotting operations are supported.
 
 Displaying XY Plots
 ~~~~~~~~~~~~~~~~~~~
