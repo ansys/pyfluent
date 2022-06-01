@@ -51,7 +51,7 @@ jobs:
           PYFLUENT_LAUNCH_CONTAINER: 1
 
       - name: Build Documentation
-        run: make build-doc
+        run: make build-doc DOCS_CNAME=dev.fluentdocs.pyansys.com
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
