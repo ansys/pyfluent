@@ -176,6 +176,7 @@ class TUIGenerator:
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
         menu.doc = menu.doc.replace("\\*", "*")
+        menu.doc = menu.doc.replace("*", "\*")
         menu.doc = menu.doc.strip()
         if not menu.doc.endswith("."):
             menu.doc = menu.doc + "."
@@ -244,10 +245,11 @@ class TUIGenerator:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
         with open(index_file, "w", encoding="utf8") as f:
-            ref = "_ref_" + heading.replace(".", "_")
+            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
             f.write(f".. {ref}:\n\n")
-            f.write(f"{heading}\n")
-            f.write(f"{'=' * len(heading)}\n")
+            heading_ = heading.replace("_", "\_")
+            f.write(f"{heading_}\n")
+            f.write(f"{'=' * len(heading_)}\n")
             desc = menu_descriptions.get(heading)
             if desc:
                 f.write(desc)
