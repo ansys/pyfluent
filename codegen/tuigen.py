@@ -230,17 +230,27 @@ class TUIGenerator:
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n\n")
 
-            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
+            child_menu_names = [
+                v.name for _, v in menu.children.items() if not v.is_command
+            ]
+
+            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
             f.write(f"   :members: {', '.join(command_names)}\n\n")
 
-            f.write(".. toctree::\n")
-            f.write("   :hidden:\n\n")
+            if child_menu_names:
+                f.write(".. toctree::\n")
+                f.write("   :hidden:\n\n")
 
-            for k, v in menu.children.items():
-                if not v.is_command:
-                    f.write(f"   {k}/index\n")
-            f.write("\n")
+                for child_menu in child_menu_names:
+                    f.write(f"   {child_menu}/index\n")
+                    self._write_doc_for_menu(
+                        menu.children[child_menu],
+                        doc_dir / child_menu,
+                        heading + "." + child_menu,
+                        class_name + "." + child_menu,
+                    )
+                f.write("\n")
 
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
