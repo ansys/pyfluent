@@ -79,8 +79,7 @@ _SOLVER_TUI_DOC_DIR = os.path.normpath(
 )
 
 menu_descriptions = {
-    "solver.tui": """
-The PyFluent solver text user interface (TUI) API is provided to command the
+    "solver.tui": """The PyFluent solver text user interface (TUI) API is provided to command the
 Fluent solver using commands that are Pythonic versions of the TUI commands used
 in the Fluent console.  Much like Fluent's TUI the API provides a hierarchical
 interface to the underlying procedural interface of the program.
@@ -244,10 +243,11 @@ class TUIGenerator:
             ref = "_ref_" + heading.replace(".", "_")
             f.write(f".. {ref}:\n\n")
             f.write(f"{heading}\n")
-            f.write(f"{'=' * len(heading)}\n\n")
+            f.write(f"{'=' * len(heading)}\n")
             desc = menu_descriptions.get(heading)
             if desc:
                 f.write(desc)
+            f.write("\n")
             f.write(f".. currentmodule:: {self._tui_module}\n\n")
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n\n")
