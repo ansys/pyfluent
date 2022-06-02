@@ -29,7 +29,7 @@ the TUI API:
 Settings Module (Beta)
 ----------------------
 The following example demonstrates how you can define boundary conditions using
-the settings module (Beta):
+the Settings API:
 
 .. code:: python
 
