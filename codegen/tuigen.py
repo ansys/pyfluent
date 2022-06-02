@@ -307,7 +307,7 @@ def generate():
     # pyfluent.set_log_level("WARNING")
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
-    # TUIGenerator(meshing=False).generate()
+    TUIGenerator(meshing=False).generate()
     LOG.warning(
         "XML help is available but not picked for the following %i paths:",
         len(_XML_HELPSTRINGS),
