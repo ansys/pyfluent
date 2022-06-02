@@ -12,7 +12,7 @@ using the TUI API:
 
     session.solver.tui.define.models.energy("yes", ", ", ", ", ", ", ", ")
 
-Settings Module (Beta)
+Settings API (Beta)
 ----------------------
 The following example demonstrates how you can define the energy model
 using the settings module (Beta):
