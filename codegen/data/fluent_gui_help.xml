@@ -35711,8 +35711,7 @@ the periodic repeat.</p>
          </sect2>
          <sect2 id="flu_meshing_file_start_transcript">
             <h3>file/start-transcript</h3>
-            <p>Starts recording input and output in a file.   A transcript file contains a complete record of all standard input to and output from Fluent (usually all keyboard and user interface input and all screen output).Start the transcription process with the <systemitem moreinfo="none">file/start-transcript</systemitem> command, and end it with the <systemitem moreinfo="none">file/stop-</systemitem>
-               <systemitem moreinfo="none">transcript</systemitem> command (or by exiting the program). <indexterm significance="normal">
+            <p>Starts recording input and output in a file.   A transcript file contains a complete record of all standard input to and output from Fluent (usually all keyboard and user interface input and all screen output).Start the transcription process with the <systemitem moreinfo="none">file/start-transcript</systemitem> command, and end it with the <systemitem moreinfo="none">file/stop-transcript</systemitem> command (or by exiting the program). <indexterm significance="normal">
                   <primary>file/start-transcript</primary>
                </indexterm>
                <indexterm significance="normal">

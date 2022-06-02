@@ -14,6 +14,7 @@ Usage
 
 import os
 from pathlib import Path
+import string
 from typing import Iterable
 import xml.etree.ElementTree as ET
 
@@ -52,6 +53,48 @@ _SOLVER_TUI_FILE = os.path.normpath(
     )
 )
 _INDENT_STEP = 4
+
+_MESHING_TUI_DOC_DIR = os.path.normpath(
+    os.path.join(
+        _THIS_DIRNAME,
+        "..",
+        "doc",
+        "source",
+        "api",
+        "core",
+        "meshing",
+        "tui",
+    )
+)
+_SOLVER_TUI_DOC_DIR = os.path.normpath(
+    os.path.join(
+        _THIS_DIRNAME,
+        "..",
+        "doc",
+        "source",
+        "api",
+        "core",
+        "solver",
+        "tui",
+    )
+)
+
+menu_descriptions = {
+    "solver.tui": """The PyFluent solver text user interface (TUI) API is provided to command the
+Fluent solver using commands that are Pythonic versions of the TUI commands used
+in the Fluent console.  Much like Fluent's TUI the API provides a hierarchical
+interface to the underlying procedural interface of the program.
+
+The solver TUI API does not support Fluent TUI features such as aliases or
+command abbreviation.  As an alternative, using this API in an interactive
+session is easier if you install a tool such as
+`pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_ which provides
+both command line completion and history.  You can also use Python standard
+`help` and `dir` commands on any object in the API to inspect it further.
+
+The TUI based examples in our gallery provide a guide for how to use this API.
+"""
+}
 
 _XML_HELP_FILE = os.path.normpath(
     os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
@@ -113,11 +156,18 @@ class TUIGenerator:
         self,
         meshing_tui_file: str = _MESHING_TUI_FILE,
         solver_tui_file: str = _SOLVER_TUI_FILE,
+        meshing_tui_doc_dir: str = _MESHING_TUI_DOC_DIR,
+        solver_tui_doc_dir: str = _SOLVER_TUI_DOC_DIR,
         meshing: bool = False,
     ):
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
+        self._tui_doc_dir = meshing_tui_doc_dir if meshing else solver_tui_doc_dir
+        self._tui_heading = ("meshing" if meshing else "solver") + ".tui"
+        self._tui_module = "ansys.fluent.core." + self._tui_heading
+        if Path(self._tui_doc_dir).exists():
+            Path(self._tui_doc_dir).unlink()
         self.session = pyfluent.launch_fluent(meshing_mode=meshing)
         self._service = self.session._datamodel_service_tui
         self._main_menu = _TUIMenu([])
@@ -127,10 +177,14 @@ class TUIGenerator:
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
         menu.doc = menu.doc.replace("\\*", "*")
+        menu.doc = menu.doc.replace("*", "\*")
+        menu.doc = menu.doc.strip()
+        if not menu.doc.endswith("."):
+            menu.doc = menu.doc + "."
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
-                if child_name:
+                if child_name and not all(x in string.punctuation for x in child_name):
                     child_menu = _TUIMenu(menu.path + [child_name])
                     menu.children[child_menu.name] = child_menu
                     self._populate_menu(child_menu)
@@ -147,7 +201,9 @@ class TUIGenerator:
         self._write_code_to_tui_file('"""\n', indent)
         doc_lines = menu.doc.splitlines()
         for line in doc_lines:
-            self._write_code_to_tui_file(f"{line}\n", indent)
+            line = line.strip()
+            if line:
+                self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
         self._write_code_to_tui_file("def __init__(self, path, service):\n", indent)
         indent += 1
@@ -173,7 +229,9 @@ class TUIGenerator:
                 self._write_code_to_tui_file('"""\n', indent)
                 doc_lines = menu.children[command].doc.splitlines()
                 for line in doc_lines:
-                    self._write_code_to_tui_file(f"{line}\n", indent)
+                    line = line.strip()
+                    if line:
+                        self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
                     f"return PyMenu(self.service, "
@@ -185,6 +243,46 @@ class TUIGenerator:
         for _, v in menu.children.items():
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
+
+    def _write_doc_for_menu(self, menu, doc_dir: Path, heading, class_name) -> None:
+        doc_dir.mkdir(exist_ok=True)
+        index_file = doc_dir / "index.rst"
+        with open(index_file, "w", encoding="utf8") as f:
+            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
+            f.write(f".. {ref}:\n\n")
+            heading_ = heading.replace("_", "\_")
+            f.write(f"{heading_}\n")
+            f.write(f"{'=' * len(heading_)}\n")
+            desc = menu_descriptions.get(heading)
+            if desc:
+                f.write(desc)
+            f.write("\n")
+            f.write(f".. currentmodule:: {self._tui_module}\n\n")
+            f.write(".. autosummary::\n")
+            f.write("   :toctree: _autosummary\n\n")
+
+            command_names = [v.name for _, v in menu.children.items() if v.is_command]
+            child_menu_names = [
+                v.name for _, v in menu.children.items() if not v.is_command
+            ]
+
+            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
+            if command_names:
+                f.write(f"   :members: {', '.join(command_names)}\n\n")
+
+            if child_menu_names:
+                f.write(".. toctree::\n")
+                f.write("   :hidden:\n\n")
+
+                for _, v in menu.children.items():
+                    if not v.is_command:
+                        f.write(f"   {v.name}/index\n")
+                        self._write_doc_for_menu(
+                            v,
+                            doc_dir / v.name,
+                            heading + "." + v.name,
+                            class_name + "." + v.name,
+                        )
 
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
@@ -207,6 +305,12 @@ class TUIGenerator:
             )
             self._main_menu.name = "main_menu"
             self._write_menu_to_tui_file(self._main_menu)
+            self._write_doc_for_menu(
+                self._main_menu,
+                Path(self._tui_doc_dir),
+                self._tui_heading,
+                self._main_menu.name,
+            )
 
 
 def generate():

@@ -175,6 +175,7 @@ html_theme_options = {
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
+    "navigation_depth": -1,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------

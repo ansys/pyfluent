@@ -40,4 +40,4 @@ TUI Commands Example
    :maxdepth: 2
    :hidden:
 
-   tui
+   tui/index
