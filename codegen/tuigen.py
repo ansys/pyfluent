@@ -229,7 +229,9 @@ class TUIGenerator:
                 self._write_code_to_tui_file('"""\n', indent)
                 doc_lines = menu.children[command].doc.splitlines()
                 for line in doc_lines:
-                    self._write_code_to_tui_file(f"{line}\n", indent)
+                    line = line.strip()
+                    if line:
+                        self._write_code_to_tui_file(f"{line}\n", indent)
                 self._write_code_to_tui_file('"""\n', indent)
                 self._write_code_to_tui_file(
                     f"return PyMenu(self.service, "
