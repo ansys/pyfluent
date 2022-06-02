@@ -58,4 +58,4 @@ The following example demonstrates how you can select the number of processors:
 API Reference
 -------------
 For more details on controlling how Ansys Fluent launches locally, see the
-function description of :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+function description for :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
