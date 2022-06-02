@@ -53,6 +53,31 @@ _SOLVER_TUI_FILE = os.path.normpath(
 )
 _INDENT_STEP = 4
 
+_MESHING_TUI_DOC_DIR = os.path.normpath(
+    os.path.join(
+        _THIS_DIRNAME,
+        "..",
+        "doc",
+        "source",
+        "api",
+        "core",
+        "meshing",
+        "tui",
+    )
+)
+_SOLVER_TUI_DOC_DIR = os.path.normpath(
+    os.path.join(
+        _THIS_DIRNAME,
+        "..",
+        "doc",
+        "source",
+        "api",
+        "core",
+        "solver",
+        "tui",
+    )
+)
+
 _XML_HELP_FILE = os.path.normpath(
     os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
 )
@@ -113,11 +138,16 @@ class TUIGenerator:
         self,
         meshing_tui_file: str = _MESHING_TUI_FILE,
         solver_tui_file: str = _SOLVER_TUI_FILE,
+        meshing_tui_doc_dir: str = _MESHING_TUI_DOC_DIR,
+        solver_tui_doc_dir: str = _SOLVER_TUI_DOC_DIR,
         meshing: bool = False,
     ):
         self._tui_file = meshing_tui_file if meshing else solver_tui_file
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
+        self._tui_doc_dir = meshing_tui_doc_dir if meshing else solver_tui_doc_dir
+        if Path(self._tui_doc_dir).exists():
+            Path(self._tui_doc_dir).unlink()
         self.session = pyfluent.launch_fluent(meshing_mode=meshing)
         self._service = self.session._datamodel_service_tui
         self._main_menu = _TUIMenu([])
@@ -186,8 +216,12 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
+    def _write_doc_for_menu(self) -> None:
+        pass
+
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
+        Path(self._tui_doc_dir).mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             self.session.exit()
@@ -207,6 +241,7 @@ class TUIGenerator:
             )
             self._main_menu.name = "main_menu"
             self._write_menu_to_tui_file(self._main_menu)
+            self._write_doc_for_menu(self._main_menu)
 
 
 def generate():
