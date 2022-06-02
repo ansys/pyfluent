@@ -1,9 +1,11 @@
 from pathlib import Path
 import pickle
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
+import numpy as np
 import pytest
 
+from ansys.fluent.core.services.field_data import SurfaceDataType
 from ansys.fluent.post.matplotlib import Plots
 from ansys.fluent.post.pyvista import Graphics
 
@@ -17,9 +19,45 @@ def patch_mock_data_extractor(mocker) -> None:
 
 
 class MockFieldData:
-    def __init__(self, solver_data):
+    def __init__(self, solver_data, field_info):
         self._session_data = solver_data
         self._request_to_serve = {"surf": [], "scalar": [], "vector": []}
+        self._field_info = field_info
+
+    def get_surface_data(
+        self,
+        surface_name: str,
+        data_type: Union[SurfaceDataType, int],
+        overset_mesh: Optional[bool] = False,
+    ) -> Dict:
+        surfaces_info = self._field_info().get_surfaces_info()
+        surface_ids = surfaces_info[surface_name]["surface_id"]
+        self._request_to_serve["surf"].append(
+            (
+                surface_ids,
+                overset_mesh,
+                data_type == SurfaceDataType.Vertices,
+                data_type == SurfaceDataType.FacesConnectivity,
+                data_type == SurfaceDataType.FacesCentroid,
+                data_type == SurfaceDataType.FacesNormal,
+            )
+        )
+        enum_to_field_name = {
+            SurfaceDataType.FacesConnectivity: "faces",
+            SurfaceDataType.Vertices: "vertices",
+            SurfaceDataType.FacesCentroid: "centroid",
+            SurfaceDataType.FacesNormal: "face-normal",
+        }
+
+        tag_id = 0
+        if overset_mesh:
+            tag_id = self._payloadTags[FieldDataProtoModule.PayloadTag.OVERSET_MESH]
+        return {
+            surface_id: self._session_data["fields"][tag_id][surface_id][
+                enum_to_field_name[data_type]
+            ]
+            for surface_id in surface_ids
+        }
 
     def add_get_surfaces_request(
         self,
@@ -132,7 +170,7 @@ class MockLocalObjectDataExtractor:
             MockLocalObjectDataExtractor._session_data
         )
         self.field_data = lambda: MockFieldData(
-            MockLocalObjectDataExtractor._session_data
+            MockLocalObjectDataExtractor._session_data, self.field_info
         )
         self.id = lambda: 1
 
@@ -147,6 +185,10 @@ def test_field_api():
         v["surface_id"][0] for k, v in field_info.get_surfaces_info().items()
     ]
 
+    # Get vertices
+    vertices_data = field_data.get_surface_data("wall", SurfaceDataType.Vertices)
+
+    # Get multiple fields
     field_data.add_get_surfaces_request(
         surfaces_id[:1],
         provide_vertices=True,
@@ -166,6 +208,8 @@ def test_field_api():
     element_location_tag = 2
     element_data = fields[element_location_tag][surfaces_id[0]]["temperature"]
 
+    # Compare vertices obtained by different APIs
+    np.testing.assert_array_equal(vertices, vertices_data[next(iter(vertices_data))])
     assert len(vertices) == len(node_data) * 3
     assert len(centroid) == len(element_data) * 3
 

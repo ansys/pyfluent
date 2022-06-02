@@ -216,7 +216,7 @@ class Session:
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
-        self.field_data = FieldData(self._field_data_service)
+        self.field_data = FieldData(self._field_data_service, self.field_info)
 
         self.meshing = Session.Meshing(
             self._datamodel_service_tui, self._datamodel_service_se
