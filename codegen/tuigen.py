@@ -176,7 +176,9 @@ class TUIGenerator:
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
         menu.doc = menu.doc.replace("\\*", "*")
-        menu.doc = menu.doc.rstrip()
+        menu.doc = menu.doc.strip()
+        if not menu.doc.endswith("."):
+            menu.doc = menu.doc + "."
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
@@ -197,7 +199,9 @@ class TUIGenerator:
         self._write_code_to_tui_file('"""\n', indent)
         doc_lines = menu.doc.splitlines()
         for line in doc_lines:
-            self._write_code_to_tui_file(f"{line}\n", indent)
+            line = line.strip()
+            if line:
+                self._write_code_to_tui_file(f"{line}\n", indent)
         self._write_code_to_tui_file('"""\n', indent)
         self._write_code_to_tui_file("def __init__(self, path, service):\n", indent)
         indent += 1
@@ -265,14 +269,15 @@ class TUIGenerator:
                 f.write(".. toctree::\n")
                 f.write("   :hidden:\n\n")
 
-                for child_menu in child_menu_names:
-                    f.write(f"   {child_menu}/index\n")
-                    self._write_doc_for_menu(
-                        menu.children[child_menu],
-                        doc_dir / child_menu,
-                        heading + "." + child_menu,
-                        class_name + "." + child_menu,
-                    )
+                for _, v in menu.children.items():
+                    if not v.is_command:
+                        f.write(f"   {v.name}/index\n")
+                        self._write_doc_for_menu(
+                            v,
+                            doc_dir / v.name,
+                            heading + "." + v.name,
+                            class_name + "." + v.name,
+                        )
 
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
