@@ -1,6 +1,6 @@
 Defining Materials
 ==================
-PyFluent supports defining materials using TUI API and 
+PyFluent supports defining materials using the TUI API and 
 Settings Module (Beta).
 
 Text User Interface (TUI) API
