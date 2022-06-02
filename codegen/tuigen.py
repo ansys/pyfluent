@@ -78,6 +78,24 @@ _SOLVER_TUI_DOC_DIR = os.path.normpath(
     )
 )
 
+menu_descriptions = {
+    "solver.tui": """
+The PyFluent solver text user interface (TUI) API is provided to command the
+Fluent solver using commands that are Pythonic versions of the TUI commands used
+in the Fluent console.  Much like Fluent's TUI the API provides a hierarchical
+interface to the underlying procedural interface of the program.
+
+The solver TUI API does not support Fluent TUI features such as aliases or
+command abbreviation.  As an alternative, using this API in an interactive
+session is easier if you install a tool such as
+`pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_ which provides
+both command line completion and history.  You can also use Python standard
+`help` and `dir` commands on any object in the API to inspect it further.
+
+The TUI based examples in our gallery provide a guide for how to use this API.
+"""
+}
+
 _XML_HELP_FILE = os.path.normpath(
     os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
 )
@@ -159,6 +177,7 @@ class TUIGenerator:
         if not menu.doc:
             menu.doc = menugen.get_doc_string()
         menu.doc = menu.doc.replace("\\*", "*")
+        menu.doc = menu.doc.rstrip()
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
@@ -226,6 +245,9 @@ class TUIGenerator:
             f.write(f".. {ref}:\n\n")
             f.write(f"{heading}\n")
             f.write(f"{'=' * len(heading)}\n\n")
+            desc = menu_descriptions.get(heading)
+            if desc:
+                f.write(desc)
             f.write(f".. currentmodule:: {self._tui_module}\n\n")
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n\n")
@@ -236,7 +258,8 @@ class TUIGenerator:
             ]
 
             f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
-            f.write(f"   :members: {', '.join(command_names)}\n\n")
+            if command_names:
+                f.write(f"   :members: {', '.join(command_names)}\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
@@ -250,7 +273,6 @@ class TUIGenerator:
                         heading + "." + child_menu,
                         class_name + "." + child_menu,
                     )
-                f.write("\n")
 
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)

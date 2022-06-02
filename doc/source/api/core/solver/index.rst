@@ -12,4 +12,4 @@ Solver
    :hidden:
   
    settings
-   tui
+   tui/index
