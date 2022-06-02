@@ -146,6 +146,8 @@ class TUIGenerator:
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._tui_doc_dir = meshing_tui_doc_dir if meshing else solver_tui_doc_dir
+        self._tui_heading = "meshing" if meshing else "solver" + ".tui"
+        self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
             Path(self._tui_doc_dir).unlink()
         self.session = pyfluent.launch_fluent(meshing_mode=meshing)
@@ -216,12 +218,15 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
-    def _write_doc_for_menu(self) -> None:
-        pass
+    def _write_doc_for_menu(self, menu, doc_dir: Path, heading) -> None:
+        doc_dir.mkdir(exist_ok=True)
+        index_file = doc_dir / "index.rst"
+        with open(index_file, "w", encoding="utf8") as f:
+            ref = "_ref_" + heading.replace(".", "_")
+            f.write(f".. {ref}:\n\n")
 
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
-        Path(self._tui_doc_dir).mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             self._populate_menu(self._main_menu)
             self.session.exit()
@@ -241,7 +246,9 @@ class TUIGenerator:
             )
             self._main_menu.name = "main_menu"
             self._write_menu_to_tui_file(self._main_menu)
-            self._write_doc_for_menu(self._main_menu)
+            self._write_doc_for_menu(
+                self._main_menu, Path(self._tui_doc_dir), self._tui_heading
+            )
 
 
 def generate():
