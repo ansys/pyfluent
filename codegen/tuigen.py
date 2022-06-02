@@ -14,12 +14,17 @@ Usage
 
 import os
 from pathlib import Path
+import shutil
 import string
 from typing import Iterable
 import xml.etree.ElementTree as ET
 
+from data.fluent_gui_help_patch import XML_HELP_PATCH
+from data.tui_menu_descriptions import MENU_DESCRIPTIONS
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
+from ansys.fluent.core.launcher.launcher import get_fluent_path
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService,
     PyMenu,
@@ -79,27 +84,28 @@ _SOLVER_TUI_DOC_DIR = os.path.normpath(
     )
 )
 
-menu_descriptions = {
-    "solver.tui": """The PyFluent solver text user interface (TUI) API is provided to command the
-Fluent solver using commands that are Pythonic versions of the TUI commands used
-in the Fluent console.  Much like Fluent's TUI the API provides a hierarchical
-interface to the underlying procedural interface of the program.
-
-The solver TUI API does not support Fluent TUI features such as aliases or
-command abbreviation.  As an alternative, using this API in an interactive
-session is easier if you install a tool such as
-`pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_ which provides
-both command line completion and history.  You can also use Python standard
-`help` and `dir` commands on any object in the API to inspect it further.
-
-The TUI based examples in our gallery provide a guide for how to use this API.
-"""
-}
-
 _XML_HELP_FILE = os.path.normpath(
     os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
 )
 _XML_HELPSTRINGS = {}
+
+
+def _copy_tui_help_xml_file():
+    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        # Currently fluent_gui_help.xml is not available in the docker image
+        pass
+    else:
+        xml_source = (
+            get_fluent_path()
+            / ".."
+            / "commonfiles"
+            / "help"
+            / "en-us"
+            / "fluent_gui_help"
+            / "fluent_gui_help.xml"
+        )
+        if xml_source.exists():
+            shutil.copy(str(xml_source), str(_XML_HELP_FILE))
 
 
 def _populate_xml_helpstrings():
@@ -109,13 +115,18 @@ def _populate_xml_helpstrings():
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
 
     for node in field_help_node.findall("sect2"):
+        id = node.get("id")
         k = node.find("h3").text
         k = k.strip().strip("/")
         path = k.split("/")
         path = [c.rstrip("?").replace("-", "_") for c in path]
         k = "/" + "/".join(path)
-        v = "".join(node.find("p").itertext())
-        _XML_HELPSTRINGS[k] = v
+        patched_doc = XML_HELP_PATCH.get(id)
+        if patched_doc:
+            _XML_HELPSTRINGS[k] = patched_doc
+        else:
+            v = "".join(node.find("p").itertext())
+            _XML_HELPSTRINGS[k] = v
 
 
 class _TUIMenuGenerator:
@@ -253,7 +264,7 @@ class TUIGenerator:
             heading_ = heading.replace("_", "\_")
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
-            desc = menu_descriptions.get(heading)
+            desc = MENU_DESCRIPTIONS.get(heading)
             if desc:
                 f.write(desc)
             f.write("\n")
@@ -315,6 +326,7 @@ class TUIGenerator:
 
 def generate():
     # pyfluent.set_log_level("WARNING")
+    _copy_tui_help_xml_file()
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
     TUIGenerator(meshing=False).generate()
