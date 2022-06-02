@@ -178,8 +178,6 @@ class TUIGenerator:
             menu.doc = menugen.get_doc_string()
         menu.doc = menu.doc.replace("\\*", "*")
         menu.doc = menu.doc.replace("*", "\*")
-        menu.doc = menu.doc.replace('"', '"')
-        menu.doc = menu.doc.replace("’", "\’")
         menu.doc = menu.doc.strip()
         if not menu.doc.endswith("."):
             menu.doc = menu.doc + "."
