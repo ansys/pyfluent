@@ -14,6 +14,7 @@ Usage
 
 import os
 from pathlib import Path
+import string
 from typing import Iterable
 import xml.etree.ElementTree as ET
 
@@ -177,13 +178,15 @@ class TUIGenerator:
             menu.doc = menugen.get_doc_string()
         menu.doc = menu.doc.replace("\\*", "*")
         menu.doc = menu.doc.replace("*", "\*")
+        menu.doc = menu.doc.replace('"', '"')
+        menu.doc = menu.doc.replace("’", "\’")
         menu.doc = menu.doc.strip()
         if not menu.doc.endswith("."):
             menu.doc = menu.doc + "."
         child_names = menugen.get_child_names()
         if child_names:
             for child_name in child_names:
-                if child_name:
+                if child_name and not all(x in string.punctuation for x in child_name):
                     child_menu = _TUIMenu(menu.path + [child_name])
                     menu.children[child_menu.name] = child_menu
                     self._populate_menu(child_menu)
