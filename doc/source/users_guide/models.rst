@@ -1,7 +1,7 @@
 Defining Your Models
 ====================
 PyFluent supports defining models using the TUI API and the 
-Settings Module (Beta).
+Settings API (Beta).
 
 Text User Interface (TUI) API
 -----------------------------
