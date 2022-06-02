@@ -146,7 +146,7 @@ class TUIGenerator:
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
         self._tui_doc_dir = meshing_tui_doc_dir if meshing else solver_tui_doc_dir
-        self._tui_heading = "meshing" if meshing else "solver" + ".tui"
+        self._tui_heading = ("meshing" if meshing else "solver") + ".tui"
         self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
             Path(self._tui_doc_dir).unlink()
@@ -218,12 +218,29 @@ class TUIGenerator:
             if not v.is_command:
                 self._write_menu_to_tui_file(v, indent)
 
-    def _write_doc_for_menu(self, menu, doc_dir: Path, heading) -> None:
+    def _write_doc_for_menu(self, menu, doc_dir: Path, heading, class_name) -> None:
         doc_dir.mkdir(exist_ok=True)
         index_file = doc_dir / "index.rst"
         with open(index_file, "w", encoding="utf8") as f:
             ref = "_ref_" + heading.replace(".", "_")
             f.write(f".. {ref}:\n\n")
+            f.write(f"{heading}\n")
+            f.write(f"{'=' * len(heading)}\n\n")
+            f.write(f".. currentmodule:: {self._tui_module}\n\n")
+            f.write(".. autosummary::\n")
+            f.write("   :toctree: _autosummary\n\n")
+
+            f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
+            command_names = [v.name for _, v in menu.children.items() if v.is_command]
+            f.write(f"   :members: {', '.join(command_names)}\n\n")
+
+            f.write(".. toctree::\n")
+            f.write("   :hidden:\n\n")
+
+            for k, v in menu.children.items():
+                if not v.is_command:
+                    f.write(f"   {k}/index\n")
+            f.write("\n")
 
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
@@ -247,7 +264,10 @@ class TUIGenerator:
             self._main_menu.name = "main_menu"
             self._write_menu_to_tui_file(self._main_menu)
             self._write_doc_for_menu(
-                self._main_menu, Path(self._tui_doc_dir), self._tui_heading
+                self._main_menu,
+                Path(self._tui_doc_dir),
+                self._tui_heading,
+                self._main_menu.name,
             )
 
 
@@ -255,7 +275,7 @@ def generate():
     # pyfluent.set_log_level("WARNING")
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
-    TUIGenerator(meshing=False).generate()
+    # TUIGenerator(meshing=False).generate()
     LOG.warning(
         "XML help is available but not picked for the following %i paths:",
         len(_XML_HELPSTRINGS),
