@@ -7,4 +7,4 @@ def test_report_system_proc_stats_tui(new_solver_session, capsys) -> None:
     new_solver_session.solver.tui.report.system.sys_stats()
     new_solver_session.solver.tui.report.system.sys_stats()
     captured = capsys.readouterr()
-    assert "CPU/Memory Usage" in captured.out
+    assert "CPU" in captured.out
