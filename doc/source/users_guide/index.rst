@@ -31,7 +31,7 @@ PyFluent Basic Overview
 =======================
 Session objects are the main entry point when using the PyFluent library, where
 one or more Fluent server sessions can be launched simultaneously from the
-server. For example:
+client. For example:
 
 .. code:: python
 
