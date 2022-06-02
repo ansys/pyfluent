@@ -37,7 +37,7 @@ the TUI API:
         "no",
     )
 
-Settings Module (Beta)
+Settings API (Beta)
 ----------------------
 The following example demonstrates how you can define materials using
 the settings module (Beta):
