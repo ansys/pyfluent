@@ -9,7 +9,7 @@ process industries. It is often important to predict the flow field and
 temperature field in the area of the mixing region in order to properly design
 the junction.
 
-This example demonstrates use of 'settings' modules (Beta):
+This example demonstrates use of 'settings' modules (Beta)
 
 - Launch Ansys Fluent
 - Import Mesh
@@ -18,7 +18,6 @@ This example demonstrates use of 'settings' modules (Beta):
 - Setup Boundary Conditions
 - Iniialize and Solve
 - Compute Mass Flow Rate and Temperature
-- Display Mesh and Contour using PyVista
 
 Problem Description:
 A cold fluid at 20 deg C flows into the pipe through a large inlet, and mixes
@@ -27,7 +26,6 @@ the elbow. The pipe dimensions are in inches and the fluid properties and
 boundary conditions are given in SI units. The Reynolds number for the flow at
 the larger inlet is 50, 800, so a turbulent flow model will be required.
 """
-# sphinx_gallery_thumbnail_number = 2
 
 ###############################################################################
 # First, download the mesh file and start Fluent as a service with
@@ -35,10 +33,6 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.post import set_config
-from ansys.fluent.post.pyvista import Graphics
-
-set_config(blocking=True, set_view_on_display="isometric")
 
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
@@ -195,31 +189,6 @@ session.solver.root.solution.report_definitions.flux["mass_flow_rate"].zone_name
 ]
 session.solver.root.solution.report_definitions.flux["mass_flow_rate"].print_state()
 session.solver.root.solution.report_definitions.compute(report_defs=["mass_flow_rate"])
-
-###############################################################################
-# Mesh display using PyVista
-
-graphics_session = Graphics(session)
-mesh_1 = graphics_session.Meshes["mesh-1"]
-mesh_1.show_edges = True
-mesh_1.surfaces_list = [
-    "cold-inlet",
-    "hot-inlet",
-    "wall-elbow",
-    "wall-inlet",
-    "symmetry-xyplane",
-    "outlet",
-]
-
-mesh_1.display()
-
-###############################################################################
-# Temperature Contour display using PyVista
-
-contour_1 = graphics_session.Contours["contour_1"]
-contour_1.field = "temperature"
-contour_1.surfaces_list = ["symmetry-xyplane"]
-contour_1.display()
 
 ###############################################################################
 # Write final case and data.

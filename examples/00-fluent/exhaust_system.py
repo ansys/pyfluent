@@ -10,7 +10,7 @@ the junction. You will use the Fault-tolerant Meshing guided workflow, which
 unlike the watertight workflow used in Fluid Flow in a Mixing Elbow, is
 appropriate for geometries with imperfections, such as gaps and leakages.
 
-End-to-end Fault Tolerant Meshing Workflow example:
+End-to-end Fault Tolerant Meshing Workflow example
 
 - Use the Fault-tolerant Meshing guided workflow to:
     - Import a CAD geometry and manage individual parts
@@ -33,6 +33,8 @@ manifold where edge extraction will be considered. There is also a known small
 leakage included that will be addressed in the meshing portion of the tutorial
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
+
+# sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
 
 ###############################################################################
 # First, download the geometry file and start Fluent as a service with

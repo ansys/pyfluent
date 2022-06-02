@@ -9,7 +9,7 @@ process industries. It is often important to predict the flow field and
 temperature field in the area of the mixing region in order to properly design
 the junction.
 
-End-to-end Watertight Meshing Workflow example:
+End-to-end Watertight Meshing Workflow example
 
 - Use the Watertight Geometry guided workflow to:
     - Import a CAD geometry
@@ -33,6 +33,7 @@ the elbow. The pipe dimensions are in inches and the fluid properties and
 boundary conditions are given in SI units. The Reynolds number for the flow at
 the larger inlet is 50, 800, so a turbulent flow model will be required.
 """
+# sphinx_gallery_thumbnail_path = '_static/mixing_elbow.png'
 
 ###############################################################################
 # First, download the geometry file and start Fluent as a service with
@@ -40,10 +41,6 @@ the larger inlet is 50, 800, so a turbulent flow model will be required.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.post import set_config
-from ansys.fluent.post.pyvista import Graphics
-
-set_config(blocking=True, set_view_on_display="isometric")
 
 import_filename = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
 
@@ -347,21 +344,6 @@ session.solver.tui.solve.initialize.hyb_initialization()
 session.solver.tui.solve.iterate(100)
 
 ###############################################################################
-# Examine the mass flux report for convergence: Select cold-inlet, hot-inlet,
-# and outlet from the Boundaries selection list.
-
-# session.solver.tui.report.fluxes.mass_flow(
-#     "no",
-#     "cold-inlet",
-#     "hot-inlet",
-#     "outlet",
-#     "()",
-#     "yes",
-#     "mass-flux1.flp",
-# )
-
-
-###############################################################################
 # Save the data file (mixing_elbow1.dat.h5).
 # session.solver.tui.file.write_data('mixing_elbow1.dat.h5')
 
@@ -370,7 +352,6 @@ session.solver.tui.solve.iterate(100)
 # symmetry plane:
 # Provide contour-vel for Contour Name. Select velocity magnitude. Select
 # symmetry-xyplane from the Surfaces list. Display contour-vel contour.
-
 
 session.solver.tui.display.objects.create(
     "contour",
@@ -436,7 +417,7 @@ session.solver.tui.display.objects.create(
     "2",
     "quit",
 )
-# session.solver.tui.display.objects.display("vector-vel")
+# session.solver.tui.display.objects.display("vector")
 
 ###############################################################################
 # Create an iso-surface representing the intersection of the plane z=0 and the
@@ -458,59 +439,6 @@ session.solver.tui.display.objects.create(
     "()",
     "quit",
 )
-# session.solver.tui.display.objects.display("xy-outlet-temp")
-# session.solver.tui.plot.plot(
-#     "yes",
-#     "temp-1.xy",
-#     "no",
-#     "no",
-#     "no",
-#     "temperature",
-#     "yes",
-#     "1",
-#     "0",
-#     "0",
-#     "z=0_outlet",
-#     "()",
-# )
-#
-
-###############################################################################
-# Mesh display using PyVista
-
-graphics_session = Graphics(session)
-mesh_1 = graphics_session.Meshes["mesh-1"]
-mesh_1.show_edges = True
-mesh_1.surfaces_list = [
-    "cold-inlet",
-    "hot-inlet",
-    "wall-elbow",
-    "wall-inlet",
-    "symmetry-xyplane",
-    "outlet",
-]
-
-mesh_1.display()
-
-###############################################################################
-# Temperature Contour display using PyVista
-
-# contour_1 = graphics_session.Contours["contour_1"]
-# contour_1.field = "temperature"
-# contour_1.surfaces_list = [
-#     "symmetry-xyplane"
-# ]
-# contour_1.display()
-
-###############################################################################
-# Velocity Magnitude Contour display using PyVista
-
-# contour_2 = graphics_session.Contours["contour_2"]
-# contour_2.field = "velocity-magnitude"
-# contour_2.surfaces_list = [
-#     "symmetry-xyplane"
-# ]
-# contour_2.display()
 
 ###############################################################################
 # Write final case and data.
@@ -520,6 +448,5 @@ mesh_1.display()
 # Close Fluent
 
 session.exit()
-
 
 ###############################################################################

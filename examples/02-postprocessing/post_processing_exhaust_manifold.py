@@ -8,14 +8,14 @@ of an exhaust manifold with high temperature flows passing through.
 The flow through the manifold is turbulent and
 involves conjugate heat transfer.
 
-This example demonstrates postprocessing using pyvista:
+This example demonstrates postprocessing using pyvista
 
 - Create surfaces for the display of 3D data.
 - Display filled contours of temperature on several surfaces.
 - Display velocity vectors.
 - Plot quantitative results using Matplotlib
 """
-# sphinx_gallery_thumbnail_number = -1
+# sphinx_gallery_thumbnail_number = -3
 
 ###############################################################################
 import ansys.fluent.core as pyfluent
@@ -127,8 +127,8 @@ temperature_contour_manifold.display("window-5")
 # Currently using outlet-plane since mid-plane is affected by Issue # 276
 
 velocity_vector = graphics.Vectors["velocity-vector"]
-velocity_vector.surfaces_list = ["outlet-plane"]
-velocity_vector.scale = 1
+velocity_vector.surfaces_list = ["solid_up:1:830"]
+velocity_vector.scale = 2
 velocity_vector.display("window-6")
 
 ###############################################################################

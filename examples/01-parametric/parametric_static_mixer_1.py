@@ -2,7 +2,8 @@
 
 Parametric Study Workflow
 ------------------------------
-This parametric study workflow example performs these steps:
+
+This parametric study workflow example performs these steps
 
 - Reads a case file and data file
 - Creates input and output parameters
@@ -13,6 +14,7 @@ This parametric study workflow example performs these steps:
 - Creates, updates, and deletes more DPs
 - Creates, renames, duplicates and deletes parametric studies
 """
+# sphinx_gallery_thumbnail_path = '_static/DP_table.png'
 
 ############################################################################
 from pathlib import Path
@@ -21,7 +23,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.parametric import ParametricProject, ParametricStudy
 from ansys.fluent.post import set_config
-from ansys.fluent.post.pyvista import Graphics
 
 set_config(blocking=True, set_view_on_display="isometric")
 
@@ -145,21 +146,6 @@ design_point_2 = study_1.duplicate_design_point(design_point_1)
 # Update all design points for study 1
 
 study_1.update_all_design_points()
-
-#########################################################################
-# Mesh display using PyVista
-
-graphics_session = Graphics(session)
-mesh_1 = graphics_session.Meshes["mesh-1"]
-mesh_1.show_edges = True
-mesh_1.surfaces_list = [
-    "inlet1",
-    "inlet2",
-    "wall",
-    "outlet",
-]
-
-mesh_1.display()
 
 ###############################################################################
 # Export design point table as a CSV table
