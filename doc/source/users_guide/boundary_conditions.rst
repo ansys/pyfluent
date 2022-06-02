@@ -1,7 +1,7 @@
 Defining Boundary Conditions
 ============================
 PyFluent supports defining boundary conditions using the TUI API and the
-Settings Module (Beta).
+the Settings API (Beta).
 
 Text User Interface (TUI) API
 -----------------------------
