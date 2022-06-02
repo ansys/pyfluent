@@ -26,7 +26,7 @@ the TUI API:
         "cold-inlet", [], "temperature", "no", 293.15, "quit"
     )
 
-Settings Module (Beta)
+Settings API (Beta)
 ----------------------
 The following example demonstrates how you can define boundary conditions using
 the Settings API:
