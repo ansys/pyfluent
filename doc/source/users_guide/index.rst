@@ -1,18 +1,37 @@
+.. _ref_user_guide:
 
-.. _user_guide:
-
-************
-User's Guide
-************
-This guide contains pertinent information regarding using Ansys PyFluent and its
+==========
+User Guide
+==========
+This guide provides information regarding using Ansys PyFluent and its
 constituent modules and components.
 
-==================================
-Understanding the PyFluent Modules
-==================================
+
+..
+   This toctreemust be a top level index to get it to show up in
+   pydata_sphinx_theme
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   launching_ansys_fluent
+   meshing_workflows
+   general_settings
+   solver_settings
+   models
+   materials
+   boundary_conditions
+   solution
+   postprocessing
+   parametric_workflows
+
+
+PyFluent Basic Overview
+=======================
 Session objects are the main entry point when using the PyFluent library, where
-one or more Fluent client sessions can be launched simulateously from the
-server. For example:
+one or more Fluent server sessions can be launched simultaneously from the
+client. For example:
 
 .. code:: python
 
