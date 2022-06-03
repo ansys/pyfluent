@@ -14,8 +14,10 @@ Usage
 
 import os
 from pathlib import Path
+import platform
 import shutil
 import string
+import subprocess
 from typing import Iterable
 import xml.etree.ElementTree as ET
 
@@ -24,13 +26,14 @@ from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
-from ansys.fluent.core.launcher.launcher import get_fluent_path
+from ansys.fluent.core.launcher.launcher import FLUENT_VERSION, get_fluent_path
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService,
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
+import docker
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 _MESHING_TUI_FILE = os.path.normpath(
@@ -89,11 +92,20 @@ _XML_HELP_FILE = os.path.normpath(
 )
 _XML_HELPSTRINGS = {}
 
+_FLUENT_IMAGE_NAME = "ghcr.io/pyansys/pyfluent:latest"
+
 
 def _copy_tui_help_xml_file():
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        # Currently fluent_gui_help.xml is not available in the docker image
-        pass
+        client = docker.from_env()
+        container = client.containers.create(_FLUENT_IMAGE_NAME)
+        xml_source = f"/ansys_inc/v{FLUENT_VERSION.replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        is_linux = platform.system() == "Linux"
+        subprocess.run(
+            f"docker cp {container.name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
+        )
+        container.remove()
+
     else:
         xml_source = (
             get_fluent_path()
@@ -105,10 +117,15 @@ def _copy_tui_help_xml_file():
             / "fluent_gui_help.xml"
         )
         if xml_source.exists():
-            shutil.copy(str(xml_source), str(_XML_HELP_FILE))
+            shutil.copy(str(xml_source), _XML_HELP_FILE)
+        else:
+            LOG.warning("fluent_gui_help.xml is not found.")
 
 
 def _populate_xml_helpstrings():
+    if not Path(_XML_HELP_FILE).exists():
+        return
+
     tree = ET.parse(_XML_HELP_FILE)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
