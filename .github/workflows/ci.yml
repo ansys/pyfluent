@@ -231,7 +231,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install-post
+          make install
 
       - name: Unit Testing
         run: make unittest
