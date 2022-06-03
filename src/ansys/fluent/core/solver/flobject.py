@@ -692,13 +692,18 @@ def get_cls(name, info, parent=None):
         cls = type(pname, (base,), dct)
 
         children = info.get("children")
+        taboo = set(dir(cls))
+        taboo |= set(
+            ["child_names", "command_names", "argument_names", "child_object_type"]
+        )
         if children:
+            taboo.add("child_names")
             cls.child_names = []
             for cname, cinfo in children.items():
                 ccls = get_cls(cname, cinfo, cls)
                 i = 0
                 ccls_name = ccls.__name__
-                while ccls_name in cls.child_names:
+                while ccls_name in taboo:
                     if i > 0:
                         ccls_name = ccls_name[: ccls_name.rfind("_")]
                     i += 1
@@ -706,14 +711,17 @@ def get_cls(name, info, parent=None):
                 ccls.__name__ = ccls_name
                 # pylint: disable=no-member
                 cls.child_names.append(ccls.__name__)
+                taboo.add(ccls_name)
                 setattr(cls, ccls.__name__, ccls)
+
         commands = info.get("commands")
         if commands:
             cls.command_names = []
             for cname, cinfo in commands.items():
                 ccls = get_cls(cname, cinfo, cls)
+                i = 0
                 ccls_name = ccls.__name__
-                while ccls_name in cls.command_names:
+                while ccls_name in taboo:
                     if i > 0:
                         ccls_name = ccls_name[: ccls_name.rfind("_")]
                     i += 1
@@ -721,6 +729,7 @@ def get_cls(name, info, parent=None):
                 ccls.__name__ = ccls_name
                 # pylint: disable=no-member
                 cls.command_names.append(ccls.__name__)
+                taboo.add(ccls_name)
                 setattr(cls, ccls.__name__, ccls)
 
         arguments = info.get("arguments")
@@ -732,12 +741,13 @@ def get_cls(name, info, parent=None):
             cls.argument_names = []
             for aname, ainfo in arguments.items():
                 ccls = get_cls(aname, ainfo, cls)
+                i = 0
                 th = ccls._state_type
                 th = th.__name__ if hasattr(th, "__name__") else str(th)
                 doc += f"    {ccls.__name__} : {th}\n"
                 doc += f"        {ccls.__doc__}\n"
                 ccls_name = ccls.__name__
-                while ccls_name in cls.argument_names:
+                while ccls_name in taboo:
                     if i > 0:
                         ccls_name = ccls_name[: ccls_name.rfind("_")]
                     i += 1
@@ -745,7 +755,9 @@ def get_cls(name, info, parent=None):
                 ccls.__name__ = ccls_name
                 # pylint: disable=no-member
                 cls.argument_names.append(ccls.__name__)
+                taboo.add(ccls_name)
                 setattr(cls, ccls.__name__, ccls)
+
             cls.__doc__ = doc
         object_type = info.get("object-type")
         if object_type:
