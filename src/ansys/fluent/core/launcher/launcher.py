@@ -24,7 +24,15 @@ FLUENT_VERSION = "22.2"
 PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
 
 
-def _get_fluent_path():
+def get_fluent_path() -> Path:
+    """Get the local Fluent installation path specified by PYFLUENT_FLUENT_ROOT
+    or AWP_ROOTXXX environment variable.
+
+    Returns
+    -------
+    str
+        Local Fluent installation path.
+    """
     if "PYFLUENT_FLUENT_ROOT" in os.environ:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
         return Path(path)
@@ -34,7 +42,7 @@ def _get_fluent_path():
 
 
 def _get_fluent_exe_path():
-    exe_path = _get_fluent_path()
+    exe_path = get_fluent_path()
     if platform.system() == "Windows":
         exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
     else:
