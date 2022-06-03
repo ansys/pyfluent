@@ -14,5 +14,3 @@ Add examples here for PyFluent ``ansys-fluent``.
    :hidden:
 
 .. 00-fluent/README.txt
-.. 01-parametric/README.txt
-.. 02-postprocessing/README.txt

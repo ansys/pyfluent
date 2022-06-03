@@ -30,8 +30,8 @@ jobs:
           sudo apt update
           sudo apt install pandoc libegl1
 
-      - name: Install pyfluent with post module
-        run: make install-post
+      - name: Install pyfluent
+        run: make install
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
