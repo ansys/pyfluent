@@ -11,24 +11,24 @@ from ansys.fluent.core.session import Session
 from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
 from ansys.fluent.post import get_config
 from ansys.fluent.post.post_data_extractor import FieldDataExtractor
-from ansys.fluent.post.post_object_defns import GraphicsDefn, PlotDefn
+from ansys.fluent.post.post_object_defns import GraphicsDefn
 from ansys.fluent.post.post_windows_manager import PostWindow, PostWindowsManager
 
 
 class PyVistaWindow(PostWindow):
     """Class for PyVista window."""
 
-    def __init__(self, id: str, post_object: Union[GraphicsDefn, PlotDefn]):
+    def __init__(self, id: str, post_object: GraphicsDefn):
         """Instantiate a PyVistaWindow.
 
         Parameters
         ----------
         id : str
             Window id.
-        post_object : Union[GraphicsDefn, PlotDefn]
+        post_object : GraphicsDefn
             Object to draw.
         """
-        self.post_object: Union[GraphicsDefn, PlotDefn] = post_object
+        self.post_object: GraphicsDefn = post_object
         self.id: str = id
         self.plotter: Union[BackgroundPlotter, pv.Plotter] = (
             pv.Plotter(title=f"PyFluent ({self.id})")
@@ -351,7 +351,7 @@ class PyVistaWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
         """Instantiate WindowManager for PyVista."""
         self._post_windows: Dict[str:PyVistaWindow] = {}
         self._plotter_thread: threading.Thread = None
-        self._post_object: Union[GraphicsDefn, PlotDefn] = None
+        self._post_object: GraphicsDefn = None
         self._window_id: str = None
         self._exit_thread: bool = False
         self._app = None
@@ -394,14 +394,12 @@ class PyVistaWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
                 self._open_and_plot_console(None, window_id)
             return window_id
 
-    def set_object_for_window(
-        self, object: Union[GraphicsDefn, PlotDefn], window_id: str
-    ) -> None:
+    def set_object_for_window(self, object: GraphicsDefn, window_id: str) -> None:
         """Associate post object with running window instance.
 
         Parameters
         ----------
-        object : Union[GraphicsDefn, PlotDefn]
+        object : GraphicsDefn
             Post object to associate with window.
 
         window_id : str
@@ -419,14 +417,12 @@ class PyVistaWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
             if window:
                 window.post_object = object
 
-    def plot(
-        self, object: Union[GraphicsDefn, PlotDefn], window_id: Optional[str] = None
-    ) -> None:
+    def plot(self, object: GraphicsDefn, window_id: Optional[str] = None) -> None:
         """Draw plot.
 
         Parameters
         ----------
-        object: Union[GraphicsDefn, PlotDefn]
+        object: GraphicsDefn
             Object to plot.
 
         window_id : str, optional

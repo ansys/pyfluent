@@ -68,6 +68,9 @@ class LocalObjectDataExtractor:
         self.obj = obj
         self.field_info = lambda: obj._get_top_most_parent().session.field_info
         self.field_data = lambda: obj._get_top_most_parent().session.field_data
+        self.monitors_manager = (
+            lambda: obj._get_top_most_parent().session.monitors_manager
+        )
         self.id = lambda: obj._get_top_most_parent().session.id
         if obj.__class__.__name__ == "Surface":
             self.surface_api = LocalObjectDataExtractor._SurfaceAPI(obj)

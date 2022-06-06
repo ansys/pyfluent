@@ -5,7 +5,7 @@ from typing import Optional
 
 from ansys.fluent.core.meta import PyLocalContainer
 from ansys.fluent.post.matplotlib.matplot_windows_manager import matplot_windows_manager
-from ansys.fluent.post.post_object_defns import XYPlotDefn
+from ansys.fluent.post.post_object_defns import MonitorDefn, XYPlotDefn
 
 
 class Plots:
@@ -59,6 +59,18 @@ class XYPlot(XYPlotDefn):
         window_id : str, optional
             Window id. If not specified unique id is used.
         """
-        self._pre_display()
         matplot_windows_manager.plot(self, window_id)
-        self._post_display()
+
+
+class MonitorPlot(MonitorDefn):
+    """Monitor Plot."""
+
+    def plot(self, window_id: Optional[str] = None):
+        """Draw Monitor Plot.
+
+        Parameters
+        ----------
+        window_id : str, optional
+            Window id. If not specified unique id is used.
+        """
+        matplot_windows_manager.plot(self, window_id)

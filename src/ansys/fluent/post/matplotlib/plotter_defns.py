@@ -48,6 +48,7 @@ class Plotter:
         self._max_y = None
         self._min_x = None
         self._max_x = None
+        self._yscale = None
         self._data = {}
         self._closed = False
         self._visible = False
@@ -72,8 +73,8 @@ class Plotter:
             max_y_value = np.amax(data[curve]["yvalues"])
             min_x_value = np.amin(data[curve]["xvalues"])
             max_x_value = np.amax(data[curve]["xvalues"])
-            self._data[curve]["xvalues"] += data[curve]["xvalues"].tolist()
-            self._data[curve]["yvalues"] += data[curve]["yvalues"].tolist()
+            self._data[curve]["xvalues"] = data[curve]["xvalues"].tolist()
+            self._data[curve]["yvalues"] = data[curve]["yvalues"].tolist()
             self._min_y = min(self._min_y, min_y_value) if self._min_y else min_y_value
             self._max_y = max(self._max_y, max_y_value) if self._max_y else max_y_value
             self._min_x = min(self._min_x, min_x_value) if self._min_x else min_x_value
@@ -84,10 +85,13 @@ class Plotter:
             curve_line.set_data(
                 self._data[curve]["xvalues"], self._data[curve]["yvalues"]
             )
-        x_range = max_x_value - min_x_value
-        y_range = max_y_value - min_y_value
-        self.ax.set_xlim(self._min_x, self._max_x)
+        if self._max_x > self._min_x:
+            self.ax.set_xlim(self._min_x, self._max_x)
+        y_range = self._max_y - self._min_y
+        if self._yscale == "log":
+            y_range = 0
         self.ax.set_ylim(self._min_y - y_range * 0.2, self._max_y + y_range * 0.2)
+
         if not self._visible:
             self._visible = True
             plt.show()
@@ -123,6 +127,7 @@ class Plotter:
         self._title = properties.get("title", self._title)
         self._xlabel = properties.get("xlabel", self._xlabel)
         self._ylabel = properties.get("ylabel", self._ylabel)
+        self._yscale = properties.get("yscale", self._yscale)
         self._data = {}
         self._min_y = None
         self._max_y = None
@@ -140,6 +145,8 @@ class Plotter:
     def _reset(self):
         plt.figure(self.fig.number)
         self.ax.cla()
+        if self._yscale:
+            self.ax.set_yscale(self._yscale)
         for curve_name in self._curves:
             self._data[curve_name] = {}
             self._data[curve_name]["xvalues"] = []

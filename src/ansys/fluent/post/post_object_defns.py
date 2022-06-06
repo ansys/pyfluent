@@ -68,6 +68,22 @@ class Vector(NamedTuple):
     z: float
 
 
+class MonitorDefn(PlotDefn):
+    """Monitor Definition."""
+
+    PLURAL = "Monitors"
+
+    class monitor_set_name(metaclass=PyLocalPropertyMeta):
+        """Monitor set name."""
+
+        value: str
+
+        @Attribute
+        def allowed_values(self):
+            """Monitor set allowed values."""
+            return self._data_extractor.monitors_manager().get_monitor_set_names()
+
+
 class XYPlotDefn(PlotDefn):
     """XYPlot Definition."""
 
