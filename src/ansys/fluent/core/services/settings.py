@@ -1,4 +1,5 @@
 """Wrapper to settings grpc service of Fluent."""
+import collections.abc
 from typing import Any, List
 
 import grpc
@@ -110,12 +111,14 @@ class SettingsService:
             state.real = value
         elif isinstance(value, str):
             state.string = value
-        elif isinstance(value, list):
-            for v in value:
-                self._set_state_from_value(state.value_list.lst.add(), v)
-        elif isinstance(value, dict):
+        elif isinstance(value, collections.abc.Mapping):
             for k, v in value.items():
                 self._set_state_from_value(state.value_map.m[k], v)
+        elif isinstance(value, collections.abc.Iterable):
+            for v in value:
+                self._set_state_from_value(state.value_list.lst.add(), v)
+        else:  # fall back to string (e.g. pathlib.Path)
+            state.string = str(value)
 
     @_trace
     def _get_state_from_value(self, state):
