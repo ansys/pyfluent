@@ -1,8 +1,9 @@
 """Module for monitors management."""
 
 import threading
-from typing import List, Union
+from typing import Dict, List, Tuple, Union
 
+import numpy as np
 import pandas as pd
 
 
@@ -77,6 +78,35 @@ class MonitorsManager:
         with self._lock:
             df = self._data_frames[monitor_set_name]["df"]
             return None if df.empty else df.plot(*args, **kwargs)
+
+    def get_monitor_set_data(
+        self, monitor_set_name
+    ) -> Tuple[np.array, Dict[str, np.array]]:
+        """Get monitor set data.
+
+        Parameters
+        ----------
+        monitor_set_name : str
+            Monitor set name.
+
+        Returns
+        --------
+        Tuple[np.array, Dict[str, np.array]]
+            Tuple contains numpy array of x-axis values and dictioary of monitor name and numpy array of
+            y-axis values.
+        """
+        with self._lock:
+            df_data = self._data_frames[monitor_set_name]
+            df = df_data["df"]
+
+            return (
+                ([], {})
+                if df.empty
+                else (
+                    df.index.to_numpy(),
+                    {column: df[[column]].to_numpy() for column in df.columns},
+                )
+            )
 
     def refresh(self, session_id, event_info) -> None:
         """Monitors refresh callback.

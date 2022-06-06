@@ -204,6 +204,7 @@ class XYPlotDataExtractor:
             return self._fetch_xy_data(self._post_object)
 
     def _fetch_xy_data(self, obj):
+        obj._pre_display()
         field = obj.y_axis_function()
         node_values = obj.node_values()
         boundary_values = obj.boundary_values()
@@ -275,4 +276,5 @@ class XYPlotDataExtractor:
             sort = np.argsort(structured_data, order=["xvalues"])
             surface_name = next(surfaces_list_iter)
             xy_plots_data[surface_name] = structured_data[sort]
+        obj._post_display()
         return xy_plots_data

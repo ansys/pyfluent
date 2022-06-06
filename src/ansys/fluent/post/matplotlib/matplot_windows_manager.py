@@ -8,7 +8,7 @@ from ansys.fluent.core.utils.generic import AbstractSingletonMeta, in_notebook
 from ansys.fluent.post import get_config
 from ansys.fluent.post.matplotlib.plotter_defns import Plotter, ProcessPlotter
 from ansys.fluent.post.post_data_extractor import XYPlotDataExtractor
-from ansys.fluent.post.post_object_defns import GraphicsDefn, PlotDefn
+from ansys.fluent.post.post_object_defns import MonitorDefn, PlotDefn, XYPlotDefn
 from ansys.fluent.post.post_windows_manager import PostWindow, PostWindowsManager
 
 
@@ -63,46 +63,31 @@ class _ProcessPlotterHandle:
 class MatplotWindow(PostWindow):
     """Class for MatplotWindow."""
 
-    def __init__(self, id: str, post_object: Union[GraphicsDefn, PlotDefn]):
+    def __init__(self, id: str, post_object: PlotDefn):
         """Instantiate a MatplotWindow.
 
         Parameters
         ----------
         id : str
             Window id.
-        post_object : Union[GraphicsDefn, PlotDefn]
+        post_object : PlotDefn
             Object to plot.
         """
-        self.post_object: Union[GraphicsDefn, PlotDefn] = post_object
         self.id: str = id
-        self.properties: dict = None
+        self.post_object = None
         self.plotter: Union[_ProcessPlotterHandle, Plotter] = self._get_plotter()
-        self.animate: bool = False
         self.close: bool = False
         self.refresh: bool = False
 
     def plot(self):
         """Draw plot."""
-        if not self.post_object:
-            return
-        self.properties = {
-            "curves": self.post_object.surfaces_list(),
-            "title": "XY Plot",
-            "xlabel": "position",
-            "ylabel": self.post_object.y_axis_function(),
-        }
-        xy_data = XYPlotDataExtractor(self.post_object).fetch_data()
-        if in_notebook() or get_config()["blocking"]:
-            self.plotter.set_properties(self.properties)
-        else:
-            try:
-                self.plotter.set_properties(self.properties)
-            except BrokenPipeError:
-                self.plotter: Union[
-                    _ProcessPlotterHandle, Plotter
-                ] = self._get_plotter()
-                self.plotter.set_properties(self.properties)
-        self.plotter.plot(xy_data)
+        if self.post_object is not None:
+            plot = (
+                _XYPlot(self.post_object, self.plotter)
+                if self.post_object.__class__.__name__ == "XYPlot"
+                else _MonitorPlot(self.post_object, self.plotter)
+            )
+            plot()
 
     # private methods
     def _get_plotter(self):
@@ -111,6 +96,100 @@ class MatplotWindow(PostWindow):
             if in_notebook() or get_config()["blocking"]
             else _ProcessPlotterHandle(self.id)
         )
+
+
+class _XYPlot:
+    """Class for XYPlot."""
+
+    def __init__(
+        self, post_object: XYPlotDefn, plotter: Union[_ProcessPlotterHandle, Plotter]
+    ):
+        """Instantiate XYPlot.
+
+        Parameters
+        ----------
+        post_object : XYPlotDefn
+            Object to plot.
+        plotter: Union[_ProcessPlotterHandle, Plotter]
+            Plotter to plot data.
+        """
+        self.post_object: XYPlotDefn = post_object
+        self.plotter: Union[_ProcessPlotterHandle, Plotter] = plotter
+
+    def __call__(self):
+        """Draw XY plot."""
+        if not self.post_object:
+            return
+        properties = {
+            "curves": self.post_object.surfaces_list(),
+            "title": "XY Plot",
+            "xlabel": "position",
+            "ylabel": self.post_object.y_axis_function(),
+        }
+        xy_data = XYPlotDataExtractor(self.post_object).fetch_data()
+        if in_notebook() or get_config()["blocking"]:
+            self.plotter.set_properties(properties)
+        else:
+            try:
+                self.plotter.set_properties(properties)
+            except BrokenPipeError:
+                self.plotter: Union[
+                    _ProcessPlotterHandle, Plotter
+                ] = self._get_plotter()
+                self.plotter.set_properties(properties)
+        self.plotter.plot(xy_data)
+
+
+class _MonitorPlot:
+    """Class MonitorPlot."""
+
+    def __init__(
+        self, post_object: MonitorDefn, plotter: Union[_ProcessPlotterHandle, Plotter]
+    ):
+        """Instantiate MonitorPlot.
+
+        Parameters
+        ----------
+        post_object : MonitorDefn
+            Object to plot.
+        plotter: Union[_ProcessPlotterHandle, Plotter]
+            Plotter to plot data.
+        """
+        self.post_object: MonitorDefn = post_object
+        self.plotter: Union[_ProcessPlotterHandle, Plotter] = plotter
+
+    def __call__(self):
+        """Draw Monitor plot."""
+        if not self.post_object:
+            return
+        monitors_manager = self.post_object._data_extractor.monitors_manager()
+        indices, columns_data = monitors_manager.get_monitor_set_data(
+            self.post_object.monitor_set_name()
+        )
+        xy_data = {}
+        for column_name, column_data in columns_data.items():
+            xy_data[column_name] = {"xvalues": indices, "yvalues": column_data}
+        monitor_set_name = self.post_object.monitor_set_name()
+        properties = {
+            "curves": list(xy_data.keys()),
+            "title": monitor_set_name,
+            "xlabel": monitors_manager.get_monitor_set_prop(monitor_set_name, "xlabel"),
+            "ylabel": monitors_manager.get_monitor_set_prop(monitor_set_name, "ylabel"),
+            "yscale": "log" if monitor_set_name == "residual" else "linear",
+        }
+
+        if in_notebook() or get_config()["blocking"]:
+            self.plotter.set_properties(properties)
+        else:
+            try:
+                self.plotter.set_properties(properties)
+            except BrokenPipeError:
+                self.plotter: Union[
+                    _ProcessPlotterHandle, Plotter
+                ] = self._get_plotter()
+                self.plotter.set_properties(properties)
+        if xy_data:
+            self.plotter.plot(xy_data)
 
 
 class MatplotWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta):
@@ -138,14 +217,12 @@ class MatplotWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
         self._open_window(window_id)
         return window_id
 
-    def set_object_for_window(
-        self, object: Union[PlotDefn, GraphicsDefn], window_id: str
-    ) -> None:
+    def set_object_for_window(self, object: PlotDefn, window_id: str) -> None:
         """Associate post object with running window instance.
 
         Parameters
         ----------
-        object : Union[GraphicsDefn, PlotDefn]
+        object : PlotDefn
             Post object to associate with window.
 
         window_id : str
@@ -164,14 +241,14 @@ class MatplotWindowsManager(PostWindowsManager, metaclass=AbstractSingletonMeta)
 
     def plot(
         self,
-        object: Union[PlotDefn, GraphicsDefn],
+        object: PlotDefn,
         window_id: Optional[str] = None,
     ) -> None:
         """Draw plot.
 
         Parameters
         ----------
-        object: Union[GraphicsDefn, PlotDefn]
+        object: PlotDefn
             Object to plot.
 
         window_id : str, optional
