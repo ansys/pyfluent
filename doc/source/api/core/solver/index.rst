@@ -13,4 +13,5 @@ Solver
   
    settings
    tui/index
+   datamodel/index
    fielddata

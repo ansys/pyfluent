@@ -1,6 +1,7 @@
 from io import FileIO
+import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import Session
@@ -31,6 +32,31 @@ _PY_TYPE_BY_DM_TYPE = {
     "None": "None",
 }
 
+_MESHING_DM_DOC_DIR = os.path.normpath(
+    os.path.join(
+        _THIS_DIR,
+        "..",
+        "doc",
+        "source",
+        "api",
+        "core",
+        "meshing",
+        "datamodel",
+    )
+)
+_SOLVER_DM_DOC_DIR = os.path.normpath(
+    os.path.join(
+        _THIS_DIR,
+        "..",
+        "doc",
+        "source",
+        "api",
+        "core",
+        "solver",
+        "datamodel",
+    )
+)
+
 
 def _build_singleton_docstring(name: str):
     return f"Singleton {name}."
@@ -40,11 +66,17 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_docstring(name: str, info: Any):
-    return_type = _PY_TYPE_BY_DM_TYPE[info.returntype]
-    arg_strings = [arg.name + ": " + _PY_TYPE_BY_DM_TYPE[arg.type] for arg in info.args]
-    arg_string = ", ".join(arg_strings)
-    return name + "(" + arg_string + ") -> " + return_type
+def _build_command_docstring(name: str, info: Any, indent: str):
+    doc = f"{indent}Command {name}.\n\n"
+    if info.args:
+        doc += f"{indent}Parameters\n"
+        doc += f"{indent}{'-' * len('Parameters')}\n"
+        for arg in info.args:
+            doc += f"{indent}{arg.name} : {_PY_TYPE_BY_DM_TYPE[arg.type]}\n"
+    doc += f"\n{indent}Returns\n"
+    doc += f"{indent}{'-' * len('Returns')}\n"
+    doc += f"{indent}{_PY_TYPE_BY_DM_TYPE[info.returntype]}\n"
+    return doc
 
 
 class DataModelStaticInfo:
@@ -61,7 +93,7 @@ class DataModelStaticInfo:
 
 class DataModelGenerator:
     def __init__(self):
-        self._static_info = {
+        self._static_info: Dict[str, DataModelStaticInfo] = {
             "workflow": DataModelStaticInfo("workflow", "meshing"),
             "meshing": DataModelStaticInfo("meshing", "meshing"),
             "PartManagement": DataModelStaticInfo("PartManagement", "meshing"),
@@ -133,6 +165,9 @@ class DataModelGenerator:
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
+            f.write(f'{indent}    """\n')
+            f.write(f"{indent}    .\n")
+            f.write(f'{indent}    """\n')
             self._write_static_info(f"_{k}", info.namedobjects[k], f, level + 2)
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
@@ -152,15 +187,82 @@ class DataModelGenerator:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
             f.write(
-                f"{indent}        "
-                f"{_build_command_docstring(k, info.commands[k].commandinfo)}"
-                "\n"
+                _build_command_docstring(
+                    k, info.commands[k].commandinfo, f"{indent}        "
+                )
             )
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
 
+    def _write_doc_for_model_object(
+        self, info, doc_dir: Path, heading, module_name, class_name
+    ) -> None:
+        doc_dir.mkdir(exist_ok=True)
+        index_file = doc_dir / "index.rst"
+        with open(index_file, "w", encoding="utf8") as f:
+            ref = "_ref_" + "_".join([x.strip("_") for x in heading.split(".")])
+            f.write(f".. {ref}:\n\n")
+            heading_ = heading.replace("_", "\_")
+            f.write(f"{heading_}\n")
+            f.write(f"{'=' * len(heading_)}\n")
+            f.write("\n")
+            f.write(f".. currentmodule:: {module_name}\n\n")
+            f.write(".. autosummary::\n")
+            f.write("   :toctree: _autosummary\n\n")
+
+            named_objects = sorted(info.namedobjects)
+            singletons = sorted(info.singletons)
+            parameters = sorted(info.parameters)
+            commands = sorted(info.commands)
+
+            f.write(f".. autoclass:: {module_name}::{class_name}\n")
+            if parameters or commands:
+                f.write(f"   :members: {', '.join(parameters + commands)}\n\n")
+
+            if singletons or named_objects:
+                f.write(".. toctree::\n")
+                f.write("   :hidden:\n\n")
+
+                for k in singletons:
+                    f.write(f"   {k}/index\n")
+                    self._write_doc_for_model_object(
+                        info.singletons[k],
+                        doc_dir / k,
+                        heading + "." + k,
+                        module_name,
+                        class_name + "." + k,
+                    )
+
+                for k in named_objects:
+                    f.write(f"   {k}/index\n")
+                    self._write_doc_for_model_object(
+                        info.namedobjects[k],
+                        doc_dir / k,
+                        heading + "." + k,
+                        module_name,
+                        class_name + "." + k,
+                    )
+
     def write_static_info(self) -> None:
-        for _, info in self._static_info.items():
+        for mode in ["meshing", "solver"]:
+            doc_dir = Path(
+                _MESHING_DM_DOC_DIR if mode == "meshing" else _SOLVER_DM_DOC_DIR
+            )
+            doc_dir.mkdir(exist_ok=True)
+            index_file = doc_dir / "index.rst"
+            with open(index_file, "w", encoding="utf8") as f:
+                f.write(f".. _ref_{mode}_datamodel:\n\n")
+                heading = mode + ".datamodel"
+                f.write(f"{heading}\n")
+                f.write(f"{'=' * len(heading)}\n")
+                f.write("\n")
+                f.write(f".. currentmodule:: ansys.fluent.core.datamodel\n\n")
+                f.write(".. autosummary::\n")
+                f.write("   :toctree: _autosummary\n\n")
+                f.write(".. toctree::\n")
+                f.write("   :hidden:\n\n")
+
+        for name, info in self._static_info.items():
             with open(info.filepath, "w", encoding="utf8") as f:
                 f.write("#\n")
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
@@ -172,11 +274,30 @@ class DataModelGenerator:
                 f.write("    PyCommand\n")
                 f.write(")\n\n\n")
                 self._write_static_info("Root", info.static_info, f)
+                doc_dir = Path(
+                    _MESHING_DM_DOC_DIR
+                    if info.mode == "meshing"
+                    else _SOLVER_DM_DOC_DIR
+                )
+                index_file = doc_dir / "index.rst"
+                with open(index_file, "a", encoding="utf8") as f:
+                    f.write(f"   {name}/index\n")
+                self._write_doc_for_model_object(
+                    info.static_info,
+                    doc_dir / name,
+                    f"{info.mode}.datamodel.{name}",
+                    f"ansys.fluent.core.datamodel.{name}",
+                    "Root",
+                )
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
             if info.filepath.exists():
                 info.filepath.unlink()
+        if Path(_MESHING_DM_DOC_DIR).exists():
+            Path(_MESHING_DM_DOC_DIR).unlink()
+        if Path(_SOLVER_DM_DOC_DIR).exists():
+            Path(_SOLVER_DM_DOC_DIR).unlink()
 
 
 def generate():
