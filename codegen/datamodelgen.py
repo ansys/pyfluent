@@ -165,9 +165,9 @@ class DataModelGenerator:
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
             f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
-            f.write(f'{indent}    """\n')
-            f.write(f"{indent}    .\n")
-            f.write(f'{indent}    """\n')
+            f.write(f'{indent}        """\n')
+            f.write(f"{indent}        .\n")
+            f.write(f'{indent}        """\n')
             self._write_static_info(f"_{k}", info.namedobjects[k], f, level + 2)
             # Specify the concrete named object type for __getitem__
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
@@ -240,7 +240,7 @@ class DataModelGenerator:
                         doc_dir / k,
                         heading + "." + k,
                         module_name,
-                        class_name + "." + k,
+                        f"{class_name}.{k}._{k}",
                     )
 
     def write_static_info(self) -> None:
