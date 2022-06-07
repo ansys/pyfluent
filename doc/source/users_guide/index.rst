@@ -23,8 +23,6 @@ constituent modules and components.
    materials
    boundary_conditions
    solution
-   postprocessing
-   parametric_workflows
 
 
 PyFluent Basic Overview

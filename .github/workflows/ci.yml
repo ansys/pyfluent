@@ -124,8 +124,8 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Install pyfluent with post requirements
-        run: make install-post
+      - name: Install pyfluent
+        run: make install
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -208,8 +208,8 @@ jobs:
       - name: Add version information
         run: make version-info
 
-      - name: Install pyfluent with post requirements
-        run: make install-post
+      - name: Install pyfluent with post
+        run: make install
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -231,7 +231,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install-post
+          make install
 
       - name: Unit Testing
         run: make unittest

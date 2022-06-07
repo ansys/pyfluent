@@ -55,14 +55,6 @@ The primary package, ``ansys-fluent``, provides features such as:
   for more information.
 - Scripting using Fluent's TUI commands. See the :ref:`ref_solver_tui`  module for
   more information about the available commands.
-- Scripting of a parametric study using Fluent.
-- Script post processing using Fluent's in-built post processing capabilities.
-  See the :ref:`ref_postprocessing` module for more information.
-- Plotting of Fluent geometry and meshes using `PyVista
-  <https://docs.pyvista.org>`_ from within a Python script or an
-  interactive `Jupyter notebook <https://jupyter.org/>`_.
-- Access to Fluent surface based field data as Python objects via `NumPy
-  <https://numpy.org/>`_ arrays
 - and more...
   
 Beta Features

@@ -15,5 +15,3 @@ Here we should discuss the different API modules at a high level.
    :hidden:
    
    core/index
-   parametric
-   post/index

@@ -29,14 +29,6 @@ install_requires = [
     "appdirs>=1.4.0",
 ]
 
-install_requires_post = [
-    "vtk==9.1.0",
-    "pyvista==0.33.2",
-    "pyvistaqt==0.7.0",
-    "pyside6==6.2.3",
-    "matplotlib==3.5.1",
-]
-
 packages = []
 for package in find_namespace_packages(where="src", include="ansys*"):
     if package.startswith("ansys.api"):
@@ -67,7 +59,4 @@ setup(
     url="https://github.com/pyansys/pyfluent",
     python_requires=">3.6",
     install_requires=install_requires,
-    extras_require={
-        "post": install_requires_post,
-    },
 )
