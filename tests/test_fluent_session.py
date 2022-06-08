@@ -1,3 +1,5 @@
+import time
+
 import psutil
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
@@ -6,6 +8,7 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.session import Session
 
 
 def _read_case(session):
@@ -24,7 +27,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
     print_transcript.called = False
     print_transcript.transcript = None
 
-    session._print_transcript = print_transcript
+    Session._print_transcript = print_transcript
 
     _read_case(session=session)
 
@@ -50,20 +53,21 @@ def test_session_starts_no_transcript_if_disabled(
 
 
 def test_server_exits_when_session_goes_out_of_scope() -> None:
-    cx_pid = None
-
     def f():
         session = pyfluent.launch_fluent()
-        cx_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
+        f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
-    assert not psutil.pid_exists(cx_pid)
+    f()
+    time.sleep(10)
+    assert not psutil.pid_exists(f.server_pid)
 
 
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
-    cx_pid = None
-
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
-        cx_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
+        f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
-    assert psutil.pid_exists(cx_pid)
+    f()
+    time.sleep(10)
+    assert psutil.pid_exists(f.server_pid)
+    psutil.Process(f.server_pid).kill()
