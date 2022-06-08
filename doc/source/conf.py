@@ -4,7 +4,7 @@ import os
 import platform
 import subprocess
 
-from ansys_sphinx_theme import ansys_favicon, ansys_logo_black
+from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
 import numpy as np
 import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
@@ -173,7 +173,7 @@ sphinx_gallery_conf = {
 # -- Options for HTML output -------------------------------------------------
 html_short_title = html_title = "PyFluent"
 html_theme = "ansys_sphinx_theme"
-html_logo = ansys_logo_black
+html_logo = pyansys_logo_black
 html_theme_options = {
     "github_url": "https://github.com/pyansys/pyfluent",
     "show_prev_next": False,
