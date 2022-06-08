@@ -41,3 +41,4 @@ TUI Commands Example
    :hidden:
 
    tui/index
+   datamodel/index
