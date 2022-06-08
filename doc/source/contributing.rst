@@ -32,7 +32,7 @@ directory of the repository:
 
 .. code:: 
 
-    pip install -r requirements_docs.txt
+    pip install -r requirements/requirements_doc.txt
     cd doc
     make html
 

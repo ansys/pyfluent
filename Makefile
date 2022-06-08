@@ -3,7 +3,7 @@ style:
 	@pre-commit run --all-files --show-diff-on-failure
 
 install:
-	@pip install -r requirements_build.txt
+	@pip install -r requirements/requirements_build.txt
 	@python setup.py sdist
 	@python setup.py bdist_wheel
 	@pip install dist/*.whl
@@ -25,7 +25,7 @@ test-import:
 
 unittest:
 	@echo "Running unittest"
-	@pip install -r requirements_test.txt
+	@pip install -r requirements/requirements_tests.txt
 	@pytest -v --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 api-codegen:
@@ -38,7 +38,7 @@ api-codegen:
 
 build-doc:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
-	@pip install -r requirements_docs.txt
+	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html
 	@touch doc/_build/html/.nojekyll
 	@echo "$(DOCS_CNAME)" >> doc/_build/html/CNAME
