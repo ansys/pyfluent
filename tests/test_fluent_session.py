@@ -1,8 +1,10 @@
+import psutil
 from util.solver_workflow import (  # noqa: F401
     new_solver_session,
     new_solver_session_no_transcript,
 )
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 
 
@@ -45,3 +47,23 @@ def test_session_starts_no_transcript_if_disabled(
     _read_case(session=session)
 
     assert not print_transcript.called
+
+
+def test_server_exits_when_session_goes_out_of_scope() -> None:
+    cx_pid = None
+
+    def f():
+        session = pyfluent.launch_fluent()
+        cx_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
+
+    assert not psutil.pid_exists(cx_pid)
+
+
+def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
+    cx_pid = None
+
+    def f():
+        session = pyfluent.launch_fluent(cleanup_on_exit=False)
+        cx_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
+
+    assert psutil.pid_exists(cx_pid)

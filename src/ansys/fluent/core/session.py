@@ -1,11 +1,11 @@
 """Module containing class encapsulating Fluent connection."""
 
-import atexit
 from ctypes import c_int, sizeof
 import itertools
 import os
 import threading
 from typing import Any, Callable, List, Optional, Tuple
+import weakref
 
 import grpc
 
@@ -243,12 +243,23 @@ class Session:
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
-        Session._monitor_thread.cbs.append(self.exit)
 
         if start_transcript:
             self.start_transcript()
 
         self._remote_instance = remote_instance
+
+        self._finalizer = weakref.finalize(
+            self,
+            Session._exit,
+            self._channel,
+            self._cleanup_on_exit,
+            self.scheme_eval,
+            self._transcript_service,
+            self.events_manager,
+            self._remote_instance,
+        )
+        Session._monitor_thread.cbs.append(self._finalizer)
 
     @classmethod
     def create_from_server_info_file(
@@ -293,18 +304,20 @@ class Session:
         """Return the session id."""
         return self._id
 
-    def _print_transcript(self, transcript: str):
+    @staticmethod
+    def _print_transcript(transcript: str):
         print(transcript)
 
-    def _process_transcript(self):
-        responses = self._transcript_service.begin_streaming()
+    @staticmethod
+    def _process_transcript(transcript_service):
+        responses = transcript_service.begin_streaming()
         transcript = ""
         while True:
             try:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    self._print_transcript(transcript[0:-1])
+                    Session._print_transcript(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break
@@ -312,7 +325,7 @@ class Session:
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(
-            target=Session._process_transcript, args=(self,)
+            target=Session._process_transcript, args=(self._transcript_service,)
         )
 
         self._transcript_thread.start()
@@ -333,32 +346,34 @@ class Session:
 
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
-        if self._channel:
-            if self._cleanup_on_exit:
-                self.scheme_eval.exec(("(exit-server)",))
-            self._transcript_service.end_streaming()
-            self.events_manager.stop()
-            self._channel.close()
-            self._channel = None
+        self._finalizer()
 
-        if self._remote_instance:
-            self._remote_instance.delete()
+    @staticmethod
+    def _exit(
+        channel,
+        cleanup_on_exit,
+        scheme_eval,
+        transcript_service,
+        events_manager,
+        remote_instance,
+    ) -> None:
+        if channel:
+            if cleanup_on_exit:
+                scheme_eval.exec(("(exit-server)",))
+            transcript_service.end_streaming()
+            events_manager.stop()
+            channel.close()
+            channel = None
+
+        if remote_instance:
+            remote_instance.delete()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
-        self.exit()
-
-    @classmethod
-    def register_on_exit(cls, callback: Callable) -> None:
-        cls._on_exit_cbs.append(callback)
-
-    @staticmethod
-    def exit_all() -> None:
-        for cb in Session._on_exit_cbs:
-            cb()
+        self._finalizer()
 
     class Meshing:
         def __init__(
@@ -484,6 +499,3 @@ class Session:
                 LOG.warning("The settings API is currently experimental.")
                 self._settings_root = settings_get_root(flproxy=self._settings_service)
             return self._settings_root
-
-
-atexit.register(Session.exit_all)

@@ -1,3 +1,4 @@
 pytest
 pytest-mock
 pytest-cov
+psutils>=5.9.1
