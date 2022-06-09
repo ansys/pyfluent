@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import socket
 import subprocess
 import tempfile
@@ -36,6 +37,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     timeout = 100
     license_server = os.environ["ANSYSLMD_LICENSE_FILE"]
     port = _get_free_port()
+    container_sifile = mounted_to + "/" + Path(sifile).name
 
     try:
         subprocess.run(
@@ -56,7 +58,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
                 "ghcr.io/pyansys/pyfluent",
                 "-g",
-                f"-sifile={sifile}",
+                f"-sifile={container_sifile}",
             ]
             + args
         )

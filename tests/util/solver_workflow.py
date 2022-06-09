@@ -8,14 +8,14 @@ def create_solver_session(*args, **kwargs):
 
 
 @pytest.fixture
-def new_solver_session(with_running_pytest):
+def new_solver_session(with_launching_container):
     solver = create_solver_session()
     yield solver
     solver.exit()
 
 
 @pytest.fixture
-def new_solver_session_no_transcript(with_running_pytest):
+def new_solver_session_no_transcript(with_launching_container):
     solver = create_solver_session(start_transcript=False)
     yield solver
     solver.exit()
