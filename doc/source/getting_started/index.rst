@@ -53,7 +53,7 @@ This will allow you to install the PyFluent ``ansys-fluent-core`` module
 and modify it locally and have the changes reflected in your setup
 after restarting the Python kernel.
 
-****************
+****************                          
 Launching Fluent
 ****************
 
@@ -64,7 +64,6 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
   import ansys.fluent.core as pyfluent
   session = pyfluent.launch_fluent(precision="double", processor_count=2)
   session.check_health()
-  session.start_transcript() # Streaming the transcript locally
 
 Fluent is now active and you can send commands to it as a genuine Python class.
 For example, if we wanted to read a case file, update a setting and iterate the
@@ -77,18 +76,16 @@ solver:
   session.solver.tui.solve.initialize.initialize_flow()
   session.solver.tui.solve.dual_time_iterate(2, 3)
 
-In addition to all TUI commands being available there are the ``parametric`` and
-``post`` packages.  The ``parametric`` package provides access to Fluent's
-design point capability and the ``post`` package provides integrations with both
+In addition to all TUI commands being available there are the `ansys-fluent-parametric <https://github.com/pyansys/pyfluent-parametric>`_ and
+`ansys-fluent-visualization <https://github.com/pyansys/pyfluent-visualization>`_ packages.  The ``ansys-fluent-parametric`` package provides access to Fluent's
+design point capability and the ``ansys-fluent-visualization`` package provides integrations with both
 ``pyvista`` and ``matplotlib``.
 
-If you want to interact with the Fluent graphical user interface, set the
-following environment variable:
+If you want to interact with the Fluent graphical user interface, pass show_gui=True to the launch_fluent function:
 
-.. code::
+.. code:: python
 
-  set PYFLUENT_SHOW_SERVER_GUI=1    # Windows
-  export PYFLUENT_SHOW_SERVER_GUI=1 # Linux (bash)
+  session = pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True)
 
 If you want to print the debug information for development, set the following
 environment variable:
