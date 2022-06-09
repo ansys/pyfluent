@@ -1,33 +1,14 @@
 """Sphinx documentation configuration file."""
 from datetime import datetime
-import os
 import platform
 import subprocess
 
 from ansys_sphinx_theme import ansys_favicon, pyansys_logo_black
-import numpy as np
-import pyvista
 from sphinx_gallery.sorting import FileNameSortKey
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import __version__
 
-# Manage errors
-pyvista.set_error_output_file("errors.txt")
-
-# Ensure that offscreen rendering is used for docs generation
-pyvista.OFF_SCREEN = True
-
-# must be less than or equal to the XVFB window size
-pyvista.rcParams["window_size"] = np.array([1024, 768])
-
-# Save figures in specified directory
-pyvista.FIGURE_PATH = os.path.join(os.path.abspath("./images/"), "auto-generated/")
-if not os.path.exists(pyvista.FIGURE_PATH):
-    os.makedirs(pyvista.FIGURE_PATH)
-
-# necessary when building the sphinx gallery
-pyvista.BUILDING_GALLERY = True
 pyfluent.BUILDING_GALLERY = True
 
 # -- Project information -----------------------------------------------------
@@ -162,7 +143,6 @@ sphinx_gallery_conf = {
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
     "doc_module": "ansys-fluent-core",
-    "image_scrapers": ("pyvista", "matplotlib"),
     "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
