@@ -81,7 +81,7 @@ In addition to all TUI commands being available there are the `ansys-fluent-para
 design point capability and the ``ansys-fluent-visualization`` package provides integrations with both
 ``pyvista`` and ``matplotlib``.
 
-If you want to interact with the Fluent graphical user interface, pass show_gui=True to the launch_fluent function:
+If you want to interact with the Fluent graphical user interface, pass ``show_gui=True`` to the ``launch_fluent`` function:
 
 .. code:: python
 
