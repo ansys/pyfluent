@@ -1,4 +1,4 @@
-"""Setup file for ansys-fluent-solver."""
+"""Setup file for ansys-fluent-core."""
 import os
 import shutil
 import sys
@@ -41,7 +41,7 @@ for package in find_namespace_packages(where="src", include="ansys*"):
         packages.append(package)
 
 setup(
-    name="ansys-fluent-solver",
+    name="ansys-fluent-core",
     packages=packages,
     package_dir={"": "src"},
     include_package_data=True,
