@@ -1,2 +1,2 @@
-grpcio-tools==1.30.0
+grpcio-tools==1.46.3
 docker>=5.0.3
