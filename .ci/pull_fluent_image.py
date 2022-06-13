@@ -1,6 +1,9 @@
+import os
+
 import docker
 
-_IMAGE_NAME = "ghcr.io/pyansys/pyfluent:latest"
+_IMAGE_TAG = os.getenv("FLUENT_IMAGE_TAG", "latest")
+_IMAGE_NAME = f"ghcr.io/pyansys/pyfluent:{_IMAGE_TAG}"
 
 
 def _is_newer_version_available(client: docker.DockerClient):
