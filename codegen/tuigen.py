@@ -92,7 +92,8 @@ _XML_HELP_FILE = os.path.normpath(
 )
 _XML_HELPSTRINGS = {}
 
-_FLUENT_IMAGE_NAME = "ghcr.io/pyansys/pyfluent:latest"
+_FLUENT_IMAGE_TAG = os.getenv("FLUENT_IMAGE_TAG", "latest")
+_FLUENT_IMAGE_NAME = f"ghcr.io/pyansys/pyfluent:{_FLUENT_IMAGE_TAG}"
 
 
 def _copy_tui_help_xml_file():

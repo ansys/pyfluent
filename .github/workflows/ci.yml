@@ -20,7 +20,8 @@ env:
   # You should go up in number, if you go down (or repeat a previous value)
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
-  RESET_EXAMPLES_CACHE: 3
+  RESET_EXAMPLES_CACHE: 4
+  API_CODE_CACHE: 0
 
 jobs:
   stylecheck:
@@ -93,6 +94,9 @@ jobs:
   docs_build:
     name: Build Documentation
     runs-on: self-hosted
+    strategy:
+      matrix:
+        image-tag: [latest, solver-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -127,7 +131,27 @@ jobs:
       - name: Install pyfluent
         run: make install
 
+      - name: Retrieve PyFluent version
+        run: |
+          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+        id: version
+
+      - name: Cache API Code
+        uses: actions/cache@v3
+        id: cache-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel
+            src/ansys/fluent/core/fluent_version.py
+            src/ansys/fluent/core/meshing/tui.py
+            src/ansys/fluent/core/solver/settings
+            src/ansys/fluent/core/solver/tui.py
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}-${{ github.sha }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+
       - name: Login to GitHub Container Registry
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
@@ -135,44 +159,44 @@ jobs:
           password: ${{ secrets.REPO_DOWNLOAD_PAT }}
 
       - name: Pull Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
-        id: version
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Run API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cache examples
         uses: actions/cache@v3
         with:
           path: doc/source/examples
-          key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ hashFiles('examples/**') }}-${{ github.sha }}
+          key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('examples/**') }}-${{ github.sha }}
           restore-keys: |
-            Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ hashFiles('examples/**') }}
+            Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('examples/**') }}
 
       - name: Build Documentation
         run: make build-doc DOCS_CNAME=fluentdocs.pyansys.com
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:
-          name: HTML-Documentation
+          name: HTML-Documentation-tag-${{ matrix.image-tag }}
           path: doc/_build/html
           retention-days: 7
 
       - name: Deploy
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && ${{ matrix.image-tag == 'latest'}}
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           repository-name: pyansys/pyfluent-docs
@@ -185,6 +209,9 @@ jobs:
     name: Build and Unit Testing
     needs: test-import
     runs-on: self-hosted
+    strategy:
+      matrix:
+        image-tag: [latest, solver-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -208,22 +235,47 @@ jobs:
       - name: Install pyfluent
         run: make install
 
+      - name: Retrieve PyFluent version
+        run: |
+          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+        id: version
+
+      - name: Cache API Code
+        uses: actions/cache@v3
+        id: cache-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel
+            src/ansys/fluent/core/fluent_version.py
+            src/ansys/fluent/core/meshing/tui.py
+            src/ansys/fluent/core/solver/settings
+            src/ansys/fluent/core/solver/tui.py
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}-${{ github.sha }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+
       - name: Login to GitHub Container Registry
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ secrets.GH_USERNAME }}
           password: ${{ secrets.REPO_DOWNLOAD_PAT }}
 
-      - name: Pull Fluent docker image
+      - name: Pull Fluent docker image\
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Run API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Install again after codegen
         run: |
@@ -235,11 +287,12 @@ jobs:
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload Coverage Results
         uses: actions/upload-artifact@v3
         with:
-          name: HTML-Coverage
+          name: HTML-Coverage-tag-${{ matrix.image-tag }}
           path: cov_html
           retention-days: 7
 
@@ -249,6 +302,7 @@ jobs:
           twine check dist/*
 
       - name: Upload package
+        if: ${{ matrix.image-tag == 'latest'}}
         uses: actions/upload-artifact@v3
         with:
           name: PyFluent-packages
