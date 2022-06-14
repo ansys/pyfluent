@@ -22,7 +22,6 @@ _DOCS_FILE = os.path.join(
 )
 shutil.copy2(_README_FILE, _DOCS_FILE)
 
-
 install_requires = [
     "ansys-platform-instancemanagement~=1.0",
     "grpcio>=1.30.0",
@@ -30,13 +29,12 @@ install_requires = [
     "protobuf==3.20.1",
     "appdirs>=1.4.0",
     "pandas>=1.4.1" if sys.version_info.minor > 7 else "pandas==1.3.5",
+    "ansys-api-fluent @ git+https://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@github.com/ansys/ansys-api-fluent.git",
 ]
 
 
 packages = []
 for package in find_namespace_packages(where="src", include="ansys*"):
-    if package.startswith("ansys.api"):
-        packages.append(package)
     if package.startswith("ansys.fluent"):
         packages.append(package)
 

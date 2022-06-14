@@ -20,8 +20,8 @@ env:
   # You should go up in number, if you go down (or repeat a previous value)
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
-  RESET_EXAMPLES_CACHE: 4
-  API_CODE_CACHE: 0
+  RESET_EXAMPLES_CACHE: 5
+  API_CODE_CACHE: 1
 
 jobs:
   stylecheck:
@@ -44,12 +44,6 @@ jobs:
         if: always()
         run: |
           pre-commit run --all-files --show-diff-on-failure
-
-      - name: Run protolint
-        uses: plexsystems/protolint-action@v0.6.0
-        if: always()
-        with:
-          configDirectory: protos
 
   test-import:
     name: Smoke Tests
@@ -208,7 +202,7 @@ jobs:
   build_test:
     name: Build and Unit Testing
     needs: test-import
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image-tag: [latest, solver-latest]
@@ -262,7 +256,7 @@ jobs:
           username: ${{ secrets.GH_USERNAME }}
           password: ${{ secrets.REPO_DOWNLOAD_PAT }}
 
-      - name: Pull Fluent docker image\
+      - name: Pull Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:

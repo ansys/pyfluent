@@ -4,8 +4,7 @@ style:
 
 install:
 	@pip install -r requirements/requirements_build.txt
-	@python setup.py sdist
-	@python setup.py bdist_wheel
+	@python -m build
 	@pip install dist/*.whl
 
 version-info:
