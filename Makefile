@@ -3,6 +3,7 @@ style:
 	@pre-commit run --all-files --show-diff-on-failure
 
 install:
+	@pip uninstall ansys-api-fluent -y
 	@pip install -r requirements/requirements_build.txt
 	@python -m build
 	@pip install dist/*.whl
