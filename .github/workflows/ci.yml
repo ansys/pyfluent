@@ -90,7 +90,8 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        image-tag: [latest, solver-latest]
+        #image-tag: [latest, solver-latest]
+        image-tag: [latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -205,7 +206,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image-tag: [latest, solver-latest]
+        #image-tag: [latest, solver-latest]
+        image-tag: [latest]
 
     steps:
       - uses: actions/checkout@v3
