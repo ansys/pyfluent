@@ -136,7 +136,7 @@ jobs:
         uses: actions/cache@v3
         id: cache-api-code
         with:
-          path:
+          path: |
             src/ansys/fluent/core/datamodel
             src/ansys/fluent/core/fluent_version.py
             src/ansys/fluent/core/meshing/tui.py
