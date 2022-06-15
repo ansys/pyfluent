@@ -1,6 +1,6 @@
 """.. _ref_mixing_elbow_settings_api_beta:
 
-Fluent Setup and Solutoin using Settings API (Beta)
+Fluent Setup and Solution using Settings API (Beta)
 -----------------------------------------------------
 This example illustrates the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
@@ -16,7 +16,7 @@ This example demonstrates use of 'settings' modules (Beta)
 - Define Material
 - Setup Cell Zone Conditions
 - Setup Boundary Conditions
-- Iniialize and Solve
+- Initialize and Solve
 - Compute Mass Flow Rate and Temperature
 
 Problem Description:
