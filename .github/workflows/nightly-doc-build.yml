@@ -46,6 +46,8 @@ jobs:
 
       - name: Pull Fluent docker image
         run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Run API codegen
         run: make api-codegen
