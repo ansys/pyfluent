@@ -29,7 +29,6 @@ install_requires = [
     "protobuf==3.20.1",
     "appdirs>=1.4.0",
     "pandas>=1.4.1" if sys.version_info.minor > 7 else "pandas==1.3.5",
-    "ansys-api-fluent @ git+https://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@github.com/ansys/ansys-api-fluent.git",
 ]
 
 

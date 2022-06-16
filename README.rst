@@ -50,6 +50,7 @@ with:
    git clone https://github.com/pyansys/pyfluent.git
    cd pyfluent
    pip install pip -U
+   pip install install_data/ansys_api_fluent-0.1.0-py3-none-any.whl
    pip install -e .
    python codegen/allapigen.py  # Generates the API files, requires Fluent
 
