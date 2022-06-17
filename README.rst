@@ -89,9 +89,9 @@ You can run Fluent TUI commands using the ``session.tui`` interface:
   session.solver.tui.solve.initialize.initialize_flow()
   session.solver.tui.solve.dual_time_iterate(2, 3)
 
-In addition to all TUI commands being available there are the ``parametric`` and
-``post`` packages.  The ``parametric`` package provides access to Fluent's
-design point capability and the ``post`` package provides integrations with both
+In addition to all TUI commands being available there are the `ansys-fluent-parametric <https://github.com/pyansys/pyfluent-parametric>`_ and
+`ansys-fluent-visualization <https://github.com/pyansys/pyfluent-visualization>`_ packages.  The ``ansys-fluent-parametric`` package provides access to Fluent's
+design point capability and the ``ansys-fluent-visualization`` package provides integrations with both
 ``pyvista`` and ``matplotlib``.
 
 License and Acknowledgments
