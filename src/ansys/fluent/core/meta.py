@@ -3,88 +3,9 @@ from abc import ABCMeta
 from collections.abc import MutableMapping
 from pprint import pformat
 
+
 # pylint: disable=unused-private-member
 # pylint: disable=bad-mcs-classmethod-argument
-
-
-class LocalObjectDataExtractor:
-    """Class to extract data for local objects."""
-
-    class _SurfaceAPI:
-        """Class providing APIs for surface operations."""
-
-        def __init__(self, obj):
-            self.obj = obj
-            self._surface_name_on_server = self.surface_name_in_server(obj._name)
-
-        @staticmethod
-        def surface_name_in_server(local_surface_name):
-            return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
-
-        def _get_api_handle(self):
-            return self.obj._get_top_most_parent().session.solver.tui.surface
-
-        def _delete_if_exist_on_server(self):
-            field_info = self.obj._data_extractor.field_info()
-            surfaces_list = list(field_info.get_surfaces_info().keys())
-            if self._surface_name_on_server in surfaces_list:
-                self.delete_surface_on_server()
-
-        def create_surface_on_server(self):
-            if self.obj.surface.type() == "iso-surface":
-                iso_surface = self.obj.surface.iso_surface
-                field = iso_surface.field()
-                iso_value = iso_surface.iso_value()
-                if not field:
-                    raise RuntimeError("Iso surface definition is incomplete.")
-                self._delete_if_exist_on_server()
-                self._get_api_handle().iso_surface(
-                    field, self._surface_name_on_server, (), (), iso_value, ()
-                )
-            elif self.obj.surface.type() == "plane-surface":
-                plane_surface = self.obj.surface.plane_surface
-                xy_plane = plane_surface.xy_plane
-                yz_plane = plane_surface.yz_plane
-                zx_plane = plane_surface.zx_plane
-                self._delete_if_exist_on_server()
-                self._get_api_handle().plane_surface(
-                    self._surface_name_on_server,
-                    "xy-plane" if xy_plane else "yz-plane" if yz_plane else "zx-plane",
-                    xy_plane.z()
-                    if xy_plane
-                    else yz_plane.x()
-                    if yz_plane
-                    else zx_plane.y(),
-                )
-            field_info = self.obj._data_extractor.field_info()
-            surfaces_list = list(field_info.get_surfaces_info().keys())
-            if self._surface_name_on_server not in surfaces_list:
-                raise RuntimeError("Surface creation failed.")
-
-        def delete_surface_on_server(self):
-            self._get_api_handle().delete_surface(self._surface_name_on_server)
-
-    def __init__(self, obj):
-        self.obj = obj
-        self.field_info = lambda: obj._get_top_most_parent().session.field_info
-        self.field_data = lambda: obj._get_top_most_parent().session.field_data
-        self.monitors_manager = (
-            lambda: obj._get_top_most_parent().session.monitors_manager
-        )
-        self.id = lambda: obj._get_top_most_parent().session.id
-        if obj.__class__.__name__ == "Surface":
-            self.surface_api = LocalObjectDataExtractor._SurfaceAPI(obj)
-
-    def remote_surface_name(self, local_surface_name):
-        local_surfaces_provider = (
-            self.obj._get_top_most_parent()._local_surfaces_provider()
-        )
-        if local_surface_name in list(local_surfaces_provider):
-            return LocalObjectDataExtractor._SurfaceAPI.surface_name_in_server(
-                local_surface_name
-            )
-        else:
-            return local_surface_name
 
 
 class Attribute:
@@ -180,8 +101,8 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent):
-            self._data_extractor = LocalObjectDataExtractor(self)
+        def wrapper(self, parent, api_helper):
+            self._api_helper = api_helper(self)
             self._parent = parent
             self._on_change_cbs = []
             annotations = self.__class__.__dict__.get("__annotations__")
@@ -249,9 +170,9 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, parent):
+        def wrapper(self, parent, api_helper):
             self._parent = parent
-            self._data_extractor = LocalObjectDataExtractor(self)
+            self._api_helper = api_helper(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -262,13 +183,13 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
                         setattr(
                             self,
                             name,
-                            cls(self),
+                            cls(self, api_helper),
                         )
                     if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
                         setattr(
                             self,
                             cls.PLURAL,
-                            PyLocalContainer(self, cls),
+                            PyLocalContainer(self, cls, api_helper),
                         )
                 for base_class in clss.__bases__:
                     update(base_class)
@@ -381,9 +302,9 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
 
     @classmethod
     def __create_init(cls):
-        def wrapper(self, name, parent):
+        def wrapper(self, name, parent, api_helper):
             self._name = name
-            self._data_extractor = LocalObjectDataExtractor(self)
+            self._api_helper = api_helper(self)
             self._parent = parent
 
             def update(clss):
@@ -395,13 +316,13 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
                         setattr(
                             self,
                             name,
-                            cls(self),
+                            cls(self, api_helper),
                         )
                     if cls.__class__.__name__ == "PyLocalNamedObjectMeta":
                         setattr(
                             self,
                             cls.PLURAL,
-                            PyLocalContainer(self, cls),
+                            PyLocalContainer(self, cls, api_helper),
                         )
                 for base_class in clss.__bases__:
                     update(base_class)
@@ -422,10 +343,11 @@ class PyLocalNamedObjectMetaAbstract(ABCMeta, PyLocalNamedObjectMeta):
 class PyLocalContainer(MutableMapping):
     """Local container for named objects."""
 
-    def __init__(self, parent, object_class):
+    def __init__(self, parent, object_class, api_helper):
         self._parent = parent
         self.__object_class = object_class
         self.__collection: dict = {}
+        self.__api_helper = api_helper
 
     def __iter__(self):
         return iter(self.__collection)
@@ -438,7 +360,9 @@ class PyLocalContainer(MutableMapping):
     def __getitem__(self, name):
         o = self.__collection.get(name, None)
         if not o:
-            o = self.__collection[name] = self.__object_class(name, self)
+            o = self.__collection[name] = self.__object_class(
+                name, self, self.__api_helper
+            )
         return o
 
     # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
