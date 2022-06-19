@@ -219,7 +219,6 @@ class Session:
         self.events_manager.register_callback(
             "DataReadEvent", self.monitors_manager.refresh
         )
-
         self._datamodel_service_tui = DatamodelService_TUI(
             self._channel, self._metadata
         )
