@@ -26,7 +26,7 @@ the elbow. The pipe dimensions are in inches and the fluid properties and
 boundary conditions are given in SI units. The Reynolds number for the flow at
 the larger inlet is 50, 800, so a turbulent flow model will be required.
 """
-
+# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
 ###############################################################################
 # First, download the mesh file and start Fluent as a service with
 # Solver Mode, Double Precision, Number of Processors 2
