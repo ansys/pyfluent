@@ -33,7 +33,6 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
-import docker
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 _MESHING_TUI_FILE = os.path.normpath(
@@ -98,6 +97,8 @@ _FLUENT_IMAGE_NAME = f"ghcr.io/pyansys/pyfluent:{_FLUENT_IMAGE_TAG}"
 
 def _copy_tui_help_xml_file():
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        import docker
+
         client = docker.from_env()
         container = client.containers.create(_FLUENT_IMAGE_NAME)
         xml_source = f"/ansys_inc/v{FLUENT_VERSION.replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
