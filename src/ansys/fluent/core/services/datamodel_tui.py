@@ -1,6 +1,7 @@
 """Wrappers over TUI-based datamodel grpc service of Fluent."""
 
 import keyword
+import types
 from typing import Any, Iterable, List, Tuple, Union
 
 import grpc
@@ -209,6 +210,15 @@ class TUIMenu:
             convert_tui_menu_to_func_name(x)
             for x in PyMenu(self.service, self.path).get_child_names()
         ]
+
+    def __getattribute__(self, name):
+        attr = super().__getattribute__(name)
+        if type(attr) == types.MethodType:
+            path = self.path + [name]
+            # if menus are inserted at runtime in Fluent
+            if PyMenu(self.service, path).get_child_names():
+                return TUIMenuGeneric(path, self.service)
+        return attr
 
 
 class TUIMenuGeneric(TUIMenu):
