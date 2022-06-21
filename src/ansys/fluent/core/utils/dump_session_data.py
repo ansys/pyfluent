@@ -20,7 +20,7 @@ def dump_session_data(session, file_path: str, fields: list = [], surfaces: list
     session_data["scalar_fields_info"] = {
         k: v
         for k, v in session.field_info.get_fields_info().items()
-        if (not fields or v["solver_name"] in fields)
+        if (not fields or k in fields)
     }
     session_data["surfaces_info"] = {
         k: v

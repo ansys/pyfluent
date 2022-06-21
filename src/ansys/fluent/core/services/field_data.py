@@ -79,8 +79,8 @@ class FieldInfo:
         request = FieldDataProtoModule.GetFieldsInfoRequest()
         response = self._service.get_fields_info(request)
         return {
-            field_info.displayName: {
-                "solver_name": field_info.solverName,
+            field_info.solverName: {
+                "display_name": field_info.displayName,
                 "section": field_info.section,
                 "domain": field_info.domain,
             }
