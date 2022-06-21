@@ -52,6 +52,7 @@ with:
    pip install pip -U
    pip install install_data/ansys_api_fluent-0.1.0-py3-none-any.whl
    pip install -e .
+   pip install -r requirements/requirements_codegen.txt
    python codegen/allapigen.py  # Generates the API files, requires Fluent
 
 Dependencies
