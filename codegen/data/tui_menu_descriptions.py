@@ -12,8 +12,8 @@ both command line completion and history.  You can also use Python standard
 `help` and `dir` commands on any object in the API to inspect it further.
 
 The arguments to a TUI command are just those that would be passed in direct interaction with the
-Fluent Console, but in a Pythonic style. For instance the TUI command /define/models/energy? #t becomes
-_session_.solver.tui.define.energy(False).
+Fluent Console, but in a Pythonic style. For instance the TUI command `/define/models/energy? #t` becomes
+`_session_.solver.tui.define.energy(False)`.
 
 Care must be taken wherever the TUI expects a quoted string as input: in such cases the Python argument
 should be provided as a double quoted string embedded inside single quotes. For instance
