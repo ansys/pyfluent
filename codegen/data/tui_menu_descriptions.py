@@ -11,8 +11,8 @@ session is easier if you install a tool such as
 both command line completion and history.  You can also use Python standard
 `help` and `dir` commands on any object in the API to inspect it further.
 
-The arguments to a TUI API call are just those that would be passed in direct interaction with the
-Fluent TUI, but in a Pythonic style. For instance the TUI interaction /define/models/energy? #t becomes
+The arguments to a TUI command are just those that would be passed in direct interaction with the
+Fluent Console, but in a Pythonic style. For instance the TUI command /define/models/energy? #t becomes
 _session_.solver.tui.define.energy(False).
 
 Care must be taken wherever the TUI expects a quoted string as input: in such cases the Python argument
