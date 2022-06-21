@@ -17,9 +17,9 @@ Fluent Console, but in a Pythonic style. For instance the TUI command `/define/m
 
 Care must be taken wherever the TUI expects a quoted string as input: in such cases the Python argument
 should be provided as a double quoted string embedded inside single quotes. For instance
-/define/boundary_conditions/velocity_inlet "IF(t<=10e-6[sec],3.58[m/s]*cos(PI*t/30e-6[s]),0[m/s])"
-in the TUI would be written as session.solver.tui.define.boundary_conditions.velocity_inlet("inlet2", "no", "no", "yes", "yes", "no",
-'"IF(t<=10e-6[sec],3.58[m/s]*cos(PI*t/30e-6[s]),0[m/s])"', "no", 0, "no", 300, "no", "no", "no", "yes", 10, 0.04) in Python.
+`/define/boundary_conditions/velocity_inlet "IF(t<=10e-6[sec],3.58[m/s]*cos(PI*t/30e-6[s]),0[m/s])"`
+in the TUI would be written as `session.solver.tui.define.boundary_conditions.velocity_inlet("inlet2", "no", "no", "yes", "yes", "no",
+'"IF(t<=10e-6[sec],3.58[m/s]*cos(PI*t/30e-6[s]),0[m/s])"', "no", 0, "no", 300, "no", "no", "no", "yes", 10, 0.04)` in Python.
 
 The TUI based examples in our gallery provide a guide for how to use this API.
 """
