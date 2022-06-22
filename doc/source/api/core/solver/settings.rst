@@ -144,13 +144,38 @@ Additional Metadata
 -------------------
 
 Settings objects have some additional metadata which can be accessed using the
-``get_attr`` and ``get_attrs`` methods. For example, the list of allowed values
-at a particular state for the viscous model can be accessed as follows:
+``get_attr`` and ``get_attrs`` methods. 
+
+Example(1): The list of allowed values at a particular state for the viscous
+model can be accessed as follows:
 
 .. code-block::
 
   >>> root.setup.models.viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
+  
+.. code-block::
+
+  >>> root.setup.models.viscous.model.get_attrs(['allowed-values'])
+  {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
+
+Example(2): The list of zone surfaces can be accessed as follows:
+
+.. code-block::
+
+  >>> root.solution.report_definitions.flux["mass_flow_rate"] = {}
+  >>> root.solution.report_definitions.flux[
+          "mass_flow_rate"
+      ].zone_names.get_attr("allowed-values")
+  ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']
+
+.. code-block::
+
+  >>> root.solution.report_definitions.flux["mass_flow_rate"] = {}
+  >>> root.solution.report_definitions.flux[
+          "mass_flow_rate"
+      ].zone_names.get_attrs(["allowed-values"])
+  {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
 Attributes are dynamic and the values can change depending on the application
 state.
@@ -163,6 +188,20 @@ application. The ``is_active()`` method returns ``True`` if an object or command
 is active at a particular time. ``get_active_child_names`` returns the list of
 active children. ``get_active_command_names`` returns the list of active
 commands.
+
+Example(1): The list of active child names can be accessed as follows:
+
+.. code-block::
+
+  >>> root.setup.models.get_active_child_names()
+  ['energy', 'multiphase', 'viscous']
+
+Example(2): The list of valid commands can be accessed as follows:
+
+.. code-block::
+
+  >>> root.solution.run_calculation.get_active_command_names()
+  ['iterate']
 
 Settings Objects Root
 ---------------------
