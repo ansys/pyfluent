@@ -168,6 +168,11 @@ jobs:
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install
+
       - name: Cache examples
         uses: actions/cache@v3
         with:
