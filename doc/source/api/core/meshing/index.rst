@@ -23,10 +23,12 @@ Existing Fluent meshing workflows journals can also be converted to the
 session based PyFluent scripts with some manual modifications.
 For example:
 
+Fluent Journal:
+
 .. code-block::
 
   (%py-exec "workflow.InitializeWorkflow(WorkflowType=r'Watertight Geometry')")
-  (%py-exec "workflow.TaskObject['Import Geometry'].Arguments.setState({r'FileName': r'elbow.scdoc.pmdb',r'LengthUnit': r'in',})")
+  (%py-exec "workflow.TaskObject['Import Geometry'].Arguments.setState({r'FileName': r'file.pmdb',r'LengthUnit': r'in',})")
   (%py-exec "workflow.TaskObject['Import Geometry'].Execute()")
   (%py-exec "workflow.TaskObject['Add Local Sizing'].AddChildToTask()")
   (%py-exec "workflow.TaskObject['Add Local Sizing'].Execute()")
@@ -46,6 +48,8 @@ For example:
   (%py-exec "workflow.TaskObject['smooth-transition_1'].Execute()")
   (%py-exec "workflow.TaskObject['Generate the Volume Mesh'].Arguments.setState({r'VolumeFill': r'poly-hexcore',r'VolumeFillControls': {r'HexMaxCellLength': 0.3,},})")
   (%py-exec "workflow.TaskObject['Generate the Volume Mesh'].Execute()")
+
+Equivalent PyFluent Journal:
 
 .. code:: python
 
