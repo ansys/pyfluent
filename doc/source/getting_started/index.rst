@@ -3,7 +3,7 @@
 ===============
 Getting Started
 ===============
-To run PyFluent, you must have a local licenced copy of Ansys Fluent. 
+To run PyFluent, you must have a local licensed copy of Ansys Fluent. 
 PyFluent supports Ansys Fluent versions 2022 R2 or newer.
 
 Visit `Ansys <https://www.ansys.com/>`_ for more information on
