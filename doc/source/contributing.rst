@@ -4,10 +4,10 @@
 Contributing
 ============
 Overall guidance on contributing to a PyAnsys library appears in the
-`Contributing <https://dev.docs.pyansys.com/overview/contributing.html>`_ topic
+`Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
-it and all `Guidelines and Best Practices
-<https://dev.docs.pyansys.com/guidelines/index.html>`_ before attempting to
+it and `Coding Style
+<https://dev.docs.pyansys.com/coding-style/index.html#coding-style>`_ before attempting to
 contribute to PyFluent.
  
 The following contribution information is specific to PyFluent.
