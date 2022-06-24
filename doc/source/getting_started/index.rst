@@ -41,7 +41,7 @@ For a local "development" version, install with:
    cd pyfluent
    pip install -e .
 
-Follow README.rst. This will allow you to install the PyFluent ``ansys-fluent-core`` module
+Follow `README.rst. <https://github.com/pyansys/pyfluent/blob/main/README.rst>`_ This will allow you to install the PyFluent ``ansys-fluent-core`` module
 and modify it locally and have the changes reflected in your setup
 after restarting the Python kernel.
 
