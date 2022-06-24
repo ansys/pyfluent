@@ -7,7 +7,7 @@ PyFluent
    :alt: PyAnsys
 
 .. |pypi| image:: https://img.shields.io/pypi/v/pyfluent.svg?logo=python&logoColor=white
-   :target: https://pypi.org/project/pyfluent
+   :target: https://pypi.org/project/ansys-fluent-core
    :alt: PyPI
 
 .. |GH-CI| image:: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml/badge.svg
