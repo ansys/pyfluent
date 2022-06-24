@@ -6,7 +6,7 @@ PyFluent
    :target: https://docs.pyansys.com/
    :alt: PyAnsys
 
-.. |pypi| image:: https://img.shields.io/pypi/v/pyfluent.svg?logo=python&logoColor=white
+.. |pypi| image:: https://img.shields.io/pypi/v/ansys-fluent-core.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/ansys-fluent-core
    :alt: PyPI
 
