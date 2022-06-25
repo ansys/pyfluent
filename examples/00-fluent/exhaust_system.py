@@ -43,11 +43,6 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-# from ansys.fluent.post import set_config
-# from ansys.fluent.post.pyvista import Graphics
-
-# set_config(blocking=True, set_view_on_display="isometric")
-
 import_filename = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
 )
@@ -594,7 +589,6 @@ session.solver.tui.display.objects.create(
     "()",
     "quit",
 )
-# session.solver.tui.display.objects.display("pathlines-1")
 
 ###############################################################################
 # Create an iso-surface through the manifold geometry.
@@ -630,7 +624,6 @@ session.solver.tui.display.objects.create(
     "quit",
     "quit",
 )
-# session.solver.tui.display.objects.display("contour-velocity")
 
 session.solver.tui.display.objects.create(
     "mesh", "mesh-1", "surfaces-list", "*", "()", "quit"
@@ -654,30 +647,6 @@ session.solver.tui.display.objects.create(
     "quit",
     "quit",
 )
-# session.solver.tui.display.objects.display("scene-1")
-
-###############################################################################
-# Mesh display using PyVista
-
-# graphics_session = Graphics(session)
-# mesh_1 = graphics_session.Meshes["mesh-1"]
-# mesh_1.show_edges = True
-# mesh_1.surfaces_list = [
-#    "inlet-1",
-#    "inlet-2",
-#    "inlet-3",
-#    "outlet-1",
-#    "flow-pipe",
-#    "main.1",
-#    "object1.1",
-#    "object2.1",
-#    "outpipe3.1",
-# ]
-
-# mesh_1.display()
-###############################################################################
-# Save case, data.
-# session.solver.tui.file.write_case_data("exhaust_system.cas.h5")
 
 #########################################################################
 # Close Fluent

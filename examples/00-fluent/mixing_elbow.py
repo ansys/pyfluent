@@ -369,7 +369,6 @@ session.solver.tui.display.objects.create(
     "banded",
     "quit",
 )
-# session.solver.tui.display.objects.display("contour-vel")
 
 ###############################################################################
 # Create and display a definition for temperature contours on the symmetry
@@ -393,7 +392,6 @@ session.solver.tui.display.objects.create(
     "smooth",
     "quit",
 )
-# session.solver.tui.display.objects.display("contour-temp")
 
 ###############################################################################
 # Create and display velocity vectors on the symmetry-xyplane plane:
@@ -417,7 +415,6 @@ session.solver.tui.display.objects.create(
     "2",
     "quit",
 )
-# session.solver.tui.display.objects.display("vector")
 
 ###############################################################################
 # Create an iso-surface representing the intersection of the plane z=0 and the

@@ -213,7 +213,7 @@ def launch_fluent(
 
     additional_arguments : str, optional
         Additional arguments in string format which will be sent to
-        Fluent launcher as is.
+        Fluent as is.
 
     env : Dict[str, str], optional
         Mapping to modify environment variables in Fluent

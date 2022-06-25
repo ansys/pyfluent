@@ -1,7 +1,6 @@
 """Setup file for ansys-fluent-core."""
 import os
 import shutil
-import sys
 
 from setuptools import find_namespace_packages, setup
 
@@ -28,7 +27,7 @@ install_requires = [
     "numpy>=1.21.5",
     "protobuf==3.20.1",
     "appdirs>=1.4.0",
-    "pandas>=1.4.1" if sys.version_info.minor > 7 else "pandas==1.3.5",
+    "pandas>=1.1.5",
 ]
 
 
