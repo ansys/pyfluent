@@ -83,16 +83,15 @@ class Base:
 
     def __init__(self, name: str = None, parent=None):
         """__init__ of Base class."""
-        self._setattr('_parent', weakref.proxy(parent) \
+        self._setattr("_parent", weakref.proxy(parent) \
                 if parent is not None else None)
-        self._setattr('_flproxy', None)
+        self._setattr("_flproxy", None)
         if name is not None:
-            self._setattr('_name', name)
-
+            self._setattr("_name", name)
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
-        self._setattr('_flproxy',  flproxy)
+        self._setattr("_flproxy", flproxy)
 
     @property
     def flproxy(self):
@@ -110,9 +109,7 @@ class Base:
 
     @property
     def parent(self):
-        """
-        The parent (container) object
-        """
+        """The parent (container) object"""
         return self._parent
 
     @property
@@ -162,7 +159,9 @@ class Base:
     def _setattr(self, name, value):
         super().__setattr__(name, value)
 
+
 StateT = TypeVar("StateT")
+
 
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
@@ -225,6 +224,7 @@ class SettingsBase(Base, Generic[StateT]):
     def print_state(self, out=sys.stdout, indent_factor=2):
         """Print the state of this object."""
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
+
 
 class Integer(SettingsBase[int]):
     """An Integer object represents an integer value setting."""
@@ -411,7 +411,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def __init__(self, name: str = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
-        self._setattr('_objects', {})
+        self._setattr("_objects", {})
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
             self._setattr(cmd, cls(None, self))
@@ -567,7 +567,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __init__(self, name=None, parent=None):
         """__init__ of ListObject class."""
         super().__init__(name, parent)
-        self._setattr('_objects', [])
+        self._setattr("_objects", [])
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
             self._setattr(cmd, cls(None, self))
