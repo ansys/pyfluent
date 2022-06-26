@@ -83,8 +83,7 @@ class Base:
 
     def __init__(self, name: str = None, parent=None):
         """__init__ of Base class."""
-        self._setattr("_parent", weakref.proxy(parent) \
-                if parent is not None else None)
+        self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
         self._setattr("_flproxy", None)
         if name is not None:
             self._setattr("_name", name)
@@ -109,7 +108,7 @@ class Base:
 
     @property
     def parent(self):
-        """The parent (container) object"""
+        """The parent (container) object."""
         return self._parent
 
     @property
@@ -597,7 +596,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def _update_objects(self):
         # pylint: disable=no-member
         cls = self.__class__.child_object_type
-        self._setattr('_objects', [cls(str(x), self) for x in range(self.get_size())])
+        self._setattr("_objects", [cls(str(x), self) for x in range(self.get_size())])
 
     def __len__(self):
         return self.get_size()
@@ -656,6 +655,7 @@ class Command(Base):
                 raise RuntimeError("Argument '" + str(k) + "' is invalid")
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
+
 class Query(Base):
     """Query object."""
 
@@ -669,6 +669,7 @@ class Query(Base):
             else:
                 raise RuntimeError("Argument '" + str(k) + "' is invalid")
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
+
 
 _baseTypes = {
     "group": Group,
@@ -699,6 +700,7 @@ def _clean_helpinfo(helpinfo):
         helpinfo += "."
     helpinfo = helpinfo[0].upper() + helpinfo[1:]
     return helpinfo
+
 
 class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     def __getitem__(self, name):
@@ -739,6 +741,7 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 l += len(cobj)
         return l
 
+
 def get_cls(name, info, parent=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -770,14 +773,12 @@ def get_cls(name, info, parent=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = \
-                obj_type == 'group' and \
-                pname in [
-                        'boundary_conditions',
-                        'cell_zone_conditions',
-                        'report_definitions',
+        include_child_named_objects = obj_type == 'group' and pname in [
+                        "boundary_conditions",
+                        "cell_zone_conditions",
+                        "report_definitions",
                         ]
-        #include_child_name_objects = info.get('include_child_named_objects', False)
+        # include_child_name_objects = info.get("include_child_named_objects", False)
         if include_child_named_objects:
             cls = type(pname, (base, ChildNamedObjectAccessorMixin), dct)
         else:
@@ -868,10 +869,10 @@ def get_cls(name, info, parent=None):
         object_type = info.get("object-type")
         if object_type:
             cls.child_object_type = get_cls("child-object-type", object_type, cls)
-            cls.child_object_type.rename = \
-                    lambda self, name: self._parent.rename(name, self._name)
-            cls.child_object_type.get_name = \
-                    lambda self: self._name
+            cls.child_object_type.rename = lambda self, name: self._parent.rename(
+                name, self._name
+            )
+            cls.child_object_type.get_name = lambda self: self._name
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
@@ -916,5 +917,5 @@ def get_root(flproxy) -> Group:
     # pylint: disable=no-member
     root = cls()
     root.set_flproxy(flproxy)
-    root._setattr('_static_info', obj_info)
+    root._setattr("_static_info", obj_info)
     return root
