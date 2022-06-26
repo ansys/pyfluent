@@ -773,11 +773,11 @@ def get_cls(name, info, parent=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = obj_type == 'group' and pname in [
-                        "boundary_conditions",
-                        "cell_zone_conditions",
-                        "report_definitions",
-                        ]
+        include_child_named_objects = obj_type == "group" and pname in [
+            "boundary_conditions",
+            "cell_zone_conditions",
+            "report_definitions",
+        ]
         # include_child_name_objects = info.get("include_child_named_objects", False)
         if include_child_named_objects:
             cls = type(pname, (base, ChildNamedObjectAccessorMixin), dct)
