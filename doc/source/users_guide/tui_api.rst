@@ -54,7 +54,7 @@ arguments. With the full TUI call in hand, the next step is to transform it to a
 
     tui = solver_session.solver.tui
 
-    tui.define.boundary.conditions.set.velocity_inlet(
+    tui.define.boundary_conditions.set.velocity_inlet(
       "velocity-inlet-5", [], "temperature", "no", 293.15, "quit"
       )
 
@@ -77,41 +77,18 @@ The Python analogue is:
 where the string "Pa" is wrapped in single quotes in order to preserve the double quotes around the TUI argument.
 
 Note the following rules implied in the above examples:
-    - Each forward slash (/) separator between elements in TUI paths is transformed to Python dot (.) notation
-    - Some characters in path elements are either removed or replaced because they are illegal inside Python names:
-      - Each hyphen (-) in a path element is transformed to an underscore (_)
-      - Each question mark in a path element is removed
-    - Some rules about strings:
-      - Of course, string-type arguments have to be quoted in Python
-      - Note the special case where a target Fluent TUI argument needs to be quoted - that quoting has to be
-        preserved by wrapping the Python string in additional single quotes
-      - The contents of string arguments are preserved
 
-The above examples ......
+- Each forward slash separator between elements in TUI paths is transformed to Python dot notation
+- Some characters in path elements are either removed or replaced because they are illegal inside Python names:
+  
+  - Each hyphen in a path element is transformed to an underscore
+  - Each question mark in a path element is removed
 
-.. code:: python
-    session.solver.tui.define.boundary_conditions.fluid(
-        "elbow-fluid",
-        "yes",
-        "water-liquid",
-        "no",
-        "no",
-        "no",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "1",
-        "no",
-        "no",
-        "no",
-        "no",
-        "no",
-    )
+- Some rules about strings:
+  
+  - Of course, string-type arguments have to be quoted in Python
+  - Note the special case where a target Fluent TUI argument needs to be quoted (e.g. "Pa" above). 
+    That quoting has to be preserved by wrapping the Python string in additional single quotes
+  - The contents of string arguments are preserved
+
+There are plenty of additional examples of TUI API usage in :ref:`ref_mixing_elbow_tui_api`.
