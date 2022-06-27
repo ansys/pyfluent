@@ -1,3 +1,5 @@
+.. _ref_user_guide_launch:
+
 Launching Ansys Fluent Locally
 ==============================
 Fluent can be started from python in gRPC mode using
