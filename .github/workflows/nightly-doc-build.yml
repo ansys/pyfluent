@@ -7,7 +7,7 @@ on:
 
 jobs:
   nightly_docs_build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
         #image-tag: [latest, solver-latest]

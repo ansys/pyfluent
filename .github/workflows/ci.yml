@@ -87,7 +87,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    runs-on: self-hosted
+    runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
         #image-tag: [latest, solver-latest]
