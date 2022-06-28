@@ -233,7 +233,7 @@ class FieldData:
             If set to True overset mesh will be provided.
 
         Returns
-        --------
+        -------
         Dict[int, np.array]
             Dictionary containing map of surface id to surface data.
         """
@@ -290,7 +290,7 @@ class FieldData:
             if set to True, no slip velocity will be provided at wall boundaries.
 
         Returns
-        --------
+        -------
         Dict[int, np.array]
             Dictionary containing map of surface id to scalar field.
         """
@@ -340,7 +340,7 @@ class FieldData:
             Vector field name.
 
         Returns
-        --------
+        -------
         Dict[int, Tuple[np.array, float]]
             Dictionary containing map of surface id to  Tuple of vector field and vector scale.
         """
@@ -394,7 +394,7 @@ class FieldData:
             if set to True faces normal will be provided.
 
         Returns
-        --------
+        -------
         None
         """
         self._get_fields_request().surfaceRequest.extend(
@@ -433,7 +433,7 @@ class FieldData:
             if set to True, no slip velocity will be provided at wall boundaries.
 
         Returns
-        --------
+        -------
         None
         """
         self._get_fields_request().scalarFieldRequest.extend(
@@ -465,7 +465,7 @@ class FieldData:
             Vector field name.
 
         Returns
-        --------
+        -------
         None
         """
         self._get_fields_request().vectorFieldRequest.extend(
