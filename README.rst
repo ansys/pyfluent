@@ -83,7 +83,7 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
   pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
   session.check_health()
-  session.start_transcript() # enable transcript streaming
+  session.stop_transcript() # disable transcript streaming
 
 To use a non-default install location set the ``PYFLUENT_FLUENT_ROOT``
 environment variable to the ``<version>/fluent`` directory where ``<version>``
