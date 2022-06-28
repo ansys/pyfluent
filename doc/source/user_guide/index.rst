@@ -78,7 +78,7 @@ programming in terms of such an API can be found in :ref:`ref_user_guide_tui_api
 The same ``solver`` object also has a ``root`` object, which provides a 
 different interface to the Fluent solver. The ``root`` object exposes most of the
 solver capabilities covered by the ``tui`` object, while providing significant 
-additional interface features that are not possible via ``tui``:
+additional interface features that are not possible via the ``tui`` object:
 
 .. code:: python
 
@@ -144,7 +144,7 @@ code that could be executed in Fluent for the current mode:
 
 .. code:: python
 
-    unsteady = solver_session.scheme_eval.string_eval("(rp-unsteady?)")​
+    unsteady = solver_session.scheme_eval.scheme_eval("(rp-unsteady?)")​
 
 Surface field and mesh data services are available in solution mode only via
 the ``field_data`` object attribute of the session object:
