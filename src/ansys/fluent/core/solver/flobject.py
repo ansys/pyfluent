@@ -703,7 +703,21 @@ def _clean_helpinfo(helpinfo):
 
 
 class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
+    """A mixin class to provide dict interface at a Group class level if the
+    Group has multiple named objects of similar type. For example, boundary
+    conditions are grouped by type but quite often we want to access them
+    without the type context.
+
+    e.g. the following can be used:
+    for name, boundary in setup.boundary_conditions.items():
+        print (name, boundary())
+
+    even though actual boundary conditions are stored one level lower to
+    boundary_conditions.
+    """
+
     def __getitem__(self, name):
+        """Get a child object"""
         for cname in self.child_names:
             cobj = getattr(self, cname)
             try:
@@ -713,9 +727,11 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         raise KeyError(name)
 
     def __setitem__(self, name, value):
+        """Set the state of a child object"""
         self[name].set_state(value)
 
     def __delitem__(self, name):
+        """Delete a child object"""
         for cname in self.child_names:
             cobj = getattr(self, cname)
             try:
@@ -726,6 +742,7 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         raise KeyError(name)
 
     def __iter__(self):
+        """Iterator for child named objects"""
         for cname in self.child_names:
             try:
                 for item in getattr(self, cname):
@@ -734,6 +751,7 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 continue
 
     def __len__(self):
+        """Number of child named objects"""
         l = 0
         for cname in self.child_names:
             cobj = getattr(self, cname)
