@@ -702,7 +702,7 @@ def _clean_helpinfo(helpinfo):
     return helpinfo
 
 
-class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
+class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     """A mixin class to provide dict interface at a Group class level if the
     Group has multiple named objects of similar type. For example, boundary
     conditions are grouped by type but quite often we want to access them
@@ -717,7 +717,7 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     """
 
     def __getitem__(self, name):
-        """Get a child object"""
+        """Get a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
             try:
@@ -727,11 +727,11 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         raise KeyError(name)
 
     def __setitem__(self, name, value):
-        """Set the state of a child object"""
+        """Set the state of a child object."""
         self[name].set_state(value)
 
     def __delitem__(self, name):
-        """Delete a child object"""
+        """Delete a child object."""
         for cname in self.child_names:
             cobj = getattr(self, cname)
             try:
@@ -742,7 +742,7 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         raise KeyError(name)
 
     def __iter__(self):
-        """Iterator for child named objects"""
+        """Iterator for child named objects."""
         for cname in self.child_names:
             try:
                 for item in getattr(self, cname):
@@ -751,7 +751,7 @@ class ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 continue
 
     def __len__(self):
-        """Number of child named objects"""
+        """Number of child named objects."""
         l = 0
         for cname in self.child_names:
             cobj = getattr(self, cname)
@@ -798,7 +798,7 @@ def get_cls(name, info, parent=None):
         ]
         # include_child_name_objects = info.get("include_child_named_objects", False)
         if include_child_named_objects:
-            cls = type(pname, (base, ChildNamedObjectAccessorMixin), dct)
+            cls = type(pname, (base, _ChildNamedObjectAccessorMixin), dct)
         else:
             cls = type(pname, (base,), dct)
 
