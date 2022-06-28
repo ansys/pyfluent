@@ -72,7 +72,7 @@ users:
     tui.define.models.energy("yes")
 
 See :ref:`ref_solver_tui` for details of the full hierarchical API
-(the Fluent solver _TUI_ API) under the ``tui`` object. Some general guidance on 
+under the ``tui`` object. Some general guidance on 
 programming in terms of such an API can be found in :ref:`ref_user_guide_tui_api`. 
 
 The same ``solver`` object also has a ``root`` object, which provides a 
@@ -92,7 +92,7 @@ additional interface features that are not possible via ``tui``:
 
 See :ref:`ref_settings` Read more about the full hierarchy of :ref:`ref_settings`
 under the ``root`` object. :ref:`ref_user_guide_solver_settings` provides additional
-guidance on using both the `tui` and `root` objects.
+guidance on using both the ``tui`` and ``root`` objects.
 
 A meshing mode session has an active ``meshing`` object, which provides
 three interfaces to the mesher.
