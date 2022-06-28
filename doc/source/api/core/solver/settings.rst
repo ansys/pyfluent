@@ -1,7 +1,7 @@
 .. _ref_settings:
 
-Settings Objects (Beta)
-=======================
+Settings Objects
+================
 
 Introduction
 ------------

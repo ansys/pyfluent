@@ -1,7 +1,7 @@
 """.. _ref_mixing_elbow_settings_api_beta:
 
-Fluent Setup and Solution using Settings API (Beta)
------------------------------------------------------
+Fluent Setup and Solution using Settings Objects
+------------------------------------------------
 This example illustrates the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and

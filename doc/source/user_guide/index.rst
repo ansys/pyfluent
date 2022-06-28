@@ -30,9 +30,8 @@ and monitor Ansys Fluent.
 Overview
 ========
 The function, :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-launches an instance of Ansys Fluent, running it as a server in the background.
-:ref:`ref_user_guide_launch` provides a more detailed overview of the usage of
-that function. The simplest scenario is to call it without arguments:
+launches an instance of Ansys Fluent, running it as a server in the background. Launching 
+in solution mode requires no arguments:
 
 .. code:: python
 
@@ -40,7 +39,7 @@ that function. The simplest scenario is to call it without arguments:
 
     solver_session = launch_fluent()
 
-which starts Fluent in solution mode, while 
+while: 
 
 .. code:: python
 
@@ -50,16 +49,15 @@ which starts Fluent in solution mode, while
 
 starts Fluent in meshing mode. If the ``meshing_mode`` argument were set to 
 ``False``, Fluent would be launched in solution mode, exactly equivalent to 
-the first example. For the many other arguments that can be passed to 
-``launch_fluent()``, see :ref:`ref_launcher_launcher` and
-:ref:`ref_user_guide_launch`.
+the first example. You can read more in the user guide on :ref:`ref_user_guide_launch` 
+and the API documentation on :ref:`ref_launcher_launcher`.
 
 PyFluent can hold multiple, independent session objects, each providing full
 access to Ansys Fluent capabilities relevant to its current mode (solution or
 meshing).
 
-A solution mode session has an active ``solver`` property, which provides two
-distinct interfaces to the solver. The ``solver`` object has a ``tui`` property,
+A solution mode session has an active ``solver`` object, which provides two
+distinct interfaces to the solver. The ``solver`` object has a ``tui`` object,
 which is a complete Python exposure of the Fluent solver's actual Text 
 User Interface. This interface allows straightforward execution of commands and 
 modification of settings in a manner that will be familiar to existing Fluent 
@@ -74,10 +72,10 @@ users:
     tui.define.models.energy("yes")
 
 See :ref:`ref_solver_tui` for details of the full hierarchical API
-(the Fluent solver _TUI_ API) under the ``tui`` object. Some guidance on programming
-in terms of that API is provided here: :ref:`ref_user_guide_tui_api`. 
+(the Fluent solver _TUI_ API) under the ``tui`` object. Some general guidance on 
+programming in terms of such an API can be found in :ref:`ref_user_guide_tui_api`. 
 
-The same ``solver`` object also has a ``root`` property, which provides a 
+The same ``solver`` object also has a ``root`` object, which provides a 
 different interface to the Fluent solver. The ``root`` object exposes most of the
 solver capabilities covered by the ``tui`` object, while providing significant 
 additional interface features that are not possible via ``tui``:
@@ -92,15 +90,14 @@ additional interface features that are not possible via ``tui``:
 
     energy_is_enabled = root.setup.models.energy.enabled()
 
-See :ref:`ref_settings` for details of the full hierarchical API
-(the Fluent solver _settings_ API) under the ``root`` object. 
-:ref:_ref_user_guide_solver_settings provides additional
-guidance on using both `tui` and `root`.
+See :ref:`ref_settings` Read more about the full hierarchy of :ref:`ref_settings`
+under the ``root`` object. :ref:`ref_user_guide_solver_settings` provides additional
+guidance on using both the `tui` and `root` objects.
 
-A meshing mode session has an active ``meshing`` property, which provides
+A meshing mode session has an active ``meshing`` object, which provides
 three interfaces to the mesher.
 
-Like the ``solver`` object, the ``meshing`` object has a ``tui`` property, which
+Like the ``solver`` object, the ``meshing`` object has a ``tui`` object, which
 is a complete Python exposure of meshing's Text User Interface. Again, 
 straightforward and familiar command and settings interactions are available:
 
@@ -113,7 +110,8 @@ straightforward and familiar command and settings interactions are available:
     tui.file.write_case("pipe.cas.h5")
     
 See :ref:`ref_meshing_tui` for details of the full hierarchical API under the
-``tui`` object.
+``tui`` object. As mentioned above, :ref:`ref_user_guide_tui_api` contains
+more general guidance. 
 
 In addition, the ``meshing`` object has ``meshing`` and ``workflow`` properties,
 which together provide access to Fluent's `meshing workflows`. This interface
@@ -140,7 +138,7 @@ See :ref:`ref_user_guide_meshing_workflows` for further examples. The full inter
 is documented here: :ref:`ref_meshing_datamodel`.
 
 A session object in either solution or meshing mode provides a more direct
-interaction via the ``scheme_eval`` property. The argument
+interaction via its ``scheme_eval`` attribute. The argument
 to string_eval in the following example is a string that contains any Scheme
 code that could be executed in Fluent for the current mode:
 
@@ -149,7 +147,7 @@ code that could be executed in Fluent for the current mode:
     unsteady = solver_session.scheme_eval.string_eval("(rp-unsteady?)")​
 
 Surface field and mesh data services are available in solution mode only via
-the ``field_data`` session property (something to link to) (check if correct):
+the ``field_data`` object attribute of the session object:
 
 .. code:: python
 
@@ -174,7 +172,7 @@ automatically started by default):
     solver_session.start_transcript()​​
 
 Streaming of events pertaining to various, specific solver event types can be
-enabled/disabled via the ``events_manager`` property of a solution-mode session:
+enabled/disabled via the ``events_manager`` attribute of a solution-mode session:
 
 .. code:: python
 

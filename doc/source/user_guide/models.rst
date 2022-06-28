@@ -1,7 +1,6 @@
-Defining Your Models
-====================
-PyFluent supports defining models using the TUI API and the 
-Settings API (Beta).
+Defining Models
+===============
+PyFluent supports defining models using the TUI API and :ref:`ref_settings`.
 
 Text User Interface (TUI) API
 -----------------------------
@@ -12,10 +11,10 @@ using the TUI API:
 
     session.solver.tui.define.models.energy("yes", ", ", ", ", ", ", ", ")
 
-Settings API (Beta)
-----------------------
+Settings Objects
+----------------
 The following example demonstrates how you can define the energy model
-using the settings module (Beta):
+using :ref:`ref_settings`:
 
 .. code:: python
 

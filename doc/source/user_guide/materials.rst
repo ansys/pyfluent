@@ -1,7 +1,7 @@
 Defining Materials
 ==================
 PyFluent supports defining materials using the TUI API and 
-Settings Module (Beta).
+:ref:`ref_settings`.
 
 Text User Interface (TUI) API
 -----------------------------
@@ -37,10 +37,10 @@ the TUI API:
         "no",
     )
 
-Settings API (Beta)
-----------------------
+Settings Objects
+----------------
 The following example demonstrates how you can define materials using
-the settings module (Beta):
+:ref:`ref_settings`:
 
 .. code:: python
 

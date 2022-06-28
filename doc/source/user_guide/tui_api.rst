@@ -5,14 +5,26 @@ Using the TUI APIs
 
 TUI API refers to a programming interface that mirrors the Fluent text user
 interface (TUI). There is a TUI API defined for each of meshing and solution mode -
-which API is active depends on the current Fluent mode.
+which API is active depends on the current Fluent mode. The guidance here is 
+applicable to either mode.
 
 The TUI APIs represent a means to automate workflows comprehensively: everything
 that's in the Fluent TUI (which itself is a comprehensive automation interface)
-is in the TUI API.
+is in the TUI API. The TUI APIs provide commands that are Pythonic versions of the TUI commands used
+in the Fluent console. Much like Fluent's TUI the API provides a hierarchical
+interface to the underlying procedural interface of the program.
 
-Let's look at examples of how the API usage mirrors existing TUI usage, because
-the most productive way to write TUI API Python commands is with reference to
+The TUI APIs do not support Fluent TUI features such as aliases or
+command abbreviation. As an alternative, using these APIs in an interactive
+session is easier if you install a tool such as
+`pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_ which provides
+both command line completion and history. You can also use Python built-in functions,
+`help <https://docs.python.org/3/library/functions.html#help>`_ and 
+`dir <https://docs.python.org/3/library/functions.html#dir>`_ on any object in the API to inspect it further.
+
+The arguments to a TUI command are just those that would be passed in direct interaction with the
+Fluent Console, but in a Pythonic style. Let's look in more detail at how the API usage mirrors 
+existing TUI usage, because the most productive way to write TUI API Python commands is with reference to
 existing TUI commands. For instance, in solution mode:
 
 .. code:: lisp

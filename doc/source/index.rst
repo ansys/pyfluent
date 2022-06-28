@@ -6,7 +6,7 @@ PyFluent Documentation |version|
    :maxdepth: 2
 
    getting_started/index
-   users_guide/index
+   user_guide/index
    api/index
    examples/index
    contributing

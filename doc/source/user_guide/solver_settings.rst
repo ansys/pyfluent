@@ -3,8 +3,8 @@
 
 Specifying Solver Settings
 ==========================
-PyFluent supports specifying solver settings using the TUI API and the
-Settings Module.
+PyFluent supports specifying solver settings using the TUI API and
+:ref:`ref_settings`.
 
 Text User Interface (TUI) API
 -----------------------------
