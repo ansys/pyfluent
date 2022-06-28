@@ -345,7 +345,8 @@ class TUIGenerator:
 
 def generate():
     # pyfluent.set_log_level("WARNING")
-    _copy_tui_help_xml_file()
+    if FLUENT_VERSION > "22.2":
+        _copy_tui_help_xml_file()
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
     TUIGenerator(meshing=False).generate()
