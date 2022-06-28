@@ -52,7 +52,7 @@ starts Fluent in meshing mode. If the ``meshing_mode`` argument were set to
 the first example. You can read more in the user guide on :ref:`ref_user_guide_launch` 
 and the API documentation on :ref:`ref_launcher_launcher`.
 
-PyFluent can hold multiple, independent session objects, each providing full
+PyFluent can create and initialize multiple, independent session objects, each providing full
 access to Ansys Fluent capabilities relevant to its current mode (solution or
 meshing).
 
