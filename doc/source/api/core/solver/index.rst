@@ -15,5 +15,3 @@ Solver
    tui/index
    datamodel/index
    fielddata
-   monitors
-   events
