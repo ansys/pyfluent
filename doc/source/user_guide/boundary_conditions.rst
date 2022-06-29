@@ -1,7 +1,6 @@
 Defining Boundary Conditions
 ============================
-PyFluent supports defining boundary conditions using the TUI API and the
-the Settings API (Beta).
+PyFluent supports defining boundary conditions using the TUI API and :ref:`ref_settings`.
 
 Text User Interface (TUI) API
 -----------------------------
@@ -26,10 +25,10 @@ the TUI API:
         "cold-inlet", [], "temperature", "no", 293.15, "quit"
     )
 
-Settings API (Beta)
-----------------------
+Settings Objects
+----------------
 The following example demonstrates how you can define boundary conditions using
-the Settings API:
+:ref:`ref_settings`:
 
 .. code:: python
 

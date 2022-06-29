@@ -1,6 +1,8 @@
+.. _ref_user_guide_launch:
+
 Launching Ansys Fluent Locally
 ==============================
-Fluent can be started from python in gRPC mode using
+Fluent can be started from Python in gRPC mode using
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
 This starts Fluent in the background and sends commands to that service.
 
@@ -9,23 +11,22 @@ This starts Fluent in the background and sends commands to that service.
     import ansys.fluent.core as pyfluent
     solver_session = pyfluent.launch_fluent()
 
-Fluent is now active and you can send commands to it as a Python class.
-
 Launcher Options
 ----------------
-Examples:
 
 Solver Mode
 ~~~~~~~~~~~
-The following example demonstrates how you can start Fluent using the default launcher options:
+The following examples demonstrate how you can start Fluent in solution mode:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent()
+   solver_session_a = pyfluent.launch_fluent()
+
+   solver_session_b = pyfluent.launch_fluent(meshing_mode=False)
 
 Meshing Mode
 ~~~~~~~~~~~~
-The following example demonstrates how you can start Fluent in the meshing mode:
+The following example demonstrates how you can start Fluent in meshing mode:
 
 .. code:: python
 
@@ -33,7 +34,7 @@ The following example demonstrates how you can start Fluent in the meshing mode:
 
 Precision
 ~~~~~~~~~
-The following example demonstrates how you can select the double precision:
+The following example demonstrates how you can select double precision in solution mode:
 
 .. code:: python
 
@@ -41,7 +42,7 @@ The following example demonstrates how you can select the double precision:
 
 Dimension
 ~~~~~~~~~
-The following example demonstrates how you can select the 2d dimension:
+The following example demonstrates how you can select double precision and 2D in solution mode:
 
 .. code:: python
 

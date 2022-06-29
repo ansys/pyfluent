@@ -1,7 +1,7 @@
 Applying General Settings
 =========================
 PyFluent supports defining general settings using the TUI API and
-the Settings API (Beta).
+:ref:`ref_settings`.
 
 Text User Interface (TUI) API
 -----------------------------
