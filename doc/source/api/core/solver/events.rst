@@ -1,5 +1,7 @@
 .. _ref_events:
 
+:orphan:
+
 EventsManager
 =============
 

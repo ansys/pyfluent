@@ -1,5 +1,7 @@
 .. _ref_monitors:
 
+:orphan:
+
 MonitorsManager
 ===============
 
