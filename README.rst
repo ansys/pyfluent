@@ -80,7 +80,6 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
   session = pyfluent.launch_fluent()
   session.check_health()
 
