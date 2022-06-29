@@ -42,7 +42,9 @@ class MonitorsManager:
             return list(self._data_frames)
 
     def get_monitor_set_prop(self, monitor_set_name: str, property: str) -> str:
-        """Get monitor set property.
+        """
+        Get monitor set property.
+
         Parameters
         ----------
         monitor_set_name : str
@@ -51,7 +53,7 @@ class MonitorsManager:
             Monitor set property. It can be `title`, `xlabel`, `ylabel`.
 
         Returns
-        --------
+        -------
         str
             Monitor set property.
         """
@@ -61,7 +63,8 @@ class MonitorsManager:
     def get_monitor_set_plot(
         self, monitor_set_name, *args, **kwargs
     ) -> Union[None, object]:
-        """Get monitor set plot.
+        """
+        Get monitor set plot.
 
         Parameters
         ----------
@@ -69,7 +72,7 @@ class MonitorsManager:
             Monitor set name.
 
         Returns
-        --------
+        -------
         Union[None, object]
             Returns None if DataFrame is empty. Otherwise plot object depending upon
             ``plotting.backend``.
@@ -82,7 +85,8 @@ class MonitorsManager:
     def get_monitor_set_data(
         self, monitor_set_name
     ) -> Tuple[np.array, Dict[str, np.array]]:
-        """Get monitor set data.
+        """
+        Get monitor set data.
 
         Parameters
         ----------
@@ -90,9 +94,9 @@ class MonitorsManager:
             Monitor set name.
 
         Returns
-        --------
+        -------
         Tuple[np.array, Dict[str, np.array]]
-            Tuple contains numpy array of x-axis values and dictioary of monitor name and numpy array of
+            Tuple contains numpy array of x-axis values and dictionary of monitor name and numpy array of
             y-axis values.
         """
         with self._lock:
@@ -109,7 +113,9 @@ class MonitorsManager:
             )
 
     def refresh(self, session_id, event_info) -> None:
-        """Monitors refresh callback.
+        """
+
+        Monitors refresh callback.
 
         The callback is registered with events manager to refresh plots
         during initialized and dataread events.
@@ -122,7 +128,7 @@ class MonitorsManager:
             Event info object.
 
         Returns
-        --------
+        -------
         None
         """
         with self._lock_refresh:
