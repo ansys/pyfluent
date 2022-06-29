@@ -29,12 +29,13 @@ class MonitorsManager:
 
     def get_monitor_set_names(self) -> List[str]:
         """Get monitor set names.
+
         Parameters
         ----------
         None
 
         Returns
-        --------
+        -------
         List[str]
             List of all monitor set names.
         """
@@ -42,8 +43,7 @@ class MonitorsManager:
             return list(self._data_frames)
 
     def get_monitor_set_prop(self, monitor_set_name: str, property: str) -> str:
-        """
-        Get monitor set property.
+        """Get monitor set property.
 
         Parameters
         ----------
@@ -63,8 +63,7 @@ class MonitorsManager:
     def get_monitor_set_plot(
         self, monitor_set_name, *args, **kwargs
     ) -> Union[None, object]:
-        """
-        Get monitor set plot.
+        """Get monitor set plot.
 
         Parameters
         ----------
@@ -85,8 +84,7 @@ class MonitorsManager:
     def get_monitor_set_data(
         self, monitor_set_name
     ) -> Tuple[np.array, Dict[str, np.array]]:
-        """
-        Get monitor set data.
+        """Get monitor set data.
 
         Parameters
         ----------
@@ -113,9 +111,7 @@ class MonitorsManager:
             )
 
     def refresh(self, session_id, event_info) -> None:
-        """
-
-        Monitors refresh callback.
+        """Monitors refresh callback.
 
         The callback is registered with events manager to refresh plots
         during initialized and dataread events.
