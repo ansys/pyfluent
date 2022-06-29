@@ -1,15 +1,13 @@
 Applying Solution Settings
 ==========================
-PyFluent supports applying solution settings using the TUI API and :ref:`ref_settings`.
 
-PyFluent allows you to initialize and solve using the traditional
-Text User Interface (TUI) command-based infrastructure and the settings
-module.
+PyFluent allows you to apply solution settings, initialize and solve using both 
+:ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
 
-Text User Interface (TUI) API
------------------------------
+Solver TUI Commands
+-------------------
 The following example demonstrates how you can apply solution settings
-using the TUI API:
+using :ref:`ref_solver_tui_commands`:
 
 .. code:: python
 
