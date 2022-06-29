@@ -19,7 +19,7 @@ class EventsManager:
     service :
         Event streaming service.
 
-    Properties
+    Attributes
     ----------
     events_list : List[str]
         List of supported events.
@@ -69,15 +69,15 @@ class EventsManager:
         call_back : Callable
             Callback to register.
 
-        Raises
-        ------
-        RuntimeError
-            If event name is not valid.
-
         Returns
         -------
         str
             Registered callback Id.
+
+        Raises
+        ------
+        RuntimeError
+            If event name is not valid.
         """
         if not event_name in self.events_list:
             raise RuntimeError(f"{event_name} is not a valid event.")
