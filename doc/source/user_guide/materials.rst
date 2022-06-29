@@ -1,12 +1,12 @@
 Defining Materials
 ==================
-PyFluent supports defining materials using the TUI API and 
+PyFluent supports defining materials using the :ref:`ref_solver_tui_commands` and 
 :ref:`ref_settings`.
 
-Text User Interface (TUI) API
------------------------------
+Solver TUI Commands
+-------------------
 The following example demonstrates how you can define materials using
-the TUI API:
+the :ref:`ref_solver_tui_commands`:
 
 .. code:: python
 

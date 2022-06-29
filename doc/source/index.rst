@@ -56,16 +56,6 @@ The primary package, ``ansys-fluent``, provides features such as:
 - Scripting using Fluent's TUI commands. See the :ref:`ref_solver_tui`  module for
   more information about the available commands.
 - and more...
-  
-Beta Features
--------------
-The settings object interface provides a more Pythonic way to access and modify
-Fluent settings than the TUI command interface.  These API calls group Fluent
-settings into a tree of objects where individal settings for material
-properties, boundary conditions are accessible without the need to pass
-parameter lists.
-
-More information is available in the :ref:`ref_settings` module documentation.
 
 Documentation and Issues
 ------------------------
