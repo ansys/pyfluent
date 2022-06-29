@@ -29,6 +29,7 @@ import io
 import os
 import pickle
 import pprint
+import shutil
 
 from ansys.fluent.core.solver import flobject
 
@@ -306,8 +307,11 @@ def generate():
             "settings",
         )
     )
-    if not os.path.exists(parent_dir):
-        os.makedirs(parent_dir)
+
+    # Clear previously generated data
+    if os.path.exists(parent_dir):
+        shutil.rmtree(parent_dir)
+    os.makedirs(parent_dir)
 
     session = launch_fluent()
     sinfo = session._settings_service.get_static_info()
