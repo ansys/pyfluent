@@ -54,6 +54,13 @@ class EventsManager:
 
     @property
     def events_list(self) -> List[str]:
+        """Returns the list of supported events.
+
+        Returns
+        -------
+        List[str]
+            List of supported events.
+        """
         return self._events_list
 
     def register_callback(

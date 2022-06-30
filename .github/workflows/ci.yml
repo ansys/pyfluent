@@ -252,6 +252,10 @@ jobs:
             src/ansys/fluent/core/meshing/tui.py
             src/ansys/fluent/core/solver/settings
             src/ansys/fluent/core/solver/tui.py
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}-${{ github.sha }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
 

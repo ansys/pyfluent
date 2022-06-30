@@ -144,7 +144,7 @@ code that could be executed in Fluent for the current mode:
 
 .. code:: python
 
-    unsteady = solver_session.scheme_eval.scheme_eval("(rp-unsteady?)")​
+    unsteady = solver_session.scheme_eval.scheme_eval("(rp-unsteady?)")
 
 Surface field and mesh data services are available in solution mode only via
 the ``field_data`` object attribute of the session object:
@@ -160,16 +160,16 @@ The connection status of any session can be verified as follows
 
 .. code:: python
 
-    health = solver_session.check_health()​​
+    health = solver_session.check_health()
 
 Streaming of the Fluent transcript can be stopped/started as follows (it is 
 automatically started by default):
  
 .. code:: python
 
-    solver_session.stop_transcript()​​
+    solver_session.stop_transcript()
 
-    solver_session.start_transcript()​​
+    solver_session.start_transcript()
 
 Streaming of events pertaining to various, specific solver event types can be
 enabled/disabled via the ``events_manager`` attribute of a solution-mode session:
@@ -178,7 +178,10 @@ enabled/disabled via the ``events_manager`` attribute of a solution-mode session
 
     solver_session.events_manager.start()
 
-Event management is detailed further here: :ref:`ref_events`.
+..
+
+  Add the following line after fixing events_manager doc
+  Event management is detailed further here: <ref to event_manager doc>
 
 The global logging level can be controlled at any time:
 
