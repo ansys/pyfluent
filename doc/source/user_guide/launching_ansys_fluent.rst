@@ -38,7 +38,7 @@ The following example demonstrates how you can select double precision in soluti
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double")
+   solver_session = pyfluent.launch_fluent(precision='double')
 
 Dimension
 ~~~~~~~~~
@@ -46,7 +46,7 @@ The following example demonstrates how you can select double precision and 2D in
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="2d")
+   solver_session = pyfluent.launch_fluent(precision='double', version='2d')
 
 Number of Processors
 ~~~~~~~~~~~~~~~~~~~~
@@ -54,7 +54,7 @@ The following example demonstrates how you can select the number of processors:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="2d", processor_count=2)
+   solver_session = pyfluent.launch_fluent(precision='double', version='2d', processor_count=2)
 
 API Reference
 -------------

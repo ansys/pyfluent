@@ -8,16 +8,23 @@ and setup units using the TUI API:
 
 Checking Mesh
 ~~~~~~~~~~~~~
+mesh/check TUI: Performs various mesh consistency checks and displays a
+report in the console that lists the domain extents, the volume statistics,
+the face area statistics, and any warnings, as well as details about the
+various checks and mesh failures (depending on the setting specified for
+mesh/check-verbosity).
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    session = pyfluent.launch_fluent(precision='double', processor_count=2)
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
     session.solver.tui.mesh.check()
 
 Reporting Mesh Quality
 ~~~~~~~~~~~~~~~~~~~~~~
+mesh/check-quality TUI: Enables you to ensure that the mesh quality is appropriate
+before transferring the mesh to the solution mode.
 
 .. code:: python
 
@@ -25,6 +32,8 @@ Reporting Mesh Quality
 
 Scaling Mesh
 ~~~~~~~~~~~~
+mesh/scale TUI: Prompts for the scaling factors in each of the active Cartesian
+coordinate directions.
 
 .. code:: python
 
@@ -32,7 +41,8 @@ Scaling Mesh
 
 Defining Units
 ~~~~~~~~~~~~~~
+define/units TUI: Sets unit conversion factors.
 
 .. code:: python
 
-    session.solver.tui.define.units("length", "in")
+    session.solver.tui.define.units('length', 'in')

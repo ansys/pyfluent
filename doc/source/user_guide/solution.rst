@@ -8,18 +8,25 @@ settings using the TUI API:
 
 Selecting Solution Methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+solve/set/p-v-coupling TUI: Selects which pressure-velocity coupling scheme is to be used.
+
+Five schemes are available: (Index-Model) 20-SIMPLE, 21-SIMPLEC, 22-PISO,
+24-Coupled, 25-Fractional Step
+
+solve/set/gradient-scheme: Sets gradient options.
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    session = pyfluent.launch_fluent(precision='double', processor_count=2)
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.solve.set.p_v_coupling(20) # Coupled
+    session.solver.tui.solve.set.p_v_coupling(24) # Coupled
     session.solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
     session.solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based
     
 Selecting Solution Controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+solve/set/p-v-controls TUI: Sets pressure-velocity controls.
 
 .. code:: python
 
@@ -27,6 +34,7 @@ Selecting Solution Controls
 
 Creating Report Definition 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+solve/report-definitions TUI: Enters the report definitions menu.
 
 .. code:: python
 
@@ -43,6 +51,12 @@ Creating Report Definition
 
 Initialize and Solve 
 ~~~~~~~~~~~~~~~~~~~~
+solve/initialize TUI: Enters the flow initialization menu.
+
+solve/initialize/hyb-initialization TUI: Initializes using the hybrid
+initialization method.
+
+solve/iterate TUI: Performs a specified number of iterations.
 
 .. code:: python
 
