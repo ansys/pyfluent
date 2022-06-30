@@ -214,10 +214,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
         return wrapper
 
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # c1 = graphics.contour['contour-1']
-    # c2 = graphics.contour['contour-2']
-    # c1.update(c2())
     @classmethod
     def __create_updateitem(cls):
         def wrapper(self, value):
@@ -231,8 +227,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         wrapper.__doc__ = "Update object."
         return wrapper
 
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # graphics.contour['contour-1']()
     @classmethod
     def __create_get_state(cls):
         def wrapper(self, show_attributes=False):
@@ -266,8 +260,6 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
 
         return wrapper
 
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # graphics.contour['contour-1'].field  =  "temperature"
     @classmethod
     def __create_setattr(cls):
         def wrapper(self, name, value):
@@ -354,8 +346,6 @@ class PyLocalContainer(MutableMapping):
     def __len__(self):
         return len(self.__collection)
 
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # c1 = graphics.Contours['contour-1']
     def __getitem__(self, name):
         o = self.__collection.get(name, None)
         if not o:
@@ -364,14 +354,9 @@ class PyLocalContainer(MutableMapping):
             )
         return o
 
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # c1 = graphics.Contours['contour-1']
-    # graphics.Contours['contour-2'] = c1()
     def __setitem__(self, name, value):
         o = self[name]
         o.update(value)
 
-    # graphics = ansys.fluent.postprocessing.pyvista.Graphics(session1)
-    # del graphics.Contours['contour-1']
     def __delitem__(self, name):
         del self.__collection[name]

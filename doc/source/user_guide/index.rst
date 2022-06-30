@@ -178,10 +178,7 @@ enabled/disabled via the ``events_manager`` attribute of a solution-mode session
 
     solver_session.events_manager.start()
 
-..
-
-  Add the following line after fixing events_manager doc
-  Event management is detailed further here: <ref to event_manager doc>
+Event management is detailed further here: :ref:`ref_events`
 
 The global logging level can be controlled at any time:
 
