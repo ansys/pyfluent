@@ -3,7 +3,7 @@ Applying General Settings
 
 Text User Interface (TUI) API
 -----------------------------
-The following example demonstrates how you can use some general
+The following examples demonstrate how you can use solver meshing commands and setup units.
 settings using the TUI API:
 
 Checking Mesh
