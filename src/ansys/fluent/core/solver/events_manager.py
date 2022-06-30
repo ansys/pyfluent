@@ -55,6 +55,10 @@ class EventsManager:
     @property
     def events_list(self) -> List[str]:
         """Returns the list of supported events.
+        
+        Parameters
+        ----------
+        None         
 
         Returns
         -------
