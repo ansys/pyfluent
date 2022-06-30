@@ -52,7 +52,7 @@ Initialize and Solve
 Settings Objects
 ----------------
 The following example demonstrates how you can apply solution settings
-using the settings module (Beta):
+using the :ref:`ref_settings`:
 
 .. code:: python
 
