@@ -1,21 +1,64 @@
 Defining Models
 ===============
-PyFluent supports defining models using the TUI API and :ref:`ref_settings`.
 
 Text User Interface (TUI) API
 -----------------------------
-The following example demonstrates how you can define the energy model
+The following example demonstrates how you can define some models settings
 using the TUI API:
 
-.. code:: python
-
-    session.solver.tui.define.models.energy("yes", ", ", ", ", ", ", ", ")
-
-Settings Objects
-----------------
-The following example demonstrates how you can define the energy model
-using :ref:`ref_settings`:
+Enabling Energy Model
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.solver.root.setup.models.energy.enabled = True
+	import ansys.fluent.core as pyfluent
+	session = pyfluent.launch_fluent(precision="double", processor_count=2)
+	session.solver.tui.file.read_case(case_file_name='file.cas.h5')
+	session.solver.tui.define.models.energy("yes", "no", "no", "no", "yes")
+
+Enabling Viscous Model
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+	session.solver.tui.define.models.viscous.laminar('yes')
+	session.solver.tui.define.models.viscous.kw_sst('yes')
+	session.solver.tui.define.models.viscous.ke_standard('yes')
+
+Enabling Radiation Model
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+	session.solver.tui.define.models.radiation.s2s('yes')
+	session.solver.tui.define.models.radiation.p1('yes')
+
+Enabling Multiphase Model
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+	session.solver.tui.define.models.multiphase.model('vof')
+	session.solver.tui.define.models.multiphase.model('eulerian')
+	session.solver.tui.define.models.multiphase.model('mixture')
+	session.solver.tui.define.models.multiphase.model('wetsteam')
+
+Settings API (Beta)
+-----------------------------
+The following example demonstrates how you can define some models settings
+using the Settings API:
+
+Enabling Energy Model
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+	session.solver.root.setup.models.energy.enabled = True
+
+Enabling Viscous Model
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+	session.solver.root.setup.models.viscous.k_epsilon_model.enabled = True
+	session.solver.root.setup.models.viscous.k_omega_model.enabled = True
