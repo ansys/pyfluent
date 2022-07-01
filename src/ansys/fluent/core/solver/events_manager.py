@@ -56,6 +56,10 @@ class EventsManager:
     def events_list(self) -> List[str]:
         """Returns the list of supported events.
 
+        Parameters
+        ----------
+        None
+
         Returns
         -------
         List[str]
@@ -66,7 +70,7 @@ class EventsManager:
     def register_callback(
         self, event_name: str, call_back: Callable, *args, **kwargs
     ) -> str:
-        """Register Callback.
+        """Register `Callback`.
 
         Parameters
         ----------
@@ -101,7 +105,7 @@ class EventsManager:
             return id
 
     def unregister_callback(self, callback_id: str):
-        """Unregister Callback.
+        """Unregister `Callback`.
 
         Parameters
         ----------
@@ -114,7 +118,16 @@ class EventsManager:
                     del callbacks_map[callback_id]
 
     def start(self):
-        """Start Events manager."""
+        """Start Events manager.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         if self._events_thread is None:
             self._events_thread: threading.Thread = threading.Thread(
                 target=EventsManager._listen_events, args=(self,)
@@ -122,7 +135,16 @@ class EventsManager:
             self._events_thread.start()
 
     def stop(self):
-        """Stop Events manager."""
+        """Stop Events manager.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         if self._events_thread:
             self._events_service.end_streaming()
             self._events_thread.join()
