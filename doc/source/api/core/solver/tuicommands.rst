@@ -8,7 +8,7 @@ Introduction
 The solver TUI (text user interface) is exposed in PyFluent in a hierarchy
 of Python commands.
 
-See :ref:`ref_user_guide_tui_api` for general guidance on using the TUI Commands.
+See :ref:`ref_user_guide_tui_commands` for general guidance on using the TUI Commands.
 
 The TUI based examples in our gallery, such as in :ref:`ref_mixing_elbow_tui_api`, provide a guide for how to use these commands.
 

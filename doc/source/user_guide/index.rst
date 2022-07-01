@@ -17,7 +17,7 @@ and monitor Ansys Fluent.
    :hidden:
 
    launching_ansys_fluent
-   tui_api
+   tui_commands
    meshing_workflows
    general_settings
    solver_settings
@@ -73,7 +73,7 @@ users:
 
 See :ref:`ref_solver_tui_commands` for details of the full hierarchy
 under the ``tui`` object. Some general guidance on 
-programming in terms of such an interface can be found in :ref:`ref_user_guide_tui_api`. 
+programming in terms of such an interface can be found in :ref:`ref_user_guide_tui_commands`. 
 
 The same ``solver`` object also has a ``root`` object, which provides a 
 different interface to the Fluent solver. The ``root`` object exposes most of the
@@ -110,7 +110,7 @@ straightforward and familiar command and settings interactions are available:
     tui.file.write_case("pipe.cas.h5")
     
 See :ref:`ref_meshing_tui` for details of the full hierarchy under the
-``tui`` object. As mentioned above, :ref:`ref_user_guide_tui_api` contains
+``tui`` object. As mentioned above, :ref:`ref_user_guide_tui_commands` contains
 more general guidance. 
 
 In addition, the ``meshing`` object has ``meshing`` and ``workflow`` properties,
