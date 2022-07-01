@@ -15,3 +15,9 @@ The TUI based examples in our gallery, such as in :ref:`ref_mixing_elbow_tui_api
 Solver TUI Commands Root
 ------------------------
 :ref:`ref_solver_tui`
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+
+   tui/index
