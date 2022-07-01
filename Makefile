@@ -4,8 +4,8 @@ style:
 
 install:
 	@pip uninstall ansys-api-fluent -y
+	@pip install git+https://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@github.com/ansys/ansys-api-fluent.git@release/1.0-prepare  # temporary
 	@pip install -r requirements/requirements_build.txt
-	@pip install install_data/ansys_api_fluent-0.1.0-py3-none-any.whl
 	@python -m build
 	@pip install dist/*.whl
 
