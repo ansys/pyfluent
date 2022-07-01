@@ -12,6 +12,6 @@ Solver
    :hidden:
   
    settings
-   tui/index
+   tui
    datamodel/index
    fielddata
