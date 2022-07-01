@@ -1,11 +1,11 @@
 Defining Models
 ===============
-PyFluent supports defining models using the TUI API and :ref:`ref_settings`.
+PyFluent supports defining models using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
 
-Text User Interface (TUI) API
------------------------------
+Solver TUI Commands
+-------------------
 The following example demonstrates how you can define the energy model
-using the TUI API:
+using :ref:`ref_solver_tui_commands`:
 
 .. code:: python
 

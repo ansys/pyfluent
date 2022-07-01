@@ -3,10 +3,10 @@ Applying General Settings
 PyFluent supports defining general settings using the TUI API and
 :ref:`ref_settings`.
 
-Text User Interface (TUI) API
------------------------------
+Solver TUI Commands
+-------------------
 The following example demonstrates how you can define units using
-the TUI API:
+:ref:`ref_solver_tui_commands`:
 
 .. code:: python
 

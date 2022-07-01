@@ -12,7 +12,7 @@ Solver
    :hidden:
   
    settings
-   tui/index
+   tuicommands
    datamodel/index
    fielddata
    events

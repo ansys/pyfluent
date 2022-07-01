@@ -1,30 +1,29 @@
-.. _ref_user_guide_tui_api:
+.. _ref_user_guide_tui_commands:
 
-Using the TUI APIs
+Using TUI Commands
 ==================
 
-TUI API refers to a programming interface that mirrors the Fluent text user
-interface (TUI). There is a TUI API defined for each of meshing and solution mode -
-which API is active depends on the current Fluent mode. The guidance here is 
+TUI commands refers to a programming interface that mirrors the Fluent text user
+interface (TUI). There is a TUI command hierarchy defined for each of meshing and solution mode -
+which hierarchy is active depends on the current Fluent mode. The guidance here is 
 applicable to either mode.
 
-The TUI APIs represent a means to automate workflows comprehensively: everything
+The PyFluent TUI commands represent a means to automate workflows comprehensively: everything
 that's in the Fluent TUI (which itself is a comprehensive automation interface)
-is in the TUI API. The TUI APIs provide commands that are Pythonic versions of the TUI commands used
-in the Fluent console. Much like Fluent's TUI the API provides a hierarchical
-interface to the underlying procedural interface of the program.
+is exposed in PyFluent. The PyFluent TUI commands are Pythonic versions of those used
+in the Fluent console.
 
-The TUI APIs do not support Fluent TUI features such as aliases or
-command abbreviation. As an alternative, using these APIs in an interactive
+The PyFluent TUI commands do not support TUI features such as aliases or
+command abbreviation. As an alternative, using these PyFluent commands in an interactive
 session is easier if you install a tool such as
 `pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_ which provides
 both command line completion and history. You can also use Python built-in functions,
 `help <https://docs.python.org/3/library/functions.html#help>`_ and 
-`dir <https://docs.python.org/3/library/functions.html#dir>`_ on any object in the API to inspect it further.
+`dir <https://docs.python.org/3/library/functions.html#dir>`_ on any PyFluent TUI object to inspect it further.
 
 The arguments to a TUI command are just those that would be passed in direct interaction with the
-Fluent Console, but in a Pythonic style. Let's look in more detail at how the API usage mirrors 
-existing TUI usage, because the most productive way to write TUI API Python commands is with reference to
+Fluent Console, but in a Pythonic style. Let's look in more detail at how the Python usage mirrors 
+existing TUI usage, because the most productive way to write Python commands is with reference to
 existing TUI commands. For instance, in solution mode:
 
 .. code:: lisp
@@ -103,4 +102,4 @@ Note the following rules implied in the above examples:
     That quoting has to be preserved by wrapping the Python string in additional single quotes
   - The contents of string arguments are preserved
 
-There are plenty of additional examples of TUI API usage in :ref:`ref_mixing_elbow_tui_api`.
+There are plenty of additional examples of TUI command usage in :ref:`ref_mixing_elbow_tui_api`.
