@@ -23,8 +23,10 @@ mesh/check-verbosity).
 
 Reporting Mesh Quality
 ~~~~~~~~~~~~~~~~~~~~~~
-mesh/check-quality TUI: Enables you to ensure that the mesh quality is appropriate
-before transferring the mesh to the solution mode.
+mesh/quality TUI: Displays information about the quality of the mesh in the
+console, including the minimum orthogonal quality and the maximum aspect ratio.
+The level of detail displayed depends on the setting specified for
+mesh/check-verbosity.
 
 .. code:: python
 
