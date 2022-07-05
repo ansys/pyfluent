@@ -7,7 +7,7 @@ PyFluent supports specifying solver settings using  both
 
 Solver TUI Commands
 -------------------
-The following examples demonstrate how you can specify some solver
+The following examples demonstrate how you can specify solver
 settings using the :ref:`ref_solver_tui_commands`:
 
 Selecting Steady or Transient

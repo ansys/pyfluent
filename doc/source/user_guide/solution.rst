@@ -6,7 +6,7 @@ PyFluent allows you to apply solution settings, initialize and solve using both
 
 Solver TUI Commands
 -------------------
-The following example demonstrates how you can apply some solution settings
+The following example demonstrates how you can apply solution settings
 using :ref:`ref_solver_tui_commands`:
 
 Selecting Solution Methods 

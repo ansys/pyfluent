@@ -4,7 +4,7 @@ PyFluent supports defining models using :ref:`ref_solver_tui_commands` and :ref:
 
 Solver TUI Commands
 -------------------
-The following examples demonstrate how you can define some models using :ref:`ref_solver_tui_commands`:
+The following examples demonstrate how you can define models using :ref:`ref_solver_tui_commands`:
 
 Enabling Energy Model
 ~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +55,7 @@ define/models/multiphase TUI: Provide options to select different multiphase mod
 
 Settings Objects
 ----------------
-The following examples demonstrate how you can define some models using :ref:`ref_settings`:
+The following examples demonstrate how you can define models using :ref:`ref_settings`:
 
 Enabling Energy Model
 ~~~~~~~~~~~~~~~~~~~~~
