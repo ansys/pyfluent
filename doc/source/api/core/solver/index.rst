@@ -2,7 +2,7 @@
 
 Solver
 ======
-This module allows you to use Fluent solver capabilities from Python.  While 
+This module allows you to use Fluent solver capabilities from Python. While 
 the :ref:`ref_solver_tui`-based commands are available, you can also use 
 the :ref:`ref_settings`, in addition to having access to Fluent surface, scalar 
 and vector field data, and events and monitoring. 
