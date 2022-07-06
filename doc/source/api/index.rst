@@ -7,42 +7,37 @@ API Reference
 This section describes the core pythonic interfaces for Fluent. 
 Here, you can find the application programming interfaces for 
 such things as launching Fluent, assorted utilities, as well as 
-the APIs for the meshing and solver components of Fluent. 
-
-Note that aside from the core API, there is also the separate 
-Parametric Study API (``ansys-fluent-parametric``), as well as the 
-separate Visualization API (``ansys-fluent-visualization``).
+the interfaces for the meshing and solver components of Fluent. 
 
 Launching Fluent
 ----------------
 
-The API for this component provides access to starting Fluent locally in 
+This component provides access to starting Fluent locally in 
 server mode or connecting to a running Fluent server instance.
 
 Pythonic Utilities
 ------------------
 
-The API is currently comprosed of only a function to allow for 
+This component consists solely of a function to allow for 
 asynchonous execution.
 
 Meshing Mode
 ------------
 
-The meshing API is dedicated to capturing the capabilities of 
-the Fluent Meshing guided workflows and associated tools. The API 
-consists of a TUI-based API that is derived from the Fluent (meshing) 
-text command interface, as well as a datamodel-driven meshing workflow 
-interface that manages the workflow tasks, meshing functions, and 
-part management.
+The meshing mode is dedicated to capturing the capabilities of 
+the Fluent Meshing guided workflows and associated tools. This component 
+consists of an interface that is derived from the Fluent (meshing) 
+TUI, as well as a meshing workflow interface that manages workflow 
+tasks, meshing functions, and part management.
 
 Solver Mode
 -----------
 
-The solver API is dedicated to capturing the power of the 
-Fluent solver. The API consists of a settings-based API (beta) 
-or TUI-based API that is derived from the Fluent (solver) text 
-command interface, as well as access to Fluent surface, scalar 
-and vector field data. 
+The solver mode is dedicated to capturing the power of the 
+Fluent solver. This component consists of a :ref:`ref_settings`-based 
+interface or a :ref:`ref_solver_tui`-based interface that is derived 
+from the Fluent (solver) TUI, as well as access to Fluent surface, 
+scalar and vector field data. 
 
 .. currentmodule:: ansys.fluent
 
