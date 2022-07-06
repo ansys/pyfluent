@@ -7,7 +7,7 @@ API Reference
 This section describes the core pythonic interfaces for Fluent. 
 Here, you can find the application programming interfaces for 
 such things as launching Fluent, assorted utilities, as well as 
-the interfaces for the meshing and solver components of Fluent. 
+the interfaces for the meshing and solver components of Fluent.
 
 Launching Fluent
 ----------------
@@ -19,7 +19,7 @@ Pythonic Utilities
 ------------------
 
 This component consists solely of a function to allow for 
-asynchonous execution.
+asynchronous execution.
 
 Meshing Mode
 ------------
