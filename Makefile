@@ -5,7 +5,6 @@ style:
 install:
 	@pip uninstall ansys-api-fluent -y
 	@pip install -r requirements/requirements_build.txt
-	@pip install install_data/ansys_api_fluent-0.1.0-py3-none-any.whl
 	@python -m build
 	@pip install dist/*.whl
 
