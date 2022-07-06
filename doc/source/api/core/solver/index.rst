@@ -3,8 +3,8 @@
 Solver
 ======
 This module allows you to use Fluent solver capabilities from Python.  While 
-the solver TUI commands are available, you can also use the settings-based object 
-API (Beta), in addition to access to Fluent surface, scalar 
+the :ref:`ref_solver_tui`-based commands are available, you can also use 
+the :ref:`ref_settings`, in addition to having access to Fluent surface, scalar 
 and vector field data, and events and monitoring. 
 
 .. currentmodule:: ansys.fluent.core.solver

@@ -6,10 +6,7 @@ Core
 This section describes the core pythonic interfaces for Fluent. 
 Here, you can find the application programming interfaces for 
 such things as launching Fluent, assorted utilities, as well as 
-the APIs for the meshing and solver components of Fluent. 
-
-Aside from the core API, there is also the separate Parametric 
-Study API, as well as the separate Visualization API.
+the interfaces for the meshing and solver components of Fluent. 
 
 .. currentmodule:: ansys.fluent.core
 
