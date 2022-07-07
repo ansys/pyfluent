@@ -46,8 +46,15 @@ Installation
 The ``ansys-fluent-core`` package currently supports Python 3.7 through Python
 3.10 on Windows and Linux.
 
-If you want to use PyFluent please install the latest from `PyFluent GitHub
-<https://github.com/pyansys/pyfluent/issues>`_ via:
+Install the latest release from `PyPI
+<https://pypi.org/project/ansys-fluent-core/>`_ with:
+
+.. code:: console
+
+   pip install ansys-fluent-core
+
+Alternatively, install the latest from `PyFluent GitHub
+<https://github.com/pyansys/pyfluent>`_ via:
 
 .. code:: console
 
