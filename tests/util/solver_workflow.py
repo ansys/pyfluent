@@ -3,6 +3,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 
+
 def create_solver_session(*args, **kwargs):
     return pyfluent.launch_fluent(**kwargs)
 

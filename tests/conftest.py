@@ -1,8 +1,9 @@
 import pytest
 
 pytest_plugins = [
-   "util.fixture_fluent",
-  ]
+    "util.fixture_fluent",
+]
+
 
 @pytest.fixture
 def with_launching_container(monkeypatch: pytest.MonkeyPatch) -> None:
