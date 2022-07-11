@@ -1,7 +1,7 @@
 """.. _ref_exhaust_system_tui_api:
 
 End-to-end Fault-tolerant Meshing Workflow
-----------------------------------------------
+------------------------------------------
 This tutorial illustrates the setup and solution of a three-dimensional
 turbulent fluid flow in a manifold exhaust system. The manifold configuration
 is encountered in the automotive industry. It is often important to predict
