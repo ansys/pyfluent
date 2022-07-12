@@ -1,7 +1,7 @@
 Sphinx==4.4.0
 jupyter_sphinx==0.3.2
 numpydoc==1.2
-matplotlib==3.5.1
+matplotlib==3.5.2
 ansys-sphinx-theme==0.4.0
 pypandoc==1.8.1
 pytest-sphinx==0.3.1
