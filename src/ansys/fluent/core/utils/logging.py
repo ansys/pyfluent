@@ -99,5 +99,11 @@ class Logger:
         """Disable logging to file."""
         self.logger.removeHandler(self.file_handler)
 
+    def getEffectiveLevel(self) -> int:
+        return self.logger.getEffectiveLevel()
+
+    def getLevelName(self) -> str:
+        return logging.getLevelName(self.getEffectiveLevel())
+
 
 LOG = Logger()
