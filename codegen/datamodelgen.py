@@ -1,6 +1,7 @@
 from io import FileIO
 import os
 from pathlib import Path
+import shutil
 from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
@@ -295,9 +296,9 @@ class DataModelGenerator:
             if info.filepath.exists():
                 info.filepath.unlink()
         if Path(_MESHING_DM_DOC_DIR).exists():
-            Path(_MESHING_DM_DOC_DIR).unlink()
+            shutil.rmtree(Path(_MESHING_DM_DOC_DIR))
         if Path(_SOLVER_DM_DOC_DIR).exists():
-            Path(_SOLVER_DM_DOC_DIR).unlink()
+            shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
 def generate():

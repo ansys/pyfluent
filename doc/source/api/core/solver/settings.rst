@@ -1,7 +1,7 @@
 .. _ref_settings:
 
-Settings Objects (Beta)
-=======================
+Settings Objects
+================
 
 Introduction
 ------------
@@ -12,7 +12,7 @@ issue commands with a hierarchy of objects.
 Top-level Objects
 -----------------
 
-The top-level settings object is available as the ``root`` property of session.solver.
+The top-level settings object is available as the :ref:`root<settings_root_section>` property of session.solver.
 
 .. code-block::
 
@@ -203,6 +203,11 @@ Example(2): The list of valid commands can be accessed as follows:
   >>> root.solution.run_calculation.get_active_command_names()
   ['iterate']
 
+.. _settings_root_section:
+
 Settings Objects Root
 ---------------------
-:ref:`Settings root<root>`
+
+The ``root`` object is the top-level settings object which contains all other
+settings objects in a hierarchical structure. The full API documentation of settings
+objects can be browsed from the :ref:`root object's page<root>`.

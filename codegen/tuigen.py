@@ -197,7 +197,7 @@ class TUIGenerator:
         self._tui_heading = ("meshing" if meshing else "solver") + ".tui"
         self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
-            Path(self._tui_doc_dir).unlink()
+            shutil.rmtree(Path(self._tui_doc_dir))
         self.session = pyfluent.launch_fluent(meshing_mode=meshing)
         self._service = self.session._datamodel_service_tui
         self._main_menu = _TUIMenu([])
@@ -345,7 +345,8 @@ class TUIGenerator:
 
 def generate():
     # pyfluent.set_log_level("WARNING")
-    _copy_tui_help_xml_file()
+    if FLUENT_VERSION > "22.2":
+        _copy_tui_help_xml_file()
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
     TUIGenerator(meshing=False).generate()

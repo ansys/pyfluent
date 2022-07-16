@@ -3,11 +3,8 @@
 ========
 Examples
 ========
-Add examples here for PyFluent ``ansys-fluent``.
-
-..
-   This toctree must be a top level index to get it to show up in
-   pydata_sphinx_theme
+On this page you will find a number of examples for the PyFluent
+``ansys-fluent-core`` package.
 
 .. toctree::
    :maxdepth: 1

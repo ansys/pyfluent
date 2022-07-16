@@ -29,6 +29,7 @@ import io
 import os
 import pickle
 import pprint
+import shutil
 
 from ansys.fluent.core.solver import flobject
 
@@ -182,6 +183,9 @@ def _populate_classes(parent_dir):
 
             # write imports to py file
             f.write("from ansys.fluent.core.solver.flobject import *\n\n")
+            f.write(
+                "from ansys.fluent.core.solver.flobject import _ChildNamedObjectAccessorMixin\n\n"
+            )
             if children_hash:
                 for child in children_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
@@ -280,7 +284,7 @@ def _populate_init(parent_dir, sinfo):
         f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
         f.write("#\n")
         f.write("\n")
-        f.write(f'"""A package providing Fluent\'s Settings API in Python."""')
+        f.write(f'"""A package providing Fluent\'s Settings Objects in Python."""')
         f.write("\n")
         f.write("from ansys.fluent.core.solver.flobject import *\n\n")
         f.write(f'SHASH = "{hash}"\n')
@@ -303,8 +307,11 @@ def generate():
             "settings",
         )
     )
-    if not os.path.exists(parent_dir):
-        os.makedirs(parent_dir)
+
+    # Clear previously generated data
+    if os.path.exists(parent_dir):
+        shutil.rmtree(parent_dir)
+    os.makedirs(parent_dir)
 
     session = launch_fluent()
     sinfo = session._settings_service.get_static_info()

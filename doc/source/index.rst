@@ -6,7 +6,7 @@ PyFluent Documentation |version|
    :maxdepth: 2
 
    getting_started/index
-   users_guide/index
+   user_guide/index
    api/index
    examples/index
    contributing
@@ -34,12 +34,12 @@ What is PyFluent?
 -----------------
 
 PyFluent is part of the `PyAnsys <https://docs.pyansys.com>`_ ecosystem that
-lets you use Ansys Fluent within or alongside any other Python environment,
-whether it is in conjunction with other Ansys Python libraries and packages or
-with other external Python products.
+lets you use Ansys Fluent within a Python environment of your choice in
+conjunction with other PyAnsys libraries and with other external Python
+libraries.
 
 PyFluent implements a client-server architecture.  PyFluent launches or connects
-with a running Fluent process as a server using Google remote procedure calls, 
+with a running Fluent process as a server using Google remote procedure calls,
 or gRPC interfaces, but all you need to interact with is the Python interface.
 
 You can use PyFluent to programmatically create, interact with and control an
@@ -49,23 +49,24 @@ customized scripts.
 
 Features
 --------
-The primary package, ``ansys-fluent``, provides features such as:
+The primary package, ``ansys-fluent-core``, provides features such as:
 
+- Ability to launch the Fluent solver in serial or parallel and connect to
+  already running Fluent sessions using the :ref:`ref_launcher_launcher` module.
 - Scripting of Fluent's meshing capabilities. See the :ref:`ref_meshing` module
   for more information.
-- Scripting using Fluent's TUI commands. See the :ref:`ref_solver_tui`  module for
-  more information about the available commands.
-- and more...
-  
-Beta Features
--------------
-The settings object interface provides a more Pythonic way to access and modify
-Fluent settings than the TUI command interface.  These API calls group Fluent
-settings into a tree of objects where individal settings for material
-properties, boundary conditions are accessible without the need to pass
-parameter lists.
-
-More information is available in the :ref:`ref_settings` module documentation.
+- Scripting using all of Fluent's TUI commands. See the :ref:`ref_solver_tui`
+  module for more information about the available commands.
+- Ability to run more than one Fluent session asynchronously.  See the
+  :ref:`ref_utils` module for more information.
+- Ability to retrieve Fluent field data as numpy arryas for custom post
+  processing using standard Python libraries such as matplotlib.  See the
+  :ref:`ref_field_data` module for more information.
+- Ability to register function callbacks on Fluent solver events such as when a
+  case or data file is read, or the Fluent solver completes an iteration.  See
+  the :ref:`ref_events` module for more information.
+- Ability to retrieve solver monitors such as residuals using the
+  :ref:`ref_monitors` module.
 
 Documentation and Issues
 ------------------------
@@ -73,9 +74,9 @@ Documentation and Issues
 In addition to installation, usage, and contribution information, the PyFluent
 documentation provides API documentation, examples, and code guidelines.
 
-On the PyFluent Issues page, you can create issues to submit questions,
-report bugs, and request new features. To reach the project support team,
-email pyansys.support@ansys.com.
+On the PyFluent Issues page, you can create issues to submit questions, report
+bugs, and request new features. To reach the project support team, email
+pyansys.support@ansys.com.
 
 License
 -------

@@ -1,7 +1,7 @@
 """.. _ref_mixing_elbow_settings_api_beta:
 
-Fluent Setup and Solution using Settings API (Beta)
------------------------------------------------------
+Fluent Setup and Solution using Settings Objects
+------------------------------------------------
 This example illustrates the setup and solution of a three-dimensional
 turbulent fluid flow and heat transfer problem in a mixing elbow. The mixing
 elbow configuration is encountered in piping systems in power plants and
@@ -173,7 +173,6 @@ session.solver.root.results.graphics.vector[
     "velocity_vector_symmetry"
 ].scale.scale_f = 4
 session.solver.root.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
-# session.solver.root.results.graphics.vector["velocity_vector_symmetry"].display()
 
 ###############################################################################
 # Compute mass flow rate
@@ -189,10 +188,6 @@ session.solver.root.solution.report_definitions.flux["mass_flow_rate"].zone_name
 ]
 session.solver.root.solution.report_definitions.flux["mass_flow_rate"].print_state()
 session.solver.root.solution.report_definitions.compute(report_defs=["mass_flow_rate"])
-
-###############################################################################
-# Write final case and data.
-# session.solver.tui.file.write_case_data('mixing_elbow2_set.cas.h5')
 
 #########################################################################
 # Close Fluent

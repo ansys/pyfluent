@@ -29,12 +29,13 @@ class MonitorsManager:
 
     def get_monitor_set_names(self) -> List[str]:
         """Get monitor set names.
+
         Parameters
         ----------
         None
 
         Returns
-        --------
+        -------
         List[str]
             List of all monitor set names.
         """
@@ -43,6 +44,7 @@ class MonitorsManager:
 
     def get_monitor_set_prop(self, monitor_set_name: str, property: str) -> str:
         """Get monitor set property.
+
         Parameters
         ----------
         monitor_set_name : str
@@ -51,7 +53,7 @@ class MonitorsManager:
             Monitor set property. It can be `title`, `xlabel`, `ylabel`.
 
         Returns
-        --------
+        -------
         str
             Monitor set property.
         """
@@ -69,7 +71,7 @@ class MonitorsManager:
             Monitor set name.
 
         Returns
-        --------
+        -------
         Union[None, object]
             Returns None if DataFrame is empty. Otherwise plot object depending upon
             ``plotting.backend``.
@@ -90,9 +92,9 @@ class MonitorsManager:
             Monitor set name.
 
         Returns
-        --------
+        -------
         Tuple[np.array, Dict[str, np.array]]
-            Tuple contains numpy array of x-axis values and dictioary of monitor name and numpy array of
+            Tuple contains numpy array of x-axis values and dictionary of monitor name and numpy array of
             y-axis values.
         """
         with self._lock:
@@ -122,7 +124,7 @@ class MonitorsManager:
             Event info object.
 
         Returns
-        --------
+        -------
         None
         """
         with self._lock_refresh:

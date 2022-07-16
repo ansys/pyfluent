@@ -19,7 +19,7 @@ class EventsManager:
     service :
         Event streaming service.
 
-    Properties
+    Attributes
     ----------
     events_list : List[str]
         List of supported events.
@@ -54,12 +54,23 @@ class EventsManager:
 
     @property
     def events_list(self) -> List[str]:
+        """Returns the list of supported events.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        List[str]
+            List of supported events.
+        """
         return self._events_list
 
     def register_callback(
         self, event_name: str, call_back: Callable, *args, **kwargs
     ) -> str:
-        """Register Callback.
+        """Register `Callback`.
 
         Parameters
         ----------
@@ -69,15 +80,15 @@ class EventsManager:
         call_back : Callable
             Callback to register.
 
-        Raises
-        ------
-        RuntimeError
-            If event name is not valid.
-
         Returns
         -------
         str
             Registered callback Id.
+
+        Raises
+        ------
+        RuntimeError
+            If event name is not valid.
         """
         if not event_name in self.events_list:
             raise RuntimeError(f"{event_name} is not a valid event.")
@@ -94,7 +105,7 @@ class EventsManager:
             return id
 
     def unregister_callback(self, callback_id: str):
-        """Unregister Callback.
+        """Unregister `Callback`.
 
         Parameters
         ----------
@@ -107,7 +118,16 @@ class EventsManager:
                     del callbacks_map[callback_id]
 
     def start(self):
-        """Start Events manager."""
+        """Start Events manager.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         if self._events_thread is None:
             self._events_thread: threading.Thread = threading.Thread(
                 target=EventsManager._listen_events, args=(self,)
@@ -115,7 +135,16 @@ class EventsManager:
             self._events_thread.start()
 
     def stop(self):
-        """Stop Events manager."""
+        """Stop Events manager.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         if self._events_thread:
             self._events_service.end_streaming()
             self._events_thread.join()

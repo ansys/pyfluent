@@ -81,18 +81,16 @@ class Base:
     fluent_name
     """
 
-    _initialized = False
-
     def __init__(self, name: str = None, parent=None):
         """__init__ of Base class."""
-        self._parent = weakref.proxy(parent) if parent is not None else None
-        self._flproxy = None
+        self._setattr("_parent", weakref.proxy(parent) if parent is not None else None)
+        self._setattr("_flproxy", None)
         if name is not None:
-            self._name = name
+            self._setattr("_name", name)
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
-        self._flproxy = flproxy
+        self._setattr("_flproxy", flproxy)
 
     @property
     def flproxy(self):
@@ -107,6 +105,11 @@ class Base:
 
     _name = None
     fluent_name = None
+
+    @property
+    def parent(self):
+        """The parent (container) object."""
+        return self._parent
 
     @property
     def obj_name(self) -> str:
@@ -146,6 +149,14 @@ class Base:
     def is_active(self) -> bool:
         """Indicates if the object is active."""
         return self.get_attr("active?")
+
+    def __setattr__(self, name, value):
+        raise AttributeError(name)
+
+    # __setattr__ is overridden to prevent creation of new attributes or
+    # overriding existing ones. _setattr is the backdoor to set attributes
+    def _setattr(self, name, value):
+        super().__setattr__(name, value)
 
 
 StateT = TypeVar("StateT")
@@ -303,11 +314,13 @@ class Group(SettingsBase[DictStateType]):
         super().__init__(name, parent)
         for child in self.child_names:
             cls = getattr(self.__class__, child)
-            setattr(self, child, cls(None, self))
+            self._setattr(child, cls(None, self))
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
-            setattr(self, cmd, cls(None, self))
-        self._initialized = True
+            self._setattr(cmd, cls(None, self))
+        for query in self.query_names:
+            cls = getattr(self.__class__, query)
+            self._setattr(query, cls(None, self))
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -341,6 +354,7 @@ class Group(SettingsBase[DictStateType]):
 
     child_names = []
     command_names = []
+    query_names = []
 
     def get_active_child_names(self):
         """Names of children that are currently active."""
@@ -358,6 +372,14 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(command)
         return ret
 
+    def get_active_query_names(self):
+        """Names of queries that are currently active."""
+        ret = []
+        for query in self.query_names:
+            if getattr(self, query).is_active():
+                ret.append(query)
+        return ret
+
     def __getattribute__(self, name):
         if name in super().__getattribute__("child_names"):
             if not self.is_active():
@@ -365,10 +387,7 @@ class Group(SettingsBase[DictStateType]):
         return super().__getattribute__(name)
 
     def __setattr__(self, name: str, value):
-        if not self._initialized or name[0] == "_":
-            super().__setattr__(name, value)
-        else:
-            getattr(self, name).set_state(value)
+        return getattr(self, name).set_state(value)
 
 
 ChildTypeT = TypeVar("ChildTypeT")
@@ -391,10 +410,13 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def __init__(self, name: str = None, parent=None):
         """__init__ of NamedObject class."""
         super().__init__(name, parent)
-        self._objects = {}
+        self._setattr("_objects", {})
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
-            setattr(self, cmd, cls(None, self))
+            self._setattr(cmd, cls(None, self))
+        for query in self.query_names:
+            cls = getattr(self.__class__, query)
+            self._setattr(query, cls(None, self))
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -419,6 +441,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             return value
 
     command_names = []
+    query_names = []
 
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
@@ -543,10 +566,13 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __init__(self, name=None, parent=None):
         """__init__ of ListObject class."""
         super().__init__(name, parent)
-        self._objects = []
+        self._setattr("_objects", [])
         for cmd in self.command_names:
             cls = getattr(self.__class__, cmd)
-            setattr(self, cmd, cls(None, self))
+            self._setattr(cmd, cls(None, self))
+        for query in self.query_names:
+            cls = getattr(self.__class__, query)
+            self._setattr(query, cls(None, self))
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -565,11 +591,12 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             return value
 
     command_names = []
+    query_names = []
 
     def _update_objects(self):
         # pylint: disable=no-member
         cls = self.__class__.child_object_type
-        self._objects = [cls(str(x), self) for x in range(self.get_size())]
+        self._setattr("_objects", [cls(str(x), self) for x in range(self.get_size())])
 
     def __len__(self):
         return self.get_size()
@@ -617,15 +644,6 @@ class Map(SettingsBase[DictStateType]):
 class Command(Base):
     """Command object."""
 
-    def __init__(self, name: str = None, parent=None):
-        """__init__ of Group class."""
-        super().__init__(name, parent)
-        if hasattr(self, "argument_names"):
-            for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
-                setattr(self, argument, cls(None, self))
-        self._initialized = True
-
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         newkwds = {}
@@ -636,6 +654,21 @@ class Command(Base):
             else:
                 raise RuntimeError("Argument '" + str(k) + "' is invalid")
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+
+
+class Query(Base):
+    """Query object."""
+
+    def __call__(self, **kwds):
+        """Call a query with the specified keyword arguments."""
+        newkwds = {}
+        for k, v in kwds.items():
+            if k in self.argument_names:
+                ccls = getattr(self, k)
+                newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
+            else:
+                raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
 _baseTypes = {
@@ -652,6 +685,7 @@ _baseTypes = {
     "named-object": NamedObject,
     "vector": RealVector,
     "command": Command,
+    "query": Query,
     "material-property": String,
     "thread-var": String,
     "list-object": ListObject,
@@ -666,6 +700,64 @@ def _clean_helpinfo(helpinfo):
         helpinfo += "."
     helpinfo = helpinfo[0].upper() + helpinfo[1:]
     return helpinfo
+
+
+class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
+    """A mixin class to provide dict interface at a Group class level if the
+    Group has multiple named objects of similar type. For example, boundary
+    conditions are grouped by type but quite often we want to access them
+    without the type context.
+
+    e.g. the following can be used:
+    for name, boundary in setup.boundary_conditions.items():
+        print (name, boundary())
+
+    even though actual boundary conditions are stored one level lower to
+    boundary_conditions.
+    """
+
+    def __getitem__(self, name):
+        """Get a child object."""
+        for cname in self.child_names:
+            cobj = getattr(self, cname)
+            try:
+                return cobj[name]
+            except Exception:
+                pass
+        raise KeyError(name)
+
+    def __setitem__(self, name, value):
+        """Set the state of a child object."""
+        self[name].set_state(value)
+
+    def __delitem__(self, name):
+        """Delete a child object."""
+        for cname in self.child_names:
+            cobj = getattr(self, cname)
+            try:
+                del cobj[name]
+                return
+            except Exception:
+                pass
+        raise KeyError(name)
+
+    def __iter__(self):
+        """Iterator for child named objects."""
+        for cname in self.child_names:
+            try:
+                for item in getattr(self, cname):
+                    yield item
+            except Exception:
+                continue
+
+    def __len__(self):
+        """Number of child named objects."""
+        l = 0
+        for cname in self.child_names:
+            cobj = getattr(self, cname)
+            if isinstance(cobj, NamedObject):
+                l += len(cobj)
+        return l
 
 
 def get_cls(name, info, parent=None):
@@ -694,9 +786,21 @@ def get_cls(name, info, parent=None):
             else:
                 if obj_type == "command":
                     dct["__doc__"] = f"'{pname.strip('_')}' command."
+                elif obj_type == "query":
+                    dct["__doc__"] = f"'{pname.strip('_')}' query."
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
-        cls = type(pname, (base,), dct)
+
+        include_child_named_objects = obj_type == "group" and pname in [
+            "boundary_conditions",
+            "cell_zone_conditions",
+            "report_definitions",
+        ]
+        # include_child_name_objects = info.get("include_child_named_objects", False)
+        if include_child_named_objects:
+            cls = type(pname, (base, _ChildNamedObjectAccessorMixin), dct)
+        else:
+            cls = type(pname, (base,), dct)
 
         children = info.get("children")
         taboo = set(dir(cls))
@@ -720,7 +824,6 @@ def get_cls(name, info, parent=None):
                 cls.child_names.append(ccls.__name__)
                 taboo.add(ccls_name)
                 setattr(cls, ccls.__name__, ccls)
-
         commands = info.get("commands")
         if commands:
             cls.command_names = []
@@ -737,6 +840,21 @@ def get_cls(name, info, parent=None):
                 # pylint: disable=no-member
                 cls.command_names.append(ccls.__name__)
                 taboo.add(ccls_name)
+                setattr(cls, ccls.__name__, ccls)
+        queries = info.get("queries")
+        if queries:
+            cls.query_names = []
+            for cname, cinfo in queries.items():
+                ccls = get_cls(cname, cinfo, cls)
+                ccls_name = ccls.__name__
+                while ccls_name in cls.query_names:
+                    if i > 0:
+                        ccls_name = ccls_name[: ccls_name.rfind("_")]
+                    i += 1
+                    ccls_name += f"_{str(i)}"
+                ccls.__name__ = ccls_name
+                # pylint: disable=no-member
+                cls.query_names.append(ccls.__name__)
                 setattr(cls, ccls.__name__, ccls)
 
         arguments = info.get("arguments")
@@ -769,6 +887,10 @@ def get_cls(name, info, parent=None):
         object_type = info.get("object-type")
         if object_type:
             cls.child_object_type = get_cls("child-object-type", object_type, cls)
+            cls.child_object_type.rename = lambda self, name: self._parent.rename(
+                name, self._name
+            )
+            cls.child_object_type.get_name = lambda self: self._name
     except Exception:
         print(
             f"Unable to construct class for '{name}' of "
@@ -813,5 +935,5 @@ def get_root(flproxy) -> Group:
     # pylint: disable=no-member
     root = cls()
     root.set_flproxy(flproxy)
-    root._static_info = obj_info
+    root._setattr("_static_info", obj_info)
     return root

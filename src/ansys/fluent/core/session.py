@@ -86,9 +86,9 @@ _CODEGEN_MSG_DATAMODEL = (
 )
 
 _CODEGEN_MSG_TUI = (
-    "Currently calling the TUI API in a generic manner. "
+    "Currently calling the TUI commands in a generic manner. "
     "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local TUI API classes."
+    "directory to generate the local TUI commands classes."
 )
 
 
@@ -102,7 +102,7 @@ class Session:
         for meshing TUI and various meshing datamodel API calls.
     solver: Session.Solver
         Instance of Session.Solver which holds the top-level objects
-        for solver TUI and settings API calls.
+        for solver TUI and settings objects calls.
     scheme_eval: SchemeEval
         Instance of SchemeEval on which Fluent's scheme code can be
         executed.
@@ -398,7 +398,7 @@ class Session:
                     )
 
                     self._tui = MeshingMainMenu([], self._tui_service)
-                except ImportError:
+                except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
                     self._tui = TUIMenuGeneric([], self._tui_service)
             return self._tui
@@ -411,9 +411,9 @@ class Session:
                     from ansys.fluent.core.datamodel.meshing import Root as meshing_root
 
                     self._meshing = meshing_root(self._se_service, "meshing", [])
-                except ImportError:
+                except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self.meshing = PyMenuGeneric(self._se_service, "meshing")
+                    self._meshing = PyMenuGeneric(self._se_service, "meshing")
             return self._meshing
 
         @property
@@ -426,7 +426,7 @@ class Session:
                     )
 
                     self._workflow = workflow_root(self._se_service, "workflow", [])
-                except ImportError:
+                except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
                     self._workflow = PyMenuGeneric(self._se_service, "workflow")
             return self._workflow
@@ -443,7 +443,7 @@ class Session:
                     self._part_management = PartManagement_root(
                         self._se_service, "PartManagement", []
                     )
-                except ImportError:
+                except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
                     self._part_management = PyMenuGeneric(
                         self._se_service, "PartManagement"
@@ -462,7 +462,7 @@ class Session:
                     self._pm_file_management = PMFileManagement_root(
                         self._se_service, "PMFileManagement", []
                     )
-                except ImportError:
+                except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_DATAMODEL)
                     self._pm_file_management = PyMenuGeneric(
                         self._se_service, "PMFileManagement"
@@ -487,7 +487,7 @@ class Session:
                     from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
 
                     self._tui = SolverMainMenu([], self._tui_service)
-                except ImportError:
+                except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
                     self._tui = TUIMenuGeneric([], self._tui_service)
             return self._tui

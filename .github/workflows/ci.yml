@@ -9,6 +9,7 @@ on:
       - "*"
     branches:
       - main
+      - release/*
 
 concurrency:
   group: ${{ github.ref }}
@@ -87,7 +88,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    runs-on: self-hosted
+    runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
         #image-tag: [latest, solver-latest]
@@ -252,6 +253,10 @@ jobs:
             src/ansys/fluent/core/meshing/tui.py
             src/ansys/fluent/core/solver/settings
             src/ansys/fluent/core/solver/tui.py
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}-${{ github.sha }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
 
@@ -337,6 +342,15 @@ jobs:
           TWINE_USERNAME: PAT
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
+
+      - name: Upload to Public PyPi
+        run: |
+          pip install twine
+          twine upload --skip-existing ./**/*.whl
+          python -m twine upload --skip-existing ./**/*.tar.gz
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
 
       - name: Release
         uses: softprops/action-gh-release@v1

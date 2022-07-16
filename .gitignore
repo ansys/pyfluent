@@ -68,11 +68,17 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
+# Sphinx generated documentation
 doc/_build/
 _autosummary
 doc/source/examples
 doc/build_errors.txt
+
+# Auto-generated documentation
+doc/source/api/core/meshing/tui
+doc/source/api/core/meshing/datamodel
+doc/source/api/core/solver/tui
+doc/source/api/core/solver/datamodel
 
 # PyBuilder
 target/
