@@ -641,18 +641,23 @@ class Map(SettingsBase[DictStateType]):
     """A Map object represents key-value settings."""
 
 
+def _get_new_keywords(obj, kwds):
+    newkwds = {}
+    for k, v in kwds.items():
+        if k in obj.argument_names:
+            ccls = getattr(obj, k)
+            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
+        else:
+            raise RuntimeError("Argument '" + str(k) + "' is invalid")
+    return newkwds
+
+
 class Command(Base):
     """Command object."""
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
-        newkwds = {}
-        for k, v in kwds.items():
-            if k in self.argument_names:
-                ccls = getattr(self, k)
-                newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
-            else:
-                raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        newkwds = _get_new_keywords(self, kwds)
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -661,13 +666,7 @@ class Query(Base):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = {}
-        for k, v in kwds.items():
-            if k in self.argument_names:
-                ccls = getattr(self, k)
-                newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
-            else:
-                raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        newkwds = _get_new_keywords(self, kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -802,60 +801,55 @@ def get_cls(name, info, parent=None):
         else:
             cls = type(pname, (base,), dct)
 
-        children = info.get("children")
         taboo = set(dir(cls))
         taboo |= set(
             ["child_names", "command_names", "argument_names", "child_object_type"]
         )
+
+        doc = ""
+
+        def _process_cls_names(info_dict, names, write_doc=False):
+            nonlocal taboo
+            nonlocal cls
+
+            for cname, cinfo in info_dict.items():
+                ccls = get_cls(cname, cinfo, cls)
+                ccls_name = ccls.__name__
+
+                i = 0
+                if write_doc:
+                    nonlocal doc
+                    th = ccls._state_type
+                    th = th.__name__ if hasattr(th, "__name__") else str(th)
+                    doc += f"    {ccls.__name__} : {th}\n"
+                    doc += f"        {ccls.__doc__}\n"
+
+                while ccls_name in taboo:
+                    if i > 0:
+                        ccls_name = ccls_name[: ccls_name.rfind("_")]
+                    i += 1
+                    ccls_name += f"_{str(i)}"
+                ccls.__name__ = ccls_name
+                # pylint: disable=no-member
+                names.append(ccls.__name__)
+                taboo.add(ccls_name)
+                setattr(cls, ccls.__name__, ccls)
+
+        children = info.get("children")
         if children:
             taboo.add("child_names")
             cls.child_names = []
-            for cname, cinfo in children.items():
-                ccls = get_cls(cname, cinfo, cls)
-                i = 0
-                ccls_name = ccls.__name__
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.child_names.append(ccls.__name__)
-                taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+            _process_cls_names(children, cls.child_names)
+
         commands = info.get("commands")
         if commands:
             cls.command_names = []
-            for cname, cinfo in commands.items():
-                ccls = get_cls(cname, cinfo, cls)
-                i = 0
-                ccls_name = ccls.__name__
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.command_names.append(ccls.__name__)
-                taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+            _process_cls_names(commands, cls.command_names)
+
         queries = info.get("queries")
         if queries:
             cls.query_names = []
-            for cname, cinfo in queries.items():
-                ccls = get_cls(cname, cinfo, cls)
-                ccls_name = ccls.__name__
-                while ccls_name in cls.query_names:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.query_names.append(ccls.__name__)
-                setattr(cls, ccls.__name__, ccls)
+            _process_cls_names(queries, cls.query_names)
 
         arguments = info.get("arguments")
         if arguments:
@@ -864,26 +858,9 @@ def get_cls(name, info, parent=None):
             doc += "Parameters\n"
             doc += "----------\n"
             cls.argument_names = []
-            for aname, ainfo in arguments.items():
-                ccls = get_cls(aname, ainfo, cls)
-                i = 0
-                th = ccls._state_type
-                th = th.__name__ if hasattr(th, "__name__") else str(th)
-                doc += f"    {ccls.__name__} : {th}\n"
-                doc += f"        {ccls.__doc__}\n"
-                ccls_name = ccls.__name__
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.argument_names.append(ccls.__name__)
-                taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
-
+            _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
+
         object_type = info.get("object-type")
         if object_type:
             cls.child_object_type = get_cls("child-object-type", object_type, cls)
