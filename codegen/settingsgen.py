@@ -186,6 +186,12 @@ def _populate_classes(parent_dir):
             f.write(
                 "from ansys.fluent.core.solver.flobject import _ChildNamedObjectAccessorMixin\n\n"
             )
+            f.write(
+                "from ansys.fluent.core.solver.flobject import _CreatableNamedObjectMixin\n\n"
+            )
+            f.write(
+                "from ansys.fluent.core.solver.flobject import _NonCreatableNamedObjectMixin\n\n"
+            )
             if children_hash:
                 for child in children_hash:
                     pchild_name = hash_dict.get(child)[0].__name__

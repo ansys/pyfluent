@@ -505,21 +505,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         self._update_objects()
         return self._objects.items()
 
-    def create(self, name: str):
-        """Create a named object with given name.
-
-        Parameters
-        ----------
-        name: str
-              Name of new object
-
-        Returns
-        -------
-        The object that has been created
-        """
-        self.flproxy.create(self.path, name)
-        return self._create_child_object(name)
-
     def get_object_names(self):
         """Object names."""
         return self.flproxy.get_object_names(self.path)
@@ -531,14 +516,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if not obj:
             obj = self._create_child_object(name)
         return obj
-
-    def __setitem__(self, name: str, value):
-        if name not in self.get_object_names():
-            self.flproxy.create(self.path, name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
-        child.set_state(value)
 
 
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
@@ -759,6 +736,43 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return l
 
 
+class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+    def create(self, name: str) -> ChildTypeT:
+        """Create a named object with given name.
+
+        Parameters
+        ----------
+        name: str
+              Name of new object
+
+        Returns
+        -------
+        The object that has been created
+        """
+        self.flproxy.create(self.path, name)
+        return self._create_child_object(name)
+
+    def __setitem__(self, name: str, value):
+        if name not in self.get_object_names():
+            self.flproxy.create(self.path, name)
+        child = self._objects.get(name)
+        if not child:
+            child = self._create_child_object(name)
+        child.set_state(value)
+
+
+class _NonCreatableNamedObjectMixin(
+    collections.abc.MutableMapping, Generic[ChildTypeT]
+):
+    def __setitem__(self, name: str, value):
+        if name not in self.get_object_names():
+            raise KeyError(name)
+        child = self._objects.get(name)
+        if not child:
+            child = self._create_child_object(name)
+        child.set_state(value)
+
+
 def get_cls(name, info, parent=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -790,16 +804,18 @@ def get_cls(name, info, parent=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = obj_type == "group" and pname in [
-            "boundary_conditions",
-            "cell_zone_conditions",
-            "report_definitions",
-        ]
-        # include_child_name_objects = info.get("include_child_named_objects", False)
+        include_child_named_objects = info.get("include_child_named_objects", False)
+        user_creatable = info.get("user_creatable", False)
+
+        bases = (base,)
         if include_child_named_objects:
-            cls = type(pname, (base, _ChildNamedObjectAccessorMixin), dct)
-        else:
-            cls = type(pname, (base,), dct)
+            bases = bases + (_ChildNamedObjectAccessorMixin,)
+        if obj_type == "named-object" and user_creatable:
+            bases = bases + (_CreatableNamedObjectMixin,)
+        elif obj_type == "named-object":
+            bases = bases + (_NonCreatableNamedObjectMixin,)
+
+        cls = type(pname, bases, dct)
 
         taboo = set(dir(cls))
         taboo |= set(

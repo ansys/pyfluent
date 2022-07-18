@@ -186,6 +186,11 @@ class NamedObject(Setting, MutableMapping):
         ret["object-type"] = cls.child_object_type.get_static_info()
         if cls.commands:
             ret["commands"] = {c: v.get_static_info() for c, v in cls.commands.items()}
+        try:
+            if cls.user_creatable:
+                ret["user_creatable"] = cls.user_creatable
+        except AttributeError:
+            ret["user_creatable"] = True
         return ret
 
 
