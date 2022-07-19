@@ -149,11 +149,9 @@ session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
 session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_011.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Check the mesh in Meshing mode
@@ -351,17 +349,14 @@ session.solver.tui.solve.initialize.hyb_initialization()
 session.solver.tui.solve.iterate(100)
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_012.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # .. image:: /_static/mixing_elbow_013.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Save the data file (mixing_elbow1.dat.h5).
@@ -391,11 +386,9 @@ session.solver.tui.display.objects.create(
 )
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_014.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Create and display a definition for temperature contours on the symmetry
@@ -421,11 +414,9 @@ session.solver.tui.display.objects.create(
 )
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_015.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Create and display velocity vectors on the symmetry-xyplane plane:
@@ -451,11 +442,9 @@ session.solver.tui.display.objects.create(
 )
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_016.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Create an iso-surface representing the intersection of the plane z=0 and the
@@ -479,11 +468,9 @@ session.solver.tui.display.objects.create(
 )
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_017.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Write final case and data.

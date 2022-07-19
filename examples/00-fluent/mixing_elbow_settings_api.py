@@ -175,11 +175,9 @@ session.solver.root.results.graphics.vector[
 session.solver.root.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
 
 ###############################################################################
-# |
 # .. image:: /_static/mixing_elbow_016.png
 #   :width: 500pt
 #   :align: center
-# |
 
 ###############################################################################
 # Compute mass flow rate
