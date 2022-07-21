@@ -36,8 +36,8 @@ class EventsManager:
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]
 
-    def _listen_events(self):
-        responses = self._events_service.begin_streaming()
+    def _listen_events(self, started_evt):
+        responses = self._events_service.begin_streaming(started_evt)
         while True:
             try:
                 response = next(responses)
@@ -129,10 +129,12 @@ class EventsManager:
         None
         """
         if self._events_thread is None:
+            started_evt = threading.Event()
             self._events_thread: threading.Thread = threading.Thread(
-                target=EventsManager._listen_events, args=(self,)
+                target=EventsManager._listen_events, args=(self, started_evt)
             )
             self._events_thread.start()
+            started_evt.wait()
 
     def stop(self):
         """Stop Events manager.

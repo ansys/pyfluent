@@ -14,7 +14,7 @@ class EventsService:
         self.__metadata = metadata
         self.__streams = None
 
-    def begin_streaming(self):
+    def begin_streaming(self, started_evt):
         """Begin events streaming from Fluent.
 
         Yields
@@ -23,7 +23,7 @@ class EventsService:
         """
         request = EventsProtoModule.BeginStreamingRequest()
         self.__streams = self.__stub.BeginStreaming(request, metadata=self.__metadata)
-
+        started_evt.set()
         while True:
             try:
                 yield next(self.__streams)
