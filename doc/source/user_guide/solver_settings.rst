@@ -2,7 +2,7 @@
 
 Specifying solver settings
 ==========================
-PyFluent supports specifying solver settings using the 
+PyFluent supports specifying solver settings using 
 :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
 
 The following examples show how you specify solver

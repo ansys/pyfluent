@@ -3,10 +3,10 @@ Defining Materials
 PyFluent supports defining materials using :ref:`ref_solver_tui_commands` and 
 :ref:`ref_settings`.
 
-Defining materials using solver TUI commands
---------------------------------------------
-This example shows how you can define materials using
-:ref:`ref_solver_tui_commands`:
+Using solver TUI commands
+-------------------------
+This example shows how you define materials using
+:ref:`ref_solver_tui_commands`.
 
 The ``define.materials`` TUI enters the materials menu.
 
@@ -42,10 +42,10 @@ The ``define.materials`` TUI enters the materials menu.
         'no',
     )
 
-Defining materials using Settings objects
------------------------------------------
-This example shows how you can define materials using
-:ref:`ref_settings`:
+Using Settings objects
+----------------------
+This example shows how you define materials using
+:ref:`ref_settings`.
 
 .. code:: python
 

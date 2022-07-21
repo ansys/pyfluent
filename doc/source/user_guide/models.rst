@@ -2,9 +2,9 @@ Defining models
 ===============
 PyFluent supports defining models using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
 
-Defining models using solver TUI commands
------------------------------------------
-The following examples show how you can define models using :ref:`ref_solver_tui_commands`.
+Using solver TUI commands
+-------------------------
+The following examples show how you define models using :ref:`ref_solver_tui_commands`.
 
 Enabling the energy model
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,9 +52,9 @@ The ``define.models.multiphase`` TUI provides options for selecting different mu
     session.solver.tui.define.models.multiphase.model('mixture')
     session.solver.tui.define.models.multiphase.model('wetsteam')
 
-Defining models using Settings objects
---------------------------------------
-The following examples show how you can define models using :ref:`ref_settings`.
+Uing Settings objects
+---------------------
+The following examples show how you define models using :ref:`ref_settings`.
 
 Enabling the energy model
 ~~~~~~~~~~~~~~~~~~~~~~~~~

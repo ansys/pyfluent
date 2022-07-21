@@ -1,18 +1,15 @@
 .. _ref_settings:
 
-Settings Objects
+Settings objects
 ================
-
-Introduction
-------------
-
 Settings objects provide a natural way to access and modify Fluent settings and
 issue commands with a hierarchy of objects.
 
-Top-level Objects
------------------
+Top-level Settings objects
+--------------------------
 
-The top-level settings object is available as the :ref:`root<settings_root_section>` property of session.solver.
+The top-level settings object is available as the :ref:`root<settings_root_section>`
+property of ``session.solver``.
 
 .. code-block::
 
@@ -20,50 +17,49 @@ The top-level settings object is available as the :ref:`root<settings_root_secti
   >>> session = pyfluent.launch_fluent()
   >>> root = session.solver.root
 
-The root object contains attributes such as ``file``, ``setup``,
-``solution`` and ``results``.  These objects are also instances of 'settings'
+The ``root`` object contains attributes such as ``file``, ``setup``,
+``solution``, and ``results``.  These objects are also instances of Settings'
 objects and roughly mirror the outline view in Fluent.
 
-Types of Settings Objects
+Types of Settings objects
 -------------------------
 
-A settings object can be one of the primitive types like ``Integer``, ``Real``,
-``String`` and ``Boolean`` or a container object.
+A settings object can be one of the primitive types, like ``Integer``, ``Real``,
+``String``, and ``Boolean``, or a container object.
 
-There are three types of container objects: ``Group``, ``NamedObject`` and
+There are three types of container objects: ``Group``, ``NamedObject``, and
 ``ListObject``.
 
-A ``Group`` object is a static container with pre-defined child objects which
+A ``Group`` object is a static container with predefined child objects that
 can be accessed via attribute access. For example, ``setup.models.energy``
 refers to the ``energy`` child of ``models`` child of the ``setup`` object. The
 names of the child objects of a group can be accessed with the ``child_names``
 attribute of a ``Group`` object.
 
-A ``NamedObject`` is a container holding dynamically created named objects of
-its specified child type (accessible via ``child_object_type`` attribute)
+A ``NamedObject`` is a container holding dynamically-created named objects of
+its specified child type (accessible via a ``child_object_type`` attribute),
 similar to a dictionary. A specified named object can be accessed using the
 index operator. For example,
 ``root.setup.boundary_conditions.velocity_inlet['inlet2']`` refers to the
-``velocity_object`` object with name ``inlet2``. The current list of named
+``velocity_object`` object with the name ``inlet2``. The current list of named
 object children can be accessed with the ``get_object_names()`` function of the
 container class.
 
-A ``ListObject`` is a container holding dynamically created unnamed objects of
-its specified child type (accessible via ``child_object_type`` attribute) in a
+A ``ListObject`` is a container holding dynamically-created unnamed objects of
+its specified child type (accessible viaa  ``child_object_type`` attribute) in a
 list. Children of ``ListObject`` can be accessed using the index operator. For
 example,
 ``root.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
 refers to the third (starting from index 0) mass source entry for the fluid zone
-named ``fluid-1``. The current number of child objects can be accessed via the
+named ``fluid-1``. The current number of child objects can be accessed with the
 ``get_size()`` function.
  
 
-Setting and Modifying State
+Setting and modifying state
 ---------------------------
-
 The state of any object can be accessed by "calling" it. For container objects,
-this will return the state of the children as a dictionary (for ``Group`` and
-``NamedObject`` types) or a list (for ``ListObject``) types:
+this returns the state of the children as a dictionary (for ``Group`` and
+``NamedObject`` types) or a list (for ``ListObject`` types):
 
 .. code-block::
 
@@ -82,10 +78,10 @@ this will return the state of the children as a dictionary (for ``Group`` and
   >>> root.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
   10.0
 
-To modify the state of any object, you could assign the corresponding attribute
-in its parent object. This assignment could be done at any level. For ``Group``
-and ``NamedObject`` type objects, the state value will be a dictionary, and for
-``ListObject`` type objects, the state value will be a list.
+To modify the state of any object, you can assign the corresponding attribute
+in its parent object. This assignment can be done at any level. For ``Group``
+and ``NamedObject`` type objects, the state value is a dictionary. For
+``ListObject`` type objects, the state value is a list.
 
 .. code-block::
 
@@ -93,17 +89,17 @@ and ``NamedObject`` type objects, the state value will be a dictionary, and for
   >>> root.setup.models.energy = { 'enabled' : False }
   >>> root.setup.boundary_conditions.velocity['inlet1'].vmag.constant = 14
 
-The state of an object can also be accessed via the ``get_state`` method, and
-modified via the ``set_state`` method.
+The state of an object can also be accessed with the ``get_state`` method and
+modified with the ``set_state`` method.
 
 The current state can also be printed in a simple text format with the
-``print_state`` method. For example, the following
+``print_state`` method. For example, assume you entered:
 
 .. code-block::
 
   >>> root.setup.models.print_state()
 
-gives the following output:
+The following output is returned:
   
 .. code-block::
 
@@ -128,26 +124,25 @@ gives the following output:
 
 Commands
 --------
-
-Commands are methods of settings objects that are used to modify the state of
+Commands are methods of Settings objects that are used to modify the state of
 the application. For example, the ``hybrid_initialize()`` method of
 ``solution.initialization`` initializes the solution using the hybrid
-initialization method. The ``command_names`` attribute of a settings object
+initialization method. The ``command_names`` attribute of a Settings object
 provides the names of its commands.
 
 If needed, commands can be passed keyword arguments, and the list of valid
 arguments can be accessed using the ``arguments`` attribute.  If an argument is
-not specified, its default value is used. Arguments are also settings objects
-and can be either primitive type or container type.
+not specified, its default value is used. Arguments are also Settings objects
+and can be either the primitive type or the container type.
 
 Additional Metadata
 -------------------
 
-Settings objects have some additional metadata which can be accessed using the
+Settings objects have some additional metadata that can be accessed using the
 ``get_attr`` and ``get_attrs`` methods. 
 
-Example(1): The list of allowed values at a particular state for the viscous
-model can be accessed as follows:
+This example accesses the list of allowed values at a particular state for the viscous
+model:
 
 .. code-block::
 
@@ -159,7 +154,7 @@ model can be accessed as follows:
   >>> root.setup.models.viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
 
-Example(2): The list of zone surfaces can be accessed as follows:
+This example accesses the list of zone surfaces:
 
 .. code-block::
 
@@ -177,37 +172,38 @@ Example(2): The list of zone surfaces can be accessed as follows:
       ].zone_names.get_attrs(["allowed-values"])
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
-Attributes are dynamic and the values can change depending on the application
+Attributes are dynamic, and the values can change depending on the application
 state.
 
-Active Objects and Commands
+Active objects and commands
 ---------------------------
 
 Objects and commands can be active or inactive based on the application state.
-application. The ``is_active()`` method returns ``True`` if an object or command
-is active at a particular time. ``get_active_child_names`` returns the list of
-active children. ``get_active_command_names`` returns the list of active
-commands.
+The ``is_active()`` method returns ``True`` if an object or command
+is active at a particular time.
 
-Example(1): The list of active child names can be accessed as follows:
+The ``get_active_child_names`` method returns the list of
+active children:
 
 .. code-block::
 
   >>> root.setup.models.get_active_child_names()
   ['energy', 'multiphase', 'viscous']
 
-Example(2): The list of valid commands can be accessed as follows:
+
+The ``get_active_command_names`` method returns the list of active
+commands:
 
 .. code-block::
 
   >>> root.solution.run_calculation.get_active_command_names()
   ['iterate']
 
+
 .. _settings_root_section:
 
-Settings Objects Root
----------------------
+Root object
+-----------
 
-The ``root`` object is the top-level settings object which contains all other
-settings objects in a hierarchical structure. The full API documentation of settings
-objects can be browsed from the :ref:`root object's page<root>`.
+The ``root`` object is the top-level Settings object. It contains all other
+settings objects in a hierarchical structure. For more information, see :ref:`root object's page<root>`.

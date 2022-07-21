@@ -3,9 +3,9 @@ Defining boundary conditions
 PyFluent supports defining boundary conditions using :ref:`ref_solver_tui_commands`
 and :ref:`ref_settings`.
 
-Defining boundary conditions using solver TUI commands
-------------------------------------------------------
-These examples show how you can define and copy boundary conditions, list zones,
+Using solver TUI commands
+-------------------------
+These examples show how you define and copy boundary conditions, list zones,
 and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
 
 Defining boundary conditions
@@ -109,10 +109,10 @@ The ``define.boundary_conditions.fluid`` TUI modifies cell zone conditions.
         'no'
     )
 
-Defining boundary conditions using Settings objects
----------------------------------------------------
-The following examples show how you can define boundary conditions using
-:ref:`ref_settings`:
+Using Settings objects
+----------------------
+The following examples show how you define boundary conditions using
+:ref:`ref_settings`.
 
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

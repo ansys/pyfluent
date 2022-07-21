@@ -32,6 +32,11 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 # sphinx_gallery_thumbnail_path = '_static/mixing_elbow.png'
 
 ###############################################################################
+# Setting up the example
+# -----------------------
+# Before you can use the watertight geometry meshing workflow, you must set up the
+# example and initialize this workflow.
+# 
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing
@@ -61,6 +66,11 @@ session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 
 ###############################################################################
+# Using the watertight geometry meshing workflow
+# ----------------------------------------------
+# The fault-tolerant meshing workflow guides you through the several tasks that
+# follow.
+#
 # Import CAD and set length units
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry and set the length units to inches.
@@ -184,6 +194,11 @@ session.meshing.tui.mesh.check_mesh()
 session.meshing.tui.file.write_mesh('mixing_elbow.msh.h5')
 
 ###############################################################################
+# Solve and Postprocess
+# ----------------------
+# Once you have completed the watertight geometry meshing workflow, you can
+# solve and postprcess the results.
+#
 # Switch to solution mode
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Switch to solution mode. Now that a high-quality mesh has been generated
@@ -456,8 +471,8 @@ session.solver.tui.display.objects.create(
 #   :align: center
 
 ###############################################################################
-# Create and display a definition for temperature contours
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create and display definition for temperature contours
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for temperature contours on the symmetry
 # plane. 
 #

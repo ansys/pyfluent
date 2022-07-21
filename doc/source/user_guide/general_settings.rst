@@ -1,9 +1,9 @@
 Applying general settings
 =========================
-PyFluent supports applying general settings using the :ref:`ref_solver_tui_commands` and 
+PyFluent supports applying general settings using :ref:`ref_solver_tui_commands` and 
 :ref:`ref_settings`.
 
-The following examples demonstrate how you use solver meshing commands
+The following examples shows how you use solver meshing commands
 and set up units using :ref:`ref_solver_tui_commands`.
 
 Checking the mesh
@@ -11,7 +11,8 @@ Checking the mesh
 The ``mesh.check`` TUI performs various mesh consistency checks and displays a
 report in the console that lists domain extents, volume statistics,
 face area statistics, any warnings, and information about various check and mesh
-failures (depending on the setting specified for mesh/check-verbosity).
+failures. THe level of information shown depends on the setting specified for
+``mesh.check-verbosity``.
 
 .. code:: python
 
@@ -25,7 +26,7 @@ Reporting mesh quality
 The ``mesh.quality`` TUI displays information about the quality of the mesh in the
 console, including the minimum orthogonal quality and maximum aspect ratio.
 The level of information that is shown depends on the setting specified for
-mesh/check-verbosity.
+``mesh.check-verbosity``.
 
 .. code:: python
 
@@ -33,7 +34,7 @@ mesh/check-verbosity.
 
 Scaling mesh
 ------------
-The ``mesh.scale`` TUI prompt for the scaling factors in each of the active Cartesian
+The ``mesh.scale`` TUI prompts for the scaling factors in each of the active Cartesian
 coordinate directions.
 
 .. code:: python

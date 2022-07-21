@@ -2,10 +2,10 @@
 
 Meshing
 =======
-This module allows you to use Fluent meshing capabilities from Python.  Both
-the meshing workflows and meshing TUI commands are available.
+This module allows you to use Fluent meshing capabilities from Python. Both
+of the meshing workflows and the meshing TUI commands are available.
 
-Workflow Example
+Workflow example
 ----------------
 
 .. code:: python
@@ -19,11 +19,11 @@ Workflow Example
     session.meshing.tui.mesh.check_mesh()
     exit()
 	
-Existing Fluent meshing workflows journals can also be converted to the
-session based PyFluent scripts with some manual modifications.
-For example:
+You can make some manual modifications to convert existing Fluent meshing workflow
+journals to session-based PyFluent scripts. Examples follow of a Fluent journal
+and the equivalent PyFluent script.
 
-Fluent Journal:
+**Fluent journal**
 
 .. code-block::
 
@@ -49,7 +49,7 @@ Fluent Journal:
   (%py-exec "workflow.TaskObject['Generate the Volume Mesh'].Arguments.setState({r'VolumeFill': r'poly-hexcore',r'VolumeFillControls': {r'HexMaxCellLength': 0.3,},})")
   (%py-exec "workflow.TaskObject['Generate the Volume Mesh'].Execute()")
 
-Equivalent PyFluent Journal:
+**PyFluent script**
 
 .. code:: python
 
@@ -97,7 +97,7 @@ Equivalent PyFluent Journal:
   }
   session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
-TUI Commands Example
+TUI commands example
 --------------------
 
 .. code:: python

@@ -2,8 +2,8 @@
 
 Launching Fluent locally
 ========================
-You can use the function :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-to start Fluent from Python in gRPC mode. The following code starts Fluent in the
+You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+function to start Fluent from Python in gRPC mode. The following code starts Fluent in the
 background and sends commands to this service.
 
 .. code:: python
@@ -13,7 +13,9 @@ background and sends commands to this service.
 
 Launcher options
 ----------------
-The following examples show different ways that you can start Fluent.
+The following examples show different ways that you can launch Fluent locally.
+For more information, see the description for the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+function.
 
 Solver mode
 ~~~~~~~~~~~
@@ -57,7 +59,3 @@ This example shows how you can also select the number of processors:
 
    solver_session = pyfluent.launch_fluent(precision='double', version='2d', processor_count=2)
 
-API Reference
--------------
-For more information on controlling how Fluent launches locally, see the
-function description for :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.

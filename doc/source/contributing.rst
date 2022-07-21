@@ -51,8 +51,8 @@ Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page to
 submit questions, report bugs, and request new features.
 
 
-Code style
-----------
+Adhering to code style
+----------------------
 PyFluent is compliant with the `PyAnsys Development Code Style Guide
 <https://dev.docs.pyansys.com/coding_style/index.html>`_. It uses the tool
 `pre-commit <https://pre-commit.com/>`_ to check the code style. You can
@@ -69,7 +69,7 @@ You then use the ``style`` rule defined in ``Makefile`` with:
 
    make style
 
-Or, you can directly execute this tool with:
+Or, you can directly execute `pre-commit <https://pre-commit.com/>`_ with:
 
 .. code:: bash
 

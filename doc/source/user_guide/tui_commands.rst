@@ -4,27 +4,28 @@ Using TUI commands
 ==================
 
 TUI commands refer to a programming interface that mirrors the Fluent TUI (text user
-interface). There is a TUI command hierarchy defined for each mode, meshing and solution.
-The hierarchy that is active depends on the current Fluent mode. The guidance here applies
-to either mode.
+interface). There is a TUI command hierarchy defined for each of the two modes, meshing
+and solution. The hierarchy that is active depends on the current Fluent mode. The guidance
+in this topic applies to both modes.
 
-The PyFluent TUI commands allow you to automate workflows comprehensively. Everything
+The PyFluent TUI commands allow you to automate workflows. Everything
 that's in the Fluent TUI (which itself is a comprehensive automation interface)
-is exposed in PyFluent. The PyFluent TUI commands are Pythonic versions of those used
-in the Fluent console.
+is exposed in PyFluent. The PyFluent TUI commands are Pythonic versions of the
+commands that are used in the Fluent console.
 
 The PyFluent TUI commands do not support TUI features such as aliases or
 command abbreviation. To make using PyFluent commands in an interactive
 session easier, you can install a tool such as
 `pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_, which provides
 both command line completion and history. To inspect any PyFluent TUI object further,
-you can also use the Python built-in functions,
+you can also use the Python built-in
 `help <https://docs.python.org/3/library/functions.html#help>`_ and 
-`dir <https://docs.python.org/3/library/functions.html#dir>`_.
+`dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 
-The arguments to a TUI command are just those that would be passed in direct interaction with the
-Fluent Console, but in a Pythonic style. Because the most productive way to write Python commands
-is with reference to existing TUI commands, look at how the Python usage mirrors existing TUI usage.
+The arguments to a TUI command are just those that would be passed in direct interaction in the
+Fluent console, but in a Pythonic style. The most productive way to write Python commands
+is with reference to existing TUI commands. The following examples show how the Python usage
+mirrors the existing TUI usage.
 
 Assume in the solution mode, you typed the following in the Fluent console to set
 velocity inlet properties:
@@ -56,8 +57,8 @@ The effect is identical to the following code that specifies all the arguments i
 
     /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
-Interactive TUI usage then is a reliable approach for constructing full TUI calls, including full sequences of
-arguments. With the full TUI call in hand, the next step is to transform it to a Python call:
+You can see how using the interactive TUI provides a reliable approach for constructing TUI calls, including full sequences of
+arguments. With the full TUI call in hand, you can transform it to a Python call:
 
 .. code:: python
 
@@ -87,9 +88,10 @@ The Python call is:
 
     tui.define.units("pressure", '"Pa"')
 
-The string "Pa" is wrapped in single quotes to preserve the double quotes around the TUI argument.
+The string ``"Pa"`` is wrapped in single quototaton marks to preserve the double quotation marks
+around the TUI argument.
 
-Note the following rules implied in the preceding examples:
+Note the following rules that are implied in the preceding examples:
 
 - Each forward slash separator between elements in TUI paths is transformed to Python dot notation.
 - Some characters in path elements are either removed or replaced because they are illegal inside Python names.
@@ -102,8 +104,8 @@ Note the following rules implied in the preceding examples:
   
   - String-type arguments must be surrounded by quotation marks in Python.
   - Note the special case in the last Python call example where a target Fluent TUI argument was surrounded
-    by quotation marks (`"Pa"`). To preserve  quotations, you must wrap Python string in additional single
-    quotation marks.
+    by quotation marks (``"Pa"``). To preserve  quotation marks, you must wrap the Python string in additional
+    single quotation marks.
   - The contents of string arguments are preserved.
 
 For more examples of TUI command usage, see :ref:`ref_mixing_elbow_tui_api`.

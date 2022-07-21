@@ -3,8 +3,8 @@
 ==========
 User guide
 ==========
-PyFluent can be used by anyone who wants to import its Python modules
-and start to develop Python code to control and monitor Ansys Fluent. 
+Anyone who wants to use PyFluent can import its Python modules develop
+Python code to control and monitor Ansys Fluent. 
 
 ..
    This toctree must be a top level index to get it to show up in
@@ -26,7 +26,7 @@ and start to develop Python code to control and monitor Ansys Fluent.
 
 
 Overview
-========
+--------
 The function :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
 launches an instance of Fluent, running it as a server in the background. You can launch 
 Fluent in solution mode with no arguments:
@@ -45,12 +45,14 @@ You can launch Fluent in meshing mode with:
 
     meshing_session = launch_fluent(meshing_mode=True)
 
-Setting the ``meshing_mode`` argument to ``False`` would launch Fluent in solution mode. 
-For more information, see :ref:`ref_user_guide_launch` 
-and the :ref:`ref_launcher_launcher` API topic.
+Setting the ``meshing_mode`` argument to ``False`` launches Fluent in solution mode. 
 
-PyFluent can create and initialize multiple, independent session objects, each providing full
-access to Fluent capabilities relevant to its current mode (solution or meshing).
+For more information, see :ref:`ref_user_guide_launch` 
+and the API topic :ref:`ref_launcher_launcher`.
+
+PyFluent can create and initialize multiple, independent session objects. Each session
+object providings full access to Fluent capabilities relevant to the session's current
+mode (solution or meshing).
 
 Solution mode session
 ---------------------
@@ -70,7 +72,7 @@ users:
     tui.define.models.energy("yes")
 
 For the full hierarchy under the ``tui`` object, see :ref:`ref_solver_tui_commands`.
-For general guidance on programming in terms of thjis interface, see :ref:`ref_user_guide_tui_commands`. 
+For general guidance on programming in terms of this interface, see :ref:`ref_user_guide_tui_commands`. 
 
 The same ``solver`` object also has a ``root`` object, which provides a 
 different interface to the Fluent solver. The ``root`` object exposes most of the
@@ -87,9 +89,10 @@ additional interface features that are not possible via the ``tui`` object:
 
     energy_is_enabled = root.setup.models.energy.enabled()
 
-For more information, see :ref:`ref_settings`. For the full hierarchy under the``root``
-object, see the `root <https://fluentdocs.pyansys.com/api/core/solver/_autosummary/settings/root.html#root>`_`
-API topic. For general guidance on using both the  ``tui`` and ``root`` objects, see
+For more information, see :ref:`ref_settings`. For the full hierarchy under the ``root``
+object, see the API topic :ref:`ref_solver_tui`.
+
+For general guidance on using both the  ``tui`` and ``root`` objects, see
 :ref:`ref_user_guide_solver_settings`.
 
 Meshing mode session

@@ -8,7 +8,7 @@ Predicting the flow field in the area of the mixing region is important
 to designing the junction properly.
 
 This example uses the guided workflow for fault-tolerant meshing because it
-appropriate for geometries that can have imperfections, such as gaps and
+is appropriate for geometries that can have imperfections, such as gaps and
 leakages.
 
 **Workflow tasks**
@@ -37,6 +37,11 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
 
 ###############################################################################
+# Setting up the example
+# -----------------------
+# Before you can use the fault-tolerant meshing workflow, you must set up the
+# example and initialize this worfklow.
+# 
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing
@@ -67,6 +72,11 @@ session = pyfluent.launch_fluent(
 session.meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
 ###############################################################################
+# Using the fault-folerant meshing workflow
+# -----------------------------------------
+# The fault-tolerant meshing workflow guides you through the several tasks that
+# follow.
+# 
 # Import CAD and manage parts
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry (``exhaust_system.fmd``) and selectively manage some
@@ -490,9 +500,9 @@ session.meshing.workflow.TaskObject["Update Region Settings"].Execute()
 
 
 ###############################################################################
-# Choose mesh control options
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Choose options for controlling the mesh.
+# Set mesh control options
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+# Set options for controlling the mesh.
 
 session.meshing.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
@@ -569,6 +579,11 @@ session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 session.meshing.tui.mesh.check_mesh()
 
 ###############################################################################
+# Solve and Postprocess
+# ----------------------
+# Once you have completed the fault tolerate meshing workflow, you can solve and
+# postprcess the results.
+# 
 # Switch to solution mode
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Switch to the solution mode.
