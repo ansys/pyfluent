@@ -221,10 +221,10 @@ class PyMenu:
 
 def _get_static_info_at_level(menu: PyMenu) -> Dict[str, Any]:
     info = {}
-    info["help"] = menu.get_doc_string()
+    info["help"] = menu.get_doc_string(include_unavailable=True)
     info["menus"] = {}
     info["commands"] = {}
-    child_names = menu.get_child_names()
+    child_names = menu.get_child_names(include_unavailable=True)
     if child_names:
         for child_name in child_names:
             if child_name:
