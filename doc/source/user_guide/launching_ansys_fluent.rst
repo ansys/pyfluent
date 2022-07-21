@@ -1,22 +1,23 @@
 .. _ref_user_guide_launch:
 
-Launching Ansys Fluent Locally
-==============================
-Fluent can be started from Python in gRPC mode using
-:func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
-This starts Fluent in the background and sends commands to that service.
+Launching Fluent locally
+========================
+You can use the function :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+to start Fluent from Python in gRPC mode. The following code starts Fluent in the
+background and sends commands to this service.
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
     solver_session = pyfluent.launch_fluent()
 
-Launcher Options
+Launcher options
 ----------------
+The following examples show different ways that you can start Fluent.
 
-Solver Mode
+Solver mode
 ~~~~~~~~~~~
-The following examples demonstrate how you can start Fluent in solution mode:
+This example shows how you can start Fluent in solution mode:
 
 .. code:: python
 
@@ -24,9 +25,9 @@ The following examples demonstrate how you can start Fluent in solution mode:
 
    solver_session_b = pyfluent.launch_fluent(meshing_mode=False)
 
-Meshing Mode
+Meshing mode
 ~~~~~~~~~~~~
-The following example demonstrates how you can start Fluent in meshing mode:
+This example shows how you can start Fluent in meshing mode:
 
 .. code:: python
 
@@ -34,7 +35,7 @@ The following example demonstrates how you can start Fluent in meshing mode:
 
 Precision
 ~~~~~~~~~
-The following example demonstrates how you can select double precision in solution mode:
+This example shows how you can select double precision in solution mode:
 
 .. code:: python
 
@@ -42,15 +43,15 @@ The following example demonstrates how you can select double precision in soluti
 
 Dimension
 ~~~~~~~~~
-The following example demonstrates how you can select double precision and 2D in solution mode:
+This example shows how you can select double precision and 2D in solution mode:
 
 .. code:: python
 
    solver_session = pyfluent.launch_fluent(precision='double', version='2d')
 
-Number of Processors
+Number of processors
 ~~~~~~~~~~~~~~~~~~~~
-The following example demonstrates how you can select the number of processors:
+This example shows how you can also select the number of processors:
 
 .. code:: python
 
@@ -58,5 +59,5 @@ The following example demonstrates how you can select the number of processors:
 
 API Reference
 -------------
-For more details on controlling how Ansys Fluent launches locally, see the
+For more information on controlling how Fluent launches locally, see the
 function description for :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
