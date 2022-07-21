@@ -106,7 +106,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
-    need: [docs-style]
+    needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
