@@ -139,6 +139,7 @@ session.meshing.workflow.TaskObject["smooth-transition_1"].Execute()
 # Select the Generate the Volume Mesh task, where you can set properties of the
 # volume mesh. Select the poly-hexcore for Fill With. Execute Generate the
 # Volume Mesh.
+
 session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
     "VolumeFill": "poly-hexcore",
     "VolumeFillControls": {
@@ -146,6 +147,11 @@ session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
     },
 }
 session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+
+###############################################################################
+# .. image:: /_static/mixing_elbow_011.png
+#   :width: 500pt
+#   :align: center
 
 ###############################################################################
 # Check the mesh in Meshing mode
@@ -245,7 +251,6 @@ session.solver.tui.define.boundary_conditions.set.velocity_inlet(
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
 
-
 session.solver.tui.define.boundary_conditions.set.velocity_inlet(
     "hot-inlet", [], "vmag", "no", 1.2, "quit"
 )
@@ -344,6 +349,16 @@ session.solver.tui.solve.initialize.hyb_initialization()
 session.solver.tui.solve.iterate(100)
 
 ###############################################################################
+# .. image:: /_static/mixing_elbow_012.png
+#   :width: 500pt
+#   :align: center
+
+###############################################################################
+# .. image:: /_static/mixing_elbow_013.png
+#   :width: 500pt
+#   :align: center
+
+###############################################################################
 # Save the data file (mixing_elbow1.dat.h5).
 # session.solver.tui.file.write_data('mixing_elbow1.dat.h5')
 
@@ -371,6 +386,11 @@ session.solver.tui.display.objects.create(
 )
 
 ###############################################################################
+# .. image:: /_static/mixing_elbow_014.png
+#   :width: 500pt
+#   :align: center
+
+###############################################################################
 # Create and display a definition for temperature contours on the symmetry
 # plane:
 # Provide contour-temp for Contour Name. Select temperature. Select
@@ -392,6 +412,11 @@ session.solver.tui.display.objects.create(
     "smooth",
     "quit",
 )
+
+###############################################################################
+# .. image:: /_static/mixing_elbow_015.png
+#   :width: 500pt
+#   :align: center
 
 ###############################################################################
 # Create and display velocity vectors on the symmetry-xyplane plane:
@@ -417,6 +442,11 @@ session.solver.tui.display.objects.create(
 )
 
 ###############################################################################
+# .. image:: /_static/mixing_elbow_016.png
+#   :width: 500pt
+#   :align: center
+
+###############################################################################
 # Create an iso-surface representing the intersection of the plane z=0 and the
 # surface outlet. Name: z=0_outlet
 session.solver.tui.surface.iso_surface(
@@ -436,6 +466,11 @@ session.solver.tui.display.objects.create(
     "()",
     "quit",
 )
+
+###############################################################################
+# .. image:: /_static/mixing_elbow_017.png
+#   :width: 500pt
+#   :align: center
 
 ###############################################################################
 # Write final case and data.

@@ -129,6 +129,16 @@ session.meshing.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 ###############################################################################
 # Cover any openings in your geometry.
 
+###############################################################################
+# .. image:: /_static/exhaust_system_011.png
+#   :width: 400pt
+#   :align: center
+
+###############################################################################
+# .. image:: /_static/exhaust_system_012.png
+#   :width: 400pt
+#   :align: center
+
 session.meshing.workflow.TaskObject[
     "Enclose Fluid Regions (Capping)"
 ].Arguments.setState(
@@ -466,6 +476,11 @@ session.meshing.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 ###############################################################################
 # Generate the surface mesh.
 
+###############################################################################
+# .. image:: /_static/exhaust_system_013.png
+#   :width: 500pt
+#   :align: center
+
 session.meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 ###############################################################################
@@ -491,6 +506,11 @@ session.meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
 
 ###############################################################################
 # Generate the volume mesh.
+
+###############################################################################
+# .. image:: /_static/exhaust_system_014.png
+#   :width: 500pt
+#   :align: center
 
 session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.setState(
     {
@@ -564,13 +584,23 @@ session.solver.tui.solve.initialize.hyb_initialization()
 ###############################################################################
 # Start the calculation by requesting 100 iterations
 
+###############################################################################
+# .. image:: /_static/exhaust_system_015.png
+#   :width: 500pt
+#   :align: center
+
 session.solver.tui.solve.set.number_of_iterations(100)
 session.solver.tui.solve.iterate()
 
 # session.solver.tui.report.volume_integrals.volume("fluid-region-1","()","yes","volume.vrp")
 
 ###############################################################################
-# Display path lines highlighting the flow field
+# Create path lines highlighting the flow field
+
+###############################################################################
+# .. image:: /_static/exhaust_system_016.png
+#   :width: 500pt
+#   :align: center
 
 session.solver.tui.display.objects.create(
     "pathlines",
@@ -607,6 +637,11 @@ session.solver.tui.surface.iso_surface(
 # Create and define contours of velocity magnitude throughout the manifold
 # along with the mesh.
 
+###############################################################################
+# .. image:: /_static/exhaust_system_017.png
+#   :width: 500pt
+#   :align: center
+
 session.solver.tui.display.objects.create(
     "contour",
     "contour-velocity",
@@ -631,6 +666,11 @@ session.solver.tui.display.objects.create(
 
 ###############################################################################
 # Create a scene containing the mesh and the contours.
+
+###############################################################################
+# .. image:: /_static/exhaust_system_018.png
+#   :width: 500pt
+#   :align: center
 
 session.solver.tui.display.objects.create(
     "scene",
