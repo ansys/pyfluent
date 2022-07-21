@@ -31,7 +31,6 @@ with a uniform velocity of 1 m/s. The air then exits through the outlet.
 A small pipe is placed in the main portion of the manifold where edge
 extraction is considered. The example also includes a known small leakage
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
-
 """
 
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
@@ -41,11 +40,11 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # -----------------------
 # Before you can use the fault-tolerant meshing workflow, you must set up the
 # example and initialize this worfklow.
-# 
+#
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing
-# the geometry file. 
+# the geometry file.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -76,7 +75,7 @@ session.meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing
 # -----------------------------------------
 # The fault-tolerant meshing workflow guides you through the several tasks that
 # follow.
-# 
+#
 # Import CAD and manage parts
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry (``exhaust_system.fmd``) and selectively manage some
@@ -583,7 +582,7 @@ session.meshing.tui.mesh.check_mesh()
 # ----------------------
 # Once you have completed the fault tolerate meshing workflow, you can solve and
 # postprcess the results.
-# 
+#
 # Switch to solution mode
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Switch to the solution mode.

@@ -36,11 +36,11 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 # -----------------------
 # Before you can use the watertight geometry meshing workflow, you must set up the
 # example and initialize this workflow.
-# 
+#
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Perform required imports, which includes downloading and importing
-# the geometry file. 
+# the geometry file.
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -142,7 +142,7 @@ session.meshing.workflow.TaskObject["Update Boundaries"].Execute()
 # ~~~~~~~~~~~~~~
 # Update the regions. In this task, you can review the names and types of
 # the various regions that have been generated from your imported geometry and
-# change them as needed. You can keep the default settings. 
+# change them as needed. You can keep the default settings.
 
 session.meshing.workflow.TaskObject["Update Regions"].Execute()
 
@@ -191,7 +191,7 @@ session.meshing.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~
 # Save the mesh file (``mixing_elbow.msh.h5``).
 
-session.meshing.tui.file.write_mesh('mixing_elbow.msh.h5')
+session.meshing.tui.file.write_mesh("mixing_elbow.msh.h5")
 
 ###############################################################################
 # Solve and Postprocess
@@ -357,16 +357,16 @@ session.solver.tui.solve.report_definitions.add(
 ###############################################################################
 # Create a convergence condition
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Create a convergence condition for ``outlet-temp-avg``. 
+# Create a convergence condition for ``outlet-temp-avg``.
 
 # - Set ``"add"`` to ``"con-outlet-temp-avg"``.
-# - Set ``"report-defs"`` to ``"outlet-temp-avg"``. 
+# - Set ``"report-defs"`` to ``"outlet-temp-avg"``.
 # - Set ``"stop-criterion"`` to ``"1e-04"``.
 # - Set ``"initial-values-to-ignore"`` to ``"20"``.
 # - Set ``"previous-values-to-consider"`` to ``"15"``.
 # - Set ``"print?"``to ``"yes"``.
 # - Set ``"frequency"`` to ``"3"``.
-# 
+#
 # These settings cause Fluent to consider the solution converged when the
 # surface report definition value for each of the previous 15 iterations is
 # within 0.001% of the current value. Convergence of the values is checked
@@ -411,7 +411,7 @@ session.solver.tui.solve.initialize.hyb_initialization()
 # ~~~~~~~~~~~~~~
 # Solve the case (``mixing_elbow1.cas.h5``).
 
-session.solver.tui.file.write_case('mixing_elbow1.cas.h5')
+session.solver.tui.file.write_case("mixing_elbow1.cas.h5")
 
 ###############################################################################
 # Solve for 100 iterations
@@ -435,14 +435,14 @@ session.solver.tui.solve.iterate(100)
 # ~~~~~~~~~~~~~~
 # Save the data file (``mixing_elbow1.dat.h5``).
 
-session.solver.tui.file.write_data('mixing_elbow1.dat.h5')
+session.solver.tui.file.write_data("mixing_elbow1.dat.h5")
 
 ###############################################################################
 # Create and display definition for velocity magnitude contours
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for the velocity magnitude contours on the
 # symmetry plane.
-# 
+#
 # - Set ``"contour"`` to ``"contour-vel"``.
 # - Set ``"field"`` to ``"velocity-magnitude"``.
 # - Set ``"surfaces-list"`` to ``"symmetry-xyplane"``.
@@ -474,7 +474,7 @@ session.solver.tui.display.objects.create(
 # Create and display definition for temperature contours
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for temperature contours on the symmetry
-# plane. 
+# plane.
 #
 # - Set ``"contour"`` to ``"contour-temp"``.
 # - Set ``"field"`` to ``"temperature"``.
