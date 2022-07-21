@@ -39,7 +39,7 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # Setting up the example
 # -----------------------
 # Before you can use the fault-tolerant meshing workflow, you must set up the
-# example and initialize this worfklow.
+# example and initialize this workflow.
 #
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
