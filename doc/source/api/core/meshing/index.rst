@@ -19,7 +19,7 @@ Workflow example
     session.meshing.tui.mesh.check_mesh()
     exit()
 	
-You can make some manual modifications to convert existing Fluent meshing workflow
+You can manually convert existing Fluent meshing workflow
 journals to session-based PyFluent scripts. Examples follow of a Fluent journal
 and the equivalent PyFluent script.
 

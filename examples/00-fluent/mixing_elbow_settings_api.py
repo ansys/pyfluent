@@ -8,7 +8,7 @@ systems in power plants and process industries. Predicting the flow field
 and temperature field in the area of the mixing region is important to
 designing the junction properly.
 
-This example uses the ``settings`` modules (beta).
+This example uses the ``settings`` objects.
 
 **Problem description**
 

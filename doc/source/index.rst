@@ -25,7 +25,7 @@ geometries with relative ease. Supported mesh types include:
 - 3D tetrahedral, hexahedral, pyramid, wedge, and polyhedral
 - Mixed (hybrid)
 
-Ansys also enables you to refine or coarsen your mesh based on the flow solution.
+Fluent also enables you to refine or coarsen your mesh based on the flow solution.
 
 You can read your mesh into Fluent or, for 3D geometries, create your
 mesh using Fluent's meshing mode. All other operations are performed within
@@ -84,7 +84,7 @@ documentation provides an `API reference <https://fluentdocs.pyansys.com/api/ind
 `examples <https://fluentdocs.pyansys.com/examples/index.html>`_, and
 `contribution guidelines <https://fluentdocs.pyansys.com/contributing.html>`_.
 
-On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_, you can create
+On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
 the project support team, email `pyansys.support@ansys.com <pyansys.support@ansys.com>`_.
 

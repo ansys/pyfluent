@@ -4,10 +4,8 @@ EventsManager
 =============
 
 An instance of ``EventsManager`` exists as an active ``events_manager`` property in each
-solution-mode session object. It allows for registering the client callback with server-side
-events. Whenever an event occurs, the registered callback is triggered with session ID and event
-information passed as arguments to the callback. It is useful in solution monitoring and updating graphics 
-during runtime.
+solution-mode session object. You can register client callbacks with the EventsManager. The EventsManager calls each callback whenever a server event occurs, passing session ID and event
+information arguments. The EventsManager is useful for solution monitoring and updating graphics.
 
 Supported events are:
 ``CalculationsEndedEvent, CalculationsStartedEvent, CaseReadEvent, DataReadEvent, 
