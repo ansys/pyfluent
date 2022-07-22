@@ -1,4 +1,5 @@
 import json
+import os
 from unittest import TestCase
 
 import pytest
@@ -86,10 +87,11 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 @pytest.mark.setup
 def test_boundaries_periodic(load_periodic_rot_cas):
     session = load_periodic_rot_cas
+    print(__file__)
+    _THIS_DIR = os.path.dirname(__file__)
+    _DATA_FILE = os.path.join(_THIS_DIR, "boundaries_periodic_expDict")
     pysession = session.solver.root
-    boundary_exp = json.load(
-        open("tests\\test_solvermode\\boundaries_periodic_expDict")
-    )
+    boundary_exp = json.load(open(_DATA_FILE))
     boundary_test = {}
     boundary_tested = {}
     for name, boundary in pysession.setup.boundary_conditions.items():
