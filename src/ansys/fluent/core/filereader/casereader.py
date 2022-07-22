@@ -67,6 +67,10 @@ class CaseReader:
         Get a list of input parameter objects
     output_parameters
         Get a list of output parameter objects
+    num_dimensions
+        Get the dimensionality of the case (2 or 3)
+    precision
+        Get the precision (1 or 2 for 1D of 2D)
     """
 
     def __init__(self, hdf5_case_filepath: str):
