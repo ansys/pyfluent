@@ -74,7 +74,7 @@ arguments. With the full TUI call in hand, you can transform it to a Python call
 
 Now look at another Fluent console interaction:
 
-.. code:: lisp
+.. code:: scheme
 
     /define/units
 
