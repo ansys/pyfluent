@@ -125,9 +125,6 @@ class Session:
 
     exit()
         Close the Fluent connection and exit Fluent.
-
-    foo()
-        Nothing
     """
 
     _on_exit_cbs: List[Callable] = []
@@ -350,10 +347,6 @@ class Session:
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
         self._finalizer()
-
-    def foo(self) -> None:
-        """Nothing."""
-        pass
 
     @staticmethod
     def _exit(
