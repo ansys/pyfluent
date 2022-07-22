@@ -11,7 +11,7 @@ using :ref:`ref_solver_tui_commands`.
 
 Selecting solution methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.set.p_v_coupling`` TUI selects which pressure-velocity coupling scheme to use.
+The ``solve.set.p_v_coupling`` TUI command selects which pressure-velocity coupling scheme to use.
 Five schemes (Index-Model) are available: 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled,
 and 25-Fractional Step.
 
