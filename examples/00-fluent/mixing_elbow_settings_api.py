@@ -1,14 +1,14 @@
 """.. _ref_mixing_elbow_settings_api_beta:
 
-Fluent setup and solution using Settings objects
-------------------------------------------------
+Fluent setup and solution using settings objects
+----------------------------------------------------
 This example sets up and solves a three-dimensional turbulent fluid flow
 and heat transfer problem in a mixing elbow, which is common in piping
 systems in power plants and process industries. Predicting the flow field
 and temperature field in the area of the mixing region is important to
 designing the junction properly.
 
-This example uses the ``settings`` objects.
+This example uses settings objects.
 
 **Problem description**
 
@@ -52,7 +52,7 @@ session.solver.tui.mesh.check()
 ###############################################################################
 # Set working units for mesh
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the working units for the mesh to inches.Because the default SI units are
+# Set the working units for the mesh to inches. Because the default SI units are
 # used for everything except length, you do not have to change any other units
 # in this example. If you want working units for length to be other than inches
 # (for example, millimeters), make the appropriate change.

@@ -5,7 +5,7 @@ Settings objects
 Settings objects provide a natural way to access and modify Fluent settings and
 issue commands with a hierarchy of objects.
 
-Top-level Settings objects
+Top-level settings objects
 --------------------------
 
 The top-level settings object is available as the :ref:`root<settings_root_section>`
@@ -18,10 +18,10 @@ property of ``session.solver``.
   >>> root = session.solver.root
 
 The ``root`` object contains attributes such as ``file``, ``setup``,
-``solution``, and ``results``.  These objects are also instances of Settings'
+``solution``, and ``results``.  These objects are also instances of settings
 objects and roughly mirror the outline view in Fluent.
 
-Types of Settings objects
+Types of settings objects
 -------------------------
 
 A settings object can be one of the primitive types, like ``Integer``, ``Real``,
@@ -124,15 +124,15 @@ The following output is returned:
 
 Commands
 --------
-Commands are methods of Settings objects that are used to modify the state of
+Commands are methods of settings objects that you use to modify the state of
 the application. For example, the ``hybrid_initialize()`` method of
 ``solution.initialization`` initializes the solution using the hybrid
-initialization method. The ``command_names`` attribute of a Settings object
+initialization method. The ``command_names`` attribute of a settings object
 provides the names of its commands.
 
 If needed, commands can be passed keyword arguments, and the list of valid
 arguments can be accessed using the ``arguments`` attribute.  If an argument is
-not specified, its default value is used. Arguments are also Settings objects
+not specified, its default value is used. Arguments are also settings objects
 and can be either the primitive type or the container type.
 
 Additional Metadata
@@ -205,5 +205,5 @@ commands:
 Root object
 -----------
 
-The ``root`` object is the top-level Settings object. It contains all other
+The ``root`` object is the top-level settings object. It contains all other
 settings objects in a hierarchical structure. For more information, see :ref:`root object's page<root>`.

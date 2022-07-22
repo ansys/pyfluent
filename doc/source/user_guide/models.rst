@@ -52,7 +52,7 @@ The ``define.models.multiphase`` TUI provides options for selecting different mu
     session.solver.tui.define.models.multiphase.model('mixture')
     session.solver.tui.define.models.multiphase.model('wetsteam')
 
-Uing Settings objects
+Uing settings objects
 ---------------------
 The following examples show how you define models using :ref:`ref_settings`.
 

@@ -3,7 +3,7 @@
 Launching Fluent locally
 ========================
 You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-function to start Fluent from Python in gRPC mode. The following code starts Fluent in the
+method to start Fluent from Python in gRPC mode. The following code starts Fluent in the
 background and sends commands to this service.
 
 .. code:: python
@@ -15,7 +15,7 @@ Launcher options
 ----------------
 The following examples show different ways that you can launch Fluent locally.
 For more information, see the description for the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-function.
+method.
 
 Solver mode
 ~~~~~~~~~~~

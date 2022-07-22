@@ -42,7 +42,7 @@ The ``define.materials`` TUI enters the materials menu.
         'no',
     )
 
-Using Settings objects
+Using settings objects
 ----------------------
 This example shows how you define materials using
 :ref:`ref_settings`.

@@ -65,7 +65,7 @@ The ``solve.iterate`` TUI performs a specified number of iterations.
     session.solver.tui.solve.initialize.hyb_initialization()
     session.solver.tui.solve.iterate(100)
 
-Using Settings objects
+Using settings objects
 ----------------------
 The following example shows how you apply solution settings
 using :ref:`ref_settings`.

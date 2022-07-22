@@ -10,8 +10,8 @@ and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
 
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.bound_counditions.set.velocity_inlet`` TUI defines velocity boundary conditions
-at inlets.
+The ``define.boundary_counditions.set.velocity_inlet`` TUI command defines velocity
+boundary conditions at inlets.
 
 .. code:: python
 
@@ -61,7 +61,8 @@ at inlets.
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_conditions.copy_bc`` TUI copies boundary conditions to other zones.
+The ``define.boundary_conditions.copy_bc`` TUI command copies boundary conditions
+to other zones.
 
 .. code:: python
 
@@ -69,8 +70,8 @@ The ``define.boundary_conditions.copy_bc`` TUI copies boundary conditions to oth
 
 Listing zones
 ~~~~~~~~~~~~~
-The ``define.boundary_conditions.list_zones`` TUI prints in the console window the types
-and IDs of all zones.
+The ``define.boundary_conditions.list_zones`` TUI command prints in the Fluent console
+the types and IDs of all zones.
 
 .. code:: python
 
@@ -78,7 +79,7 @@ and IDs of all zones.
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_conditions.fluid`` TUI modifies cell zone conditions.
+The ``define.boundary_conditions.fluid`` TUI command modifies cell zone conditions.
 
 .. code:: python
 
@@ -109,7 +110,7 @@ The ``define.boundary_conditions.fluid`` TUI modifies cell zone conditions.
         'no'
     )
 
-Using Settings objects
+Using settings objects
 ----------------------
 The following examples show how you define boundary conditions using
 :ref:`ref_settings`.
