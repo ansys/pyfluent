@@ -3,7 +3,7 @@
 Example
 -------
 
-from ansys.fluent.parametric.local.filereader.casereader import CaseReader
+from ansys.fluent.core.filereader.casereader import CaseReader
 
 Instantiate a case reader
 

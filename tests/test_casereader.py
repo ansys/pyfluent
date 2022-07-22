@@ -35,3 +35,12 @@ def test_casereader():
     assert {"outlet-temp-avg-op", "outlet-vel-avg-op"} == {
         p.name for p in output_parameters
     }
+
+
+def test_casereader_no_file():
+    throws = False
+    try:
+        reader = CaseReader(hdf5_case_filepath="no_file.cas.h5")
+    except BaseException:
+        throws = True
+    assert throws
