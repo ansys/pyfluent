@@ -69,7 +69,7 @@ with:
    cd pyfluent
    pip install pip -U
    pip install -e .
-   python codegen/allapigen.py  # Generates the API files, which requires Fluent
+   python codegen/allapigen.py  # Generates the API files
 
 Dependencies
 ------------
