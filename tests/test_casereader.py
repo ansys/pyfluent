@@ -8,7 +8,7 @@ def test_casereader():
         "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
     )
 
-    reader = CaseReader(case_filepath=case_filepath)
+    reader = CaseReader(hdf5_case_filepath=case_filepath)
 
     input_parameters = reader.input_parameters()
 

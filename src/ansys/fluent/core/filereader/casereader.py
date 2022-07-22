@@ -3,18 +3,19 @@
 Example
 -------
 
->>> from ansys.fluent.parametric.local.filereader.casereader import CaseReader
+from ansys.fluent.parametric.local.filereader.casereader import CaseReader
 
 Instantiate a case reader
 
->>> reader = CaseReader(case_filepath=case_filepath)
+reader = CaseReader(hdf5_case_filepath=case_filepath)
 
 Get lists of input and output parameters
 
->>> input_parameters = reader.input_parameters()
->>> output_parameters = reader.output_parameters()
+input_parameters = reader.input_parameters()
+output_parameters = reader.output_parameters()
 """
 
+from pathlib import Path
 from typing import List
 
 import h5py
@@ -68,8 +69,22 @@ class CaseReader:
         Get a list of output parameter objects
     """
 
-    def __init__(self, case_filepath: str):
-        file = h5py.File(case_filepath)
+    def __init__(self, hdf5_case_filepath: str):
+        try:
+            file = h5py.File(hdf5_case_filepath)
+        except FileNotFoundError:
+            raise RuntimeError(f"The case file {hdf5_case_filepath} cannot be found.")
+        except OSError:
+            error_message = (
+                "Could not read case file. " "Only valid HDF5 files can be read. "
+            )
+            if Path(hdf5_case_filepath).suffix != ".h5":
+                error_message += (
+                    f"The file {hdf5_case_filepath} does not have a .h5 extension."
+                )
+            raise RuntimeError(error_message)
+        except BaseException:
+            raise RuntimeError(f"Could not read case file {hdf5_case_filepath}")
         settings = file["settings"]
         rpvars = settings["Rampant Variables"][0]
         rp_vars_str = rpvars.decode()
