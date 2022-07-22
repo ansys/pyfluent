@@ -61,28 +61,27 @@ Some of the many features in the primary package, ``ansys-fluent-core``, allow
 you to:
 
 - Launch the Fluent solver in serial or parallel and connect to
-  already running Fluent sessions using the :ref:`ref_launcher_launcher` module.
+  already-running Fluent sessions. For more information, see :ref:`ref_user_guide_launch`.
 - Script using Fluent's meshing capabilities. For more information, see 
-  the :ref:`ref_meshing` module.
-- Script using all of Fluent's TUI commands. For more information on these
-  commands, see the :ref:`ref_solver_tui` module.
+  :ref:`ref_meshing`.
+- Script using all of Fluent's TUI  (text user interface) commands. For more
+  information, see :ref:`ref_user_guide_tui_commands`.
 - Run more than one Fluent session asynchronously. For more information,
-  see the :ref:`ref_utils` module.
+  see :ref:`ref_utils`.
 - Retrieve Fluent field data as numpy arrays for custom postprocessing
   using standard Python libraries such as `Matplotlib <https://matplotlib.org/>`_.
-  For more information, see the :ref:`ref_field_data` module.
+  For more information, see :ref:`ref_field_data`.
 - Register function callbacks on Fluent solver events such as when a
   case or data file is read or when the Fluent solver completes an iteration. 
-  For more information, see the :ref:`ref_events` module.
-- Retrieve solver monitors such as residuals using the :ref:`ref_monitors` module.
+  For more information, see :ref:`ref_events`.
+- Retrieve solver monitors such as residuals using the :ref:`ref_monitors`.
 
 Documentation and issues
 ------------------------
 
 In addition to installation and usage information, the PyFluent
-documentation provides an `API reference <https://fluentdocs.pyansys.com/api/index.html>`,
-`examples <https://fluentdocs.pyansys.com/examples/index.html>`_, and
-`contribution guidelines <https://fluentdocs.pyansys.com/contributing.html>`_.
+documentation provides an :ref:`ref_index_api`, :ref:`ref_example_gallery`,
+and :ref:`ref_contributing` guidelines.
 
 On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
@@ -92,15 +91,15 @@ License
 -------
 PyFluent is licensed under the MIT license.
 
-This module, ``ansys-fluent`` makes no commercial claim over Ansys whatsoever.
-PyFluent extends the functionality of Fluent by adding a Python interface
+This module makes no commercial claim over Ansys whatsoever. PyFluent
+extends the functionality of Fluent by adding a Python interface
 to Fluent without changing the core behavior or license of the original
 software. The use of the interactive control of ``PyFluent`` requires a
 legally licensed local copy of Fluent. For more information about Fluent,
 visit the `Fluent page <https://www.ansys.com/products/fluids/ansys-fluent>`_ 
 on the Ansys website.
 
-Project Index
+Project index
 -------------
 
 * :ref:`genindex`

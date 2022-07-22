@@ -29,11 +29,12 @@ the elbow. The pipe dimensions are in inches, and the fluid properties and
 boundary conditions are given in SI units. Because the Reynolds number for the
 flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 """
+
 # sphinx_gallery_thumbnail_path = '_static/mixing_elbow.png'
 
 ###############################################################################
-# Setting up the example
-# -----------------------
+# Example Setup
+# -------------
 # Before you can use the watertight geometry meshing workflow, you must set up the
 # example and initialize this workflow.
 #
@@ -66,8 +67,8 @@ session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 
 ###############################################################################
-# Using the watertight geometry meshing workflow
-# ----------------------------------------------
+# Watertight geometry meshing workflow
+# ------------------------------------
 # The fault-tolerant meshing workflow guides you through the several tasks that
 # follow.
 #
@@ -237,8 +238,8 @@ session.solver.tui.define.units("length", "in")
 session.solver.tui.define.models.energy("yes", ", ", ", ", ", ", ", ")
 
 ###############################################################################
-# Create a material
-# ~~~~~~~~~~~~~~~~~
+# Create material
+# ~~~~~~~~~~~~~~~
 # Create a material named ``"water-liquid"``.
 
 session.solver.tui.define.materials.copy("fluid", "water-liquid")
@@ -355,8 +356,8 @@ session.solver.tui.solve.report_definitions.add(
 )
 
 ###############################################################################
-# Create a convergence condition
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create convergence condition
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a convergence condition for ``outlet-temp-avg``.
 
 # - Set ``"add"`` to ``"con-outlet-temp-avg"``.
@@ -438,8 +439,8 @@ session.solver.tui.solve.iterate(100)
 session.solver.tui.file.write_data("mixing_elbow1.dat.h5")
 
 ###############################################################################
-# Create and display definition for velocity magnitude contours
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create definition for velocity magnitude contours
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for the velocity magnitude contours on the
 # symmetry plane.
 #
@@ -471,8 +472,8 @@ session.solver.tui.display.objects.create(
 #   :align: center
 
 ###############################################################################
-# Create and display definition for temperature contours
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create definition for temperature contours
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display a definition for temperature contours on the symmetry
 # plane.
 #
@@ -504,8 +505,8 @@ session.solver.tui.display.objects.create(
 #   :align: center
 
 ###############################################################################
-# Create and display velocity vectors
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create velocity vectors
+# ~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display velocity vectors on the symmetry-xyplane plane.
 #
 # - Set ``"vector"`` to ``"vector-vel"``.
@@ -547,8 +548,8 @@ session.solver.tui.surface.iso_surface(
 )
 
 ###############################################################################
-# Display and save an XY plot
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Display and save XY plot
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
 # Display and save an XY plot of the temperature profile across the centerline
 # of the outlet for the initial solution.
 

@@ -18,7 +18,9 @@ the elbow. The pipe dimensions are in inches, and the fluid properties and
 boundary conditions are given in SI units. Because the Reynolds number for the
 flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 """
+
 # sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
+
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,8 +69,8 @@ session.solver.tui.define.units("length", "in")
 session.solver.root.setup.models.energy.enabled = True
 
 ###############################################################################
-# Create a material
-# ~~~~~~~~~~~~~~~~~
+# Create material
+# ~~~~~~~~~~~~~~~
 # Create a material named ``"water-liquid"``.
 
 session.solver.root.setup.materials.copy_database_material_by_name(
@@ -171,8 +173,8 @@ session.solver.root.solution.run_calculation.iterate.get_attr("arguments")
 session.solver.root.solution.run_calculation.iterate(number_of_iterations=150)
 
 ###############################################################################
-# Create and display velocity vectors
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create velocity vectors
+# ~~~~~~~~~~~~~~~~~~~~~~~
 # Create and display velocity vectors on the symmetry-xyplane plane.
 
 session.solver.root.results.graphics.vector["velocity_vector_symmetry"] = {}

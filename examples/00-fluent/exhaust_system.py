@@ -36,8 +36,8 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
 
 ###############################################################################
-# Setting up the example
-# -----------------------
+# Example Setup
+# -------------
 # Before you can use the fault-tolerant meshing workflow, you must set up the
 # example and initialize this workflow.
 #
@@ -71,8 +71,8 @@ session = pyfluent.launch_fluent(
 session.meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
 ###############################################################################
-# Using the fault-folerant meshing workflow
-# -----------------------------------------
+# Fault-folerant meshing workflow
+# -------------------------------
 # The fault-tolerant meshing workflow guides you through the several tasks that
 # follow.
 #
