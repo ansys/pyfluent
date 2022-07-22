@@ -195,7 +195,7 @@ session.meshing.tui.mesh.check_mesh()
 session.meshing.tui.file.write_mesh("mixing_elbow.msh.h5")
 
 ###############################################################################
-# Solve and Postprocess
+# Solve and postprocess
 # ----------------------
 # Once you have completed the watertight geometry meshing workflow, you can
 # solve and postprcess the results.

@@ -1,4 +1,4 @@
-"""Wrapper to settings grpc service of Fluent."""
+"""Wrapper to settings gRPC service of Fluent."""
 import collections.abc
 from typing import Any, List
 
@@ -165,7 +165,7 @@ class SettingsService:
 
     @_trace
     def create(self, path: str, name: str):
-        """Create a new named object child for the given path."""
+        """Create a named object child for the given path."""
         request = _get_request_instance_for_path(SettingsModule.CreateRequest, path)
         request.name = name
 
@@ -173,7 +173,7 @@ class SettingsService:
 
     @_trace
     def delete(self, path: str, name: str):
-        """Delete the object with the given name at the give path."""
+        """Delete the object with the given name at the given path."""
         request = _get_request_instance_for_path(SettingsModule.DeleteRequest, path)
         request.name = name
 
@@ -181,7 +181,7 @@ class SettingsService:
 
     @_trace
     def get_object_names(self, path: str) -> List[int]:
-        """Get the list of named objects."""
+        """Get a list of named objects."""
         request = _get_request_instance_for_path(
             SettingsModule.GetObjectNamesRequest, path
         )
@@ -263,8 +263,7 @@ class SettingsService:
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute a command of given name with the provided keyword
-        arguments."""
+        """Execute a given command with the provided keyword arguments."""
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteCommandRequest, path
         )

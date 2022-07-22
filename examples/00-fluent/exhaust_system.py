@@ -578,7 +578,7 @@ session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 session.meshing.tui.mesh.check_mesh()
 
 ###############################################################################
-# Solve and Postprocess
+# Solve and postprocess
 # ----------------------
 # Once you have completed the fault tolerate meshing workflow, you can solve and
 # postprcess the results.

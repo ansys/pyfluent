@@ -1,4 +1,4 @@
-"""Wrappers over FieldData grpc service of Fluent."""
+"""Wrappers over FieldData gRPC service of Fluent."""
 
 from enum import IntEnum
 from functools import reduce
@@ -42,22 +42,22 @@ class FieldDataService:
 
 
 class FieldInfo:
-    """Provides access to Fluent field info.
+    """Provides access to Fluent field information.
 
     Methods
     -------
     get_range(field: str, node_value: bool, surface_ids: List[int])
     -> List[float]
-        Get field range i.e. minimum and maximum value.
+        Get the range (minimum and maximum values) of the field.
 
     get_fields_info(self) -> dict
-        Get fields information i.e. field name, domain and  section.
+        Get fields information (field name, domain, and section).
 
     get_vector_fields_info(self) -> dict
-        Get vector fields information i.e. vector of and components.
+        Get vector fields information (vector of and components).
 
     get_surfaces_info(self) -> dict
-        Get surfaces information i.e. surface name, id and type.
+        Get surfaces information (surface name, ID, and type).
     """
 
     def __init__(self, service: FieldDataService):
@@ -115,7 +115,7 @@ class FieldInfo:
 
 
 class SurfaceDataType(IntEnum):
-    """Surface data type."""
+    """Provides surface data types."""
 
     Vertices = 1
     FacesConnectivity = 2
@@ -220,22 +220,22 @@ class FieldData:
         data_type: SurfaceDataType,
         overset_mesh: Optional[bool] = False,
     ) -> Dict[int, np.array]:
-        """Get surface data i.e. vertices, faces connectivity, centroids and
-        normals.
+        """Get surface data (vertices, faces connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
         surface_name : str
-            Surface name for surface data.
+            Surface name for the surface data.
         data_type : SurfaceDataType
             SurfaceDataType Enum member.
         overset_mesh : bool, optional
-            If set to True overset mesh will be provided.
+            Whether to provide the overset method. The default is ``False``.
 
         Returns
         -------
         Dict[int, np.array]
-            Dictionary containing map of surface id to surface data.
+            Dictionary containing a map of surface IDs to surface data.
         """
         surface_ids = self._field_info.get_surfaces_info()[surface_name]["surface_id"]
         self._get_fields_request().surfaceRequest.extend(
@@ -280,19 +280,20 @@ class FieldData:
         Parameters
         ----------
         surface_name : str
-            Surface name, for scalar field data.
+            Name of the surface.
         field_name : str
-            Scalar field name.
+            Name of the scalar field.
         node_value : bool, optional
-            if set to True data will be provided for nodal location otherwise
-            data will be provided for element location.
+            Whether to provide data for the nodal location. The default is ``True``.
+            When ``False``, data is provided for the element location.
         boundary_value : bool, optional
-            if set to True, no slip velocity will be provided at wall boundaries.
+            Whether to provide slip velocity at the wall boundaries. The default is
+            ``False``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
         Dict[int, np.array]
-            Dictionary containing map of surface id to scalar field.
+            Dictionary containing a map of surface IDs to the scalar field.
         """
         surface_ids = self._field_info.get_surfaces_info()[surface_name]["surface_id"]
         self._get_fields_request().scalarFieldRequest.extend(
@@ -330,19 +331,19 @@ class FieldData:
         surface_name: str,
         vector_field: Optional[str] = "velocity",
     ) -> Dict[int, Tuple[np.array, float]]:
-        """Get vector field data on surface.
+        """Get vector field data on a surface.
 
         Parameters
         ----------
         surface_name : str
-            Surface name, for vector field data.
+            Name of the surface.
         vector_field : str, optional
-            Vector field name.
+            Name of the vector field.
 
         Returns
         -------
         Dict[int, Tuple[np.array, float]]
-            Dictionary containing map of surface id to  Tuple of vector field and vector scale.
+            Dictionary containing a map of surface IDs to a tuple of vector field and vector scale.
         """
         surface_ids = self._field_info.get_surfaces_info()[surface_name]["surface_id"]
         self._get_fields_request().vectorFieldRequest.extend(
@@ -375,23 +376,23 @@ class FieldData:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surfaces data i.e. vertices, faces connectivity,
-        centroids and normals.
+        """Add request to get surface data (vertices, faces connectivity,
+        centroids, and normals).
 
         Parameters
         ----------
         surface_ids : List[int]
-            List of surface ids, for surface data.
+            List of surface IDS for the surface data.
         overset_mesh : bool, optional
-            If set to True overset mesh will be provided.
+            Whether to get the overset met. The default is ``False``.
         provide_vertices : bool, optional
-            if set to True vertices i.e. node coordinates will be provided.
+            Whether to get node coordinates. The default is ``True``.
         provide_faces : bool, optional
-            if set to True faces connectivity will be provided.
+            Whether to get faces connectivity. The default is ``True``.
         provide_faces_centroid : bool, optional
-            if set to True faces centroid will be provided.
+            Whether to get faces centroid The default is ``False``.
         provide_faces_normal : bool, optional
-            if set to True faces normal will be provided.
+            Whether to get faces normal. The default is ``False``
 
         Returns
         -------
@@ -423,14 +424,15 @@ class FieldData:
         Parameters
         ----------
         surface_ids : List[int]
-            List of surface ids, for scalar field data.
+            List of surface IDs for scalar field data.
         field_name : str
-            Scalar field name.
+            Name of the scalar field.
         node_value : bool, optional
-            if set to True data will be provided for nodal location otherwise
-            data will be provided for element location.
+            Whether to provide the nodal location. The default is ``True``. If
+            ``False``, the element location is provided.
         boundary_value : bool, optional
-            if set to True, no slip velocity will be provided at wall boundaries.
+            Whether to provide the slip velocity at the wall boundaries. The default
+            is ``False``. When ``True``, no slip velocity is provided.
 
         Returns
         -------
@@ -460,9 +462,9 @@ class FieldData:
         Parameters
         ----------
         surface_ids : List[int]
-            List of surface ids, for vector field data.
+            List of surface IDs for vector field data.
         vector_field : str, optional
-            Vector field name.
+            Name of the vector field.
 
         Returns
         -------
@@ -479,7 +481,7 @@ class FieldData:
         )
 
     def get_fields(self) -> Dict[int, Dict[int, Dict[str, np.array]]]:
-        """Provide data for previously added requests.
+        """Get data for previously added requests.
 
         Returns
         -------

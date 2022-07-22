@@ -12,14 +12,14 @@ the data for all fields in a single response.
 
 **Request**
 
-The `add_get_<items>_request` API combines requests for multiple fields in a single request. 
+The ``add_get_<items>_request`` methods combine requests for multiple fields in a single request. 
 
 - ``add_get_surfaces_request`` adds a surfaces request.
 - ``add_get_scalar_fields_request`` adds a scalar fields request.
 - ``add_get_vector_fields_request`` adds a vector fields request. 
     
 **Response**
-The ``get_fields`` API returns all requested fields in a single response. It provides 
+The ``get_fields`` method returns all requested fields in a single response. It provides 
 the dictionary containing the requested fields as a numpy array in the following order:
 
 tag_id [int]-> surface_id [int] -> field_name [str] -> field_data[np.array]
@@ -35,9 +35,9 @@ of supported tags and their values:
 *  NODE_LOCATION: 4,
 *  BOUNDARY_VALUES: 8,
 
-If scalar field data is requested for element location[2], ``tag_id`` in 
-the dictionary is ``2``. Similarly if boundary values[8] are requested for 
-node location[4], ``tag_id`` is (4|8), or 12.
+For example, if you request the scalar field data for element location[2], in the
+dictionary,  ``tag_id`` is ``2``. Similarly, if you request the boundary values[8] for 
+node location[4], ``tag_id`` is ``(4|8)``, or 12.
 
 Surface ID
 ----------
@@ -45,27 +45,27 @@ The surface ID is the same one as passed in the request.
 
 Field name
 ----------
-For a request, multiple fields are returned. The number of fields depends on the request type.
+A request returns multiple fields. The number of fields depends on the request type.
 
 Surface request 
 ~~~~~~~~~~~~~~~
-The response for a surface request contains any of the following fields, depending on the
+The response to a surface request contains any of the following fields, depending on the
 request arguments:
 
-- faces, which contains face connectivity    
-- vertices, which contains node coordinates
+- faces, which contain face connectivity    
+- vertices, which contain node coordinates
 - centroid, which contains face centroids    
 - face-normal, which contains face normals
 
 
 Scalar field request
 ~~~~~~~~~~~~~~~~~~~~
-The response for a scalar field request contains a single field with the same name as the
+The response to a scalar field request contains a single field with the same name as the
 scalar field name passed in the request.
 
 Vector field request
 ~~~~~~~~~~~~~~~~~~~~
-The response to a vector field request contain two fields:
+The response to a vector field request contains two fields:
 
 - vector field, with the same name as the vector field name passed in the request 
 - vector-scale
@@ -153,7 +153,7 @@ You can receive one field for each request. There is a separeate method for each
 or vector):
 
 - ``get_surface_data`` gets surface data.
-- ``get_scalar_field_data``gets scalar field data.
+- ``get_scalar_field_data`` gets scalar field data.
 - ``get_vector_field_data`` gets vector field data.
         
 For a surface or scalar field request, the response contains a dictionary of surface IDs and a numpy array of 

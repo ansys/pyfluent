@@ -16,15 +16,15 @@ class Logger:
     Methods
     -------
     set_level(level)
-        Set logging level
+        Set the logging level.
     enable_logging_to_stdout()
-        Enable logging to stdout
+        Enable logging to stdout.
     disable_logging_to_stdout()
-        Disable logging to stdout
+        Disable logging to stdout.
     enable_logging_to_file(filepath)
-        Enable logging to file
+        Enable logging to a file.
     disable_logging_to_file()
-        Disable logging to file
+        Disable logging to a file.
     """
 
     def __init__(self, level: Any = logging.ERROR):
@@ -47,13 +47,13 @@ class Logger:
         self.log = self.logger.log
 
     def set_level(self, level: Any) -> None:
-        """Set logging level.
+        """Set the logging level.
 
         Parameters
         ----------
         level : Any
-            Any of the logging level (CRITICAL, ERROR, WARNING, INFO, DEBUG)
-            in string or enum format
+            Any of the logging levels in string or enum format. The options
+            are ``CRITICAL``, ``ERROR``, ``WARNING``, ``INFO``, and ``DEBUG``.)
         """
         self.logger.setLevel(level)
 
@@ -78,13 +78,13 @@ class Logger:
         self.logger.removeHandler(self.stream_handler)
 
     def enable_logging_to_file(self, filepath: str = None) -> None:
-        """Enable logging to file.
+        """Enable logging to a file.
 
         Parameters
         ----------
         filepath : str, optional
-            filapath, a default filepath will be chosen if filepath is not
-            passed
+            Path to the file. If a file is not specified, a default path
+            is chosen.
         """
         self.logger.removeHandler(self.file_handler)
         if not filepath and not self.log_filepath:
@@ -96,7 +96,7 @@ class Logger:
         self.logger.addHandler(self.file_handler)
 
     def disable_logging_to_file(self) -> None:
-        """Disable logging to file."""
+        """Disable logging to a file."""
         self.logger.removeHandler(self.file_handler)
 
     def getEffectiveLevel(self) -> int:
