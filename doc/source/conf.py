@@ -40,7 +40,7 @@ extensions = [
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/dev", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/objects.inv", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/objects", None),
     "numpy": ("https://numpy.org/devdocs", None),
     "matplotlib": ("https://matplotlib.org/stable", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
