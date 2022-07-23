@@ -505,21 +505,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         self._update_objects()
         return self._objects.items()
 
-    def create(self, name: str):
-        """Create a named object with given name.
-
-        Parameters
-        ----------
-        name: str
-              Name of new object
-
-        Returns
-        -------
-        The object that has been created
-        """
-        self.flproxy.create(self.path, name)
-        return self._create_child_object(name)
-
     def get_object_names(self):
         """Object names."""
         return self.flproxy.get_object_names(self.path)
@@ -531,14 +516,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         if not obj:
             obj = self._create_child_object(name)
         return obj
-
-    def __setitem__(self, name: str, value):
-        if name not in self.get_object_names():
-            self.flproxy.create(self.path, name)
-        child = self._objects.get(name)
-        if not child:
-            child = self._create_child_object(name)
-        child.set_state(value)
 
 
 class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
@@ -641,18 +618,23 @@ class Map(SettingsBase[DictStateType]):
     """A Map object represents key-value settings."""
 
 
+def _get_new_keywords(obj, kwds):
+    newkwds = {}
+    for k, v in kwds.items():
+        if k in obj.argument_names:
+            ccls = getattr(obj, k)
+            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
+        else:
+            raise RuntimeError("Argument '" + str(k) + "' is invalid")
+    return newkwds
+
+
 class Command(Base):
     """Command object."""
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
-        newkwds = {}
-        for k, v in kwds.items():
-            if k in self.argument_names:
-                ccls = getattr(self, k)
-                newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
-            else:
-                raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        newkwds = _get_new_keywords(self, kwds)
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -661,13 +643,7 @@ class Query(Base):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = {}
-        for k, v in kwds.items():
-            if k in self.argument_names:
-                ccls = getattr(self, k)
-                newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
-            else:
-                raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        newkwds = _get_new_keywords(self, kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -760,6 +736,43 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         return l
 
 
+class _CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
+    def create(self, name: str) -> ChildTypeT:
+        """Create a named object with given name.
+
+        Parameters
+        ----------
+        name: str
+              Name of new object
+
+        Returns
+        -------
+        The object that has been created
+        """
+        self.flproxy.create(self.path, name)
+        return self._create_child_object(name)
+
+    def __setitem__(self, name: str, value):
+        if name not in self.get_object_names():
+            self.flproxy.create(self.path, name)
+        child = self._objects.get(name)
+        if not child:
+            child = self._create_child_object(name)
+        child.set_state(value)
+
+
+class _NonCreatableNamedObjectMixin(
+    collections.abc.MutableMapping, Generic[ChildTypeT]
+):
+    def __setitem__(self, name: str, value):
+        if name not in self.get_object_names():
+            raise KeyError(name)
+        child = self._objects.get(name)
+        if not child:
+            child = self._create_child_object(name)
+        child.set_state(value)
+
+
 def get_cls(name, info, parent=None):
     """Create a class for the object identified by "path"."""
     try:
@@ -791,71 +804,68 @@ def get_cls(name, info, parent=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = obj_type == "group" and pname in [
-            "boundary_conditions",
-            "cell_zone_conditions",
-            "report_definitions",
-        ]
-        # include_child_name_objects = info.get("include_child_named_objects", False)
-        if include_child_named_objects:
-            cls = type(pname, (base, _ChildNamedObjectAccessorMixin), dct)
-        else:
-            cls = type(pname, (base,), dct)
+        include_child_named_objects = info.get("include_child_named_objects", False)
+        user_creatable = info.get("user_creatable", False)
 
-        children = info.get("children")
+        bases = (base,)
+        if include_child_named_objects:
+            bases = bases + (_ChildNamedObjectAccessorMixin,)
+        if obj_type == "named-object" and user_creatable:
+            bases = bases + (_CreatableNamedObjectMixin,)
+        elif obj_type == "named-object":
+            bases = bases + (_NonCreatableNamedObjectMixin,)
+
+        cls = type(pname, bases, dct)
+
         taboo = set(dir(cls))
         taboo |= set(
             ["child_names", "command_names", "argument_names", "child_object_type"]
         )
+
+        doc = ""
+
+        def _process_cls_names(info_dict, names, write_doc=False):
+            nonlocal taboo
+            nonlocal cls
+
+            for cname, cinfo in info_dict.items():
+                ccls = get_cls(cname, cinfo, cls)
+                ccls_name = ccls.__name__
+
+                i = 0
+                if write_doc:
+                    nonlocal doc
+                    th = ccls._state_type
+                    th = th.__name__ if hasattr(th, "__name__") else str(th)
+                    doc += f"    {ccls.__name__} : {th}\n"
+                    doc += f"        {ccls.__doc__}\n"
+
+                while ccls_name in taboo:
+                    if i > 0:
+                        ccls_name = ccls_name[: ccls_name.rfind("_")]
+                    i += 1
+                    ccls_name += f"_{str(i)}"
+                ccls.__name__ = ccls_name
+                # pylint: disable=no-member
+                names.append(ccls.__name__)
+                taboo.add(ccls_name)
+                setattr(cls, ccls.__name__, ccls)
+
+        children = info.get("children")
         if children:
             taboo.add("child_names")
             cls.child_names = []
-            for cname, cinfo in children.items():
-                ccls = get_cls(cname, cinfo, cls)
-                i = 0
-                ccls_name = ccls.__name__
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.child_names.append(ccls.__name__)
-                taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+            _process_cls_names(children, cls.child_names)
+
         commands = info.get("commands")
         if commands:
             cls.command_names = []
-            for cname, cinfo in commands.items():
-                ccls = get_cls(cname, cinfo, cls)
-                i = 0
-                ccls_name = ccls.__name__
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.command_names.append(ccls.__name__)
-                taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
+            _process_cls_names(commands, cls.command_names)
+
         queries = info.get("queries")
         if queries:
             cls.query_names = []
-            for cname, cinfo in queries.items():
-                ccls = get_cls(cname, cinfo, cls)
-                ccls_name = ccls.__name__
-                while ccls_name in cls.query_names:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.query_names.append(ccls.__name__)
-                setattr(cls, ccls.__name__, ccls)
+            _process_cls_names(queries, cls.query_names)
 
         arguments = info.get("arguments")
         if arguments:
@@ -864,26 +874,9 @@ def get_cls(name, info, parent=None):
             doc += "Parameters\n"
             doc += "----------\n"
             cls.argument_names = []
-            for aname, ainfo in arguments.items():
-                ccls = get_cls(aname, ainfo, cls)
-                i = 0
-                th = ccls._state_type
-                th = th.__name__ if hasattr(th, "__name__") else str(th)
-                doc += f"    {ccls.__name__} : {th}\n"
-                doc += f"        {ccls.__doc__}\n"
-                ccls_name = ccls.__name__
-                while ccls_name in taboo:
-                    if i > 0:
-                        ccls_name = ccls_name[: ccls_name.rfind("_")]
-                    i += 1
-                    ccls_name += f"_{str(i)}"
-                ccls.__name__ = ccls_name
-                # pylint: disable=no-member
-                cls.argument_names.append(ccls.__name__)
-                taboo.add(ccls_name)
-                setattr(cls, ccls.__name__, ccls)
-
+            _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
+
         object_type = info.get("object-type")
         if object_type:
             cls.child_object_type = get_cls("child-object-type", object_type, cls)
