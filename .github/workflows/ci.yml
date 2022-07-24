@@ -110,15 +110,14 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
-        #image-tag: [latest, solver-latest]
-        image-tag: [latest]
+        image-tag: [v22.2.0]
 
     steps:
       - uses: actions/checkout@v3
 
       # used for documentation deployment
       - name: Get Bot Application Token
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
         id: get_workflow_token
         uses: peter-murray/workflow-application-token-action@v1
         with:
@@ -209,6 +208,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload HTML Documentation
+        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Documentation-tag-${{ matrix.image-tag }}
@@ -216,7 +216,7 @@ jobs:
           retention-days: 7
 
       - name: Deploy
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && ${{ matrix.image-tag == 'latest'}}
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           repository-name: pyansys/pyfluent-docs
@@ -231,8 +231,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #image-tag: [latest, solver-latest]
-        image-tag: [latest]
+        image-tag: [v22.2.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -315,6 +314,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload Coverage Results
+        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Coverage-tag-${{ matrix.image-tag }}
@@ -327,7 +327,7 @@ jobs:
           twine check dist/*
 
       - name: Upload package
-        if: ${{ matrix.image-tag == 'latest'}}
+        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: PyFluent-packages
