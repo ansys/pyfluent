@@ -14,7 +14,7 @@ version-info:
 
 docker-pull:
 	@pip install docker
-	@python .ci/pull_fluent_image.py
+	@bash .ci/pull_fluent_image.sh
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
