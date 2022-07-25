@@ -8,12 +8,12 @@ import pandas as pd
 
 
 class MonitorsManager:
-    """Manages monitors e.g Fluent residuals and report definitions monitors.
+    """Manages monitors (Fluent residuals and report definitions monitors).
 
     Parameters
     ----------
     session_id : str
-        Session id.
+        Session ID.
     service : MonitorsService
         Monitors streaming service.
     """
@@ -48,9 +48,9 @@ class MonitorsManager:
         Parameters
         ----------
         monitor_set_name : str
-            Monitor set name.
+            Name of the monitor.
         property : str
-            Monitor set property. It can be `title`, `xlabel`, `ylabel`.
+            Property of the monitor set. It can be ``title``, ``xlabel``, or ``ylabel``.
 
         Returns
         -------
@@ -68,13 +68,13 @@ class MonitorsManager:
         Parameters
         ----------
         monitor_set_name : str
-            Monitor set name.
+            Name of the monitor.
 
         Returns
         -------
         Union[None, object]
-            Returns None if DataFrame is empty. Otherwise plot object depending upon
-            ``plotting.backend``.
+            Returns ``None`` if the DataFrame is empty. Otherwise, it returns the
+            plot object, depending on the ``plotting.backend``.
             https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html
         """
         with self._lock:
@@ -89,13 +89,13 @@ class MonitorsManager:
         Parameters
         ----------
         monitor_set_name : str
-            Monitor set name.
+            Name of the monitor set.
 
         Returns
         -------
         Tuple[np.array, Dict[str, np.array]]
-            Tuple contains numpy array of x-axis values and dictionary of monitor name and numpy array of
-            y-axis values.
+            Tuple containing a numpy array of x-axis values and a dictionary of monitor names
+            and a numpy array of y-axis values.
         """
         with self._lock:
             df_data = self._data_frames[monitor_set_name]
@@ -113,13 +113,13 @@ class MonitorsManager:
     def refresh(self, session_id, event_info) -> None:
         """Monitors refresh callback.
 
-        The callback is registered with events manager to refresh plots
-        during initialized and dataread events.
+        The callback is registered with the EventsManager to refresh plots
+        during initialized and data-read events.
 
         Parameters
         ----------
         session_id : str
-            Monitor set name.
+            Name of the monitor set.
         event_info : object
             Event info object.
 
@@ -165,7 +165,7 @@ class MonitorsManager:
                 break
 
     def _start(self) -> str:
-        """Start monitors manager."""
+        """Start MonitorsManager."""
         with self._lock:
             if not self._monitors_thread:
                 self._monitors_info = self._monitors_service.get_monitors_info()
@@ -185,7 +185,7 @@ class MonitorsManager:
                 started_evt.wait()
 
     def _stop(self):
-        """Stop monitors manager."""
+        """Stops MonitorsManager."""
         if self._monitors_thread:
             self._monitors_service.end_streaming()
             self._monitors_thread.join()

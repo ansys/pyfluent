@@ -1,11 +1,17 @@
-Defining Boundary Conditions
+Defining boundary conditions
 ============================
-PyFluent supports defining boundary conditions using the :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
+PyFluent supports defining boundary conditions using :ref:`ref_solver_tui_commands`
+and :ref:`ref_settings`.
 
-Solver TUI Commands
--------------------
-The following example demonstrates how you can define boundary conditions using
-:ref:`ref_solver_tui_commands`:
+Using solver TUI commands
+-------------------------
+These examples show how you define and copy boundary conditions, list zones,
+and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
+
+Defining boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The ``define.boundary_counditions.set.velocity_inlet`` TUI command defines velocity
+boundary conditions at inlets.
 
 .. code:: python
 
@@ -53,25 +59,27 @@ The following example demonstrates how you can define boundary conditions using
         'quit'
     )
 
-Copying Boundary Conditions
+Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-define/boundary-conditions/copy-bc TUI: Copies boundary conditions to other zones.
+The ``define.boundary_conditions.copy_bc`` TUI command copies boundary conditions
+to other zones.
 
 .. code:: python
 
     session.solver.tui.define.boundary_conditions.copy_bc('cold-inlet','hot-inlet','()')
 
-Listing Zones
+Listing zones
 ~~~~~~~~~~~~~
-define/boundary-conditions/list-zones TUI: Prints out the types and IDs of all
-zones in the console window.
+The ``define.boundary_conditions.list_zones`` TUI command prints in the Fluent console
+the types and IDs of all zones.
 
 .. code:: python
 
     session.solver.tui.define.boundary_conditions.list_zones()
 
-Modifying Cell Zone Conditions
+Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The ``define.boundary_conditions.fluid`` TUI command modifies cell zone conditions.
 
 .. code:: python
 
@@ -102,12 +110,12 @@ Modifying Cell Zone Conditions
         'no'
     )
 
-Settings Objects
-----------------
-The following example demonstrates how you can define boundary conditions using
-:ref:`ref_settings`:
+Using settings objects
+----------------------
+The following examples show how you define boundary conditions using
+:ref:`ref_settings`.
 
-Defining Boundary Conditions
+Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -130,7 +138,7 @@ Defining Boundary Conditions
         'constant': 293.15,
     }
 
-Modifying Cell Zone Conditions
+Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python

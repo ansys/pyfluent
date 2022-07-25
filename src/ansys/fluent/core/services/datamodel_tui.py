@@ -1,4 +1,4 @@
-"""Wrappers over TUI-based datamodel grpc service of Fluent."""
+"""Wrappers over TUI-based datamodel gRPC service of Fluent."""
 
 import keyword
 import types
@@ -17,9 +17,9 @@ Path = List[str]
 
 
 class DatamodelService:
-    """Class wrapping the TUI-based datamodel grpc service of Fluent.
+    """Class wrapping the TUI-based datamodel gRPC service of Fluent.
 
-    It is suggested to use the methods from PyMenu class.
+    Using the methods from PyMenu class is recommended.
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
@@ -107,17 +107,17 @@ def _convert_gvalue_to_value(gval: Variant):
 
 class PyMenu:
     """Pythonic wrapper of TUI-based DatamodelService class. Use this class
-    instead of directly calling DatamodelService's method.
+    instead of directly calling the DatamodelService's method.
 
     Methods
     -------
     get_child_names(include_unavailable):
-        Get child menu names
+        Get child menu names.
     execute(*args, **kwargs)
-        Execute command/query at menu with positional or keyword
-        arguments
+        Execute a command or query at a menu with positional or keyword
+        arguments.
     get_doc_string(include_unavailable)
-        Get docstring for menu
+        Get docstring for a menu.
     """
 
     def __init__(self, service: DatamodelService, path: Union[Path, str]):
@@ -125,17 +125,17 @@ class PyMenu:
         self._path = path if isinstance(path, str) else convert_path_to_grpc_path(path)
 
     def get_child_names(self, include_unavailable: bool = False) -> List[str]:
-        """Get child menu names.
+        """Get the names of child menus.
 
         Parameters
         ----------
         include_unavailable : bool, optional
-            When True, will query over static TUI metadata,
-            by default False
+            Whether to query over static TUI metadata. The default is ``False``.
 
         Returns
         -------
         List[str]
+            Names of child menus.
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.path = self._path
@@ -158,7 +158,8 @@ class PyMenu:
         return _convert_gvalue_to_value(ret.result)
 
     def execute(self, *args, **kwargs) -> Any:
-        """Execute command/query at path with positional or keyword arguments.
+        """Execute a command or query at a path with positional or keyword
+        arguments.
 
         Parameters
         ----------
@@ -167,7 +168,7 @@ class PyMenu:
         -------
         Any
             Query result (any Python datatype) or Future object
-            wrapping TUI output of a command
+            wrapping TUI output of a command.
         """
         request = DataModelProtoModule.ExecuteCommandRequest()
         request.path = self._path
@@ -182,13 +183,12 @@ class PyMenu:
             return self._execute_command(request)
 
     def get_doc_string(self, include_unavailable: bool = False) -> str:
-        """Get docstring for menu.
+        """Get docstring for a menu.
 
         Parameters
         ----------
         include_unavailable : bool, optional
-            When True, will query over static TUI metadata,
-            by default False
+            Whether to query over static TUI metadata. The default is ``False``.
 
         Returns
         -------
@@ -289,11 +289,12 @@ class TUICommandGeneric(TUIMenu):
 
 
 def convert_func_name_to_tui_menu(func_name: str) -> str:
-    """Convert Python function name to TUI menu string.
+    """Convert a Python function name to a TUI menu string.
 
     Parameters
     ----------
     func_name : str
+       Name of the Python function.
 
     Returns
     -------
@@ -305,11 +306,12 @@ def convert_func_name_to_tui_menu(func_name: str) -> str:
 
 
 def convert_tui_menu_to_func_name(menu: str) -> str:
-    """Convert TUI menu string to Python function name.
+    """Convert a TUI menu string to a Python function name.
 
     Parameters
     ----------
     menu : str
+       TUI menu string.
 
     Returns
     -------
@@ -324,17 +326,17 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
 
 
 def convert_path_to_grpc_path(path: Path) -> str:
-    """Convert path structure to a string which can be passed to datamodel grpc
-    service.
+    """Convert a path structure to a string that can be passed to the data
+    model gRPC service.
 
     Parameters
     ----------
     path : Path
-        Path structure
+        Path structure.
 
     Returns
     -------
     str
-        grpc path
+        gRPC path.
     """
     return "/" + "/".join(convert_func_name_to_tui_menu(x) for x in path)
