@@ -5,10 +5,16 @@ PyFluent supports defining materials using :ref:`ref_solver_tui_commands` and
 
 Using solver TUI commands
 -------------------------
-This example shows how you define materials using
-:ref:`ref_solver_tui_commands`.
+The following example shows a comparision between the TUI command and the
+python code for defining materials.
 
-The ``define.materials`` TUI enters the materials menu.
+TUI command
+
+.. code:: scheme
+
+    /define/materials
+
+Python command
 
 .. code:: python
 

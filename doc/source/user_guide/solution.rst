@@ -11,11 +11,20 @@ using :ref:`ref_solver_tui_commands`.
 
 Selecting solution methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.set.p_v_coupling`` TUI command selects which pressure-velocity coupling scheme to use.
-Five schemes (Index-Model) are available: 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled,
-and 25-Fractional Step.
+The following example shows a comparision between the TUI command and the
+python code for selecting the pressure velocity coupling scheme and setting
+the gradient options. Five schemes (Index-Model) are available:
+20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.
 
-The ``solve.set/gradient_scheme`` TUI sets the gradient options.
+TUI command
+
+.. code:: scheme
+
+    /solve/set/p-v-coupling 24
+    /solve/set/gradient-scheme yes
+    /solve/set/gradient-scheme no yes 
+
+Python command
 
 .. code:: python
 
@@ -28,7 +37,16 @@ The ``solve.set/gradient_scheme`` TUI sets the gradient options.
     
 Selecting solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.set.p_v_controls`` TUI sets pressure-velocity controls.
+The following example shows a comparision between the TUI command and the
+python code for selecting the pressure velocity controls.
+
+TUI command
+
+.. code:: scheme
+
+    /solve/set/p-v-controls 0.3 0.4
+
+Python command
 
 .. code:: python
 
@@ -36,7 +54,16 @@ The ``solve.set.p_v_controls`` TUI sets pressure-velocity controls.
 
 Creating report definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.report_definitions`` TUI enters the report definitions menu.
+The following example shows a comparision between the TUI command and the
+python code for report definitions.
+
+TUI command
+
+.. code:: scheme
+
+    /solve/report-definitions
+
+Python command
 
 .. code:: python
 
@@ -53,12 +80,17 @@ The ``solve.report_definitions`` TUI enters the report definitions menu.
 
 Initializing and solving 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.initialize`` TUI enters the flow initialization menu.
+The following example shows a comparision between the TUI command and the
+python code for initialization and performing a specified number of iterations.
 
-The ``solve.initialize.hyb_initialization`` TUI initializes using the hybrid
-initialization method.
+TUI command
 
-The ``solve.iterate`` TUI performs a specified number of iterations.
+.. code:: scheme
+
+    /solve/initialize/hyb-initialization
+    /solve/iterate 100
+
+Python command
 
 .. code:: python
 

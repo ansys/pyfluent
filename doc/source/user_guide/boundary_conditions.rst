@@ -10,8 +10,16 @@ and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
 
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_counditions.set.velocity_inlet`` TUI command defines velocity
-boundary conditions at inlets.
+The following example shows a comparision between the TUI command and the
+python code for defining velocity boundary conditions at inlets.
+
+TUI command
+
+.. code:: scheme
+
+    /define/boundary-counditions/set/velocity-inlet
+
+Python code
 
 .. code:: python
 
@@ -61,8 +69,16 @@ boundary conditions at inlets.
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_conditions.copy_bc`` TUI command copies boundary conditions
-to other zones.
+The following example shows a comparision between the TUI command and the
+python code for copying boundary conditions to other zones.
+
+TUI command
+
+.. code:: scheme
+
+    /define/boundary-conditions/copy-bc
+
+Python command
 
 .. code:: python
 
@@ -70,8 +86,17 @@ to other zones.
 
 Listing zones
 ~~~~~~~~~~~~~
-The ``define.boundary_conditions.list_zones`` TUI command prints in the Fluent console
-the types and IDs of all zones.
+The following example shows a comparision between the TUI command and the
+python code for printing the types and IDs of all zones in the Fluent
+console.
+
+TUI command
+
+.. code:: scheme
+
+    /define/boundary-conditions/list-zones
+
+Python command
 
 .. code:: python
 
@@ -79,7 +104,16 @@ the types and IDs of all zones.
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_conditions.fluid`` TUI command modifies cell zone conditions.
+The following example shows a comparision between the TUI command and the
+python code for modifying cell zone conditions.
+
+TUI command
+
+.. code:: scheme
+
+    /define/boundary-conditions/fluid
+
+Python command
 
 .. code:: python
 

@@ -10,10 +10,17 @@ settings using :ref:`ref_solver_tui_commands`:
 
 Selecting steady or transient
 -----------------------------
-The ``define.models.steady`` TUI enables and disables the steady solution model.
+The following example shows a comparision between the TUI command and the
+python code for enabling and disabling the steady and unsteady solution model.
 
-The ``define.models.unsteady.1st_order TUI`` selects the first-order implicit
-formulation for a transient simulation.
+TUI command
+
+.. code:: scheme
+
+    /define/models/steady yes
+    /define/models/unsteady_1st_order yes
+
+Python command
 
 .. code:: python
 
@@ -25,14 +32,19 @@ formulation for a transient simulation.
 
 Selecting pressure-based or density-based solver
 ------------------------------------------------
-The ``define.models.solver.density_based_explicit`` TUI enables and disables the
-density-based explicit solver.
+The following example shows a comparision between the TUI command and the
+python code for enabling and disabling the pressure and density based solver
+models.
 
-The ``define.models.solver.density_based-implicit`` TUI enables and disables the
-density-based implicit solver.
+TUI command
 
-The ``define.models.solver.pressure_based`` TUI enables and disables the
-pressure-based solver.
+.. code:: scheme
+
+    /define/models/solver/density-based-explicit yes 
+    /define/models/solver/density-based-implicit yes
+    /define/models/solver/pressure-based yes
+
+Python command
 
 .. code:: python
 
@@ -42,7 +54,14 @@ pressure-based solver.
 
 Defining gravitational acceleration
 -----------------------------------
-The ``define.operating_conditions.gravity`` TUI sets the gravitational acceleration.
+The following example shows a comparision between the TUI command and the
+python code for settings the gravitational acceleration
+
+TUI command
+
+.. code:: scheme
+
+    /define/operating-conditions/gravity yes 0 -9.81 0
 
 .. code:: python
 

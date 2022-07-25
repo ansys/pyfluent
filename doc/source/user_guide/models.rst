@@ -8,7 +8,16 @@ The following examples show how you define models using :ref:`ref_solver_tui_com
 
 Enabling the energy model
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.models.energy`` TUI enables and disables the energy model.
+The following example shows a comparision between the TUI command and the
+python code for enabling and disabling the energy model.
+
+TUI command
+
+.. code:: scheme
+
+    /define/models/energy yes no no no yes
+
+Python command
 
 .. code:: python
 
@@ -19,12 +28,18 @@ The ``define.models.energy`` TUI enables and disables the energy model.
 
 Enabling the viscous model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.models.viscous.laminar`` TUI enables and disables the laminar flow model.
+The following example shows a comparision between the TUI command and the
+python code for enabling and disabling the various viscous models.
 
-The ``define.models.viscous.kw_sst`` TUI enables and disables the SST-kw turbulence model.
+TUI command
 
-The ``define.models.viscous.ke_standard`` TUI enables and disables the standard-ke
-turbulence model.
+.. code:: scheme
+
+    /define/models/viscous/laminar yes
+    /define/models/viscous/kw-sst yes
+    /define/models/viscous/ke-standard yes
+
+Python command
 
 .. code:: python
 
@@ -34,7 +49,17 @@ turbulence model.
 
 Enabling the radiation model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.models.radiation`` TUI provides options for selecting different radiation models.
+The following example shows a comparision between the TUI command and the
+python code for selecting different radiation models.
+
+TUI command
+
+.. code:: scheme
+
+    /define/models/radiation/s2s yes
+    /define/models/radiation/p1 yes
+
+Python command
 
 .. code:: python
 
@@ -43,7 +68,19 @@ The ``define.models.radiation`` TUI provides options for selecting different rad
 
 Enabling the multiphase model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.models.multiphase`` TUI provides options for selecting different multiphase models.
+The following example shows a comparision between the TUI command and the
+python code for selecting different multiphase models.
+
+TUI command
+
+.. code:: scheme
+
+    /define/models/multiphase/model vof
+    /define/models/multiphase/model eulerian
+    /define/models/multiphase/model mixture
+    /define/models/multiphase/model wetsteam
+
+Python command
 
 .. code:: python
 
