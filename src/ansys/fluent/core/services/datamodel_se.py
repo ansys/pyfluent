@@ -16,7 +16,8 @@ Path = List[Tuple[str, str]]
 
 
 class Attribute(Enum):
-    """Contains the standard names of data model attributes associated with the data model service."""
+    """Contains the standard names of data model attributes associated with the
+    data model service."""
 
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
@@ -192,9 +193,9 @@ def _convert_path_to_se_path(path: Path) -> str:
 
 
 class PyMenu:
-    """Object class using the StateEngine-based DatamodelService as the backend.
-
-    Use this class instead of directly calling the DatamodelService's method.
+    """Object class using the StateEngine-based DatamodelService as the
+    backend. Use this class instead of directly calling the DatamodelService's
+    method.
 
     Methods
     -------
@@ -344,9 +345,9 @@ class PyMenu:
 
 
 class PyNamedObjectContainer:
-    """Container class using the StateEngine-based DatamodelService as the backend.
-
-    Use this class instead of directly calling the DatamodelService's method.
+    """Container class using the StateEngine-based DatamodelService as the
+    backend. Use this class instead of directly calling the DatamodelService's
+    method.
 
     Methods
     -------
@@ -489,9 +490,9 @@ class PyNamedObjectContainer:
 
 
 class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the backend.
-
-    Use this class instead of directly calling the DatamodelService's method.
+    """Command class using the StateEngine-based DatamodelService as the
+    backend. Use this class instead of directly calling the DatamodelService's
+    method.
 
     Methods
     -------
