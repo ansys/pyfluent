@@ -53,7 +53,7 @@ The ``define.models.multiphase`` TUI provides options for selecting different mu
     session.solver.tui.define.models.multiphase.model('wetsteam')
 
 Using settings objects
----------------------
+----------------------
 The following examples show how you define models using :ref:`ref_settings`.
 
 Enabling the energy model

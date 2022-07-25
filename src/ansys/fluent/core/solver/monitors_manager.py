@@ -73,8 +73,8 @@ class MonitorsManager:
         Returns
         -------
         Union[None, object]
-            Returns ``None`` if theDataFrame is empty. Otherwise, it returns plot object,
-            depending on the ``plotting.backend``.
+            Returns ``None`` if the DataFrame is empty. Otherwise, it returns the
+            plot object, depending on the ``plotting.backend``.
             https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html
         """
         with self._lock:
