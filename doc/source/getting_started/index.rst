@@ -1,7 +1,7 @@
 .. _getting_started:
 
 ===============
-Getting Started
+Getting started
 ===============
 To run PyFluent, you must have a licensed copy of Ansys Fluent
 installed locally. PyFluent supports Ansys Fluent versions 2022 R2 or later.

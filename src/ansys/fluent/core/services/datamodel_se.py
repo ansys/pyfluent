@@ -16,8 +16,7 @@ Path = List[Tuple[str, str]]
 
 
 class Attribute(Enum):
-    """Contains the standard names of the data model attributes associated with
-    the datamodel service."""
+    """Contains the standard names of data model attributes associated with the data model service."""
 
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
@@ -193,7 +192,7 @@ def _convert_path_to_se_path(path: Path) -> str:
 
 
 class PyMenu:
-    """Object class using the StateEngine-based DatamodelService as backend.
+    """Object class using the StateEngine-based DatamodelService as the backend.
 
     Use this class instead of directly calling the DatamodelService's method.
 
@@ -222,12 +221,12 @@ class PyMenu:
         same as the set_state(state) method.)
     update_dict(dict_state)
         Update the state of the current object if the current object
-        is a dictionary in the data model. Otherwise, throw a RuntimeError
+        is a dictionary in the data model. Otherwise, throw a ``RuntimeError``
         (which is currently not showing up in Python). The update is
         executed according to dict.update semantics.
     updateDict(dict_state)
         Update the state of the current object if the current object
-        is a dictionary in the data model. Otherwise, throw a RuntimeError
+        is a dictionary in the data model. Otherwise, throw a ``RuntimeError``
         (which is currently not showing up in Python). The update is
         executed according to dict.update semantics. (This method is
         the same as the update_dict(dict_state) method.)
@@ -345,8 +344,7 @@ class PyMenu:
 
 
 class PyNamedObjectContainer:
-    """Container class using the StateEngine-based DatamodelService as the
-    backend.
+    """Container class using the StateEngine-based DatamodelService as the backend.
 
     Use this class instead of directly calling the DatamodelService's method.
 
@@ -491,8 +489,7 @@ class PyNamedObjectContainer:
 
 
 class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the
-    backend.
+    """Command class using the StateEngine-based DatamodelService as the backend.
 
     Use this class instead of directly calling the DatamodelService's method.
 

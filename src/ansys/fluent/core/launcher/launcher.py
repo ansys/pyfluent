@@ -200,10 +200,10 @@ def launch_fluent(
         Dimensions for modeling. The default is ``None``, in which case ``"3d"``
         is used. Options are ``"2d"`` and ``"3d"``.
     precision : str, optional
-        Precision level. The default is ``None``, in which case ``"double"``
+        Floating point precision. The default is ``None``, in which case ``"double"``
         is used. Options are ``"single"``or ``"double"``.
     processor_count : int, optional
-        Number of processors. The default is ``None``, in which case 1
+        Number of processors. The default is ``None``, in which case ``1``
         is used.
     journal_filename : str, optional
         Name of the journal file to read. The default is ``None``.
@@ -231,7 +231,7 @@ def launch_fluent(
         IP address defaults to ``"127.0.0.1"``. You can also use the environment
         variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
     port : int, optional
-        Port to connect to existing Fluent instance. This parameter is
+        Port to connect to an existing Fluent instance. This parameter is
         used only when ``start_instance`` is ``False``. You can use the
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
         value.

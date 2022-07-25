@@ -53,7 +53,7 @@ _ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation), "?'")
 def to_python_name(fluent_name: str) -> str:
     """Convert a scheme string to a Python variable name.
 
-    The function replacing symbols with _. Any ``?`` symbols are
+    This function replaces symbols with _. Any ``?`` symbols are
     ignored.
     """
     if not fluent_name:
@@ -469,7 +469,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         ----------
         new: str
             New name.
-        old: str
+        old : str
             Current name.
         """
         self.flproxy.rename(self.path, new, old)
@@ -906,7 +906,7 @@ def get_root(flproxy) -> Group:
     Parameters
     ----------
     flproxy: Proxy
-        Object that interfaces with the Fluent backend
+        Object that interfaces with the Fluent backend.
 
     Returns
     -------

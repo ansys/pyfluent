@@ -1,7 +1,7 @@
 """Functions to download sample datasets from the PyAnsys data repository.
 
-Example
--------
+Examples
+--------
 
 >>> from ansys.fluent.core import examples
 >>> filename = examples.download_file("bracket.iges", "geometry")

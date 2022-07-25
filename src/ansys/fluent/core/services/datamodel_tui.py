@@ -158,8 +158,7 @@ class PyMenu:
         return _convert_gvalue_to_value(ret.result)
 
     def execute(self, *args, **kwargs) -> Any:
-        """Execute a command or query at a path with positional or keyword
-        arguments.
+        """Execute a command or query at a path with positional or keyword arguments.
 
         Parameters
         ----------
@@ -326,8 +325,7 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
 
 
 def convert_path_to_grpc_path(path: Path) -> str:
-    """Convert a path structure to a string that can be passed to the datamodel
-    gRPC service.
+    """Convert a path structure to a string that can be passed to the data model gRPC service.
 
     Parameters
     ----------

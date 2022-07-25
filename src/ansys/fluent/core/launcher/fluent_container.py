@@ -22,7 +22,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
         Path to mount from. Within the container, ``mounted_from`` is mounted as
         ``mount_to``.
     mounted_to : str
-        Path to mount to. Within the counter, ``mounted_from`` is mounted as
+        Path to mount to. Within the container, ``mounted_from`` is mounted as
         ``mount_to``.
     args : List[str]
         List of Fluent launch arguments.

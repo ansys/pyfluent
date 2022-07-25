@@ -11,7 +11,7 @@ from ansys.fluent.core.services.error_handler import catch_grpc_error
 
 
 class HealthCheckService:
-    """Class wrapping the health check gRPCc service of Fluent.
+    """Class wrapping the health check gRPC service of Fluent.
 
     Methods
     -------

@@ -220,8 +220,7 @@ class FieldData:
         data_type: SurfaceDataType,
         overset_mesh: Optional[bool] = False,
     ) -> Dict[int, np.array]:
-        """Get surface data (vertices, faces connectivity, centroids, and
-        normals).
+        """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
         ----------
