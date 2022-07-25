@@ -105,6 +105,12 @@ class DatamodelService:
         return self.__stub.executeCommand(request, metadata=self.__metadata)
 
     @catch_grpc_error
+    def create_command_arguments(
+        self, request: DataModelProtoModule.CreateCommandArgumentsRequest
+    ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
+        return self.__stub.createCommandArguments(request, metadata=self.__metadata)
+
+    @catch_grpc_error
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
@@ -336,6 +342,14 @@ class PyMenu:
             raise RuntimeError(
                 f"{self.__class__.__name__} is not a named object class."
             )
+
+    def create_command_arguments(self, command):
+        request = DataModelProtoModule.CreateCommandArgumentsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        request.command = command
+        response = self.service.create_command_arguments(request)
+        return response.commandid
 
 
 class PyNamedObjectContainer:
