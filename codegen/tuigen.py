@@ -18,7 +18,7 @@ import platform
 import shutil
 import string
 import subprocess
-from typing import Iterable
+from typing import Any, Dict
 import xml.etree.ElementTree as ET
 
 from data.fluent_gui_help_patch import XML_HELP_PATCH
@@ -28,7 +28,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
 from ansys.fluent.core.launcher.launcher import FLUENT_VERSION, get_fluent_path
 from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService,
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
@@ -148,32 +147,30 @@ def _populate_xml_helpstrings():
             _XML_HELPSTRINGS[k] = v
 
 
-class _TUIMenuGenerator:
-    """Wrapper over PyMenu to extract TUI menu metadata from Fluent."""
-
-    def __init__(self, path: str, service: DatamodelService):
-        self._menu = PyMenu(service, path)
-
-    def get_child_names(self) -> Iterable[str]:
-        return self._menu.get_child_names(True)
-
-    def get_doc_string(self) -> str:
-        return self._menu.get_doc_string(True)
+def _is_valid_tui_menu_name(name):
+    return name and not all(x in string.punctuation for x in name)
 
 
 class _TUIMenu:
     """Class representing Fluent's TUI menu."""
 
-    def __init__(self, path: str):
+    def __init__(self, path: str, doc: str, is_command: bool = False):
         self.path = path
         self.tui_name = path[-1] if path else ""
         self.name = convert_tui_menu_to_func_name(self.tui_name)
+        self.is_command = is_command
         tui_path = convert_path_to_grpc_path(path)
         self.doc = _XML_HELPSTRINGS.get(tui_path, None)
         if self.doc:
             del _XML_HELPSTRINGS[tui_path]
+        else:
+            self.doc = doc
+        self.doc = self.doc.replace("\\*", "*")
+        self.doc = self.doc.replace("*", "\*")
+        self.doc = self.doc.strip()
+        if not self.doc.endswith("."):
+            self.doc = self.doc + "."
         self.children = {}
-        self.is_command = False
 
     def get_command_path(self, command: str) -> str:
         return convert_path_to_grpc_path(self.path + [command])
@@ -200,26 +197,22 @@ class TUIGenerator:
             shutil.rmtree(Path(self._tui_doc_dir))
         self.session = pyfluent.launch_fluent(meshing_mode=meshing)
         self._service = self.session._datamodel_service_tui
-        self._main_menu = _TUIMenu([])
+        self._main_menu = _TUIMenu([], "")
 
-    def _populate_menu(self, menu: _TUIMenu):
-        menugen = _TUIMenuGenerator(menu.path, self._service)
-        if not menu.doc:
-            menu.doc = menugen.get_doc_string()
-        menu.doc = menu.doc.replace("\\*", "*")
-        menu.doc = menu.doc.replace("*", "\*")
-        menu.doc = menu.doc.strip()
-        if not menu.doc.endswith("."):
-            menu.doc = menu.doc + "."
-        child_names = menugen.get_child_names()
-        if child_names:
-            for child_name in child_names:
-                if child_name and not all(x in string.punctuation for x in child_name):
-                    child_menu = _TUIMenu(menu.path + [child_name])
-                    menu.children[child_menu.name] = child_menu
-                    self._populate_menu(child_menu)
-        else:
-            menu.is_command = True
+    def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
+        for child_menu_name, child_menu_info in info["menus"].items():
+            if _is_valid_tui_menu_name(child_menu_name):
+                child_menu = _TUIMenu(
+                    menu.path + [child_menu_name], child_menu_info["help"]
+                )
+                menu.children[child_menu.name] = child_menu
+                self._populate_menu(child_menu, child_menu_info)
+        for child_command_name, child_command_info in info["commands"].items():
+            if _is_valid_tui_menu_name(child_command_name):
+                child_menu = _TUIMenu(
+                    menu.path + [child_command_name], child_command_info["help"], True
+                )
+                menu.children[child_menu.name] = child_menu
 
     def _write_code_to_tui_file(self, code: str, indent: int = 0):
         self.__writer.write(" " * _INDENT_STEP * indent + code)
@@ -317,7 +310,8 @@ class TUIGenerator:
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            self._populate_menu(self._main_menu)
+            info = PyMenu(self._service, self._main_menu.path).get_static_info()
+            self._populate_menu(self._main_menu, info)
             self.session.exit()
             if self._tui_file == _SOLVER_TUI_FILE:
                 self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')

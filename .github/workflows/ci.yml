@@ -91,15 +91,14 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
-        #image-tag: [latest, solver-latest]
-        image-tag: [latest]
+        image-tag: [v22.2.0]
 
     steps:
       - uses: actions/checkout@v3
 
       # used for documentation deployment
       - name: Get Bot Application Token
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
         id: get_workflow_token
         uses: peter-murray/workflow-application-token-action@v1
         with:
@@ -143,8 +142,12 @@ jobs:
             src/ansys/fluent/core/meshing/tui.py
             src/ansys/fluent/core/solver/settings
             src/ansys/fluent/core/solver/tui.py
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}-${{ github.sha }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -178,9 +181,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: doc/source/examples
-          key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('examples/**') }}-${{ github.sha }}
+          key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('examples/**') }}
           restore-keys: |
-            Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('examples/**') }}
+            Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
 
       - name: Build Documentation
         run: make build-doc DOCS_CNAME=fluentdocs.pyansys.com
@@ -190,6 +193,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload HTML Documentation
+        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Documentation-tag-${{ matrix.image-tag }}
@@ -197,7 +201,7 @@ jobs:
           retention-days: 7
 
       - name: Deploy
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && ${{ matrix.image-tag == 'latest'}}
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           repository-name: pyansys/pyfluent-docs
@@ -212,8 +216,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #image-tag: [latest, solver-latest]
-        image-tag: [latest]
+        image-tag: [v22.2.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -257,8 +260,8 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}-${{ github.sha }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -296,6 +299,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload Coverage Results
+        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Coverage-tag-${{ matrix.image-tag }}
@@ -308,7 +312,7 @@ jobs:
           twine check dist/*
 
       - name: Upload package
-        if: ${{ matrix.image-tag == 'latest'}}
+        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: PyFluent-packages

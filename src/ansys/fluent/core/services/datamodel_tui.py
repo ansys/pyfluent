@@ -2,8 +2,9 @@
 
 import keyword
 import types
-from typing import Any, Iterable, List, Tuple, Union
+from typing import Any, Dict, Iterable, List, Tuple, Union
 
+from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
@@ -56,6 +57,10 @@ class DatamodelService:
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
         return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
+
+    @catch_grpc_error
+    def get_static_info(self, request):
+        return self.__stub.GetStaticInfo(request, metadata=self.__metadata)
 
 
 def _convert_value_to_gvalue(val: Any, gval: Variant):
@@ -196,6 +201,45 @@ class PyMenu:
             request.args["include_unavailable"] = 1
         response = self._service.get_attribute_value(request)
         return _convert_gvalue_to_value(response.value)
+
+    def get_static_info(self) -> Dict[str, Any]:
+        """Get static info at menu level.
+
+        Returns
+        -------
+        DataModelProtoModule.StaticInfo
+            static info
+        """
+        if hasattr(DataModelProtoModule, "GetStaticInfoRequest"):
+            request = DataModelProtoModule.GetStaticInfoRequest()
+            request.path = self._path
+            response = self._service.get_static_info(request)
+            return MessageToDict(response.info, including_default_value_fields=True)
+        else:
+            return _get_static_info_at_level(self)
+
+
+def _get_static_info_at_level(menu: PyMenu) -> Dict[str, Any]:
+    info = {}
+    info["help"] = menu.get_doc_string(include_unavailable=True)
+    info["menus"] = {}
+    info["commands"] = {}
+    child_names = menu.get_child_names(include_unavailable=True)
+    if child_names:
+        for child_name in child_names:
+            if child_name:
+                child_menu = PyMenu(
+                    menu._service,
+                    menu._path + ("" if menu._path.endswith("/") else "/") + child_name,
+                )
+                child_info = _get_static_info_at_level(child_menu)
+                if child_info.pop("is_command", False):
+                    info["commands"][child_name] = child_info
+                else:
+                    info["menus"][child_name] = child_info
+    else:
+        info["is_command"] = True
+    return info
 
 
 class TUIMenu:

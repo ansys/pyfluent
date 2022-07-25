@@ -189,6 +189,7 @@ def launch_fluent(
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     show_gui: bool = None,
+    case_filepath: str = None,
 ) -> Session:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -252,6 +253,10 @@ def launch_fluent(
         PYFLUENT_SHOW_SERVER_GUI is set to ``1`` and the ``show-gui``
         parameter is set to ``False``, the GUI is hidden.
 
+
+    case_filepath : str, optional
+        If provided, reads a fluent case file and sets the required settings
+        in the fluent session
 
     Returns
     -------
