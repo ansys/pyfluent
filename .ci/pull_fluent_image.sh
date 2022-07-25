@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# _IMAGE_NAME
+# Image name
 _IMAGE_NAME="ghcr.io/pyansys/pyfluent:${FLUENT_IMAGE_TAG:-latest}"
 
 # Pull fluent image based on tag
