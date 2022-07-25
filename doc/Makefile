@@ -21,6 +21,7 @@ help:
 
 # customized clean due to examples gallery
 clean:
+	rm -rf build_errors.txt
 	rm -rf $(BUILDDIR)/*
 	rm -rf $(SOURCEDIR)/examples
 	find . -type d -name "_autosummary" -exec rm -rf {} +
