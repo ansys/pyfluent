@@ -375,8 +375,7 @@ class FieldData:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surface data (vertices, faces connectivity,
-        centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity, centroids, and normals).
 
         Parameters
         ----------
