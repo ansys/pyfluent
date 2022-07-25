@@ -57,7 +57,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 "-e",
                 "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
                 "ghcr.io/pyansys/pyfluent",
-                "-g",
+                "-gu",
                 f"-sifile={container_sifile}",
             ]
             + args
