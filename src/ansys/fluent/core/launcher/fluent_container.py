@@ -19,18 +19,18 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     Parameters
     ----------
     mounted_from : str
-        Path to mount from. ``mounted_from`` will be mounted as ``mount_to``
-        within the container.
+        Path to mount from. Within the container, ``mounted_from`` is mounted as
+        ``mount_to``.
     mounted_to : str
-        Path to mount to. ``mounted_from`` will be mounted as ``mount_to``
-        within the container.
+        Path to mount to. Within the container, ``mounted_from`` is mounted as
+        ``mount_to``.
     args : List[str]
-        List of Fluent launch arguments
+        List of Fluent launch arguments.
 
     Returns
     -------
     int
-        gPRC server port exposed from container
+        gPRC server port exposed from the container.
     """
     fd, sifile = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=mounted_from)
     os.close(fd)
@@ -57,7 +57,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 "-e",
                 "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
                 "ghcr.io/pyansys/pyfluent",
-                "-g",
+                "-gu",
                 f"-sifile={container_sifile}",
             ]
             + args

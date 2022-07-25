@@ -1,16 +1,16 @@
 .. _ref_user_guide_meshing_workflows:
 
-Using the Meshing Workflows
-===========================
-PyFluent supports accessing all the Fluent Meshing functionalities including 
-the guided Meshing Workflows.
+Using meshing workflows
+=======================
+PyFluent supports accessing all Fluent meshing functionalities, including 
+guided meshing workflows.
 
-Using the Watertight Geometry Meshing Workflow
+Using the watertight geometry meshing workflow
 ----------------------------------------------
-Here is a simple example demonstrating the the Watertight Geometry Workflow usage:
+This simple example shows how you use the watertight geometry meshing workflow.
 
-Importing Your Geometry
-~~~~~~~~~~~~~~~~~~~~~~~
+Import geometry
+~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -27,16 +27,16 @@ Importing Your Geometry
     )
     session.meshing.workflow.TaskObject['Import Geometry'].Execute()
 
-Adding Local Sizing
-~~~~~~~~~~~~~~~~~~~
+Add local sizing
+~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject['Add Local Sizing'].AddChildToTask()
     session.meshing.workflow.TaskObject['Add Local Sizing'].Execute()
 
-Generating the Surface Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate surface mesh
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -45,8 +45,8 @@ Generating the Surface Mesh
     }
     session.meshing.workflow.TaskObject['Generate the Surface Mesh'].Execute()
 
-Describing the Geometry
-~~~~~~~~~~~~~~~~~~~~~~~
+Describe geometry
+~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -61,8 +61,8 @@ Describing the Geometry
     )
     session.meshing.workflow.TaskObject['Describe Geometry'].Execute()
 
-Updating Boundaries
-~~~~~~~~~~~~~~~~~~~
+Update boundaries
+~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -74,15 +74,15 @@ Updating Boundaries
     }
     session.meshing.workflow.TaskObject['Update Boundaries'].Execute()
 
-Updating Regions
-~~~~~~~~~~~~~~~~
+Update regions
+~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject['Update Regions'].Execute()
 
-Adding Boundary Layers
-~~~~~~~~~~~~~~~~~~~~~~
+Add boundary layers
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -94,8 +94,8 @@ Adding Boundary Layers
     session.meshing.workflow.TaskObject['Add Boundary Layers'].Arguments = {}
     session.meshing.workflow.TaskObject['smooth-transition_1'].Execute()
 
-Generating the Volume Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate volume mesh
+~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -107,19 +107,19 @@ Generating the Volume Mesh
     }
     session.meshing.workflow.TaskObject['Generate the Volume Mesh'].Execute()
 
-Switching to Solution Mode
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Switch to solution mode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.tui.switch_to_solution_mode('yes')
 
-Using the Fault-tolerant Meshing Workflow
+Using the fault-tolerant meshing workflow
 -----------------------------------------
-Here is a simple example demonstrating the the Fault-tolerant Meshing Workflow usage:
+This simple example shows how you use the fault-tolerant meshing workflow.
 
-Importing CAD and Part Management
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Import CAD and part management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -167,8 +167,8 @@ Importing CAD and Part Management
     )
     session.meshing.workflow.TaskObject['Import CAD and Part Management'].Execute()
 
-Describing Geometry and Flow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Describe geometry and flow
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -198,8 +198,8 @@ Describing Geometry and Flow
     )
     session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Execute()
 
-Enclosing Fluid Regions (Capping)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enclose fluid regions (capping)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -360,8 +360,8 @@ Enclosing Fluid Regions (Capping)
     ].Arguments.setState({})
     session.meshing.workflow.TaskObject['outlet-1'].Execute()
 
-Extracting Edge Features
-~~~~~~~~~~~~~~~~~~~~~~~~
+Extract edge features
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -386,8 +386,8 @@ Extracting Edge Features
 
     session.meshing.workflow.TaskObject['edge-group-1'].Execute()
 
-Identifying Regions
-~~~~~~~~~~~~~~~~~~~
+Identify regions
+~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -464,8 +464,8 @@ Identifying Regions
 
     session.meshing.workflow.TaskObject['void-region-1'].Execute()
 
-Defining Leakage Threshold
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Define leakage threshold
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -498,8 +498,8 @@ Defining Leakage Threshold
     )
     session.meshing.workflow.TaskObject['leakage-1'].Execute()
 
-Updating Regions Settings
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Update regions settings
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -540,29 +540,29 @@ Updating Regions Settings
     session.meshing.workflow.TaskObject['Update Region Settings'].Execute()
 
 
-Choosing Mesh Control Options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Choose mesh control options
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject['Choose Mesh Control Options'].Execute()
 
-Generating the Surface Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generating surface mesh
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject['Generate the Surface Mesh'].Execute()
 
-Updating Boundaries
-~~~~~~~~~~~~~~~~~~~
+Update boundaries
+~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
     session.meshing.workflow.TaskObject['Update Boundaries'].Execute()
 
-Adding Boundary Layers
-~~~~~~~~~~~~~~~~~~~~~~
+Add boundary layers
+~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -579,8 +579,8 @@ Adding Boundary Layers
 
     session.meshing.workflow.TaskObject['aspect-ratio_1'].Execute()
 
-Generating the Volume Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate volume mesh
+~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -602,8 +602,8 @@ Generating the Volume Mesh
     )
     session.meshing.workflow.TaskObject['Generate the Volume Mesh'].Execute()
 
-Switching to Solution Mode
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Switch to solution mode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 

@@ -1,4 +1,4 @@
-"""Provide a module for launching Fluent.
+"""Provides a module for launching Fluent.
 
 This module supports both starting Fluent locally or connecting to a
 remote instance with gRPC.
@@ -26,7 +26,7 @@ PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
 
 def get_fluent_path() -> Path:
     """Get the local Fluent installation path specified by PYFLUENT_FLUENT_ROOT
-    or AWP_ROOTXXX environment variable.
+    or the AWP_ROOTXXX environment variable.
 
     Returns
     -------
@@ -79,7 +79,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     Returns
     -------
     str
-        Fluent's launch arguments string
+        Fluent's launch arguments string.
     """
     all_options = None
     with open(_OPTIONS_FILE, encoding="utf-8") as fp:
@@ -130,21 +130,26 @@ def launch_remote_fluent(
     dimensionality: str = None,
 ):
 
-    """Start Fluent remotely using the product instance management API.
+    """Launch Fluent remotely using the PIM (Product Instance Management) API.
 
-    When calling this method, you need to ensure that you are in an
+    When calling this method, you must ensure that you are in an
     environment where PyPIM is configured. This can be verified with :func:
     `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`.
 
     Parameters
     ----------
     version : str, optional
-        The Fluent version to run, in the 3 digits format, such as "212".
-        If unspecified, the version will be chosen by the server.
+        Version of Fluent to use in the three-digit format (such as ``"212"``
+        for 2021 R2). The default is ``None``, in which case the active version
+        or latest installed version is used.
     cleanup_on_exit : bool, optional
-        Exit Fluent when python exits or the Fluent Python instance is
-        garbage collected.
-        If unspecified, it will be cleaned up.
+        Whether to clean up and exit Fluent when Python exits or when garbage
+        is collected for the Fluent Python instance. The default is ``True``.
+    meshing mode: bool, optional
+        Whether to launch Fluent remotely in meshing mode. The default is
+        ``False``.
+    dimensionality: str, optional
+        The default is ``None``.
 
     Returns
     -------
@@ -184,75 +189,74 @@ def launch_fluent(
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     show_gui: bool = None,
+    case_filepath: str = None,
 ) -> Session:
-    """Start Fluent locally in server mode or connect to a running Fluent
+    """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
     Parameters
     ----------
     version : str, optional
-        Selects either the ``"2d"`` or ``"3d"`` version of Fluent.
-        Default is ``"3d"``.
-
+        Dimensions for modeling. The default is ``None``, in which case ``"3d"``
+        is used. Options are ``"2d"`` and ``"3d"``.
     precision : str, optional
-        Selects either the ``"single"`` precision or ``"double"``
-        precision version of Fluent. Default is ``"double"`` precision.
-
+        Floating point precision. The default is ``None``, in which case ``"double"``
+        is used. Options are ``"single"``or ``"double"``.
     processor_count : int, optional
-        Specify number of processors. Default is 1.
-
+        Number of processors. The default is ``None``, in which case ``1``
+        is used.
     journal_filename : str, optional
-        Read the specified journal file.
-
+        Name of the journal file to read. The default is ``None``.
     meshing_mode : bool, optional
-        Launch Fluent in meshing mode
-
+        Whether to launch Fluent in meshing mode. The default is ``None``,
+        in which case Fluent is launched in meshing mode.
     start_timeout : int, optional
         Maximum allowable time in seconds to connect to the Fluent
-        server. Default is 100 seconds.
-
+        server. The default is ``100``.
     additional_arguments : str, optional
-        Additional arguments in string format which will be sent to
-        Fluent as is.
-
-    env : Dict[str, str], optional
-        Mapping to modify environment variables in Fluent
-
+        Additional arguments to send to Fluent as is. The default is ``""``.
+    env : dict[str, str], optional
+        Mapping to modify environment variables in Fluent. The default
+        is ``None``.
     start_instance : bool, optional
-        When False, connect to an existing Fluent instance at ``ip``
-        and ``port``. Otherwise, launch a local instance of Fluent.
-        Defaults to True and can also be set by the environment variable
-        ``PYFLUENT_START_INSTANCE=<0 or 1>``.
-
+        Whether to connect to an existing Fluent instance at a specified IP
+        address on a specified poort. The default is ``None``, in which
+        case a local instance of Fluent is started. When ``False``, use
+        the next two parameters to specify the IP address and port. You
+        can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
+        to set this parameter.
     ip : str, optional
-        IP address to connect to existing Fluent instance. Used only
-        when ``start_instance`` is ``False``.  Defaults to
-        ``"127.0.0.1"`` and can also be set by the environment variable
-        ``PYFLUENT_FLUENT_IP=<ip>``.
-
+        IP address to connect to an existing Fluent instance. This parameter
+        is used only when ``start_instance`` is ``False``. Otherwise, the
+        IP address defaults to ``"127.0.0.1"``. You can also use the environment
+        variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
     port : int, optional
-        Port to connect to existing Fluent instance. Used only when
-        ``start_instance`` is ``False``. Default value can be set
-        by the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
-
+        Port to connect to an existing Fluent instance. This parameter is
+        used only when ``start_instance`` is ``False``. You can use the
+        environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
+        value.
     cleanup_on_exit : bool, optional
-        When True, the connected Fluent session will be shut down when
-        PyFluent is exited or exit() is called on the session instance,
-        by default True.
-
+        Whether to shut down the connected Fluent session when PyFluent is
+        exited or the ``exist()`` method is called on the session instance.
+        The default is ``True``.
     start_transcript : bool, optional
-        The Fluent transcript is started in the client only when
-        start_transcript is True. It can be started and stopped
-        subsequently via method calls on the Session object.
-
+        Whether to start the Fluent transcript in the client. The default is
+        ``True``. You can stop and start the Fluent transcript subsequently
+        via method calls on the Session object.
     show_gui : bool, optional
-        When True, the Fluent GUI will be displayed as long as start_instance
-        is also True, which can also be set by the environment
-        variable PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``. The show-gui argument has
-        the effect of overriding the PYFLUENT_SHOW_SERVER_GUI variable. E.g., if
-        PYFLUENT_SHOW_SERVER_GUI is set to 1, the gui is hidden if show-gui is
-        set to False. The default is None so that explicit False settings can
-        be detected.
+        Whether to display the Fluent GUI when ````start_instance``
+        is set to ''True``. The default is ``None`` so that explicit
+        ``False`` settings can be detected. This is because you can use
+        also use the environment variable ``PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``
+        to set this parameter. The ``show-gui`` parameter overrides the
+        PYFLUENT_SHOW_SERVER_GUI environment variable. For example, if
+        PYFLUENT_SHOW_SERVER_GUI is set to ``1`` and the ``show-gui``
+        parameter is set to ``False``, the GUI is hidden.
+
+
+    case_filepath : str, optional
+        If provided, reads a fluent case file and sets the required settings
+        in the fluent session
 
     Returns
     -------

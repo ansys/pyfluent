@@ -1,4 +1,4 @@
-"""Wrappers over StateEngine based datamodel grpc service of Fluent."""
+"""Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 
 from enum import Enum
 import itertools
@@ -16,8 +16,8 @@ Path = List[Tuple[str, str]]
 
 
 class Attribute(Enum):
-    """Class containing the standard names of data model attributes associated
-    with the datamodel service."""
+    """Contains the standard names of data model attributes associated with the
+    data model service."""
 
     IS_ACTIVE = "isActive"
     EXPOSURE_LEVEL = "exposureLevel"
@@ -51,9 +51,9 @@ class Attribute(Enum):
 
 
 class DatamodelService:
-    """Class wrapping the StateEngine based datamodel grpc service of Fluent.
+    """Wraps the StateEngine-based datamodel gRPC service of Fluent.
 
-    It is suggested to use the methods from PyMenu class.
+    Using the methods from the ``PyMenu`` class is recommended.
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
@@ -118,7 +118,7 @@ class DatamodelService:
 
 
 def _convert_value_to_variant(val: Any, var: Variant):
-    """Convert Python datatype to Fluent's Variant type."""
+    """Convert a Python data type to Fluent's variant type."""
 
     if isinstance(val, bool):
         var.bool_state = val
@@ -141,7 +141,7 @@ def _convert_value_to_variant(val: Any, var: Variant):
 
 
 def _convert_variant_to_value(var: Variant):
-    """Convert Fluent's Variant to Python datatype."""
+    """Convert Fluent's variant type to a Python data type."""
 
     if var.HasField("bool_state"):
         return var.bool_state
@@ -172,12 +172,12 @@ def _convert_variant_to_value(var: Variant):
 
 
 def _convert_path_to_se_path(path: Path) -> str:
-    """Convert path structure to a StateEngine path.
+    """Convert a path structure to a StateEngine path.
 
     Parameters
     ----------
     path : Path
-        Path structure
+        Path structure.
 
     Returns
     -------
@@ -193,38 +193,44 @@ def _convert_path_to_se_path(path: Path) -> str:
 
 
 class PyMenu:
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Object class using the StateEngine-based DatamodelService as the
+    backend. Use this class instead of directly calling the DatamodelService's
+    method.
 
     Methods
     -------
     __setattr__(name, value)
-        Set state of the child object
+        Set the state of the child object.
     __call__()
-        Get state of the current object
+        Get the state of the current object.
     get_attrib_value(attrib)
-        Get attribute value of the current object
+        Get the attribute value of the current object.
     getAttribValue(attrib)
-        Get attribute value of the current object
-        (same as get_attrib_value(attrib))
+        Get the attribute value of the current object.
+        (This method is the same as the get_attrib_value(attrib)
+        method.)
     get_state()
-        Get state of the current object (same as __call__())
+        Get the state of the current object. (This method is the
+        same as the __call__() method.)
     getState()
-        Get state of the current object (same as __call__())
+        Get the state of the current object. (This method is the
+        same as the __call__() method.)
     set_state(state)
-        Set state of the current object
+        Set the state of the current object.
     setState(state)
-        Set state of the current object (same as set_state(state))
+        Set the state of the current object. (This method is the
+        same as the set_state(state) method.)
     update_dict(dict_state)
         Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics
+        is a dictionary in the data model. Otherwise, throw a ``RuntimeError``
+        (which is currently not showing up in Python). The update is
+        executed according to dict.update semantics.
     updateDict(dict_state)
         Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics (same as update_dict(dict_state))
+        is a dictionary in the data model. Otherwise, throw a ``RuntimeError``
+        (which is currently not showing up in Python). The update is
+        executed according to dict.update semantics. (This method is
+        the same as the update_dict(dict_state) method.)
     """
 
     docstring = None
@@ -270,9 +276,9 @@ class PyMenu:
         Parameters
         ----------
         name : str
-            child object name
+            Name of the child object.
         value : Any
-            state
+            State of the child object.
         """
         if hasattr(self, name) and isinstance(getattr(self, name), PyMenu):
             getattr(self, name).set_state(value)
@@ -285,7 +291,7 @@ class PyMenu:
         Returns
         -------
         Any
-            state
+            State of the object.
         """
         return self.get_state()
 
@@ -295,12 +301,12 @@ class PyMenu:
         Parameters
         ----------
         attrib : str
-            attribute name
+            Name of the attribute.
 
         Returns
         -------
         Any
-            attribute value
+            Value of the attribute.
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.rules = self.rules
@@ -312,7 +318,7 @@ class PyMenu:
     getAttribValue = get_attrib_value
 
     def help(self) -> None:
-        """Prints help string."""
+        """Print help string."""
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
@@ -328,7 +334,7 @@ class PyMenu:
         Parameters
         ----------
         new_name : str
-            new name
+            New name for the object.
         """
         try:
             self._name_.set_state(new_name)
@@ -339,21 +345,22 @@ class PyMenu:
 
 
 class PyNamedObjectContainer:
-    """Container class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Container class using the StateEngine-based DatamodelService as the
+    backend. Use this class instead of directly calling the DatamodelService's
+    method.
 
     Methods
     -------
     __len__()
-        Returns count of child objects
+        Return a count of the child objects.
     __iter__()
-        Returns the next child object
+        Return the next child object.
     __getitem__(key)
-        Returns the child object by key
+        Return the child object by key.
     __setitem__(key, value)
-        Set state of the child object by name
+        Set the state of the child object by name.
     __delitem__(key)
-        Deletes the child object by name
+        Delete the child object by name.
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -392,22 +399,22 @@ class PyNamedObjectContainer:
         return child_object_display_names
 
     def __len__(self) -> int:
-        """Returns count of child objects.
+        """Return a count of child objects.
 
         Returns
         -------
         int
-            count
+            Count of child objects.
         """
         return len(self._get_child_object_display_names())
 
     def __iter__(self) -> Iterator[PyMenu]:
-        """Returns the next child object.
+        """Return the next child object.
 
         Yields
         -------
         Iterator[PyMenu]
-            iterator of child objects
+            Iterator of child objects.
         """
         for name in self._get_child_object_display_names():
             child_path = self.path[:-1]
@@ -442,17 +449,17 @@ class PyNamedObjectContainer:
             )
 
     def __getitem__(self, key: str) -> PyMenu:
-        """Returns the child object by key.
+        """Return the child object by key.
 
         Parameters
         ----------
         key : str
-            child name
+            Name of the child object.
 
         Returns
         -------
         PyMenu
-            child object
+            Child object.
         """
         return self._get_item(key)
 
@@ -462,9 +469,9 @@ class PyNamedObjectContainer:
         Parameters
         ----------
         key : str
-            child name
+            Name of the child object.
         value : Any
-            state
+            State of the child object.
         """
         if isinstance(value, dict) and not value:
             value["_name_"] = key
@@ -472,26 +479,27 @@ class PyNamedObjectContainer:
         PyMenu(self.service, self.rules, self.path[:-1]).set_state(parent_state)
 
     def __delitem__(self, key: str):
-        """Deletes the child object by name.
+        """Delete the child object by name.
 
         Parameters
         ----------
         key : str
-            child name
+            Name of the child object.
         """
         self._del_item(key)
 
 
 class PyCommand:
-    """Command class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+    """Command class using the StateEngine-based DatamodelService as the
+    backend. Use this class instead of directly calling the DatamodelService's
+    method.
 
     Methods
     -------
     __call__()
-        Executes the command
+        Execute the command.
     help()
-        Prints command help string
+        Print the command help string.
     """
 
     docstring = None
@@ -512,12 +520,12 @@ class PyCommand:
             self.path = path
 
     def __call__(self, *args, **kwds) -> Any:
-        """Executes the command.
+        """Execute the command.
 
         Returns
         -------
         Any
-            return value
+            Return value.
         """
         request = DataModelProtoModule.ExecuteCommandRequest()
         request.rules = self.rules

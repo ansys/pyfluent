@@ -1,22 +1,21 @@
-Applying Solution Settings
+Applying solution settings
 ==========================
 
-PyFluent allows you to apply solution settings, initialize and solve using both 
+PyFluent allows you to apply solution settings, initialize, and solve using 
 :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
 
-Solver TUI Commands
--------------------
-The following example demonstrates how you can apply solution settings
-using :ref:`ref_solver_tui_commands`:
+Using solver TUI commands
+-------------------------
+The following examples show how you apply solution settings
+using :ref:`ref_solver_tui_commands`.
 
-Selecting Solution Methods 
+Selecting solution methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-solve/set/p-v-coupling TUI: Selects which pressure-velocity coupling scheme is to be used.
+The ``solve.set.p_v_coupling`` TUI command selects which pressure-velocity coupling scheme to use.
+Five schemes (Index-Model) are available: 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled,
+and 25-Fractional Step.
 
-Five schemes are available: (Index-Model) 20-SIMPLE, 21-SIMPLEC, 22-PISO,
-24-Coupled, 25-Fractional Step
-
-solve/set/gradient-scheme: Sets gradient options.
+The ``solve.set/gradient_scheme`` TUI sets the gradient options.
 
 .. code:: python
 
@@ -27,17 +26,17 @@ solve/set/gradient-scheme: Sets gradient options.
     session.solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
     session.solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based
     
-Selecting Solution Controls 
+Selecting solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-solve/set/p-v-controls TUI: Sets pressure-velocity controls.
+The ``solve.set.p_v_controls`` TUI sets pressure-velocity controls.
 
 .. code:: python
 
     session.solver.tui.solve.set.p_v_controls(0.3,0.4) # Momentum and Pressure
 
-Creating Report Definition 
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-solve/report-definitions TUI: Enters the report definitions menu.
+Creating report definitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The ``solve.report_definitions`` TUI enters the report definitions menu.
 
 .. code:: python
 
@@ -52,24 +51,24 @@ solve/report-definitions TUI: Enters the report definitions menu.
         'quit',
     )
 
-Initialize and Solve 
-~~~~~~~~~~~~~~~~~~~~
-solve/initialize TUI: Enters the flow initialization menu.
+Initializing and solving 
+~~~~~~~~~~~~~~~~~~~~~~~~
+The ``solve.initialize`` TUI enters the flow initialization menu.
 
-solve/initialize/hyb-initialization TUI: Initializes using the hybrid
+The ``solve.initialize.hyb_initialization`` TUI initializes using the hybrid
 initialization method.
 
-solve/iterate TUI: Performs a specified number of iterations.
+The ``solve.iterate`` TUI performs a specified number of iterations.
 
 .. code:: python
 
     session.solver.tui.solve.initialize.hyb_initialization()
     session.solver.tui.solve.iterate(100)
 
-Settings Objects
-----------------
-The following example demonstrates how you can apply solution settings
-using the :ref:`ref_settings`:
+Using settings objects
+----------------------
+The following example shows how you apply solution settings
+using :ref:`ref_settings`.
 
 .. code:: python
 

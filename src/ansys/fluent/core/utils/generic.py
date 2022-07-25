@@ -26,7 +26,7 @@ class AbstractSingletonMeta(ABCMeta, SingletonMeta):
 
 
 def execute_in_event_loop_threadsafe(f):
-    """Decorator to execute function in event loop from another thread."""
+    """Decorator to execute function in an event loop from another thread."""
 
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
@@ -36,7 +36,7 @@ def execute_in_event_loop_threadsafe(f):
 
 
 def execute_in_event_loop(f):
-    """Decorator to execute function in event loop."""
+    """Decorator to execute function in an event loop."""
 
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)

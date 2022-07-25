@@ -31,6 +31,10 @@
         "type": "str",
         "fluent_format": " -i {}"
     },
+    "case_filepath": {
+        "type": "str",
+        "fluent_format": " -case {}"
+    },
     "meshing_mode": {
         "type": "bool",
         "fluent_map": {
