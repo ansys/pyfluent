@@ -29,7 +29,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
     # Step 2: Launch fluent session and read case file with and without data file
     session = load_mixing_elbow_param_case_dat
-    session.check_health() == 'SERVING' 
+    assert session.check_health() == 'SERVING' 
     case_path = str(Path(pyfluent.EXAMPLES_PATH) / "elbow_param.cas.h5")
     session.solver.tui.file.read_case_data(case_path)
 
