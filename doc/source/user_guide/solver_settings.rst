@@ -10,7 +10,7 @@ settings using :ref:`ref_solver_tui_commands`:
 
 Selecting steady or transient
 -----------------------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for enabling and disabling the steady and unsteady solution model.
 
 TUI command
@@ -32,7 +32,7 @@ Python command
 
 Selecting pressure-based or density-based solver
 ------------------------------------------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for enabling and disabling the pressure and density based solver
 models.
 
@@ -54,7 +54,7 @@ Python command
 
 Defining gravitational acceleration
 -----------------------------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for settings the gravitational acceleration
 
 TUI command

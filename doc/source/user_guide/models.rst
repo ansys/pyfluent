@@ -8,7 +8,7 @@ The following examples show how you define models using :ref:`ref_solver_tui_com
 
 Enabling the energy model
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for enabling and disabling the energy model.
 
 TUI command
@@ -28,7 +28,7 @@ Python command
 
 Enabling the viscous model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for enabling and disabling the various viscous models.
 
 TUI command
@@ -49,7 +49,7 @@ Python command
 
 Enabling the radiation model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for selecting different radiation models.
 
 TUI command
@@ -68,7 +68,7 @@ Python command
 
 Enabling the multiphase model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for selecting different multiphase models.
 
 TUI command

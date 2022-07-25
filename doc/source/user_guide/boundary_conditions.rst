@@ -10,7 +10,7 @@ and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
 
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for defining velocity boundary conditions at inlets.
 
 TUI command
@@ -69,7 +69,7 @@ Python code
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for copying boundary conditions to other zones.
 
 TUI command
@@ -86,7 +86,7 @@ Python command
 
 Listing zones
 ~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for printing the types and IDs of all zones in the Fluent
 console.
 
@@ -104,7 +104,7 @@ Python command
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for modifying cell zone conditions.
 
 TUI command

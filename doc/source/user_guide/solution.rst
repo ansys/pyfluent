@@ -11,7 +11,7 @@ using :ref:`ref_solver_tui_commands`.
 
 Selecting solution methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for selecting the pressure velocity coupling scheme and setting
 the gradient options. Five schemes (Index-Model) are available:
 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.
@@ -37,7 +37,7 @@ Python command
     
 Selecting solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for selecting the pressure velocity controls.
 
 TUI command
@@ -54,7 +54,7 @@ Python command
 
 Creating report definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for report definitions.
 
 TUI command
@@ -80,7 +80,7 @@ Python command
 
 Initializing and solving 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for initialization and performing a specified number of iterations.
 
 TUI command

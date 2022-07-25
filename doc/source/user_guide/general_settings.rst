@@ -8,7 +8,7 @@ and set up units using :ref:`ref_solver_tui_commands`.
 
 Checking the mesh
 -----------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for performing various mesh consistency checks and displays a
 report in the console that lists domain extents, volume statistics,
 face area statistics, any warnings, and information about various check and mesh
@@ -31,7 +31,7 @@ Python command
 
 Reporting mesh quality
 ----------------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for displaying information about the quality of the mesh in the
 console, including the minimum orthogonal quality and maximum aspect ratio.
 
@@ -49,7 +49,7 @@ Python command
 
 Scaling mesh
 ------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for the scaling factors in each of the active Cartesian
 coordinate directions.
 
@@ -67,7 +67,7 @@ Python command
 
 Defining units
 --------------
-The following example shows a comparision between the TUI command and the
+The following example shows a comparison between the TUI command and the
 python code for the setting unit conversion factors.
 
 TUI command
