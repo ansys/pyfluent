@@ -6,10 +6,10 @@ Getting started
 To run PyFluent, you must have a licensed copy of Ansys Fluent
 installed locally. PyFluent supports Ansys Fluent versions 2022 R2 or later.
 
-For more information on getting a licensed copy of Ansys Fluent, vist the `Ansys website
+For more information on getting a licensed copy of Ansys Fluent, visit the `Ansys website
 <https://www.ansys.com/>`_ .
 
-Installing the Package
+Installing the package
 ----------------------
 The ``ansys-fluent-core`` package currently supports Python 3.7 through
 Python 3.10 on Windows and Linux.

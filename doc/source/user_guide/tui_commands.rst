@@ -4,7 +4,7 @@ Using TUI commands
 ==================
 
 TUI commands refer to a programming interface that mirrors the Fluent TUI (text user
-interface). There is a TUI command hierarchy defined for each of the two modes, meshing
+interface). There is a TUI command hierarchy defined for each of the two modes: meshing
 and solution. The hierarchy that is active depends on the current Fluent mode. The guidance
 in this topic applies to both modes.
 
@@ -88,7 +88,7 @@ The Python call is:
 
     tui.define.units("pressure", '"Pa"')
 
-The string ``"Pa"`` is wrapped in single quototaton marks to preserve the double quotation marks
+The string ``"Pa"`` is wrapped in single quotation marks to preserve the double quotation marks
 around the TUI argument.
 
 Note the following rules that are implied in the preceding examples:

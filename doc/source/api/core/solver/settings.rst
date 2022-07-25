@@ -36,7 +36,7 @@ refers to the ``energy`` child of ``models`` child of the ``setup`` object. The
 names of the child objects of a group can be accessed with the ``child_names``
 attribute of a ``Group`` object.
 
-A ``NamedObject`` is a container holding dynamically-created named objects of
+A ``NamedObject`` is a container holding dynamically created named objects of
 its specified child type (accessible via a ``child_object_type`` attribute),
 similar to a dictionary. A specified named object can be accessed using the
 index operator. For example,
@@ -45,8 +45,8 @@ index operator. For example,
 object children can be accessed with the ``get_object_names()`` function of the
 container class.
 
-A ``ListObject`` is a container holding dynamically-created unnamed objects of
-its specified child type (accessible viaa  ``child_object_type`` attribute) in a
+A ``ListObject`` is a container holding dynamically created unnamed objects of
+its specified child type (accessible via a ``child_object_type`` attribute) in a
 list. Children of ``ListObject`` can be accessed using the index operator. For
 example,
 ``root.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
@@ -131,11 +131,11 @@ initialization method. The ``command_names`` attribute of a settings object
 provides the names of its commands.
 
 If needed, commands can be passed keyword arguments, and the list of valid
-arguments can be accessed using the ``arguments`` attribute.  If an argument is
+arguments can be accessed using the ``arguments`` attribute. If an argument is
 not specified, its default value is used. Arguments are also settings objects
 and can be either the primitive type or the container type.
 
-Additional Metadata
+Additional metadata
 -------------------
 
 Settings objects have some additional metadata that can be accessed using the

@@ -1,12 +1,12 @@
 .. _ref_field_data:
 
-Field Data
+Field data
 ==========
 Field data is an attribute of a session and thus an object. With PyFluent, you
 can access Fluent surface, scalar, and vector field data.
 
-Muliple fields in a request
----------------------------
+Multiple fields in a request
+----------------------------
 You can combine requests for multiple fields in a single request and receive
 the data for all fields in a single response. 
 
@@ -22,7 +22,7 @@ The ``add_get_<items>_request`` methods combine requests for multiple fields in 
 The ``get_fields`` method returns all requested fields in a single response. It provides 
 the dictionary containing the requested fields as a numpy array in the following order:
 
-tag_id [int]-> surface_id [int] -> field_name [str] -> field_data[np.array]
+``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data[np.array]``
 
   
 Tag ID
@@ -149,7 +149,7 @@ Example
 
 One field per request
 ---------------------
-You can receive one field for each request. There is a separeate method for each type of field (surface, scalar, 
+You can receive one field for each request. There is a separate method for each type of field (surface, scalar, 
 or vector):
 
 - ``get_surface_data`` gets surface data.
@@ -159,12 +159,12 @@ or vector):
 For a surface or scalar field request, the response contains a dictionary of surface IDs and a numpy array of 
 the requested field. 
 
-surface_id [int] -> field[np.array]
+``surface_id [int] -> field[np.array]``
   
 For a vector field request, the response is a dictionary of surface IDs and a tuple of a numpy array of ``vector field`` 
 and ``vector scale``. 
 
-* surface_id [int] -> (vector field [np.array],  vector-scale [float])  
+``surface_id [int] -> (vector field [np.array],  vector-scale [float])``
 
 It is important to note that in Fluent, you can associate a surface name with multiple surface 
 IDs. Thus, a response can contain a surface ID as a key of the returned dictionary. 

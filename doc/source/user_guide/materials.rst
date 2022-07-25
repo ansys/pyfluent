@@ -1,4 +1,4 @@
-Defining Materials
+Defining materials
 ==================
 PyFluent supports defining materials using :ref:`ref_solver_tui_commands` and 
 :ref:`ref_settings`.

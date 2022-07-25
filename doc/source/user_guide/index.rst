@@ -51,7 +51,7 @@ For more information, see :ref:`ref_user_guide_launch`
 and the API topic :ref:`ref_launcher_launcher`.
 
 PyFluent can create and initialize multiple, independent session objects. Each session
-object providings full access to Fluent capabilities relevant to the session's current
+object provides full access to the Fluent capabilities relevant to the session's current
 mode (solution or meshing).
 
 Solution mode session
@@ -101,7 +101,7 @@ A meshing mode session has an active ``meshing`` object, which provides
 three interfaces to the mesher.
 
 Like the ``solver`` object, the ``meshing`` object has a ``tui`` object, which
-is a complete Python exposure of meshing's TUI (text user interface). Again, 
+is a complete Python exposure of the meshing's TUI (text user interface). Again, 
 straightforward and familiar command and settings interactions are available:
 
 .. code:: python

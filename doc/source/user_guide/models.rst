@@ -23,7 +23,7 @@ The ``define.models.viscous.laminar`` TUI enables and disables the laminar flow 
 
 The ``define.models.viscous.kw_sst`` TUI enables and disables the SST-kw turbulence model.
 
-The ``define.models.viscous.ke_standard`` TUI enables and ddisables the standard-ke
+The ``define.models.viscous.ke_standard`` TUI enables and disables the standard-ke
 turbulence model.
 
 .. code:: python
@@ -52,7 +52,7 @@ The ``define.models.multiphase`` TUI provides options for selecting different mu
     session.solver.tui.define.models.multiphase.model('mixture')
     session.solver.tui.define.models.multiphase.model('wetsteam')
 
-Uing settings objects
+Using settings objects
 ---------------------
 The following examples show how you define models using :ref:`ref_settings`.
 

@@ -2,8 +2,8 @@
 
 :orphan:
 
-flobject
-========
+``flobject``
+============
 .. currentmodule:: ansys.fluent.core.solver
 
 .. autosummary::
