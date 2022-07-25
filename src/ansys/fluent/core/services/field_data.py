@@ -220,7 +220,8 @@ class FieldData:
         data_type: SurfaceDataType,
         overset_mesh: Optional[bool] = False,
     ) -> Dict[int, np.array]:
-        """Get surface data (vertices, faces connectivity, centroids, and normals).
+        """Get surface data (vertices, faces connectivity, centroids, and
+        normals).
 
         Parameters
         ----------
@@ -375,7 +376,8 @@ class FieldData:
         provide_faces_centroid: Optional[bool] = False,
         provide_faces_normal: Optional[bool] = False,
     ) -> None:
-        """Add request to get surface data (vertices, face connectivity, centroids, and normals).
+        """Add request to get surface data (vertices, face connectivity,
+        centroids, and normals).
 
         Parameters
         ----------
@@ -386,9 +388,9 @@ class FieldData:
         provide_vertices : bool, optional
             Whether to get node coordinates. The default is ``True``.
         provide_faces : bool, optional
-            Whether to get faces connectivity. The default is ``True``.
+            Whether to get face connectivity. The default is ``True``.
         provide_faces_centroid : bool, optional
-            Whether to get faces centroid The default is ``False``.
+            Whether to get face centroids. The default is ``False``.
         provide_faces_normal : bool, optional
             Whether to get faces normal. The default is ``False``
 
