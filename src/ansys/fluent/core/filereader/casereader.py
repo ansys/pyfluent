@@ -101,7 +101,7 @@ class CaseReader:
         except OSError:
             error_message = (
                 "Could not read case file. "
-                "Only valid HDF5 / Case files can be read. "
+                "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
             )
             if Path(case_filepath).suffix not in [".h5", ".cas", ".cas.gz"]:
                 error_message += f"The file {case_filepath} does not have either of a .h5, .cas or .cas.gz extension."
