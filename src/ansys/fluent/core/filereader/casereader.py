@@ -57,6 +57,8 @@ class OutputParameter:
         for elem in parameter:
             if len(elem) and elem[0] == "name":
                 self.name = elem[1][1]
+            if len(elem) and elem[0] == "fluent-units":
+                self.units = elem[1].strip()
 
 
 class CaseReader:

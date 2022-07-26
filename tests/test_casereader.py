@@ -28,9 +28,11 @@ def call_casereader(case_filepath: str):
 
     assert len(output_parameters) == 2
 
-    assert {"outlet-temp-avg-op", "outlet-vel-avg-op"} == {
-        p.name for p in output_parameters
-    }
+    output_parameter_dict = {p.name: p.units for p in output_parameters}
+    assert {
+        "outlet-temp-avg-op": "K",
+        "outlet-vel-avg-op": "m s^-1",
+    } == output_parameter_dict
 
 
 def test_casereader_h5():
