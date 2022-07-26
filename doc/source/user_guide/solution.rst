@@ -61,7 +61,7 @@ TUI command
 
 .. code:: scheme
 
-    /solve/report-definitions
+    /solve/report-definitions outlet-temp-avg surface-massavg field temperature surface-names outlet () quit
 
 Python command
 

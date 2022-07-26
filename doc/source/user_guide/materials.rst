@@ -12,7 +12,7 @@ TUI command
 
 .. code:: scheme
 
-    /define/materials
+    /define/materials elbow-fluid yes water-liquid no no no no 0 no 0 no 0 no 0 no 0 no 1 no no no no no
 
 Python command
 

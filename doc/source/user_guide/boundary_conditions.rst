@@ -17,7 +17,11 @@ TUI command
 
 .. code:: scheme
 
-    /define/boundary-counditions/set/velocity-inlet
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () vmag no 0.4 quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () ke-spec no no no yes quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet() cold-inlet () turb-intensity 5 quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () cold-inlet () turb-hydraulic-diam 4 quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () cold-inlet () temperature no 293.15 quit
 
 Python code
 
@@ -28,7 +32,7 @@ Python code
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'vmag',
         'no',
         0.4,
@@ -36,7 +40,7 @@ Python code
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'ke-spec',
         'no',
         'no',
@@ -46,21 +50,21 @@ Python code
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'turb-intensity',
         5,
         'quit'
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'turb-hydraulic-diam',
         4,
         'quit'
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'temperature',
         'no',
         293.15,
@@ -76,7 +80,7 @@ TUI command
 
 .. code:: scheme
 
-    /define/boundary-conditions/copy-bc
+    /define/boundary-conditions/copy-bc cold-inlet hot-inlet ()
 
 Python command
 
@@ -111,7 +115,7 @@ TUI command
 
 .. code:: scheme
 
-    /define/boundary-conditions/fluid
+    /define/boundary-conditions/fluid no no no no no 0 no 0 no 0 no 0 no 0 no 1 no yes yes no no no
 
 Python command
 
