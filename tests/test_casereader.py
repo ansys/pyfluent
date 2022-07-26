@@ -4,10 +4,6 @@ from ansys.fluent.core.filereader.casereader import CaseReader, get_processed_st
 
 def call_casereader(case_filepath: str):
 
-    # case_filepath = examples.download_file(
-    #     "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
-    # )
-
     reader = CaseReader(case_filepath=case_filepath)
 
     input_parameters = reader.input_parameters()
@@ -38,21 +34,32 @@ def call_casereader(case_filepath: str):
 
 
 def test_casereader_h5():
-    call_casereader(r"E:\CaseReaderCases\Static_Mixer_Parameters.cas.h5")
+    call_casereader(
+        examples.download_file(
+            "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
+        )
+    )
 
 
 def test_casereader_cas():
-    call_casereader(r"E:\CaseReaderCases\Static_Mixer_Parameters_text.cas")
+    call_casereader(
+        examples.download_file("Static_Mixer_Parameters.cas", "pyfluent/static_mixer")
+    )
 
 
 def test_casereader_gz():
-    call_casereader(r"E:\CaseReaderCases\Static_Mixer_Parameters_text_binary.cas.gz")
+    call_casereader(
+        examples.download_file(
+            "Static_Mixer_Parameters.cas.gz", "pyfluent/static_mixer"
+        )
+    )
 
 
 def test_processed_string():
-    assert get_processed_string(
-        b'Hello! World (37 ( Get this part of the string ))'
-    ) == "(37 ( Get this part of the string ))"
+    assert (
+        get_processed_string(b"Hello! World (37 ( Get this part of the string ))")
+        == "(37 ( Get this part of the string ))"
+    )
 
 
 def test_casereader_no_file():
