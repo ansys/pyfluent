@@ -74,7 +74,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     else:
         print('Solution is converged')
 
-    assert convergence == "#t"
+    assert convergence == "#t", "Solution failed to converge"
 
     #########################################################
     # Step 6: Read the data again from the case and data file   
