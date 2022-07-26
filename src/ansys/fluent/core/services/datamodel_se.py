@@ -524,10 +524,12 @@ class PyCommand:
         rules: str,
         command: str,
         path: Path = None,
+        id: str = None,
     ):
         self.service = service
         self.rules = rules
         self.command = command
+        self.id = id
         if path is None:
             self.path = []
         else:
@@ -560,6 +562,52 @@ class PyCommand:
             response.member, response.member.WhichOneof("as")
         ).common.helpstring
         print(help_string)
+
+    def __getitem__(self, key: str):
+        assert self.id is None
+        new_cmd = PyCommand(self.service, self.rules, self.command, self.path, key)
+        return new_cmd
+
+    def get_state(self) -> Any:
+        request = DataModelProtoModule.GetStateRequest()
+        request.rules = self.rules
+        path = self.path + [(self.command, self.id)]
+        request.path = _convert_path_to_se_path(path)
+        response = self.service.get_state(request)
+        return _convert_variant_to_value(response.state)
+
+    getState = get_state
+
+    def set_state(self, state: Any) -> None:
+        request = DataModelProtoModule.SetStateRequest()
+        request.rules = self.rules
+        path = self.path + [(self.command, self.id)]
+        request.path = _convert_path_to_se_path(path)
+        _convert_value_to_variant(state, request.state)
+        self.service.set_state(request)
+
+    setState = set_state
+
+    def get_attrib_value(self, attrib: str) -> Any:
+        """Get attribute value of the current object.
+
+        Parameters
+        ----------
+        attrib : str
+            attribute name
+
+        Returns
+        -------
+        Any
+            attribute value
+        """
+        request = DataModelProtoModule.GetAttributeValueRequest()
+        request.rules = self.rules
+        path = self.path + [(self.command, self.id)]
+        request.path = _convert_path_to_se_path(path)
+        request.attribute = attrib
+        response = self.service.get_attribute_value(request)
+        return _convert_variant_to_value(response.result)
 
 
 class PyMenuGeneric(PyMenu):
