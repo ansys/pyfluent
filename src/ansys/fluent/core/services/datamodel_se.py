@@ -198,14 +198,12 @@ def _convert_path_to_se_path(path: Path) -> str:
     return se_path
 
 
-class PyMenu:
+class PyBasicStateContainer:
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
     Methods
     -------
-    __setattr__(name, value)
-        Set state of the child object
     __call__()
         Get state of the current object
     get_attrib_value(attrib)
@@ -221,27 +219,18 @@ class PyMenu:
         Set state of the current object
     setState(state)
         Set state of the current object (same as set_state(state))
-    update_dict(dict_state)
-        Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics
-    updateDict(dict_state)
-        Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics (same as update_dict(dict_state))
     """
 
-    docstring = None
-
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        super().__init__()
         self.service = service
         self.rules = rules
         if path is None:
             self.path = []
         else:
             self.path = path
+
+    docstring = None
 
     def get_state(self) -> Any:
         request = DataModelProtoModule.GetStateRequest()
@@ -260,30 +249,6 @@ class PyMenu:
         self.service.set_state(request)
 
     setState = set_state
-
-    def update_dict(self, dict_state: Dict[str, Any]) -> None:
-        request = DataModelProtoModule.UpdateDictRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(dict_state, request.dicttomerge)
-        self.service.update_dict(request)
-
-    updateDict = update_dict
-
-    def __setattr__(self, name: str, value: Any):
-        """Set state of the child object.
-
-        Parameters
-        ----------
-        name : str
-            child object name
-        value : Any
-            state
-        """
-        if hasattr(self, name) and isinstance(getattr(self, name), PyMenu):
-            getattr(self, name).set_state(value)
-        else:
-            super().__setattr__(name, value)
 
     def __call__(self, *args, **kwds) -> Any:
         """Get state of the current object.
@@ -327,6 +292,55 @@ class PyMenu:
             response.member, response.member.WhichOneof("as")
         ).common.helpstring
         print(help_string)
+
+
+class PyMenu(PyBasicStateContainer):
+    """Object class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
+
+    Methods
+    -------
+    __setattr__(name, value)
+        Set state of the child object
+    update_dict(dict_state)
+        Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
+        to dict.update semantics
+    updateDict(dict_state)
+        Update the state of the current object if the current object
+        is a Dict in the data model, else throws RuntimeError
+        (currently not showing up in Python). Update is executed according
+        to dict.update semantics (same as update_dict(dict_state))
+    create_command_arguments(command)
+    """
+
+    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        super().__init__(service, rules, path)
+
+    def update_dict(self, dict_state: Dict[str, Any]) -> None:
+        request = DataModelProtoModule.UpdateDictRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(dict_state, request.dicttomerge)
+        self.service.update_dict(request)
+
+    updateDict = update_dict
+
+    def __setattr__(self, name: str, value: Any):
+        """Set state of the child object.
+
+        Parameters
+        ----------
+        name : str
+            child object name
+        value : Any
+            state
+        """
+        if hasattr(self, name) and isinstance(getattr(self, name), PyMenu):
+            getattr(self, name).set_state(value)
+        else:
+            super().__setattr__(name, value)
 
     def rename(self, new_name: str) -> None:
         """Rename the named object.
@@ -511,17 +525,11 @@ class PyCommand:
     docstring = None
 
     def __init__(
-        self,
-        service: DatamodelService,
-        rules: str,
-        command: str,
-        path: Path = None,
-        id: str = None,
+        self, service: DatamodelService, rules: str, command: str, path: Path = None
     ):
         self.service = service
         self.rules = rules
         self.command = command
-        self.id = id
         if path is None:
             self.path = []
         else:
@@ -556,50 +564,17 @@ class PyCommand:
         print(help_string)
 
     def __getitem__(self, key: str):
-        assert self.id is None
-        new_cmd = PyCommand(self.service, self.rules, self.command, self.path, key)
-        return new_cmd
+        return PyCommandArguments(
+            self.service, self.rules, self.command, self.path.copy(), key
+        )
 
-    def get_state(self) -> Any:
-        request = DataModelProtoModule.GetStateRequest()
-        request.rules = self.rules
-        path = self.path + [(self.command, self.id)]
-        request.path = _convert_path_to_se_path(path)
-        response = self.service.get_state(request)
-        return _convert_variant_to_value(response.state)
 
-    getState = get_state
-
-    def set_state(self, state: Any) -> None:
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        path = self.path + [(self.command, self.id)]
-        request.path = _convert_path_to_se_path(path)
-        _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
-
-    setState = set_state
-
-    def get_attrib_value(self, attrib: str) -> Any:
-        """Get attribute value of the current object.
-
-        Parameters
-        ----------
-        attrib : str
-            attribute name
-
-        Returns
-        -------
-        Any
-            attribute value
-        """
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.rules = self.rules
-        path = self.path + [(self.command, self.id)]
-        request.path = _convert_path_to_se_path(path)
-        request.attribute = attrib
-        response = self.service.get_attribute_value(request)
-        return _convert_variant_to_value(response.result)
+class PyCommandArguments(PyBasicStateContainer):
+    def __init__(
+        self, service: DatamodelService, rules: str, command: str, path: Path, id: str
+    ):
+        super().__init__(service, rules, path)
+        self.path.append((command, id))
 
 
 class PyMenuGeneric(PyMenu):
