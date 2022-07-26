@@ -13,7 +13,7 @@ Selecting solution methods
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
 Python code for selecting the pressure velocity coupling scheme and setting
-the gradient options. Five solution methoods (Index-Model) are available:
+the gradient options. Five solution methods (Index-Model) are available:
 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.
 
 **TUI command**
