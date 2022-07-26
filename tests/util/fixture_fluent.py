@@ -59,6 +59,7 @@ def load_mixing_elbow_case_dat(with_launching_container):
 _mixing_elbow_param_case_filename = None
 _mixing_elbow_param_dat_filename = None
 
+
 @pytest.fixture
 def load_mixing_elbow_param_case_dat(with_launching_container):
     session = pyfluent.launch_fluent(precision="double", processor_count=2)
@@ -77,4 +78,3 @@ def load_mixing_elbow_param_case_dat(with_launching_container):
     )
     yield session
     session.exit()
-    
