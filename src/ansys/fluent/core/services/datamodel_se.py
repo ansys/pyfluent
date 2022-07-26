@@ -204,6 +204,7 @@ def _convert_path_to_se_path(path: Path) -> str:
     return se_path
 
 
+<<<<<<< HEAD
 class PyCallableStateObject:
     """Any object which can be called to get its state.
 
@@ -218,11 +219,19 @@ class PyCallableStateObject:
 
 
 class PyBasicStateContainer(PyCallableStateObject):
+=======
+class PyBasicStateContainer:
+>>>>>>> 52d87a3 (got the command server -> client)
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
     Methods
     -------
+<<<<<<< HEAD
+=======
+    __call__()
+        Get state of the current object
+>>>>>>> 52d87a3 (got the command server -> client)
     get_attrib_value(attrib)
         Get the attribute value of the current object.
     getAttribValue(attrib)
@@ -270,6 +279,19 @@ class PyBasicStateContainer(PyCallableStateObject):
 
     setState = set_state
 
+<<<<<<< HEAD
+=======
+    def __call__(self, *args, **kwds) -> Any:
+        """Get state of the current object.
+
+        Returns
+        -------
+        Any
+            state
+        """
+        return self.get_state()
+
+>>>>>>> 52d87a3 (got the command server -> client)
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
 
@@ -538,6 +560,7 @@ class PyCommand:
 
     def __init__(
 <<<<<<< HEAD
+<<<<<<< HEAD
         self, service: DatamodelService, rules: str, command: str, path: Path = None
 =======
         self,
@@ -547,11 +570,13 @@ class PyCommand:
         path: Path = None,
         id: str = None,
 >>>>>>> 111d575 (still got the command server -> client)
+=======
+        self, service: DatamodelService, rules: str, command: str, path: Path = None
+>>>>>>> 52d87a3 (got the command server -> client)
     ):
         self.service = service
         self.rules = rules
         self.command = command
-        self.id = id
         if path is None:
             self.path = []
         else:
@@ -617,6 +642,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
             pass
 =======
     def __getitem__(self, key: str):
+<<<<<<< HEAD
         assert self.id is None
         new_cmd = PyCommand(self.service, self.rules, self.command, self.path, key)
         return new_cmd
@@ -697,6 +723,19 @@ class PyCommandArguments(PyBasicStateContainer):
         response = self.service.get_attribute_value(request)
         return _convert_variant_to_value(response.result)
 >>>>>>> 111d575 (still got the command server -> client)
+=======
+        return PyCommandArguments(
+            self.service, self.rules, self.command, self.path.copy(), key
+        )
+
+
+class PyCommandArguments(PyBasicStateContainer):
+    def __init__(
+        self, service: DatamodelService, rules: str, command: str, path: Path, id: str
+    ):
+        super().__init__(service, rules, path)
+        self.path.append((command, id))
+>>>>>>> 52d87a3 (got the command server -> client)
 
 
 class PyMenuGeneric(PyMenu):
