@@ -83,12 +83,12 @@ class CaseReader:
                 rpvars = settings["Rampant Variables"][0]
                 rp_vars_str = rpvars.decode()
             elif Path(case_filepath).suffix == ".cas":
-                with open(case_filepath, 'rb') as file:
+                with open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = get_processed_string(rp_vars_str)
 
             elif Path(case_filepath).suffix == ".gz":
-                with gzip.open(case_filepath, 'rb') as file:
+                with gzip.open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = get_processed_string(rp_vars_str)
             else:
@@ -100,12 +100,11 @@ class CaseReader:
             raise RuntimeError(f"The case file {case_filepath} cannot be found.")
         except OSError:
             error_message = (
-                "Could not read case file. " "Only valid HDF5 / Case files can be read. "
+                "Could not read case file. "
+                "Only valid HDF5 / Case files can be read. "
             )
             if Path(case_filepath).suffix not in [".h5", ".cas", ".cas.gz"]:
-                error_message += (
-                    f"The file {case_filepath} does not have either of a .h5, .cas or .cas.gz extension."
-                )
+                error_message += f"The file {case_filepath} does not have either of a .h5, .cas or .cas.gz extension."
             raise RuntimeError(error_message)
         except BaseException:
             raise RuntimeError(f"Could not read case file {case_filepath}")
@@ -170,6 +169,6 @@ def get_processed_string(input_string: bytes) -> str:
     -------
     processed string (str)
     """
-    rp_vars_str = codecs.decode(input_string, errors='ignore')
+    rp_vars_str = codecs.decode(input_string, errors="ignore")
     string_identifier = "(37 ("
     return string_identifier + rp_vars_str.split(string_identifier)[1]
