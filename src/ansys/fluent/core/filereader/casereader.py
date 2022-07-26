@@ -14,12 +14,12 @@ Get lists of input and output parameters
 input_parameters = reader.input_parameters()
 output_parameters = reader.output_parameters()
 """
+import codecs
+import gzip
 from pathlib import Path
 from typing import List
 
 import h5py
-import codecs
-import gzip
 
 from . import lispy
 
@@ -156,9 +156,8 @@ class CaseReader:
 
 
 def get_processed_string(input_string: bytes) -> str:
-    """
-    Processes the input string (binary) with help of an identifier
-    to return it in a format which can be parsed by lispy.parse()
+    """Processes the input string (binary) with help of an identifier to return
+    it in a format which can be parsed by lispy.parse()
 
     Parameters
     ----------
