@@ -109,7 +109,7 @@ class CaseReader:
             raise RuntimeError(f"Could not read case file {case_filepath}")
 
         self._rp_vars = lispy.parse(rp_vars_str)[1]
-        self._rp_var_cache = {}
+        self._rp_var_cache = dict()
 
     def input_parameters(self) -> List[InputParameter]:
         exprs = self._named_expressions()
