@@ -9,18 +9,20 @@ and set up units using :ref:`ref_solver_tui_commands`.
 Checking the mesh
 -----------------
 The following example shows a comparison between the TUI command and the
-python code for performing various mesh consistency checks and displays a
+Python code for performing mesh consistency checks and displaying a
 report in the console that lists domain extents, volume statistics,
-face area statistics, any warnings, and information about various check and mesh
-failures.
+face area statistics, any warnings, and information about failures.
+The level of information shown depends on the setting specified for
+the verbosity (level 0 to 3).
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /mesh/check
+    /mesh/check-verbosity 1
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -32,16 +34,16 @@ Python command
 Reporting mesh quality
 ----------------------
 The following example shows a comparison between the TUI command and the
-python code for displaying information about the quality of the mesh in the
+Python code for displaying information about the quality of the mesh in the
 console, including the minimum orthogonal quality and maximum aspect ratio.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /mesh/quality
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -50,16 +52,16 @@ Python command
 Scaling mesh
 ------------
 The following example shows a comparison between the TUI command and the
-python code for the scaling factors in each of the active Cartesian
+Python code for the scaling the mesh in each of the active Cartesian
 coordinate directions.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /mesh/scale 1 1 1
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -68,15 +70,15 @@ Python command
 Defining units
 --------------
 The following example shows a comparison between the TUI command and the
-python code for the setting unit conversion factors.
+Python code for setting the unit conversion factors.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /define/units length 'in'
 
-Python command
+**Python code**
 
 .. code:: python
 

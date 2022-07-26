@@ -12,11 +12,11 @@ using :ref:`ref_solver_tui_commands`.
 Selecting solution methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for selecting the pressure velocity coupling scheme and setting
-the gradient options. Five schemes (Index-Model) are available:
+Python code for selecting the pressure velocity coupling scheme and setting
+the gradient options. Five solution methoods (Index-Model) are available:
 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
@@ -24,7 +24,7 @@ TUI command
     /solve/set/gradient-scheme yes
     /solve/set/gradient-scheme no yes 
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -38,15 +38,15 @@ Python command
 Selecting solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for selecting the pressure velocity controls.
+Python code for selecting the pressure velocity controls.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /solve/set/p-v-controls 0.3 0.4
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -55,15 +55,15 @@ Python command
 Creating report definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for report definitions.
+Python code for creating report definitions.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /solve/report-definitions outlet-temp-avg surface-massavg field temperature surface-names outlet () quit
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -81,16 +81,16 @@ Python command
 Initializing and solving 
 ~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for initialization and performing a specified number of iterations.
+Python code for initializing and performing a specified number of iterations.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /solve/initialize/hyb-initialization
     /solve/iterate 100
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -101,6 +101,8 @@ Using settings objects
 ----------------------
 The following example shows how you apply solution settings
 using :ref:`ref_settings`.
+
+**Python code**
 
 .. code:: python
 

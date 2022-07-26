@@ -9,15 +9,15 @@ The following examples show how you define models using :ref:`ref_solver_tui_com
 Enabling the energy model
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for enabling and disabling the energy model.
+Python code for enabling and disabling the energy model.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /define/models/energy yes no no no yes
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -29,9 +29,9 @@ Python command
 Enabling the viscous model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for enabling and disabling the various viscous models.
+Python code for enabling and disabling the various viscous models.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
@@ -39,7 +39,7 @@ TUI command
     /define/models/viscous/kw-sst yes
     /define/models/viscous/ke-standard yes
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -50,16 +50,16 @@ Python command
 Enabling the radiation model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for selecting different radiation models.
+Python code for selecting different radiation models.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /define/models/radiation/s2s yes
     /define/models/radiation/p1 yes
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -69,9 +69,9 @@ Python command
 Enabling the multiphase model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for selecting different multiphase models.
+Python code for selecting different multiphase models.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
@@ -80,7 +80,7 @@ TUI command
     /define/models/multiphase/model mixture
     /define/models/multiphase/model wetsteam
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -96,12 +96,16 @@ The following examples show how you define models using :ref:`ref_settings`.
 Enabling the energy model
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+**Python code**
+
 .. code:: python
 
     session.solver.root.setup.models.energy.enabled = True
 
 Enabling the viscous model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Python code**
 
 .. code:: python
 

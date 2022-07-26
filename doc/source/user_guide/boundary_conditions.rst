@@ -11,9 +11,9 @@ and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for defining velocity boundary conditions at inlets.
+Python code for defining velocity boundary conditions at inlets.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
@@ -23,7 +23,7 @@ TUI command
     /define/boundary-counditions/set/velocity-inlet cold-inlet () cold-inlet () turb-hydraulic-diam 4 quit
     /define/boundary-counditions/set/velocity-inlet cold-inlet () cold-inlet () temperature no 293.15 quit
 
-Python code
+**Python code**
 
 .. code:: python
 
@@ -74,15 +74,15 @@ Python code
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for copying boundary conditions to other zones.
+Python code for copying boundary conditions to other zones.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /define/boundary-conditions/copy-bc cold-inlet hot-inlet ()
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -91,16 +91,15 @@ Python command
 Listing zones
 ~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for printing the types and IDs of all zones in the Fluent
-console.
+Python code for printing to the Fluent console the types and IDs of all zones.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
     /define/boundary-conditions/list-zones
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -109,15 +108,15 @@ Python command
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The following example shows a comparison between the TUI command and the
-python code for modifying cell zone conditions.
+Python code for modifying cell zone conditions.
 
-TUI command
+**TUI command**
 
 .. code:: scheme
 
-    /define/boundary-conditions/fluid no no no no no 0 no 0 no 0 no 0 no 0 no 1 no yes yes no no no
+    /define/boundary-conditions/fluid elbow-fluid no no no no no 0 no 0 no 0 no 0 no 0 no 1 no yes yes no no no
 
-Python command
+**Python code**
 
 .. code:: python
 
@@ -156,6 +155,8 @@ The following examples show how you define boundary conditions using
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+**Python code**
+
 .. code:: python
 
     session.solver.root.setup.boundary_conditions.velocity_inlet['cold-inlet'].vmag = {
@@ -178,6 +179,8 @@ Defining boundary conditions
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Python code**
 
 .. code:: python
 
