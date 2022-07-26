@@ -41,16 +41,30 @@ def test_casereader_h5():
     )
 
 
-def test_casereader_cas():
+def test_casereader_binary_cas():
     call_casereader(
-        examples.download_file("Static_Mixer_Parameters.cas", "pyfluent/static_mixer")
+        examples.download_file("Static_Mixer_Parameters_legacy_binary.cas", "pyfluent/static_mixer")
     )
 
 
-def test_casereader_gz():
+def test_casereader_binary_gz():
     call_casereader(
         examples.download_file(
-            "Static_Mixer_Parameters.cas.gz", "pyfluent/static_mixer"
+            "Static_Mixer_Parameters_legacy_binary.cas.gz", "pyfluent/static_mixer"
+        )
+    )
+
+
+def test_casereader_text_cas():
+    call_casereader(
+        examples.download_file("Static_Mixer_Parameters_legacy_text.cas", "pyfluent/static_mixer")
+    )
+
+
+def test_casereader_text_gz():
+    call_casereader(
+        examples.download_file(
+            "Static_Mixer_Parameters_legacy_text.cas.gz", "pyfluent/static_mixer"
         )
     )
 

@@ -92,9 +92,7 @@ class CaseReader:
                     rp_vars_str = file.read()
                 rp_vars_str = get_processed_string(rp_vars_str)
             else:
-                rp_vars_str = ""
-                print("Wrong choice")
-                pass
+                raise RuntimeError()
 
         except FileNotFoundError:
             raise RuntimeError(f"The case file {case_filepath} cannot be found.")
@@ -103,9 +101,8 @@ class CaseReader:
                 "Could not read case file. "
                 "Only valid Case files (.h5, .cas, .cas.gz) can be read. "
             )
-            if Path(case_filepath).suffix not in [".h5", ".cas", ".cas.gz"]:
-                error_message += f"The file {case_filepath} does not have either of a .h5, .cas or .cas.gz extension."
             raise RuntimeError(error_message)
+
         except BaseException:
             raise RuntimeError(f"Could not read case file {case_filepath}")
 
