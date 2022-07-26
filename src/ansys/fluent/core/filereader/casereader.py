@@ -14,11 +14,12 @@ Get lists of input and output parameters
 input_parameters = reader.input_parameters()
 output_parameters = reader.output_parameters()
 """
-
 from pathlib import Path
 from typing import List
 
 import h5py
+import codecs
+import gzip
 
 from . import lispy
 
@@ -73,36 +74,57 @@ class CaseReader:
         Get the precision (1 or 2 for 1D of 2D)
     """
 
-    def __init__(self, hdf5_case_filepath: str):
+    def __init__(self, case_filepath: str):
+
         try:
-            file = h5py.File(hdf5_case_filepath)
+            if Path(case_filepath).suffix == ".h5":
+                file = h5py.File(case_filepath)
+                settings = file["settings"]
+                rpvars = settings["Rampant Variables"][0]
+                rp_vars_str = rpvars.decode()
+            elif Path(case_filepath).suffix == ".cas":
+                with open(case_filepath, 'rb') as file:
+                    rp_vars_str = file.read()
+                rp_vars_str = get_processed_string(rp_vars_str)
+
+            elif Path(case_filepath).suffix == ".gz":
+                with gzip.open(case_filepath, 'rb') as file:
+                    rp_vars_str = file.read()
+                rp_vars_str = get_processed_string(rp_vars_str)
+            else:
+                rp_vars_str = ""
+                print("Wrong choice")
+                pass
+
         except FileNotFoundError:
-            raise RuntimeError(f"The case file {hdf5_case_filepath} cannot be found.")
+            raise RuntimeError(f"The case file {case_filepath} cannot be found.")
         except OSError:
             error_message = (
-                "Could not read case file. " "Only valid HDF5 files can be read. "
+                "Could not read case file. " "Only valid HDF5 / Case files can be read. "
             )
-            if Path(hdf5_case_filepath).suffix != ".h5":
+            if Path(case_filepath).suffix not in [".h5", ".cas", ".cas.gz"]:
                 error_message += (
-                    f"The file {hdf5_case_filepath} does not have a .h5 extension."
+                    f"The file {case_filepath} does not have either of a .h5, .cas or .cas.gz extension."
                 )
             raise RuntimeError(error_message)
         except BaseException:
-            raise RuntimeError(f"Could not read case file {hdf5_case_filepath}")
-        settings = file["settings"]
-        rpvars = settings["Rampant Variables"][0]
-        rp_vars_str = rpvars.decode()
+            raise RuntimeError(f"Could not read case file {case_filepath}")
+
         self._rp_vars = lispy.parse(rp_vars_str)[1]
         self._rp_var_cache = {}
 
     def input_parameters(self) -> List[InputParameter]:
         exprs = self._named_expressions()
-        input_params = []
-        for expr in exprs:
-            for attr in expr:
-                if attr[0] == "input-parameter" and attr[1] is True:
-                    input_params.append(InputParameter(expr))
-        return input_params
+        if exprs:
+            input_params = []
+            for expr in exprs:
+                for attr in expr:
+                    if attr[0] == "input-parameter" and attr[1] is True:
+                        input_params.append(InputParameter(expr))
+            return input_params
+        else:
+            parameters = self._find_rp_var("parameters/input-parameters")
+            return [InputParameter(param) for param in parameters]
 
     def output_parameters(self) -> List[OutputParameter]:
         parameters = self._find_rp_var("parameters/output-parameters")
@@ -132,3 +154,22 @@ class CaseReader:
                 if type(var) == list and len(var) and var[0] == name:
                     self._rp_var_cache[name] = var[1]
                     return var[1]
+
+
+def get_processed_string(input_string: bytes) -> str:
+    """
+    Processes the input string (binary) with help of an identifier
+    to return it in a format which can be parsed by lispy.parse()
+
+    Parameters
+    ----------
+    input_string : bytes
+        The input string in bytes
+
+    Returns
+    -------
+    processed string (str)
+    """
+    rp_vars_str = codecs.decode(input_string, errors='ignore')
+    string_identifier = "(37 ("
+    return string_identifier + rp_vars_str.split(string_identifier)[1]
