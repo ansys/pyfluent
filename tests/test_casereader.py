@@ -1,14 +1,14 @@
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.casereader import CaseReader
+from ansys.fluent.core.filereader.casereader import CaseReader, get_processed_string
 
 
-def test_casereader():
+def call_casereader(case_filepath: str):
 
-    case_filepath = examples.download_file(
-        "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
-    )
+    # case_filepath = examples.download_file(
+    #     "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
+    # )
 
-    reader = CaseReader(hdf5_case_filepath=case_filepath)
+    reader = CaseReader(case_filepath=case_filepath)
 
     input_parameters = reader.input_parameters()
 
@@ -37,10 +37,28 @@ def test_casereader():
     }
 
 
+def test_casereader_h5():
+    call_casereader(r"E:\CaseReaderCases\Static_Mixer_Parameters.cas.h5")
+
+
+def test_casereader_cas():
+    call_casereader(r"E:\CaseReaderCases\Static_Mixer_Parameters_text.cas")
+
+
+def test_casereader_gz():
+    call_casereader(r"E:\CaseReaderCases\Static_Mixer_Parameters_text_binary.cas.gz")
+
+
+def test_processed_string():
+    assert get_processed_string(
+        b'Hello! World (37 ( Get this part of the string ))'
+    ) == "(37 ( Get this part of the string ))"
+
+
 def test_casereader_no_file():
     throws = False
     try:
-        reader = CaseReader(hdf5_case_filepath="no_file.cas.h5")
-    except BaseException:
+        call_casereader("no_file.cas.h5")
+    except RuntimeError:
         throws = True
     assert throws
