@@ -10,8 +10,20 @@ and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
 
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_counditions.set.velocity_inlet`` TUI command defines velocity
-boundary conditions at inlets.
+The following example shows a comparison between the TUI command and the
+Python code for defining velocity boundary conditions at inlets.
+
+**TUI command**
+
+.. code:: scheme
+
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () vmag no 0.4 quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () ke-spec no no no yes quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet() cold-inlet () turb-intensity 5 quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () cold-inlet () turb-hydraulic-diam 4 quit
+    /define/boundary-counditions/set/velocity-inlet cold-inlet () cold-inlet () temperature no 293.15 quit
+
+**Python code**
 
 .. code:: python
 
@@ -20,7 +32,7 @@ boundary conditions at inlets.
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'vmag',
         'no',
         0.4,
@@ -28,7 +40,7 @@ boundary conditions at inlets.
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'ke-spec',
         'no',
         'no',
@@ -38,21 +50,21 @@ boundary conditions at inlets.
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'turb-intensity',
         5,
         'quit'
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'turb-hydraulic-diam',
         4,
         'quit'
     )
     session.solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
-        [],
+        (),
         'temperature',
         'no',
         293.15,
@@ -61,8 +73,16 @@ boundary conditions at inlets.
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_conditions.copy_bc`` TUI command copies boundary conditions
-to other zones.
+The following example shows a comparison between the TUI command and the
+Python code for copying boundary conditions to other zones.
+
+**TUI command**
+
+.. code:: scheme
+
+    /define/boundary-conditions/copy-bc cold-inlet hot-inlet ()
+
+**Python code**
 
 .. code:: python
 
@@ -70,8 +90,16 @@ to other zones.
 
 Listing zones
 ~~~~~~~~~~~~~
-The ``define.boundary_conditions.list_zones`` TUI command prints in the Fluent console
-the types and IDs of all zones.
+The following example shows a comparison between the TUI command and the
+Python code for printing to the Fluent console the types and IDs of all zones.
+
+**TUI command**
+
+.. code:: scheme
+
+    /define/boundary-conditions/list-zones
+
+**Python code**
 
 .. code:: python
 
@@ -79,7 +107,16 @@ the types and IDs of all zones.
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``define.boundary_conditions.fluid`` TUI command modifies cell zone conditions.
+The following example shows a comparison between the TUI command and the
+Python code for modifying cell zone conditions.
+
+**TUI command**
+
+.. code:: scheme
+
+    /define/boundary-conditions/fluid elbow-fluid no no no no no 0 no 0 no 0 no 0 no 0 no 1 no yes yes no no no
+
+**Python code**
 
 .. code:: python
 
@@ -118,6 +155,8 @@ The following examples show how you define boundary conditions using
 Defining boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+**Python code**
+
 .. code:: python
 
     session.solver.root.setup.boundary_conditions.velocity_inlet['cold-inlet'].vmag = {
@@ -140,6 +179,8 @@ Defining boundary conditions
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Python code**
 
 .. code:: python
 

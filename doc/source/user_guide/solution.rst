@@ -11,11 +11,20 @@ using :ref:`ref_solver_tui_commands`.
 
 Selecting solution methods 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.set.p_v_coupling`` TUI command selects which pressure-velocity coupling scheme to use.
-Five schemes (Index-Model) are available: 20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled,
-and 25-Fractional Step.
+The following example shows a comparison between the TUI command and the
+Python code for selecting the pressure velocity coupling scheme and setting
+the gradient options. Five solution methods (Index-Model) are available:
+20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.
 
-The ``solve.set/gradient_scheme`` TUI sets the gradient options.
+**TUI command**
+
+.. code:: scheme
+
+    /solve/set/p-v-coupling 24
+    /solve/set/gradient-scheme yes
+    /solve/set/gradient-scheme no yes 
+
+**Python code**
 
 .. code:: python
 
@@ -28,7 +37,16 @@ The ``solve.set/gradient_scheme`` TUI sets the gradient options.
     
 Selecting solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.set.p_v_controls`` TUI sets pressure-velocity controls.
+The following example shows a comparison between the TUI command and the
+Python code for selecting the pressure velocity controls.
+
+**TUI command**
+
+.. code:: scheme
+
+    /solve/set/p-v-controls 0.3 0.4
+
+**Python code**
 
 .. code:: python
 
@@ -36,7 +54,16 @@ The ``solve.set.p_v_controls`` TUI sets pressure-velocity controls.
 
 Creating report definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.report_definitions`` TUI enters the report definitions menu.
+The following example shows a comparison between the TUI command and the
+Python code for creating report definitions.
+
+**TUI command**
+
+.. code:: scheme
+
+    /solve/report-definitions outlet-temp-avg surface-massavg field temperature surface-names outlet () quit
+
+**Python code**
 
 .. code:: python
 
@@ -53,12 +80,17 @@ The ``solve.report_definitions`` TUI enters the report definitions menu.
 
 Initializing and solving 
 ~~~~~~~~~~~~~~~~~~~~~~~~
-The ``solve.initialize`` TUI enters the flow initialization menu.
+The following example shows a comparison between the TUI command and the
+Python code for initializing and performing a specified number of iterations.
 
-The ``solve.initialize.hyb_initialization`` TUI initializes using the hybrid
-initialization method.
+**TUI command**
 
-The ``solve.iterate`` TUI performs a specified number of iterations.
+.. code:: scheme
+
+    /solve/initialize/hyb-initialization
+    /solve/iterate 100
+
+**Python code**
 
 .. code:: python
 
@@ -69,6 +101,8 @@ Using settings objects
 ----------------------
 The following example shows how you apply solution settings
 using :ref:`ref_settings`.
+
+**Python code**
 
 .. code:: python
 
