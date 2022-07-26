@@ -389,14 +389,6 @@ class PyMenu(PyBasicStateContainer):
                 f"{self.__class__.__name__} is not a named object class."
             )
 
-    def create_command_arguments(self, command):
-        request = DataModelProtoModule.CreateCommandArgumentsRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        request.command = command
-        response = self.service.create_command_arguments(request)
-        return response.commandid
-
 
 class PyNamedObjectContainer:
     """Container class using the StateEngine-based DatamodelService as the
@@ -611,6 +603,9 @@ class PyCommand:
         print(help_string)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9dd010f (got the command server -> client)
     def _create_command_arguments(self):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
@@ -619,6 +614,7 @@ class PyCommand:
         response = self.service.create_command_arguments(request)
         return response.commandid
 
+<<<<<<< HEAD
     def new(self):
         id = self._create_command_arguments()
         return PyCommandArguments(
@@ -724,8 +720,12 @@ class PyCommandArguments(PyBasicStateContainer):
         return _convert_variant_to_value(response.result)
 >>>>>>> 111d575 (still got the command server -> client)
 =======
+=======
+    def instance(self):
+        id = self._create_command_arguments()
+>>>>>>> 9dd010f (got the command server -> client)
         return PyCommandArguments(
-            self.service, self.rules, self.command, self.path.copy(), key
+            self.service, self.rules, self.command, self.path.copy(), id
         )
 
 
