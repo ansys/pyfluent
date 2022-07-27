@@ -570,12 +570,48 @@ class PyCommand:
         )
 
 
+class PyCommandArgumentsSubItem:
+    def __init__(self, parent, name: str):
+        self.parent = parent
+        self.name = name
+
+    def __getattr__(self, attr):
+        return PyCommandArgumentsSubItem(self, attr)
+
+    def get_state(self) -> Any:
+        parent_state = self.parent.get_state()
+        try:
+            return parent_state[self.name]
+        except KeyError:
+            pass
+
+    getState = get_state
+
+    def set_state(self, state: Any) -> None:
+        self.parent.set_state({self.name: state})
+
+    setState = set_state
+
+    def __call__(self, *args, **kwds) -> Any:
+        return self.get_state()
+
+    def get_attrib_value(self, attrib: str) -> Any:
+        attrib_path = f"{self.name}/{attrib}"
+        return self.parent.get_attrib_value(attrib_path)
+
+    def help(self) -> None:
+        pass
+
+
 class PyCommandArguments(PyBasicStateContainer):
     def __init__(
         self, service: DatamodelService, rules: str, command: str, path: Path, id: str
     ):
         super().__init__(service, rules, path)
         self.path.append((command, id))
+
+    def __getattr__(self, attr):
+        return PyCommandArgumentsSubItem(self, attr)
 
 
 class PyMenuGeneric(PyMenu):
