@@ -1,5 +1,5 @@
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.casereader import CaseReader, get_processed_string
+from ansys.fluent.core.filereader.casereader import CaseReader, _get_processed_string
 
 
 def call_casereader(case_filepath: str):
@@ -77,7 +77,7 @@ def test_casereader_text_gz():
 
 def test_processed_string():
     assert (
-        get_processed_string(b"Hello! World (37 ( Get this part of the string ))")
+        _get_processed_string(b"Hello! World (37 ( Get this part of the string ))")
         == "(37 ( Get this part of the string ))"
     )
 

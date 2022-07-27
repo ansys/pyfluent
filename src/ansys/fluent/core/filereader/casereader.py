@@ -87,11 +87,11 @@ class CaseReader:
             elif Path(case_filepath).suffix == ".cas":
                 with open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
-                rp_vars_str = get_processed_string(rp_vars_str)
+                rp_vars_str = _get_processed_string(rp_vars_str)
             elif "".join(Path(case_filepath).suffixes) == ".cas.gz":
                 with gzip.open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
-                rp_vars_str = get_processed_string(rp_vars_str)
+                rp_vars_str = _get_processed_string(rp_vars_str)
             else:
                 raise RuntimeError()
 
@@ -154,7 +154,7 @@ class CaseReader:
                     return var[1]
 
 
-def get_processed_string(input_string: bytes) -> str:
+def _get_processed_string(input_string: bytes) -> str:
     """Processes the input string (binary) with help of an identifier to return
     it in a format which can be parsed by lispy.parse()
 
