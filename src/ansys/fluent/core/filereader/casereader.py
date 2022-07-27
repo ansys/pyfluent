@@ -114,7 +114,7 @@ class CaseReader:
     def input_parameters(self) -> List[InputParameter]:
         exprs = self._named_expressions()
         if exprs:
-            input_params = list()
+            input_params = []
             for expr in exprs:
                 for attr in expr:
                     if attr[0] == "input-parameter" and attr[1] is True:
