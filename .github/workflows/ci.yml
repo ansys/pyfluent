@@ -194,7 +194,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install
+          make install > /dev/null
 
       - name: Cache examples
         uses: actions/cache@v3
@@ -308,7 +308,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install
+          make install > /dev/null
 
       - name: Unit Testing
         run: make unittest

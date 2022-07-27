@@ -5,7 +5,7 @@ style:
 install:
 	@pip install -r requirements/requirements_build.txt
 	@python -m build
-	@pip install dist/*.whl --quiet
+	@pip install -q dist/*.whl
 
 version-info:
 	@bash -c "date -u +'Build date: %B %d, %Y %H:%M UTC ShaID: <id>' | xargs -I date sed -i 's/_VERSION_INFO = .*/_VERSION_INFO = \"date\"/g' src/ansys/fluent/core/__init__.py"
@@ -26,7 +26,7 @@ api-codegen:
 	@echo "Running API codegen"
 	@python -m venv env
 	@. env/bin/activate
-	@pip install -e .  --quiet
+	@pip install -q -e .
 	@python codegen/allapigen.py
 	@rm -rf env
 
