@@ -5,10 +5,16 @@ PyFluent supports defining materials using :ref:`ref_solver_tui_commands` and
 
 Using solver TUI commands
 -------------------------
-This example shows how you define materials using
-:ref:`ref_solver_tui_commands`.
+The following example shows a comparison between the TUI command and the
+Python code for defining the fluid material being modelled on a cell zone.
 
-The ``define.materials`` TUI enters the materials menu.
+**TUI command**
+
+.. code:: scheme
+
+    /define/materials elbow-fluid yes water-liquid no no no no 0 no 0 no 0 no 0 no 0 no 1 no no no no no
+
+**Python code**
 
 .. code:: python
 
@@ -46,6 +52,8 @@ Using settings objects
 ----------------------
 This example shows how you define materials using
 :ref:`ref_settings`.
+
+**Python code**
 
 .. code:: python
 
