@@ -75,6 +75,14 @@ def test_casereader_text_gz():
     )
 
 
+def test_casereader_h5_from_inside_directory():
+    call_casereader(r"E:\Static_Mixer_Parameter\Static_Mixer_Parameters.cffdb")
+
+
+def test_casereader_h5_from_base_directory():
+    call_casereader(r"E:\Static_Mixer_Parameter")
+
+
 def test_processed_string():
     assert (
         _get_processed_string(b"Hello! World (37 ( Get this part of the string ))")
