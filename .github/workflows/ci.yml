@@ -22,7 +22,7 @@ env:
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
   RESET_EXAMPLES_CACHE: 5
-  API_CODE_CACHE: 1
+  API_CODE_CACHE: 2
 
 jobs:
   stylecheck:
