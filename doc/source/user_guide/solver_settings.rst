@@ -1,21 +1,26 @@
 .. _ref_user_guide_solver_settings:
 
-Specifying Solver Settings
+Specifying solver settings
 ==========================
-PyFluent supports specifying solver settings using  both 
+PyFluent supports specifying solver settings using 
 :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
 
-Solver TUI Commands
--------------------
-The following examples demonstrate how you can specify solver
-settings using the :ref:`ref_solver_tui_commands`:
+The following examples show how you specify solver
+settings using :ref:`ref_solver_tui_commands`:
 
-Selecting Steady or Transient
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-define/models/steady TUI: Enables/disables the steady solution model.
+Selecting steady or transient
+-----------------------------
+The following example shows a comparison between the TUI commands and the
+Python code for enabling and disabling the steady and unsteady solution model.
 
-define/models/unsteady-1st-order TUI: Selects the first-order implicit
-formulation for transient simulations.
+**TUI command**
+
+.. code:: scheme
+
+    /define/models/steady yes
+    /define/models/unsteady_1st_order yes
+
+**Python code**
 
 .. code:: python
 
@@ -25,16 +30,21 @@ formulation for transient simulations.
     session.solver.tui.define.models.steady('yes')
     session.solver.tui.define.models.unsteady_1st_order('yes')
 
-Selecting Pressure Based or Density Based Solver
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-define/models/solver/density-based-explicit TUI: Enables/disables the
-density-based-explicit solver.
+Selecting a pressure-based or density-based solver
+--------------------------------------------------
+The following examples show comparisons between the TUI commands and the
+Python code for enabling and disabling the pressure-based and density-based solver
+models.
 
-define/models/solver/density-based-implicit TUI: Enables/disables the
-density-based-implicit solver.
+**TUI command**
 
-define/models/solver/pressure-based TUI: Enables/disables the
-pressure-based solver.
+.. code:: scheme
+
+    /define/models/solver/density-based-explicit yes 
+    /define/models/solver/density-based-implicit yes
+    /define/models/solver/pressure-based yes
+
+**Python code**
 
 .. code:: python
 
@@ -42,9 +52,18 @@ pressure-based solver.
     session.solver.tui.define.models.solver.density_based_implicit('yes')
     session.solver.tui.define.models.solver.pressure_based('yes')
 
-Defining Gravitational Acceleration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-define/operating-conditions/gravity TUI: Sets gravitational acceleration.
+Defining gravitational acceleration
+-----------------------------------
+The following example shows a comparison between the TUI command and the
+Python code for settings the gravitational acceleration
+
+**TUI command**
+
+.. code:: scheme
+
+    /define/operating-conditions/gravity yes 0 -9.81 0
+
+**Python code**
 
 .. code:: python
 

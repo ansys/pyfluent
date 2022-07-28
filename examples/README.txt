@@ -3,8 +3,8 @@
 ========
 Examples
 ========
-On this page you will find a number of examples for the PyFluent
-``ansys-fluent-core`` package.
+End-to-end examples show how you can use PyFluent. If the PyFluent ``ansys-fluent-core`` package is installed on your machine,
+you can download these examples as Python files or Jupyter notebooks and run them locally.
 
 .. toctree::
    :maxdepth: 1

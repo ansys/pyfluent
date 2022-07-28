@@ -1,7 +1,7 @@
 .. _ref_index_api:
 
 =============
-API Reference
+API reference
 =============
 
 .. currentmodule:: ansys.fluent

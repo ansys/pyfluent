@@ -22,7 +22,7 @@ env:
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
   RESET_EXAMPLES_CACHE: 5
-  API_CODE_CACHE: 1
+  API_CODE_CACHE: 2
 
 jobs:
   stylecheck:
@@ -45,6 +45,24 @@ jobs:
         if: always()
         run: |
           pre-commit run --all-files --show-diff-on-failure
+
+  docs-style:
+    name: Documentation Style Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+  
+      - name: Running Vale
+        uses: errata-ai/vale-action@reviewdog
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          files: doc
+          reporter: github-pr-check
+          level: error
+          filter_mode: nofilter
+          fail_on_error: true
+          vale_flags: "--config=doc/.vale.ini"
 
   test-import:
     name: Smoke Tests
@@ -88,10 +106,11 @@ jobs:
 
   docs_build:
     name: Build Documentation
+    needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
-        image-tag: [v22.2.0]
+        image-tag: [v22.2.0, v23.1.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -175,7 +194,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install
+          make install > /dev/null
 
       - name: Cache examples
         uses: actions/cache@v3
@@ -216,7 +235,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        image-tag: [v22.2.0]
+        image-tag: [v22.2.0, v23.1.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -289,7 +308,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install
+          make install > /dev/null
 
       - name: Unit Testing
         run: make unittest
@@ -354,7 +373,7 @@ jobs:
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
           TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+          TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
         uses: softprops/action-gh-release@v1

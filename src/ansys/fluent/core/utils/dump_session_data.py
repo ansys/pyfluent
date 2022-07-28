@@ -10,11 +10,11 @@ def dump_session_data(session, file_path: str, fields: list = [], surfaces: list
     session :
         Session object.
     file_path: str
-        Session dump file path.
+        File path for the session dump.
     fields: list, optional
-        List of fields to write. If empty then all fields will be written.
+        List of fields to write. If the list is empty, all fields are written.
     surfaces: list, optional
-        List of surfaces to write. If empty then all surfaces will be written.
+        List of surfaces to write. If the list is empty, all surfaces are written.
     """
     session_data = {}
     session_data["scalar_fields_info"] = {

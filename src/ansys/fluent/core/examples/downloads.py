@@ -1,7 +1,7 @@
-"""Functions to download sample datasets from the pyansys data repository.
+"""Functions to download sample datasets from the PyAnsys data repository.
 
-Example
--------
+Examples
+--------
 
 >>> from ansys.fluent.core import examples
 >>> filename = examples.download_file("bracket.iges", "geometry")
@@ -18,7 +18,7 @@ import ansys.fluent.core as pyfluent
 
 
 def get_ext(filename: str) -> str:
-    """Extract the extension of the filename."""
+    """Extract the extension of a file."""
     ext = os.path.splitext(filename)[1].lower()
     return ext
 

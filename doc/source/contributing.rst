@@ -6,13 +6,13 @@ Contributing
 Overall guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
-it and `Coding Style
-<https://dev.docs.pyansys.com/coding-style/index.html#coding-style>`_ before attempting to
-contribute to PyFluent.
+this guide, paying particular attention to the `Coding Style
+<https://dev.docs.pyansys.com/coding-style/index.html#coding-style>`_ topic, before
+attempting to contribute to PyFluent.
  
 The following contribution information is specific to PyFluent.
 
-Cloning the PyFluent Repository
+Cloning the PyFluent repository
 -------------------------------
 Run this code to clone and install the latest version of PyFluent in development
 mode:
@@ -24,10 +24,10 @@ mode:
     pip install pip -U
     pip install -e .
 
-Building Documentation
+Building documentation
 ----------------------
-To build the documentation locally you need to follow these steps at the root
-directory of the repository:
+In the root directory of the repository, you can build documentation
+locally with:
 
 .. code:: 
 
@@ -35,39 +35,41 @@ directory of the repository:
     cd doc
     make html
 
-After the build completes the html documentation is located in the
-``_builds/html`` directory and you can load the ``index.html`` into a web
-browser.  To clean the documentation you can execute this command:
+After the build completes, the HTML documentation is located in the
+``_builds/html`` directory. You can load the ``index.html`` file in
+this directory into a web browser.
+
+You can clear all HTML files from the ``_builds/html`` directory with:
 
 .. code::
 
     make clean
 
-Posting Issues
+Posting issues
 --------------
 Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page to
 submit questions, report bugs, and request new features.
 
 
-Code Style
-----------
-PyFluent is compliant with `PyAnsys Development Code Style Guide
-<https://dev.docs.pyansys.com/coding_style/index.html>`_.  Code style is checked
-by making use of `pre-commit <https://pre-commit.com/>`_. Install this tool and
-activate it executing the following commands:
+Adhering to code style
+----------------------
+PyFluent is compliant with the `PyAnsys Development Code Style Guide
+<https://dev.docs.pyansys.com/coding_style/index.html>`_. It uses the tool
+`pre-commit <https://pre-commit.com/>`_ to check the code style. You can
+install and activate this tool with:
 
 .. code:: bash
 
    python -m pip install pre-commit
    pre-commit install
 
-Then, you can use the ``style`` rule defined in the ``Makefile``:
+You then use the ``style`` rule defined in ``Makefile`` with:
 
 .. code:: bash
 
    make style
 
-Or directly execute `pre-commit <https://pre-commit.com/>`_:
+Or, you can directly execute `pre-commit <https://pre-commit.com/>`_ with:
 
 .. code:: bash
 

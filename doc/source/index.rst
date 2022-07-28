@@ -1,4 +1,4 @@
-PyFluent Documentation |version|
+PyFluent documentation |version|
 ================================
 
 .. toctree::
@@ -17,79 +17,89 @@ Ansys Fluent is a state-of-the-art computational fluid dynamics (CFD) software
 package for modeling fluid flow, heat transfer, and chemical reactions in
 complex geometries.
 
-Ansys Fluent provides complete mesh flexibility, including the ability to solve
+Fluent provides complete mesh flexibility, including the ability to solve
 your flow problems using unstructured meshes that can be generated about complex
-geometries with relative ease. Supported mesh types include 2D
-triangular/quadrilateral, 3D tetrahedral/hexahedral/pyramid/wedge/polyhedral,
-and mixed (hybrid) meshes. Ansys Fluent also enables you to refine or coarsen
-your mesh based on the flow solution.
+geometries with relative ease. Supported mesh types include:
 
-You can read your mesh into Ansys Fluent, or, for 3D geometries, create your
-mesh using the meshing mode of Fluent. All other operations are performed within
-the solution mode of Fluent, including setting boundary conditions, defining
-fluid properties, executing the solution, refining the mesh, running a parametric study, 
-and postprocessing and viewing the results.
+- 2D triangular and quadrilateral
+- 3D tetrahedral, hexahedral, pyramid, wedge, and polyhedral
+- Mixed (hybrid)
+
+Fluent also enables you to refine or coarsen your mesh based on the flow solution.
+
+You can read your mesh into Fluent or, for 3D geometries, create your
+mesh using Fluent's meshing mode. All other operations are performed within
+Fluent's solution mode, including:
+
+- Setting boundary conditions
+- Defining fluid properties
+- Executing the solution
+- Refining the mesh
+- Running a parametric study 
+- Postprocessing and viewing results
 
 What is PyFluent?
 -----------------
 
 PyFluent is part of the `PyAnsys <https://docs.pyansys.com>`_ ecosystem that
-lets you use Ansys Fluent within a Python environment of your choice in
+lets you use Fluent within a Python environment of your choice in
 conjunction with other PyAnsys libraries and with other external Python
 libraries.
 
-PyFluent implements a client-server architecture.  PyFluent launches or connects
-with a running Fluent process as a server using Google remote procedure calls,
-or gRPC interfaces, but all you need to interact with is the Python interface.
+PyFluent implements a client-server architecture. It uses Google remote procedure
+calls, or gRPC interfaces, to launch or connect with a running Fluent process as
+a server. However, you only need to interact with the Python interface.
 
-You can use PyFluent to programmatically create, interact with and control an
-Ansys Fluent session to create your own customized workspace. In addition, you
+You can use PyFluent to programmatically create, interact with, and control a
+Fluent session to create your own customized workspace. In addition, you
 can use PyFluent to enhance your productivity with highly configurable,
 customized scripts.
 
 Features
 --------
-The primary package, ``ansys-fluent-core``, provides features such as:
+Some of the many features in the primary package, ``ansys-fluent-core``, allow
+you to:
 
-- Ability to launch the Fluent solver in serial or parallel and connect to
-  already running Fluent sessions using the :ref:`ref_launcher_launcher` module.
-- Scripting of Fluent's meshing capabilities. See the :ref:`ref_meshing` module
-  for more information.
-- Scripting using all of Fluent's TUI commands. See the :ref:`ref_solver_tui`
-  module for more information about the available commands.
-- Ability to run more than one Fluent session asynchronously.  See the
-  :ref:`ref_utils` module for more information.
-- Ability to retrieve Fluent field data as numpy arryas for custom post
-  processing using standard Python libraries such as matplotlib.  See the
-  :ref:`ref_field_data` module for more information.
-- Ability to register function callbacks on Fluent solver events such as when a
-  case or data file is read, or the Fluent solver completes an iteration.  See
-  the :ref:`ref_events` module for more information.
-- Ability to retrieve solver monitors such as residuals using the
-  :ref:`ref_monitors` module.
+- Launch the Fluent solver in serial or parallel and connect to
+  already-running Fluent sessions. For more information, see :ref:`ref_user_guide_launch`.
+- Script using Fluent's meshing capabilities. For more information, see 
+  :ref:`ref_meshing`.
+- Script using all of Fluent's TUI  (text user interface) commands. For more
+  information, see :ref:`ref_user_guide_tui_commands`.
+- Run more than one Fluent session asynchronously. For more information,
+  see :ref:`ref_utils`.
+- Retrieve Fluent field data as numpy arrays for custom postprocessing
+  using standard Python libraries such as `Matplotlib <https://matplotlib.org/>`_.
+  For more information, see :ref:`ref_field_data`.
+- Register function callbacks on Fluent solver events such as when a
+  case or data file is read or when the Fluent solver completes an iteration. 
+  For more information, see :ref:`ref_events`.
+- Retrieve solver monitors such as residuals using the :ref:`ref_monitors`.
 
-Documentation and Issues
+Documentation and issues
 ------------------------
 
-In addition to installation, usage, and contribution information, the PyFluent
-documentation provides API documentation, examples, and code guidelines.
+In addition to installation and usage information, the PyFluent
+documentation provides an :ref:`ref_index_api`, :ref:`ref_example_gallery`,
+and :ref:`ref_contributing` guidelines.
 
-On the PyFluent Issues page, you can create issues to submit questions, report
-bugs, and request new features. To reach the project support team, email
-pyansys.support@ansys.com.
+On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
+issues to submit questions, report bugs, and request new features. To reach
+the project support team, email `pyansys.support@ansys.com <pyansys.support@ansys.com>`_.
 
 License
 -------
 PyFluent is licensed under the MIT license.
 
-This module makes no commercial claim over Ansys whatsoever. PyFluent extends
-the functionality of Ansys Fluent by adding an additional Python interface to
-Ansys Fluent without changing the core behavior or license of the original
-software. The use of the interactive control of PyFluent requires a legally
-licensed local copy of Ansys Fluent. For more information about Ansys Fluent,
-visit the Ansys Fluent page on the Ansys website.
+This module makes no commercial claim over Ansys whatsoever. PyFluent
+extends the functionality of Fluent by adding a Python interface
+to Fluent without changing the core behavior or license of the original
+software. The use of the interactive control of ``PyFluent`` requires a
+legally licensed local copy of Fluent. For more information about Fluent,
+visit the `Fluent page <https://www.ansys.com/products/fluids/ansys-fluent>`_ 
+on the Ansys website.
 
-Project Index
+Project index
 -------------
 
 * :ref:`genindex`

@@ -1,4 +1,4 @@
-"""Wrappers over SchemeEval grpc service of Fluent.
+"""Wrappers over SchemeEval gRPC service of Fluent.
 
 Example
 -------
@@ -29,9 +29,9 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 
 
 class SchemeEvalService:
-    """Class wrapping the SchemeEval grpc service of Fluent.
+    """Class wrapping the SchemeEval gRPC service of Fluent.
 
-    It is suggested to use the methods from SchemeEval class.
+    Using the methods from the SchemeEval class is recommended.
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
@@ -53,12 +53,12 @@ class SchemeEvalService:
 
 
 class Symbol:
-    """Class to represent symbol datatype in scheme.
+    """Class representing the symbol datatype in the scheme.
 
     Attributes
     ----------
     str : str
-        The underlying string representation
+        Underlying string representation
     """
 
     def __init__(self, str_: str):
