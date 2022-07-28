@@ -194,7 +194,7 @@ jobs:
       - name: Install again after codegen
         run: |
           rm -rf dist
-          make install
+          make install > /dev/null
 
       - name: Cache examples
         uses: actions/cache@v3
@@ -205,11 +205,7 @@ jobs:
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
 
       - name: Build Documentation
-        run: |
-          ls -al src/ansys/fluent/core/solver
-          which python
-          ls -alR /home/ansys/actions-runner/_work/_tool/Python/3.9.12/x64
-          make build-doc DOCS_CNAME=fluentdocs.pyansys.com
+        run: make build-doc DOCS_CNAME=fluentdocs.pyansys.com
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
