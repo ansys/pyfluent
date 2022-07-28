@@ -19,7 +19,7 @@ Pythonic utilities
 ------------------
 
 This component consists solely of a function to allow for 
-asynchonous execution.
+asynchronous execution.
 
 Meshing mode
 ------------
