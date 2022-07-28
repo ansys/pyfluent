@@ -18,8 +18,7 @@ import codecs
 import glob
 import gzip
 import itertools
-import os
-from os.path import dirname, isdir
+from os.path import dirname
 from pathlib import Path
 from typing import List
 
@@ -82,8 +81,8 @@ class CaseReader:
 
     def __init__(self, case_filepath: str):
 
-        if isdir(case_filepath):
-            case_filepath = _get_case_filepath(case_filepath)
+        if Path(case_filepath).suffix in [".flprj", ".flprz"]:
+            case_filepath = _get_case_filepath(dirname(case_filepath))
         try:
             if "".join(Path(case_filepath).suffixes) == ".cas.h5":
                 file = h5py.File(case_filepath)
@@ -178,33 +177,8 @@ def _get_processed_string(input_string: bytes) -> str:
     return string_identifier + rp_vars_str.split(string_identifier)[1]
 
 
-def _get_case_filepath(project_dir_path):
-    """Extracts the path of the case file given a project directory.
-
-    Parameters
-    ----------
-    project_dir_path : str
-        The directory containing the case file
-
-    Returns
-    -------
-    case file path (str)
-    """
-    if Path(project_dir_path).suffix == ".cffdb":
-        case_filepath = _get_filepath(project_dir_path, r"\**-Solve\*.%s")
-    else:
-        suffix_list = [Path(item).suffix for item in os.listdir(project_dir_path)]
-        if ".flprj" not in suffix_list and ".flprz" not in suffix_list:
-            raise RuntimeError(
-                f'The path provided "{project_dir_path}" does not contain a valid fluent project file.'
-            )
-        case_filepath = _get_filepath(project_dir_path, r"\**\**-Solve\*.%s")
-
-    return case_filepath
-
-
-def _get_filepath(project_dir_path: str, path_identifier: str) -> str:
-    """Gets path of any file having extension either of .cas, .cas.gz and.
+def _get_case_filepath(project_dir_path: str) -> str:
+    """Gets path of any file having extension either of .cas, .cas.gz or.
 
     .cas.h5 and returns the same.
 
@@ -212,8 +186,6 @@ def _get_filepath(project_dir_path: str, path_identifier: str) -> str:
     ----------
     project_dir_path : str
         The directory containing the case file
-    path_identifier: str
-        Identifier to help track the level at which the file is present
 
     Returns
     -------
@@ -222,7 +194,7 @@ def _get_filepath(project_dir_path: str, path_identifier: str) -> str:
     file_list = list(
         itertools.chain(
             *(
-                glob.glob(project_dir_path + path_identifier % ext)
+                glob.glob(project_dir_path + r"\**\**-Solve\*.%s" % ext)
                 for ext in ["cas", "cas.h5", "cas.gz"]
             )
         )

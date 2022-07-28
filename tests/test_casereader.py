@@ -98,14 +98,14 @@ def test_casereader_h5_for_project_directory():
     os.makedirs(prj_dir)
     shutil.copy(case_filepath, prj_dir)
     prj_file_dir = "Static_Mixer_Parameter_project_file"
+    prj_file = r"Static_Mixer_Parameters.flprj"
     prj_filepath = examples.download_file(
-        "Static_Mixer_Parameters.flprj", "pyfluent/static_mixer/" + prj_file_dir
+        prj_file, "pyfluent/static_mixer/" + prj_file_dir
     )
     prj_file_dir = join(dirname(prj_filepath), prj_file_dir)
     shutil.copy(prj_filepath, prj_file_dir)
 
-    call_casereader(dirname(prj_dir))  # passing directory with ".cffdb" extension
-    call_casereader(prj_file_dir)  # passing the base project directory
+    call_casereader(join(prj_file_dir, prj_file))
 
 
 def test_processed_string():
