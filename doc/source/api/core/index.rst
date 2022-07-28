@@ -4,9 +4,8 @@ Core
 ====
 
 This section describes the core Pythonic interfaces for Fluent. 
-Here, you can find the application programming interfaces for 
-such things as launching Fluent, assorted utilities, as well as 
-the interfaces for the meshing and solver components of Fluent.
+Here, you can find methods for launching Fluent and using assorted utilities
+and Fluent meshing and solver components.
 
 .. currentmodule:: ansys.fluent.core
 
