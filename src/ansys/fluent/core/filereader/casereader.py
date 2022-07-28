@@ -194,7 +194,7 @@ def _get_case_filepath(project_dir_path):
         case_filepath = _get_filepath(project_dir_path, r"\**-Solve\*.%s")
     else:
         suffix_list = [Path(item).suffix for item in os.listdir(project_dir_path)]
-        if ".flprj" not in suffix_list:
+        if ".flprj" not in suffix_list and ".flprz" not in suffix_list:
             raise RuntimeError(
                 f'The path provided "{project_dir_path}" does not contain a valid fluent project file.'
             )
