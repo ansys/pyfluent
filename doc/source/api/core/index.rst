@@ -3,7 +3,7 @@
 Core
 ====
 
-This section describes the core pythonic interfaces for Fluent. 
+This section describes the core Pythonic interfaces for Fluent. 
 Here, you can find the application programming interfaces for 
 such things as launching Fluent, assorted utilities, as well as 
 the interfaces for the meshing and solver components of Fluent.
