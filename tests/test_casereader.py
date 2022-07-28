@@ -1,3 +1,7 @@
+import os
+from os.path import dirname, exists, join
+import shutil
+
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.casereader import CaseReader, _get_processed_string
 
@@ -75,12 +79,30 @@ def test_casereader_text_gz():
     )
 
 
-def test_casereader_h5_from_inside_directory():
-    call_casereader(r"E:\Static_Mixer_Parameter\Static_Mixer_Parameters.cffdb")
+def test_casereader_h5_for_project_directory():
 
+    # Copying from and then creating the entire directory structure locally
+    case_file_dir = (
+        "Static_Mixer_Parameter_project_file/"
+        "Static_Mixer_Parameters.cffdb/Static_Mixer_Parameters-Solve"
+    )
+    case_filepath = examples.download_file(
+        "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer/" + case_file_dir
+    )
+    prj_dir = join(dirname(case_filepath), case_file_dir)
+    if exists(prj_dir):
+        shutil.rmtree(dirname(dirname(prj_dir)))
+    os.makedirs(prj_dir)
+    shutil.copy(case_filepath, prj_dir)
+    prj_file_dir = "Static_Mixer_Parameter_project_file"
+    prj_filepath = examples.download_file(
+        "Static_Mixer_Parameters.flprj", "pyfluent/static_mixer/" + prj_file_dir
+    )
+    prj_file_dir = join(dirname(prj_filepath), prj_file_dir)
+    shutil.copy(prj_filepath, prj_file_dir)
 
-def test_casereader_h5_from_base_directory():
-    call_casereader(r"E:\Static_Mixer_Parameter")
+    call_casereader(dirname(prj_dir))  # passing directory with ".cffdb" extension
+    call_casereader(prj_file_dir)  # passing the base project directory
 
 
 def test_processed_string():
