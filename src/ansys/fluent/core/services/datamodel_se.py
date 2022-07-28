@@ -563,7 +563,7 @@ class PyCommand:
         response = self.service.create_command_arguments(request)
         return response.commandid
 
-    def instance(self):
+    def new(self):
         id = self._create_command_arguments()
         return PyCommandArguments(
             self.service, self.rules, self.command, self.path.copy(), id
@@ -609,6 +609,14 @@ class PyCommandArguments(PyBasicStateContainer):
     ):
         super().__init__(service, rules, path)
         self.path.append((command, id))
+
+    def __del__(self):
+        request = DataModelProtoModule.DeleteCommandArgumentsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path[:-1])
+        request.command = self.path[-1][0]
+        request.commandid = self.path[-1][1]
+        response = self.service.delete_command_arguments(request)
 
     def __getattr__(self, attr):
         return PyCommandArgumentsSubItem(self, attr)
