@@ -204,7 +204,6 @@ def _convert_path_to_se_path(path: Path) -> str:
     return se_path
 
 
-<<<<<<< HEAD
 class PyCallableStateObject:
     """Any object which can be called to get its state.
 
@@ -219,19 +218,11 @@ class PyCallableStateObject:
 
 
 class PyBasicStateContainer(PyCallableStateObject):
-=======
-class PyBasicStateContainer:
->>>>>>> 52d87a3 (got the command server -> client)
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
     Methods
     -------
-<<<<<<< HEAD
-=======
-    __call__()
-        Get state of the current object
->>>>>>> 52d87a3 (got the command server -> client)
     get_attrib_value(attrib)
         Get the attribute value of the current object.
     getAttribValue(attrib)
@@ -279,19 +270,6 @@ class PyBasicStateContainer:
 
     setState = set_state
 
-<<<<<<< HEAD
-=======
-    def __call__(self, *args, **kwds) -> Any:
-        """Get state of the current object.
-
-        Returns
-        -------
-        Any
-            state
-        """
-        return self.get_state()
-
->>>>>>> 52d87a3 (got the command server -> client)
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
 
@@ -388,6 +366,14 @@ class PyMenu(PyBasicStateContainer):
             raise RuntimeError(
                 f"{self.__class__.__name__} is not a named object class."
             )
+
+    def create_command_arguments(self, command):
+        request = DataModelProtoModule.CreateCommandArgumentsRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        request.command = command
+        response = self.service.create_command_arguments(request)
+        return response.commandid
 
 
 class PyNamedObjectContainer:
@@ -551,20 +537,7 @@ class PyCommand:
     docstring = None
 
     def __init__(
-<<<<<<< HEAD
-<<<<<<< HEAD
         self, service: DatamodelService, rules: str, command: str, path: Path = None
-=======
-        self,
-        service: DatamodelService,
-        rules: str,
-        command: str,
-        path: Path = None,
-        id: str = None,
->>>>>>> 111d575 (still got the command server -> client)
-=======
-        self, service: DatamodelService, rules: str, command: str, path: Path = None
->>>>>>> 52d87a3 (got the command server -> client)
     ):
         self.service = service
         self.rules = rules
@@ -602,10 +575,6 @@ class PyCommand:
         ).common.helpstring
         print(help_string)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 9dd010f (got the command server -> client)
     def _create_command_arguments(self):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
@@ -614,7 +583,6 @@ class PyCommand:
         response = self.service.create_command_arguments(request)
         return response.commandid
 
-<<<<<<< HEAD
     def new(self):
         id = self._create_command_arguments()
         return PyCommandArguments(
@@ -636,40 +604,15 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
             return parent_state[self.name]
         except KeyError:
             pass
-=======
-    def __getitem__(self, key: str):
-<<<<<<< HEAD
-        assert self.id is None
-        new_cmd = PyCommand(self.service, self.rules, self.command, self.path, key)
-        return new_cmd
-
-    def get_state(self) -> Any:
-        request = DataModelProtoModule.GetStateRequest()
-        request.rules = self.rules
-        path = self.path + [(self.command, self.id)]
-        request.path = _convert_path_to_se_path(path)
-        response = self.service.get_state(request)
-        return _convert_variant_to_value(response.state)
->>>>>>> 111d575 (still got the command server -> client)
 
     getState = get_state
 
     def set_state(self, state: Any) -> None:
-<<<<<<< HEAD
         self.parent.set_state({self.name: state})
-=======
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        path = self.path + [(self.command, self.id)]
-        request.path = _convert_path_to_se_path(path)
-        _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
->>>>>>> 111d575 (still got the command server -> client)
 
     setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
-<<<<<<< HEAD
         attrib_path = f"{self.name}/{attrib}"
         return self.parent.get_attrib_value(attrib_path)
 
@@ -695,80 +638,6 @@ class PyCommandArguments(PyBasicStateContainer):
         except ValueError:
             # "Cannot invoke RPC on closed channel!"
             pass
-
-    def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(self, attr)
-=======
-        """Get attribute value of the current object.
-
-        Parameters
-        ----------
-        attrib : str
-            attribute name
-
-        Returns
-        -------
-        Any
-            attribute value
-        """
-        request = DataModelProtoModule.GetAttributeValueRequest()
-        request.rules = self.rules
-        path = self.path + [(self.command, self.id)]
-        request.path = _convert_path_to_se_path(path)
-        request.attribute = attrib
-        response = self.service.get_attribute_value(request)
-        return _convert_variant_to_value(response.result)
->>>>>>> 111d575 (still got the command server -> client)
-=======
-=======
-    def instance(self):
-        id = self._create_command_arguments()
->>>>>>> 9dd010f (got the command server -> client)
-        return PyCommandArguments(
-            self.service, self.rules, self.command, self.path.copy(), id
-        )
-
-
-class PyCommandArgumentsSubItem:
-    def __init__(self, parent, name: str):
-        self.parent = parent
-        self.name = name
-
-    def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(self, attr)
-
-    def get_state(self) -> Any:
-        parent_state = self.parent.get_state()
-        try:
-            return parent_state[self.name]
-        except KeyError:
-            pass
-
-    getState = get_state
-
-    def set_state(self, state: Any) -> None:
-        self.parent.set_state({self.name: state})
-
-    setState = set_state
-
-    def __call__(self, *args, **kwds) -> Any:
-        return self.get_state()
-
-    def get_attrib_value(self, attrib: str) -> Any:
-        attrib_path = f"{self.name}/{attrib}"
-        return self.parent.get_attrib_value(attrib_path)
-
-    def help(self) -> None:
-        pass
-
-
-class PyCommandArguments(PyBasicStateContainer):
-    def __init__(
-        self, service: DatamodelService, rules: str, command: str, path: Path, id: str
-    ):
-        super().__init__(service, rules, path)
-        self.path.append((command, id))
->>>>>>> 52d87a3 (got the command server -> client)
 
     def __getattr__(self, attr):
         return PyCommandArgumentsSubItem(self, attr)
