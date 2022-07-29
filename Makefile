@@ -5,7 +5,7 @@ style:
 install:
 	@pip install -r requirements/requirements_build.txt
 	@python -m build
-	@pip install -q dist/*.whl
+	@pip install -q --force-reinstall dist/*.whl
 
 version-info:
 	@bash -c "date -u +'Build date: %B %d, %Y %H:%M UTC ShaID: <id>' | xargs -I date sed -i 's/_VERSION_INFO = .*/_VERSION_INFO = \"date\"/g' src/ansys/fluent/core/__init__.py"
