@@ -1,8 +1,6 @@
-import os
-from os.path import dirname, exists, join
+from os.path import dirname, join
+import pathlib
 import shutil
-
-import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.casereader import CaseReader, _get_processed_string
@@ -81,7 +79,6 @@ def test_casereader_text_gz():
     )
 
 
-@pytest.mark.skip("failing in github CI run, runs locally")
 def test_casereader_h5_for_project_directory():
 
     # Copying from and then creating the entire directory structure locally
@@ -93,9 +90,7 @@ def test_casereader_h5_for_project_directory():
         "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer/" + case_file_dir
     )
     prj_dir = join(dirname(case_filepath), case_file_dir)
-    if exists(prj_dir):
-        shutil.rmtree(dirname(dirname(prj_dir)))
-    os.makedirs(prj_dir)
+    pathlib.Path(prj_dir).mkdir(parents=True, exist_ok=True)
     shutil.copy(case_filepath, prj_dir)
     prj_file_dir = "Static_Mixer_Parameter_project_file"
     prj_file = r"Static_Mixer_Parameters.flprj"
