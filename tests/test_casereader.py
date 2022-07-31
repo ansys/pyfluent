@@ -1,4 +1,4 @@
-from os.path import dirname, join
+from os.path import dirname
 import pathlib
 import shutil
 
@@ -89,7 +89,7 @@ def test_casereader_h5_for_project_directory():
     case_filepath = examples.download_file(
         "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer/" + case_file_dir
     )
-    prj_dir = join(dirname(case_filepath), case_file_dir)
+    prj_dir = dirname(case_filepath) + "/" + case_file_dir
     pathlib.Path(prj_dir).mkdir(parents=True, exist_ok=True)
     shutil.copy2(case_filepath, prj_dir)
     prj_file_dir = "Static_Mixer_Parameter_project_file"
@@ -97,10 +97,10 @@ def test_casereader_h5_for_project_directory():
     prj_filepath = examples.download_file(
         prj_file, "pyfluent/static_mixer/" + prj_file_dir
     )
-    prj_file_dir = join(dirname(prj_filepath), prj_file_dir)
+    prj_file_dir = dirname(prj_filepath) + "/" + prj_file_dir
     shutil.copy2(prj_filepath, prj_file_dir)
 
-    call_casereader(join(prj_file_dir, prj_file))
+    call_casereader(prj_file_dir + "/" + prj_file)
 
 
 def test_processed_string():
