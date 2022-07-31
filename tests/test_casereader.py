@@ -2,8 +2,6 @@ from os.path import dirname, join
 import pathlib
 import shutil
 
-import pytest
-
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.casereader import CaseReader, _get_processed_string
 
@@ -81,8 +79,6 @@ def test_casereader_text_gz():
     )
 
 
-# TODO: Investigate (why test failing in github CI?)
-@pytest.mark.skip("Failing in github CI - might be due to linux based system")
 def test_casereader_h5_for_project_directory():
 
     # Copying from and then creating the entire directory structure locally

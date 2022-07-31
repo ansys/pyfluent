@@ -194,7 +194,7 @@ def _get_case_filepath(project_dir_path: str) -> str:
     file_list = list(
         itertools.chain(
             *(
-                glob.glob(project_dir_path + r"\**\**-Solve\*.%s" % ext)
+                glob.glob(project_dir_path + r"/**/**-Solve/*.%s" % ext)
                 for ext in ["cas", "cas.h5", "cas.gz"]
             )
         )
