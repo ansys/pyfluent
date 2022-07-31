@@ -81,6 +81,7 @@ def test_casereader_text_gz():
     )
 
 
+# TODO: Investigate (why test failing in github CI?)
 @pytest.mark.skip("Failing in github CI - might be due to linux based system")
 def test_casereader_h5_for_project_directory():
 
