@@ -2,6 +2,11 @@
 
 Core
 ====
+
+This section describes the Fluent Python API (application programming interface). 
+Here, you can find methods for launching Fluent and using assorted utilities
+and Fluent meshing and solver components.
+
 .. currentmodule:: ansys.fluent.core
 
 .. autosummary::
