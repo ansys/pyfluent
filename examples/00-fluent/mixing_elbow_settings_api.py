@@ -83,9 +83,7 @@ solver.root.setup.materials.copy_database_material_by_name(
 # Set up the cell zone conditions for the fluid zone (elbow-fluid). Set ``material``
 # to ``"water-liquid"``.
 
-solver.root.setup.cell_zone_conditions.fluid[
-    "elbow-fluid"
-].material = "water-liquid"
+solver.root.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 
 ###############################################################################
 # Set up boundary conditions for CFD analysis
@@ -108,9 +106,7 @@ solver.root.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
 solver.root.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].ke_spec = "Intensity and Hydraulic Diameter"
-solver.root.setup.boundary_conditions.velocity_inlet[
-    "cold-inlet"
-].turb_intensity = 5
+solver.root.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 5
 solver.root.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].turb_hydraulic_diam = "4 [in]"
@@ -146,9 +142,7 @@ solver.root.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
 # Backflow Turbulent Intensity: 5 [%]
 # Backflow Turbulent Viscosity Ratio: 4
 
-solver.root.setup.boundary_conditions.pressure_outlet[
-    "outlet"
-].turb_viscosity_ratio = 4
+solver.root.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
 ###############################################################################
 # Disable plotting of residuals during calculation
@@ -179,17 +173,11 @@ solver.root.solution.run_calculation.iterate(number_of_iterations=150)
 
 solver.root.results.graphics.vector["velocity_vector_symmetry"] = {}
 solver.root.results.graphics.vector["velocity_vector_symmetry"].print_state()
-solver.root.results.graphics.vector[
-    "velocity_vector_symmetry"
-].field = "temperature"
-solver.root.results.graphics.vector[
-    "velocity_vector_symmetry"
-].surfaces_list = [
+solver.root.results.graphics.vector["velocity_vector_symmetry"].field = "temperature"
+solver.root.results.graphics.vector["velocity_vector_symmetry"].surfaces_list = [
     "symmetry-xyplane",
 ]
-solver.root.results.graphics.vector[
-    "velocity_vector_symmetry"
-].scale.scale_f = 4
+solver.root.results.graphics.vector["velocity_vector_symmetry"].scale.scale_f = 4
 solver.root.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
 
 ###############################################################################
@@ -203,9 +191,9 @@ solver.root.results.graphics.vector["velocity_vector_symmetry"].style = "arrow"
 # Compute the mass flow rate.
 
 solver.root.solution.report_definitions.flux["mass_flow_rate"] = {}
-solver.root.solution.report_definitions.flux[
-    "mass_flow_rate"
-].zone_names.get_attr("allowed-values")
+solver.root.solution.report_definitions.flux["mass_flow_rate"].zone_names.get_attr(
+    "allowed-values"
+)
 solver.root.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
     "cold-inlet",
     "hot-inlet",

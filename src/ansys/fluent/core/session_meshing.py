@@ -1,13 +1,11 @@
 """Module containing class encapsulating Fluent connection."""
 import grpc
 
-from ansys.fluent.core.session import Session
-from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session import parse_server_info_file
-from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, Session, parse_server_info_file
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.utils.logging import LOG
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI
 
 _CODEGEN_MSG_DATAMODEL = (
     "Currently calling the datamodel API in a generic manner. "
@@ -86,13 +84,11 @@ class Meshing(Session):
 
     @property
     def tui(self):
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods
-        can be executed."""
+        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
+        executed."""
         if self._tui is None:
             try:
-                from ansys.fluent.core.meshing.tui import (
-                    main_menu as MeshingMainMenu,
-                )
+                from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
 
                 self._tui = MeshingMainMenu([], self._tui_service)
             except (ImportError, ModuleNotFoundError):
@@ -118,9 +114,7 @@ class Meshing(Session):
         """workflow datamodel root."""
         if self._workflow is None:
             try:
-                from ansys.fluent.core.datamodel.workflow import (
-                    Root as workflow_root,
-                )
+                from ansys.fluent.core.datamodel.workflow import Root as workflow_root
 
                 self._workflow = workflow_root(self._se_service, "workflow", [])
             except (ImportError, ModuleNotFoundError):

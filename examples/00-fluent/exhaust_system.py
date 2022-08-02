@@ -92,12 +92,8 @@ meshing.PartManagement.Node["Meshing Model"].Copy(
         "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
-meshing.PartManagement.ObjectSetting[
-    "DefaultObjectSetting"
-].OneZonePer.setState("part")
-meshing.workflow.TaskObject[
-    "Import CAD and Part Management"
-].Arguments.setState(
+meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.setState("part")
+meshing.workflow.TaskObject["Import CAD and Part Management"].Arguments.setState(
     {
         "Context": 0,
         "CreateObjectPer": "Custom",
@@ -159,9 +155,7 @@ meshing.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 #   :width: 400pt
 #   :align: center
 
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "CreatePatchPreferences": {
             "ShowCreatePatchPreferences": False,
@@ -171,9 +165,7 @@ meshing.workflow.TaskObject[
         "ZoneSelectionList": ["inlet.1"],
     }
 )
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "CreatePatchPreferences": {
             "ShowCreatePatchPreferences": False,
@@ -195,25 +187,17 @@ meshing.workflow.TaskObject[
 )
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 meshing.workflow.TaskObject["inlet-1"].Execute()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-2",
         "SelectionType": "zone",
         "ZoneSelectionList": ["inlet.2"],
     }
 )
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-2",
         "SelectionType": "zone",
@@ -232,25 +216,17 @@ meshing.workflow.TaskObject[
 )
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 meshing.workflow.TaskObject["inlet-2"].Execute()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-3",
         "SelectionType": "zone",
         "ZoneSelectionList": ["inlet"],
     }
 )
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "inlet-3",
         "SelectionType": "zone",
@@ -269,16 +245,10 @@ meshing.workflow.TaskObject[
 )
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 meshing.workflow.TaskObject["inlet-3"].Execute()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "outlet-1",
         "SelectionType": "zone",
@@ -286,9 +256,7 @@ meshing.workflow.TaskObject[
         "ZoneType": "pressure-outlet",
     }
 )
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
     {
         "PatchName": "outlet-1",
         "SelectionType": "zone",
@@ -308,12 +276,8 @@ meshing.workflow.TaskObject[
 )
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].InsertCompoundChildTask()
-meshing.workflow.TaskObject[
-    "Enclose Fluid Regions (Capping)"
-].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 meshing.workflow.TaskObject["outlet-1"].Execute()
 
 ###############################################################################
@@ -435,9 +399,7 @@ meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
 )
 meshing.workflow.TaskObject["Define Leakage Threshold"].AddChildToTask()
 
-meshing.workflow.TaskObject[
-    "Define Leakage Threshold"
-].InsertCompoundChildTask()
+meshing.workflow.TaskObject["Define Leakage Threshold"].InsertCompoundChildTask()
 meshing.workflow.TaskObject["leakage-1"].Arguments.setState(
     {
         "AddChild": "yes",
@@ -619,9 +581,7 @@ solver.tui.define.boundary_conditions.set.velocity_inlet(
 # Set the same boundary conditions for the other velocity inlets (inlet_2
 # and inlet_3).
 
-solver.tui.define.boundary_conditions.copy_bc(
-    "inlet-1", "inlet-2", "inlet-3", ()
-)
+solver.tui.define.boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
 
 ###############################################################################
 # Set boundary conditions at outlet
@@ -727,9 +687,7 @@ solver.tui.display.objects.create(
     "quit",
 )
 
-solver.tui.display.objects.create(
-    "mesh", "mesh-1", "surfaces-list", "*", "()", "quit"
-)
+solver.tui.display.objects.create("mesh", "mesh-1", "surfaces-list", "*", "()", "quit")
 
 ###############################################################################
 # Create scene

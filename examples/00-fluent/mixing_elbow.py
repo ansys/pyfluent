@@ -118,9 +118,7 @@ meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
 meshing.workflow.TaskObject["Describe Geometry"].Arguments = dict(
     SetupType="The geometry consists of only fluid regions with no voids"
 )
-meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
-    SetupTypeChanged=True
-)
+meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 meshing.workflow.TaskObject["Describe Geometry"].Execute()
 
 ###############################################################################

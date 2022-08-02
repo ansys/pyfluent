@@ -1,12 +1,10 @@
 """Module containing class encapsulating Fluent connection."""
 import grpc
 
-from ansys.fluent.core.session import Session
-from ansys.fluent.core.session import parse_server_info_file
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.utils.logging import LOG
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, Session, parse_server_info_file
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI
+from ansys.fluent.core.utils.logging import LOG
 
 
 class Solver(Session):
@@ -76,8 +74,8 @@ class Solver(Session):
 
     @property
     def tui(self):
-        """Instance of ``main_menu`` on which Fluent's SolverTUI methods
-        can be executed."""
+        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
+        executed."""
         if self._tui is None:
             try:
                 from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
