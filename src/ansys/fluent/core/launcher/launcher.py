@@ -16,7 +16,9 @@ from typing import Any, Dict
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import Session
 from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
 
@@ -270,10 +272,15 @@ def launch_fluent(
     if mode == "meshing":
         newSession = Meshing
         meshing_mode = True
+    elif mode == "pure-meshing":
+        newSession = PureMeshing
+        meshing_mode = True
     elif mode == "solver":
         newSession = Solver
+    elif mode == "solver-lite":
+        newSession = SolverLite
     else:
-        newSession = Session
+        raise RuntimeError("The passed mode matches none of the 4 allowed modes.")
 
     argvals["meshing_mode"] = meshing_mode
     if start_instance is None:
