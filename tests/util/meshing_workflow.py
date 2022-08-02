@@ -106,9 +106,7 @@ def mixing_elbow_geometry():
 
 
 def initialize_fault_tolerant(mesh_session):
-    mesh_session.workflow.InitializeWorkflow(
-        WorkflowType="Fault-tolerant Meshing"
-    )
+    mesh_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
 
 @pytest.fixture
