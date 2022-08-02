@@ -44,11 +44,11 @@ def create_mesh_session():
 
 
 def initialize_watertight(mesh_session):
-    mesh_session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    mesh_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 
 def reset_workflow(mesh_session):
-    mesh_session.meshing.workflow.ResetWorkflow()
+    mesh_session.workflow.ResetWorkflow()
 
 
 @pytest.fixture
@@ -66,7 +66,7 @@ def new_watertight_workflow_session(new_mesh_session):
 
 @pytest.fixture
 def new_watertight_workflow(new_watertight_workflow_session):
-    yield new_watertight_workflow_session.meshing.workflow
+    yield new_watertight_workflow_session.workflow
 
 
 _mesher = None
@@ -89,7 +89,7 @@ def shared_watertight_workflow_session(shared_mesh_session):
 
 @pytest.fixture
 def shared_watertight_workflow(shared_watertight_workflow_session):
-    yield shared_watertight_workflow_session.meshing.workflow
+    yield shared_watertight_workflow_session.workflow
 
 
 _mixing_elbow_geometry_filename = None
@@ -106,7 +106,7 @@ def mixing_elbow_geometry():
 
 
 def initialize_fault_tolerant(mesh_session):
-    mesh_session.meshing.workflow.InitializeWorkflow(
+    mesh_session.workflow.InitializeWorkflow(
         WorkflowType="Fault-tolerant Meshing"
     )
 
@@ -119,7 +119,7 @@ def new_fault_tolerant_workflow_session(new_mesh_session):
 
 @pytest.fixture
 def new_fault_tolerant_workflow(new_fault_tolerant_workflow_session):
-    yield new_fault_tolerant_workflow_session.meshing.workflow
+    yield new_fault_tolerant_workflow_session.workflow
 
 
 _mesher = None
@@ -142,7 +142,7 @@ def shared_fault_tolerant_workflow_session(shared_mesh_session):
 
 @pytest.fixture
 def shared_fault_tolerant_workflow(shared_fault_tolerant_workflow_session):
-    yield shared_fault_tolerant_workflow_session.meshing.workflow
+    yield shared_fault_tolerant_workflow_session.workflow
 
 
 _exhaust_system_geometry_filename = None
