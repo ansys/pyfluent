@@ -1,6 +1,10 @@
 from pathlib import Path
 
 import pytest
+from util.meshing_workflow import (  # noqa: F401
+    create_mesh_session,
+    mixing_elbow_geometry,
+)
 
 import ansys.fluent.core as pyfluent
 
@@ -10,7 +14,7 @@ import ansys.fluent.core as pyfluent
 def test_simple_solve(load_mixing_elbow_param_case_dat):
 
     """
-    This optiSLang integration test performs these steps
+    Use case 1: This optiSLang integration test performs these steps
 
     - Reads a case file with and without data file
     - Gets input and output parameters and creates dictionary
@@ -19,12 +23,14 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     - Reread data
 
     This test queries the following using PyTest:
+    - Session health
     - Input parameters
     - Output parameters
     """
 
     # Step 1: Setup logging
     pyfluent.set_log_level("ERROR")
+    pyfluent.enable_logging_to_stdout()
 
     # Step 2: Launch fluent session and read case file with and without data file
     session = load_mixing_elbow_param_case_dat
@@ -80,3 +86,49 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
     assert input_parameters[0] == input_parameters2[0]
     assert output_parameters[0] == output_parameters2[0]
+
+
+@pytest.mark.optislang
+@pytest.mark.integration
+def test_generate_read_mesh(create_mesh_session, mixing_elbow_geometry):
+
+    """
+    Use case 2: This optiSLang integration test performs these steps
+
+    - Launch Fluent in Meshing Mode
+    - Generate mesh with default workflow settings
+    - Read created mesh file
+    - Switch to solution and write case file
+
+    This test queries the following using PyTest:
+    - Session health
+    """
+
+    # Step 1: Setup logging
+    pyfluent.set_log_level("ERROR")
+    pyfluent.enable_logging_to_stdout()
+
+    # Step 2: Launch fluent session in meshing mode
+    session = create_mesh_session
+    assert session.check_health() == "SERVING"
+
+    # Step 3 Generate mesh from geometry with default workflow settings
+    session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    session.meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=mixing_elbow_geometry
+    )
+    session.meshing.workflow.TaskObject["Import Geometry"].Execute()
+    session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+    session.meshing.tui.mesh.check_mesh()
+    session.meshing.tui.file.write_mesh("default_mesh.msh.gz")
+    session.meshing.tui.file.write_mesh("default_mesh.msh.h5")
+
+    # Step 4: use created mesh file - .msh.gz/.msh.h5
+    session.meshing.tui.file.read_mesh("default_mesh.msh.gz", "ok")
+    session.meshing.tui.file.read_mesh("default_mesh.msh.h5", "ok")
+
+    # Step 5: Switch to solution and Write case file
+    session.meshing.tui.switch_to_solution_mode("yes")
+    session.solver.tui.solve.initialize.hyb_initialization()
+    session.solver.tui.file.write_case("default_case.cas.gz")
+    session.solver.tui.file.write_case("default_case.cas.h5")
