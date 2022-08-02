@@ -43,7 +43,7 @@ You can launch Fluent in meshing mode with:
 
     from ansys.fluent.core import launch_fluent
 
-    meshing_session = launch_fluent(meshing_mode=True)
+    meshing_session = launch_fluent(mode="meshing")
 
 Setting the ``meshing_mode`` argument to ``False`` launches Fluent in solution mode. 
 

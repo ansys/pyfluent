@@ -25,7 +25,7 @@ This example shows how you can start Fluent in solution mode:
 
    solver_session_a = pyfluent.launch_fluent()
 
-   solver_session_b = pyfluent.launch_fluent(meshing_mode=False)
+   solver_session_b = pyfluent.launch_fluent(mode="solver")
 
 Meshing mode
 ~~~~~~~~~~~~
@@ -33,7 +33,7 @@ This example shows how you can start Fluent in meshing mode:
 
 .. code:: python
 
-   meshing_session = pyfluent.launch_fluent(meshing_mode=True)
+   meshing_session = pyfluent.launch_fluent(mode="meshing")
 
 Precision
 ~~~~~~~~~
