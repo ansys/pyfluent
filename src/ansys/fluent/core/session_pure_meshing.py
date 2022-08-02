@@ -1,5 +1,7 @@
 """Module containing class encapsulating Fluent connection.
-**********PRESENTLY SAME AS MESHING WITHOUT THE SWITCH TO SOLVER***********"""
+
+**********PRESENTLY SAME AS MESHING WITHOUT THE SWITCH TO SOLVER***********
+"""
 import grpc
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric

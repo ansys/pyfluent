@@ -1,11 +1,13 @@
 """Module containing class encapsulating Fluent connection.
-**********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********"""
+
+**********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
+"""
 import grpc
 
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, Session, parse_server_info_file
-from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.logging import LOG
 
 
