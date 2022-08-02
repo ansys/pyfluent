@@ -28,7 +28,7 @@ from util.meshing_workflow import (  # noqa: F401
 from util.solver import check_report_definition_result
 
 
-def test_mixing_elbow(create_mesh_session, mixing_elbow_geometry):
+def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     session = new_watertight_workflow_session
     workflow = session.meshing.workflow

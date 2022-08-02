@@ -1,10 +1,7 @@
 from pathlib import Path
 
 import pytest
-from util.meshing_workflow import (  # noqa: F401
-    create_mesh_session,
-    mixing_elbow_geometry,
-)
+from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 
@@ -90,7 +87,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
 @pytest.mark.optislang
 @pytest.mark.integration
-def test_generate_read_mesh(create_mesh_session, mixing_elbow_geometry):
+def test_generate_read_mesh(mixing_elbow_geometry):
 
     """
     Use case 2: This optiSLang integration test performs these steps
@@ -109,7 +106,9 @@ def test_generate_read_mesh(create_mesh_session, mixing_elbow_geometry):
     pyfluent.enable_logging_to_stdout()
 
     # Step 2: Launch fluent session in meshing mode
-    session = create_mesh_session
+    session = pyfluent.launch_fluent(
+        meshing_mode=True, precision="double", processor_count=2
+    )
     assert session.check_health() == "SERVING"
 
     # Step 3 Generate mesh from geometry with default workflow settings
