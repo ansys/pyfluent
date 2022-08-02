@@ -40,9 +40,7 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
 
 
 def create_mesh_session():
-    return pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
-    )
+    return pyfluent.launch_fluent(mode="meshing", precision="double", processor_count=2)
 
 
 def initialize_watertight(mesh_session):

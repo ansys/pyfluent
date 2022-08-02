@@ -5,13 +5,13 @@ from ansys.fluent.core.examples import download_file
 
 
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
-    session = new_solver_session
-    assert session.solver.root.setup.models.viscous.model() == "laminar"
-    assert "inviscid" in session.solver.root.setup.models.viscous.model.get_attr(
+    solver_session = new_solver_session
+    assert solver_session.root.setup.models.viscous.model() == "laminar"
+    assert "inviscid" in solver_session.root.setup.models.viscous.model.get_attr(
         "allowed-values"
     )
-    session.solver.root.setup.models.viscous.model = "inviscid"
-    assert session.solver.root.setup.models.viscous.model() == "inviscid"
+    solver_session.root.setup.models.viscous.model = "inviscid"
+    assert solver_session.root.setup.models.viscous.model() == "inviscid"
 
 
 @pytest.mark.skip(reason="failing if run with other tests")

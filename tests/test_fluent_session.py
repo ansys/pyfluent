@@ -15,7 +15,7 @@ import docker
 
 def _read_case(session):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.solver.root.file.read(file_type="case", file_name=case_path)
+    session.root.file.read(file_type="case", file_name=case_path)
 
 
 def test_session_starts_transcript_by_default(new_solver_session) -> None:

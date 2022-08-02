@@ -19,17 +19,17 @@ _mixing_elbow_mesh_filename = None
 
 @pytest.fixture
 def load_mixing_elbow_mesh(with_launching_container):
-    session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
     global _mixing_elbow_mesh_filename
     if not _mixing_elbow_mesh_filename:
         _mixing_elbow_mesh_filename = download_file(
             filename="mixing_elbow.msh.h5", directory="pyfluent/mixing_elbow"
         )
-    session.solver.root.file.read(
+    solver_session.root.file.read(
         file_type="case", file_name=_mixing_elbow_mesh_filename
     )
-    yield session
-    session.exit()
+    yield solver_session
+    solver_session.exit()
 
 
 _mixing_elbow_case_filename = None
@@ -38,7 +38,7 @@ _mixing_elbow_dat_filename = None
 
 @pytest.fixture
 def load_mixing_elbow_case_dat(with_launching_container):
-    session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
     global _mixing_elbow_case_filename
     if not _mixing_elbow_case_filename:
         _mixing_elbow_case_filename = download_file(
@@ -49,11 +49,11 @@ def load_mixing_elbow_case_dat(with_launching_container):
         _mixing_elbow_dat_filename = download_file(
             filename="mixing_elbow.dat.h5", directory="pyfluent/mixing_elbow"
         )
-    session.solver.root.file.read(
+    solver_session.root.file.read(
         file_type="case-data", file_name=_mixing_elbow_case_filename
     )
-    yield session
-    session.exit()
+    yield solver_session
+    solver_session.exit()
 
 
 _mixing_elbow_param_case_filename = None
@@ -62,7 +62,7 @@ _mixing_elbow_param_dat_filename = None
 
 @pytest.fixture
 def load_mixing_elbow_param_case_dat(with_launching_container):
-    session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
     global _mixing_elbow_param_case_filename
     if not _mixing_elbow_param_case_filename:
         _mixing_elbow_param_case_filename = download_file(
@@ -73,8 +73,8 @@ def load_mixing_elbow_param_case_dat(with_launching_container):
         _mixing_elbow_param_dat_filename = download_file(
             filename="elbow_param.dat.h5", directory="pyfluent/mixing_elbow"
         )
-    session.solver.root.file.read(
+    solver_session.root.file.read(
         file_type="case-data", file_name=_mixing_elbow_param_case_filename
     )
-    yield session
-    session.exit()
+    yield solver_session
+    solver_session.exit()
