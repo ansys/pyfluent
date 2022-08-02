@@ -220,13 +220,6 @@ class Session:
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service, self.field_info)
 
-        # self.meshing = Session.Meshing(
-        #     self._datamodel_service_tui, self._datamodel_service_se
-        # )
-        # self.solver = Session.Solver(
-        #     self._datamodel_service_tui, self._settings_service
-        # )
-
         self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
