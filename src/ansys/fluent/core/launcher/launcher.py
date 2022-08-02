@@ -15,6 +15,8 @@ from typing import Any, Dict
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import Session
+from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
 
@@ -179,7 +181,6 @@ def launch_fluent(
     precision: str = None,
     processor_count: int = None,
     journal_filename: str = None,
-    meshing_mode: bool = None,
     start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
@@ -190,6 +191,7 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
+    mode: str = "meshing",
 ) -> Session:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -207,9 +209,6 @@ def launch_fluent(
         is used.
     journal_filename : str, optional
         Name of the journal file to read. The default is ``None``.
-    meshing_mode : bool, optional
-        Whether to launch Fluent in meshing mode. The default is ``None``,
-        in which case Fluent is launched in meshing mode.
     start_timeout : int, optional
         Maximum allowable time in seconds to connect to the Fluent
         server. The default is ``100``.
@@ -252,18 +251,31 @@ def launch_fluent(
         PYFLUENT_SHOW_SERVER_GUI environment variable. For example, if
         PYFLUENT_SHOW_SERVER_GUI is set to ``1`` and the ``show-gui``
         parameter is set to ``False``, the GUI is hidden.
-
-
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
+    mode : str, optional
+        Launch mode of Fluent to point to a specific session type.
+        Currently, available - "meshing" and "solver"
+        Default value is "meshing"
 
     Returns
     -------
     ansys.fluent.session.Session
         Fluent session.
     """
-    argvals = locals()
+    argvals = locals().copy()
+
+    meshing_mode = False
+    if mode == "meshing":
+        newSession = Meshing
+        meshing_mode = True
+    elif mode == "solver":
+        newSession = Solver
+    else:
+        newSession = Session
+
+    argvals["meshing_mode"] = meshing_mode
     if start_instance is None:
         start_instance = bool(
             int(
@@ -305,7 +317,7 @@ def launch_fluent(
                     "Waiting for Fluent to launch...%02d seconds remaining",
                     start_timeout,
                 )
-            return Session.create_from_server_info_file(
+            return newSession.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
         finally:
@@ -333,7 +345,7 @@ def launch_fluent(
             port = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
-            return Session(
+            return newSession(
                 port=port,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
@@ -341,7 +353,7 @@ def launch_fluent(
         else:
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
-            return Session(
+            return newSession(
                 ip=ip,
                 port=port,
                 cleanup_on_exit=cleanup_on_exit,

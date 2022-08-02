@@ -12,11 +12,9 @@ import grpc
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
-from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -25,17 +23,15 @@ from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
-from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.solver.monitors_manager import MonitorsManager
 
 try:
     from ansys.fluent.core.solver.settings import root
 except Exception:
     root = Any
-from ansys.fluent.core.utils.logging import LOG
 
 
-def _parse_server_info_file(filename: str):
+def parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
     ip_and_port = lines[0].strip().split(":")
@@ -78,12 +74,6 @@ def _get_max_c_int_limit() -> int:
     """
     return 2 ** (sizeof(c_int) * 8 - 1) - 1
 
-
-_CODEGEN_MSG_DATAMODEL = (
-    "Currently calling the datamodel API in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local datamodel API classes."
-)
 
 _CODEGEN_MSG_TUI = (
     "Currently calling the TUI commands in a generic manner. "
@@ -230,12 +220,12 @@ class Session:
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service, self.field_info)
 
-        self.meshing = Session.Meshing(
-            self._datamodel_service_tui, self._datamodel_service_se
-        )
-        self.solver = Session.Solver(
-            self._datamodel_service_tui, self._settings_service
-        )
+        # self.meshing = Session.Meshing(
+        #     self._datamodel_service_tui, self._datamodel_service_se
+        # )
+        # self.solver = Session.Solver(
+        #     self._datamodel_service_tui, self._settings_service
+        # )
 
         self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
@@ -243,6 +233,7 @@ class Session:
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self._cleanup_on_exit = cleanup_on_exit
+        self._start_transcript = start_transcript
 
         if start_transcript:
             self.start_transcript()
@@ -289,7 +280,7 @@ class Session:
         Session
             Session instance
         """
-        ip, port, password = _parse_server_info_file(server_info_filepath)
+        ip, port, password = parse_server_info_file(server_info_filepath)
         session = Session(
             ip=ip,
             port=port,
@@ -374,128 +365,3 @@ class Session:
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self._finalizer()
-
-    class Meshing:
-        def __init__(
-            self, tui_service: DatamodelService_TUI, se_service: DatamodelService_SE
-        ):
-            self._tui_service = tui_service
-            self._se_service = se_service
-            self._tui = None
-            self._meshing = None
-            self._workflow = None
-            self._part_management = None
-            self._pm_file_management = None
-
-        @property
-        def tui(self):
-            """Instance of ``main_menu`` on which Fluent's SolverTUI methods
-            can be executed."""
-            if self._tui is None:
-                try:
-                    from ansys.fluent.core.meshing.tui import (
-                        main_menu as MeshingMainMenu,
-                    )
-
-                    self._tui = MeshingMainMenu([], self._tui_service)
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_TUI)
-                    self._tui = TUIMenuGeneric([], self._tui_service)
-            return self._tui
-
-        @property
-        def meshing(self):
-            """meshing datamodel root."""
-            if self._meshing is None:
-                try:
-                    from ansys.fluent.core.datamodel.meshing import Root as meshing_root
-
-                    self._meshing = meshing_root(self._se_service, "meshing", [])
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._meshing = PyMenuGeneric(self._se_service, "meshing")
-            return self._meshing
-
-        @property
-        def workflow(self):
-            """workflow datamodel root."""
-            if self._workflow is None:
-                try:
-                    from ansys.fluent.core.datamodel.workflow import (
-                        Root as workflow_root,
-                    )
-
-                    self._workflow = workflow_root(self._se_service, "workflow", [])
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._workflow = PyMenuGeneric(self._se_service, "workflow")
-            return self._workflow
-
-        @property
-        def PartManagement(self):
-            """PartManagement datamodel root."""
-            if self._part_management is None:
-                try:
-                    from ansys.fluent.core.datamodel.PartManagement import (
-                        Root as PartManagement_root,
-                    )
-
-                    self._part_management = PartManagement_root(
-                        self._se_service, "PartManagement", []
-                    )
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._part_management = PyMenuGeneric(
-                        self._se_service, "PartManagement"
-                    )
-            return self._part_management
-
-        @property
-        def PMFileManagement(self):
-            """PMFileManagement datamodel root."""
-            if self._pm_file_management is None:
-                try:
-                    from ansys.fluent.core.datamodel.PMFileManagement import (
-                        Root as PMFileManagement_root,
-                    )
-
-                    self._pm_file_management = PMFileManagement_root(
-                        self._se_service, "PMFileManagement", []
-                    )
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._pm_file_management = PyMenuGeneric(
-                        self._se_service, "PMFileManagement"
-                    )
-            return self._pm_file_management
-
-    class Solver:
-        def __init__(
-            self, tui_service: DatamodelService_TUI, settings_service: SettingsService
-        ):
-            self._tui_service = tui_service
-            self._settings_service = settings_service
-            self._tui = None
-            self._settings_root = None
-
-        @property
-        def tui(self):
-            """Instance of ``main_menu`` on which Fluent's SolverTUI methods
-            can be executed."""
-            if self._tui is None:
-                try:
-                    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-
-                    self._tui = SolverMainMenu([], self._tui_service)
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_TUI)
-                    self._tui = TUIMenuGeneric([], self._tui_service)
-            return self._tui
-
-        @property
-        def root(self):
-            """root settings object."""
-            if self._settings_root is None:
-                LOG.warning("The settings API is currently experimental.")
-                self._settings_root = settings_get_root(flproxy=self._settings_service)
-            return self._settings_root
