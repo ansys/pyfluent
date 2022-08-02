@@ -119,7 +119,7 @@ class DataModelGenerator:
         import ansys.fluent.core as pyfluent
 
         if run_meshing_mode:
-            session = pyfluent.launch_fluent(meshing_mode=True)
+            session = pyfluent.launch_fluent(mode="meshing")
             for _, info in self._static_info.items():
                 if info.mode == "meshing":
                     info.static_info = self._get_static_info(info.rules, session)
