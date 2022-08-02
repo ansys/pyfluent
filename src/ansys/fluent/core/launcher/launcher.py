@@ -193,7 +193,7 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    mode: str = "meshing",
+    mode: str = "solver",
 ) -> Session:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -258,8 +258,8 @@ def launch_fluent(
         in the fluent session
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
-        Currently, available - "meshing" and "solver"
-        Default value is "meshing"
+        Currently, available - "meshing", "pure-meshing", "solver" and "solver-lite"
+        Default value is "solver"
 
     Returns
     -------
