@@ -266,7 +266,7 @@ def launch_fluent(
     """
     argvals = locals().copy()
 
-    meshing_mode = False
+    meshing_mode = None
     if mode == "meshing":
         newSession = Meshing
         meshing_mode = True
