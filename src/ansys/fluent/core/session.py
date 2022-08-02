@@ -87,12 +87,6 @@ class Session:
 
     Attributes
     ----------
-    meshing: Session.Meshing
-        Instance of Session.Meshing which holds the top-level objects
-        for meshing TUI and various meshing datamodel API calls.
-    solver: Session.Solver
-        Instance of Session.Solver which holds the top-level objects
-        for solver TUI and settings objects calls.
     scheme_eval: SchemeEval
         Instance of SchemeEval on which Fluent's scheme code can be
         executed.

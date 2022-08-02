@@ -8,7 +8,9 @@ from ansys.fluent.core.utils.logging import LOG
 
 
 class Solver(Session):
-    """Encapsulates a Fluent - Meshing session connection."""
+    """Encapsulates a Fluent - Solver session connection.
+    Solver(Session) which holds the top-level objects
+    for solver TUI and settings objects calls."""
 
     def __init__(
         self,

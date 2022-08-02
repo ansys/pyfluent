@@ -15,7 +15,9 @@ _CODEGEN_MSG_DATAMODEL = (
 
 
 class Meshing(Session):
-    """Encapsulates a Fluent - Meshing session connection."""
+    """Encapsulates a Fluent - Meshing session connection.
+    Meshing(Session) which holds the top-level objects
+    for meshing TUI and various meshing datamodel API calls."""
 
     def __init__(
         self,
