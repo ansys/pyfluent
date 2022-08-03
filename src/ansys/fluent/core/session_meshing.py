@@ -164,6 +164,7 @@ class Meshing(Session):
 
     def switch_to_solver(self):
         self.tui.switch_to_solution_mode("yes")
+        print(self._metadata, "%%%%%")
         password = self._metadata[0][1]
         solver_session = Solver(
             password=password,
