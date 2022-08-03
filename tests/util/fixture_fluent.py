@@ -172,7 +172,7 @@ def load_disk_mesh(with_launching_container):
     global _disk_mesh_filename
     if not _disk_mesh_filename:
         _disk_mesh_filename = download_file(
-            filename="disk.msh", directory="pyfluent/disk_tut"
+            filename="disk.msh", directory="pyfluent/rotating_disk"
         )
     session.solver.root.file.read(file_type="case", file_name=_disk_mesh_filename)
     yield session
