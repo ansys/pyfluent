@@ -4,13 +4,16 @@ import pytest
 @pytest.mark.quick
 @pytest.mark.setup
 def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
-    session = load_mixing_elbow_mesh
-    assert session.solver.root.get_attr("active?")
-    assert session.check_health() == "SERVING"
+    solver_session = load_mixing_elbow_mesh
+    assert solver_session.root.get_attr("active?")
+    assert solver_session.check_health() == "SERVING"
     ###
-    assert not session.solver.root.setup.models.energy.enabled()
-    assert session.scheme_eval.scheme_eval("(case-valid?)")
+    assert not solver_session.root.setup.models.energy.enabled()
+    assert solver_session.scheme_eval.scheme_eval("(case-valid?)")
     ###
-    session.solver.tui.mesh.check()
-    session.solver.tui.define.units("length", "in")
-    assert session.scheme_eval.scheme_eval('(units/quantity-info "length")')[-1] == "in"
+    solver_session.tui.mesh.check()
+    solver_session.tui.define.units("length", "in")
+    assert (
+        solver_session.scheme_eval.scheme_eval('(units/quantity-info "length")')[-1]
+        == "in"
+    )

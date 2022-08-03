@@ -3,7 +3,7 @@ import pytest
 
 @pytest.mark.setup
 def test_post_elbow(load_mixing_elbow_case_dat):
-    pyflu = load_mixing_elbow_case_dat.solver.root
+    pyflu = load_mixing_elbow_case_dat.root
     pyflu.results.graphics.vector["velocity_vector_symmetry"] = {}
     pyflu.results.graphics.vector["velocity_vector_symmetry"].field = "temperature"
     pyflu.results.graphics.vector["velocity_vector_symmetry"].surfaces_list = [
