@@ -15,6 +15,7 @@ def exhaust_system_geometry():
 
 
 _mixing_elbow_mesh_filename = None
+_mixing_elbow_geom_filename = None
 
 
 @pytest.fixture
@@ -78,3 +79,43 @@ def load_mixing_elbow_param_case_dat(with_launching_container):
     )
     yield solver_session
     solver_session.exit()
+
+
+@pytest.fixture
+def load_mixing_elbow_pure_meshing(with_launching_container):
+    pure_meshing_session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, mode="pure-meshing"
+    )
+    global _mixing_elbow_geom_filename
+    if not _mixing_elbow_geom_filename:
+        _mixing_elbow_geom_filename = download_file(
+            filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        )
+
+    pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=_mixing_elbow_geom_filename, LengthUnit="in"
+    )
+
+    yield pure_meshing_session
+    pure_meshing_session.exit()
+
+
+@pytest.fixture
+def load_mixing_elbow_meshing(with_launching_container):
+    pure_meshing_session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, mode="meshing"
+    )
+    global _mixing_elbow_geom_filename
+    if not _mixing_elbow_geom_filename:
+        _mixing_elbow_geom_filename = download_file(
+            filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
+        )
+
+    pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        FileName=_mixing_elbow_geom_filename, LengthUnit="in"
+    )
+
+    yield pure_meshing_session
+    pure_meshing_session.exit()

@@ -100,7 +100,7 @@ class SolverLite(Session):
             self._settings_root = settings_get_root(flproxy=self._settings_service)
         return self._settings_root
 
-    def switch_to_solver(self):
+    def switch_to_full_solver(self):
         password = self._metadata[0][1]
         solver_session = Solver(
             password=password,
