@@ -39,7 +39,6 @@ def execute_task_with_pre_and_postcondition_checks(workflow, task_name: str) -> 
     check_task_execute_postconditions(task)
 
 
-@pytest.fixture
 def create_mesh_session():
     return pyfluent.launch_fluent(
         meshing_mode=True, precision="double", processor_count=2
