@@ -85,6 +85,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 
 @pytest.mark.integration
 @pytest.mark.setup
+@pytest.mark.skip(reason="skip to run using 22.2")
 def test_boundaries_periodic(load_periodic_rot_cas):
     session = load_periodic_rot_cas
     print(__file__)
