@@ -92,14 +92,14 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     _DATA_FILE = os.path.join(_THIS_DIR, "boundaries_periodic_expDict")
     pysession = session.solver.root
     boundary_exp = json.load(open(_DATA_FILE))
-    boundary_test = {}
-    boundary_tested = {}
+    boundary_test = dict()
+    boundary_tested = dict()
     for name, boundary in pysession.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_1"] = boundary_test
     TestCase().assertDictEqual(boundary_tested["val_1"], boundary_exp["val_1"])
 
-    boundary_test = {}
+    boundary_test = dict()
     for boundary_type in pysession.setup.boundary_conditions.get_active_child_names():
         if boundary_type == "matching_tolerance":
             continue
@@ -120,7 +120,7 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     pysession.setup.boundary_conditions.velocity_inlet["inlet"].vmag = 5.0
     pysession.setup.boundary_conditions["inlet"].vmag = 10.0
     boundaries_check = ["inlet", "out", "pipe2_wall"]
-    boundary_test = {}
+    boundary_test = dict()
     for name, boundary in pysession.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_3"] = boundary_test
