@@ -196,7 +196,7 @@ class TUIGenerator:
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         self.session = pyfluent.launch_fluent(mode="meshing")
-        self._service = self.session._datamodel_service_tui
+        self._service = self.session.fluent_connection._datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
