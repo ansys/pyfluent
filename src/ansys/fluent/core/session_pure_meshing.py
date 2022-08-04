@@ -169,7 +169,3 @@ class PureMeshing(BaseSession):
                     self._se_service, "PMFileManagement"
                 )
         return self._pm_file_management
-
-    def exit(self) -> None:
-        if self._channel_str:
-            self._finalizer()

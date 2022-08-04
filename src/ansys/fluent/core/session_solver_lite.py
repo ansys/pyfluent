@@ -116,7 +116,3 @@ class SolverLite(BaseSession):
         )
 
         return solver_session
-
-    def exit(self) -> None:
-        if self._channel_str:
-            self._finalizer()

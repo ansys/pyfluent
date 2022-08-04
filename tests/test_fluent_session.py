@@ -9,7 +9,7 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session import _FluentConnection
 import docker
 
 
@@ -29,7 +29,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
     print_transcript.called = False
     print_transcript.transcript = None
 
-    BaseSession._print_transcript = print_transcript
+    _FluentConnection._print_transcript = print_transcript
 
     _read_case(session=session)
 
