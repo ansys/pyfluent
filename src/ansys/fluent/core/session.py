@@ -82,7 +82,7 @@ _CODEGEN_MSG_TUI = (
 )
 
 
-class Session:
+class _FluentConnection:
     """Encapsulates a Fluent connection.
 
     Attributes
@@ -182,11 +182,11 @@ class Session:
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
-        self._id = f"session-{next(Session._id_iter)}"
+        self._id = f"session-{next(_FluentConnection._id_iter)}"
 
-        if not Session._monitor_thread:
-            Session._monitor_thread = MonitorThread()
-            Session._monitor_thread.start()
+        if not _FluentConnection._monitor_thread:
+            _FluentConnection._monitor_thread = MonitorThread()
+            _FluentConnection._monitor_thread.start()
 
         self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
@@ -229,7 +229,7 @@ class Session:
 
         self._finalizer = weakref.finalize(
             self,
-            Session._exit,
+            _FluentConnection._exit,
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
@@ -237,45 +237,7 @@ class Session:
             self.events_manager,
             self._remote_instance,
         )
-        Session._monitor_thread.cbs.append(self._finalizer)
-
-    @classmethod
-    def create_from_server_info_file(
-        cls,
-        server_info_filepath: str,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-    ) -> "Session":
-        """Create a Session instance from server-info file.
-
-        Parameters
-        ----------
-        server_info_filepath : str
-            Path to server-info file written out by Fluent server
-        cleanup_on_exit : bool, optional
-            When True, the connected Fluent session will be shut down
-            when PyFluent is exited or exit() is called on the session
-            instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
-            Defaults to true.
-
-        Returns
-        -------
-        Session
-            Session instance
-        """
-        ip, port, password = parse_server_info_file(server_info_filepath)
-        session = Session(
-            ip=ip,
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
-        )
-        return session
+        _FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     @property
     def id(self) -> str:
@@ -295,7 +257,7 @@ class Session:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    Session._print_transcript(transcript[0:-1])
+                    _FluentConnection._print_transcript(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break
@@ -303,7 +265,7 @@ class Session:
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(
-            target=Session._process_transcript, args=(self._transcript_service,)
+            target=_FluentConnection._process_transcript, args=(self._transcript_service,)
         )
 
         self._transcript_thread.start()
@@ -346,9 +308,123 @@ class Session:
         if remote_instance:
             remote_instance.delete()
 
+
+class BaseSession:
+    """Instantiates a Fluent connection.
+
+    Attributes
+    ----------
+    scheme_eval: SchemeEval
+        Instance of SchemeEval on which Fluent's scheme code can be
+        executed.
+
+    Methods
+    -------
+    create_from_server_info_file(
+        server_info_filepath, cleanup_on_exit, start_transcript
+        )
+        Create a Session instance from server-info file
+
+    start_transcript()
+        Start streaming of Fluent transcript
+
+    stop_transcript()
+        Stop streaming of Fluent transcript
+
+    check_health()
+        Check health of Fluent connection
+
+    exit()
+        Close the Fluent connection and exit Fluent.
+    """
+    def __init__(
+        self,
+        ip: str = None,
+        port: int = None,
+        password: str = None,
+        channel: grpc.Channel = None,
+        cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
+        remote_instance=None,
+        fluent_connection=None
+    ):
+        if not fluent_connection:
+            self.fluent_connection = _FluentConnection(
+                ip=ip,
+                port=port,
+                password=password,
+                channel=channel,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                remote_instance=remote_instance
+            )
+        else:
+            self.fluent_connection = fluent_connection
+
+        self.scheme_eval = self.fluent_connection.scheme_eval
+
+    @classmethod
+    def create_from_server_info_file(
+            cls,
+            server_info_filepath: str,
+            cleanup_on_exit: bool = True,
+            start_transcript: bool = True,
+    ) -> "BaseSession":
+        """Create a Session instance from server-info file.
+
+        Parameters
+        ----------
+        server_info_filepath : str
+            Path to server-info file written out by Fluent server
+        cleanup_on_exit : bool, optional
+            When True, the connected Fluent session will be shut down
+            when PyFluent is exited or exit() is called on the session
+            instance, by default True.
+        start_transcript : bool, optional
+            The Fluent transcript is started in the client only when
+            start_transcript is True. It can be started and stopped
+            subsequently via method calls on the Session object.
+            Defaults to true.
+
+        Returns
+        -------
+        Session
+            Session instance
+        """
+        ip, port, password = parse_server_info_file(server_info_filepath)
+        session = BaseSession(
+            ip=ip,
+            port=port,
+            password=password,
+            cleanup_on_exit=cleanup_on_exit,
+            start_transcript=start_transcript,
+        )
+        return session
+
+    @property
+    def id(self) -> str:
+        """Return the session id."""
+        return self.fluent_connection.id
+
+    def start_transcript(self) -> None:
+        """Start streaming of Fluent transcript."""
+        self.fluent_connection.start_transcript()
+
+    def stop_transcript(self) -> None:
+        """Stop streaming of Fluent transcript."""
+        self.fluent_connection.stop_transcript()
+
+    def check_health(self) -> str:
+        """Check health of Fluent connection."""
+        return self.fluent_connection.check_health()
+
+    def exit(self) -> None:
+        """Close the Fluent connection and exit Fluent."""
+        self.fluent_connection.exit()
+
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
-        self._finalizer()
+        self.fluent_connection.exit()
