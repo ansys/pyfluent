@@ -354,6 +354,8 @@ def launch_fluent(
 
         if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             args = _build_fluent_launch_args_string(**argvals).split()
+            if meshing_mode:
+                args.append(" -meshing")
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
