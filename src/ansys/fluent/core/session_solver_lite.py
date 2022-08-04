@@ -5,13 +5,13 @@
 import grpc
 
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, Session, parse_server_info_file
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, parse_server_info_file
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.logging import LOG
 
 
-class SolverLite(Session):
+class SolverLite(BaseSession):
     """Encapsulates a Fluent - Solver session connection.
     Solver(Session) which holds the top-level objects
     for solver TUI and settings objects calls."""
@@ -25,6 +25,7 @@ class SolverLite(Session):
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         remote_instance=None,
+        fluent_connection=None
     ):
         super().__init__(
             ip=ip,
@@ -34,9 +35,10 @@ class SolverLite(Session):
             cleanup_on_exit=cleanup_on_exit,
             start_transcript=start_transcript,
             remote_instance=remote_instance,
+            fluent_connection=fluent_connection
         )
-        self._tui_service = self._datamodel_service_tui
-        self._settings_service = self._settings_service
+        self._tui_service = self.fluent_connection._datamodel_service_tui
+        self._settings_service = self.fluent_connection._settings_service
         self._tui = None
         self._settings_root = None
 

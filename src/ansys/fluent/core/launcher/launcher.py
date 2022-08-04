@@ -14,7 +14,7 @@ import time
 from typing import Any, Dict
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import Session
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -142,14 +142,14 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    version : str, optional
+    product_version : str, optional
         Version of Fluent to use in the three-digit format (such as ``"212"``
         for 2021 R2). The default is ``None``, in which case the active version
         or latest installed version is used.
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
-    meshing mode: bool, optional
+    meshing_mode: bool, optional
         Whether to launch Fluent remotely in meshing mode. The default is
         ``False``.
     dimensionality: str, optional
@@ -172,7 +172,7 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return Session(
+    return BaseSession(
         channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
     )
 
@@ -194,7 +194,7 @@ def launch_fluent(
     show_gui: bool = None,
     case_filepath: str = None,
     mode: str = "solver",
-) -> Session:
+) -> BaseSession:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 

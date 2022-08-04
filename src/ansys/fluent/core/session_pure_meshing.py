@@ -6,7 +6,7 @@ import grpc
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, Session, parse_server_info_file
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, parse_server_info_file
 from ansys.fluent.core.utils.logging import LOG
 
 _CODEGEN_MSG_DATAMODEL = (
@@ -16,7 +16,7 @@ _CODEGEN_MSG_DATAMODEL = (
 )
 
 
-class PureMeshing(Session):
+class PureMeshing(BaseSession):
     """Encapsulates a Fluent - Pure Meshing session connection.
     PureMeshing(Session) which holds the top-level objects
     for meshing TUI and various meshing datamodel API calls."""
@@ -30,6 +30,7 @@ class PureMeshing(Session):
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         remote_instance=None,
+        fluent_connection=None
     ):
         super().__init__(
             ip=ip,
@@ -39,9 +40,10 @@ class PureMeshing(Session):
             cleanup_on_exit=cleanup_on_exit,
             start_transcript=start_transcript,
             remote_instance=remote_instance,
+            fluent_connection=fluent_connection
         )
-        self._tui_service = self._datamodel_service_tui
-        self._se_service = self._datamodel_service_se
+        self._tui_service = self.fluent_connection._datamodel_service_tui
+        self._se_service = self.fluent_connection._datamodel_service_se
         self._tui = None
         self._meshing = None
         self._workflow = None

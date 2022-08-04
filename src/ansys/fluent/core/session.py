@@ -85,19 +85,8 @@ _CODEGEN_MSG_TUI = (
 class _FluentConnection:
     """Encapsulates a Fluent connection.
 
-    Attributes
-    ----------
-    scheme_eval: SchemeEval
-        Instance of SchemeEval on which Fluent's scheme code can be
-        executed.
-
     Methods
     -------
-    create_from_server_info_file(
-        server_info_filepath, cleanup_on_exit, start_transcript
-        )
-        Create a Session instance from server-info file
-
     start_transcript()
         Start streaming of Fluent transcript
 
