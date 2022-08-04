@@ -266,23 +266,29 @@ def launch_fluent(
     ansys.fluent.session.Session
         Fluent session.
     """
-    argvals = locals().copy()
+    argvals = locals()
 
-    meshing_mode = None
-    if mode == "meshing":
+    meshing_mode = False
+    if mode.lower() == "meshing":
         newSession = Meshing
         meshing_mode = True
-    elif mode == "pure-meshing":
+    elif mode.lower() == "pure-meshing":
         newSession = PureMeshing
         meshing_mode = True
-    elif mode == "solver":
+    elif mode.lower() == "solver":
         newSession = Solver
-    elif mode == "solver-lite":
+    elif mode.lower() == "solver-lite":
         newSession = SolverLite
     else:
+        LOG.info(
+            "Please provide an option amongst the 4 allowed modes."
+            '\n1. "meshing"'
+            '\n2. "pure-meshing"'
+            '\n3. "solver"'
+            '\n4. "solver-lite"'
+        )
         raise RuntimeError("The passed mode matches none of the 4 allowed modes.")
 
-    argvals["meshing_mode"] = meshing_mode
     if start_instance is None:
         start_instance = bool(
             int(
@@ -295,6 +301,8 @@ def launch_fluent(
         exe_path = _get_fluent_exe_path()
         launch_string = exe_path
         launch_string += _build_fluent_launch_args_string(**argvals)
+        if meshing_mode:
+            launch_string += " -meshing"
         server_info_filepath = _get_server_info_filepath()
         try:
             launch_string += f" {additional_arguments}"
