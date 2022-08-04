@@ -254,7 +254,8 @@ class _FluentConnection:
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(
-            target=_FluentConnection._process_transcript, args=(self._transcript_service,)
+            target=_FluentConnection._process_transcript,
+            args=(self._transcript_service,),
         )
 
         self._transcript_thread.start()
@@ -326,6 +327,7 @@ class BaseSession:
     exit()
         Close the Fluent connection and exit Fluent.
     """
+
     def __init__(
         self,
         ip: str = None,
@@ -335,7 +337,7 @@ class BaseSession:
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         remote_instance=None,
-        fluent_connection=None
+        fluent_connection=None,
     ):
         if not fluent_connection:
             self.fluent_connection = _FluentConnection(
@@ -345,7 +347,7 @@ class BaseSession:
                 channel=channel,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
-                remote_instance=remote_instance
+                remote_instance=remote_instance,
             )
         else:
             self.fluent_connection = fluent_connection
@@ -354,10 +356,10 @@ class BaseSession:
 
     @classmethod
     def create_from_server_info_file(
-            cls,
-            server_info_filepath: str,
-            cleanup_on_exit: bool = True,
-            start_transcript: bool = True,
+        cls,
+        server_info_filepath: str,
+        cleanup_on_exit: bool = True,
+        start_transcript: bool = True,
     ) -> "BaseSession":
         """Create a Session instance from server-info file.
 

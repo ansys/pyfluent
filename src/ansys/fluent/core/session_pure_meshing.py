@@ -6,7 +6,11 @@ import grpc
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession, parse_server_info_file
+from ansys.fluent.core.session import (
+    _CODEGEN_MSG_TUI,
+    BaseSession,
+    parse_server_info_file,
+)
 from ansys.fluent.core.utils.logging import LOG
 
 _CODEGEN_MSG_DATAMODEL = (
@@ -30,7 +34,7 @@ class PureMeshing(BaseSession):
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         remote_instance=None,
-        fluent_connection=None
+        fluent_connection=None,
     ):
         super().__init__(
             ip=ip,
@@ -40,7 +44,7 @@ class PureMeshing(BaseSession):
             cleanup_on_exit=cleanup_on_exit,
             start_transcript=start_transcript,
             remote_instance=remote_instance,
-            fluent_connection=fluent_connection
+            fluent_connection=fluent_connection,
         )
         self._tui_service = self.fluent_connection._datamodel_service_tui
         self._se_service = self.fluent_connection._datamodel_service_se
