@@ -126,18 +126,18 @@ _periodic_rot_case_filename = None
 
 @pytest.fixture
 def load_periodic_rot_cas(with_launching_container):
-    session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
     global _periodic_rot_case_filename
     if not _periodic_rot_case_filename:
         _periodic_rot_case_filename = download_file(
             filename="periodic_rot.cas.h5",
             directory="pyfluent/periodic_rot",
         )
-    session.solver.root.file.read(
+    solver_session.root.file.read(
         file_type="case", file_name=_periodic_rot_case_filename
     )
-    yield session
-    session.exit()
+    yield solver_session
+    solver_session.exit()
 
 
 def get_name_info(allnamesdict, namescheck):
