@@ -97,7 +97,9 @@ class Meshing(BaseSession):
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self.solver_switch:
-            raise AttributeError("Mesh-Session-specific attributes are not available in Solver-Session")
+            raise AttributeError(
+                "Mesh-Session-specific attributes are not available in Solver-Session"
+            )
         if self._tui is None:
             try:
                 from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
@@ -112,7 +114,9 @@ class Meshing(BaseSession):
     def meshing(self):
         """meshing datamodel root."""
         if self.solver_switch:
-            raise AttributeError("Mesh-Session-specific attributes are not available in Solver-Session")
+            raise AttributeError(
+                "Mesh-Session-specific attributes are not available in Solver-Session"
+            )
         if self._meshing is None:
             try:
                 from ansys.fluent.core.datamodel.meshing import Root as meshing_root
@@ -127,7 +131,9 @@ class Meshing(BaseSession):
     def workflow(self):
         """workflow datamodel root."""
         if self.solver_switch:
-            raise AttributeError("Mesh-Session-specific attributes are not available in Solver-Session")
+            raise AttributeError(
+                "Mesh-Session-specific attributes are not available in Solver-Session"
+            )
         if self._workflow is None:
             try:
                 from ansys.fluent.core.datamodel.workflow import Root as workflow_root
@@ -142,7 +148,9 @@ class Meshing(BaseSession):
     def PartManagement(self):
         """PartManagement datamodel root."""
         if self.solver_switch:
-            raise AttributeError("Mesh-Session-specific attributes are not available in Solver-Session")
+            raise AttributeError(
+                "Mesh-Session-specific attributes are not available in Solver-Session"
+            )
         if self._part_management is None:
             try:
                 from ansys.fluent.core.datamodel.PartManagement import (
@@ -163,7 +171,9 @@ class Meshing(BaseSession):
     def PMFileManagement(self):
         """PMFileManagement datamodel root."""
         if self.solver_switch:
-            raise AttributeError("Mesh-Session-specific attributes are not available in Solver-Session")
+            raise AttributeError(
+                "Mesh-Session-specific attributes are not available in Solver-Session"
+            )
         if self._pm_file_management is None:
             try:
                 from ansys.fluent.core.datamodel.PMFileManagement import (
@@ -182,7 +192,9 @@ class Meshing(BaseSession):
 
     def switch_to_solver(self):
         if self.solver_switch:
-            raise AttributeError("Mesh-Session-specific attributes are not available in Solver-Session")
+            raise AttributeError(
+                "Mesh-Session-specific attributes are not available in Solver-Session"
+            )
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(fluent_connection=self.fluent_connection)
         self.solver_switch = True
