@@ -448,7 +448,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def _create_child_object(self, cname: str):
         ret = self._objects.get(cname)
         if not ret:
-            # pylint: disable=no-member
             cls = self.__class__.child_object_type
             ret = self._objects[cname] = cls(cname, self)
         return ret
@@ -571,7 +570,6 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     query_names = []
 
     def _update_objects(self):
-        # pylint: disable=no-member
         cls = self.__class__.child_object_type
         self._setattr("_objects", [cls(str(x), self) for x in range(self.get_size())])
 
@@ -847,7 +845,6 @@ def get_cls(name, info, parent=None):
                     i += 1
                     ccls_name += f"_{str(i)}"
                 ccls.__name__ = ccls_name
-                # pylint: disable=no-member
                 names.append(ccls.__name__)
                 taboo.add(ccls_name)
                 setattr(cls, ccls.__name__, ccls)
@@ -924,9 +921,8 @@ def get_root(flproxy) -> Group:
             )
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
-    except Exception:
+    except (ImportError, RuntimeError):
         cls = get_cls("", obj_info)
-    # pylint: disable=no-member
     root = cls()
     root.set_flproxy(flproxy)
     root._setattr("_static_info", obj_info)
