@@ -57,5 +57,5 @@ This example shows how you define materials using
 
 .. code:: python
 
-    session.solver.root.setup.materials.copy_database_material_by_name(type='fluid', name='water-liquid')
-    session.solver.root.setup.cell_zone_conditions.fluid['elbow-fluid'].material = 'water-liquid'
+    session.solver.setup.materials.copy_database_material_by_name(type='fluid', name='water-liquid')
+    session.solver.setup.cell_zone_conditions.fluid['elbow-fluid'].material = 'water-liquid'

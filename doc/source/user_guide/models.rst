@@ -100,7 +100,7 @@ Enabling the energy model
 
 .. code:: python
 
-    session.solver.root.setup.models.energy.enabled = True
+    session.solver.setup.models.energy.enabled = True
 
 Enabling the viscous model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,5 +109,5 @@ Enabling the viscous model
 
 .. code:: python
 
-    session.solver.root.setup.models.viscous.k_epsilon_model.enabled = True
-    session.solver.root.setup.models.viscous.k_omega_model.enabled = True
+    session.solver.setup.models.viscous.k_epsilon_model.enabled = True
+    session.solver.setup.models.viscous.k_omega_model.enabled = True

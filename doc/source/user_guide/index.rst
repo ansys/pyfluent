@@ -81,7 +81,7 @@ additional interface features that are not possible via the ``tui`` object:
 
 .. code:: python
 
-    root = solver_session.solver.root
+    root = solver_session.solver
 
     root.file.read(file_type="case", file_name="pipe.cas.h5")
 

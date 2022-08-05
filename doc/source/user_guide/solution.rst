@@ -106,5 +106,5 @@ using :ref:`ref_settings`.
 
 .. code:: python
 
-    session.solver.root.solution.initialization.hybrid_initialize()
-    session.solver.root.solution.run_calculation.iterate(number_of_iterations=150)
+    session.solver.solution.initialization.hybrid_initialize()
+    session.solver.solution.run_calculation.iterate(number_of_iterations=150)
