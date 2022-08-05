@@ -1,4 +1,5 @@
-"""Module containing class encapsulating Fluent connection."""
+"""Module containing class encapsulating Fluent connection and the Base
+Session."""
 
 from ctypes import c_int, sizeof
 import itertools
@@ -193,11 +194,9 @@ class _FluentConnection:
             "DataReadEvent", self.monitors_manager.refresh
         )
         self.events_manager.start()
-        self._datamodel_service_tui = DatamodelService_TUI(
-            self._channel, self._metadata
-        )
-        self._datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
-        self._settings_service = SettingsService(self._channel, self._metadata)
+        self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
+        self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
+        self.settings_service = SettingsService(self._channel, self._metadata)
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)

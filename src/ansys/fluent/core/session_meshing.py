@@ -20,7 +20,7 @@ _CODEGEN_MSG_DATAMODEL = (
 
 class Meshing(BaseSession):
     """Encapsulates a Fluent - Meshing session connection.
-    Meshing(Session) which holds the top-level objects
+    Meshing(Session) holds the top-level objects
     for meshing TUI and various meshing datamodel API calls."""
 
     def __init__(
@@ -44,8 +44,8 @@ class Meshing(BaseSession):
             remote_instance=remote_instance,
             fluent_connection=fluent_connection,
         )
-        self._tui_service = self.fluent_connection._datamodel_service_tui
-        self._se_service = self.fluent_connection._datamodel_service_se
+        self._tui_service = self.fluent_connection.datamodel_service_tui
+        self._se_service = self.fluent_connection.datamodel_service_se
         self._tui = None
         self._meshing = None
         self._workflow = None
@@ -191,6 +191,7 @@ class Meshing(BaseSession):
         return self._pm_file_management
 
     def switch_to_solver(self):
+        """A switch to move to the solver session from meshing."""
         if self.solver_switch:
             raise AttributeError(
                 "Mesh-Session-specific attributes are not available in Solver-Session"

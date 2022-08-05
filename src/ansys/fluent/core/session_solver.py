@@ -13,7 +13,7 @@ from ansys.fluent.core.utils.logging import LOG
 
 class Solver(BaseSession):
     """Encapsulates a Fluent - Solver session connection.
-    Solver(Session) which holds the top-level objects
+    Solver(Session) holds the top-level objects
     for solver TUI and settings objects calls."""
 
     def __init__(
@@ -37,8 +37,8 @@ class Solver(BaseSession):
             remote_instance=remote_instance,
             fluent_connection=fluent_connection,
         )
-        self._tui_service = self.fluent_connection._datamodel_service_tui
-        self._settings_service = self.fluent_connection._settings_service
+        self._tui_service = self.fluent_connection.datamodel_service_tui
+        self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._settings_root = None
 

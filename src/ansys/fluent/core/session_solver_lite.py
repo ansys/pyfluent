@@ -16,8 +16,8 @@ from ansys.fluent.core.utils.logging import LOG
 
 
 class SolverLite(BaseSession):
-    """Encapsulates a Fluent - Solver session connection.
-    Solver(Session) which holds the top-level objects
+    """Encapsulates a Fluent - Solver(Lite) session connection.
+    SolverLite(Session) holds the top-level objects
     for solver TUI and settings objects calls."""
 
     def __init__(
@@ -41,8 +41,8 @@ class SolverLite(BaseSession):
             remote_instance=remote_instance,
             fluent_connection=fluent_connection,
         )
-        self._tui_service = self.fluent_connection._datamodel_service_tui
-        self._settings_service = self.fluent_connection._settings_service
+        self._tui_service = self.fluent_connection.datamodel_service_tui
+        self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._settings_root = None
 
@@ -107,12 +107,6 @@ class SolverLite(BaseSession):
         return self._settings_root
 
     def switch_to_full_solver(self):
-        password = self._metadata[0][1]
-        solver_session = Solver(
-            password=password,
-            channel=self._channel,
-            cleanup_on_exit=self._cleanup_on_exit,
-            start_transcript=self._start_transcript,
-        )
-
+        """A switch to move to the full-solver session from solver-lite."""
+        solver_session = Solver(fluent_connection=self.fluent_connection)
         return solver_session

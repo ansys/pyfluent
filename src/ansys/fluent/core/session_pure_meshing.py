@@ -22,7 +22,7 @@ _CODEGEN_MSG_DATAMODEL = (
 
 class PureMeshing(BaseSession):
     """Encapsulates a Fluent - Pure Meshing session connection.
-    PureMeshing(Session) which holds the top-level objects
+    PureMeshing(Session) holds the top-level objects
     for meshing TUI and various meshing datamodel API calls."""
 
     def __init__(
@@ -46,8 +46,8 @@ class PureMeshing(BaseSession):
             remote_instance=remote_instance,
             fluent_connection=fluent_connection,
         )
-        self._tui_service = self.fluent_connection._datamodel_service_tui
-        self._se_service = self.fluent_connection._datamodel_service_se
+        self._tui_service = self.fluent_connection.datamodel_service_tui
+        self._se_service = self.fluent_connection.datamodel_service_se
         self._tui = None
         self._meshing = None
         self._workflow = None
