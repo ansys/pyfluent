@@ -95,9 +95,39 @@ class Solver(BaseSession):
         return self._tui
 
     @property
-    def root(self):
+    def _root(self):
         """root settings object."""
         if self._settings_root is None:
             LOG.warning("The settings API is currently experimental.")
             self._settings_root = settings_get_root(flproxy=self._settings_service)
         return self._settings_root
+
+    @property
+    def file(self):
+        """instance of file -> root settings object."""
+        return self._root.file
+
+    @property
+    def setup(self):
+        """instance of setup -> root settings object."""
+        return self._root.setup
+
+    @property
+    def solution(self):
+        """instance of solution -> root settings object."""
+        return self._root.solution
+
+    @property
+    def results(self):
+        """instance of results -> root settings object."""
+        return self._root.results
+
+    @property
+    def parametric_studies(self):
+        """instance of parametric_studies -> root settings object."""
+        return self._root.parametric_studies
+
+    @property
+    def current_parametric_study(self):
+        """instance of current_parametric_study -> root settings object."""
+        return self._root.current_parametric_study
