@@ -15,8 +15,8 @@ def test_solver_calculation(load_mixing_elbow_mesh):
         == False
     )
     assert solver_session.scheme_eval.scheme_eval("(data-valid?)") == False
-    solver_session.root.solution.initialization.hybrid_initialize()
+    solver_session.solution.initialization.hybrid_initialize()
     assert solver_session.scheme_eval.scheme_eval("(data-valid?)") == True
-    # solver_session.root.solution.run_calculation.iterate.get_attr("arguments")
-    # solver_session.root.solution.run_calculation.number_of_iterations = 5
-    # assert solver_session.root.solution.run_calculation.number_of_iterations == 5
+    # solver_session.solution.run_calculation.iterate.get_attr("arguments")
+    # solver_session.solution.run_calculation.number_of_iterations = 5
+    # assert solver_session.solution.run_calculation.number_of_iterations == 5

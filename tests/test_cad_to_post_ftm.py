@@ -479,10 +479,8 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Assert the returned mass flow rate report definition value
-    solver_session.root.solution.report_definitions.flux["mass_flow_rate"] = {}
-    solver_session.root.solution.report_definitions.flux[
-        "mass_flow_rate"
-    ].zone_names = [
+    solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
+    solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
         "inlet-1",
         "inlet-2",
         "inlet-3",
@@ -491,7 +489,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     check_report_definition = partial(
         check_report_definition_result,
-        report_definitions=solver_session.root.solution.report_definitions,
+        report_definitions=solver_session.solution.report_definitions,
     )
 
     check_report_definition(
@@ -502,22 +500,20 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Assert the returned velocity-magnitude report definition value on the outlet
     # surface
-    solver_session.root.solution.report_definitions.surface[
-        "velocity_magnitude_outlet"
-    ] = {}
-    solver_session.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface["velocity_magnitude_outlet"] = {}
+    solver_session.solution.report_definitions.surface[
         "velocity_magnitude_outlet"
     ].report_type = "surface-areaavg"
-    solver_session.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface[
         "velocity_magnitude_outlet"
     ].field = "velocity-magnitude"
-    solver_session.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface[
         "velocity_magnitude_outlet"
     ].surface_names = ["outlet-1"]
 
     check_report_definition = partial(
         check_report_definition_result,
-        report_definitions=solver_session.root.solution.report_definitions,
+        report_definitions=solver_session.solution.report_definitions,
     )
 
     check_report_definition(

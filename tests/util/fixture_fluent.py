@@ -26,9 +26,7 @@ def load_mixing_elbow_mesh(with_launching_container):
         _mixing_elbow_mesh_filename = download_file(
             filename="mixing_elbow.msh.h5", directory="pyfluent/mixing_elbow"
         )
-    solver_session.root.file.read(
-        file_type="case", file_name=_mixing_elbow_mesh_filename
-    )
+    solver_session.file.read(file_type="case", file_name=_mixing_elbow_mesh_filename)
     yield solver_session
     solver_session.exit()
 
@@ -50,7 +48,7 @@ def load_mixing_elbow_case_dat(with_launching_container):
         _mixing_elbow_dat_filename = download_file(
             filename="mixing_elbow.dat.h5", directory="pyfluent/mixing_elbow"
         )
-    solver_session.root.file.read(
+    solver_session.file.read(
         file_type="case-data", file_name=_mixing_elbow_case_filename
     )
     yield solver_session
@@ -74,7 +72,7 @@ def load_mixing_elbow_param_case_dat(with_launching_container):
         _mixing_elbow_param_dat_filename = download_file(
             filename="elbow_param.dat.h5", directory="pyfluent/mixing_elbow"
         )
-    solver_session.root.file.read(
+    solver_session.file.read(
         file_type="case-data", file_name=_mixing_elbow_param_case_filename
     )
     yield solver_session
@@ -133,9 +131,7 @@ def load_periodic_rot_cas(with_launching_container):
             filename="periodic_rot.cas.h5",
             directory="pyfluent/periodic_rot",
         )
-    solver_session.root.file.read(
-        file_type="case", file_name=_periodic_rot_case_filename
-    )
+    solver_session.file.read(file_type="case", file_name=_periodic_rot_case_filename)
     yield solver_session
     solver_session.exit()
 

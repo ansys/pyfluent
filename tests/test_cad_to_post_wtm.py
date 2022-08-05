@@ -231,10 +231,8 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     ###############################################################################
     # Assert the returned mass flow rate report definition value
-    solver_session.root.solution.report_definitions.flux["mass_flow_rate"] = {}
-    solver_session.root.solution.report_definitions.flux[
-        "mass_flow_rate"
-    ].zone_names = [
+    solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
+    solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
         "cold-inlet",
         "hot-inlet",
         "outlet",
@@ -242,7 +240,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     check_report_definition = partial(
         check_report_definition_result,
-        report_definitions=solver_session.root.solution.report_definitions,
+        report_definitions=solver_session.solution.report_definitions,
     )
 
     check_report_definition(
@@ -252,14 +250,14 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     ###############################################################################
     # Assert the returned temperature report definition value on the outlet surface
-    solver_session.root.solution.report_definitions.surface["temperature_outlet"] = {}
-    solver_session.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface["temperature_outlet"] = {}
+    solver_session.solution.report_definitions.surface[
         "temperature_outlet"
     ].report_type = "surface-massavg"
-    solver_session.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface[
         "temperature_outlet"
     ].field = "temperature"
-    solver_session.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface[
         "temperature_outlet"
     ].surface_names = ["outlet"]
 
