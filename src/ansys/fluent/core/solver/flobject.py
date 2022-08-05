@@ -921,7 +921,7 @@ def get_root(flproxy) -> Group:
             )
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
-    except RuntimeError:
+    except (ImportError, RuntimeError):
         cls = get_cls("", obj_info)
     root = cls()
     root.set_flproxy(flproxy)
