@@ -4,6 +4,7 @@ This module supports both starting Fluent locally or connecting to a
 remote instance with gRPC.
 """
 
+from enum import Enum
 import json
 import os
 from pathlib import Path
@@ -11,7 +12,7 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import BaseSession
@@ -26,6 +27,15 @@ _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = "22.2"
 PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
+
+
+class LaunchModes(Enum):
+    """Contains the standard fluent launch modes."""
+
+    MESHING_MODE = "meshing"
+    PURE_MESHING_MODE = "pure-meshing"
+    SOLVER = "solver"
+    SOLVER_LITE = "solver-lite"
 
 
 def get_fluent_path() -> Path:
@@ -193,7 +203,7 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    mode: str = "solver",
+    mode: Union[LaunchModes, str] = LaunchModes.SOLVER,
 ) -> BaseSession:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -268,16 +278,18 @@ def launch_fluent(
     """
     argvals = locals()
 
+    mode = mode if isinstance(mode, LaunchModes) else LaunchModes(mode)
+
     meshing_mode = False
-    if mode.lower() == "meshing":
+    if mode == LaunchModes.MESHING_MODE:
         newSession = Meshing
         meshing_mode = True
-    elif mode.lower() == "pure-meshing":
+    elif mode == LaunchModes.PURE_MESHING_MODE:
         newSession = PureMeshing
         meshing_mode = True
-    elif mode.lower() == "solver":
+    elif mode == LaunchModes.SOLVER:
         newSession = Solver
-    elif mode.lower() == "solver-lite":
+    elif mode == LaunchModes.SOLVER_LITE:
         newSession = SolverLite
     else:
         LOG.info(
