@@ -101,7 +101,7 @@ def load_mixing_elbow_pure_meshing(with_launching_container):
 
 @pytest.fixture
 def load_mixing_elbow_meshing(with_launching_container):
-    pure_meshing_session = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="meshing"
     )
     global _mixing_elbow_geom_filename
@@ -110,13 +110,13 @@ def load_mixing_elbow_meshing(with_launching_container):
             filename="mixing_elbow.pmdb", directory="pyfluent/mixing_elbow"
         )
 
-    pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
+    meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
         FileName=_mixing_elbow_geom_filename, LengthUnit="in"
     )
 
-    yield pure_meshing_session
-    pure_meshing_session.exit()
+    yield meshing_session
+    meshing_session.exit()
 
 
 _periodic_rot_case_filename = None
