@@ -32,10 +32,30 @@ PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
 class LaunchModes(Enum):
     """Contains the standard fluent launch modes."""
 
-    MESHING_MODE = "meshing"
-    PURE_MESHING_MODE = "pure-meshing"
-    SOLVER = "solver"
-    SOLVER_LITE = "solver-lite"
+    MESHING_MODE = [Meshing, True]
+    PURE_MESHING_MODE = [PureMeshing, True]
+    SOLVER = [Solver, False]
+    SOLVER_LITE = [SolverLite, False]
+
+    @staticmethod
+    def get_mode(mode: str) -> "LaunchModes":
+        """Returns the LaunchMode based on the mode in string format."""
+        try:
+            mode = MODE_DICT[mode]
+        except KeyError:
+            LOG.info("Please provide an option amongst the 4 allowed modes.")
+            for i, mode in enumerate(MODE_DICT.keys()):
+                LOG.info(i + 1, ". ", mode)
+            raise RuntimeError("The passed mode matches none of the 4 allowed modes.")
+        return mode
+
+
+MODE_DICT = {
+    "meshing": LaunchModes.MESHING_MODE,
+    "pure-meshing": LaunchModes.PURE_MESHING_MODE,
+    "solver": LaunchModes.SOLVER,
+    "solver-lite": LaunchModes.SOLVER_LITE,
+}
 
 
 def get_fluent_path() -> Path:
@@ -278,28 +298,11 @@ def launch_fluent(
     """
     argvals = locals()
 
-    mode = mode if isinstance(mode, LaunchModes) else LaunchModes(mode)
+    if type(mode) == str:
+        mode = LaunchModes.get_mode(mode)
 
-    meshing_mode = False
-    if mode == LaunchModes.MESHING_MODE:
-        newSession = Meshing
-        meshing_mode = True
-    elif mode == LaunchModes.PURE_MESHING_MODE:
-        newSession = PureMeshing
-        meshing_mode = True
-    elif mode == LaunchModes.SOLVER:
-        newSession = Solver
-    elif mode == LaunchModes.SOLVER_LITE:
-        newSession = SolverLite
-    else:
-        LOG.info(
-            "Please provide an option amongst the 4 allowed modes."
-            '\n1. "meshing"'
-            '\n2. "pure-meshing"'
-            '\n3. "solver"'
-            '\n4. "solver-lite"'
-        )
-        raise RuntimeError("The passed mode matches none of the 4 allowed modes.")
+    newSession = mode.value[0]
+    meshing_mode = mode.value[1]
 
     if start_instance is None:
         start_instance = bool(
