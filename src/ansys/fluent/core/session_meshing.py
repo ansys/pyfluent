@@ -197,6 +197,6 @@ class Meshing(BaseSession):
                 "Mesh-Session-specific attributes are not available in Solver-Session"
             )
         self.tui.switch_to_solution_mode("yes")
-        solver_session = Solver(fluent_connection=self.fluent_connection)
         self.solver_switch = True
+        solver_session = Solver(fluent_connection=self.fluent_connection)
         return solver_session
