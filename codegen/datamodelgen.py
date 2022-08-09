@@ -128,7 +128,7 @@ class DataModelGenerator:
             session.exit()
 
         if run_solver_mode:
-            session = pyfluent.launch_fluent()
+            session = pyfluent.launch_fluent(mode="solver")
             for _, info in self._static_info.items():
                 if info.mode == "solver":
                     info.static_info = self._get_static_info(info.rules, session)

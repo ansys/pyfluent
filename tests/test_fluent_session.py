@@ -56,7 +56,7 @@ def test_session_starts_no_transcript_if_disabled(
 
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
     def f():
-        session = pyfluent.launch_fluent()
+        session = pyfluent.launch_fluent(mode="solver")
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
@@ -77,7 +77,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
     with_launching_container,
 ) -> None:
     def f():
-        session = pyfluent.launch_fluent(cleanup_on_exit=False)
+        session = pyfluent.launch_fluent(mode="solver", cleanup_on_exit=False)
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":

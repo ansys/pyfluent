@@ -319,7 +319,7 @@ def generate():
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
-    session = launch_fluent()
+    session = launch_fluent(mode="solver")
     sinfo = session._settings_service.get_static_info()
     session.exit()
     cls = flobject.get_cls("", sinfo)

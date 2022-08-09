@@ -19,7 +19,7 @@ Python code for defining the fluid material being modelled on a cell zone.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
+    session = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
     session.solver.tui.define.materials.copy('fluid', 'water-liquid')
     session.solver.tui.define.boundary_conditions.fluid(

@@ -198,7 +198,7 @@ class TUIGenerator:
         if meshing:
             self.session = pyfluent.launch_fluent(mode="meshing")
         else:
-            self.session = pyfluent.launch_fluent()
+            self.session = pyfluent.launch_fluent(mode="solver")
         self._service = self.session.fluent_connection.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 

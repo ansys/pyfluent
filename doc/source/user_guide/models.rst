@@ -22,7 +22,7 @@ Python code for enabling and disabling the energy model.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
+    session = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
     session.solver.tui.define.models.energy('yes', 'no', 'no', 'no', 'yes')
 

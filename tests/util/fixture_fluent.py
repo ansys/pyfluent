@@ -20,7 +20,9 @@ _mixing_elbow_geom_filename = None
 
 @pytest.fixture
 def load_mixing_elbow_mesh(with_launching_container):
-    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, mode="solver"
+    )
     global _mixing_elbow_mesh_filename
     if not _mixing_elbow_mesh_filename:
         _mixing_elbow_mesh_filename = download_file(
@@ -37,7 +39,9 @@ _mixing_elbow_dat_filename = None
 
 @pytest.fixture
 def load_mixing_elbow_case_dat(with_launching_container):
-    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, mode="solver"
+    )
     global _mixing_elbow_case_filename
     if not _mixing_elbow_case_filename:
         _mixing_elbow_case_filename = download_file(
@@ -61,7 +65,9 @@ _mixing_elbow_param_dat_filename = None
 
 @pytest.fixture
 def load_mixing_elbow_param_case_dat(with_launching_container):
-    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, mode="solver"
+    )
     global _mixing_elbow_param_case_filename
     if not _mixing_elbow_param_case_filename:
         _mixing_elbow_param_case_filename = download_file(
@@ -124,7 +130,9 @@ _periodic_rot_case_filename = None
 
 @pytest.fixture
 def load_periodic_rot_cas(with_launching_container):
-    solver_session = pyfluent.launch_fluent(precision="double", processor_count=2)
+    solver_session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, mode="solver"
+    )
     global _periodic_rot_case_filename
     if not _periodic_rot_case_filename:
         _periodic_rot_case_filename = download_file(

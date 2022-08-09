@@ -35,7 +35,7 @@ Fluent in solution mode with no arguments:
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent()
+    solver_session = launch_fluent(mode="solver")
 
 You can launch Fluent in meshing mode with: 
 
