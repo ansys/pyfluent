@@ -178,9 +178,7 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_filepath(project_dir_path: str) -> str:
-    """Gets path of any file having extension either of .cas, .cas.gz or.
-
-    .cas.h5 and returns the same.
+    """Gets case file path within the provided project directory path.
 
     Parameters
     ----------
