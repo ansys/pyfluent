@@ -15,7 +15,7 @@ import time
 from typing import Any, Dict, Union
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session import BaseSession, BaseSessionDeprecated
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -214,8 +214,9 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    mode: Union[LaunchModes, str] = LaunchModes.SOLVER,
-) -> BaseSession:
+    meshing_mode: bool = None,
+    mode: Union[LaunchModes, str, None] = None,
+) -> Union[BaseSession, BaseSessionDeprecated]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -277,10 +278,13 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
+    meshing_mode : bool, optional
+        Whether to launch Fluent in meshing mode. The default is ``None``,
+        in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         Currently, available - "meshing", "pure-meshing", "solver" and "solver-lite"
-        Default value is "solver"
+        Default value is "None"
 
     Returns
     -------
@@ -289,11 +293,15 @@ def launch_fluent(
     """
     argvals = locals()
 
-    if type(mode) == str:
-        mode = LaunchModes.get_mode(mode)
-
-    newSession = mode.value[1]
-    meshing_mode = mode.value[2]
+    if mode is None:
+        newSession = BaseSessionDeprecated
+    elif mode is not None and meshing_mode is not None:
+        raise RuntimeError("Please select either of the 2 ways of running")
+    else:
+        if type(mode) == str:
+            mode = LaunchModes.get_mode(mode)
+        newSession = mode.value[1]
+        meshing_mode = mode.value[2]
 
     if start_instance is None:
         start_instance = bool(
