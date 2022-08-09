@@ -43,10 +43,10 @@ class LaunchModes(Enum):
         for m in LaunchModes:
             if mode == m.value[0]:
                 return m
-            else:
-                raise RuntimeError(
-                    f"The passed mode '{mode}' matches none of the allowed modes."
-                )
+        else:
+            raise RuntimeError(
+                f"The passed mode '{mode}' matches none of the allowed modes."
+            )
 
 
 def get_fluent_path() -> Path:
