@@ -32,30 +32,21 @@ PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
 class LaunchModes(Enum):
     """Contains the standard fluent launch modes."""
 
-    MESHING_MODE = [Meshing, True]
-    PURE_MESHING_MODE = [PureMeshing, True]
-    SOLVER = [Solver, False]
-    SOLVER_LITE = [SolverLite, False]
+    MESHING_MODE = ("meshing", Meshing, True)
+    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True)
+    SOLVER = ("solver", Solver, False)
+    SOLVER_LITE = ("solver-lite", SolverLite, False)
 
     @staticmethod
     def get_mode(mode: str) -> "LaunchModes":
         """Returns the LaunchMode based on the mode in string format."""
-        try:
-            mode = MODE_DICT[mode]
-        except KeyError:
-            LOG.info("Please provide an option amongst the 4 allowed modes.")
-            for i, mode in enumerate(MODE_DICT.keys()):
-                LOG.info(i + 1, ". ", mode)
-            raise RuntimeError("The passed mode matches none of the 4 allowed modes.")
-        return mode
-
-
-MODE_DICT = {
-    "meshing": LaunchModes.MESHING_MODE,
-    "pure-meshing": LaunchModes.PURE_MESHING_MODE,
-    "solver": LaunchModes.SOLVER,
-    "solver-lite": LaunchModes.SOLVER_LITE,
-}
+        for m in LaunchModes:
+            if mode == m.value[0]:
+                return m
+            else:
+                raise RuntimeError(
+                    f"The passed mode '{mode}' matches none of the allowed modes."
+                )
 
 
 def get_fluent_path() -> Path:
@@ -301,8 +292,8 @@ def launch_fluent(
     if type(mode) == str:
         mode = LaunchModes.get_mode(mode)
 
-    newSession = mode.value[0]
-    meshing_mode = mode.value[1]
+    newSession = mode.value[1]
+    meshing_mode = mode.value[2]
 
     if start_instance is None:
         start_instance = bool(
