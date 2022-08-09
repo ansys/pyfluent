@@ -198,10 +198,10 @@ def _get_case_filepath(project_dir_path: str) -> str:
         )
     )
     if len(file_list) < 1:
-        raise RuntimeError(f"No case files are present in: {dirname(file_list[0])}")
+        raise RuntimeError(f"No case files are present in: {project_dir_path}")
     elif len(file_list) > 1:
         raise RuntimeError(
-            f"More than one case file is present in: {dirname(file_list[0])}"
+            f"More than one case file is present in: {project_dir_path}"
         )
     else:
         return file_list[0]
