@@ -111,6 +111,12 @@ class DatamodelService:
         return self.__stub.createCommandArguments(request, metadata=self.__metadata)
 
     @catch_grpc_error
+    def delete_command_arguments(
+        self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
+    ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
+        return self.__stub.deleteCommandArguments(request, metadata=self.__metadata)
+
+    @catch_grpc_error
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
@@ -616,7 +622,11 @@ class PyCommandArguments(PyBasicStateContainer):
         request.path = _convert_path_to_se_path(self.path[:-1])
         request.command = self.path[-1][0]
         request.commandid = self.path[-1][1]
-        response = self.service.delete_command_arguments(request)
+        try:
+            self.service.delete_command_arguments(request)
+        except ValueError:
+            # "Cannot invoke RPC on closed channel!"
+            pass
 
     def __getattr__(self, attr):
         return PyCommandArgumentsSubItem(self, attr)
