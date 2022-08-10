@@ -15,7 +15,7 @@ import time
 from typing import Any, Dict, Union
 
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import BaseSession, BaseSessionDeprecated
+from ansys.fluent.core.session import BaseSession, Session
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -216,7 +216,7 @@ def launch_fluent(
     case_filepath: str = None,
     meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
-) -> Union[BaseSession, BaseSessionDeprecated]:
+) -> Union[BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -294,7 +294,7 @@ def launch_fluent(
     argvals = locals()
 
     if mode is None:
-        new_session = BaseSessionDeprecated
+        new_session = Session
     elif mode and meshing_mode:
         raise RuntimeError(
             "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"

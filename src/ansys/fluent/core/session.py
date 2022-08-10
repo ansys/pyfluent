@@ -430,8 +430,10 @@ class BaseSession:
         self.fluent_connection.exit()
 
 
-class BaseSessionDeprecated:
-    """Instantiates a Fluent connection.
+class Session:
+    """Instantiates a Fluent connection. This is a deprecated class. This has
+    been replaced by the "BaseSession" class to implement the new fluent launch
+    modes.
 
     Attributes
     ----------
@@ -486,11 +488,11 @@ class BaseSessionDeprecated:
 
         self.scheme_eval = self.fluent_connection.scheme_eval
 
-        self.meshing = BaseSessionDeprecated.Meshing(
+        self.meshing = Session.Meshing(
             self.fluent_connection.datamodel_service_tui,
             self.fluent_connection.datamodel_service_se,
         )
-        self.solver = BaseSessionDeprecated.Solver(
+        self.solver = Session.Solver(
             self.fluent_connection.datamodel_service_tui,
             self.fluent_connection.settings_service,
         )
@@ -501,7 +503,7 @@ class BaseSessionDeprecated:
         server_info_filepath: str,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-    ) -> "BaseSessionDeprecated":
+    ) -> "Session":
         """Create a Session instance from server-info file.
 
         Parameters
@@ -524,7 +526,7 @@ class BaseSessionDeprecated:
             Session instance
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
-        session = BaseSessionDeprecated(
+        session = Session(
             ip=ip,
             port=port,
             password=password,
