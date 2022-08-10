@@ -256,6 +256,12 @@ class Filename(SettingsBase[str]):
     _state_type = str
 
 
+class FilenameList(SettingsBase[StringListType]):
+    """A FilenameList object represents a list of file names."""
+
+    _state_type = StringListType
+
+
 class Boolean(SettingsBase[bool]):
     """A ``Boolean`` object representing a Boolean value setting."""
 
@@ -664,6 +670,7 @@ _baseTypes = {
     "thread-var": String,
     "list-object": ListObject,
     "file": Filename,
+    "file-list": FilenameList,
     "map": Map,
 }
 
