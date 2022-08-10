@@ -172,7 +172,7 @@ class Property(Base):
 
 
 class Numerical(Property):
-    """Exposes attribute accessor on settings object - specific to numerical objects"""
+    """Exposes attribute accessor on settings object - specific to numerical objects."""
 
     def min(self):
         """Gets the minimum value of the object."""
@@ -184,7 +184,7 @@ class Numerical(Property):
 
 
 class Textual(Property):
-    """Exposes attribute accessor on settings object - specific to string objects"""
+    """Exposes attribute accessor on settings object - specific to string objects."""
 
     def allowed_values(self):
         """Gets the allowed values of the object."""
