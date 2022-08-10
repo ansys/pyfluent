@@ -79,10 +79,16 @@ class CaseReader:
         Get the precision (1 or 2 for 1D of 2D)
     """
 
-    def __init__(self, case_filepath: str):
-
-        if Path(case_filepath).suffix in [".flprj", ".flprz"]:
-            case_filepath = _get_case_filepath(dirname(case_filepath))
+    def __init__(self, case_filepath: str = None, project_filepath: str = None):
+        if case_filepath and project_filepath:
+            raise RuntimeError(
+                "Please enter either the case file path or the project file path"
+            )
+        if project_filepath:
+            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
+                case_filepath = _get_case_filepath(dirname(project_filepath))
+            else:
+                raise RuntimeError("Please provide a valid fluent project file path")
         try:
             if "".join(Path(case_filepath).suffixes) == ".cas.h5":
                 file = h5py.File(case_filepath)
@@ -200,8 +206,6 @@ def _get_case_filepath(project_dir_path: str) -> str:
     if len(file_list) < 1:
         raise RuntimeError(f"No case files are present in: {project_dir_path}")
     elif len(file_list) > 1:
-        raise RuntimeError(
-            f"More than one case file is present in: {project_dir_path}"
-        )
+        raise RuntimeError(f"More than one case file is present in: {project_dir_path}")
     else:
         return file_list[0]
