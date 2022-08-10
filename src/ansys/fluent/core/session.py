@@ -488,13 +488,15 @@ class Session:
 
         self.scheme_eval = self.fluent_connection.scheme_eval
 
+        self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
+        self._datamodel_service_se = self.fluent_connection.datamodel_service_se
+        self._settings_service = self.fluent_connection.settings_service
+
         self.meshing = Session.Meshing(
-            self.fluent_connection.datamodel_service_tui,
-            self.fluent_connection.datamodel_service_se,
+            self._datamodel_service_tui, self._datamodel_service_se
         )
         self.solver = Session.Solver(
-            self.fluent_connection.datamodel_service_tui,
-            self.fluent_connection.settings_service,
+            self._datamodel_service_tui, self._settings_service
         )
 
     @classmethod
