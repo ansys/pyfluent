@@ -15,7 +15,10 @@ input_parameters = reader.input_parameters()
 output_parameters = reader.output_parameters()
 """
 import codecs
+import glob
 import gzip
+import itertools
+from os.path import dirname
 from pathlib import Path
 from typing import List
 
@@ -76,8 +79,16 @@ class CaseReader:
         Get the precision (1 or 2 for 1D of 2D)
     """
 
-    def __init__(self, case_filepath: str):
-
+    def __init__(self, case_filepath: str = None, project_filepath: str = None):
+        if case_filepath and project_filepath:
+            raise RuntimeError(
+                "Please enter either the case file path or the project file path"
+            )
+        if project_filepath:
+            if Path(project_filepath).suffix in [".flprj", ".flprz"]:
+                case_filepath = _get_case_filepath(dirname(project_filepath))
+            else:
+                raise RuntimeError("Please provide a valid fluent project file path")
         try:
             if "".join(Path(case_filepath).suffixes) == ".cas.h5":
                 file = h5py.File(case_filepath)
@@ -170,3 +181,31 @@ def _get_processed_string(input_string: bytes) -> str:
     rp_vars_str = codecs.decode(input_string, errors="ignore")
     string_identifier = "(37 ("
     return string_identifier + rp_vars_str.split(string_identifier)[1]
+
+
+def _get_case_filepath(project_dir_path: str) -> str:
+    """Gets case file path within the provided project directory path.
+
+    Parameters
+    ----------
+    project_dir_path : str
+        The directory containing the case file
+
+    Returns
+    -------
+    case file path (str)
+    """
+    file_list = list(
+        itertools.chain(
+            *(
+                glob.glob(project_dir_path + r"/**/**-Solve/*.%s" % ext)
+                for ext in ["cas", "cas.h5", "cas.gz"]
+            )
+        )
+    )
+    if len(file_list) < 1:
+        raise RuntimeError(f"No case files are present in: {project_dir_path}")
+    elif len(file_list) > 1:
+        raise RuntimeError(f"More than one case file is present in: {project_dir_path}")
+    else:
+        return file_list[0]
