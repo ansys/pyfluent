@@ -164,21 +164,30 @@ StateT = TypeVar("StateT")
 
 
 class Property(Base):
+    """Exposes attribute accessor on settings object."""
+
     def default_value(self):
         """Gets the default value of the object."""
         return self.get_attr("default")
 
 
 class Numerical(Property):
+    """Exposes attribute accessor on settings object - specific to numerical objects"""
+
     def min(self):
+        """Gets the minimum value of the object."""
         return self.get_attr("min")
 
     def max(self):
+        """Gets the maximum value of the object."""
         return self.get_attr("max")
 
 
 class Textual(Property):
+    """Exposes attribute accessor on settings object - specific to string objects"""
+
     def allowed_values(self):
+        """Gets the allowed values of the object."""
         return self.get_attr("allowed-values")
 
 
