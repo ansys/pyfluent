@@ -294,13 +294,15 @@ def launch_fluent(
     argvals = locals()
 
     if mode is None:
-        newSession = BaseSessionDeprecated
-    elif mode is not None and meshing_mode is not None:
-        raise RuntimeError("Please select either of the 2 ways of running")
+        new_session = BaseSessionDeprecated
+    elif mode and meshing_mode:
+        raise RuntimeError(
+            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
+        )
     else:
         if type(mode) == str:
             mode = LaunchModes.get_mode(mode)
-        newSession = mode.value[1]
+        new_session = mode.value[1]
         meshing_mode = mode.value[2]
 
     if start_instance is None:
@@ -346,7 +348,7 @@ def launch_fluent(
                     "Waiting for Fluent to launch...%02d seconds remaining",
                     start_timeout,
                 )
-            return newSession.create_from_server_info_file(
+            return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
         finally:
@@ -376,7 +378,7 @@ def launch_fluent(
             port = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
-            return newSession(
+            return new_session(
                 port=port,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
@@ -384,7 +386,7 @@ def launch_fluent(
         else:
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
-            return newSession(
+            return new_session(
                 ip=ip,
                 port=port,
                 cleanup_on_exit=cleanup_on_exit,
