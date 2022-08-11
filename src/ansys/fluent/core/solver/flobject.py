@@ -151,6 +151,10 @@ class Base:
         """Whether the object is active."""
         return self.get_attr("active?")
 
+    def is_read_only(self) -> bool:
+        """Whether the object is read-only."""
+        return self.get_attr("read-only?")
+
     def __setattr__(self, name, value):
         raise AttributeError(name)
 
@@ -169,10 +173,6 @@ class Property(Base):
     def default_value(self):
         """Gets the default value of the object."""
         return self.get_attr("default")
-
-    def is_read_only(self) -> bool:
-        """Whether the object is read-only."""
-        return self.get_attr("read-only?")
 
 
 class Numerical(Property):
