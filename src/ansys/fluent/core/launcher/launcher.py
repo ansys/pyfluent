@@ -36,6 +36,16 @@ class FluentVersion(Enum):
     version_22R2 = "22.2"
     version_23R1 = "23.1"
 
+    @staticmethod
+    def get_version(version: str) -> "FluentVersion":
+        """Returns the available versions based on the version in string
+        format."""
+        for v in FluentVersion:
+            if version == v.value:
+                return v
+        else:
+            raise RuntimeError(f"The passed version '{version}' does not exist.")
+
 
 def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
     """Lets the user set the fluent installation path manually.
@@ -52,11 +62,9 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     environment variables are updated properly. This supersedes the
     fluent path set in the environment variable
     """
-    if type(version) == str:
-        FLUENT_VERSION[0] = version
-    elif type(version) == float:
-        FLUENT_VERSION[0] = str(version)
-    else:
+    if type(version) in [float, str]:
+        version = FluentVersion.get_version(str(version))
+    if version in FluentVersion or str(version) in FluentVersion.value:
         FLUENT_VERSION[0] = version.value
 
 
