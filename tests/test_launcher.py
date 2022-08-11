@@ -1,7 +1,7 @@
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.launcher import FLUENT_EXE_PATH, FLUENT_VERSION
+from ansys.fluent.core.launcher.launcher import FLUENT_VERSION
 
 
 def test_manual_fluent_version_setting():
@@ -22,10 +22,6 @@ def test_manual_fluent_version_setting():
 
 def test_manual_fluent_path_setting():
     """Test case for setting up the path to fluent.exe via program"""
-    pyfluent.set_fluent_path("X:/dir_1/dir2/fluent.exe")
-    assert FLUENT_EXE_PATH[0] == "X:/dir_1/dir2/fluent.exe"
-
-    # fluent.exe does not exist
     with pytest.raises(RuntimeError):
         pyfluent.set_fluent_path("X:/dir_1/dir2/xxx.exe")
 

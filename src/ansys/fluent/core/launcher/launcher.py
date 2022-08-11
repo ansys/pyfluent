@@ -26,7 +26,7 @@ import ansys.platform.instancemanagement as pypim
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 FLUENT_VERSION = ["22.2"]
-PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION[0].replace(".", "")
+PIM_FLUENT_PRODUCT_VERSION = [FLUENT_VERSION[0].replace(".", "")]
 FLUENT_EXE_PATH = []
 
 
@@ -52,7 +52,7 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
 
     This supersedes the fluent path set in the environment variable
     """
-    if str(fluent_exe_path).endswith("fluent.exe"):
+    if Path(fluent_exe_path).exists() and str(fluent_exe_path).endswith("fluent.exe"):
         FLUENT_EXE_PATH.append(str(fluent_exe_path))
     else:
         raise RuntimeError(
@@ -71,6 +71,7 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
         version = FluentVersion.get_version(str(version))
     if version in FluentVersion or str(version) in FluentVersion.value:
         FLUENT_VERSION[0] = version.value
+        PIM_FLUENT_PRODUCT_VERSION[0] = FLUENT_VERSION[0].replace(".", "")
 
 
 class LaunchModes(Enum):
@@ -409,7 +410,7 @@ def launch_fluent(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(
-                product_version=PIM_FLUENT_PRODUCT_VERSION,
+                product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
