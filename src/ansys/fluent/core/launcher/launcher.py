@@ -25,8 +25,39 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-FLUENT_VERSION = "22.2"
-PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
+FLUENT_VERSION = ["22.2"]
+PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION[0].replace(".", "")
+FLUENT_EXE_PATH = []
+
+
+class FluentVersion(Enum):
+    """Contains the standard ansys / fluent release."""
+
+    version_22R2 = "22.2"
+    version_23R1 = "23.1"
+
+
+def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
+    """Lets the user set the fluent installation path manually.
+
+    This supersedes the fluent path set in the environment variable
+    """
+    FLUENT_EXE_PATH.append(str(fluent_exe_path))
+
+
+def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
+    """Lets the user set the fluent version manually.
+
+    Only works if the provided ansys version is installed and the
+    environment variables are updated properly. This supersedes the
+    fluent path set in the environment variable
+    """
+    if type(version) == str:
+        FLUENT_VERSION[0] = version
+    elif type(version) == float:
+        FLUENT_VERSION[0] = str(version)
+    else:
+        FLUENT_VERSION[0] = version.value
 
 
 class LaunchModes(Enum):
@@ -62,7 +93,7 @@ def get_fluent_path() -> Path:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
         return Path(path)
     else:
-        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
+        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION[0].split("."))]
         return Path(path) / "fluent"
 
 
@@ -315,7 +346,10 @@ def launch_fluent(
             )
         )
     if start_instance:
-        exe_path = _get_fluent_exe_path()
+        if FLUENT_EXE_PATH:
+            exe_path = FLUENT_EXE_PATH[0]
+        else:
+            exe_path = _get_fluent_exe_path()
         launch_string = exe_path
         launch_string += _build_fluent_launch_args_string(**argvals)
         if meshing_mode:
