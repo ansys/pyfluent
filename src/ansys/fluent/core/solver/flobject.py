@@ -151,6 +151,10 @@ class Base:
         """Whether the object is active."""
         return self.get_attr("active?")
 
+    def is_read_only(self) -> bool:
+        """Whether the object is read-only."""
+        return self.get_attr("read-only?")
+
     def __setattr__(self, name, value):
         raise AttributeError(name)
 
@@ -161,6 +165,34 @@ class Base:
 
 
 StateT = TypeVar("StateT")
+
+
+class Property(Base):
+    """Exposes attribute accessor on settings object."""
+
+    def default_value(self):
+        """Gets the default value of the object."""
+        return self.get_attr("default")
+
+
+class Numerical(Property):
+    """Exposes attribute accessor on settings object - specific to numerical objects."""
+
+    def min(self):
+        """Gets the minimum value of the object."""
+        return self.get_attr("min")
+
+    def max(self):
+        """Gets the maximum value of the object."""
+        return self.get_attr("max")
+
+
+class Textual(Property):
+    """Exposes attribute accessor on settings object - specific to string objects."""
+
+    def allowed_values(self):
+        """Gets the allowed values of the object."""
+        return self.get_attr("allowed-values")
 
 
 class SettingsBase(Base, Generic[StateT]):
@@ -228,13 +260,13 @@ class SettingsBase(Base, Generic[StateT]):
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
 
 
-class Integer(SettingsBase[int]):
+class Integer(SettingsBase[int], Numerical):
     """An ``Integer`` object representing an integer value setting."""
 
     _state_type = int
 
 
-class Real(SettingsBase[RealType]):
+class Real(SettingsBase[RealType], Numerical):
     """A ``Real`` object representing a real value setting.
 
     Some ``Real`` objects also accept string arguments representing
@@ -244,37 +276,43 @@ class Real(SettingsBase[RealType]):
     _state_type = RealType
 
 
-class String(SettingsBase[str]):
+class String(SettingsBase[str], Textual):
     """A ``String`` object representing a string value setting."""
 
     _state_type = str
 
 
-class Filename(SettingsBase[str]):
+class Filename(SettingsBase[str], Textual):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
 
 
-class Boolean(SettingsBase[bool]):
+class FilenameList(SettingsBase[StringListType], Textual):
+    """A FilenameList object represents a list of file names."""
+
+    _state_type = StringListType
+
+
+class Boolean(SettingsBase[bool], Property):
     """A ``Boolean`` object representing a Boolean value setting."""
 
     _state_type = bool
 
 
-class RealList(SettingsBase[RealListType]):
+class RealList(SettingsBase[RealListType], Numerical):
     """A ``RealList`` object representing a real list setting."""
 
     _state_type = RealListType
 
 
-class IntegerList(SettingsBase[IntListType]):
+class IntegerList(SettingsBase[IntListType], Numerical):
     """An ``Integer`` object representing an integer list setting."""
 
     _state_type = IntListType
 
 
-class RealVector(SettingsBase[RealVectorType]):
+class RealVector(SettingsBase[RealVectorType], Numerical):
     """An object representing a 3D vector.
 
     A ``RealVector`` object representing a real vector setting
@@ -284,13 +322,13 @@ class RealVector(SettingsBase[RealVectorType]):
     _state_type = RealVectorType
 
 
-class StringList(SettingsBase[StringListType]):
+class StringList(SettingsBase[StringListType], Textual):
     """A ``StringList`` object representing a string list setting."""
 
     _state_type = StringListType
 
 
-class BooleanList(SettingsBase[BoolListType]):
+class BooleanList(SettingsBase[BoolListType], Property):
     """A ``BooleanList`` object representing a Boolean list setting."""
 
     _state_type = BoolListType
@@ -630,6 +668,14 @@ def _get_new_keywords(obj, kwds):
 class Command(Base):
     """Command object."""
 
+    def __init__(self, name: str = None, parent=None):
+        """__init__ of Command class."""
+        super().__init__(name, parent)
+        if hasattr(self, "argument_names"):
+            for argument in self.argument_names:
+                cls = getattr(self.__class__, argument)
+                self._setattr(argument, cls(None, self))
+
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
@@ -664,6 +710,7 @@ _baseTypes = {
     "thread-var": String,
     "list-object": ListObject,
     "file": Filename,
+    "file-list": FilenameList,
     "map": Map,
 }
 
