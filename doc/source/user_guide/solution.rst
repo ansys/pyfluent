@@ -29,7 +29,7 @@ the gradient options. Five solution methods (Index-Model) are available:
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
+    session = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
     session.solver.tui.file.read_case(case_file_name='file.cas.h5')
     session.solver.tui.solve.set.p_v_coupling(24) # Coupled
     session.solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
@@ -106,5 +106,5 @@ using :ref:`ref_settings`.
 
 .. code:: python
 
-    session.solver.root.solution.initialization.hybrid_initialize()
-    session.solver.root.solution.run_calculation.iterate(number_of_iterations=150)
+    session.solver.solution.initialization.hybrid_initialize()
+    session.solver.solution.run_calculation.iterate(number_of_iterations=150)

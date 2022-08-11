@@ -86,7 +86,7 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  session = pyfluent.launch_fluent()
+  session = pyfluent.launch_fluent(mode="solver")
   session.check_health()
 
 To use a non-default installation location, set the ``PYFLUENT_FLUENT_ROOT``

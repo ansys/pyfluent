@@ -35,7 +35,7 @@ Fluent in solution mode with no arguments:
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent()
+    solver_session = launch_fluent(mode="solver")
 
 You can launch Fluent in meshing mode with: 
 
@@ -43,7 +43,7 @@ You can launch Fluent in meshing mode with:
 
     from ansys.fluent.core import launch_fluent
 
-    meshing_session = launch_fluent(meshing_mode=True)
+    meshing_session = launch_fluent(mode="meshing")
 
 Setting the ``meshing_mode`` argument to ``False`` launches Fluent in solution mode. 
 
@@ -81,7 +81,7 @@ additional interface features that are not possible via the ``tui`` object:
 
 .. code:: python
 
-    root = solver_session.solver.root
+    root = solver_session.solver
 
     root.file.read(file_type="case", file_name="pipe.cas.h5")
 
