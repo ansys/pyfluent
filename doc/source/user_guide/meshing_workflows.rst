@@ -19,7 +19,7 @@ Import geometry
 
     import_filename = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
     session = pyfluent.launch_fluent(
-        meshing_mode=True, precision='double', processor_count=2
+        meshing_mode=True, precision='double', processor_count=2, mode="solver"
     )
     session.meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
     session.meshing.workflow.TaskObject['Import Geometry'].Arguments = dict(
@@ -130,7 +130,7 @@ Import CAD and part management
         'exhaust_system.fmd', 'pyfluent/exhaust_system'
     )
     session = pyfluent.launch_fluent(
-        meshing_mode=True, precision='double', processor_count=2
+        meshing_mode=True, precision='double', processor_count=2, mode="solver"
     )
     session.meshing.workflow.InitializeWorkflow(WorkflowType='Fault-tolerant Meshing')
     session.meshing.PartManagement.InputFileChanged(

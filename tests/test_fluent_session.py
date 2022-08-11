@@ -9,13 +9,13 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.session import Session
+from ansys.fluent.core.session import _FluentConnection
 import docker
 
 
 def _read_case(session):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.solver.root.file.read(file_type="case", file_name=case_path)
+    session.file.read(file_type="case", file_name=case_path)
 
 
 def test_session_starts_transcript_by_default(new_solver_session) -> None:
@@ -29,7 +29,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
     print_transcript.called = False
     print_transcript.transcript = None
 
-    Session._print_transcript = print_transcript
+    _FluentConnection._print_transcript = print_transcript
 
     _read_case(session=session)
 
@@ -56,7 +56,7 @@ def test_session_starts_no_transcript_if_disabled(
 
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
     def f():
-        session = pyfluent.launch_fluent()
+        session = pyfluent.launch_fluent(mode="solver")
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
@@ -77,7 +77,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
     with_launching_container,
 ) -> None:
     def f():
-        session = pyfluent.launch_fluent(cleanup_on_exit=False)
+        session = pyfluent.launch_fluent(mode="solver", cleanup_on_exit=False)
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":

@@ -28,8 +28,8 @@ from util.solver import check_report_definition_result
 
 def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geometry):
 
-    session = new_fault_tolerant_workflow_session
-    workflow = session.meshing.workflow
+    meshing_session = new_fault_tolerant_workflow_session
+    workflow = meshing_session.workflow
 
     assign_task_args = partial(
         assign_task_arguments, workflow=workflow, check_state=True
@@ -41,13 +41,13 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Import the CAD geometry
-    session.meshing.PartManagement.InputFileChanged(
+    meshing_session.PartManagement.InputFileChanged(
         FilePath=exhaust_system_geometry,
         IgnoreSolidNames=False,
         PartPerBody=False,
     )
-    session.meshing.PMFileManagement.FileManager.LoadFiles()
-    session.meshing.PartManagement.Node["Meshing Model"].Copy(
+    meshing_session.PMFileManagement.FileManager.LoadFiles()
+    meshing_session.PartManagement.Node["Meshing Model"].Copy(
         Paths=[
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
             "/dirty_manifold-for-wrapper,"
@@ -58,7 +58,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-    session.meshing.PartManagement.ObjectSetting[
+    meshing_session.PartManagement.ObjectSetting[
         "DefaultObjectSetting"
     ].OneZonePer.setState("part")
     workflow.TaskObject["Import CAD and Part Management"].Arguments.setState(
@@ -320,7 +320,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Define thresholds for any potential leakages.
-    session.meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
+    meshing_session.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
         {
             "AddChild": "yes",
             "FlipDirection": True,
@@ -430,59 +430,57 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    session.meshing.tui.mesh.check_mesh()
+    meshing_session.tui.mesh.check_mesh()
 
     ###############################################################################
     # Switch to Solution mode
-    session.meshing.tui.switch_to_solution_mode("yes")
+    solver_session = meshing_session.switch_to_solver()
 
     ###############################################################################
     # Check the mesh in Solver mode
-    session.solver.tui.mesh.check()
+    solver_session.tui.mesh.check()
 
     ###############################################################################
     # Set the units for length
-    session.solver.tui.define.units("length", "mm")
+    solver_session.tui.define.units("length", "mm")
 
     ###############################################################################
     # Select kw sst turbulence model
-    session.solver.tui.define.models.viscous.kw_sst("yes")
+    solver_session.tui.define.models.viscous.kw_sst("yes")
 
     ###############################################################################
     # Set the velocity and turbulence boundary conditions for the first inlet
     # (inlet-1).
-    session.solver.tui.define.boundary_conditions.set.velocity_inlet(
+    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
         "inlet-1", [], "vmag", "no", 1, "quit"
     )
     ###############################################################################
     # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
     # and inlet_3).
-    session.solver.tui.define.boundary_conditions.copy_bc(
+    solver_session.tui.define.boundary_conditions.copy_bc(
         "inlet-1", "inlet-2", "inlet-3", ()
     )
 
     ###############################################################################
     # Set the boundary conditions at the outlet (outlet-1).
-    session.solver.tui.define.boundary_conditions.set.pressure_outlet(
+    solver_session.tui.define.boundary_conditions.set.pressure_outlet(
         "outlet-1", [], "turb-intensity", 5, "quit"
     )
-    session.solver.tui.solve.monitors.residual.plot("yes")
+    solver_session.tui.solve.monitors.residual.plot("yes")
 
     ###############################################################################
     # Initialize the flow field using the Initialization
-    session.solver.tui.solve.initialize.hyb_initialization()
+    solver_session.tui.solve.initialize.hyb_initialization()
 
     ###############################################################################
     # Start the calculation by requesting 100 iterations
-    session.solver.tui.solve.set.number_of_iterations(100)
-    session.solver.tui.solve.iterate()
+    solver_session.tui.solve.set.number_of_iterations(100)
+    solver_session.tui.solve.iterate()
 
     ###############################################################################
     # Assert the returned mass flow rate report definition value
-    session.solver.root.solution.report_definitions.flux["mass_flow_rate"] = {}
-    session.solver.root.solution.report_definitions.flux[
-        "mass_flow_rate"
-    ].zone_names = [
+    solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
+    solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
         "inlet-1",
         "inlet-2",
         "inlet-3",
@@ -491,7 +489,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     check_report_definition = partial(
         check_report_definition_result,
-        report_definitions=session.solver.root.solution.report_definitions,
+        report_definitions=solver_session.solution.report_definitions,
     )
 
     check_report_definition(
@@ -502,22 +500,20 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Assert the returned velocity-magnitude report definition value on the outlet
     # surface
-    session.solver.root.solution.report_definitions.surface[
-        "velocity_magnitude_outlet"
-    ] = {}
-    session.solver.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface["velocity_magnitude_outlet"] = {}
+    solver_session.solution.report_definitions.surface[
         "velocity_magnitude_outlet"
     ].report_type = "surface-areaavg"
-    session.solver.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface[
         "velocity_magnitude_outlet"
     ].field = "velocity-magnitude"
-    session.solver.root.solution.report_definitions.surface[
+    solver_session.solution.report_definitions.surface[
         "velocity_magnitude_outlet"
     ].surface_names = ["outlet-1"]
 
     check_report_definition = partial(
         check_report_definition_result,
-        report_definitions=session.solver.root.solution.report_definitions,
+        report_definitions=solver_session.solution.report_definitions,
     )
 
     check_report_definition(

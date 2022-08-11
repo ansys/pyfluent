@@ -64,7 +64,7 @@ arguments. With the full TUI call in hand, you can transform it to a Python call
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent()
+    solver_session = launch_fluent(mode="solver")
 
     tui = solver_session.solver.tui
 

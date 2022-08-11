@@ -22,8 +22,8 @@ def test_mixing_elbow_meshing_workflow(
     mixing_elbow_geometry,
 ):
 
-    session = shared_watertight_workflow_session
-    workflow = session.meshing.workflow
+    meshing_session = shared_watertight_workflow_session
+    workflow = meshing_session.workflow
 
     ###############################################################################
 
@@ -117,7 +117,7 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    session.meshing.tui.mesh.check_mesh()
+    meshing_session.tui.mesh.check_mesh()
 
 
 def test_meshing_workflow_raises_exception_on_invalid_task_name(

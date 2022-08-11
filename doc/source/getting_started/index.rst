@@ -50,7 +50,7 @@ You can launch Fluent from Python using the ``launch_fluent`` function:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  session = pyfluent.launch_fluent(precision="double", processor_count=2)
+  session = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
   session.check_health()
 
 Fluent is now active. You can send commands to it as a genuine Python class.
@@ -78,7 +78,7 @@ to the ``launch_fluent`` function:
 
 .. code:: python
 
-  session = pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True)
+  session = pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True, mode="solver")
 
 If you want to print the debug information for development, set the following
 environment variable:
