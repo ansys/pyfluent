@@ -170,6 +170,10 @@ class Property(Base):
         """Gets the default value of the object."""
         return self.get_attr("default")
 
+    def is_read_only(self) -> bool:
+        """Whether the object is read-only."""
+        return self.get_attr("read-only?")
+
 
 class Numerical(Property):
     """Exposes attribute accessor on settings object - specific to numerical objects."""
