@@ -52,7 +52,12 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
 
     This supersedes the fluent path set in the environment variable
     """
-    FLUENT_EXE_PATH.append(str(fluent_exe_path))
+    if str(fluent_exe_path).endswith("fluent.exe"):
+        FLUENT_EXE_PATH.append(str(fluent_exe_path))
+    else:
+        raise RuntimeError(
+            f"The passed path '{fluent_exe_path}' does not contain a valid fluent executable file."
+        )
 
 
 def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
