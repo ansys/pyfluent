@@ -48,7 +48,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     assert mock_is_configured.called
     assert mock_connect.called
     mock_client.create_instance.assert_called_with(
-        "fluent-3ddp", product_version=launcher.PIM_FLUENT_PRODUCT_VERSION
+        "fluent-3ddp", product_version=launcher.PIM_FLUENT_PRODUCT_VERSION[0]
     )
     assert mock_instance.wait_for_ready.called
     mock_instance.build_grpc_channel.assert_called_with()
