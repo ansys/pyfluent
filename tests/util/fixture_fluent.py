@@ -152,3 +152,10 @@ def get_name_info(allnamesdict, namescheck):
                 if name in details.values() or name in details or name in names:
                     name_selected[name] = details
     return name_selected
+
+
+@pytest.fixture
+def sample_solver_session(with_launching_container):
+    solver_session = pyfluent.launch_fluent(mode="solver")
+    yield solver_session
+    solver_session.exit()

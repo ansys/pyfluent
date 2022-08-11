@@ -151,6 +151,10 @@ class Base:
         """Whether the object is active."""
         return self.get_attr("active?")
 
+    def is_read_only(self) -> bool:
+        """Whether the object is read-only."""
+        return self.get_attr("read-only?")
+
     def __setattr__(self, name, value):
         raise AttributeError(name)
 
@@ -169,10 +173,6 @@ class Property(Base):
     def default_value(self):
         """Gets the default value of the object."""
         return self.get_attr("default")
-
-    def is_read_only(self) -> bool:
-        """Whether the object is read-only."""
-        return self.get_attr("read-only?")
 
 
 class Numerical(Property):
@@ -667,6 +667,14 @@ def _get_new_keywords(obj, kwds):
 
 class Command(Base):
     """Command object."""
+
+    def __init__(self, name: str = None, parent=None):
+        """__init__ of Command class."""
+        super().__init__(name, parent)
+        if hasattr(self, "argument_names"):
+            for argument in self.argument_names:
+                cls = getattr(self.__class__, argument)
+                self._setattr(argument, cls(None, self))
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
