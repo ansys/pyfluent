@@ -100,7 +100,7 @@ def _copy_tui_help_xml_file():
 
         client = docker.from_env()
         container = client.containers.create(_FLUENT_IMAGE_NAME)
-        xml_source = f"/ansys_inc/v{FLUENT_VERSION.replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        xml_source = f"/ansys_inc/v{FLUENT_VERSION[0].replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         is_linux = platform.system() == "Linux"
         subprocess.run(
             f"docker cp {container.name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
@@ -342,7 +342,7 @@ class TUIGenerator:
 
 def generate():
     # pyfluent.set_log_level("WARNING")
-    if FLUENT_VERSION > "22.2":
+    if FLUENT_VERSION[0] > "22.2":
         _copy_tui_help_xml_file()
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
