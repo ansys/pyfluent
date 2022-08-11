@@ -5,7 +5,7 @@ import shutil
 from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.fluent.core.session import Session
+from ansys.fluent.core.session import BaseSession as Session
 
 _THIS_DIR = Path(__file__).parent
 
@@ -106,7 +106,9 @@ class DataModelGenerator:
     def _get_static_info(self, rules: str, session: Session):
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.rules = rules
-        response = session._datamodel_service_se.get_static_info(request)
+        response = session.fluent_connection.datamodel_service_se.get_static_info(
+            request
+        )
         return response.info
 
     def _populate_static_info(self):
@@ -119,14 +121,14 @@ class DataModelGenerator:
         import ansys.fluent.core as pyfluent
 
         if run_meshing_mode:
-            session = pyfluent.launch_fluent(meshing_mode=True)
+            session = pyfluent.launch_fluent(mode="meshing")
             for _, info in self._static_info.items():
                 if info.mode == "meshing":
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
         if run_solver_mode:
-            session = pyfluent.launch_fluent()
+            session = pyfluent.launch_fluent(mode="solver")
             for _, info in self._static_info.items():
                 if info.mode == "solver":
                     info.static_info = self._get_static_info(info.rules, session)

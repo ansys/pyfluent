@@ -195,8 +195,11 @@ class TUIGenerator:
         self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
-        self.session = pyfluent.launch_fluent(meshing_mode=meshing)
-        self._service = self.session._datamodel_service_tui
+        if meshing:
+            self.session = pyfluent.launch_fluent(mode="meshing")
+        else:
+            self.session = pyfluent.launch_fluent(mode="solver")
+        self._service = self.session.fluent_connection.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
