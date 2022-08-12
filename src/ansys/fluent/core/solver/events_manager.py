@@ -8,9 +8,9 @@ from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 
 
 class EventsManager:
-    """Manages the server-side events.
+    """Manages server-side events.
 
-    Allows client to register and unregister callbacks with server events.
+    This class allows the client to register and unregister callbacks with server events.
 
     Parameters
     ----------
@@ -70,7 +70,7 @@ class EventsManager:
     def register_callback(
         self, event_name: str, call_back: Callable, *args, **kwargs
     ) -> str:
-        """Register `Callback`.
+        """Register the callback.
 
         Parameters
         ----------

@@ -34,8 +34,8 @@ This example shows how you launch Fluent in meshing mode:
 
 Precision
 ~~~~~~~~~
-This example shows how you lanch Fluent in solution mode
-and set the precision:
+This example shows how you launch Fluent in solution mode
+and set the floating point precision:
 
 .. code:: python
 

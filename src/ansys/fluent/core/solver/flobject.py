@@ -96,7 +96,7 @@ class Base:
     def flproxy(self):
         """Proxy object.
 
-        This is set at the root level and accessed via the parent for
+        The proxy object is set at the root level and accessed via the parent for
         the child classes.
         """
         if self._flproxy is None:
@@ -179,11 +179,11 @@ class Numerical(Property):
     """Exposes attribute accessor on settings object - specific to numerical objects."""
 
     def min(self):
-        """Gets the minimum value of the object."""
+        """Get the minimum value of the object."""
         return self.get_attr("min")
 
     def max(self):
-        """Gets the maximum value of the object."""
+        """Get the maximum value of the object."""
         return self.get_attr("max")
 
 
@@ -191,7 +191,7 @@ class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
     def allowed_values(self):
-        """Gets the allowed values of the object."""
+        """Get the allowed values of the object."""
         return self.get_attr("allowed-values")
 
 
