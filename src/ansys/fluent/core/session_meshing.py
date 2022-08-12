@@ -1,5 +1,6 @@
 """Module containing class encapsulating Fluent connection."""
-import weakref
+# import weakref
+
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -11,12 +12,14 @@ class Meshing(PureMeshing):
     Meshing(PureMeshing) holds the top-level objects
     for meshing TUI and various meshing datamodel API calls."""
 
+    """
     _alive = []
 
     def __new__(cls, *args, **kwargs):
         self = super().__new__(cls)
         Meshing._alive.append(self)
         return weakref.proxy(self)
+    """
 
     def __init__(
         self,
@@ -27,5 +30,5 @@ class Meshing(PureMeshing):
     def switch_to_solver(self):
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(fluent_connection=self.fluent_connection)
-        self._alive.remove(self)
+        # self._alive.remove(self)
         return solver_session
