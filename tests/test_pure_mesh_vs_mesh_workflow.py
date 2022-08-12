@@ -38,5 +38,5 @@ def test_meshing_mode_post_switching_to_solver(load_mixing_elbow_meshing):
     meshing_session = load_mixing_elbow_meshing
     meshing_session.switch_to_solver()
     # Post switching to solver session, meshing session specific attributes are unavailable
-    with pytest.raises(AttributeError):
-        meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    # with pytest.raises(AttributeError):
+    #    meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
