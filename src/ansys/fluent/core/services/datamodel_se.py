@@ -204,7 +204,6 @@ def _convert_path_to_se_path(path: Path) -> str:
     return se_path
 
 
-
 class PyBasicStateContainer:
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
