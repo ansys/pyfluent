@@ -1,20 +1,13 @@
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService as DatamodelService_SE,
-)
+from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 
 
 class BaseMeshing:
-    def __init__(
-        self, tui_service: DatamodelService_TUI, se_service: DatamodelService_SE
-    ):
-        self._tui_service = tui_service
-        self._se_service = se_service
+    def __init__(self, fluent_connection: _FluentConnection):
+        self._tui_service = fluent_connection.datamodel_service_tui
+        self._se_service = fluent_connection.datamodel_service_se
         self._tui = None
         self._meshing = None
         self._workflow = None

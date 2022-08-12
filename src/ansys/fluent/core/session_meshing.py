@@ -2,6 +2,7 @@
 # import weakref
 
 
+from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 
@@ -19,6 +20,12 @@ class Meshing(PureMeshing):
         Meshing._alive.append(self)
         return weakref.proxy(self)
     """
+
+    def __init__(
+        self,
+        fluent_connection: _FluentConnection,
+    ):
+        super(Meshing, self).__init__(fluent_connection=fluent_connection)
 
     def switch_to_solver(self):
         self.tui.switch_to_solution_mode("yes")

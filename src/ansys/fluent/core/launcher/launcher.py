@@ -14,6 +14,7 @@ import tempfile
 import time
 from typing import Any, Dict, Union
 
+from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.session import BaseSession, Session
 from ansys.fluent.core.session_meshing import Meshing
@@ -428,16 +429,20 @@ def launch_fluent(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
-                port=port,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
+                _FluentConnection(
+                    port=port,
+                    cleanup_on_exit=cleanup_on_exit,
+                    start_transcript=start_transcript,
+                )
             )
         else:
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
             return new_session(
-                ip=ip,
-                port=port,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
+                _FluentConnection(
+                    ip=ip,
+                    port=port,
+                    cleanup_on_exit=cleanup_on_exit,
+                    start_transcript=start_transcript,
+                )
             )
