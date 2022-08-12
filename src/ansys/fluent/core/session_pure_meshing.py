@@ -7,22 +7,16 @@ import grpc
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session import (
+    _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
     BaseSession,
-    parse_server_info_file,
 )
 from ansys.fluent.core.utils.logging import LOG
-
-_CODEGEN_MSG_DATAMODEL = (
-    "Currently calling the datamodel API in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local datamodel API classes."
-)
 
 
 class PureMeshing(BaseSession):
     """Encapsulates a Fluent - Pure Meshing session connection.
-    PureMeshing(Session) holds the top-level objects
+    PureMeshing(BaseSession) holds the top-level objects
     for meshing TUI and various meshing datamodel API calls."""
 
     def __init__(
@@ -53,44 +47,6 @@ class PureMeshing(BaseSession):
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
-
-    @classmethod
-    def create_from_server_info_file(
-        cls,
-        server_info_filepath: str,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-    ) -> "PureMeshing":
-        """Create a Session instance from server-info file.
-
-        Parameters
-        ----------
-        server_info_filepath : str
-            Path to server-info file written out by Fluent server
-        cleanup_on_exit : bool, optional
-            When True, the connected Fluent session will be shut down
-            when PyFluent is exited or exit() is called on the session
-            instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
-            Defaults to true.
-
-        Returns
-        -------
-        Session
-            Session instance
-        """
-        ip, port, password = parse_server_info_file(server_info_filepath)
-        meshing_session = PureMeshing(
-            ip=ip,
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
-        )
-        return meshing_session
 
     @property
     def tui(self):
