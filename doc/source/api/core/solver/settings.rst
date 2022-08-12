@@ -16,6 +16,7 @@ property of ``session.solver``.
   >>> solver = pyfluent.launch_fluent(mode="solver")
   >>> root = solver
 
+
 The ``root`` object contains attributes such as ``file``, ``setup``,
 ``solution``, and ``results``.  These objects are also instances of settings
 objects and roughly mirror the outline view in Fluent.
@@ -50,13 +51,14 @@ are three types: ``Group``, ``NamedObject``, and ``ListObject``.
 Object state
 ------------
 You can access the state of any object by "calling" it. For container objects,
-this returns the state of the children as a dictionary (for ``Group`` and
-``NamedObject`` types) or a list (for ``ListObject`` types):
+this returns the state of the children as a dictionary for ``Group`` and
+``NamedObject`` types or as a list for ``ListObject`` types:
 
 .. code-block::
 
   >>> root.setup.models.viscous.model()
   'k-epsilon-standard'
+
 
 .. code-block::
 
@@ -70,6 +72,7 @@ this returns the state of the children as a dictionary (for ``Group`` and
   >>> root.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
   10.0
 
+
 To modify the state of any object, you can assign the corresponding attribute
 in its parent object. This assignment can be done at any level. For ``Group``
 and ``NamedObject`` types, the state value is a dictionary. For the
@@ -81,6 +84,7 @@ and ``NamedObject`` types, the state value is a dictionary. For the
   >>> root.setup.models.energy = { 'enabled' : False }
   >>> root.setup.boundary_conditions.velocity['inlet1'].vmag.constant = 14
 
+
 You can also access the state of an object with the ``get_state`` method and
 modify it with the ``set_state`` method.
 
@@ -90,6 +94,7 @@ You can print the current state in a simple text format with the
 .. code-block::
 
   >>> root.setup.models.print_state()
+
 
 The following output is returned:
   
@@ -139,11 +144,13 @@ the viscous model:
 
   >>> root.setup.models.viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
-  
+ 
+
 .. code-block::
 
   >>> root.setup.models.viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
+
 
 This example accesses the list of zone surfaces:
 
@@ -155,6 +162,7 @@ This example accesses the list of zone surfaces:
       ].zone_names.get_attr("allowed-values")
   ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']
 
+
 .. code-block::
 
   >>> root.solution.report_definitions.flux["mass_flow_rate"] = {}
@@ -162,6 +170,7 @@ This example accesses the list of zone surfaces:
           "mass_flow_rate"
       ].zone_names.get_attrs(["allowed-values"])
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
+
 
 Attributes are dynamic. Values can change based on the app
 state.
