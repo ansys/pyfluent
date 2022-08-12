@@ -104,7 +104,7 @@ For additional interface features, see :ref:`ref_settings`.
 Meshing mode session
 --------------------
 A meshing mode session has an active ``meshing`` object that provides two
-distinct inferfaces to the mesher:
+distinct interfaces to the mesher:
 
 - ``tui`` object
 - ``meshing`` and ``workflow`` properties

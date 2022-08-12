@@ -1,6 +1,6 @@
 .. _ref_utils:
 
-PyFluent Utility functions
+PyFluent utility functions
 ==========================
 
 .. currentmodule:: ansys.fluent.core.utils

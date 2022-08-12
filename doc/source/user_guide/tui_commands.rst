@@ -52,7 +52,7 @@ to each prompt in turn as follows:
     
     quit
 
-The following code yields the same result by specifing all arguments in one call:
+The following code yields the same result but specifies all arguments in one call:
 
 .. code:: lisp
 
@@ -62,7 +62,7 @@ You can see how using the interactive TUI provides a reliable approach for
 constructing TUI calls that include full sequences of arguments.
 
 With the full TUI call in hand, you can transform it to a Python call. This
-code lauches Fluent and makes the call to set velocity inlet properties:
+code launches Fluent and makes the call to set velocity inlet properties:
 
 .. code:: python
 
@@ -95,8 +95,8 @@ The corresponding Python call is:
 To preserve the double quotation marks around the TUI argument,
 you must wrap the string ``"Pa"`` in single quotation marks .
 
-TUI command tranformation rules
--------------------------------
+TUI command transformation rules
+--------------------------------
 The following rules are implied in the preceding examples:
 
 - Each forward slash separator between elements in TUI paths is transformed to Python dot notation.
