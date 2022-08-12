@@ -102,7 +102,6 @@ class SolverLite(BaseSession):
     def root(self):
         """root settings object."""
         if self._settings_root is None:
-            LOG.warning("The settings API is currently experimental.")
             self._settings_root = settings_get_root(flproxy=self._settings_service)
         return self._settings_root
 
