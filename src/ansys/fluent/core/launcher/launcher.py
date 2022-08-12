@@ -40,7 +40,9 @@ class FluentVersion(Enum):
     @staticmethod
     def get_version(version: str) -> "FluentVersion":
         """Get the available versions based on the version in string.
-        format."""
+
+        format.
+        """
         for v in FluentVersion:
             if version == v.value:
                 return v
@@ -64,9 +66,9 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
 def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     """Set the Fluent version manually.
 
-    This method only works if the provided Fluent version is installed and the
-    environment variables are updated properly. This supersedes the
-    Fluent path set in the environment variable.
+    This method only works if the provided Fluent version is installed
+    and the environment variables are updated properly. This supersedes
+    the Fluent path set in the environment variable.
     """
     if type(version) in [float, str]:
         version = FluentVersion.get_version(str(version))
@@ -148,7 +150,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
     """Build Fluent's launch arguments string from keyword arguments.
-    
+
     Returns
     -------
     str

@@ -96,8 +96,8 @@ class Base:
     def flproxy(self):
         """Proxy object.
 
-        The proxy object is set at the root level and accessed via the parent for
-        the child classes.
+        The proxy object is set at the root level and accessed via the
+        parent for the child classes.
         """
         if self._flproxy is None:
             return self._parent.flproxy

@@ -75,7 +75,6 @@ class MonitorsManager:
         Union[None, object]
             Returns ``None`` if the `DataFrame <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html>`_
             is empty. Otherwise, it returns the plot object, depending on the ``plotting.backend``.
-            
         """
         with self._lock:
             df = self._data_frames[monitor_set_name]["df"]

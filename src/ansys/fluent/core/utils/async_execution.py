@@ -7,8 +7,8 @@ from typing import Callable
 
 def asynchronous(f: Callable) -> Callable:
     """Use for decorating functions that are to execute asynchronously. The
-    decorated function returns a `future`_ object. Calling `result()`_ on the future
-    object synchronizes the function execution.
+    decorated function returns a `future`_ object. Calling `result()`_ on the
+    future object synchronizes the function execution.
 
     Examples
     --------
