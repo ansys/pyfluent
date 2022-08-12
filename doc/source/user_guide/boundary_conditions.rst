@@ -1,16 +1,16 @@
 Defining boundary conditions
 ============================
-PyFluent supports defining boundary conditions using :ref:`ref_solver_tui_commands`
-and :ref:`ref_settings`.
+PyFluent supports using :ref:`ref_solver_tui_commands`
+and :ref:`ref_settings` to define boundary conditions.
 
-Using solver TUI commands
--------------------------
-These examples show how you define and copy boundary conditions, list zones,
-and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
+Use solver TUI commands
+-----------------------
+The examples in this section show how you use :ref:`ref_solver_tui_commands`
+to define boundary conditions.
 
-Defining boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+Define boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
 Python code for defining velocity boundary conditions at inlets.
 
 **TUI command**
@@ -73,7 +73,7 @@ Python code for defining velocity boundary conditions at inlets.
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+This example shows a comparison between the TUI command and the
 Python code for copying boundary conditions to other zones.
 
 **TUI command**
@@ -90,7 +90,7 @@ Python code for copying boundary conditions to other zones.
 
 Listing zones
 ~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+This example shows a comparison between the TUI command and the
 Python code for printing to the Fluent console the types and IDs of all zones.
 
 **TUI command**
@@ -107,7 +107,7 @@ Python code for printing to the Fluent console the types and IDs of all zones.
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+This example shows a comparison between the TUI command and the
 Python code for modifying cell zone conditions.
 
 **TUI command**
@@ -149,11 +149,11 @@ Python code for modifying cell zone conditions.
 
 Using settings objects
 ----------------------
-The following examples show how you define boundary conditions using
-:ref:`ref_settings`.
+The examples in this section show how you use :ref:`ref_settings` to define
+boundary conditions.
 
-Defining boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Define boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 
@@ -177,8 +177,8 @@ Defining boundary conditions
         'constant': 293.15,
     }
 
-Modifying cell zone conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Modify cell zone conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 

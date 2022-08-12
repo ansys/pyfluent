@@ -52,8 +52,8 @@ For more information, see :ref:`ref_user_guide_launch`
 and :ref:`ref_launcher_launcher`.
 
 You can use PyFluent to create and initialize multiple, independent session objects.
-Each session object provides full access to the Fluent components relevant to the session's current
-mode (solution or meshing).
+Each session object provides full access to the Fluent components relevant to the
+session's current mode (solution or meshing).
 
 Solution mode session
 ---------------------
@@ -80,7 +80,7 @@ modification of solve settings in a manner that is familiar to existing Fluent u
     tui.define.models.energy("yes")
 
 For the full hierarchy under the solver ``tui`` object, see :ref:`ref_solver_tui_commands`.
-For general guidance, see :ref:`ref_user_guide_tui_commands`. 
+For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_commands`. 
 
 Solver ``root`` object
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -125,7 +125,7 @@ to existing Fluent users:
     tui.file.write_case("pipe.cas.h5")
     
 For the full hierarchy under the meshing ``tui`` object, see :ref:`ref_meshing_tui`.
-For general guidance, see :ref:`ref_user_guide_tui_commands`. 
+For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_commands`. 
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,7 +155,7 @@ For information on the full interface, see :ref:`ref_meshing_datamodel`.
 
 Session object
 --------------
-In either a solution or meshing mode session, a ``session`` object provides
+In either a solution or meshing mode session, the ``session`` object provides
 a more direct interaction via its ``scheme_eval`` attribute:
 
 .. code:: python
@@ -163,8 +163,9 @@ a more direct interaction via its ``scheme_eval`` attribute:
     unsteady = solver_session.scheme_eval.scheme_eval("(rp-unsteady?)")
 
 The argument to ``scheme_eval`` is a string that contains any scheme
-code that can be executed in Fluent for the current mode. Surface field
-and mesh data services are available in solution mode only via
+code that can be executed in Fluent for the current mode.
+
+Surface field and mesh data services are available in solution mode only via
 the ``field_data`` object attribute of the session object:
 
 .. code:: python
@@ -184,7 +185,7 @@ The connection status of any session can be verified with:
 Streaming
 ---------
 Streaming of a Fluent transcript is automatically started by default.
-You can stop and start a transcript manually with:
+You can stop and start the streaming of a transcript manually with:
  
 .. code:: python
 
