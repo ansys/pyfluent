@@ -14,8 +14,8 @@ property of ``session.solver``.
 .. code-block::
 
   >>> import ansys.fluent.core as pyfluent
-  >>> session = pyfluent.launch_fluent(mode="solver")
-  >>> root = session.solver
+  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> root = solver
 
 The ``root`` object contains attributes such as ``file``, ``setup``,
 ``solution``, and ``results``.  These objects are also instances of settings

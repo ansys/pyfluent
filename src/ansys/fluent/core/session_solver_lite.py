@@ -38,7 +38,7 @@ class SolverLite(Solver):
         self._tui = None
         self._settings_root = None
 
-    # One can inherit methods from 'Solver' and re-define it here to mak it unavailable in solver-Lite
+    # One can inherit methods from 'Solver' and re-define it here to make it unavailable in solver-Lite
 
     def switch_to_full_solver(self):
         """A switch to move to the full-solver session from solver-lite."""

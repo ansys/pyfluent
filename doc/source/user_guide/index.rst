@@ -65,7 +65,7 @@ users:
 
 .. code:: python
 
-    tui = solver_session.solver.tui
+    tui = solver_session.tui
 
     tui.file.read_case(case_file_name="pipe.cas.h5")
 
@@ -81,7 +81,7 @@ additional interface features that are not possible via the ``tui`` object:
 
 .. code:: python
 
-    root = solver_session.solver
+    root = solver_session
 
     root.file.read(file_type="case", file_name="pipe.cas.h5")
 
@@ -106,7 +106,7 @@ straightforward and familiar command and settings interactions are available:
 
 .. code:: python
 
-    tui = meshing_session.meshing.tui
+    tui = meshing_session.tui
 
     tui.mesh.prepare_for_solve("yes")
 
@@ -122,7 +122,7 @@ exposes directly:
 
 .. code:: python
 
-    workflow = meshing_session.meshing.workflow
+    workflow = meshing_session.workflow
 
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
@@ -132,7 +132,7 @@ exposes directly:
 
     import_geometry.Execute()
 
-    meshing = meshing_session.meshing.meshing
+    meshing = meshing_session.meshing
 
     meshing.GlobalSettings.LengthUnit.setState("mm")
 

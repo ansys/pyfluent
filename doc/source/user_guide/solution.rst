@@ -29,11 +29,11 @@ the gradient options. Five solution methods (Index-Model) are available:
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
-    session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.solve.set.p_v_coupling(24) # Coupled
-    session.solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
-    session.solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based
+    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
+    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.solve.set.p_v_coupling(24) # Coupled
+    solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
+    solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based
     
 Selecting solution controls 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,7 +50,7 @@ Python code for selecting the pressure velocity controls.
 
 .. code:: python
 
-    session.solver.tui.solve.set.p_v_controls(0.3,0.4) # Momentum and Pressure
+    solver.tui.solve.set.p_v_controls(0.3,0.4) # Momentum and Pressure
 
 Creating report definitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,7 +67,7 @@ Python code for creating report definitions.
 
 .. code:: python
 
-    session.solver.tui.solve.report_definitions.add(
+    solver.tui.solve.report_definitions.add(
         'outlet-temp-avg',
         'surface-massavg',
         'field',
@@ -94,8 +94,8 @@ Python code for initializing and performing a specified number of iterations.
 
 .. code:: python
 
-    session.solver.tui.solve.initialize.hyb_initialization()
-    session.solver.tui.solve.iterate(100)
+    solver.tui.solve.initialize.hyb_initialization()
+    solver.tui.solve.iterate(100)
 
 Using settings objects
 ----------------------
@@ -106,5 +106,5 @@ using :ref:`ref_settings`.
 
 .. code:: python
 
-    session.solver.solution.initialization.hybrid_initialize()
-    session.solver.solution.run_calculation.iterate(number_of_iterations=150)
+    solver.solution.initialization.hybrid_initialize()
+    solver.solution.run_calculation.iterate(number_of_iterations=150)
