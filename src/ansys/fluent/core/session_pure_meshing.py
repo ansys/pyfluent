@@ -7,17 +7,12 @@ import grpc
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session import (
+    _CODEGEN_MSG_DATAMODEL,
     _CODEGEN_MSG_TUI,
     BaseSession,
     parse_server_info_file,
 )
 from ansys.fluent.core.utils.logging import LOG
-
-_CODEGEN_MSG_DATAMODEL = (
-    "Currently calling the datamodel API in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local datamodel API classes."
-)
 
 
 class PureMeshing(BaseSession):
