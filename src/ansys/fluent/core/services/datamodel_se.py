@@ -204,14 +204,25 @@ def _convert_path_to_se_path(path: Path) -> str:
     return se_path
 
 
-class PyBasicStateContainer:
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+class PyCallableStateObject:
+    """Any object which can be called to get its state.
 
     Methods
     -------
     __call__()
         Get the state of the current object.
+    """
+
+    def __call__(self, *args, **kwds) -> Any:
+        return self.get_state()
+
+
+class PyBasicStateContainer(PyCallableStateObject):
+    """Object class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
+
+    Methods
+    -------
     get_attrib_value(attrib)
         Get the attribute value of the current object.
     getAttribValue(attrib)
@@ -258,16 +269,6 @@ class PyBasicStateContainer:
         self.service.set_state(request)
 
     setState = set_state
-
-    def __call__(self, *args, **kwds) -> Any:
-        """Get state of the current object.
-
-        Returns
-        -------
-        Any
-            State of the object.
-        """
-        return self.get_state()
 
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -581,7 +582,7 @@ class PyCommand:
         )
 
 
-class PyCommandArgumentsSubItem:
+class PyCommandArgumentsSubItem(PyCallableStateObject):
     def __init__(self, parent, name: str):
         self.parent = parent
         self.name = name
@@ -602,9 +603,6 @@ class PyCommandArgumentsSubItem:
         self.parent.set_state({self.name: state})
 
     setState = set_state
-
-    def __call__(self, *args, **kwds) -> Any:
-        return self.get_state()
 
     def get_attrib_value(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"

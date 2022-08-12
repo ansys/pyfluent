@@ -1,4 +1,7 @@
-def new_command_for_task(task, meshing):
+from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
+
+
+def _new_command_for_task(task, meshing):
     class NewCommandError(Exception):
         def __init__(self, task_name):
             super().__init__(f"Could not create command for meshing task {task_name}")
@@ -13,8 +16,8 @@ def new_command_for_task(task, meshing):
 
 
 class MeshingWorkflow:
-    class Task:
-        class Args:
+    class Task(PyCallableStateObject):
+        class Args(PyCallableStateObject):
             def __init__(self, task):
                 self._task = task
                 self._args = task.Arguments
@@ -33,11 +36,14 @@ class MeshingWorkflow:
             self.Arguments = MeshingWorkflow.Task.Args(self)
 
         def get_expanded_arg_state(self):
-            return self._command().get_state()
+            task_arg_state = self.Arguments.get_state()
+            cmd = self._command()
+            cmd.set_state(task_arg_state)
+            return cmd.get_state()
 
         def _command(self):
             if not self._cmd:
-                self._cmd = new_command_for_task(self._task, self._meshing)
+                self._cmd = _new_command_for_task(self._task, self._meshing)
             return self._cmd
 
         def __getattr__(self, attr):
