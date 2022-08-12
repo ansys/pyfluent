@@ -369,7 +369,7 @@ class BaseSession:
         server_info_filepath: str,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-    ) -> "BaseSession":
+    ):
         """Create a Session instance from server-info file.
 
         Parameters
@@ -392,7 +392,7 @@ class BaseSession:
             Session instance
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
-        session = BaseSession(
+        session = cls(
             ip=ip,
             port=port,
             password=password,
