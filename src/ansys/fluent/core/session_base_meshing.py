@@ -1,4 +1,5 @@
 from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.meshing.workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
@@ -42,16 +43,21 @@ class BaseMeshing:
         return self._meshing
 
     @property
-    def workflow(self):
+    def _workflow_se(self):
         """workflow datamodel root."""
-        if self._workflow is None:
-            try:
-                from ansys.fluent.core.datamodel.workflow import Root as workflow_root
+        try:
+            from ansys.fluent.core.datamodel.workflow import Root as workflow_root
 
-                self._workflow = workflow_root(self._se_service, "workflow", [])
-            except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                self._workflow = PyMenuGeneric(self._se_service, "workflow")
+            workflow_se = workflow_root(self._se_service, "workflow", [])
+        except (ImportError, ModuleNotFoundError):
+            LOG.warning(_CODEGEN_MSG_DATAMODEL)
+            workflow_se = PyMenuGeneric(self._se_service, "workflow")
+        return workflow_se
+
+    @property
+    def workflow(self):
+        if not self._workflow:
+            self._workflow = MeshingWorkflow(self._workflow_se, self.meshing)
         return self._workflow
 
     @property

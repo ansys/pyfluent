@@ -49,9 +49,9 @@ class MeshingWorkflow:
         def __getattr__(self, attr):
             return getattr(self._task, attr)
 
-    def __init__(self, meshing):
-        self._workflow = meshing.workflow
-        self._meshing = meshing.meshing
+    def __init__(self, workflow, meshing):
+        self._workflow = workflow
+        self._meshing = meshing
 
     def task(self, name):
         return MeshingWorkflow.Task(self, name)
