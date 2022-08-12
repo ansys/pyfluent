@@ -32,6 +32,7 @@ are three types: ``Group``, ``NamedObject``, and ``ListObject``.
   refers to the ``energy`` child of the ``models`` child of the ``setup`` object. The
   names of the child objects of a group can be accessed with the ``child_names``
   attribute of a ``Group`` object.
+
 - The ``NamedObject`` type is a container holding dynamically created named objects of
   its specified child type (accessible via a ``child_object_type`` attribute),
   similar to a dictionary. A specified named object can be accessed using the
@@ -39,6 +40,7 @@ are three types: ``Group``, ``NamedObject``, and ``ListObject``.
   refers to the ``velocity_object`` object with the name ``inlet2``. The current
   list of named object children can be accessed with the ``get_object_names()`` method
   of the container class.
+
 - The ``ListObject`` type is a container holding dynamically created unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
   list. Children of a ``ListObject`` object can be accessed using the index operator.
