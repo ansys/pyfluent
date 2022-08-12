@@ -109,8 +109,8 @@ distinct interfaces to the mesher:
 - ``tui`` object
 - ``meshing`` and ``workflow`` properties
 
-Meshing ``tui``object
-~~~~~~~~~~~~~~~~~~~~~
+Meshing ``tui`` object
+~~~~~~~~~~~~~~~~~~~~~~
 The meshing ``tui`` object is a complete Python exposure of the Fluent meshing TUI
 (text user interface). This object allows straightforward execution of meshing
 commands and modification of meshing settings in a manner that is familiar

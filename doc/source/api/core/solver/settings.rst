@@ -45,7 +45,7 @@ are three types: ``Group``, ``NamedObject``, and ``ListObject``.
   refers to the third (starting from index 0) mass source entry for the fluid zone
   named ``fluid-1``. The current number of child objects can be accessed with the
 ``get_size()`` method.
- 
+
 
 Object state
 ------------
