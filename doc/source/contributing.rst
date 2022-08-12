@@ -12,10 +12,10 @@ attempting to contribute to PyFluent.
  
 The following contribution information is specific to PyFluent.
 
-Cloning the PyFluent repository
--------------------------------
-Run this code to clone and install the latest version of PyFluent in development
-mode:
+Clone the repository
+--------------------
+To clone and install the latest PyFluent release in development
+mode, run:
 
 .. code::
 
@@ -24,10 +24,10 @@ mode:
     pip install pip -U
     pip install -e .
 
-Building documentation
-----------------------
-In the root directory of the repository, you can build documentation
-locally with:
+Build documentation
+-------------------
+To build the PyFluent documentation locally, in the root directory of the
+repository, run:
 
 .. code:: 
 
@@ -45,15 +45,15 @@ You can clear all HTML files from the ``_builds/html`` directory with:
 
     make clean
 
-Posting issues
---------------
+Post issues
+-----------
 Use the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page to
 submit questions, report bugs, and request new features.
 
 
-Adhering to code style
-----------------------
-PyFluent is compliant with the `PyAnsys Development Code Style Guide
+Adhere to code style
+--------------------
+PyFluent is compliant with the `PyAnsys code style
 <https://dev.docs.pyansys.com/coding_style/index.html>`_. It uses the tool
 `pre-commit <https://pre-commit.com/>`_ to check the code style. You can
 install and activate this tool with:
@@ -63,7 +63,7 @@ install and activate this tool with:
    python -m pip install pre-commit
    pre-commit install
 
-You then use the ``style`` rule defined in ``Makefile`` with:
+You can then use the ``style`` rule defined in ``Makefile`` with:
 
 .. code:: bash
 
