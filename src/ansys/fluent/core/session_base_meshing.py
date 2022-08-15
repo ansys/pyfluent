@@ -3,6 +3,7 @@ from ansys.fluent.core.meshing.workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
+from ansys.fluent.core.utils.logging import LOG
 
 
 class _BaseMeshing:
