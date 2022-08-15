@@ -39,9 +39,7 @@ class FluentVersion(Enum):
 
     @staticmethod
     def get_version(version: str) -> "FluentVersion":
-        """Get the available versions based on the version in string.
-
-        format.
+        """Get the available versions based on the version in string format.
         """
         for v in FluentVersion:
             if version == v.value:

@@ -93,7 +93,7 @@ PyFluent makes no commercial claim over Ansys whatsoever. This library
 extends the functionality of Ansys Fluent by adding a Python interface
 to Fluent without changing the core behavior or license of the original
 software. The use of the interactive control of Fluent control of PyFluent
-requires a legally licensed local copy of Fluent.
+requires a legally licensed copy of Fluent.
 
 For more information on Fluent, see the `Ansys Fluent page <https://www.ansys.com/products/fluids/ansys-fluent>`_ 
 on the Ansys website.
