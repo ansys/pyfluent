@@ -39,13 +39,13 @@ class FluentVersion(Enum):
 
     @staticmethod
     def get_version(version: str) -> "FluentVersion":
-        """Get the available versions based on the version in string format.
-        """
+        """Get the available versions based on the version in string format."""
+        
         for v in FluentVersion:
             if version == v.value:
                 return v
-        else:
-            raise RuntimeError(f"The passed version '{version}' does not exist.")
+            else:
+                raise RuntimeError(f"The passed version '{version}' does not exist.")
 
 
 def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
