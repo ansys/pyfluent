@@ -1,3 +1,5 @@
+from typing import Any
+
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
 
@@ -25,8 +27,15 @@ class MeshingWorkflow:
             def __getattr__(self, attr):
                 return getattr(self._args, attr)
 
-            def get_expanded_state(self):
-                return self._task.get_expanded_arg_state()
+            def get_command_argument_state(self) -> Any:
+                return self._task.get_command_argument_state()
+
+            def get_command_argument_attribute_value(
+                self, attribute_sub_path: str
+            ) -> Any:
+                return self._task.get_command_argument_attribute_value(
+                    attribute_sub_path
+                )
 
         def __init__(self, meshing, name):
             self._workflow = meshing._workflow
@@ -35,11 +44,18 @@ class MeshingWorkflow:
             self._cmd = None
             self.Arguments = MeshingWorkflow.Task.Args(self)
 
-        def get_expanded_arg_state(self):
+        def get_command_argument_attribute_value(self, attribute_sub_path: str) -> Any:
+            cmd = self._refreshed_command()
+            return cmd.get_attrib_value(attribute_sub_path)
+
+        def get_command_argument_state(self) -> Any:
+            return self._refreshed_command().get_state()
+
+        def _refreshed_command(self):
             task_arg_state = self.Arguments.get_state()
             cmd = self._command()
             cmd.set_state(task_arg_state)
-            return cmd.get_state()
+            return cmd
 
         def _command(self):
             if not self._cmd:
