@@ -74,7 +74,7 @@ the latest release with:
 Dependencies
 ------------
 You must have a licensed copy of Ansys Fluent installed locally. PyFluent
-supports Fluent 202022 R2 and later.
+supports Fluent 2022 R2 and later.
 
 Getting started
 ---------------
