@@ -5,7 +5,10 @@ from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 
 
-class BaseMeshing:
+class _BaseMeshing:
+
+    meshing_attrs = ("tui", "meshing", "workflow", "PartManagement", "PMFileManagement")
+
     def __init__(self, fluent_connection: _FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se

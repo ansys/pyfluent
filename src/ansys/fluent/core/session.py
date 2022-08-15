@@ -11,7 +11,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.session_base_meshing import BaseMeshing
+from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.logging import LOG
@@ -32,7 +32,7 @@ def parse_server_info_file(filename: str):
     return ip, port, password
 
 
-class BaseSession:
+class _BaseSession:
     """Instantiates a Fluent connection.
 
     Attributes
@@ -95,7 +95,7 @@ class BaseSession:
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
         session = cls(
-            _FluentConnection(
+            fluent_connection=_FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,
@@ -133,11 +133,14 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self.fluent_connection.exit()
 
+    def __getattr__(self, attr):
+        return getattr(self.fluent_connection, attr)
+
 
 class Session:
     """Instantiates a Fluent connection. This is a deprecated class. This has
-    been replaced by the "BaseSession" class to implement the new fluent launch
-    modes.
+    been replaced by the "_BaseSession" class to implement the new fluent
+    launch modes.
 
     Attributes
     ----------
@@ -192,7 +195,7 @@ class Session:
 
         self.scheme_eval = self.fluent_connection.scheme_eval
 
-        self.meshing = BaseMeshing(self.fluent_connection)
+        self.meshing = _BaseMeshing(self.fluent_connection)
 
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
         self._settings_service = self.fluent_connection.settings_service
@@ -231,7 +234,7 @@ class Session:
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
         session = Session(
-            _FluentConnection(
+            fluent_connection=_FluentConnection(
                 ip=ip,
                 port=port,
                 password=password,
@@ -268,6 +271,9 @@ class Session:
 
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self.fluent_connection.exit()
+
+    def __getattr__(self, attr):
+        return getattr(self.fluent_connection, attr)
 
     class Solver:
         def __init__(

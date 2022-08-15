@@ -16,7 +16,7 @@ from typing import Any, Dict, Union
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import BaseSession, Session
+from ansys.fluent.core.session import Session, _BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -240,8 +240,10 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return BaseSession(
-        channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+    return _BaseSession(
+        fluent_connection=_FluentConnection(
+            channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+        )
     )
 
 
@@ -263,7 +265,7 @@ def launch_fluent(
     case_filepath: str = None,
     meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
-) -> Union[BaseSession, Session]:
+) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -439,7 +441,7 @@ def launch_fluent(
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
             return new_session(
-                _FluentConnection(
+                fluent_connection=_FluentConnection(
                     ip=ip,
                     port=port,
                     cleanup_on_exit=cleanup_on_exit,

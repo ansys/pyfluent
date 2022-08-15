@@ -1,12 +1,12 @@
 """Module containing class encapsulating Fluent connection."""
 
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, BaseSession
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, _BaseSession
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.logging import LOG
 
 
-class Solver(BaseSession):
+class Solver(_BaseSession):
     """Encapsulates a Fluent - Solver session connection.
     Solver(Session) holds the top-level objects
     for solver TUI and settings objects calls."""
