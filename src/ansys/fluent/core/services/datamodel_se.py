@@ -616,6 +616,8 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         attrib_path = f"{self.name}/{attrib}"
         return self.parent.get_attrib_value(attrib_path)
 
+    getAttribValue = get_attrib_value
+
     def help(self) -> None:
         pass
 

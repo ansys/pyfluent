@@ -44,6 +44,10 @@ class MeshingWorkflow:
             self._cmd = None
             self.Arguments = MeshingWorkflow.Task.Args(self)
 
+        @property
+        def CommandArguments(self):
+            return self._refreshed_command()
+
         def get_command_argument_attribute_value(self, attribute_sub_path: str) -> Any:
             cmd = self._refreshed_command()
             return cmd.get_attrib_value(attribute_sub_path)
