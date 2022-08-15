@@ -40,8 +40,9 @@ class FluentVersion(Enum):
     @staticmethod
     def get_version(version: str) -> "FluentVersion":
         """Get the available versions based on the version in string format."""
-        if version == v.value:
-            return v
+        for v in FluentVersion:
+            if version == v.value:
+                return v
         else:
             raise RuntimeError(f"The passed version '{version}' does not exist.")
 
