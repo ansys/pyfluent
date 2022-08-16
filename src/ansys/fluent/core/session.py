@@ -136,6 +136,15 @@ class _BaseSession:
     def __getattr__(self, attr):
         return getattr(self.fluent_connection, attr)
 
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self.fluent_connection)
+            )
+        )
+
 
 class Session:
     """Instantiates a Fluent connection. This is a deprecated class. This has
@@ -274,6 +283,15 @@ class Session:
 
     def __getattr__(self, attr):
         return getattr(self.fluent_connection, attr)
+
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self.fluent_connection)
+            )
+        )
 
     class Solver:
         def __init__(

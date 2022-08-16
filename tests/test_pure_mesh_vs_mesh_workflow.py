@@ -6,6 +6,12 @@ import pytest
 @pytest.mark.setup
 def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
+    # check a few dir elements
+    # n.b. 'field_data', 'field_info' need to
+    # be eliminated from meshing sessions
+    session_dir = dir(pure_meshing_session)
+    for attr in ("field_data", "field_info", "meshing", "workflow"):
+        assert attr in session_dir
     assert pure_meshing_session.workflow.TaskObject["Import Geometry"].Execute()
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()
@@ -16,6 +22,12 @@ def test_pure_meshing_mode(load_mixing_elbow_pure_meshing):
 @pytest.mark.setup
 def test_meshing_mode(load_mixing_elbow_meshing):
     meshing_session = load_mixing_elbow_meshing
+    # check a few dir elements
+    # n.b. 'field_data', 'field_info' need to
+    # be eliminated from meshing sessions
+    session_dir = dir(meshing_session)
+    for attr in ("field_data", "field_info", "meshing", "workflow"):
+        assert attr in session_dir
     assert meshing_session.workflow.TaskObject["Import Geometry"].Execute()
     assert meshing_session.switch_to_solver()
 

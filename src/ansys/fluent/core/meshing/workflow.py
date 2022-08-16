@@ -17,20 +17,11 @@ def _new_command_for_task(task, meshing):
 
 class MeshingWorkflow:
     class Task(PyCallableStateObject):
-        class Args(PyCallableStateObject):
-            def __init__(self, task):
-                self._task = task
-                self._args = task.Arguments
-
-            def __getattr__(self, attr):
-                return getattr(self._args, attr)
-
         def __init__(self, meshing, name):
             self._workflow = meshing._workflow
             self._meshing = meshing._meshing
             self._task = self._workflow.TaskObject[name]
             self._cmd = None
-            self.Arguments = MeshingWorkflow.Task.Args(self)
 
         @property
         def CommandArguments(self):
@@ -50,6 +41,11 @@ class MeshingWorkflow:
         def __getattr__(self, attr):
             return getattr(self._task, attr)
 
+        def __dir__(self):
+            return sorted(
+                set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
+            )
+
     def __init__(self, workflow, meshing):
         self._workflow = workflow
         self._meshing = meshing
@@ -59,3 +55,8 @@ class MeshingWorkflow:
 
     def __getattr__(self, attr):
         return getattr(self._workflow, attr)
+
+    def __dir__(self):
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
+        )
