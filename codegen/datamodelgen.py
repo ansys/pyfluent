@@ -178,7 +178,15 @@ class DataModelGenerator:
         for k in singletons:
             self._write_static_info(k, info.singletons[k], f, level + 1)
         for k in parameters:
-            f.write(f"{indent}    class {k}(PyMenu):\n")
+            k_type = _PY_TYPE_BY_DM_TYPE[info.parameters[k].type]
+            if k_type in ["str", "List[str]"]:
+                f.write(f"{indent}    class {k}(PyTextual):\n")
+            elif k_type in ["int", "float"]:
+                f.write(f"{indent}    class {k}(PyNumerical):\n")
+            elif k_type in ["Dict", "Dict[str, Any]"]:
+                f.write(f"{indent}    class {k}(PyDictionary):\n")
+            else:
+                f.write(f"{indent}    class {k}(PyParameter):\n")
             f.write(f'{indent}        """\n')
             f.write(
                 f"{indent}        "

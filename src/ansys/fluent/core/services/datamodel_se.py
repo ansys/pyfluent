@@ -72,7 +72,11 @@ class DatamodelService:
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        return self.__stub.getAttributeValue(request, metadata=self.__metadata)
+        ret = self.__stub.getAttributeValue(request, metadata=self.__metadata)
+        try:
+            return ret.item
+        except AttributeError:
+            return ret
 
     @catch_grpc_error
     def get_state(
@@ -295,6 +299,10 @@ class PyBasicStateContainer(PyCallableStateObject):
 
     getAttribValue = get_attrib_value
 
+    def is_active(self):
+        """Returns true if the parameter is active."""
+        return true_if_none(self.get_attrib_value(Attribute.IS_ACTIVE.value))
+
     def help(self) -> None:
         """Print help string."""
         request = DataModelProtoModule.GetSpecsRequest()
@@ -307,30 +315,59 @@ class PyBasicStateContainer(PyCallableStateObject):
         print(help_string)
 
 
-class PyMenu(PyBasicStateContainer):
+class PyParameter(PyBasicStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
+        this class instead of directly calling DatamodelService's method.
+        """
+    def default_value(self):
+        """Returns Default value of parameter."""
+        return self.get_attrib_value(Attribute.DEFAULT.value)
 
+    def is_read_only(self):
+        return true_if_none(self.get_attrib_value(Attribute.IS_READ_ONLY.value))
+
+
+def true_if_none(val):
+    """Returns true if 'val' is true or None, else returns false."""
+    if val in [True, False, None]:
+        if val is None:
+            return True
+        else:
+            return val
+    else:
+        raise RuntimeError(f"In-correct value passed")
+
+
+class PyTextual(PyParameter):
+    """Provides interface for textual parameters."""
+    def allowed_values(self):
+        return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
+
+
+class PyNumerical(PyParameter):
+    """Provides interface for numerical parameters."""
+    def min(self):
+        return self.get_attrib_value(Attribute.MIN.value)
+
+    def max(self):
+        return self.get_attrib_value(Attribute.MAX.value)
+
+
+class PyDictionary(PyParameter):
+    """Provides interface for dictionaries.
     Methods
-    -------
-    __setattr__(name, value)
-        Set state of the child object
-    update_dict(dict_state)
-        Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics
-    updateDict(dict_state)
-        Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics (same as update_dict(dict_state))
-    create_command_arguments(command)
+        -------
+        update_dict(dict_state)
+            Update the state of the current object if the current object
+            is a Dict in the data model, else throws RuntimeError
+            (currently not showing up in Python). Update is executed according
+            to dict.update semantics
+        updateDict(dict_state)
+            Update the state of the current object if the current object
+            is a Dict in the data model, else throws RuntimeError
+            (currently not showing up in Python). Update is executed according
+            to dict.update semantics (same as update_dict(dict_state))
     """
-
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
-        super().__init__(service, rules, path)
-
     def update_dict(self, dict_state: Dict[str, Any]) -> None:
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
@@ -339,6 +376,21 @@ class PyMenu(PyBasicStateContainer):
         self.service.update_dict(request)
 
     updateDict = update_dict
+
+
+class PyMenu(PyBasicStateContainer):
+    """Object class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
+
+    Methods
+    -------
+    __setattr__(name, value)
+        Set state of the child object
+    create_command_arguments(command)
+    """
+
+    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        super().__init__(service, rules, path)
 
     def __setattr__(self, name: str, value: Any):
         """Set state of the child object.
