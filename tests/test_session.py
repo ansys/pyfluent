@@ -155,7 +155,7 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     session = launch_fluent(start_instance=False, cleanup_on_exit=False, mode="solver")
     # check a few dir elements
     session_dir = dir(session)
-    for attr in ("field_data", "field_info", "meshing", "solver"):
+    for attr in ("field_data", "field_info"):
         assert attr in session_dir
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
