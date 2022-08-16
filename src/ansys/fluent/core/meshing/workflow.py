@@ -27,15 +27,6 @@ class MeshingWorkflow:
             def __getattr__(self, attr):
                 return getattr(self._args, attr)
 
-            def get_command_argument_state(self) -> Any:
-                return self._task.get_command_argument_state()
-
-            def get_command_argument_attribute_value(
-                self, attribute_sub_path: str
-            ) -> Any:
-                return self._task.get_command_argument_attribute_value(
-                    attribute_sub_path
-                )
 
         def __init__(self, meshing, name):
             self._workflow = meshing._workflow
@@ -47,13 +38,6 @@ class MeshingWorkflow:
         @property
         def CommandArguments(self):
             return self._refreshed_command()
-
-        def get_command_argument_attribute_value(self, attribute_sub_path: str) -> Any:
-            cmd = self._refreshed_command()
-            return cmd.get_attrib_value(attribute_sub_path)
-
-        def get_command_argument_state(self) -> Any:
-            return self._refreshed_command().get_state()
 
         def _refreshed_command(self):
             task_arg_state = self.Arguments.get_state()
