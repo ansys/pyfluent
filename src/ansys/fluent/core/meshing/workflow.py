@@ -60,3 +60,6 @@ class MeshingWorkflow:
         return sorted(
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
         )
+
+    def __call__(self):
+        return self._workflow()

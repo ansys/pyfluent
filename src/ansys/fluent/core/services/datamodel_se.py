@@ -583,8 +583,8 @@ class PyCommand:
         print(help_string)
 
     def _create_command_arguments(self):
-        # pending the proto changes
         pass
+        # pending the proto changes
         """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
