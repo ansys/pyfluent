@@ -130,6 +130,10 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port(
     session = launch_fluent(
         start_instance=False, ip=ip, port=port, cleanup_on_exit=False, mode="solver"
     )
+    # check a few dir elements
+    session_dir = dir(session)
+    for attr in ("field_data", "field_info", "setup", "solution"):
+        assert attr in session_dir
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -149,6 +153,10 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
     session = launch_fluent(start_instance=False, cleanup_on_exit=False, mode="solver")
+    # check a few dir elements
+    session_dir = dir(session)
+    for attr in ("field_data", "field_info"):
+        assert attr in session_dir
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
