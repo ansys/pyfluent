@@ -27,9 +27,9 @@ the verbosity (level 0 to 3).
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
-    session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.mesh.check()
+    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
+    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.mesh.check()
 
 Reporting mesh quality
 ----------------------
@@ -47,7 +47,7 @@ console, including the minimum orthogonal quality and maximum aspect ratio.
 
 .. code:: python
 
-    session.solver.tui.mesh.quality()
+    solver.tui.mesh.quality()
 
 Scaling mesh
 ------------
@@ -65,7 +65,7 @@ coordinate directions.
 
 .. code:: python
 
-    session.solver.tui.mesh.scale(1,1,1)
+    solver.tui.mesh.scale(1,1,1)
 
 Defining units
 --------------
@@ -82,4 +82,4 @@ Python code for setting the unit conversion factors.
 
 .. code:: python
 
-    session.solver.tui.define.units('length', 'in')
+    solver.tui.define.units('length', 'in')

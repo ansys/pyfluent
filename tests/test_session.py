@@ -7,8 +7,9 @@ import pytest
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
 from ansys.fluent.core import launch_fluent
+from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.session import Session
+from ansys.fluent.core.session import _BaseSession
 
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
@@ -34,7 +35,7 @@ def test_create_session_by_passing_ip_and_port(
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
-    session = Session(ip=ip, port=port, cleanup_on_exit=False)
+    session = _BaseSession(_FluentConnection(ip=ip, port=port, cleanup_on_exit=False))
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -53,7 +54,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = Session(cleanup_on_exit=False)
+    session = _BaseSession(_FluentConnection(cleanup_on_exit=False))
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -71,7 +72,7 @@ def test_create_session_by_passing_grpc_channel(
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
-    session = Session(channel=channel, cleanup_on_exit=False)
+    session = _BaseSession(_FluentConnection(channel=channel, cleanup_on_exit=False))
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -87,8 +88,8 @@ def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
-    session = Session.create_from_server_info_file(
-        server_info_filepath=server_info_file, cleanup_on_exit=False
+    session = _BaseSession.create_from_server_info_file(
+        server_info_filepath=str(server_info_file), cleanup_on_exit=False
     )
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
@@ -107,8 +108,8 @@ def test_create_session_from_server_info_file_with_wrong_password(
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
-    session = Session.create_from_server_info_file(
-        server_info_filepath=server_info_file, cleanup_on_exit=False
+    session = _BaseSession.create_from_server_info_file(
+        server_info_filepath=str(server_info_file), cleanup_on_exit=False
     )
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
     server.stop(None)
@@ -127,8 +128,12 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port(
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     session = launch_fluent(
-        start_instance=False, ip=ip, port=port, cleanup_on_exit=False
+        start_instance=False, ip=ip, port=port, cleanup_on_exit=False, mode="solver"
     )
+    # check a few dir elements
+    session_dir = dir(session)
+    for attr in ("field_data", "field_info", "setup", "solution"):
+        assert attr in session_dir
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -147,7 +152,11 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = launch_fluent(start_instance=False, cleanup_on_exit=False)
+    session = launch_fluent(start_instance=False, cleanup_on_exit=False, mode="solver")
+    # check a few dir elements
+    session_dir = dir(session)
+    for attr in ("field_data", "field_info"):
+        assert attr in session_dir
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()

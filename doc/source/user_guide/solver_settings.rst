@@ -25,10 +25,10 @@ Python code for enabling and disabling the steady and unsteady solution model.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
-    session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.define.models.steady('yes')
-    session.solver.tui.define.models.unsteady_1st_order('yes')
+    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
+    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.define.models.steady('yes')
+    solver.tui.define.models.unsteady_1st_order('yes')
 
 Selecting a pressure-based or density-based solver
 --------------------------------------------------
@@ -48,9 +48,9 @@ models.
 
 .. code:: python
 
-    session.solver.tui.define.models.solver.density_based_explicit('yes')
-    session.solver.tui.define.models.solver.density_based_implicit('yes')
-    session.solver.tui.define.models.solver.pressure_based('yes')
+    solver.tui.define.models.solver.density_based_explicit('yes')
+    solver.tui.define.models.solver.density_based_implicit('yes')
+    solver.tui.define.models.solver.pressure_based('yes')
 
 Defining gravitational acceleration
 -----------------------------------
@@ -67,4 +67,4 @@ Python code for settings the gravitational acceleration
 
 .. code:: python
 
-    session.solver.tui.define.operating_conditions.gravity('yes','0','-9.81','0')
+    solver.tui.define.operating_conditions.gravity('yes','0','-9.81','0')

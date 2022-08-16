@@ -11,3 +11,8 @@ updates:
     ignore:
       - dependency-name: "vtk"
       - dependency-name: "grpcio"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github"
+    schedule:
+      interval: "daily"
