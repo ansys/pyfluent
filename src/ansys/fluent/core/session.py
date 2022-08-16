@@ -1,33 +1,19 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
-from ctypes import c_int, sizeof
-import itertools
-import os
-import threading
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any
 import warnings
-import weakref
 
 import grpc
 
-from ansys.fluent.core.services.datamodel_se import (
-    DatamodelService as DatamodelService_SE,
-)
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.services.events import EventsService
-from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
-from ansys.fluent.core.services.health_check import HealthCheckService
-from ansys.fluent.core.services.monitor import MonitorsService
-from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.services.transcript import TranscriptService
-from ansys.fluent.core.solver.events_manager import EventsManager
+from ansys.fluent.core.session_base_meshing import _BaseMeshing
+from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.solver.monitors_manager import MonitorsManager
 from ansys.fluent.core.utils.logging import LOG
 
 try:
@@ -46,269 +32,7 @@ def parse_server_info_file(filename: str):
     return ip, port, password
 
 
-class MonitorThread(threading.Thread):
-    """A class used for monitoring a Fluent session.
-
-    Daemon thread which will ensure cleanup of session objects, shutdown of
-    non-deamon threads etc.
-
-    Attributes
-    ----------
-    cbs : List[Callable]
-        Cleanup/shutdown functions
-    """
-
-    def __init__(self):
-        super().__init__(daemon=True)
-        self.cbs: List[Callable] = []
-
-    def run(self) -> None:
-        main_thread = threading.main_thread()
-        main_thread.join()
-        for cb in self.cbs:
-            cb()
-
-
-def _get_max_c_int_limit() -> int:
-    """Get the maximum limit of a C int.
-
-    Returns
-    -------
-    int
-        The maximum limit of a C int
-    """
-    return 2 ** (sizeof(c_int) * 8 - 1) - 1
-
-
-_CODEGEN_MSG_DATAMODEL = (
-    "Currently calling the datamodel API in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local datamodel API classes."
-)
-
-_CODEGEN_MSG_TUI = (
-    "Currently calling the TUI commands in a generic manner. "
-    "Please run `python codegen/allapigen.py` from the top-level pyfluent "
-    "directory to generate the local TUI commands classes."
-)
-
-
-class _FluentConnection:
-    """Encapsulates a Fluent connection.
-
-    Methods
-    -------
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
-
-    check_health()
-        Check health of Fluent connection
-
-    exit()
-        Close the Fluent connection and exit Fluent.
-    """
-
-    _on_exit_cbs: List[Callable] = []
-    _id_iter = itertools.count()
-    _monitor_thread: Optional[MonitorThread] = None
-
-    def __init__(
-        self,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        channel: grpc.Channel = None,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        remote_instance=None,
-    ):
-        """Instantiate a Session.
-
-        Parameters
-        ----------
-        ip : str, optional
-            IP address to connect to existing Fluent instance. Used only
-            when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
-            and can also be set by the environment variable
-            ``PYFLUENT_FLUENT_IP=<ip>``.
-        port : int, optional
-            Port to connect to existing Fluent instance. Used only
-            when ``channel`` is ``None``.  Defaults value can be set by
-            the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
-        password : str, optional
-            Password to connect to existing Fluent instance.
-        channel : grpc.Channel, optional
-            Grpc channel to use to connect to existing Fluent instance.
-            ip and port arguments will be ignored when channel is
-            specified.
-        cleanup_on_exit : bool, optional
-            When True, the connected Fluent session will be shut down
-            when PyFluent is exited or exit() is called on the session
-            instance, by default True.
-        start_transcript : bool, optional
-            The Fluent transcript is started in the client only when
-            start_transcript is True. It can be started and stopped
-            subsequently via method calls on the Session object.
-        remote_instance : ansys.platform.instancemanagement.Instance
-            The corresponding remote instance when Fluent is launched through
-            PyPIM. This instance will be deleted when calling
-            ``Session.exit()``.
-        """
-        self._channel_str = None
-        if channel is not None:
-            self._channel = channel
-        else:
-            if not ip:
-                ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
-            if not port:
-                port = os.getenv("PYFLUENT_FLUENT_PORT")
-            self._channel_str = f"{ip}:{port}"
-            if not port:
-                raise ValueError(
-                    "The port to connect to Fluent session is not provided."
-                )
-            # Same maximum message length is used in the server
-            max_message_length = _get_max_c_int_limit()
-            self._channel = grpc.insecure_channel(
-                f"{ip}:{port}",
-                options=[
-                    ("grpc.max_send_message_length", max_message_length),
-                    ("grpc.max_receive_message_length", max_message_length),
-                ],
-            )
-        self._metadata: List[Tuple[str, str]] = (
-            [("password", password)] if password else []
-        )
-        self._id = f"session-{next(_FluentConnection._id_iter)}"
-
-        if not _FluentConnection._monitor_thread:
-            _FluentConnection._monitor_thread = MonitorThread()
-            _FluentConnection._monitor_thread.start()
-
-        self._transcript_service = TranscriptService(self._channel, self._metadata)
-        self._transcript_thread: Optional[threading.Thread] = None
-
-        self._events_service = EventsService(self._channel, self._metadata)
-        self.events_manager = EventsManager(self._id, self._events_service)
-
-        self._monitors_service = MonitorsService(self._channel, self._metadata)
-        self.monitors_manager = MonitorsManager(self._id, self._monitors_service)
-
-        self.events_manager.register_callback(
-            "InitializedEvent", self.monitors_manager.refresh
-        )
-        self.events_manager.register_callback(
-            "DataReadEvent", self.monitors_manager.refresh
-        )
-        self.events_manager.start()
-        self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
-        self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
-        self.settings_service = SettingsService(self._channel, self._metadata)
-
-        self._field_data_service = FieldDataService(self._channel, self._metadata)
-        self.field_info = FieldInfo(self._field_data_service)
-        self.field_data = FieldData(self._field_data_service, self.field_info)
-
-        self._health_check_service = HealthCheckService(self._channel, self._metadata)
-
-        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
-
-        self._cleanup_on_exit = cleanup_on_exit
-        self._start_transcript = start_transcript
-
-        if start_transcript:
-            self.start_transcript()
-
-        self._remote_instance = remote_instance
-
-        self._finalizer = weakref.finalize(
-            self,
-            _FluentConnection._exit,
-            self._channel,
-            self._cleanup_on_exit,
-            self.scheme_eval,
-            self._transcript_service,
-            self.events_manager,
-            self._remote_instance,
-        )
-        _FluentConnection._monitor_thread.cbs.append(self._finalizer)
-
-    @property
-    def id(self) -> str:
-        """Return the session id."""
-        return self._id
-
-    @staticmethod
-    def _print_transcript(transcript: str):
-        print(transcript)
-
-    @staticmethod
-    def _process_transcript(transcript_service):
-        responses = transcript_service.begin_streaming()
-        transcript = ""
-        while True:
-            try:
-                response = next(responses)
-                transcript += response.transcript
-                if transcript[-1] == "\n":
-                    _FluentConnection._print_transcript(transcript[0:-1])
-                    transcript = ""
-            except StopIteration:
-                break
-
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self._transcript_thread = threading.Thread(
-            target=_FluentConnection._process_transcript,
-            args=(self._transcript_service,),
-        )
-
-        self._transcript_thread.start()
-
-    def stop_transcript(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        self._transcript_service.end_streaming()
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        if self._channel:
-            try:
-                return self._health_check_service.check_health()
-            except Exception:
-                return HealthCheckService.Status.NOT_SERVING.name
-        else:
-            return HealthCheckService.Status.NOT_SERVING.name
-
-    def exit(self) -> None:
-        """Close the Fluent connection and exit Fluent."""
-        self._finalizer()
-
-    @staticmethod
-    def _exit(
-        channel,
-        cleanup_on_exit,
-        scheme_eval,
-        transcript_service,
-        events_manager,
-        remote_instance,
-    ) -> None:
-        if channel:
-            if cleanup_on_exit:
-                scheme_eval.exec(("(exit-server)",))
-            transcript_service.end_streaming()
-            events_manager.stop()
-            channel.close()
-            channel = None
-
-        if remote_instance:
-            remote_instance.delete()
-
-
-class BaseSession:
+class _BaseSession:
     """Instantiates a Fluent connection.
 
     Attributes
@@ -337,30 +61,8 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
-    def __init__(
-        self,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        channel: grpc.Channel = None,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        remote_instance=None,
-        fluent_connection=None,
-    ):
-        if not fluent_connection:
-            self.fluent_connection = _FluentConnection(
-                ip=ip,
-                port=port,
-                password=password,
-                channel=channel,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
-                remote_instance=remote_instance,
-            )
-        else:
-            self.fluent_connection = fluent_connection
-
+    def __init__(self, fluent_connection: _FluentConnection):
+        self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
 
     @classmethod
@@ -393,11 +95,13 @@ class BaseSession:
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
         session = cls(
-            ip=ip,
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
+            fluent_connection=_FluentConnection(
+                ip=ip,
+                port=port,
+                password=password,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+            )
         )
         return session
 
@@ -429,11 +133,23 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self.fluent_connection.exit()
 
+    def __getattr__(self, attr):
+        return getattr(self.fluent_connection, attr)
+
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self.fluent_connection)
+            )
+        )
+
 
 class Session:
     """Instantiates a Fluent connection. This is a deprecated class. This has
-    been replaced by the "BaseSession" class to implement the new fluent launch
-    modes.
+    been replaced by the "_BaseSession" class to implement the new fluent
+    launch modes.
 
     Attributes
     ----------
@@ -488,13 +204,11 @@ class Session:
 
         self.scheme_eval = self.fluent_connection.scheme_eval
 
+        self.meshing = _BaseMeshing(self.fluent_connection)
+
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
-        self._datamodel_service_se = self.fluent_connection.datamodel_service_se
         self._settings_service = self.fluent_connection.settings_service
 
-        self.meshing = Session.Meshing(
-            self._datamodel_service_tui, self._datamodel_service_se
-        )
         self.solver = Session.Solver(
             self._datamodel_service_tui, self._settings_service
         )
@@ -529,11 +243,13 @@ class Session:
         """
         ip, port, password = parse_server_info_file(server_info_filepath)
         session = Session(
-            ip=ip,
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
+            fluent_connection=_FluentConnection(
+                ip=ip,
+                port=port,
+                password=password,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+            )
         )
         return session
 
@@ -565,99 +281,17 @@ class Session:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         self.fluent_connection.exit()
 
-    class Meshing:
-        def __init__(
-            self, tui_service: DatamodelService_TUI, se_service: DatamodelService_SE
-        ):
-            self._tui_service = tui_service
-            self._se_service = se_service
-            self._tui = None
-            self._meshing = None
-            self._workflow = None
-            self._part_management = None
-            self._pm_file_management = None
+    def __getattr__(self, attr):
+        return getattr(self.fluent_connection, attr)
 
-        @property
-        def tui(self):
-            """Instance of ``main_menu`` on which Fluent's SolverTUI methods
-            can be executed."""
-            if self._tui is None:
-                try:
-                    from ansys.fluent.core.meshing.tui import (
-                        main_menu as MeshingMainMenu,
-                    )
-
-                    self._tui = MeshingMainMenu([], self._tui_service)
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_TUI)
-                    self._tui = TUIMenuGeneric([], self._tui_service)
-            return self._tui
-
-        @property
-        def meshing(self):
-            """meshing datamodel root."""
-            if self._meshing is None:
-                try:
-                    from ansys.fluent.core.datamodel.meshing import Root as meshing_root
-
-                    self._meshing = meshing_root(self._se_service, "meshing", [])
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._meshing = PyMenuGeneric(self._se_service, "meshing")
-            return self._meshing
-
-        @property
-        def workflow(self):
-            """workflow datamodel root."""
-            if self._workflow is None:
-                try:
-                    from ansys.fluent.core.datamodel.workflow import (
-                        Root as workflow_root,
-                    )
-
-                    self._workflow = workflow_root(self._se_service, "workflow", [])
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._workflow = PyMenuGeneric(self._se_service, "workflow")
-            return self._workflow
-
-        @property
-        def PartManagement(self):
-            """PartManagement datamodel root."""
-            if self._part_management is None:
-                try:
-                    from ansys.fluent.core.datamodel.PartManagement import (
-                        Root as PartManagement_root,
-                    )
-
-                    self._part_management = PartManagement_root(
-                        self._se_service, "PartManagement", []
-                    )
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._part_management = PyMenuGeneric(
-                        self._se_service, "PartManagement"
-                    )
-            return self._part_management
-
-        @property
-        def PMFileManagement(self):
-            """PMFileManagement datamodel root."""
-            if self._pm_file_management is None:
-                try:
-                    from ansys.fluent.core.datamodel.PMFileManagement import (
-                        Root as PMFileManagement_root,
-                    )
-
-                    self._pm_file_management = PMFileManagement_root(
-                        self._se_service, "PMFileManagement", []
-                    )
-                except (ImportError, ModuleNotFoundError):
-                    LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                    self._pm_file_management = PyMenuGeneric(
-                        self._se_service, "PMFileManagement"
-                    )
-            return self._pm_file_management
+    def __dir__(self):
+        return sorted(
+            set(
+                list(self.__dict__.keys())
+                + dir(type(self))
+                + dir(self.fluent_connection)
+            )
+        )
 
     class Solver:
         def __init__(
