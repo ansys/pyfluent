@@ -1,5 +1,3 @@
-from typing import Any
-
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
 
@@ -26,7 +24,6 @@ class MeshingWorkflow:
 
             def __getattr__(self, attr):
                 return getattr(self._args, attr)
-
 
         def __init__(self, meshing, name):
             self._workflow = meshing._workflow
