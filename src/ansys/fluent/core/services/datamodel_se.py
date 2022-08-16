@@ -316,9 +316,12 @@ class PyBasicStateContainer(PyCallableStateObject):
 
 
 class PyParameter(PyBasicStateContainer):
-    """Object class using StateEngine based DatamodelService as backend. Use
-        this class instead of directly calling DatamodelService's method.
-        """
+    """Object class using StateEngine based DatamodelService as backend.
+
+    Use this class instead of directly calling DatamodelService's
+    method.
+    """
+
     def default_value(self):
         """Returns Default value of parameter."""
         return self.get_attrib_value(Attribute.DEFAULT.value)
@@ -340,12 +343,14 @@ def true_if_none(val):
 
 class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
+
     def allowed_values(self):
         return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
 
 
 class PyNumerical(PyParameter):
     """Provides interface for numerical parameters."""
+
     def min(self):
         return self.get_attrib_value(Attribute.MIN.value)
 
@@ -368,6 +373,7 @@ class PyDictionary(PyParameter):
             (currently not showing up in Python). Update is executed according
             to dict.update semantics (same as update_dict(dict_state))
     """
+
     def update_dict(self, dict_state: Dict[str, Any]) -> None:
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
