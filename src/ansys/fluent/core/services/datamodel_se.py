@@ -382,7 +382,7 @@ class PyParameter(PyBasicStateContainer):
     """
 
     def default_value(self):
-        """Returns Default value of parameter."""
+        """Get default value of the parameter."""
         return self.get_attrib_value(Attribute.DEFAULT.value)
 
     def is_read_only(self):
