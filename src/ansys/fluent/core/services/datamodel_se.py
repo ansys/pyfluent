@@ -315,75 +315,6 @@ class PyBasicStateContainer(PyCallableStateObject):
         print(help_string)
 
 
-class PyParameter(PyBasicStateContainer):
-    """Object class using StateEngine based DatamodelService as backend.
-
-    Use this class instead of directly calling DatamodelService's
-    method.
-    """
-
-    def default_value(self):
-        """Returns Default value of parameter."""
-        return self.get_attrib_value(Attribute.DEFAULT.value)
-
-    def is_read_only(self):
-        return true_if_none(self.get_attrib_value(Attribute.IS_READ_ONLY.value))
-
-
-def true_if_none(val):
-    """Returns true if 'val' is true or None, else returns false."""
-    if val in [True, False, None]:
-        if val is None:
-            return True
-        else:
-            return val
-    else:
-        raise RuntimeError(f"In-correct value passed")
-
-
-class PyTextual(PyParameter):
-    """Provides interface for textual parameters."""
-
-    def allowed_values(self):
-        return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
-
-
-class PyNumerical(PyParameter):
-    """Provides interface for numerical parameters."""
-
-    def min(self):
-        return self.get_attrib_value(Attribute.MIN.value)
-
-    def max(self):
-        return self.get_attrib_value(Attribute.MAX.value)
-
-
-class PyDictionary(PyParameter):
-    """Provides interface for dictionaries.
-    Methods
-        -------
-        update_dict(dict_state)
-            Update the state of the current object if the current object
-            is a Dict in the data model, else throws RuntimeError
-            (currently not showing up in Python). Update is executed according
-            to dict.update semantics
-        updateDict(dict_state)
-            Update the state of the current object if the current object
-            is a Dict in the data model, else throws RuntimeError
-            (currently not showing up in Python). Update is executed according
-            to dict.update semantics (same as update_dict(dict_state))
-    """
-
-    def update_dict(self, dict_state: Dict[str, Any]) -> None:
-        request = DataModelProtoModule.UpdateDictRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(dict_state, request.dicttomerge)
-        self.service.update_dict(request)
-
-    updateDict = update_dict
-
-
 class PyMenu(PyBasicStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
@@ -439,6 +370,72 @@ class PyMenu(PyBasicStateContainer):
         response = self.service.create_command_arguments(request)
         return response.commandid
         """
+
+
+class PyParameter(PyMenu):
+    """Object class using StateEngine based DatamodelService as backend.
+
+    Use this class instead of directly calling DatamodelService's
+    method.
+    """
+
+    def default_value(self):
+        """Returns Default value of parameter."""
+        return self.get_attrib_value(Attribute.DEFAULT.value)
+
+    def is_read_only(self):
+        return true_if_none(self.get_attrib_value(Attribute.IS_READ_ONLY.value))
+
+
+def true_if_none(val):
+    """Returns true if 'val' is true or None, else returns false."""
+    if val in [True, False, None]:
+        return True if val is None else val
+    else:
+        raise RuntimeError(f"In-correct value passed")
+
+
+class PyTextual(PyParameter):
+    """Provides interface for textual parameters."""
+
+    def allowed_values(self):
+        return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
+
+
+class PyNumerical(PyParameter):
+    """Provides interface for numerical parameters."""
+
+    def min(self):
+        return self.get_attrib_value(Attribute.MIN.value)
+
+    def max(self):
+        return self.get_attrib_value(Attribute.MAX.value)
+
+
+class PyDictionary(PyParameter):
+    """Provides interface for dictionaries.
+    Methods
+        -------
+        update_dict(dict_state)
+            Update the state of the current object if the current object
+            is a Dict in the data model, else throws RuntimeError
+            (currently not showing up in Python). Update is executed according
+            to dict.update semantics
+        updateDict(dict_state)
+            Update the state of the current object if the current object
+            is a Dict in the data model, else throws RuntimeError
+            (currently not showing up in Python). Update is executed according
+            to dict.update semantics (same as update_dict(dict_state))
+    """
+
+    def update_dict(self, dict_state: Dict[str, Any]) -> None:
+        request = DataModelProtoModule.UpdateDictRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(dict_state, request.dicttomerge)
+        self.service.update_dict(request)
+
+    updateDict = update_dict
 
 
 class PyNamedObjectContainer:
