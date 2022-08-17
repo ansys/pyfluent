@@ -339,7 +339,9 @@ class PyMenu(PyBasicStateContainer):
         value : Any
             state
         """
-        if hasattr(self, name) and isinstance(getattr(self, name), PyMenu):
+        if hasattr(self, name) and isinstance(
+            getattr(self, name), PyBasicStateContainer
+        ):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -372,7 +374,7 @@ class PyMenu(PyBasicStateContainer):
         """
 
 
-class PyParameter(PyMenu):
+class PyParameter(PyBasicStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
     Use this class instead of directly calling DatamodelService's
