@@ -30,7 +30,7 @@ install_requires = [
     "appdirs>=1.4.0",
     "pandas>=1.1.5",
     "h5py>=3.7.0",
-    "pint>=0.19",
+    "pint>=0.18",
 ]
 
 
