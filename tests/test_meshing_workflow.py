@@ -6,7 +6,9 @@ This test covers generic meshing workflow behaviour
 """
 
 from functools import partial
+import os
 
+import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
@@ -16,12 +18,13 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow_session,
 )
 
+import ansys.fluent.core as pf
+
 
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
 ):
-
     meshing_session = shared_watertight_workflow_session
     workflow = meshing_session.workflow
 
@@ -180,3 +183,29 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     else:
         assert False
 """
+
+
+@pytest.mark.skip(
+    reason="enable test after completely shifting to a stable release of R23.1"
+)
+def test_command_args_datamodel_se():
+    # Remove the below code after shifting to 23.1
+    #####
+    session_old = pf.launch_fluent(mode="meshing")
+    w = session_old.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.task("Import Geometry")
+    with pytest.raises(RuntimeError):
+        igt.CommandArguments.CadImportOptions()
+
+    # Set the most recent fluent build path in the below environment variable
+    os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
+    # -----------------------------------------------------------------------
+
+    session_new = pf.launch_fluent(mode="meshing")
+    w = session_new.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.task("Import Geometry")
+    assert igt.CommandArguments.CadImportOptions()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
