@@ -191,7 +191,7 @@ class Quantity:
 
     def __add__(self, other):
         if self._unit_string in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is retsricted")
+            raise ValueError("This arithmetic operation is restricted")
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity + other._quantity
@@ -206,7 +206,7 @@ class Quantity:
 
     def __sub__(self, other):
         if self._unit_string in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is retsricted")
+            raise ValueError("This arithmetic operation is restricted")
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity - other._quantity
@@ -218,7 +218,7 @@ class Quantity:
 
     def __rsub__(self, other):
         if self._unit_string in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is retsricted")
+            raise ValueError("This arithmetic operation is restricted")
 
         if isinstance(other, Quantity):
             temp = other._quantity - self._base_si_quantity
