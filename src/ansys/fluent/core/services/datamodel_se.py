@@ -108,8 +108,6 @@ class DatamodelService:
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         return self.__stub.executeCommand(request, metadata=self.__metadata)
 
-    # pending the proto changes
-    """
     @catch_grpc_error
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
@@ -121,7 +119,6 @@ class DatamodelService:
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
         return self.__stub.deleteCommandArguments(request, metadata=self.__metadata)
-    """
 
     @catch_grpc_error
     def get_specs(
@@ -362,16 +359,12 @@ class PyMenu(PyBasicStateContainer):
             )
 
     def create_command_arguments(self, command):
-        pass
-        # pending the proto changes
-        """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
         request.command = command
         response = self.service.create_command_arguments(request)
         return response.commandid
-        """
 
 
 class PyParameter(PyBasicStateContainer):
@@ -640,26 +633,18 @@ class PyCommand:
         print(help_string)
 
     def _create_command_arguments(self):
-        pass
-        # pending the proto changes
-        """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
         request.command = self.command
         response = self.service.create_command_arguments(request)
         return response.commandid
-        """
 
     def new(self):
-        # pending the proto changes
-        pass
-        """
         id = self._create_command_arguments()
         return PyCommandArguments(
             self.service, self.rules, self.command, self.path.copy(), id
         )
-        """
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
@@ -702,9 +687,6 @@ class PyCommandArguments(PyBasicStateContainer):
         self.path.append((command, id))
 
     def __del__(self):
-        # pending the proto changes
-        pass
-        """
         request = DataModelProtoModule.DeleteCommandArgumentsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path[:-1])
@@ -715,7 +697,6 @@ class PyCommandArguments(PyBasicStateContainer):
         except ValueError:
             # "Cannot invoke RPC on closed channel!"
             pass
-        """
 
     def __getattr__(self, attr):
         return PyCommandArgumentsSubItem(self, attr)
