@@ -46,7 +46,6 @@ You can launch Fluent in meshing mode with:
 
     meshing_session = launch_fluent(mode="meshing")
 
-Setting the ``meshing_mode`` argument to ``False`` launches Fluent in solution mode. 
 
 For more information, see :ref:`ref_user_guide_launch` 
 and :ref:`ref_launcher_launcher`.
@@ -107,7 +106,8 @@ A meshing mode session has an active ``meshing`` object that provides two
 distinct interfaces to the mesher:
 
 - ``tui`` object
-- ``meshing`` and ``workflow`` properties
+- meshing workflow, which consists of ``meshing`` and ``workflow`` properties and the
+  ``PartManagement`` and ``PMFileMangement`` classes
 
 Meshing ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~~

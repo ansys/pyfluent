@@ -57,7 +57,7 @@ To launch Fluent from PyFluent, use the ``launch_fluent`` method:
   solver.check_health()
 
 Once Fluent is active, you can use the ``session.solver.tui`` interface to send
-Fluent TUI commands to Fluent as a genuine Python class. For example, you can read a
+Fluent TUI commands to Fluent. For example, you can read a
 case file, update a setting, and iterate the solver with:
 
 .. code:: python

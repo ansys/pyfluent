@@ -93,8 +93,8 @@ class MonitorsManager:
         Returns
         -------
         Tuple[np.array, Dict[str, np.array]]
-            Tuple containing a numpy array of x-axis values, a dictionary of monitor names,
-            and a numpy array of y-axis values.
+            Tuple containing two elements: a numpy array of x-axis values and a dictionary
+            associating monitor names of type ``str`` to numpy arrays of y-axis values.
         """
         with self._lock:
             df_data = self._data_frames[monitor_set_name]
