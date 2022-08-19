@@ -110,10 +110,10 @@ class MonitorsManager:
             )
 
     def refresh(self, session_id, event_info) -> None:
-        """Monitors the refresh callback.
+        """Refreshes plots on-initialized and data-read events.
 
-        The callback is registered with the EventsManager to refresh plots
-        during initialization and data-read events.
+        This method is registered with the EventsManager and is called 
+        to refresh plots whenever on-initialized and data-read events occur.
 
         Parameters
         ----------
