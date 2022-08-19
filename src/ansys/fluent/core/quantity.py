@@ -1,49 +1,15 @@
+from itertools import permutations
+
 import pint
 from pint import Unit
 
 unit = pint.UnitRegistry(autoconvert_offset_to_baseunit=True, system="SI")
 quantity = unit.Quantity
 
-restricted_conversions = (
-    ("Hz", "rad/s"),
-    ("Hz", "radian/s"),
-    ("Hz", "rpm"),
-    ("Hz", "rps"),
-    ("Hz", "cps"),
-    ("hertz", "rad/s"),
-    ("hertz", "radian/s"),
-    ("hertz", "rpm"),
-    ("hertz", "rps"),
-    ("hertz", "cps"),
-    ("rpm", "Hz"),
-    ("rpm", "hertz"),
-    ("rpm", "rad/s"),
-    ("rpm", "radian/s"),
-    ("rpm", "rps"),
-    ("rpm", "cps"),
-    ("rps", "Hz"),
-    ("rps", "hertz"),
-    ("rps", "rad/s"),
-    ("rps", "radian/s"),
-    ("rps", "rpm"),
-    ("rps", "cps"),
-    ("cps", "Hz"),
-    ("cps", "hertz"),
-    ("cps", "rad/s"),
-    ("cps", "radian/s"),
-    ("cps", "rpm"),
-    ("cps", "rps"),
-    ("rad/s", "Hz"),
-    ("rad/s", "hertz"),
-    ("rad/s", "rpm"),
-    ("rad/s", "rps"),
-    ("rad/s", "cps"),
-    ("radian/s", "Hz"),
-    ("radian/s", "hertz"),
-    ("radian/s", "rpm"),
-    ("radian/s", "rps"),
-    ("radian/s", "cps"),
-)
+
+restricted_units = ["Hz", "hertz", "rad/s", "radian/s", "rpm", "rps", "cps"]
+restricted_conversions = list((permutations(restricted_units, 2)))
+
 
 restricted_unit_expansion = {
     "Hz": [
@@ -127,8 +93,8 @@ class Quantity:
     units.
 
     All the instances of this class are converted to base SI units
-    system. Any conversion between Hz, hertz, rad/s, radian/s,
-    revolution/min, revolution/s, counts/s is restricted.
+    system. Any conversion between "Hz", "hertz", "rad/s", "radian/s",
+    "rpm", "rps", "cps" is restricted.
     """
 
     def __init__(self, real_value, units_string):
