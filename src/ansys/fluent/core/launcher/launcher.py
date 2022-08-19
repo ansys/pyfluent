@@ -284,9 +284,6 @@ def launch_fluent(
         is used.
     journal_filename : str, optional
         Name of the journal file to read. The default is ``None``.
-    meshing_mode : bool, optional
-        Whether to launch Fluent in meshing mode. The default is ``None``,
-        in which case Fluent is launched in meshing mode.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``100``.
@@ -332,10 +329,13 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
+    meshing_mode : bool, optional
+        Whether to launch Fluent in meshing mode. The default is ``None``,
+        in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
-        Currently, available - "meshing", "pure-meshing", "solver" and "solver-lite"
-        Default value is "None"
+        The default value is ``None``. Options are ``"meshing"``,
+        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.        
 
     Returns
     -------
