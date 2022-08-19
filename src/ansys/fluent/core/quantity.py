@@ -79,50 +79,50 @@ class Quantity:
     """
 
     def __init__(self, real_value, units_string):
-        self._real_value = real_value
-        self._unit_string = units_string
-        self._quantity = quantity(self._real_value, self._unit_string)
+        self.value = real_value
+        self.unit = units_string
+        self._quantity = quantity(self.value, self.unit)
         self._base_si_quantity = self._quantity.to_base_units()
         self._restricted_conversions = restricted_units
 
     def __float__(self):
-        return Quantity(self._real_value, self._unit_string)
+        return Quantity(self.value, self.unit)
 
     def __str__(self):
-        return f'({self._real_value}, "{self._unit_string}")'
+        return f'({self.value}, "{self.unit}")'
 
     def __repr__(self):
-        return f'(Quantity ({self._real_value}, "{self._unit_string}"))'
+        return f'(Quantity ({self.value}, "{self.unit}"))'
 
-    def __getitem__(self, unit):
+    def convert(self, to_unit):
 
         """This method checks the compatibility between current instance unit
         and user provided unit, if both of them are compatible, then only it
         performs required conversion otherwise raises a Value Error."""
 
         if (
-            self._unit_string in self._restricted_conversions.keys()
-            and unit in self._restricted_conversions[self._unit_string]
+            self.unit in self._restricted_conversions.keys()
+            and to_unit in self._restricted_conversions[self.unit]
         ):
             raise ValueError(
-                f"Conversion between '{self._unit_string}' and '{unit}' is restricted."
+                f"Conversion between '{self.unit}' and '{to_unit}' is restricted."
             )
 
-        user_unit = Unit(unit)
+        user_unit = Unit(to_unit)
 
         if not self._quantity.is_compatible_with(user_unit):
             raise ValueError("Units are not compatible")
 
-        convert = self._quantity.to(unit)
+        converted = self._quantity.to(to_unit)
 
-        return Quantity(convert.magnitude, unit)
+        return Quantity(converted.magnitude, to_unit)
 
     def __mul__(self, other):
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity * other._quantity
         elif isinstance(other, int) or isinstance(other, float):
-            temp = quantity(self._base_si_quantity * other, self._unit_string)
+            temp = quantity(self._base_si_quantity * other, self.unit)
         return Quantity(temp.magnitude, temp.units)
 
     def __rmul__(self, other):
@@ -133,11 +133,11 @@ class Quantity:
         if isinstance(other, Quantity):
             temp = self._base_si_quantity / other._quantity
         elif isinstance(other, int) or isinstance(other, float):
-            temp = quantity(self._base_si_quantity / other, self._unit_string)
+            temp = quantity(self._base_si_quantity / other, self.unit)
         return Quantity(temp.magnitude, temp.units)
 
     def __add__(self, other):
-        if self._unit_string in self._restricted_conversions.keys():
+        if self.unit in self._restricted_conversions.keys():
             raise ValueError("This arithmetic operation is restricted")
 
         if isinstance(other, Quantity):
@@ -152,7 +152,7 @@ class Quantity:
         return self.__add__(other)
 
     def __sub__(self, other):
-        if self._unit_string in self._restricted_conversions.keys():
+        if self.unit in self._restricted_conversions.keys():
             raise ValueError("This arithmetic operation is restricted")
 
         if isinstance(other, Quantity):
@@ -164,7 +164,7 @@ class Quantity:
         return Quantity(temp.magnitude, temp.units)
 
     def __rsub__(self, other):
-        if self._unit_string in self._restricted_conversions.keys():
+        if self.unit in self._restricted_conversions.keys():
             raise ValueError("This arithmetic operation is restricted")
 
         if isinstance(other, Quantity):
