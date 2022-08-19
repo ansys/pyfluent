@@ -17,18 +17,15 @@ def assign_settings_value_from_value_dict(setting, value):
 
 
 def settings_value_from_value_dict(dict_value) -> bool:
-    try:
-        if "option" in dict_value:
-            option = dict_value["option"]
-            key = None
-            if option == "value":
-                key = "value"
-            elif option == "constant or expression":
-                key = "constant"
-            if key:
-                return dict_value[key]
-    except TypeError:
-        return dict_value
+    if "option" in dict_value:
+        option = dict_value["option"]
+        key = None
+        if option == "value":
+            key = "value"
+        elif option == "constant or expression":
+            key = "constant"
+        if key:
+            return dict_value[key]
 
 
 def assert_settings_values_equal(left, right):

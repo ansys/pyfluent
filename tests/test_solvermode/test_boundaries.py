@@ -43,7 +43,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
         "p_sup": D(0),
         "t": D(293.15),
         "ke_spec": "Intensity and Hydraulic Diameter",
-        "turb_intensity": D(0.05),
+        "turb_intensity": 0.05,
         "turb_hydraulic_diam": {"constant": 1, "expression": "4 [in]"},
     } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
     assign_dict_val(
