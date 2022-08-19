@@ -335,7 +335,7 @@ def launch_fluent(
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
-        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.        
+        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
 
     Returns
     -------
