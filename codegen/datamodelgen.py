@@ -81,15 +81,17 @@ def _build_command_docstring(name: str, info: Any, indent: str):
 
 
 class DataModelStaticInfo:
-    def __init__(self, rules: str, mode: str):
+    def __init__(self, rules: str, mode: str, rules_save_name: str = ""):
         self.rules = rules
         self.mode = mode
         self.static_info = None
+        if rules_save_name == "":
+            rules_save_name = rules
         datamodel_dir = (
             _THIS_DIR / ".." / "src" / "ansys" / "fluent" / "core" / "datamodel"
         )
         datamodel_dir.mkdir(exist_ok=True)
-        self.filepath = (datamodel_dir / f"{rules}.py").resolve()
+        self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
 
 
 class DataModelGenerator:
@@ -99,6 +101,7 @@ class DataModelGenerator:
             "meshing": DataModelStaticInfo("meshing", "meshing"),
             "PartManagement": DataModelStaticInfo("PartManagement", "meshing"),
             "PMFileManagement": DataModelStaticInfo("PMFileManagement", "meshing"),
+            "icing": DataModelStaticInfo("flserver", "flicing", "flicing"),
         }
         self._delete_generated_files()
         self._populate_static_info()
@@ -118,12 +121,16 @@ class DataModelGenerator:
         run_solver_mode = any(
             info.mode == "solver" for _, info in self._static_info.items()
         )
+        run_icing_mode = any(
+            info.mode == "flicing" for _, info in self._static_info.items()
+        )
         import ansys.fluent.core as pyfluent
 
         if run_meshing_mode:
             session = pyfluent.launch_fluent(mode="meshing")
             for _, info in self._static_info.items():
                 if info.mode == "meshing":
+                    print(f"- {info.mode}/{info.rules}")
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
@@ -131,7 +138,18 @@ class DataModelGenerator:
             session = pyfluent.launch_fluent(mode="solver")
             for _, info in self._static_info.items():
                 if info.mode == "solver":
+                    print(f"- {info.mode}/{info.rules}")
                     info.static_info = self._get_static_info(info.rules, session)
+            session.exit()
+
+        if run_icing_mode:
+            session = pyfluent.launch_fluent(mode="solver-icing")
+            for _, info in self._static_info.items():
+                if info.mode == "flicing":
+                    print(f"- {info.mode}/{info.rules}")
+                    info.static_info = self._get_static_info(info.rules, session)
+                    if info.static_info == None:
+                        print("Information: Icing module not available\n")
             session.exit()
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
