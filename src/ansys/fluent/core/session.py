@@ -145,6 +145,12 @@ class _BaseSession:
         """Executes tui command to stop journal."""
         self.execute_tui(f"(api-stop-python-journal)")
 
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return ".".join(
+            map(str, self.fluent_connection.scheme_eval.scheme_eval("(cx-version)"))
+        )
+
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self
