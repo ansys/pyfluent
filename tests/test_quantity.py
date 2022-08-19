@@ -10,7 +10,7 @@ def test_viscosity():
 
 
 def test_dynamic_viscosity():
-    vd = q.Quantity(1, "Pa s")  # poise
+    vd = q.Quantity(1, "Pa s")
     conversion_output = vd.convert("P")
     assert conversion_output.value == 10.0
 
