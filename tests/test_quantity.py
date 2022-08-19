@@ -1,4 +1,4 @@
-from pytest import approx
+import pytest
 
 import ansys.fluent.core.quantity as q
 
@@ -12,13 +12,13 @@ def test_viscosity():
 def test_volume():
     v = q.Quantity(1, "gal")
     conversion_output = v["m^3"]
-    assert conversion_output._real_value == approx(0.00378541)
+    assert conversion_output._real_value == pytest.approx(0.00378541)
 
 
 def test_youngs_modulus():
     ym = q.Quantity(1, "lbf ft^-2")
     conversion_output = ym["N m^-2"]
-    assert conversion_output._real_value == approx(47.89, 0.1)
+    assert conversion_output._real_value == pytest.approx(47.89, 0.1)
 
 
 def test_temperature():
@@ -26,33 +26,285 @@ def test_temperature():
     conversion_output_1 = tempC["degK"]
     assert conversion_output_1._real_value == 274.15
     conversion_output_2 = tempC["degR"]
-    assert conversion_output_2._real_value == approx(493.46, 0.1)
+    assert conversion_output_2._real_value == pytest.approx(493.46, 0.1)
     conversion_output_3 = tempC["degF"]
-    assert conversion_output_3._real_value == approx(33.79, 0.1)
+    assert conversion_output_3._real_value == pytest.approx(33.79, 0.1)
 
 
 def test_collision_rate():
     cr = q.Quantity(1, "ft^-3 s^-1")
     conversion_output = cr["m^-3 s^-1"]
-    assert conversion_output._real_value == approx(35.3147, 0.001)
+    assert conversion_output._real_value == pytest.approx(35.3147, 0.001)
 
 
 def test_area_inverse():
     in_sq_m = q.Quantity(1, "m^-2")
     conversion_output = in_sq_m["cm^-2"]
-    assert conversion_output._real_value == approx(0.0001)
+    assert conversion_output._real_value == pytest.approx(0.0001)
 
 
 def test_area():
     in_sq_m = q.Quantity(1, "m^2")
     conversion_output = in_sq_m["in^2"]
-    assert conversion_output._real_value == approx(1550, 0.1)
+    assert conversion_output._real_value == pytest.approx(1550, 0.1)
 
 
 def test_angular_velocity():
     degps = q.Quantity(1, "deg/s")
     conversion_output = degps["rad/s"]
-    assert conversion_output._real_value == approx(0.01745, 0.001)
+    assert conversion_output._real_value == pytest.approx(0.01745, 0.001)
+
+
+def test_hz_hertz():
+    f = q.Quantity(1, "Hz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["hertz"]
+
+
+def test_hz_rad():
+    f = q.Quantity(1, "Hz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rad/s"]
+
+
+def test_hz_radian():
+    f = q.Quantity(1, "Hz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["radian/s"]
+
+
+def test_hz_rpm():
+    f = q.Quantity(1, "Hz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rpm"]
+
+
+def test_hz_rps():
+    f = q.Quantity(1, "Hz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rps"]
+
+
+def test_hz_cps():
+    f = q.Quantity(1, "Hz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["cps"]
+
+
+def test_hertz_hz():
+    f = q.Quantity(1, "hertz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["Hz"]
+
+
+def test_hertz_rad():
+    f = q.Quantity(1, "hertz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rad/s"]
+
+
+def test_hertz_radian():
+    f = q.Quantity(1, "hertz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["radian/s"]
+
+
+def test_hertz_rpm():
+    f = q.Quantity(1, "hertz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rpm"]
+
+
+def test_hertz_rps():
+    f = q.Quantity(1, "hertz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rps"]
+
+
+def test_hertz_cps():
+    f = q.Quantity(1, "hertz")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["cps"]
+
+
+def test_rad_hz():
+    f = q.Quantity(1, "rad/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["Hz"]
+
+
+def test_rad_hertz():
+    f = q.Quantity(1, "rad/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["hertz"]
+
+
+def test_rad_radian():
+    f = q.Quantity(1, "rad/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["radian/s"]
+
+
+def test_rad_rpm():
+    f = q.Quantity(1, "rad/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rpm"]
+
+
+def test_rad_rps():
+    f = q.Quantity(1, "rad/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rps"]
+
+
+def test_rad_cps():
+    f = q.Quantity(1, "rad/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["cps"]
+
+
+def test_radian_hz():
+    f = q.Quantity(1, "radian/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["Hz"]
+
+
+def test_radian_hertz():
+    f = q.Quantity(1, "radian/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["hertz"]
+
+
+def test_radian_rad():
+    f = q.Quantity(1, "radian/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rad/s"]
+
+
+def test_radian_rpm():
+    f = q.Quantity(1, "radian/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rpm"]
+
+
+def test_radian_rps():
+    f = q.Quantity(1, "radian/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rps"]
+
+
+def test_radian_cps():
+    f = q.Quantity(1, "radian/s")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["cps"]
+
+
+def test_rpm_hz():
+    f = q.Quantity(1, "rpm")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["Hz"]
+
+
+def test_rpm_hertz():
+    f = q.Quantity(1, "rpm")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["hertz"]
+
+
+def test_rpm_radian():
+    f = q.Quantity(1, "rpm")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["radian/s"]
+
+
+def test_rpm_rad():
+    f = q.Quantity(1, "rpm")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rad/s"]
+
+
+def test_rpm_rps():
+    f = q.Quantity(1, "rpm")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rps"]
+
+
+def test_rpm_cps():
+    f = q.Quantity(1, "rpm")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["cps"]
+
+
+def test_rps_hz():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["Hz"]
+
+
+def test_rps_hertz():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["hertz"]
+
+
+def test_rps_radian():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["radian/s"]
+
+
+def test_rps_rad():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rad/s"]
+
+
+def test_rps_rpm():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rpm"]
+
+
+def test_rps_cps():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["cps"]
+
+
+def test_cps_hz():
+    f = q.Quantity(1, "cps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["Hz"]
+
+
+def test_cps_hertz():
+    f = q.Quantity(1, "rps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["hertz"]
+
+
+def test_cps_radian():
+    f = q.Quantity(1, "cps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["radian/s"]
+
+
+def test_cps_rad():
+    f = q.Quantity(1, "cps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rad/s"]
+
+
+def test_cps_rpm():
+    f = q.Quantity(1, "cps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rpm"]
+
+
+def test_cps_rps():
+    f = q.Quantity(1, "cps")
+    with pytest.raises(Exception) as e_info:
+        conversion_output = f["rps"]
 
 
 if __name__ == "__main__":
