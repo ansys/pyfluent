@@ -1,6 +1,6 @@
 import pytest
-
 from util.solver import copy_database_material
+
 
 @pytest.mark.integration
 @pytest.mark.quick
@@ -8,9 +8,7 @@ from util.solver import copy_database_material
 def test_solver_material(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     copy_database_material(
-        materials=solver_session.setup.materials,
-        type="fluid", 
-        name="water-liquid"
+        materials=solver_session.setup.materials, type="fluid", name="water-liquid"
     )
     assert (
         "water-liquid"
