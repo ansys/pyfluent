@@ -152,72 +152,74 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
     ###############################################################################
     # Set up the cell zone conditions for the fluid zone (elbow-fluid). Select
     # water-liquid from the Material list.
-    solver_session.tui.define.boundary_conditions.fluid(
-        "elbow-fluid",
-        "yes",
-        "water-liquid",
-        "no",
-        "no",
-        "no",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "0",
-        "no",
-        "1",
-        "no",
-        "no",
-        "no",
-        "no",
-        "no",
-    )
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(solver_session.get_fluent_version()[:-2]) < 23.0:
+        solver_session.tui.define.boundary_conditions.fluid(
+            "elbow-fluid",
+            "yes",
+            "water-liquid",
+            "no",
+            "no",
+            "no",
+            "no",
+            "0",
+            "no",
+            "0",
+            "no",
+            "0",
+            "no",
+            "0",
+            "no",
+            "0",
+            "no",
+            "1",
+            "no",
+            "no",
+            "no",
+            "no",
+            "no",
+        )
 
-    ###############################################################################
-    # Set up the boundary conditions
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "cold-inlet", [], "vmag", "no", 0.4, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "cold-inlet", [], "turb-intensity", 5, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "cold-inlet", [], "turb-hydraulic-diam", 4, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "cold-inlet", [], "temperature", "no", 293.15, "quit"
-    )
+        ###############################################################################
+        # Set up the boundary conditions
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "cold-inlet", [], "vmag", "no", 0.4, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "cold-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "cold-inlet", [], "turb-intensity", 5, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "cold-inlet", [], "turb-hydraulic-diam", 4, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "cold-inlet", [], "temperature", "no", 293.15, "quit"
+        )
 
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "hot-inlet", [], "vmag", "no", 1.2, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "hot-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "hot-inlet", [], "turb-intensity", 5, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "hot-inlet", [], "turb-hydraulic-diam", 1, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "hot-inlet", [], "temperature", "no", 313.15, "quit"
-    )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "hot-inlet", [], "vmag", "no", 1.2, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "hot-inlet", [], "ke-spec", "no", "no", "no", "yes", "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "hot-inlet", [], "turb-intensity", 5, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "hot-inlet", [], "turb-hydraulic-diam", 1, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "hot-inlet", [], "temperature", "no", 313.15, "quit"
+        )
 
-    solver_session.tui.define.boundary_conditions.set.pressure_outlet(
-        "outlet", [], "turb-intensity", 5, "quit"
-    )
-    solver_session.tui.define.boundary_conditions.set.pressure_outlet(
-        "outlet", [], "turb-viscosity-ratio", 4, "quit"
-    )
+        solver_session.tui.define.boundary_conditions.set.pressure_outlet(
+            "outlet", [], "turb-intensity", 5, "quit"
+        )
+        solver_session.tui.define.boundary_conditions.set.pressure_outlet(
+            "outlet", [], "turb-viscosity-ratio", 4, "quit"
+        )
 
     ###############################################################################
     # Enable the plotting of residuals during the calculation.

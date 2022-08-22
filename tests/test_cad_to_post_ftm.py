@@ -453,22 +453,24 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
     ###############################################################################
     # Set the velocity and turbulence boundary conditions for the first inlet
     # (inlet-1).
-    solver_session.tui.define.boundary_conditions.set.velocity_inlet(
-        "inlet-1", [], "vmag", "no", 1, "quit"
-    )
-    ###############################################################################
-    # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
-    # and inlet_3).
-    solver_session.tui.define.boundary_conditions.copy_bc(
-        "inlet-1", "inlet-2", "inlet-3", ()
-    )
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+        solver_session.tui.define.boundary_conditions.set.velocity_inlet(
+            "inlet-1", [], "vmag", "no", 1, "quit"
+        )
+        ###############################################################################
+        # Apply the same conditions for the other velocity inlet boundaries (inlet_2,
+        # and inlet_3).
+        solver_session.tui.define.boundary_conditions.copy_bc(
+            "inlet-1", "inlet-2", "inlet-3", ()
+        )
 
-    ###############################################################################
-    # Set the boundary conditions at the outlet (outlet-1).
-    solver_session.tui.define.boundary_conditions.set.pressure_outlet(
-        "outlet-1", [], "turb-intensity", 5, "quit"
-    )
-    solver_session.tui.solve.monitors.residual.plot("yes")
+        ###############################################################################
+        # Set the boundary conditions at the outlet (outlet-1).
+        solver_session.tui.define.boundary_conditions.set.pressure_outlet(
+            "outlet-1", [], "turb-intensity", 5, "quit"
+        )
+        solver_session.tui.solve.monitors.residual.plot("yes")
 
     ###############################################################################
     # Initialize the flow field using the Initialization

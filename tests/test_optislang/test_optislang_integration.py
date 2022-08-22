@@ -55,8 +55,8 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
         )
         solver_session.tui.file.write_case("design_elbow_param.cas.h5")
 
-    # Step 5: Solve
-    solver_session.tui.solve.initialize.initialize_flow()
+        # Step 5: Solve
+        solver_session.tui.solve.initialize.initialize_flow()
 
     # check if solution is steady or transient
     workflow = solver_session.scheme_eval.string_eval("(rp-unsteady?)")
