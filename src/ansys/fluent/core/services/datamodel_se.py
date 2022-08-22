@@ -1,8 +1,8 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-
 from enum import Enum
 import itertools
 from typing import Any, Dict, Iterator, List, Tuple
+import warnings
 
 import grpc
 
@@ -72,7 +72,11 @@ class DatamodelService:
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        return self.__stub.getAttributeValue(request, metadata=self.__metadata)
+        ret = self.__stub.getAttributeValue(request, metadata=self.__metadata)
+        try:
+            return ret.item
+        except AttributeError:
+            return ret
 
     @catch_grpc_error
     def get_state(
@@ -104,8 +108,6 @@ class DatamodelService:
     ) -> DataModelProtoModule.ExecuteCommandResponse:
         return self.__stub.executeCommand(request, metadata=self.__metadata)
 
-    # pending the proto changes
-    """
     @catch_grpc_error
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
@@ -117,7 +119,6 @@ class DatamodelService:
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
         return self.__stub.deleteCommandArguments(request, metadata=self.__metadata)
-    """
 
     @catch_grpc_error
     def get_specs(
@@ -295,6 +296,10 @@ class PyBasicStateContainer(PyCallableStateObject):
 
     getAttribValue = get_attrib_value
 
+    def is_active(self):
+        """Returns true if the parameter is active."""
+        return true_if_none(self.get_attrib_value(Attribute.IS_ACTIVE.value))
+
     def help(self) -> None:
         """Print help string."""
         request = DataModelProtoModule.GetSpecsRequest()
@@ -315,30 +320,11 @@ class PyMenu(PyBasicStateContainer):
     -------
     __setattr__(name, value)
         Set state of the child object
-    update_dict(dict_state)
-        Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics
-    updateDict(dict_state)
-        Update the state of the current object if the current object
-        is a Dict in the data model, else throws RuntimeError
-        (currently not showing up in Python). Update is executed according
-        to dict.update semantics (same as update_dict(dict_state))
     create_command_arguments(command)
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
         super().__init__(service, rules, path)
-
-    def update_dict(self, dict_state: Dict[str, Any]) -> None:
-        request = DataModelProtoModule.UpdateDictRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(dict_state, request.dicttomerge)
-        self.service.update_dict(request)
-
-    updateDict = update_dict
 
     def __setattr__(self, name: str, value: Any):
         """Set state of the child object.
@@ -350,7 +336,9 @@ class PyMenu(PyBasicStateContainer):
         value : Any
             state
         """
-        if hasattr(self, name) and isinstance(getattr(self, name), PyMenu):
+        if hasattr(self, name) and isinstance(
+            getattr(self, name), PyBasicStateContainer
+        ):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -371,16 +359,78 @@ class PyMenu(PyBasicStateContainer):
             )
 
     def create_command_arguments(self, command):
-        pass
-        # pending the proto changes
-        """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
         request.command = command
         response = self.service.create_command_arguments(request)
         return response.commandid
-        """
+
+
+class PyParameter(PyBasicStateContainer):
+    """Object class using StateEngine based DatamodelService as backend.
+
+    Use this class instead of directly calling DatamodelService's
+    method.
+    """
+
+    def default_value(self):
+        """Get default value of the parameter."""
+        return self.get_attrib_value(Attribute.DEFAULT.value)
+
+    def is_read_only(self):
+        return true_if_none(self.get_attrib_value(Attribute.IS_READ_ONLY.value))
+
+
+def true_if_none(val):
+    """Returns true if 'val' is true or None, else returns false."""
+    if val in [True, False, None]:
+        return True if val is None else val
+    else:
+        raise RuntimeError(f"In-correct value passed")
+
+
+class PyTextual(PyParameter):
+    """Provides interface for textual parameters."""
+
+    def allowed_values(self):
+        return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
+
+
+class PyNumerical(PyParameter):
+    """Provides interface for numerical parameters."""
+
+    def min(self):
+        return self.get_attrib_value(Attribute.MIN.value)
+
+    def max(self):
+        return self.get_attrib_value(Attribute.MAX.value)
+
+
+class PyDictionary(PyParameter):
+    """Provides interface for dictionaries.
+    Methods
+        -------
+        update_dict(dict_state)
+            Update the state of the current object if the current object
+            is a Dict in the data model, else throws RuntimeError
+            (currently not showing up in Python). Update is executed according
+            to dict.update semantics
+        updateDict(dict_state)
+            Update the state of the current object if the current object
+            is a Dict in the data model, else throws RuntimeError
+            (currently not showing up in Python). Update is executed according
+            to dict.update semantics (same as update_dict(dict_state))
+    """
+
+    def update_dict(self, dict_state: Dict[str, Any]) -> None:
+        request = DataModelProtoModule.UpdateDictRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(dict_state, request.dicttomerge)
+        self.service.update_dict(request)
+
+    updateDict = update_dict
 
 
 class PyNamedObjectContainer:
@@ -583,26 +633,24 @@ class PyCommand:
         print(help_string)
 
     def _create_command_arguments(self):
-        pass
-        # pending the proto changes
-        """
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
         request.command = self.command
         response = self.service.create_command_arguments(request)
         return response.commandid
-        """
 
     def new(self):
-        # pending the proto changes
-        pass
-        """
-        id = self._create_command_arguments()
-        return PyCommandArguments(
-            self.service, self.rules, self.command, self.path.copy(), id
-        )
-        """
+        try:
+            id = self._create_command_arguments()
+            return PyCommandArguments(
+                self.service, self.rules, self.command, self.path.copy(), id
+            )
+        except RuntimeError:
+            warnings.warn(
+                "Create command arguments object is available from 23.1 onwards"
+            )
+            pass
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
@@ -645,9 +693,6 @@ class PyCommandArguments(PyBasicStateContainer):
         self.path.append((command, id))
 
     def __del__(self):
-        # pending the proto changes
-        pass
-        """
         request = DataModelProtoModule.DeleteCommandArgumentsRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path[:-1])
@@ -658,7 +703,6 @@ class PyCommandArguments(PyBasicStateContainer):
         except ValueError:
             # "Cannot invoke RPC on closed channel!"
             pass
-        """
 
     def __getattr__(self, attr):
         return PyCommandArgumentsSubItem(self, attr)

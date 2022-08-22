@@ -126,6 +126,12 @@ class _BaseSession:
         """Close the Fluent connection and exit Fluent."""
         self.fluent_connection.exit()
 
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return ".".join(
+            map(str, self.fluent_connection.scheme_eval.scheme_eval("(cx-version)"))
+        )
+
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self
@@ -206,6 +212,7 @@ class Session:
 
         self.meshing = _BaseMeshing(self.fluent_connection)
 
+        self._datamodel_service_se = self.fluent_connection.datamodel_service_se
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
         self._settings_service = self.fluent_connection.settings_service
 
