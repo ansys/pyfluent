@@ -9,11 +9,13 @@ def test_solver_calculation(load_mixing_elbow_mesh):
         solver_session.scheme_eval.scheme_eval("(client-get-var 'residuals/plot?)")
         == True
     )
-    solver_session.tui.solve.monitors.residual.plot("no")
-    assert (
-        solver_session.scheme_eval.scheme_eval("(client-get-var 'residuals/plot?)")
-        == False
-    )
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(solver_session.get_fluent_version()[:-2]) < 23.0:
+        solver_session.tui.solve.monitors.residual.plot("no")
+        assert (
+            solver_session.scheme_eval.scheme_eval("(client-get-var 'residuals/plot?)")
+            == False
+        )
     assert solver_session.scheme_eval.scheme_eval("(data-valid?)") == False
     solver_session.solution.initialization.hybrid_initialize()
     assert solver_session.scheme_eval.scheme_eval("(data-valid?)") == True
