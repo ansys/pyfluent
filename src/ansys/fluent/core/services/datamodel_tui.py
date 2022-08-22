@@ -210,12 +210,12 @@ class PyMenu:
         DataModelProtoModule.StaticInfo
             static info
         """
-        if hasattr(DataModelProtoModule, "GetStaticInfoRequest"):
+        try:
             request = DataModelProtoModule.GetStaticInfoRequest()
             request.path = self._path
             response = self._service.get_static_info(request)
             return MessageToDict(response.info, including_default_value_fields=True)
-        else:
+        except RuntimeError:
             return _get_static_info_at_level(self)
 
 
