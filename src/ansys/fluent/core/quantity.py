@@ -94,7 +94,7 @@ class Quantity:
     def __repr__(self):
         return f'(Quantity ({self.value}, "{self.unit}"))'
 
-    def convert(self, to_unit):
+    def convertTo(self, to_unit):
 
         """This method checks the compatibility between current instance unit
         and user provided unit, if both of them are compatible, then only it
