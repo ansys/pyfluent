@@ -3,7 +3,15 @@ from itertools import permutations
 import pint
 from pint import Unit
 
-unit = pint.UnitRegistry(autoconvert_offset_to_baseunit=True, system="SI")
+unit = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
+unit.default_system = "SI"
+
+# Unit definitions
+unit.define("1.e15-particles/kg = 1 kg^-1 = 1^15particles kg^-1")
+unit.define("1.e15-particles m^-3 s^-1 = 1 m^-3 s^-1 = 1^15particles m^-3 s^-1")
+unit.define("ton_force = 1 UK_force_ton = tonf")
+
+
 quantity = unit.Quantity
 
 
@@ -94,7 +102,7 @@ class Quantity:
     def __repr__(self):
         return f'(Quantity ({self.value}, "{self.unit}"))'
 
-    def convertTo(self, to_unit):
+    def to(self, to_unit):
 
         """This method checks the compatibility between current instance unit
         and user provided unit, if both of them are compatible, then only it
