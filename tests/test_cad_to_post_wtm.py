@@ -125,7 +125,9 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    meshing_session.tui.mesh.check_mesh()
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+        meshing_session.tui.mesh.check_mesh()
 
     ###############################################################################
     # Switch to Solution mode

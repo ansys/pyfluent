@@ -53,7 +53,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
         solver_session.tui.define.parameters.input_parameters.edit(
             "inlet2_temp", "inlet2_temp", 600
         )
-    solver_session.tui.file.write_case("design_elbow_param.cas.h5")
+        solver_session.tui.file.write_case("design_elbow_param.cas.h5")
 
     # Step 5: Solve
     solver_session.tui.solve.initialize.initialize_flow()

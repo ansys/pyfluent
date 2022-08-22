@@ -430,7 +430,9 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    meshing_session.tui.mesh.check_mesh()
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+        meshing_session.tui.mesh.check_mesh()
 
     ###############################################################################
     # Switch to Solution mode
