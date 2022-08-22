@@ -1,8 +1,8 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-
 from enum import Enum
 import itertools
 from typing import Any, Dict, Iterator, List, Tuple
+import warnings
 
 import grpc
 
@@ -641,10 +641,16 @@ class PyCommand:
         return response.commandid
 
     def new(self):
-        id = self._create_command_arguments()
-        return PyCommandArguments(
-            self.service, self.rules, self.command, self.path.copy(), id
-        )
+        try:
+            id = self._create_command_arguments()
+            return PyCommandArguments(
+                self.service, self.rules, self.command, self.path.copy(), id
+            )
+        except RuntimeError:
+            warnings.warn(
+                "Create command arguments object is available from 23.1 onwards"
+            )
+            pass
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
