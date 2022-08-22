@@ -81,8 +81,9 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 
 @pytest.mark.integration
 @pytest.mark.setup
-@pytest.mark.skip(reason="skip to run using 22.2")
+@pytest.mark.skipif(os.environ["matrix.image-tag"] == "v22.2.0", reason="Skip on 22.2")
 def test_boundaries_periodic(load_periodic_rot_cas):
+    print(os.environ["matrix.image-tag"])
     session = load_periodic_rot_cas
     print(__file__)
     _THIS_DIR = os.path.dirname(__file__)
