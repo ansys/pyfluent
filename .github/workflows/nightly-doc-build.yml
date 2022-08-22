@@ -9,6 +9,7 @@ jobs:
   nightly_docs_build:
     runs-on: [self-hosted, pyfluent]
     strategy:
+      fail-fast: false
       matrix:
         image-tag: [v22.2.0, v23.1.0]
 
