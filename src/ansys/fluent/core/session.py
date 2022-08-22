@@ -231,6 +231,7 @@ class Session:
 
         self.meshing = _BaseMeshing(self.fluent_connection)
 
+        self._datamodel_service_se = self.fluent_connection.datamodel_service_se
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
         self._settings_service = self.fluent_connection.settings_service
 
