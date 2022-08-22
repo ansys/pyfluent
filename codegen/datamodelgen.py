@@ -130,7 +130,6 @@ class DataModelGenerator:
             session = pyfluent.launch_fluent(mode="meshing")
             for _, info in self._static_info.items():
                 if info.mode == "meshing":
-                    print(f"- {info.mode}/{info.rules}")
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
@@ -138,7 +137,6 @@ class DataModelGenerator:
             session = pyfluent.launch_fluent(mode="solver")
             for _, info in self._static_info.items():
                 if info.mode == "solver":
-                    print(f"- {info.mode}/{info.rules}")
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
@@ -146,7 +144,6 @@ class DataModelGenerator:
             session = pyfluent.launch_fluent(mode="solver-icing")
             for _, info in self._static_info.items():
                 if info.mode == "flicing":
-                    print(f"- {info.mode}/{info.rules}")
                     info.static_info = self._get_static_info(info.rules, session)
                     if info.static_info == None:
                         print("Information: Icing module not available\n")
