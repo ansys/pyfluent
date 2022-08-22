@@ -3,16 +3,16 @@ from itertools import permutations
 import pint
 from pint import Unit
 
-unit = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
-unit.default_system = "SI"
+base_units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
+base_units.default_system = "SI"
 
 # Unit definitions
-unit.define("1.e15-particles/kg = 1 kg^-1 = 1^15particles kg^-1")
-unit.define("1.e15-particles m^-3 s^-1 = 1 m^-3 s^-1 = 1^15particles m^-3 s^-1")
-unit.define("ton_force = 1 UK_force_ton = tonf")
+base_units.define("1.e15-particles/kg = 1 kg^-1 = 1^15particles kg^-1")
+base_units.define("1.e15-particles m^-3 s^-1 = 1 m^-3 s^-1 = 1^15particles m^-3 s^-1")
+base_units.define("ton_force = 1 UK_force_ton = tonf")
 
 
-quantity = unit.Quantity
+quantity = base_units.Quantity
 
 
 restricted_units = ["Hz", "hertz", "rad/s", "radian/s", "rpm", "rps", "cps"]
