@@ -221,53 +221,53 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
             "outlet", [], "turb-viscosity-ratio", 4, "quit"
         )
 
-    ###############################################################################
-    # Enable the plotting of residuals during the calculation.
-    solver_session.tui.solve.monitors.residual.plot("yes")
+        ###############################################################################
+        # Enable the plotting of residuals during the calculation.
+        solver_session.tui.solve.monitors.residual.plot("yes")
 
-    ###############################################################################
-    # Initialize the flow field using the Hybrid Initialization
-    solver_session.tui.solve.initialize.hyb_initialization()
+        ###############################################################################
+        # Initialize the flow field using the Hybrid Initialization
+        solver_session.tui.solve.initialize.hyb_initialization()
 
-    ###############################################################################
-    # Solve for 250 Iterations.
-    solver_session.tui.solve.iterate(250)
+        ###############################################################################
+        # Solve for 250 Iterations.
+        solver_session.tui.solve.iterate(250)
 
-    ###############################################################################
-    # Assert the returned mass flow rate report definition value
-    solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
-    solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
-        "cold-inlet",
-        "hot-inlet",
-        "outlet",
-    ]
+        ###############################################################################
+        # Assert the returned mass flow rate report definition value
+        solver_session.solution.report_definitions.flux["mass_flow_rate"] = {}
+        solver_session.solution.report_definitions.flux["mass_flow_rate"].zone_names = [
+            "cold-inlet",
+            "hot-inlet",
+            "outlet",
+        ]
 
-    check_report_definition = partial(
-        check_report_definition_result,
-        report_definitions=solver_session.solution.report_definitions,
-    )
+        check_report_definition = partial(
+            check_report_definition_result,
+            report_definitions=solver_session.solution.report_definitions,
+        )
 
-    check_report_definition(
-        report_definition_name="mass_flow_rate",
-        expected_result=approx(-2.985690364942784e-06, abs=1e-3),
-    )
+        check_report_definition(
+            report_definition_name="mass_flow_rate",
+            expected_result=approx(-2.985690364942784e-06, abs=1e-3),
+        )
 
-    ###############################################################################
-    # Assert the returned temperature report definition value on the outlet surface
-    solver_session.solution.report_definitions.surface["temperature_outlet"] = {}
-    solver_session.solution.report_definitions.surface[
-        "temperature_outlet"
-    ].report_type = "surface-massavg"
-    solver_session.solution.report_definitions.surface[
-        "temperature_outlet"
-    ].field = "temperature"
-    solver_session.solution.report_definitions.surface[
-        "temperature_outlet"
-    ].surface_names = ["outlet"]
+        ###############################################################################
+        # Assert the returned temperature report definition value on the outlet surface
+        solver_session.solution.report_definitions.surface["temperature_outlet"] = {}
+        solver_session.solution.report_definitions.surface[
+            "temperature_outlet"
+        ].report_type = "surface-massavg"
+        solver_session.solution.report_definitions.surface[
+            "temperature_outlet"
+        ].field = "temperature"
+        solver_session.solution.report_definitions.surface[
+            "temperature_outlet"
+        ].surface_names = ["outlet"]
 
-    check_report_definition(
-        report_definition_name="temperature_outlet",
-        expected_result=approx(296.229, rel=1e-3),
-    )
+        check_report_definition(
+            report_definition_name="temperature_outlet",
+            expected_result=approx(296.229, rel=1e-3),
+        )
 
-    ###############################################################################
+        ###############################################################################
