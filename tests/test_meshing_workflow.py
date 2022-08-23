@@ -187,23 +187,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skip(
-    reason="enable test after completely shifting to a stable release of R23.1"
-)
-def test_command_args_datamodel_se():
-    # Remove the below code after shifting to 23.1
-    #####
-    session_old = pf.launch_fluent(mode="meshing")
-    w = session_old.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.task("Import Geometry")
-    with pytest.raises(RuntimeError):
-        igt.CommandArguments.CadImportOptions()
-
-    # Set the most recent fluent build path in the below environment variable
-    os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
-    # -----------------------------------------------------------------------
-
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+def test_non_existing_command_args_datamodel_se_22_2():
     session_new = pf.launch_fluent(mode="meshing")
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -213,16 +198,9 @@ def test_command_args_datamodel_se():
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.skip(
-    reason="enable test after completely shifting to a stable release of R23.1"
-)
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
 def test_meshing_object_commands():
     with tempfile.TemporaryDirectory() as tmpdirname:
-        # Remove the below code after shifting to 23.1
-        #####
-        # Set the most recent fluent build path in the below environment variable
-        os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
-        # -----------------------------------------------------------------------
         session_new = pf.launch_fluent(mode="meshing")
         file_path = os.path.join(tmpdirname, "sample_py_journal.txt")
         m = session_new.meshing
