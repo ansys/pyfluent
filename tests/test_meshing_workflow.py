@@ -6,7 +6,6 @@ This test covers generic meshing workflow behaviour
 """
 from functools import partial
 import os
-from pathlib import Path
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -18,6 +17,8 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )
+
+import ansys.fluent.core as pyfluent
 
 
 def test_mixing_elbow_meshing_workflow(
@@ -198,7 +199,7 @@ def test_command_args_datamodel_se(new_mesh_session):
 
 
 @pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
-def test_meshing_object_commands(new_mesh_session, tmp_path: Path):
+def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session_new = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_py_journal.txt")
     m = session_new.meshing
