@@ -164,17 +164,9 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-@pytest.mark.skip(
-    reason="enable test after completely shifting to a stable release of R23.1"
-)
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
 def test_execute_tui_commands():
     with tempfile.TemporaryDirectory() as tmpdirname:
-        # Remove the below code after shifting to 23.1
-        #####
-        # Set the most recent fluent build path in the below environment variable
-        os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
-        # -----------------------------------------------------------------------
-
         session = launch_fluent(mode="meshing")
         file_path = os.path.join(tmpdirname, "sample_py_journal.txt")
 
