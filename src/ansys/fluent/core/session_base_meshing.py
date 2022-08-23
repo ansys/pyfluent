@@ -1,5 +1,5 @@
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.meshing.meshing import MeshingMeshing
+from ansys.fluent.core.meshing.meshing import Meshing
 from ansys.fluent.core.meshing.workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
@@ -50,7 +50,7 @@ class _BaseMeshing:
     @property
     def meshing(self):
         if self._meshing is None:
-            self._meshing = MeshingMeshing(
+            self._meshing = Meshing(
                 self._meshing_root, self.tui, self._fluent_connection
             )
         return self._meshing

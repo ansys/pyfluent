@@ -1,7 +1,7 @@
 import json
 
 
-class MeshingMeshing:
+class Meshing:
     def __init__(self, meshing, tui, fluent_connection):
         self._meshing = meshing
         self._tui = tui
