@@ -4,8 +4,10 @@ from pathlib import Path
 
 import grpc
 import pytest
+from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -161,3 +163,24 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     server.stop(None)
     session.exit()
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
+
+
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+    session = new_mesh_session
+    file_path = os.path.join(tmp_path, "sample_py_journal.txt")
+
+    session.setup_python_console_in_tui()
+    session.start_journal(file_path)
+
+    session = session.switch_to_solver()
+
+    session.stop_journal()
+
+    with open(file_path) as f:
+        returned = f.readlines()
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    assert returned
