@@ -4,9 +4,9 @@ Fluid Flow and Heat Transfer in a Mixing Elbow
 ---------------------------------------------------
 This test covers generic meshing workflow behaviour
 """
-
 from functools import partial
 import os
+import tempfile
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -209,3 +209,28 @@ def test_command_args_datamodel_se():
     assert igt.CommandArguments.CadImportOptions()
     assert igt.CommandArguments.CadImportOptions.OneZonePer()
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+
+
+@pytest.mark.skip(
+    reason="enable test after completely shifting to a stable release of R23.1"
+)
+def test_meshing_object_commands():
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        # Remove the below code after shifting to 23.1
+        #####
+        # Set the most recent fluent build path in the below environment variable
+        os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
+        # -----------------------------------------------------------------------
+        session_new = pf.launch_fluent(mode="meshing")
+        file_path = os.path.join(tmpdirname, "sample_py_journal.txt")
+        m = session_new.meshing
+        m.execute_tui("(api-setup-python-console)")
+        m.execute_tui(f'(api-start-python-journal "{file_path}")')
+        m.switch_to_solver()
+        m.execute_tui(f"(api-stop-python-journal)")
+
+        with open(file_path) as f:
+            returned = f.readlines()[0].strip()
+
+        expected = "solver.execute_tui(r'''/switch-to-solution-mode yes ''')"
+        assert returned == expected
