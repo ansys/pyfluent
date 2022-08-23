@@ -13,13 +13,12 @@ background and sends commands to this service.
 
 Launcher options
 ----------------
-The following examples show different ways that you can launch Fluent locally.
-For more information, see the description for the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method.
+The following examples shows different ways that you can launch Fluent locally.
+For more information, see :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
 
 Solver mode
 ~~~~~~~~~~~
-This example shows how you can start Fluent in solution mode:
+This example shows how you launch Fluent in solution mode:
 
 .. code:: python
 
@@ -27,7 +26,7 @@ This example shows how you can start Fluent in solution mode:
 
 Meshing mode
 ~~~~~~~~~~~~
-This example shows how you can start Fluent in meshing mode:
+This example shows how you launch Fluent in meshing mode:
 
 .. code:: python
 
@@ -35,7 +34,8 @@ This example shows how you can start Fluent in meshing mode:
 
 Precision
 ~~~~~~~~~
-This example shows how you can select double precision in solution mode:
+This example shows how you launch Fluent in solution mode
+and set the floating point precision:
 
 .. code:: python
 
@@ -43,7 +43,8 @@ This example shows how you can select double precision in solution mode:
 
 Dimension
 ~~~~~~~~~
-This example shows how you can select double precision and 2D in solution mode:
+This example shows how you launch Fluent in solution mode and also set the 
+modeling dimension:
 
 .. code:: python
 
@@ -51,7 +52,7 @@ This example shows how you can select double precision and 2D in solution mode:
 
 Number of processors
 ~~~~~~~~~~~~~~~~~~~~
-This example shows how you can also select the number of processors:
+This example shows how you launch fluent in solution mode and also set the number of processors:
 
 .. code:: python
 
