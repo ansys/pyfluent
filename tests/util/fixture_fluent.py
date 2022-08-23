@@ -159,3 +159,21 @@ def sample_solver_session(with_launching_container):
     solver_session = pyfluent.launch_fluent(mode="solver")
     yield solver_session
     solver_session.exit()
+
+
+_disk_mesh_filename = None
+
+
+@pytest.fixture
+def load_disk_mesh(with_launching_container):
+    session = pyfluent.launch_fluent(
+        precision="double", processor_count=2, version="2d"
+    )
+    global _disk_mesh_filename
+    if not _disk_mesh_filename:
+        _disk_mesh_filename = download_file(
+            filename="disk.msh", directory="pyfluent/rotating_disk"
+        )
+    session.solver.root.file.read(file_type="case", file_name=_disk_mesh_filename)
+    yield session
+    session.exit()
