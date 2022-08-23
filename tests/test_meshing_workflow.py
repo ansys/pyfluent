@@ -6,7 +6,7 @@ This test covers generic meshing workflow behaviour
 """
 from functools import partial
 import os
-import tempfile
+from pathlib import Path
 
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
@@ -198,18 +198,17 @@ def test_command_args_datamodel_se(new_mesh_session):
 
 
 @pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
-def test_meshing_object_commands(new_mesh_session):
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        session_new = new_mesh_session
-        file_path = os.path.join(tmpdirname, "sample_py_journal.txt")
-        m = session_new.meshing
-        m.execute_tui("(api-setup-python-console)")
-        m.execute_tui(f'(api-start-python-journal "{file_path}")')
-        m.switch_to_solver()
-        m.execute_tui(f"(api-stop-python-journal)")
+def test_meshing_object_commands(new_mesh_session, tmp_path: Path):
+    session_new = new_mesh_session
+    file_path = os.path.join(tmp_path, "sample_py_journal.txt")
+    m = session_new.meshing
+    m.execute_tui("(api-setup-python-console)")
+    m.execute_tui(f'(api-start-python-journal "{file_path}")')
+    m.switch_to_solver()
+    m.execute_tui(f"(api-stop-python-journal)")
 
-        with open(file_path) as f:
-            returned = f.readlines()[0].strip()
+    with open(file_path) as f:
+        returned = f.readlines()[0].strip()
 
-        expected = "solver.execute_tui(r'''/switch-to-solution-mode yes ''')"
-        assert returned == expected
+    expected = "solver.execute_tui(r'''/switch-to-solution-mode yes ''')"
+    assert returned == expected
