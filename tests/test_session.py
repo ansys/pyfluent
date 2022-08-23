@@ -1,12 +1,13 @@
 from concurrent import futures
 import os
 from pathlib import Path
-import tempfile
 
 import grpc
 import pytest
+from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -165,20 +166,21 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 
 
 @pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
-def test_execute_tui_commands():
-    with tempfile.TemporaryDirectory() as tmpdirname:
-        session = launch_fluent(mode="meshing")
-        file_path = os.path.join(tmpdirname, "sample_py_journal.txt")
+def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+    session = new_mesh_session
+    file_path = os.path.join("C:\ANSYSDev", "sample_py_journal.txt")
 
-        session.setup_python_console_in_tui()
-        session.start_journal(file_path)
+    session.setup_python_console_in_tui()
+    session.start_journal(file_path)
 
-        session = session.switch_to_solver()
+    session = session.switch_to_solver()
 
-        session.stop_journal()
+    session.stop_journal()
 
-        with open(file_path) as f:
-            returned = f.readlines()[0].strip()
+    with open(file_path) as f:
+        returned = f.readlines()
 
-        expected = "solver.execute_tui(r'''/switch-to-solution-mode yes ''')"
-        assert returned == expected
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    assert returned
