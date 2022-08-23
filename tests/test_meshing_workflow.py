@@ -13,12 +13,11 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
+    new_mesh_session,
     shared_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )
-
-import ansys.fluent.core as pf
 
 
 def test_mixing_elbow_meshing_workflow(
@@ -188,8 +187,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 
 
 @pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
-def test_non_existing_command_args_datamodel_se_22_2():
-    session_new = pf.launch_fluent(mode="meshing")
+def test_command_args_datamodel_se(new_mesh_session):
+    session_new = new_mesh_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.task("Import Geometry")
@@ -199,9 +198,9 @@ def test_non_existing_command_args_datamodel_se_22_2():
 
 
 @pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
-def test_meshing_object_commands():
+def test_meshing_object_commands(new_mesh_session):
     with tempfile.TemporaryDirectory() as tmpdirname:
-        session_new = pf.launch_fluent(mode="meshing")
+        session_new = new_mesh_session
         file_path = os.path.join(tmpdirname, "sample_py_journal.txt")
         m = session_new.meshing
         m.execute_tui("(api-setup-python-console)")
