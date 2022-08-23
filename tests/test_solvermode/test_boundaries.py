@@ -112,8 +112,9 @@ def test_boundaries_periodic(load_periodic_rot_cas):
     selected_bou_test = get_name_info(boundary_tested["val_1"], boundaries_check)
     selected_bou_exp = get_name_info(boundary_exp["val_1"], boundaries_check)
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
-
-    solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
+    # commented new method due to bug 753
+    # solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
+    solver_session.setup.boundary_conditions.wall.rename("pipe2_wall", "pipe_2_wall")
     solver_session.setup.boundary_conditions.wall.rename("out", "outlet")
     solver_session.setup.boundary_conditions.velocity_inlet["inlet"].vmag = 5.0
     solver_session.setup.boundary_conditions["inlet"].vmag = 10.0
