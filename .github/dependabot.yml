@@ -13,6 +13,6 @@ updates:
       - dependency-name: "grpcio"
 
   - package-ecosystem: "github-actions"
-    directory: "/.github"
+    directory: "/"
     schedule:
       interval: "daily"
