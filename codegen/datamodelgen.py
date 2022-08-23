@@ -121,7 +121,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             info.mode == "solver" for _, info in self._static_info.items()
         )
-        run_icing_mode = any(
+        run_icing_mode = "PYFLUENT_FLUENT_ROOT" in os.environ.keys() and any(
             info.mode == "flicing" for _, info in self._static_info.items()
         )
         import ansys.fluent.core as pyfluent
@@ -145,8 +145,22 @@ class DataModelGenerator:
             for _, info in self._static_info.items():
                 if info.mode == "flicing":
                     info.static_info = self._get_static_info(info.rules, session)
-                    if info.static_info == None:
-                        print("Information: Icing module not available\n")
+                    try:
+                        if (
+                            len(
+                                info.static_info.singletons["Case"]
+                                .singletons["App"]
+                                .singletons
+                            )
+                            == 0
+                        ):
+                            print(
+                                "Information: Icing settings not generated ( R23.1+ is required )\n"
+                            )
+                    except:
+                        print(
+                            "Information: Problem accessing flserver datamodel for icing settings\n"
+                        )
             session.exit()
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
@@ -289,6 +303,8 @@ class DataModelGenerator:
                 f.write("   :hidden:\n\n")
 
         for name, info in self._static_info.items():
+            if info.static_info == None:
+                continue
             with open(info.filepath, "w", encoding="utf8") as f:
                 f.write("#\n")
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")

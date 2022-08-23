@@ -20,8 +20,8 @@ from ansys.fluent.core.session import Session, _BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
 
@@ -84,7 +84,7 @@ class LaunchModes(Enum):
     PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
     SOLVER = ("solver", Solver, False, [])
     SOLVER_LITE = ("solver-lite", SolverLite, False, [])
-    SOLVER_ICING = ("solver-icing", SolverIcing, False, [ ("fluent_icing", True) ])
+    SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
     def get_mode(mode: str) -> "LaunchModes":
@@ -355,7 +355,7 @@ def launch_fluent(
             mode = LaunchModes.get_mode(mode)
         new_session = mode.value[1]
         meshing_mode = mode.value[2]
-        for k,v in mode.value[3]:
+        for k, v in mode.value[3]:
             argvals[k] = v
 
     if start_instance is None:
