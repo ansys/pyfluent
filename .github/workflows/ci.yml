@@ -171,7 +171,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ secrets.GH_USERNAME }}
@@ -222,7 +222,7 @@ jobs:
 
       - name: Deploy
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@v4.4.0
         with:
           repository-name: pyansys/pyfluent-docs
           token: ${{ secrets.DOC_DEPLOYMENT_PAT }}
@@ -286,7 +286,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ secrets.GH_USERNAME }}
