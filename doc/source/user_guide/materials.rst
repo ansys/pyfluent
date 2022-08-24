@@ -1,11 +1,11 @@
 Defining materials
 ==================
-PyFluent supports defining materials using :ref:`ref_solver_tui_commands` and 
-:ref:`ref_settings`.
+PyFluent supports using :ref:`ref_solver_tui_commands` and 
+:ref:`ref_settings` to define materials.
 
-Using solver TUI commands
--------------------------
-The following example shows a comparison between the TUI command and the
+Use solver TUI commands
+-----------------------
+This example shows a comparison between the TUI command and the
 Python code for defining the fluid material being modelled on a cell zone.
 
 **TUI command**
@@ -48,10 +48,9 @@ Python code for defining the fluid material being modelled on a cell zone.
         'no',
     )
 
-Using settings objects
-----------------------
-This example shows how you define materials using
-:ref:`ref_settings`.
+Use settings objects
+--------------------
+This example shows how you use :ref:`ref_settings` to define materials.
 
 **Python code**
 

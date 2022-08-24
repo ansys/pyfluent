@@ -1,6 +1,6 @@
 """Provides a module for launching Fluent.
 
-This module supports both starting Fluent locally or connecting to a
+This module supports both starting Fluent locally and connecting to a
 remote instance with gRPC.
 """
 
@@ -32,15 +32,14 @@ FLUENT_EXE_PATH = []
 
 
 class FluentVersion(Enum):
-    """Contains the standard ansys / fluent release."""
+    """Contains the standard Ansys Fluent release."""
 
     version_22R2 = "22.2"
     version_23R1 = "23.1"
 
     @staticmethod
     def get_version(version: str) -> "FluentVersion":
-        """Returns the available versions based on the version in string
-        format."""
+        """Get the available versions based on the version in string format."""
         for v in FluentVersion:
             if version == v.value:
                 return v
@@ -49,24 +48,24 @@ class FluentVersion(Enum):
 
 
 def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
-    """Lets the user set the fluent installation path manually.
+    """Set the Fluent installation path manually.
 
-    This supersedes the fluent path set in the environment variable
+    This supersedes the Fluent path set in the environment variable.
     """
     if Path(fluent_exe_path).exists() and Path(fluent_exe_path).name == "fluent.exe":
         FLUENT_EXE_PATH.append(str(fluent_exe_path))
     else:
         raise RuntimeError(
-            f"The passed path '{fluent_exe_path}' does not contain a valid fluent executable file."
+            f"The passed path '{fluent_exe_path}' does not contain a valid Fluent executable file."
         )
 
 
 def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
-    """Lets the user set the fluent version manually.
+    """Set the Fluent version manually.
 
-    Only works if the provided ansys version is installed and the
-    environment variables are updated properly. This supersedes the
-    fluent path set in the environment variable
+    This method only works if the provided Fluent version is installed
+    and the environment variables are updated properly. This supersedes
+    the Fluent path set in the environment variable.
     """
     if type(version) in [float, str]:
         version = FluentVersion.get_version(str(version))
@@ -76,7 +75,7 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
 
 
 class LaunchModes(Enum):
-    """Contains the standard fluent launch modes."""
+    """Provides the standard Fluent launch modes."""
 
     MESHING_MODE = ("meshing", Meshing, True)
     PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True)
@@ -97,7 +96,7 @@ class LaunchModes(Enum):
 
 def get_fluent_path() -> Path:
     """Get the local Fluent installation path specified by PYFLUENT_FLUENT_ROOT
-    or the AWP_ROOTXXX environment variable.
+    or AWP_ROOTXXX environment variable.
 
     Returns
     -------
@@ -148,6 +147,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
     """Build Fluent's launch arguments string from keyword arguments.
+
     Returns
     -------
     str
@@ -205,8 +205,9 @@ def launch_remote_fluent(
     """Launch Fluent remotely using the PIM (Product Instance Management) API.
 
     When calling this method, you must ensure that you are in an
-    environment where PyPIM is configured. This can be verified with :func:
-    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`.
+    environment where PyPIM is configured. You can use the :func:
+    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
+    method to verify that PYPIM is configured.
 
     Parameters
     ----------
@@ -217,16 +218,17 @@ def launch_remote_fluent(
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
-    meshing_mode: bool, optional
+    meshing_mode : bool, optional
         Whether to launch Fluent remotely in meshing mode. The default is
         ``False``.
-    dimensionality: str, optional
-        The default is ``None``.
+    dimensionality : str, optional
+        Number of dimensions for modeling. The default is ``None``, in which
+        case ``"3s"`` is used. Options are ``"3d"`` and ``"2d"``.
 
     Returns
     -------
     ansys.fluent.core.session.Session
-        An instance of Session.
+        Instance of the session.
     """
     pim = pypim.connect()
     instance = pim.create_instance(
@@ -273,50 +275,50 @@ def launch_fluent(
     ----------
     version : str, optional
         Dimensions for modeling. The default is ``None``, in which case ``"3d"``
-        is used. Options are ``"2d"`` and ``"3d"``.
+        is used. Options are ``"3d"`` and ``"2d"``.
     precision : str, optional
         Floating point precision. The default is ``None``, in which case ``"double"``
-        is used. Options are ``"single"``or ``"double"``.
+        is used. Options are ``"double"`` and ``"single"``.
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
         is used.
     journal_filename : str, optional
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
-        Maximum allowable time in seconds to connect to the Fluent
+        Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``100``.
     additional_arguments : str, optional
-        Additional arguments to send to Fluent as is. The default is ``""``.
+        Additional arguments to send to Fluent. The default is ``""``.
     env : dict[str, str], optional
         Mapping to modify environment variables in Fluent. The default
         is ``None``.
     start_instance : bool, optional
         Whether to connect to an existing Fluent instance at a specified IP
-        address on a specified poort. The default is ``None``, in which
+        address on a specified port. The default is ``None``, in which
         case a local instance of Fluent is started. When ``False``, use
         the next two parameters to specify the IP address and port. You
         can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
         to set this parameter.
     ip : str, optional
-        IP address to connect to an existing Fluent instance. This parameter
+        IP address for connecting to an existing Fluent instance. This parameter
         is used only when ``start_instance`` is ``False``. Otherwise, the
         IP address defaults to ``"127.0.0.1"``. You can also use the environment
         variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
     port : int, optional
-        Port to connect to an existing Fluent instance. This parameter is
+        Port to listen on for an existing Fluent instance. This parameter is
         used only when ``start_instance`` is ``False``. You can use the
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
         value.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
-        exited or the ``exist()`` method is called on the session instance.
+        exited or the ``exit()`` method is called on the session instance.
         The default is ``True``.
     start_transcript : bool, optional
-        Whether to start the Fluent transcript in the client. The default is
-        ``True``. You can stop and start the Fluent transcript subsequently
-        via method calls on the Session object.
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
     show_gui : bool, optional
-        Whether to display the Fluent GUI when ````start_instance``
+        Whether to display the Fluent GUI when ``start_instance``
         is set to ''True``. The default is ``None`` so that explicit
         ``False`` settings can be detected. This is because you can use
         also use the environment variable ``PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``
@@ -332,8 +334,8 @@ def launch_fluent(
         in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
-        Currently, available - "meshing", "pure-meshing", "solver" and "solver-lite"
-        Default value is "None"
+        The default value is ``None``. Options are ``"meshing"``,
+        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
 
     Returns
     -------
