@@ -206,7 +206,7 @@ jobs:
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
 
       - name: Build Documentation
-        run: make build-doc DOCS_CNAME=fluentdocs.pyansys.com
+        run: make build-doc DOCS_CNAME=fluent.docs.pyansys.com
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
