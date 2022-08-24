@@ -5,8 +5,8 @@ Using meshing workflows
 PyFluent supports accessing all Fluent meshing functionalities, including 
 guided meshing workflows.
 
-Using the watertight geometry meshing workflow
-----------------------------------------------
+Watertight geometry meshing workflow
+------------------------------------
 This simple example shows how you use the watertight geometry meshing workflow.
 
 Import geometry
@@ -114,8 +114,8 @@ Switch to solution mode
 
     solver = meshing.switch_to_solver()
 
-Using the fault-tolerant meshing workflow
------------------------------------------
+Fault-tolerant meshing workflow
+-------------------------------
 This simple example shows how you use the fault-tolerant meshing workflow.
 
 Import CAD and part management

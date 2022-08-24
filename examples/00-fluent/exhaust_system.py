@@ -33,8 +33,6 @@ extraction is considered. The example also includes a known small leakage
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
-
 ###############################################################################
 # Example Setup
 # -------------
@@ -71,12 +69,12 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 ###############################################################################
 # Fault-folerant meshing workflow
 # -------------------------------
-# The fault-tolerant meshing workflow guides you through the several tasks that
+# The fault-tolerant meshing workflow guides you through the many tasks that
 # follow.
 #
 # Import CAD and manage parts
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Import the CAD geometry (``exhaust_system.fmd``) and selectively manage some
+# Import the CAD geometry file (``exhaust_system.fmd``) and selectively manage some
 # parts.
 
 meshing.PartManagement.InputFileChanged(
@@ -387,7 +385,7 @@ meshing.workflow.TaskObject["void-region-1"].Execute()
 ###############################################################################
 # Define thresholds for leakages
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Define thresholds for any potential leakages.
+# Define thresholds for potential leakages.
 
 meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
     {
@@ -461,7 +459,7 @@ meshing.workflow.TaskObject["Update Region Settings"].Execute()
 ###############################################################################
 # Set mesh control options
 # ~~~~~~~~~~~~~~~~~~~~~~~~
-# Set options for controlling the mesh.
+# Set mesh control options.
 
 meshing.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
@@ -569,7 +567,7 @@ solver.tui.define.models.viscous.kw_sst("yes")
 # Set velocity and turbulence boundary conditions for first inlet
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set the velocity and turbulence boundary conditions for the first inlet
-# (inlet-1).
+# (``inlet-1``).
 
 solver.tui.define.boundary_conditions.set.velocity_inlet(
     "inlet-1", [], "vmag", "no", 1, "quit"
@@ -578,15 +576,15 @@ solver.tui.define.boundary_conditions.set.velocity_inlet(
 ###############################################################################
 # Set same boundary conditions for other velocity inlets
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the same boundary conditions for the other velocity inlets (inlet_2
-# and inlet_3).
+# Set the same boundary conditions for the other velocity inlets (``inlet_2``
+# and ``inlet_3``).
 
 solver.tui.define.boundary_conditions.copy_bc("inlet-1", "inlet-2", "inlet-3", ())
 
 ###############################################################################
 # Set boundary conditions at outlet
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set the boundary conditions at the outlet (outlet-1).
+# Set the boundary conditions at the outlet (``outlet-1``).
 
 solver.tui.define.boundary_conditions.set.pressure_outlet(
     "outlet-1", [], "turb-intensity", 5, "quit"
@@ -596,7 +594,7 @@ solver.tui.solve.monitors.residual.plot("yes")
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
-# Initialize the flow field using the hybrid initialization.
+# Initialize the flow field using hybrid initialization.
 
 solver.tui.solve.initialize.hyb_initialization()
 

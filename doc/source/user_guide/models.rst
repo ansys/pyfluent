@@ -1,14 +1,15 @@
 Defining models
 ===============
-PyFluent supports defining models using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
+PyFluent supports using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`
+to define models.
 
-Using solver TUI commands
--------------------------
-The following examples show how you define models using :ref:`ref_solver_tui_commands`.
+Use solver TUI commands
+-----------------------
+The examples in this section show how to use :ref:`ref_solver_tui_commands` to define models.
 
-Enabling the energy model
-~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+Define the energy model
+~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
 Python code for enabling and disabling the energy model.
 
 **TUI command**
@@ -26,10 +27,10 @@ Python code for enabling and disabling the energy model.
     solver.tui.file.read_case(case_file_name='file.cas.h5')
     solver.tui.define.models.energy('yes', 'no', 'no', 'no', 'yes')
 
-Enabling the viscous model
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
-Python code for enabling and disabling the various viscous models.
+Define the viscous model
+~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
+Python code for enabling and disabling various viscous models.
 
 **TUI command**
 
@@ -47,10 +48,10 @@ Python code for enabling and disabling the various viscous models.
     solver.tui.define.models.viscous.kw_sst('yes')
     solver.tui.define.models.viscous.ke_standard('yes')
 
-Enabling the radiation model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
-Python code for selecting different radiation models.
+Define the radiation model
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
+Python code for enabling and disabling various radiation models.
 
 **TUI command**
 
@@ -66,10 +67,10 @@ Python code for selecting different radiation models.
     solver.tui.define.models.radiation.s2s('yes')
     solver.tui.define.models.radiation.p1('yes')
 
-Enabling the multiphase model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
-Python code for selecting different multiphase models.
+Define the multiphase model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
+Python code for defining different multiphase models.
 
 **TUI command**
 
@@ -89,12 +90,13 @@ Python code for selecting different multiphase models.
     solver.tui.define.models.multiphase.model('mixture')
     solver.tui.define.models.multiphase.model('wetsteam')
 
-Using settings objects
-----------------------
-The following examples show how you define models using :ref:`ref_settings`.
+Use settings objects
+--------------------
+The examples in this section show how you use :ref:`ref_settings` to
+define models.
 
-Enabling the energy model
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Enable the energy model
+~~~~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 
@@ -102,8 +104,8 @@ Enabling the energy model
 
     solver.setup.models.energy.enabled = True
 
-Enabling the viscous model
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enable the viscous model
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 

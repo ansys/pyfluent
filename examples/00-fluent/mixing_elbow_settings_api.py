@@ -1,7 +1,7 @@
 """.. _ref_mixing_elbow_settings_api_beta:
 
 Fluent setup and solution using settings objects
-----------------------------------------------------
+------------------------------------------------
 This example sets up and solves a three-dimensional turbulent fluid flow
 and heat transfer problem in a mixing elbow, which is common in piping
 systems in power plants and process industries. Predicting the flow field
@@ -19,8 +19,6 @@ boundary conditions are given in SI units. Because the Reynolds number for the
 flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
-
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -32,6 +30,7 @@ from ansys.fluent.core import examples
 
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
+###############################################################################
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in meshing mode with double precision running on
@@ -78,7 +77,7 @@ solver.setup.materials.copy_database_material_by_name(type="fluid", name="water-
 ###############################################################################
 # Set up cell zone conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set up the cell zone conditions for the fluid zone (elbow-fluid). Set ``material``
+# Set up the cell zone conditions for the fluid zone (``elbow-fluid``). Set ``material``
 # to ``"water-liquid"``.
 
 solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
@@ -152,7 +151,7 @@ solver.tui.solve.monitors.residual.plot("no")
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
-# Initialize the flow field using the hybrid initialization.
+# Initialize the flow field using hybrid initialization.
 
 solver.solution.initialization.hybrid_initialize()
 
@@ -167,7 +166,7 @@ solver.solution.run_calculation.iterate(number_of_iterations=150)
 ###############################################################################
 # Create velocity vectors
 # ~~~~~~~~~~~~~~~~~~~~~~~
-# Create and display velocity vectors on the symmetry-xyplane plane.
+# Create and display velocity vectors on the ``symmetry-xyplane`` plane.
 
 solver.results.graphics.vector["velocity_vector_symmetry"] = {}
 solver.results.graphics.vector["velocity_vector_symmetry"].print_state()
