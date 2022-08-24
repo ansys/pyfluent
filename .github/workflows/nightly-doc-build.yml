@@ -58,7 +58,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Build Documentation
-        run: make build-doc DOCS_CNAME=dev.fluentdocs.pyansys.com
+        run: make build-doc DOCS_CNAME=dev.fluent.docs.pyansys.com
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
