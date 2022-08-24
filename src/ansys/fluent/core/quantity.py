@@ -3,11 +3,11 @@ from itertools import permutations
 import pint
 from pint import Unit
 
-base_units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
-base_units.default_system = "SI"
+ureg = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
+ureg.default_system = "SI"
 
 
-quantity = base_units.Quantity
+quantity = ureg.Quantity
 
 
 restricted_units = ["Hz", "hertz", "rad/s", "radian/s", "rpm", "rps", "cps"]
