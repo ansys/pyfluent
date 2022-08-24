@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import datamodelgen
 import print_fluent_version
@@ -19,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--fluent-path",
         dest="fluent_path",
-        help="Specify the fluent/ folder to use, with full path.",
+        help="Specify the fluent folder to use, with full path.  Such as /apps/ansys_inc/v231/fluent",
     )
     args = parser.parse_args()
 
