@@ -151,6 +151,7 @@ class Base:
         """Whether the object is active."""
         return self.get_attr("active?")
 
+    @property
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
         return self.get_attr("read-only?")
@@ -170,6 +171,7 @@ StateT = TypeVar("StateT")
 class Property(Base):
     """Exposes attribute accessor on settings object."""
 
+    @property
     def default_value(self):
         """Gets the default value of the object."""
         return self.get_attr("default")
@@ -178,10 +180,12 @@ class Property(Base):
 class Numerical(Property):
     """Exposes attribute accessor on settings object - specific to numerical objects."""
 
+    @property
     def min(self):
         """Get the minimum value of the object."""
         return self.get_attr("min")
 
+    @property
     def max(self):
         """Get the maximum value of the object."""
         return self.get_attr("max")
@@ -190,6 +194,7 @@ class Numerical(Property):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
+    @property
     def allowed_values(self):
         """Get the allowed values of the object."""
         return self.get_attr("allowed-values")

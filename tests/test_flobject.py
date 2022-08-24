@@ -635,9 +635,9 @@ class root(Group):
 
 def test_accessor_methods_on_settings_object(sample_solver_session):
     existing = sample_solver_session.file.read.file_type.get_attr("allowed-values")
-    modified = sample_solver_session.file.read.file_type.allowed_values()
+    modified = sample_solver_session.file.read.file_type.allowed_values
     assert existing == modified
 
     existing = sample_solver_session.file.read.file_type.get_attr("read-only?")
-    modified = sample_solver_session.file.read.file_type.is_read_only()
+    modified = sample_solver_session.file.read.file_type.is_read_only
     assert existing == modified

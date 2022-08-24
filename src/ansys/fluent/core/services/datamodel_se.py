@@ -374,10 +374,12 @@ class PyParameter(PyBasicStateContainer):
     method.
     """
 
+    @property
     def default_value(self):
         """Get default value of the parameter."""
         return self.get_attrib_value(Attribute.DEFAULT.value)
 
+    @property
     def is_read_only(self):
         return true_if_none(self.get_attrib_value(Attribute.IS_READ_ONLY.value))
 
@@ -393,6 +395,7 @@ def true_if_none(val):
 class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
 
+    @property
     def allowed_values(self):
         return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
 
@@ -400,9 +403,11 @@ class PyTextual(PyParameter):
 class PyNumerical(PyParameter):
     """Provides interface for numerical parameters."""
 
+    @property
     def min(self):
         return self.get_attrib_value(Attribute.MIN.value)
 
+    @property
     def max(self):
         return self.get_attrib_value(Attribute.MAX.value)
 
