@@ -22,7 +22,7 @@ class SolverIcing(Solver):
 
     @property
     def _flserver(self):
-        """root settings object."""
+        """root datamodel object."""
         if self._flserver_root is None:
             from ansys.fluent.core.datamodel.flicing import Root as icing_root
 
