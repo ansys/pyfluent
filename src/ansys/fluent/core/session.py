@@ -1,5 +1,6 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
+import importlib
 import json
 from typing import Any
 import warnings
@@ -15,6 +16,7 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
 
 try:
@@ -334,9 +336,11 @@ class Session:
             can be executed."""
             if self._tui is None:
                 try:
-                    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-
-                    self._tui = SolverMainMenu([], self._tui_service)
+                    version = get_version_for_filepath(session=self)
+                    tui_module = importlib.import_module(
+                        f"ansys.fluent.core.solver.tui_{version}"
+                    )
+                    self._tui = tui_module.main_menu([], self._tui_service)
                 except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
                     self._tui = TUIMenuGeneric([], self._tui_service)
