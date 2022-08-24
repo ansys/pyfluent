@@ -42,13 +42,13 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     # Start fluent with launch_fluent
     # Note: This is mocking to start Fluent, but actually reusing the common one
     # Thus cleanup_on_exit is set to false
-    fluent = launcher.launch_fluent(cleanup_on_exit=False)
+    fluent = launcher.launch_fluent(cleanup_on_exit=False, mode="solver")
 
     # Assert: PyFluent went through the pypim workflow
     assert mock_is_configured.called
     assert mock_connect.called
     mock_client.create_instance.assert_called_with(
-        "fluent-3ddp", product_version=launcher.PIM_FLUENT_PRODUCT_VERSION
+        "fluent-3ddp", product_version=launcher.PIM_FLUENT_PRODUCT_VERSION[0]
     )
     assert mock_instance.wait_for_ready.called
     mock_instance.build_grpc_channel.assert_called_with()

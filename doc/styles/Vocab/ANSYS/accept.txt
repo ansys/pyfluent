@@ -11,7 +11,7 @@ endfor
 endif
 fullname
 hexahedral
-Matplotlib
+matplotlib
 mesher
 meshing's
 MonitorsManager
@@ -19,5 +19,5 @@ numpy
 Postprocessing
 postprocessing
 postprocess
+pyvista
 Pythonic
-Util

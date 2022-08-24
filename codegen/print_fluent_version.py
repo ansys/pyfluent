@@ -9,7 +9,7 @@ _VERSION_FILE = os.path.join(
 
 
 def print_fluent_version():
-    session = pyfluent.launch_fluent()
+    session = pyfluent.launch_fluent(mode="solver")
     eval = session.scheme_eval.scheme_eval
     with open(_VERSION_FILE, "w", encoding="utf8") as f:
         f.write(f'FLUENT_BUILD_TIME = "{eval("(inquire-build-time)")}"\n')

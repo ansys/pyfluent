@@ -1,16 +1,16 @@
 Applying general settings
 =========================
-PyFluent supports applying general settings using :ref:`ref_solver_tui_commands` and 
-:ref:`ref_settings`.
+PyFluent supports using both :ref:`ref_solver_tui_commands` and 
+:ref:`ref_settings` to apply general settings.
 
-The following examples shows how you use solver meshing commands
-and set up units using :ref:`ref_solver_tui_commands`.
+The examples in this topic show how you use :ref:`ref_solver_tui_commands`
+to run solver meshing commands and set up units.
 
-Checking the mesh
------------------
-The following example shows a comparison between the TUI command and the
+Check the mesh
+--------------
+This example shows a comparison between the TUI command and the
 Python code for performing mesh consistency checks and displaying a
-report in the console that lists domain extents, volume statistics,
+report in the console. This report lists domain extents, volume statistics,
 face area statistics, any warnings, and information about failures.
 The level of information shown depends on the setting specified for
 the verbosity (level 0 to 3).
@@ -27,13 +27,13 @@ the verbosity (level 0 to 3).
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
-    session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.mesh.check()
+    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
+    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.mesh.check()
 
-Reporting mesh quality
-----------------------
-The following example shows a comparison between the TUI command and the
+Report mesh quality
+-------------------
+This example shows a comparison between the TUI command and the
 Python code for displaying information about the quality of the mesh in the
 console, including the minimum orthogonal quality and maximum aspect ratio.
 
@@ -47,12 +47,12 @@ console, including the minimum orthogonal quality and maximum aspect ratio.
 
 .. code:: python
 
-    session.solver.tui.mesh.quality()
+    solver.tui.mesh.quality()
 
-Scaling mesh
+Scale mesh
 ------------
-The following example shows a comparison between the TUI command and the
-Python code for the scaling the mesh in each of the active Cartesian
+This example shows a comparison between the TUI command and the
+Python code for scaling the mesh in each of the active Cartesian
 coordinate directions.
 
 **TUI command**
@@ -65,9 +65,9 @@ coordinate directions.
 
 .. code:: python
 
-    session.solver.tui.mesh.scale(1,1,1)
+    solver.tui.mesh.scale(1,1,1)
 
-Defining units
+Define units
 --------------
 The following example shows a comparison between the TUI command and the
 Python code for setting the unit conversion factors.
@@ -82,4 +82,4 @@ Python code for setting the unit conversion factors.
 
 .. code:: python
 
-    session.solver.tui.define.units('length', 'in')
+    solver.tui.define.units('length', 'in')

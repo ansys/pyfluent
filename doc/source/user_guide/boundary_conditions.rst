@@ -1,16 +1,16 @@
 Defining boundary conditions
 ============================
-PyFluent supports defining boundary conditions using :ref:`ref_solver_tui_commands`
-and :ref:`ref_settings`.
+PyFluent supports using :ref:`ref_solver_tui_commands`
+and :ref:`ref_settings` to define boundary conditions.
 
-Using solver TUI commands
--------------------------
-These examples show how you define and copy boundary conditions, list zones,
-and modify cell zone conditions using :ref:`ref_solver_tui_commands`.
+Use solver TUI commands
+-----------------------
+The examples in this section show how you use :ref:`ref_solver_tui_commands`
+to define boundary conditions.
 
-Defining boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+Define boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
 Python code for defining velocity boundary conditions at inlets.
 
 **TUI command**
@@ -28,9 +28,9 @@ Python code for defining velocity boundary conditions at inlets.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
-    session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.define.boundary_conditions.set.velocity_inlet(
+    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
+    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
         (),
         'vmag',
@@ -38,7 +38,7 @@ Python code for defining velocity boundary conditions at inlets.
         0.4,
         'quit'
     )
-    session.solver.tui.define.boundary_conditions.set.velocity_inlet(
+    solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
         (),
         'ke-spec',
@@ -48,21 +48,21 @@ Python code for defining velocity boundary conditions at inlets.
         'yes',
         'quit'
     )
-    session.solver.tui.define.boundary_conditions.set.velocity_inlet(
+    solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
         (),
         'turb-intensity',
         5,
         'quit'
     )
-    session.solver.tui.define.boundary_conditions.set.velocity_inlet(
+    solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
         (),
         'turb-hydraulic-diam',
         4,
         'quit'
     )
-    session.solver.tui.define.boundary_conditions.set.velocity_inlet(
+    solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
         (),
         'temperature',
@@ -73,7 +73,7 @@ Python code for defining velocity boundary conditions at inlets.
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+This example shows a comparison between the TUI command and the
 Python code for copying boundary conditions to other zones.
 
 **TUI command**
@@ -86,11 +86,11 @@ Python code for copying boundary conditions to other zones.
 
 .. code:: python
 
-    session.solver.tui.define.boundary_conditions.copy_bc('cold-inlet','hot-inlet','()')
+    solver.tui.define.boundary_conditions.copy_bc('cold-inlet','hot-inlet','()')
 
 Listing zones
 ~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+This example shows a comparison between the TUI command and the
 Python code for printing to the Fluent console the types and IDs of all zones.
 
 **TUI command**
@@ -103,11 +103,11 @@ Python code for printing to the Fluent console the types and IDs of all zones.
 
 .. code:: python
 
-    session.solver.tui.define.boundary_conditions.list_zones()
+    solver.tui.define.boundary_conditions.list_zones()
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The following example shows a comparison between the TUI command and the
+This example shows a comparison between the TUI command and the
 Python code for modifying cell zone conditions.
 
 **TUI command**
@@ -121,7 +121,7 @@ Python code for modifying cell zone conditions.
 .. code:: python
 
     #Enabling Laminar Zone
-    session.solver.tui.define.boundary_conditions.fluid(
+    solver.tui.define.boundary_conditions.fluid(
         'elbow-fluid',
         'no',
         'no',
@@ -149,40 +149,40 @@ Python code for modifying cell zone conditions.
 
 Using settings objects
 ----------------------
-The following examples show how you define boundary conditions using
-:ref:`ref_settings`.
+The examples in this section show how you use :ref:`ref_settings` to define
+boundary conditions.
 
-Defining boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Define boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 
 .. code:: python
 
-    session.solver.root.setup.boundary_conditions.velocity_inlet['cold-inlet'].vmag = {
+    solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].vmag = {
         'option': 'constant or expression',
         'constant': 0.4,
     }
-    session.solver.root.setup.boundary_conditions.velocity_inlet[
+    solver.setup.boundary_conditions.velocity_inlet[
         'cold-inlet'
     ].ke_spec = 'Intensity and Hydraulic Diameter'
-    session.solver.root.setup.boundary_conditions.velocity_inlet[
+    solver.setup.boundary_conditions.velocity_inlet[
         'cold-inlet'
     ].turb_intensity = 5
-    session.solver.root.setup.boundary_conditions.velocity_inlet[
+    solver.setup.boundary_conditions.velocity_inlet[
         'cold-inlet'
     ].turb_hydraulic_diam = '4 [in]'
-    session.solver.root.setup.boundary_conditions.velocity_inlet['cold-inlet'].t = {
+    solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].t = {
         'option': 'constant or expression',
         'constant': 293.15,
     }
 
-Modifying cell zone conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Modify cell zone conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 
 .. code:: python
 
     #Enabling Laminar Zone
-    session.solver.root.setup.cell_zone_conditions.fluid['elbow-fluid'] = {'laminar' : True}
+    solver.setup.cell_zone_conditions.fluid['elbow-fluid'] = {'laminar' : True}

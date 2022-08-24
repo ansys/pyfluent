@@ -18,23 +18,24 @@ command abbreviation. To make using PyFluent commands in an interactive
 session easier, you can install a tool such as
 `pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_, which provides
 both command line completion and history. To inspect any PyFluent TUI object further,
-you can also use the Python built-in
-`help <https://docs.python.org/3/library/functions.html#help>`_ and 
-`dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
+you can use the Python built-in`help <https://docs.python.org/3/library/functions.html#help>`_
+and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 
-The arguments to a TUI command are just those that would be passed in direct interaction in the
-Fluent console, but in a Pythonic style. The most productive way to write Python commands
+The arguments to a TUI command are those that would be passed in direct interaction in the
+Fluent console, but they are in a Pythonic style. The most productive way to write Python commands
 is with reference to existing TUI commands. The following examples show how the Python usage
 mirrors the existing TUI usage.
 
-Assume in the solution mode, you typed the following in the Fluent console to set
+TUI command construction
+-------------------------
+Assume that you are in the solution mode and type the following in the Fluent console to set
 velocity inlet properties:
 
 .. code:: lisp
 
     /define/boundary_conditions/set/velocity-inlet
 
-This command instigates a sequence of prompts for input in the console. Assume that you respond
+This command instigates a sequence of prompts in the console. Assume that you respond
 to each prompt in turn as follows:
 
 .. code:: lisp
@@ -51,20 +52,23 @@ to each prompt in turn as follows:
     
     quit
 
-The effect is identical to the following code that specifies all the arguments in one call:
+The following code yields the same result but specifies all arguments in one call:
 
 .. code:: lisp
 
     /define/boundary-conditions/set/velocity-inlet velocity-inlet-5 () temperature no 293.15 quit
 
-You can see how using the interactive TUI provides a reliable approach for constructing TUI calls, including full sequences of
-arguments. With the full TUI call in hand, you can transform it to a Python call:
+You can see how using the interactive TUI provides a reliable approach for
+constructing TUI calls that include full sequences of arguments.
+
+With the full TUI call in hand, you can transform it to a Python call. This
+code launches Fluent and makes the call to set velocity inlet properties:
 
 .. code:: python
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent()
+    solver_session = launch_fluent(mode="solver")
 
     tui = solver_session.solver.tui
 
@@ -72,7 +76,7 @@ arguments. With the full TUI call in hand, you can transform it to a Python call
       "velocity-inlet-5", [], "temperature", "no", 293.15, "quit"
       )
 
-Now look at another Fluent console interaction:
+Here is another Fluent console interaction:
 
 .. code:: scheme
 
@@ -82,16 +86,18 @@ Now look at another Fluent console interaction:
 
     "Pa"
 
-The Python call is:
+The corresponding Python call is:
 
 .. code:: python
 
     tui.define.units("pressure", '"Pa"')
 
-The string ``"Pa"`` is wrapped in single quotation marks to preserve the double quotation marks
-around the TUI argument.
+To preserve the double quotation marks around the TUI argument,
+you must wrap the string ``"Pa"`` in single quotation marks .
 
-Note the following rules that are implied in the preceding examples:
+TUI command transformation rules
+--------------------------------
+The following rules are implied in the preceding examples:
 
 - Each forward slash separator between elements in TUI paths is transformed to Python dot notation.
 - Some characters in path elements are either removed or replaced because they are illegal inside Python names.
@@ -103,9 +109,8 @@ Note the following rules that are implied in the preceding examples:
 - Some are some rules about strings:
   
   - String-type arguments must be surrounded by quotation marks in Python.
-  - Note the special case in the last Python call example where a target Fluent TUI argument was surrounded
-    by quotation marks (``"Pa"``). To preserve  quotation marks, you must wrap the Python string in additional
-    single quotation marks.
+  - A target Fluent TUI argument that is surrounded by quotation marks (like ``"Pa"`` in the preceding
+    example) must be wrapped in single quotation marks so that the original quotation marks are preserved.
   - The contents of string arguments are preserved.
 
 For more examples of TUI command usage, see :ref:`ref_mixing_elbow_tui_api`.

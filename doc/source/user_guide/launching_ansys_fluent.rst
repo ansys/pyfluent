@@ -9,53 +9,52 @@ background and sends commands to this service.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    solver_session = pyfluent.launch_fluent()
+    solver_session = pyfluent.launch_fluent(mode="solver")
 
 Launcher options
 ----------------
-The following examples show different ways that you can launch Fluent locally.
-For more information, see the description for the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
-method.
+The following examples shows different ways that you can launch Fluent locally.
+For more information, see :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
 
 Solver mode
 ~~~~~~~~~~~
-This example shows how you can start Fluent in solution mode:
+This example shows how you launch Fluent in solution mode:
 
 .. code:: python
 
-   solver_session_a = pyfluent.launch_fluent()
-
-   solver_session_b = pyfluent.launch_fluent(meshing_mode=False)
+   solver_session = pyfluent.launch_fluent(mode="solver")
 
 Meshing mode
 ~~~~~~~~~~~~
-This example shows how you can start Fluent in meshing mode:
+This example shows how you launch Fluent in meshing mode:
 
 .. code:: python
 
-   meshing_session = pyfluent.launch_fluent(meshing_mode=True)
+   meshing_session = pyfluent.launch_fluent(mode="meshing")
 
 Precision
 ~~~~~~~~~
-This example shows how you can select double precision in solution mode:
+This example shows how you launch Fluent in solution mode
+and set the floating point precision:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision='double')
+   solver_session = pyfluent.launch_fluent(precision='double', mode="solver")
 
 Dimension
 ~~~~~~~~~
-This example shows how you can select double precision and 2D in solution mode:
+This example shows how you launch Fluent in solution mode and also set the 
+modeling dimension:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision='double', version='2d')
+   solver_session = pyfluent.launch_fluent(precision='double', version='2d', mode="solver")
 
 Number of processors
 ~~~~~~~~~~~~~~~~~~~~
-This example shows how you can also select the number of processors:
+This example shows how you launch fluent in solution mode and also set the number of processors:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision='double', version='2d', processor_count=2)
+   solver_session = pyfluent.launch_fluent(precision='double', version='2d', processor_count=2, mode="solver")
 

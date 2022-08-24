@@ -34,13 +34,5 @@
     "case_filepath": {
         "type": "str",
         "fluent_format": " -case {}"
-    },
-    "meshing_mode": {
-        "type": "bool",
-        "fluent_map": {
-            "true": " -meshing",
-            "false": ""
-        },
-        "fluent_format": "{}"
     }
 }

@@ -68,6 +68,7 @@ jobs:
     name: Smoke Tests
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
         python-version: ['3.7', '3.8', '3.9', '3.10']
@@ -234,6 +235,7 @@ jobs:
     needs: test-import
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         image-tag: [v22.2.0, v23.1.0]
 
