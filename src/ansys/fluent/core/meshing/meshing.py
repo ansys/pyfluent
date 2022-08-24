@@ -1,17 +1,9 @@
-import json
-
-
 class Meshing:
-    def __init__(self, meshing, tui, fluent_connection):
+    def __init__(self, session_execute_tui, meshing, tui, fluent_connection):
+        self.execute_tui = session_execute_tui
         self._meshing = meshing
         self._tui = tui
         self._fluent_connection = fluent_connection
-
-    def execute_tui(self, command: str) -> None:
-        """Executes a tui command."""
-        self._fluent_connection.scheme_eval.scheme_eval(
-            f'(tui-menu-execute {json.dumps(command)} "")'
-        )
 
     def switch_to_solver(self):
         """Switch to solver session."""

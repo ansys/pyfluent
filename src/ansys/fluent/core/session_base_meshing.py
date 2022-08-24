@@ -11,7 +11,7 @@ class _BaseMeshing:
 
     meshing_attrs = ("tui", "meshing", "workflow", "PartManagement", "PMFileManagement")
 
-    def __init__(self, fluent_connection: _FluentConnection):
+    def __init__(self, session_execute_tui, fluent_connection: _FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se
         self._fluent_connection = fluent_connection
@@ -20,6 +20,7 @@ class _BaseMeshing:
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
+        self._session_execute_tui = session_execute_tui
 
     @property
     def tui(self):
@@ -51,7 +52,10 @@ class _BaseMeshing:
     def meshing(self):
         if self._meshing is None:
             self._meshing = Meshing(
-                self._meshing_root, self.tui, self._fluent_connection
+                self._session_execute_tui,
+                self._meshing_root,
+                self.tui,
+                self._fluent_connection,
             )
         return self._meshing
 

@@ -19,7 +19,7 @@ class PureMeshing(_BaseSession):
     def __init__(self, fluent_connection: _FluentConnection):
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
 
-        self._base_meshing = _BaseMeshing(fluent_connection)
+        self._base_meshing = _BaseMeshing(self.execute_tui, fluent_connection)
 
         for attr in _BaseMeshing.meshing_attrs:
             setattr(self, attr, getattr(self._base_meshing, attr))
