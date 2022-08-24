@@ -72,7 +72,12 @@ solver.setup.models.energy.enabled = True
 # ~~~~~~~~~~~~~~~
 # Create a material named ``"water-liquid"``.
 
-solver.setup.materials.copy_database_material_by_name(type="fluid", name="water-liquid")
+if solver.get_fluent_version() == "22.2.0":
+    solver.setup.materials.copy_database_material_by_name(
+        type="fluid", name="water-liquid"
+    )
+else:
+    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
 
 ###############################################################################
 # Set up cell zone conditions
@@ -96,21 +101,27 @@ solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
 # Hydraulic Diameter: 4 [inch]
 # Temperature: 293.15 [K]
 
-solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
-    "option": "constant or expression",
-    "constant": 0.4,
-}
+if solver.get_fluent_version() == "22.2.0":
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
+        "option": "constant or expression",
+        "constant": 0.4,
+    }
+else:
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = 0.4
 solver.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].ke_spec = "Intensity and Hydraulic Diameter"
-solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 5
+solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 0.05
 solver.setup.boundary_conditions.velocity_inlet[
     "cold-inlet"
 ].turb_hydraulic_diam = "4 [in]"
-solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
-    "option": "constant or expression",
-    "constant": 293.15,
-}
+if solver.get_fluent_version() == "22.2.0":
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
+        "option": "constant or expression",
+        "constant": 293.15,
+    }
+else:
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = 293.15
 
 # hot inlet (hot-inlet), Setting: Value:
 # Velocity Specification Method: Magnitude, Normal to Boundary
@@ -120,20 +131,26 @@ solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
 # Hydraulic Diameter: 1 [inch]
 # Temperature: 313.15 [K]
 
-solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = {
-    "option": "constant or expression",
-    "constant": 1.2,
-}
+if solver.get_fluent_version() == "22.2.0":
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = {
+        "option": "constant or expression",
+        "constant": 1.2,
+    }
+else:
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag = 1.2
 solver.setup.boundary_conditions.velocity_inlet[
     "hot-inlet"
 ].ke_spec = "Intensity and Hydraulic Diameter"
 solver.setup.boundary_conditions.velocity_inlet[
     "hot-inlet"
 ].turb_hydraulic_diam = "1 [in]"
-solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
-    "option": "constant or expression",
-    "constant": 313.15,
-}
+if solver.get_fluent_version() == "22.2.0":
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = {
+        "option": "constant or expression",
+        "constant": 313.15,
+    }
+else:
+    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = 313.15
 
 # pressure outlet (outlet), Setting: Value:
 # Backflow Turbulent Intensity: 5 [%]
