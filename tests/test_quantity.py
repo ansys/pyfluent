@@ -397,12 +397,6 @@ def test_kgf():
     assert conversion_output.value == pytest.approx(9.806805, 0.0002)
 
 
-def test_tonf():
-    x = q.Quantity(1, "tonf")
-    conversion_output = x.to("N")
-    assert conversion_output.value == pytest.approx(9964.12914, 0.1)
-
-
 def test_cal():
     x = q.Quantity(1, "cal")
     conversion_output = x.to("J")
@@ -473,30 +467,6 @@ def test_rpm():
     x = q.Quantity(1, "rpm")
     conversion_output = x.to("rad s^-1")
     assert conversion_output.value == pytest.approx(0.1047198, 0.000001)
-
-
-def test_particles_per_gm():
-    x = q.Quantity(1, "1^15particles g^-1")
-    conversion_output = x.to("1^15particles kg^-1")
-    assert conversion_output.value == 1000.0
-
-
-def test_particles_per_lb():
-    x = q.Quantity(1, "1^15particles lb^-1")
-    conversion_output = x.to("1^15particles kg^-1")
-    assert conversion_output.value == pytest.approx(2.2046225, 0.000001)
-
-
-def test_particles_rate_per_ft():
-    x = q.Quantity(1, "1^15particles ft^-3 s^-1")
-    conversion_output = x.to("1^15particles m^-3 s^-1")
-    assert conversion_output.value == pytest.approx(35.314724828, 0.0001)
-
-
-def test_particles_rate_per_cm():
-    x = q.Quantity(1, "1^15particles cm^-3 s^-1")
-    conversion_output = x.to("1^15particles m^-3 s^-1")
-    assert conversion_output.value == pytest.approx(1000000.0, 0.1)
 
 
 if __name__ == "__main__":

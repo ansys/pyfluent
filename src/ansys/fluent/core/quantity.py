@@ -6,11 +6,6 @@ from pint import Unit
 base_units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 base_units.default_system = "SI"
 
-# Unit definitions
-base_units.define("1.e15-particles/kg = 1 kg^-1 = 1^15particles kg^-1")
-base_units.define("1.e15-particles m^-3 s^-1 = 1 m^-3 s^-1 = 1^15particles m^-3 s^-1")
-base_units.define("ton_force = 1 UK_force_ton = tonf")
-
 
 quantity = base_units.Quantity
 
@@ -79,11 +74,17 @@ restricted_units = build_restricted_conversions(
 class Quantity:
 
     """This class instantiates physical quantities using their real values and
-    units.
+    units. All the instances of this class are converted to base SI units
+    system. Any conversion between "Hz", "hertz", "rad/s", "radian/s", "rpm",
+    "rps", "cps" is disallowed.
 
-    All the instances of this class are converted to base SI units
-    system. Any conversion between "Hz", "hertz", "rad/s", "radian/s",
-    "rpm", "rps", "cps" is restricted.
+    Certain conversions allowed by pint are disallowed here because they
+    are not dimensionally consistent. For instance conversions between
+    Hz and rad/s are not allowed because the former represents the
+    number of times a dimensionless quantity is changing per unit time
+    and latter represents the amount by which an angular quantity
+    changes per unit time. A ValueError exception will be thrown in such
+    cases.
     """
 
     def __init__(self, real_value, units_string):
@@ -150,10 +151,14 @@ class Quantity:
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity + other._quantity
-        elif isinstance(other, int) or isinstance(other, float):
+        elif self._base_si_quantity.dimensionless and (
+            isinstance(other, int) or isinstance(other, float)
+        ):
             temp = quantity(
                 self._base_si_quantity.magnitude + other, self._base_si_quantity.units
             )
+        else:
+            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
         return Quantity(temp.magnitude, temp.units)
 
     def __radd__(self, other):
@@ -165,10 +170,14 @@ class Quantity:
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity - other._quantity
-        elif isinstance(other, int) or isinstance(other, float):
+        elif self._base_si_quantity.dimensionless and (
+            isinstance(other, int) or isinstance(other, float)
+        ):
             temp = quantity(
                 self._base_si_quantity.magnitude - other, self._base_si_quantity.units
             )
+        else:
+            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
         return Quantity(temp.magnitude, temp.units)
 
     def __rsub__(self, other):
@@ -177,8 +186,12 @@ class Quantity:
 
         if isinstance(other, Quantity):
             temp = other._quantity - self._base_si_quantity
-        elif isinstance(other, int) or isinstance(other, float):
+        elif self._base_si_quantity.dimensionless and (
+            isinstance(other, int) or isinstance(other, float)
+        ):
             temp = quantity(
                 other - self._base_si_quantity.magnitude, self._base_si_quantity.units
             )
+        else:
+            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
         return Quantity(temp.magnitude, temp.units)
