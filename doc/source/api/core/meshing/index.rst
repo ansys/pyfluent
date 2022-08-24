@@ -2,8 +2,8 @@
 
 Meshing
 =======
-This module allows you to use Fluent meshing capabilities from Python. Both
-of the meshing workflows and the meshing TUI commands are available.
+The ``meshing`` module allows you to use Fluent meshing capabilities from Python.
+Meshing workflows and meshing TUI commands are available.
 
 Workflow example
 ----------------
@@ -11,12 +11,12 @@ Workflow example
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(meshing_mode=True)
-    session.start_transcript()
-    session.meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
-    session.meshing.workflow.TaskObject['Import Geometry'].Arguments = dict(FileName='cylinder.agdb')
-    session.meshing.workflow.TaskObject['Import Geometry'].Execute()
-    session.meshing.tui.mesh.check_mesh()
+    meshing = pyfluent.launch_fluent(mode="meshing")
+    meshing.start_transcript()
+    meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
+    meshing.workflow.TaskObject['Import Geometry'].Arguments = dict(FileName='cylinder.agdb')
+    meshing.workflow.TaskObject['Import Geometry'].Execute()
+    meshing.tui.mesh.check_mesh()
     exit()
 	
 You can manually convert existing Fluent meshing workflow
@@ -53,49 +53,49 @@ and the equivalent PyFluent script.
 
 .. code:: python
 
-  session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-  session.meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
+  meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+  meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
       FileName=import_filename, LengthUnit="in"
   )
-  session.meshing.workflow.TaskObject["Import Geometry"].Execute()
-  session.meshing.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
-  session.meshing.workflow.TaskObject["Add Local Sizing"].Execute()
-  session.meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
+  meshing.workflow.TaskObject["Import Geometry"].Execute()
+  meshing.workflow.TaskObject["Add Local Sizing"].AddChildToTask()
+  meshing.workflow.TaskObject["Add Local Sizing"].Execute()
+  meshing.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
       "CFDSurfaceMeshControls": {"MaxSize": 0.3}
   }
-  session.meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
-  session.meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
+  meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+  meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
       SetupTypeChanged=False
   )
-  session.meshing.workflow.TaskObject["Describe Geometry"].Arguments = dict(
+  meshing.workflow.TaskObject["Describe Geometry"].Arguments = dict(
       SetupType="The geometry consists of only fluid regions with no voids"
   )
-  session.meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
+  meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
       SetupTypeChanged=True
   )
-  session.meshing.workflow.TaskObject["Describe Geometry"].Execute()
-  session.meshing.workflow.TaskObject["Update Boundaries"].Arguments = {
+  meshing.workflow.TaskObject["Describe Geometry"].Execute()
+  meshing.workflow.TaskObject["Update Boundaries"].Arguments = {
       "BoundaryLabelList": ["wall-inlet"],
       "BoundaryLabelTypeList": ["wall"],
       "OldBoundaryLabelList": ["wall-inlet"],
       "OldBoundaryLabelTypeList": ["velocity-inlet"],
   }
-  session.meshing.workflow.TaskObject["Update Boundaries"].Execute()
-  session.meshing.workflow.TaskObject["Update Regions"].Execute()
-  session.meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
-  session.meshing.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-  session.meshing.workflow.TaskObject["smooth-transition_1"].Arguments = {
+  meshing.workflow.TaskObject["Update Boundaries"].Execute()
+  meshing.workflow.TaskObject["Update Regions"].Execute()
+  meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
+  meshing.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+  meshing.workflow.TaskObject["smooth-transition_1"].Arguments = {
       "BLControlName": "smooth-transition_1",
   }
-  session.meshing.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
-  session.meshing.workflow.TaskObject["smooth-transition_1"].Execute()
-  session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
+  meshing.workflow.TaskObject["Add Boundary Layers"].Arguments = {}
+  meshing.workflow.TaskObject["smooth-transition_1"].Execute()
+  meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments = {
       "VolumeFill": "poly-hexcore",
       "VolumeFillControls": {
           "HexMaxCellLength": 0.3,
       },
   }
-  session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+  meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
 TUI commands example
 --------------------
@@ -103,10 +103,10 @@ TUI commands example
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(meshing_mode=True)
-    session.meshing.tui.file.read_case("elbow.cas.gz")
-    session.meshing.tui.switch_to_solution_mode("yes")
-    session.solver.tui.define.models.unsteady_2nd_order("yes")
+    meshing_session = pyfluent.launch_fluent(mode="meshing")
+    meshing_session.tui.file.read_case("elbow.cas.gz")
+    solver_session = meshing_session.switch_to_solver()
+    solver_session.tui.define.models.unsteady_2nd_order("yes")
     exit()
 
 .. currentmodule:: ansys.fluent.core.meshing

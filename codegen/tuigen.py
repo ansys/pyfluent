@@ -14,6 +14,7 @@ Usage
 
 import os
 from pathlib import Path
+import pickle
 import platform
 import shutil
 import string
@@ -100,7 +101,7 @@ def _copy_tui_help_xml_file():
 
         client = docker.from_env()
         container = client.containers.create(_FLUENT_IMAGE_NAME)
-        xml_source = f"/ansys_inc/v{FLUENT_VERSION.replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        xml_source = f"/ansys_inc/v{FLUENT_VERSION[0].replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         is_linux = platform.system() == "Linux"
         subprocess.run(
             f"docker cp {container.name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
@@ -195,8 +196,8 @@ class TUIGenerator:
         self._tui_module = "ansys.fluent.core." + self._tui_heading
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
-        self.session = pyfluent.launch_fluent(meshing_mode=meshing)
-        self._service = self.session._datamodel_service_tui
+        self.session = pyfluent.launch_fluent(mode="meshing" if meshing else "solver")
+        self._service = self.session.fluent_connection.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
@@ -310,15 +311,25 @@ class TUIGenerator:
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            info = PyMenu(self._service, self._main_menu.path).get_static_info()
-            self._populate_menu(self._main_menu, info)
-            self.session.exit()
-            if self._tui_file == _SOLVER_TUI_FILE:
-                self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
-                self._main_menu.doc = "Fluent solver main menu."
+            mode = "meshing" if self._tui_file == _MESHING_TUI_FILE else "solver"
+            if self.session.get_fluent_version() == "22.2.0":
+                with open(
+                    os.path.join(
+                        _THIS_DIRNAME, "data", f"static_info_222_{mode}.pickle"
+                    ),
+                    "rb",
+                ) as f:
+                    self._main_menu = pickle.load(f)
             else:
+                info = PyMenu(self._service, self._main_menu.path).get_static_info()
+                self._populate_menu(self._main_menu, info)
+            self.session.exit()
+            if mode == "meshing":
                 self._write_code_to_tui_file('"""Fluent Meshing TUI Commands"""\n')
                 self._main_menu.doc = "Fluent meshing main menu."
+            else:
+                self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
+                self._main_menu.doc = "Fluent solver main menu."
             self._write_code_to_tui_file(
                 "#\n"
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
@@ -339,7 +350,7 @@ class TUIGenerator:
 
 def generate():
     # pyfluent.set_log_level("WARNING")
-    if FLUENT_VERSION > "22.2":
+    if FLUENT_VERSION[0] > "22.2":
         _copy_tui_help_xml_file()
     _populate_xml_helpstrings()
     TUIGenerator(meshing=True).generate()
