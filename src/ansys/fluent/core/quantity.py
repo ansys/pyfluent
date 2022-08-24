@@ -6,13 +6,10 @@ from pint import Unit
 ureg = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 ureg.default_system = "SI"
 
-
 quantity = ureg.Quantity
-
 
 restricted_units = ["Hz", "hertz", "rad/s", "radian/s", "rpm", "rps", "cps"]
 restricted_conversions = list((permutations(restricted_units, 2)))
-
 
 std_prefixes = [
     "y",
@@ -38,7 +35,6 @@ std_prefixes = [
     "",
 ]
 
-
 restricted_unit_expansion = {
     "Hz": [prefix + "Hz" for prefix in std_prefixes],
     "hertz": [prefix + "hertz" for prefix in std_prefixes],
@@ -51,7 +47,6 @@ restricted_unit_expansion = {
 
 
 def build_restricted_conversions(conversions, unit_expansion):
-
     """This function generates required final restricted mappings."""
 
     keys = set([i[0] for i in conversions])
@@ -71,10 +66,11 @@ restricted_units = build_restricted_conversions(
 )
 
 
-class Quantity:
-
+class Quantity(float):
     """This class instantiates physical quantities using their real values and
-    units. All the instances of this class are converted to base SI units
+    units.
+
+    All the instances of this class are converted to base SI units
     system. Any conversion between "Hz", "hertz", "rad/s", "radian/s", "rpm",
     "rps", "cps" is disallowed.
 
@@ -87,21 +83,21 @@ class Quantity:
     cases.
     """
 
+    def __new__(self, real_value, units_string):
+        return float.__new__(self, real_value)
+
     def __init__(self, real_value, units_string):
-        self.value = real_value
+        float.__init__(real_value)
         self.unit = units_string
-        self._quantity = quantity(self.value, self.unit)
+        self._quantity = quantity(self.__float__(), self.unit)
         self._base_si_quantity = self._quantity.to_base_units()
         self._restricted_conversions = restricted_units
 
-    def __float__(self):
-        return Quantity(self.value, self.unit)
-
     def __str__(self):
-        return f'({self.value}, "{self.unit}")'
+        return f'({self.__float__()}, "{self.unit}")'
 
     def __repr__(self):
-        return f'(Quantity ({self.value}, "{self.unit}"))'
+        return f'(Quantity ({self.__float__()}, "{self.unit}"))'
 
     def to(self, to_unit):
 
@@ -120,7 +116,7 @@ class Quantity:
         user_unit = Unit(to_unit)
 
         if not self._quantity.is_compatible_with(user_unit):
-            raise ValueError("Units are not compatible")
+            raise ValueError("Units are not compatible.")
 
         converted = self._quantity.to(to_unit)
 
@@ -147,7 +143,7 @@ class Quantity:
 
     def __add__(self, other):
         if self.unit in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is restricted")
+            raise ValueError("This arithmetic operation is restricted.")
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity + other._quantity
@@ -158,7 +154,9 @@ class Quantity:
                 self._base_si_quantity.magnitude + other, self._base_si_quantity.units
             )
         else:
-            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
+            raise ValueError(
+                f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
+            )
         return Quantity(temp.magnitude, temp.units)
 
     def __radd__(self, other):
@@ -166,7 +164,7 @@ class Quantity:
 
     def __sub__(self, other):
         if self.unit in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is restricted")
+            raise ValueError("This arithmetic operation is restricted.")
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity - other._quantity
@@ -177,12 +175,14 @@ class Quantity:
                 self._base_si_quantity.magnitude - other, self._base_si_quantity.units
             )
         else:
-            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
+            raise ValueError(
+                f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
+            )
         return Quantity(temp.magnitude, temp.units)
 
     def __rsub__(self, other):
         if self.unit in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is restricted")
+            raise ValueError("This arithmetic operation is restricted.")
 
         if isinstance(other, Quantity):
             temp = other._quantity - self._base_si_quantity
@@ -193,5 +193,7 @@ class Quantity:
                 other - self._base_si_quantity.magnitude, self._base_si_quantity.units
             )
         else:
-            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
+            raise ValueError(
+                f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
+            )
         return Quantity(temp.magnitude, temp.units)
