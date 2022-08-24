@@ -68,11 +68,17 @@ restricted_units = build_restricted_conversions(
 
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
-    units.
+    units. Attributes of every instance of this class are used to construct a
+    new quantity instance supported by unit registry of pint module.
 
-    All the instances of this class are converted to base SI units
-    system. Any conversion between "Hz", "hertz", "rad/s", "radian/s", "rpm",
-    "rps", "cps" is disallowed.
+    The pint module supports methods for unit conversions, unit compatibility and
+    dimensionality check.
+
+    All the instances of this class are converted to base SI units system to have
+    consistency in all arithmetic operations.
+
+    Any conversion between "Hz", "hertz", "rad/s", "radian/s", "rpm",
+    "rps", "cps" is restricted.
 
     Certain conversions allowed by pint are disallowed here because they
     are not dimensionally consistent. For instance conversions between
