@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -11,11 +13,7 @@ def get_file_type(full_file_name):
         return "case"
     if ".dat" in full_file_name:
         return "data"
-    if (
-        ".fmd" in full_file_name
-        or ".scdoc" in full_file_name
-        or ".pmdb" in full_file_name
-    ):
+    if Path(full_file_name).suffix in (".fmd", ".scdoc", ".pmdb", ".agdb"):
         return "geometry"
 
 
@@ -63,6 +61,15 @@ def sample_solver_session(with_launching_container):
 def launch_fluent_solver_3ddp_t2(with_launching_container):
     solver_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="solver"
+    )
+    yield solver_session
+    solver_session.exit()
+
+
+@pytest.fixture
+def launch_fluent_solver_2ddp_t2(with_launching_container):
+    solver_session = pyfluent.launch_fluent(
+        "2d", precision="double", processor_count=2, mode="solver"
     )
     yield solver_session
     solver_session.exit()
@@ -169,8 +176,8 @@ def load_periodic_rot_cas(launch_fluent_solver_3ddp_t2):
 
 
 @pytest.fixture
-def load_disk_mesh(launch_fluent_solver_3ddp_t2):
-    solver_session = launch_fluent_solver_3ddp_t2
+def load_disk_mesh(launch_fluent_solver_2ddp_t2):
+    solver_session = launch_fluent_solver_2ddp_t2
     input_type, input_name = download_input_file("pyfluent/rotating_disk", "disk.msh")
     solver_session.file.read(file_type=input_type, file_name=input_name)
     yield solver_session
