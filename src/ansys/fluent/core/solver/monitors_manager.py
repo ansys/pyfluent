@@ -73,9 +73,8 @@ class MonitorsManager:
         Returns
         -------
         Union[None, object]
-            Returns ``None`` if the DataFrame is empty. Otherwise, it returns the
-            plot object, depending on the ``plotting.backend``.
-            https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html
+            Returns ``None`` if the `DataFrame <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html>`_
+            is empty. Otherwise, it returns the plot object, depending on the ``plotting.backend``.
         """
         with self._lock:
             df = self._data_frames[monitor_set_name]["df"]
@@ -94,8 +93,8 @@ class MonitorsManager:
         Returns
         -------
         Tuple[np.array, Dict[str, np.array]]
-            Tuple containing a numpy array of x-axis values and a dictionary of monitor names
-            and a numpy array of y-axis values.
+            Tuple containing two elements: a numpy array of x-axis values and a dictionary
+            associating monitor names of type ``str`` to numpy arrays of y-axis values.
         """
         with self._lock:
             df_data = self._data_frames[monitor_set_name]
@@ -111,10 +110,10 @@ class MonitorsManager:
             )
 
     def refresh(self, session_id, event_info) -> None:
-        """Monitors refresh callback.
+        """Refresh plots on-initialized and data-read events.
 
-        The callback is registered with the EventsManager to refresh plots
-        during initialized and data-read events.
+        This method is registered with the EventsManager and is called
+        to refresh plots whenever on-initialized and data-read events occur.
 
         Parameters
         ----------

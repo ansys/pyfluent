@@ -14,6 +14,7 @@ Usage
 
 import os
 from pathlib import Path
+import pickle
 import platform
 import shutil
 import string
@@ -310,15 +311,25 @@ class TUIGenerator:
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            info = PyMenu(self._service, self._main_menu.path).get_static_info()
-            self._populate_menu(self._main_menu, info)
-            self.session.exit()
-            if self._tui_file == _SOLVER_TUI_FILE:
-                self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
-                self._main_menu.doc = "Fluent solver main menu."
+            mode = "meshing" if self._tui_file == _MESHING_TUI_FILE else "solver"
+            if self.session.get_fluent_version() == "22.2.0":
+                with open(
+                    os.path.join(
+                        _THIS_DIRNAME, "data", f"static_info_222_{mode}.pickle"
+                    ),
+                    "rb",
+                ) as f:
+                    self._main_menu = pickle.load(f)
             else:
+                info = PyMenu(self._service, self._main_menu.path).get_static_info()
+                self._populate_menu(self._main_menu, info)
+            self.session.exit()
+            if mode == "meshing":
                 self._write_code_to_tui_file('"""Fluent Meshing TUI Commands"""\n')
                 self._main_menu.doc = "Fluent meshing main menu."
+            else:
+                self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
+                self._main_menu.doc = "Fluent solver main menu."
             self._write_code_to_tui_file(
                 "#\n"
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
