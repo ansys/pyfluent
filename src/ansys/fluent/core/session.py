@@ -229,7 +229,7 @@ class Session:
 
         self.scheme_eval = self.fluent_connection.scheme_eval
 
-        self.meshing = _BaseMeshing(self.fluent_connection)
+        self.meshing = _BaseMeshing(None, self.fluent_connection)
 
         self._datamodel_service_se = self.fluent_connection.datamodel_service_se
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
