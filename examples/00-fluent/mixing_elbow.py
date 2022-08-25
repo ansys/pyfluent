@@ -124,7 +124,7 @@ meshing.workflow.TaskObject["Describe Geometry"].Execute()
 ###############################################################################
 # Update boundaries
 # ~~~~~~~~~~~~~~~~~
-# Update the boundaries. Set ``"BoundaryLabelTypeList"``to ``"wall"`` and
+# Update the boundaries. Set ``"BoundaryLabelTypeList"`` to ``"wall"`` and
 # update the boundaries.
 
 meshing.workflow.TaskObject["Update Boundaries"].Arguments = {
@@ -147,7 +147,7 @@ meshing.workflow.TaskObject["Update Regions"].Execute()
 ###############################################################################
 # Add boundary layers
 # ~~~~~~~~~~~~~~~~~~~
-# Add boundary layers, which consists of setting properties for the
+# Add boundary layers, which consist of setting properties for the
 # boundary layer mesh. You can keep the default settings.
 
 meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
@@ -220,7 +220,7 @@ solver.tui.mesh.check()
 ###############################################################################
 # Set working units for mesh
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# # Set the working units for the mesh to inches.Because the default SI units are
+# Set the working units for the mesh to inches. Because the default SI units are
 # used for everything except length, you do not have to change any other units
 # in this example. If you want working units for length to be other than inches
 # (for example, millimeters), make the appropriate change.
@@ -244,7 +244,7 @@ solver.tui.define.materials.copy("fluid", "water-liquid")
 ###############################################################################
 # Set up cell zone conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Set up the cell zone conditions for the fluid zone (elbow-fluid). Set the
+# Set up the cell zone conditions for the fluid zone (``elbow-fluid``)``. Set the
 # material to ``"water-liquid"``.
 
 solver.tui.define.boundary_conditions.fluid(
@@ -338,8 +338,8 @@ solver.tui.solve.monitors.residual.plot("yes")
 ###############################################################################
 # Create surface report definition
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Create a surface report definition of average temperature at the outlet
-# (outlet) named ``"outlet-temp-avg"``.
+# Create a surface report definition of the average temperature at the outlet
+# named ``"outlet-temp-avg"``.
 
 solver.tui.solve.report_definitions.add(
     "outlet-temp-avg",
@@ -400,14 +400,14 @@ solver.tui.solve.convergence_conditions("frequency", "3", "quit")
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
-# Initialize the flow field using the hybrid initialization.
+# Initialize the flow field using hybrid initialization.
 
 solver.tui.solve.initialize.hyb_initialization()
 
 ###############################################################################
 # Save case file
 # ~~~~~~~~~~~~~~
-# Solve the case (``mixing_elbow1.cas.h5``).
+# Solve the case file (``mixing_elbow1.cas.h5``).
 
 solver.tui.file.write_case("mixing_elbow1.cas.h5")
 
@@ -567,9 +567,9 @@ solver.tui.display.objects.create(
 #   :align: center
 
 ###############################################################################
-# Write final case and data
-# ~~~~~~~~~~~~~~~~~~~~~~~~~
-# Write the final case and the data.
+# Write final case file and data
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Write the final case file and the data.
 
 solver.tui.file.write_case_data("mixing_elbow2_tui.cas.h5")
 

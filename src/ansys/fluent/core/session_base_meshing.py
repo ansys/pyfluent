@@ -1,4 +1,5 @@
 from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.meshing.meshing import Meshing
 from ansys.fluent.core.meshing.workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
@@ -10,14 +11,16 @@ class _BaseMeshing:
 
     meshing_attrs = ("tui", "meshing", "workflow", "PartManagement", "PMFileManagement")
 
-    def __init__(self, fluent_connection: _FluentConnection):
+    def __init__(self, session_execute_tui, fluent_connection: _FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se
+        self._fluent_connection = fluent_connection
         self._tui = None
         self._meshing = None
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
+        self._session_execute_tui = session_execute_tui
 
     @property
     def tui(self):
@@ -34,16 +37,26 @@ class _BaseMeshing:
         return self._tui
 
     @property
-    def meshing(self):
+    def _meshing_root(self):
         """meshing datamodel root."""
-        if self._meshing is None:
-            try:
-                from ansys.fluent.core.datamodel.meshing import Root as meshing_root
+        try:
+            from ansys.fluent.core.datamodel.meshing import Root as meshing_root
 
-                self._meshing = meshing_root(self._se_service, "meshing", [])
-            except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                self._meshing = PyMenuGeneric(self._se_service, "meshing")
+            meshing_root = meshing_root(self._se_service, "meshing", [])
+        except (ImportError, ModuleNotFoundError):
+            LOG.warning(_CODEGEN_MSG_DATAMODEL)
+            meshing_root = PyMenuGeneric(self._se_service, "meshing")
+        return meshing_root
+
+    @property
+    def meshing(self):
+        if self._meshing is None:
+            self._meshing = Meshing(
+                self._session_execute_tui,
+                self._meshing_root,
+                self.tui,
+                self._fluent_connection,
+            )
         return self._meshing
 
     @property

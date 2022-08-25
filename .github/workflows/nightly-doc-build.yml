@@ -9,6 +9,7 @@ jobs:
   nightly_docs_build:
     runs-on: [self-hosted, pyfluent]
     strategy:
+      fail-fast: false
       matrix:
         image-tag: [v22.2.0, v23.1.0]
 
@@ -24,7 +25,7 @@ jobs:
           application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
 
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.9
 
@@ -37,7 +38,7 @@ jobs:
         run: make install
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ secrets.GH_USERNAME }}
@@ -57,7 +58,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Build Documentation
-        run: make build-doc DOCS_CNAME=dev.fluentdocs.pyansys.com
+        run: make build-doc DOCS_CNAME=dev.fluent.docs.pyansys.com
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
@@ -65,7 +66,7 @@ jobs:
 
       - name: Deploy
         if: matrix.image-tag == 'v22.2.0'
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@v4.4.0
         with:
           repository-name: pyansys/pyfluent-dev-docs
           token: ${{ secrets.DOC_DEPLOYMENT_PAT }}

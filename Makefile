@@ -20,7 +20,7 @@ test-import:
 unittest:
 	@echo "Running unittest"
 	@pip install -r requirements/requirements_tests.txt
-	@pytest -v --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@pytest -v -m "unmarked or integration" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 api-codegen:
 	@echo "Running API codegen"

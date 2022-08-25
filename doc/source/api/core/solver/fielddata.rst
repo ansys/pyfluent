@@ -7,12 +7,12 @@ can access Fluent surface, scalar, and vector field data.
 
 Multiple fields in a request
 ----------------------------
-You can combine requests for multiple fields in a single request and receive
-the data for all fields in a single response. 
+You can get data for multiple fields in a single request and see
+the data for all of these fields in a single response.
 
 **Request**
 
-The ``add_get_<items>_request`` methods combine requests for multiple fields in a single request. 
+The ``add_get_<items>_request`` methods combine requests for multiple fields in a single request: 
 
 - ``add_get_surfaces_request`` adds a surfaces request.
 - ``add_get_scalar_fields_request`` adds a scalar fields request.
@@ -20,7 +20,7 @@ The ``add_get_<items>_request`` methods combine requests for multiple fields in 
     
 **Response**
 The ``get_fields`` method returns all requested fields in a single response. It provides 
-the dictionary containing the requested fields as a numpy array in the following order:
+a dictionary containing the requested fields as a numpy array in the following order:
 
 ``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data[np.array]``
 
@@ -41,7 +41,7 @@ node location[4], ``tag_id`` is ``(4|8)``, or 12.
 
 Surface ID
 ----------
-The surface ID is the same one as passed in the request.
+The surface ID is the same one that is passed in the request.
 
 Field name
 ----------
@@ -52,10 +52,10 @@ Surface request
 The response to a surface request contains any of the following fields, depending on the
 request arguments:
 
-- faces, which contain face connectivity    
-- vertices, which contain node coordinates
-- centroid, which contains face centroids    
-- face-normal, which contains face normals
+- ``faces``, which contain face connectivity    
+- ``vertices``, which contain node coordinates
+- ``centroid``, which contains face centroids    
+- ``face-normal``, which contains face normals
 
 
 Scalar field request
@@ -67,8 +67,8 @@ Vector field request
 ~~~~~~~~~~~~~~~~~~~~
 The response to a vector field request contains two fields:
 
-- vector field, with the same name as the vector field name passed in the request 
-- vector-scale
+- ``vector field``, with the same name as the vector field name that is passed in the request 
+- ``vector-scale``, a float value indicating the vector scale.
  
 
 Example
@@ -162,12 +162,13 @@ the requested field.
 ``surface_id [int] -> field[np.array]``
   
 For a vector field request, the response is a dictionary of surface IDs and a tuple of a numpy array of ``vector field`` 
-and ``vector scale``. 
+and ``vector-scale``. 
 
 ``surface_id [int] -> (vector field [np.array],  vector-scale [float])``
 
-It is important to note that in Fluent, you can associate a surface name with multiple surface 
-IDs. Thus, a response can contain a surface ID as a key of the returned dictionary. 
+.. note:: 
+   In Fluent, you can associate a surface name with multiple surface IDs.
+   Thus, a response can contain a surface ID as a key of the returned dictionary. 
   
 Example
 ~~~~~~~

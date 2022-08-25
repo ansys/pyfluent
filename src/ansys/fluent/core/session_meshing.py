@@ -1,6 +1,4 @@
 """Module containing class encapsulating Fluent connection."""
-# import weakref
-
 
 from typing import Any
 

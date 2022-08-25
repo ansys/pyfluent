@@ -44,30 +44,45 @@ class Solver(_BaseSession):
 
     @property
     def file(self):
-        """instance of file -> root settings object."""
+        """file settings."""
         return self._root.file
 
     @property
+    def mesh(self):
+        """mesh settings."""
+        return self._root.mesh
+
+    @property
     def setup(self):
-        """instance of setup -> root settings object."""
+        """setup settings."""
         return self._root.setup
 
     @property
     def solution(self):
-        """instance of solution -> root settings object."""
+        """solution settings."""
         return self._root.solution
 
     @property
     def results(self):
-        """instance of results -> root settings object."""
+        """results settings."""
         return self._root.results
 
     @property
     def parametric_studies(self):
-        """instance of parametric_studies -> root settings object."""
+        """parametric_studies settings."""
         return self._root.parametric_studies
 
     @property
     def current_parametric_study(self):
-        """instance of current_parametric_study -> root settings object."""
+        """current_parametric_study settings."""
         return self._root.current_parametric_study
+
+    @property
+    def parallel(self):
+        """parallel settings."""
+        return self._root.parallel
+
+    @property
+    def report(self):
+        """report settings."""
+        return self._root.report
