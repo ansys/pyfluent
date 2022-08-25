@@ -39,7 +39,7 @@ class _BaseMeshing:
         if self._tui is None:
             try:
                 tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self.version}"
+                    f"ansys.fluent.core.meshing.tui_{self.version}"
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
             except (ImportError, ModuleNotFoundError):
