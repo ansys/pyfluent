@@ -8,4 +8,4 @@ a community that can support user questions and develop new features to make
 this software a useful tool for all users. As such, we welcome and encourage
 any questions or submissions to this repository.
 
-For more information on contributing to PyFluent, see [Contributing](https://fluentdocs.pyansys.com/contributing.html).
+For more information on contributing to PyFluent, see [Contributing](https://fluent.docs.pyansys.com/contributing.html).

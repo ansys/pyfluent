@@ -35,7 +35,7 @@ ability to:
 Documentation and issues
 ------------------------
 For comprehesive information on PyFluent, see the latest release
-`documentation <https://fluentdocs.pyansys.com>`_.
+`documentation <https://fluent.docs.pyansys.com>`_.
 
 On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
 issues to submit questions, report bugs, and request new features. To reach
@@ -52,13 +52,6 @@ Install the latest release from `PyPI
 .. code:: console
 
    pip install ansys-fluent-core
-
-Alternatively, install the latest release from `GitHub <https://github.com/pyansys/pyfluent>`_
-with:
-
-.. code:: console
-
-   pip install git+https://github.com/pyansys/pyfluent.git
 
 If you plan on doing local *development* of PyFluent with Git, install
 the latest release with:
