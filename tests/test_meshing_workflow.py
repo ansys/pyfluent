@@ -4,7 +4,6 @@ Fluid Flow and Heat Transfer in a Mixing Elbow
 ---------------------------------------------------
 This test covers generic meshing workflow behaviour
 """
-
 from functools import partial
 import os
 
@@ -13,12 +12,13 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
+    new_mesh_session,
     shared_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )
 
-import ansys.fluent.core as pf
+import ansys.fluent.core as pyfluent
 
 
 def test_mixing_elbow_meshing_workflow(
@@ -185,27 +185,31 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skip(
-    reason="enable test after completely shifting to a stable release of R23.1"
-)
-def test_command_args_datamodel_se():
-    # Remove the below code after shifting to 23.1
-    #####
-    session_old = pf.launch_fluent(mode="meshing")
-    w = session_old.workflow
-    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    igt = w.task("Import Geometry")
-    with pytest.raises(RuntimeError):
-        igt.CommandArguments.CadImportOptions()
-
-    # Set the most recent fluent build path in the below environment variable
-    os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
-    # -----------------------------------------------------------------------
-
-    session_new = pf.launch_fluent(mode="meshing")
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+def test_command_args_datamodel_se(new_mesh_session):
+    session_new = new_mesh_session
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.task("Import Geometry")
     assert igt.CommandArguments.CadImportOptions()
     assert igt.CommandArguments.CadImportOptions.OneZonePer()
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+
+
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+    session_new = new_mesh_session
+    file_path = os.path.join(tmp_path, "sample_py_journal.txt")
+    m = session_new.meshing
+    m.execute_tui("(api-setup-python-console)")
+    m.execute_tui(f'(api-start-python-journal "{file_path}")')
+    m.switch_to_solver()
+    m.execute_tui(f"(api-stop-python-journal)")
+
+    with open(file_path) as f:
+        returned = f.readlines()
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    assert returned
