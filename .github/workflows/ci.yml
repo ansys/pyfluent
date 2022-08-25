@@ -328,13 +328,13 @@ jobs:
           retention-days: 7
 
       - name: Check package
-        if: ! (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
+        if: !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
         run: |
           pip install twine
           twine check dist/*
 
       - name: Upload package
-        if: ! (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
+        if: !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
         uses: actions/upload-artifact@v3
         with:
           name: PyFluent-packages
