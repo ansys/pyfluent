@@ -108,15 +108,15 @@ class MachineList(object):
 
     def sort_by_core_count(self):
         """Sorts the machines by core count, reordering the existing data."""
-        self._machines.sort(key=lambda machine: machine.numberOfCores, reverse=True)
+        self._machines.sort(key=lambda machine: machine.number_of_cores, reverse=True)
 
     def sort_by_core_count_ascending(self):
         """Sorts the machines by core count, reordering the existing data."""
-        self._machines.sort(key=lambda machine: machine.numberOfCores)
+        self._machines.sort(key=lambda machine: machine.number_of_cores)
 
     def remove_empty_machines(self):
         """Removes all machines with 0 cores."""
-        self._machines = [m for m in self._machines if m.numberOfCores > 0]
+        self._machines = [m for m in self._machines if m.number_of_cores > 0]
 
     def move_local_host_to_front(self):
         """Moves the local host machine to the front of the machine list,
@@ -128,7 +128,7 @@ class MachineList(object):
         localHostIndex = -1
         for im, m in enumerate(self._machines):
             # Check if hostName == localHostName, comparing as much of the name as possible
-            hostNameComponents = m.hostName.split(".")
+            hostNameComponents = m.host_name.split(".")
             imin = min(len(localHostNameComponents), len(hostNameComponents))
             if hostNameComponents[:imin] == localHostNameComponents[:imin]:
                 localHostIndex = im
@@ -151,14 +151,14 @@ class MachineList(object):
     @property
     def number_of_cores(self):
         """Returns the total number of cores."""
-        return sum([m.numberOfCores for m in self._machines])
+        return sum([m.number_of_cores for m in self._machines])
 
     @property
     def max_cores(self):
         """Returns the maximum number of cores."""
-        return max([m.numberOfCores for m in self._machines])
+        return max([m.number_of_cores for m in self._machines])
 
     @property
     def min_cores(self):
         """Returns the minimum number of cores."""
-        return min([m.numberOfCores for m in self._machines])
+        return min([m.number_of_cores for m in self._machines])

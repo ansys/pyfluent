@@ -66,8 +66,8 @@ class TestMachineList(unittest.TestCase):
 
         newMachineList = copy.deepcopy(self._machineList)
         for m1, m2 in zip(self._machineList.machines, newMachineList.machines):
-            self.assertEqual(m1.hostName, m2.hostName)
-            self.assertEqual(m1.numberOfCores, m2.numberOfCores)
+            self.assertEqual(m1.host_name, m2.host_name)
+            self.assertEqual(m1.number_of_cores, m2.number_of_cores)
 
     def test_add_to_machinelist(self):
         """Tests that a machines can be added to a machine list."""
@@ -93,24 +93,28 @@ class TestMachineList(unittest.TestCase):
 
         # Sort in ascending order
         self._machineList.sort_by_core_count_ascending()
-        numCores = self._machineList.machines[0].numberOfCores
+        numCores = self._machineList.machines[0].number_of_cores
         for h in range(1, len(self._machineList.machines)):
-            self.assertLessEqual(numCores, self._machineList.machines[h].numberOfCores)
-            numCores = self._machineList.machines[h].numberOfCores
+            self.assertLessEqual(
+                numCores, self._machineList.machines[h].number_of_cores
+            )
+            numCores = self._machineList.machines[h].number_of_cores
 
         # Sort in descending order
         self._machineList.sort_by_core_count()
-        numCores = self._machineList.machines[0].numberOfCores
+        numCores = self._machineList.machines[0].number_of_cores
         for h in range(1, len(self._machineList.machines)):
-            self.assertLessEqual(self._machineList.machines[h].numberOfCores, numCores)
-            numCores = self._machineList.machines[h].numberOfCores
+            self.assertLessEqual(
+                self._machineList.machines[h].number_of_cores, numCores
+            )
+            numCores = self._machineList.machines[h].number_of_cores
 
     def test_remote_empty_machines(self):
         self._machineList.add(Machine("machine1", 5))
         self._machineList.add(Machine("machine2", 0))
         self._machineList.remove_empty_machines()
         self.assertEqual(self._machineList.num_machines, 1)
-        self.assertEqual(self._machineList.machines[0].hostName, "machine1")
+        self.assertEqual(self._machineList.machines[0].host_name, "machine1")
 
     def test_move_local_host_to_front(self):
         import socket
@@ -121,12 +125,12 @@ class TestMachineList(unittest.TestCase):
         self._machineList.add(Machine(localHostName, 1))
         self._machineList.add(Machine("M1", 3))
         self._machineList.move_local_host_to_front()
-        self.assertEqual(self._machineList.machines[0].hostName, localHostName)
-        self.assertEqual(self._machineList.machines[0].numberOfCores, 1)
-        self.assertEqual(self._machineList.machines[1].hostName, "M0")
-        self.assertEqual(self._machineList.machines[1].numberOfCores, 2)
-        self.assertEqual(self._machineList.machines[2].hostName, "M1")
-        self.assertEqual(self._machineList.machines[2].numberOfCores, 3)
+        self.assertEqual(self._machineList.machines[0].host_name, localHostName)
+        self.assertEqual(self._machineList.machines[0].number_of_cores, 1)
+        self.assertEqual(self._machineList.machines[1].host_name, "M0")
+        self.assertEqual(self._machineList.machines[1].number_of_cores, 2)
+        self.assertEqual(self._machineList.machines[2].host_name, "M1")
+        self.assertEqual(self._machineList.machines[2].number_of_cores, 3)
 
     def test_deep_copy_machinelist(self):
         self._machineList.add(Machine("wathpc-2-0.local", 23))
@@ -137,8 +141,8 @@ class TestMachineList(unittest.TestCase):
 
         machineListCopy = copy.deepcopy(self._machineList)
         for m1, m2 in zip(self._machineList.machines, machineListCopy.machines):
-            self.assertEqual(m1.hostName, m2.hostName)
-            self.assertEqual(m1.numberOfCores, m2.numberOfCores)
+            self.assertEqual(m1.host_name, m2.host_name)
+            self.assertEqual(m1.number_of_cores, m2.number_of_cores)
 
 
 class TestLoadMachines(unittest.TestCase):
@@ -151,49 +155,49 @@ class TestLoadMachines(unittest.TestCase):
         self._machineList.reset()
 
     def test_constrain_machines1(self):
-        machineList = load_machines(hostInfo="M0:2,M1:3,M2:2", ncores=4)
+        machineList = load_machines(host_info="M0:2,M1:3,M2:2", ncores=4)
         expectedValue = {"M0": 1, "M1": 2, "M2": 1}
         self.assertEqual(len(machineList.machines), 3)
         for machine in machineList.machines:
-            self.assertEqual(machine.numberOfCores, expectedValue[machine.hostName])
+            self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
-        self.assertEqual(machineList.machines[0].hostName, "M0")
+        self.assertEqual(machineList.machines[0].host_name, "M0")
 
     def test_constrain_machines2(self):
-        machineList = load_machines(hostInfo="M0:2,M1:3,M2:2", ncores=3)
+        machineList = load_machines(host_info="M0:2,M1:3,M2:2", ncores=3)
         expectedValue = {"M0": 1, "M1": 1, "M2": 1}
         self.assertEqual(len(machineList.machines), 3)
         for machine in machineList.machines:
-            self.assertEqual(machine.numberOfCores, expectedValue[machine.hostName])
+            self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
-        self.assertEqual(machineList.machines[0].hostName, "M0")
+        self.assertEqual(machineList.machines[0].host_name, "M0")
 
     def test_overload_machines1(self):
-        machineList = load_machines(hostInfo="M0:2,M1:1", ncores=10)
+        machineList = load_machines(host_info="M0:2,M1:1", ncores=10)
         expectedValue = {"M0": 2, "M1": 1}
         self.assertEqual(len(machineList.machines), 2)
         for machine in machineList.machines:
-            self.assertEqual(machine.numberOfCores, expectedValue[machine.hostName])
+            self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
-        self.assertEqual(machineList.machines[0].hostName, "M0")
+        self.assertEqual(machineList.machines[0].host_name, "M0")
 
     def test_overload_machines2(self):
-        machineList = load_machines(hostInfo="M0,M0,M1", ncores=10)
+        machineList = load_machines(host_info="M0,M0,M1", ncores=10)
         expectedValue = {"M0": 2, "M1": 1}
         self.assertEqual(len(machineList.machines), 2)
         for machine in machineList.machines:
-            self.assertEqual(machine.numberOfCores, expectedValue[machine.hostName])
+            self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
-        self.assertEqual(machineList.machines[0].hostName, "M0")
+        self.assertEqual(machineList.machines[0].host_name, "M0")
 
     def test_winhpc(self):
         os.environ["CCP_NODES"] = "3 M0 8 M1 8 M2 16"
         machineList = load_machines()
-        self.assertEqual(machineList.numMachines, 3)
-        self.assertEqual(machineList.numberOfCores, 32)
-        self.assertEqual(machineList.machines[0].hostName, "M0")
-        self.assertEqual(machineList.machines[1].hostName, "M1")
-        self.assertEqual(machineList.machines[2].hostName, "M2")
+        self.assertEqual(machineList.num_machines, 3)
+        self.assertEqual(machineList.number_of_cores, 32)
+        self.assertEqual(machineList.machines[0].host_name, "M0")
+        self.assertEqual(machineList.machines[1].host_name, "M1")
+        self.assertEqual(machineList.machines[2].host_name, "M2")
 
     def test_slurm_no_brackets(self):
         os.environ["SLURM_JOB_NODELIST"] = "M0,M1,M2"
@@ -202,9 +206,9 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 3)
         self.assertEqual(machineList.number_of_cores, 24)
-        self.assertEqual(machineList.machines[0].hostName, "M0")
-        self.assertEqual(machineList.machines[1].hostName, "M1")
-        self.assertEqual(machineList.machines[2].hostName, "M2")
+        self.assertEqual(machineList.machines[0].host_name, "M0")
+        self.assertEqual(machineList.machines[1].host_name, "M1")
+        self.assertEqual(machineList.machines[2].host_name, "M2")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -215,9 +219,9 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 3)
         self.assertEqual(machineList.number_of_cores, 36)
-        self.assertEqual(machineList.machines[0].hostName, "M0")
-        self.assertEqual(machineList.machines[1].hostName, "M1")
-        self.assertEqual(machineList.machines[2].hostName, "M2")
+        self.assertEqual(machineList.machines[0].host_name, "M0")
+        self.assertEqual(machineList.machines[1].host_name, "M1")
+        self.assertEqual(machineList.machines[2].host_name, "M2")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -228,11 +232,11 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 5)
         self.assertEqual(machineList.number_of_cores, 60)
-        self.assertEqual(machineList.machines[0].hostName, "M-n50-0")
-        self.assertEqual(machineList.machines[1].hostName, "M-n50-1")
-        self.assertEqual(machineList.machines[2].hostName, "M-p50-9")
-        self.assertEqual(machineList.machines[3].hostName, "M-p50-10")
-        self.assertEqual(machineList.machines[4].hostName, "M-p50-11")
+        self.assertEqual(machineList.machines[0].host_name, "M-n50-0")
+        self.assertEqual(machineList.machines[1].host_name, "M-n50-1")
+        self.assertEqual(machineList.machines[2].host_name, "M-p50-9")
+        self.assertEqual(machineList.machines[3].host_name, "M-p50-10")
+        self.assertEqual(machineList.machines[4].host_name, "M-p50-11")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -243,20 +247,20 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 7)
         self.assertEqual(machineList.number_of_cores, 74)
-        self.assertEqual(machineList.machines[0].hostName, "MC008")
-        self.assertEqual(machineList.machines[0].numberOfCores, 8)
-        self.assertEqual(machineList.machines[1].hostName, "MC009")
-        self.assertEqual(machineList.machines[1].numberOfCores, 10)
-        self.assertEqual(machineList.machines[2].hostName, "MC010")
-        self.assertEqual(machineList.machines[2].numberOfCores, 10)
-        self.assertEqual(machineList.machines[3].hostName, "MC011")
-        self.assertEqual(machineList.machines[3].numberOfCores, 12)
-        self.assertEqual(machineList.machines[4].hostName, "MC012")
-        self.assertEqual(machineList.machines[4].numberOfCores, 12)
-        self.assertEqual(machineList.machines[5].hostName, "MC013")
-        self.assertEqual(machineList.machines[5].numberOfCores, 12)
-        self.assertEqual(machineList.machines[6].hostName, "MC014")
-        self.assertEqual(machineList.machines[6].numberOfCores, 10)
+        self.assertEqual(machineList.machines[0].host_name, "MC008")
+        self.assertEqual(machineList.machines[0].number_of_cores, 8)
+        self.assertEqual(machineList.machines[1].host_name, "MC009")
+        self.assertEqual(machineList.machines[1].number_of_cores, 10)
+        self.assertEqual(machineList.machines[2].host_name, "MC010")
+        self.assertEqual(machineList.machines[2].number_of_cores, 10)
+        self.assertEqual(machineList.machines[3].host_name, "MC011")
+        self.assertEqual(machineList.machines[3].number_of_cores, 12)
+        self.assertEqual(machineList.machines[4].host_name, "MC012")
+        self.assertEqual(machineList.machines[4].number_of_cores, 12)
+        self.assertEqual(machineList.machines[5].host_name, "MC013")
+        self.assertEqual(machineList.machines[5].number_of_cores, 12)
+        self.assertEqual(machineList.machines[6].host_name, "MC014")
+        self.assertEqual(machineList.machines[6].number_of_cores, 10)
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_TASKS_PER_NODE"]
 
@@ -267,9 +271,9 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 3)
         self.assertEqual(machineList.number_of_cores, 36)
-        self.assertEqual(machineList.machines[0].hostName, "MD099")
-        self.assertEqual(machineList.machines[1].hostName, "MD100")
-        self.assertEqual(machineList.machines[2].hostName, "MD101")
+        self.assertEqual(machineList.machines[0].host_name, "MD099")
+        self.assertEqual(machineList.machines[1].host_name, "MD100")
+        self.assertEqual(machineList.machines[2].host_name, "MD101")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -280,21 +284,21 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 15)
         self.assertEqual(machineList.number_of_cores, 180)
-        self.assertEqual(machineList.machines[0].hostName, "M2")
-        self.assertEqual(machineList.machines[1].hostName, "M3")
-        self.assertEqual(machineList.machines[2].hostName, "M4")
-        self.assertEqual(machineList.machines[3].hostName, "M5")
-        self.assertEqual(machineList.machines[4].hostName, "M6")
-        self.assertEqual(machineList.machines[5].hostName, "M7")
-        self.assertEqual(machineList.machines[6].hostName, "M8")
-        self.assertEqual(machineList.machines[7].hostName, "M9")
-        self.assertEqual(machineList.machines[8].hostName, "M10")
-        self.assertEqual(machineList.machines[9].hostName, "M11")
-        self.assertEqual(machineList.machines[10].hostName, "M12")
-        self.assertEqual(machineList.machines[11].hostName, "M13")
-        self.assertEqual(machineList.machines[12].hostName, "M14")
-        self.assertEqual(machineList.machines[13].hostName, "M15")
-        self.assertEqual(machineList.machines[14].hostName, "M16")
+        self.assertEqual(machineList.machines[0].host_name, "M2")
+        self.assertEqual(machineList.machines[1].host_name, "M3")
+        self.assertEqual(machineList.machines[2].host_name, "M4")
+        self.assertEqual(machineList.machines[3].host_name, "M5")
+        self.assertEqual(machineList.machines[4].host_name, "M6")
+        self.assertEqual(machineList.machines[5].host_name, "M7")
+        self.assertEqual(machineList.machines[6].host_name, "M8")
+        self.assertEqual(machineList.machines[7].host_name, "M9")
+        self.assertEqual(machineList.machines[8].host_name, "M10")
+        self.assertEqual(machineList.machines[9].host_name, "M11")
+        self.assertEqual(machineList.machines[10].host_name, "M12")
+        self.assertEqual(machineList.machines[11].host_name, "M13")
+        self.assertEqual(machineList.machines[12].host_name, "M14")
+        self.assertEqual(machineList.machines[13].host_name, "M15")
+        self.assertEqual(machineList.machines[14].host_name, "M16")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -307,15 +311,15 @@ class TestLoadMachines(unittest.TestCase):
         machineList = _construct_machine_list_slurm(hostList)
         self.assertEqual(machineList.num_machines, 26)
         self.assertEqual(machineList.number_of_cores, 624)
-        self.assertEqual(machineList.machines[0].hostName, "M2")
-        self.assertEqual(machineList.machines[0].numberOfCores, 24)
-        self.assertEqual(machineList.machines[7].hostName, "M9")
-        self.assertEqual(machineList.machines[14].hostName, "M16")
-        self.assertEqual(machineList.machines[15].hostName, "MB")
-        self.assertEqual(machineList.machines[16].hostName, "MC008")
-        self.assertEqual(machineList.machines[19].hostName, "MC011")
-        self.assertEqual(machineList.machines[22].hostName, "MC014")
-        self.assertEqual(machineList.machines[24].hostName, "MD100")
+        self.assertEqual(machineList.machines[0].host_name, "M2")
+        self.assertEqual(machineList.machines[0].number_of_cores, 24)
+        self.assertEqual(machineList.machines[7].host_name, "M9")
+        self.assertEqual(machineList.machines[14].host_name, "M16")
+        self.assertEqual(machineList.machines[15].host_name, "MB")
+        self.assertEqual(machineList.machines[16].host_name, "MC008")
+        self.assertEqual(machineList.machines[19].host_name, "MC011")
+        self.assertEqual(machineList.machines[22].host_name, "MC014")
+        self.assertEqual(machineList.machines[24].host_name, "MD100")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -336,7 +340,7 @@ class TestMachineListCmdLine(unittest.TestCase):
             machineList = _parse_machine_data(machineData)
             for machine in machineList.machines:
                 self.assertEqual(
-                    machine.numberOfCores, self._expectedValues[machine.hostName]
+                    machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
 
     def test_cmd_string(self):
@@ -346,7 +350,7 @@ class TestMachineListCmdLine(unittest.TestCase):
             machineList = _parse_host_info(hostList)
             for machine in machineList.machines:
                 self.assertEqual(
-                    machine.numberOfCores, self._expectedValues[machine.hostName]
+                    machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
 
     def test_host_file(self):
@@ -358,7 +362,7 @@ class TestMachineListCmdLine(unittest.TestCase):
             machineList = _parse_host_info(hostfile)
             for machine in machineList.machines:
                 self.assertEqual(
-                    machine.numberOfCores, self._expectedValues[machine.hostName]
+                    machine.number_of_cores, self._expectedValues[machine.host_name]
                 )
 
     def test_file_not_found(self):
