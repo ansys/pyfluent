@@ -23,7 +23,13 @@ class Solver(_BaseSession):
         self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._settings_root = None
-        self._version = get_version_for_filepath(session=self)
+        self._version = None
+
+    @property
+    def version(self):
+        if self._version is None:
+            self._version = get_version_for_filepath(session=self)
+        return self._version
 
     @property
     def tui(self):
@@ -32,7 +38,7 @@ class Solver(_BaseSession):
         if self._tui is None:
             try:
                 tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self._version}"
+                    f"ansys.fluent.core.solver.tui_{self.version}"
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
             except ImportError:
@@ -45,7 +51,7 @@ class Solver(_BaseSession):
         """root settings object."""
         if self._settings_root is None:
             self._settings_root = settings_get_root(
-                flproxy=self._settings_service, version=self._version
+                flproxy=self._settings_service, version=self.version
             )
         return self._settings_root
 

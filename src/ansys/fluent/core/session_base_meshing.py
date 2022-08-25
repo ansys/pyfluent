@@ -24,7 +24,13 @@ class _BaseMeshing:
         self._part_management = None
         self._pm_file_management = None
         self._session_execute_tui = session_execute_tui
-        self._version = get_version_for_filepath(session=self)
+        self._version = None
+
+    @property
+    def version(self):
+        if self._version is None:
+            self._version = get_version_for_filepath(session=self)
+        return self._version
 
     @property
     def tui(self):
@@ -33,7 +39,7 @@ class _BaseMeshing:
         if self._tui is None:
             try:
                 tui_module = importlib.import_module(
-                    f"ansys.fluent.core.solver.tui_{self._version}"
+                    f"ansys.fluent.core.solver.tui_{self.version}"
                 )
                 self._tui = tui_module.main_menu([], self._tui_service)
             except (ImportError, ModuleNotFoundError):
@@ -46,7 +52,7 @@ class _BaseMeshing:
         """meshing datamodel root."""
         try:
             meshing_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self._version}.meshing"
+                f"ansys.fluent.core.datamodel_{self.version}.meshing"
             )
             meshing_root = meshing_module.Root(self._se_service, "meshing", [])
         except (ImportError, ModuleNotFoundError):
@@ -70,7 +76,7 @@ class _BaseMeshing:
         """workflow datamodel root."""
         try:
             workflow_module = importlib.import_module(
-                f"ansys.fluent.core.datamodel_{self._version}.workflow"
+                f"ansys.fluent.core.datamodel_{self.version}.workflow"
             )
             workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
@@ -90,7 +96,7 @@ class _BaseMeshing:
         if self._part_management is None:
             try:
                 pm_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self._version}.PartManagement"
+                    f"ansys.fluent.core.datamodel_{self.version}.PartManagement"
                 )
                 self._part_management = pm_module.Root(
                     self._se_service, "PartManagement", []
@@ -108,7 +114,7 @@ class _BaseMeshing:
         if self._pm_file_management is None:
             try:
                 pmfm_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self._version}.PMFileManagement"
+                    f"ansys.fluent.core.datamodel_{self.version}.PMFileManagement"
                 )
                 self._pm_file_management = pmfm_module.Root(
                     self._se_service, "PMFileManagement", []
