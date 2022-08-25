@@ -18,9 +18,14 @@ test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
 unittest:
-	@echo "Running unittest"
+	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
 	@pytest -v -m "unmarked or integration" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+
+unittest-all:
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@pytest -v --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 api-codegen:
 	@echo "Running API codegen"
