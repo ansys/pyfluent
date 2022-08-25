@@ -329,6 +329,7 @@ class Session:
             self._settings_service = settings_service
             self._tui = None
             self._settings_root = None
+            self._version = get_version_for_filepath(session=self)
 
         @property
         def tui(self):
@@ -336,9 +337,8 @@ class Session:
             can be executed."""
             if self._tui is None:
                 try:
-                    version = get_version_for_filepath(session=self)
                     tui_module = importlib.import_module(
-                        f"ansys.fluent.core.solver.tui_{version}"
+                        f"ansys.fluent.core.solver.tui_{self._version}"
                     )
                     self._tui = tui_module.main_menu([], self._tui_service)
                 except (ImportError, ModuleNotFoundError):
@@ -350,5 +350,7 @@ class Session:
         def root(self):
             """root settings object."""
             if self._settings_root is None:
-                self._settings_root = settings_get_root(flproxy=self._settings_service)
+                self._settings_root = settings_get_root(
+                    flproxy=self._settings_service, version=self._version
+                )
             return self._settings_root

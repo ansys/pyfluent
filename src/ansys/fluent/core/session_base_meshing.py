@@ -24,7 +24,7 @@ class _BaseMeshing:
         self._part_management = None
         self._pm_file_management = None
         self._session_execute_tui = session_execute_tui
-        self._version = version = get_version_for_filepath(session=self)
+        self._version = get_version_for_filepath(session=self)
 
     @property
     def tui(self):
