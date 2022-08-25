@@ -7,6 +7,7 @@ import ansys.fluent.core as pyfluent
 
 @pytest.mark.optislang
 @pytest.mark.integration
+@pytest.mark.nightly
 def test_simple_solve(load_mixing_elbow_param_case_dat):
 
     """
