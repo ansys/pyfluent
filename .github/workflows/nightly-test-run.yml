@@ -1,0 +1,84 @@
+name: Nightly Test Run
+
+on:
+  schedule:  # UTC at 0400
+    - cron:  '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Unit Testing
+    needs: test-import
+    runs-on: [self-hosted, pyfluent]
+    strategy:
+      fail-fast: false
+      matrix:
+        image-tag: [v22.2.0, v23.1.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Run API codegen
+        run: make api-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Unit Testing
+        run: make unittest-all
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Upload Coverage Results
+        if: matrix.image-tag == 'v22.2.0'
+        uses: actions/upload-artifact@v3
+        with:
+          name: HTML-Coverage-tag-${{ matrix.image-tag }}
+          path: cov_html
+          retention-days: 7
