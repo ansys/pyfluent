@@ -1,5 +1,6 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
+import json
 from typing import Any
 import warnings
 
@@ -125,6 +126,24 @@ class _BaseSession:
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
         self.fluent_connection.exit()
+
+    def execute_tui(self, command: str) -> None:
+        """Executes a tui command."""
+        self.fluent_connection.scheme_eval.scheme_eval(
+            f'(tui-menu-execute {json.dumps(command)} "")'
+        )
+
+    def setup_python_console_in_tui(self):
+        """Executes tui command to set up python console."""
+        self.execute_tui("(api-setup-python-console)")
+
+    def start_journal(self, file_path: str):
+        """Executes tui command to start journal."""
+        self.execute_tui(f'(api-start-python-journal "{file_path}")')
+
+    def stop_journal(self, port_data=None):
+        """Executes tui command to stop journal."""
+        self.execute_tui(f"(api-stop-python-journal)")
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""

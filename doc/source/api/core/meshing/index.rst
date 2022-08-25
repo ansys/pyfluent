@@ -2,8 +2,8 @@
 
 Meshing
 =======
-This module allows you to use Fluent meshing capabilities from Python. Both
-of the meshing workflows and the meshing TUI commands are available.
+The ``meshing`` module allows you to use Fluent meshing capabilities from Python.
+Meshing workflows and meshing TUI commands are available.
 
 Workflow example
 ----------------
