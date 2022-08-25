@@ -233,7 +233,7 @@ jobs:
   build_test:
     name: Build and Unit Testing
     needs: test-import
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
       matrix:
