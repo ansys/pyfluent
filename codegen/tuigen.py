@@ -20,6 +20,7 @@ import shutil
 import string
 import subprocess
 from typing import Any, Dict
+import uuid
 import xml.etree.ElementTree as ET
 
 from data.fluent_gui_help_patch import XML_HELP_PATCH
@@ -79,18 +80,19 @@ _XML_HELPSTRINGS = {}
 
 def _copy_tui_help_xml_file(version: str):
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        import docker
-
-        client = docker.from_env()
-        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
+        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
         image_name = f"ghcr.io/pyansys/pyfluent:{image_tag}"
-        container = client.containers.create(image_name)
-        xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
         subprocess.run(
-            f"docker cp {container.name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
+            f"docker container create --name {container_name} {image_name}",
+            shell=is_linux,
         )
-        container.remove()
+        xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        subprocess.run(
+            f"docker cp {container_name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
+        )
+        subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
         xml_source = (
