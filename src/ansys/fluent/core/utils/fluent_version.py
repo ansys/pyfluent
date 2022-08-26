@@ -11,14 +11,7 @@ def get_version(session=None):
             return image_tag.lstrip("v")
         session = pyfluent.launch_fluent(mode="solver")
 
-    try:
-        return (
-            session.get_fluent_version()
-        )  # doesn't work in meshing tuigen with docker
-    except AttributeError:
-        return ".".join(
-            map(str, session._fluent_connection.scheme_eval.scheme_eval("(cx-version)"))
-        )
+    return session.get_fluent_version()
 
 
 def get_version_for_filepath(version: str = None, session=None):

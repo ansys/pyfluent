@@ -26,6 +26,10 @@ class _BaseMeshing:
         self._session_execute_tui = session_execute_tui
         self._version = None
 
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return self._fluent_connection.get_fluent_version()
+
     @property
     def version(self):
         if self._version is None:
