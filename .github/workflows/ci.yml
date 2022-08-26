@@ -230,7 +230,7 @@ jobs:
           FOLDER: doc/_build/html
           CLEAN: true
 
-  test:
+  build-test:
     name: Unit Testing
     needs: test-import
     runs-on: ubuntu-latest
@@ -377,7 +377,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, build]
+    needs: build-test
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
