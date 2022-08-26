@@ -230,8 +230,8 @@ jobs:
           FOLDER: doc/_build/html
           CLEAN: true
 
-  build_test:
-    name: Build and Unit Testing
+  test:
+    name: Unit Testing
     needs: test-import
     runs-on: ubuntu-latest
     strategy:
@@ -328,12 +328,110 @@ jobs:
           retention-days: 7
 
       - name: Check package
+        if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/v')
         run: |
           pip install twine
           twine check dist/*
 
       - name: Upload package
-        if: matrix.image-tag == 'v22.2.0'
+        if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v3
+        with:
+          name: PyFluent-packages
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+          retention-days: 7
+
+  build:
+    name: Build for release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: test-import
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image-tag: [v22.2.0]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+        id: version
+
+      - name: Cache API Code
+        uses: actions/cache@v3
+        id: cache-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel
+            src/ansys/fluent/core/fluent_version.py
+            src/ansys/fluent/core/meshing/tui.py
+            src/ansys/fluent/core/solver/settings
+            src/ansys/fluent/core/solver/tui.py
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
+
+      - name: Login to GitHub Container Registry
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Run API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Check package
+        run: |
+          pip install twine
+          twine check dist/*
+
+      - name: Upload package
         uses: actions/upload-artifact@v3
         with:
           name: PyFluent-packages
@@ -345,7 +443,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: build_test
+    needs: [test, build]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python

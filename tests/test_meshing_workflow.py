@@ -21,6 +21,7 @@ from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invali
 import ansys.fluent.core as pyfluent
 
 
+@pytest.mark.nightly
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
