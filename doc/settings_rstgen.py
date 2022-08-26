@@ -186,18 +186,20 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         rst_list.append(rstpath)
         if has_children:
             for child in cls.child_names:
-                _populate_rst_from_settings(rst_dir, getattr(cls, child))
+                _populate_rst_from_settings(rst_dir, getattr(cls, child), version)
 
         if has_commands:
             for child in cls.command_names:
-                _populate_rst_from_settings(rst_dir, getattr(cls, child))
+                _populate_rst_from_settings(rst_dir, getattr(cls, child), version)
 
         if has_arguments:
             for child in cls.argument_names:
-                _populate_rst_from_settings(rst_dir, getattr(cls, child))
+                _populate_rst_from_settings(rst_dir, getattr(cls, child), version)
 
         if has_named_object:
-            _populate_rst_from_settings(rst_dir, getattr(cls, "child_object_type"))
+            _populate_rst_from_settings(
+                rst_dir, getattr(cls, "child_object_type"), version
+            )
 
 
 if __name__ == "__main__":
