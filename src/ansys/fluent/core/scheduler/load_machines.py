@@ -9,7 +9,7 @@ import csv
 import os
 import subprocess
 
-from ansys.fluent.core.launcher.machine_list import Machine, MachineList
+from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
 def load_machines(machine_info=None, host_info=None, ncores=None):
