@@ -108,7 +108,7 @@ jobs:
   docs_build:
     name: Build Documentation
     needs: [docs-style]
-    runs-on: [self-hosted, pyfluent]
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         image-tag: [v22.2.0]
@@ -233,7 +233,7 @@ jobs:
   test:
     name: Unit Testing
     needs: test-import
-    runs-on: [self-hosted, pyfluent]
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
