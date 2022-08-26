@@ -19,9 +19,7 @@ class MeshingWorkflow:
     class TaskContainer(PyCallableStateObject):
         def __init__(self, meshing):
             self._meshing_container = meshing
-            self._workflow = meshing._workflow
-            self._meshing = meshing._meshing
-            self._task_container = self._workflow.TaskObject
+            self._task_container = meshing._workflow.TaskObject
 
         def __getitem__(self, name):
             return MeshingWorkflow.Task(self._meshing_container, name)
