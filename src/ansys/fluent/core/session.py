@@ -411,7 +411,7 @@ class _Uploader:
         try:
             upload_server = self.pim_instance.services["http-simple-upload-server"]
         except AttributeError:
-            print("\nPIM is not installed or not authorized.\n")
+            LOG.error("PIM is not installed or not authorized.")
         except KeyError:
             self.file_service = None
         else:
