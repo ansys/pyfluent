@@ -6,13 +6,13 @@ from builtins import range
 import os
 import unittest
 
-from ansys.fluent.core.launcher.load_machines import (
+from ansys.fluent.core.scheduler.load_machines import (
     _construct_machine_list_slurm,
     _parse_host_info,
     _parse_machine_data,
     load_machines,
 )
-from ansys.fluent.core.launcher.machine_list import Machine, MachineList
+from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
 class TestMachine(unittest.TestCase):
