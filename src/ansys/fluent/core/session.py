@@ -1,6 +1,7 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
 import json
+import os
 from typing import Any
 import warnings
 
@@ -423,8 +424,6 @@ class _Uploader:
 
     def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
-        import os
-
         expanded_file_path = os.path.expandvars(file_path)
         upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
         self.file_service.upload_file(expanded_file_path, upload_file_name)

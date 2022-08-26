@@ -1,4 +1,5 @@
 import pytest
+from util.meshing_workflow import new_mesh_session  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 
