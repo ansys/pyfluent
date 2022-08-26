@@ -17,22 +17,22 @@ def load_machines(machine_info=None, host_info=None, ncores=None):
 
     Parameters
     ----------
-    machine_info : list[dict[str, int]]
-        Optional list of machines provided by the caller.
-        This is a list of dictionaries of the form:
+    machine_info : list[dict[str, int]], optional
+        List of machines provided by the caller.  Must be of the form:
             [{'machine-name' : <m-name-1>, 'core-count' : <int>},
              {'machine-name' : <m-name-2>, 'core-count' : <int>},
              ... ]
-    host_info : str
-        Optional host file name or list of machines and cores as a string
-        separated by commas and colons.
+    host_info : str, optional
+        Host file name or list of machines and cores as a string separated by
+        commas and colons as follows:
         Example 1:  'M0:3,M1:2'
         Example 2:  'M0,M0,M0,M1,M1'
-    ncores : int
-        Optional total core count.
-        If provided without machineDict, sets the core count for local parallel.
-        If both machineDict and ncores are provided, then the machine list
-        determined by machineDict will be limited by the ncores value.
+    ncores : int, optional
+        Total core count.
+        If provided without `machine_info`, sets the core count for local
+        parallel. If both `machine_info` and `ncores` are provided, then the
+        machine list determined by `machine_info` will be limited by the
+        `ncores` value.
 
     Returns
     -------
@@ -49,8 +49,9 @@ def load_machines(machine_info=None, host_info=None, ncores=None):
 
     Depending on the SLURM environment, the hostnames contained within the
     SLURM_JOB_NODELIST variable may not be valid to ssh to. In that case we
-    cannot pass these names to the solver. So, test if we can ssh to the first
-    host, if not, get 'actual' machine names using scontrol.
+    cannot pass these names to the solver. So, in the SLURM branch there is a
+    test to check if we can ssh to the first host, if not, get 'actual' machine
+    names using scontrol.
     """
 
     machine_list = []
@@ -316,7 +317,7 @@ def _construct_machine_list_slurm(host_list):
 
     An (x#) after the core count indicates that the core count is repeated #
     times.  The order is the same as SLURM_JOB_NODELIST.
-    """  # noqa
+    """
     import re
 
     machineList = MachineList()
