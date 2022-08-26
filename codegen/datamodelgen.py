@@ -101,13 +101,15 @@ class DataModelStaticInfo:
 
 class DataModelGenerator:
     def __init__(self):
-        version = get_version_for_filepath()
+        self.version = get_version_for_filepath()
         self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo("workflow", "meshing", version),
-            "meshing": DataModelStaticInfo("meshing", "meshing", version),
-            "PartManagement": DataModelStaticInfo("PartManagement", "meshing", version),
+            "workflow": DataModelStaticInfo("workflow", "meshing", self.version),
+            "meshing": DataModelStaticInfo("meshing", "meshing", self.version),
+            "PartManagement": DataModelStaticInfo(
+                "PartManagement", "meshing", self.version
+            ),
             "PMFileManagement": DataModelStaticInfo(
-                "PMFileManagement", "meshing", version
+                "PMFileManagement", "meshing", self.version
             ),
         }
         self._delete_generated_files()
@@ -311,7 +313,7 @@ class DataModelGenerator:
                     info.static_info,
                     doc_dir / name,
                     f"{info.mode}.datamodel.{name}",
-                    f"ansys.fluent.core.datamodel.{name}",
+                    f"ansys.fluent.core.datamodel_{self.version}.{name}",
                     "Root",
                 )
 

@@ -174,7 +174,7 @@ class TUIGenerator:
             Path(self._tui_file).unlink()
         self._tui_doc_dir = _get_tui_docdir(mode)
         self._tui_heading = mode + ".tui"
-        self._tui_module = "ansys.fluent.core." + self._tui_heading
+        self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
         self.session = pyfluent.launch_fluent(mode=mode)

@@ -19,7 +19,3 @@ def get_version_for_filepath(version: str = None, session=None):
         version = get_version(session)
 
     return "".join(version.split(".")[0:2])
-
-
-default_version = "22.2.0"
-default_version_for_filepath = get_version_for_filepath(default_version)

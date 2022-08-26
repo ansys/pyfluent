@@ -23,9 +23,10 @@ Usage
 python <path to settings_rstgen.py>
 """
 
+import importlib
 import os
 
-from ansys.fluent.core.solver import settings
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 parents_dict = {}
 rst_list = []
@@ -109,7 +110,7 @@ def _populate_parents_list(cls):
         _populate_parents_list(getattr(cls, "child_object_type"))
 
 
-def _populate_rst_from_settings(rst_dir, cls):
+def _populate_rst_from_settings(rst_dir, cls, version):
     istr1 = _get_indent_str(1)
     cls_name = cls.__name__
     file_name = cls.__module__.split(".")[-1]
@@ -124,7 +125,9 @@ def _populate_rst_from_settings(rst_dir, cls):
         r.write(f".. _{file_name}:\n\n")
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
-        r.write(f".. currentmodule:: ansys.fluent.core.solver.settings.{file_name}\n\n")
+        r.write(
+            f".. currentmodule:: ansys.fluent.core.solver.settings_{version}.{file_name}\n\n"
+        )
         r.write(f".. autoclass:: {cls_name}\n")
         r.write(f"{istr1}:show-inheritance:\n")
         r.write(f"{istr1}:undoc-members:\n")
@@ -214,5 +217,8 @@ if __name__ == "__main__":
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
+    version = get_version_for_filepath(image_tag.lstrip("v"))
+    settings = importlib.import_module(f"ansys.fluent.core.solver.settings_{version}")
     _populate_parents_list(settings.root)
-    _populate_rst_from_settings(rst_dir, settings.root)
+    _populate_rst_from_settings(rst_dir, settings.root, version)
