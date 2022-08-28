@@ -184,3 +184,10 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
         os.remove(file_path)
 
     assert returned
+
+
+def test_get_fluent_mode(new_mesh_session):
+    session = new_mesh_session
+    assert session.get_current_fluent_mode() == "meshing"
+    session = session.switch_to_solver()
+    assert session.get_current_fluent_mode() == "solver"
