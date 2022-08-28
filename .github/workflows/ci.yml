@@ -233,7 +233,7 @@ jobs:
   build-test:
     name: Unit Testing
     needs: test-import
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]  # temporarily to investigate hang
 
     steps:
       - uses: actions/checkout@v3
