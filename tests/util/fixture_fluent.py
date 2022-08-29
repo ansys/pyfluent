@@ -33,7 +33,7 @@ def download_input_file(directory_name, full_file_name, data_file_name=None):
         globals()[dat_name] = None
         if not globals()[dat_name]:
             globals()[dat_name] = download_file(
-                filename=full_file_name,
+                filename=data_file_name,
                 directory=directory_name,
             )
         file_type = "case-data"
