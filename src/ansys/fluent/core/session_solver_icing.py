@@ -2,8 +2,11 @@
 
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
+import importlib
+
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 
 class SolverIcing(Solver):
@@ -19,15 +22,34 @@ class SolverIcing(Solver):
     ):
         super(SolverIcing, self).__init__(fluent_connection=fluent_connection)
         self._flserver_root = None
+        self._version = None
+        self._fluent_connection = fluent_connection
+
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return self._fluent_connection.get_fluent_version()
+
+    @property
+    def version(self):
+        if self._version is None:
+            self._version = get_version_for_filepath(session=self)
+        return self._version
 
     @property
     def _flserver(self):
         """root datamodel object."""
         if self._flserver_root is None:
-            from ansys.fluent.core.datamodel.flicing import Root as icing_root
-
             se = self.fluent_connection.datamodel_service_se
-            self._flserver_root = icing_root(se, "flserver", [])
+            print("BEFORE DM MODULE")
+            try:
+                dm_module = tui_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.flicing"
+                )
+            except Exception as ex:
+                print(str(ex))
+            print("AFTER DM MODULE")
+            print(dir(dm_module))
+            self._flserver_root = dm_module.Root(se, "flserver", [])
         return self._flserver_root
 
     @property

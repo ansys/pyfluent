@@ -113,7 +113,9 @@ class DataModelGenerator:
             "PMFileManagement": DataModelStaticInfo(
                 "PMFileManagement", "meshing", self.version
             ),
-            "icing": DataModelStaticInfo("flserver", "flicing", "flicing"),
+            "icing": DataModelStaticInfo(
+                "flserver", "flicing", self.version, "flicing"
+            ),
         }
         self._delete_generated_files()
         self._populate_static_info()
