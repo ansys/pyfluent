@@ -1,8 +1,11 @@
 """Module containing class encapsulating Fluent connection."""
 
+import importlib
+
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, _BaseSession
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
 
 
@@ -20,6 +23,13 @@ class Solver(_BaseSession):
         self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._settings_root = None
+        self._version = None
+
+    @property
+    def version(self):
+        if self._version is None:
+            self._version = get_version_for_filepath(session=self)
+        return self._version
 
     @property
     def tui(self):
@@ -27,10 +37,11 @@ class Solver(_BaseSession):
         executed."""
         if self._tui is None:
             try:
-                from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-
-                self._tui = SolverMainMenu([], self._tui_service)
-            except (ImportError, ModuleNotFoundError):
+                tui_module = importlib.import_module(
+                    f"ansys.fluent.core.solver.tui_{self.version}"
+                )
+                self._tui = tui_module.main_menu([], self._tui_service)
+            except ImportError:
                 LOG.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenuGeneric([], self._tui_service)
         return self._tui
@@ -39,7 +50,9 @@ class Solver(_BaseSession):
     def _root(self):
         """root settings object."""
         if self._settings_root is None:
-            self._settings_root = settings_get_root(flproxy=self._settings_service)
+            self._settings_root = settings_get_root(
+                flproxy=self._settings_service, version=self.version
+            )
         return self._settings_root
 
     @property
