@@ -1,5 +1,6 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
+import importlib
 import json
 from typing import Any
 import warnings
@@ -15,6 +16,7 @@ from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
 
 try:
@@ -147,9 +149,7 @@ class _BaseSession:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return ".".join(
-            map(str, self.fluent_connection.scheme_eval.scheme_eval("(cx-version)"))
-        )
+        return self.fluent_connection.get_fluent_version()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
@@ -327,6 +327,13 @@ class Session:
             self._settings_service = settings_service
             self._tui = None
             self._settings_root = None
+            self._version = None
+
+        @property
+        def version(self):
+            if self._version is None:
+                self._version = get_version_for_filepath(session=self)
+            return self._version
 
         @property
         def tui(self):
@@ -334,9 +341,10 @@ class Session:
             can be executed."""
             if self._tui is None:
                 try:
-                    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-
-                    self._tui = SolverMainMenu([], self._tui_service)
+                    tui_module = importlib.import_module(
+                        f"ansys.fluent.core.solver.tui_{self.version}"
+                    )
+                    self._tui = tui_module.main_menu([], self._tui_service)
                 except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
                     self._tui = TUIMenuGeneric([], self._tui_service)
@@ -346,5 +354,7 @@ class Session:
         def root(self):
             """root settings object."""
             if self._settings_root is None:
-                self._settings_root = settings_get_root(flproxy=self._settings_service)
+                self._settings_root = settings_get_root(
+                    flproxy=self._settings_service, version=self.version
+                )
             return self._settings_root
