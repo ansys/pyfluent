@@ -1,4 +1,5 @@
 import os
+import subprocess
 import time
 
 import psutil
@@ -10,7 +11,6 @@ from util.solver_workflow import (  # noqa: F401
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.session import _FluentConnection
-import docker
 
 
 def _read_case(session):
@@ -54,18 +54,27 @@ def test_session_starts_no_transcript_if_disabled(
     assert not print_transcript.called
 
 
+def get_container_ids_set():
+    proc = subprocess.Popen(["docker", "ps", "-q"], stdout=subprocess.PIPE)
+    output_bytes = proc.stdout.read()
+    output_str = output_bytes.decode()
+    output_split = output_str.split(" ")
+    output_split_at_n = output_str.split("\n")
+    del output_split_at_n[-1]
+    return set(output_split_at_n)
+
+
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
     def f():
         session = pyfluent.launch_fluent(mode="solver")
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
-        client = docker.from_env()
-        containers_before = client.containers.list()
+        containers_before = get_container_ids_set()
         f()
         time.sleep(10)
-        containers_after = client.containers.list()
-        new_containers = set(containers_after) - set(containers_before)
+        containers_after = get_container_ids_set()
+        new_containers = containers_after - containers_before
         assert not new_containers
     else:
         f()
@@ -81,15 +90,14 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
-        client = docker.from_env()
-        containers_before = client.containers.list()
+        containers_before = get_container_ids_set()
         f()
         time.sleep(10)
-        containers_after = client.containers.list()
-        new_containers = set(containers_after) - set(containers_before)
+        containers_after = get_container_ids_set()
+        new_containers = containers_after - containers_before
         assert new_containers
         for container in new_containers:
-            container.stop()
+            subprocess.Popen(["docker", "stop", container])
     else:
         f()
         time.sleep(10)
