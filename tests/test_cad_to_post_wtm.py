@@ -16,7 +16,7 @@ This test queries the following using PyTest:
 
 from functools import partial
 
-from pytest import approx
+import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
@@ -28,6 +28,7 @@ from util.meshing_workflow import (  # noqa: F401
 from util.solver import check_report_definition_result
 
 
+@pytest.mark.nightly
 def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
     meshing_session = new_watertight_workflow_session
@@ -249,7 +250,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
         check_report_definition(
             report_definition_name="mass_flow_rate",
-            expected_result=approx(-2.985690364942784e-06, abs=1e-3),
+            expected_result=pytest.approx(-2.985690364942784e-06, abs=1e-3),
         )
 
         ###############################################################################
@@ -267,7 +268,7 @@ def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
 
         check_report_definition(
             report_definition_name="temperature_outlet",
-            expected_result=approx(296.229, rel=1e-3),
+            expected_result=pytest.approx(296.229, rel=1e-3),
         )
 
         ###############################################################################

@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.session import _BaseSession as Session
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 _THIS_DIR = Path(__file__).parent
 
@@ -81,14 +82,20 @@ def _build_command_docstring(name: str, info: Any, indent: str):
 
 
 class DataModelStaticInfo:
-    def __init__(self, rules: str, mode: str, rules_save_name: str = ""):
+    def __init__(self, rules: str, mode: str, version: str, rules_save_name: str = ""):
         self.rules = rules
         self.mode = mode
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
         datamodel_dir = (
-            _THIS_DIR / ".." / "src" / "ansys" / "fluent" / "core" / "datamodel"
+            _THIS_DIR
+            / ".."
+            / "src"
+            / "ansys"
+            / "fluent"
+            / "core"
+            / f"datamodel_{version}"
         )
         datamodel_dir.mkdir(exist_ok=True)
         self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
@@ -96,11 +103,16 @@ class DataModelStaticInfo:
 
 class DataModelGenerator:
     def __init__(self):
+        self.version = get_version_for_filepath()
         self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo("workflow", "meshing"),
-            "meshing": DataModelStaticInfo("meshing", "meshing"),
-            "PartManagement": DataModelStaticInfo("PartManagement", "meshing"),
-            "PMFileManagement": DataModelStaticInfo("PMFileManagement", "meshing"),
+            "workflow": DataModelStaticInfo("workflow", "meshing", self.version),
+            "meshing": DataModelStaticInfo("meshing", "meshing", self.version),
+            "PartManagement": DataModelStaticInfo(
+                "PartManagement", "meshing", self.version
+            ),
+            "PMFileManagement": DataModelStaticInfo(
+                "PMFileManagement", "meshing", self.version
+            ),
             "icing": DataModelStaticInfo("flserver", "flicing", "flicing"),
         }
         self._delete_generated_files()
@@ -332,7 +344,7 @@ class DataModelGenerator:
                     info.static_info,
                     doc_dir / name,
                     f"{info.mode}.datamodel.{name}",
-                    f"ansys.fluent.core.datamodel.{name}",
+                    f"ansys.fluent.core.datamodel_{self.version}.{name}",
                     "Root",
                 )
 
