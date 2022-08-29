@@ -27,6 +27,7 @@ env:
 jobs:
   stylecheck:
     name: Style Check
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -48,6 +49,7 @@ jobs:
 
   docs-style:
     name: Documentation Style Check
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -66,6 +68,7 @@ jobs:
 
   test-import:
     name: Smoke Tests
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -107,6 +110,7 @@ jobs:
 
   docs_build:
     name: Build Documentation
+    if: false
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     strategy:
@@ -232,7 +236,7 @@ jobs:
 
   build-test:
     name: Unit Testing
-    needs: test-import
+    #needs: test-import
     runs-on: ubuntu-latest
 
     steps:
@@ -340,7 +344,7 @@ jobs:
           make install > /dev/null
 
       - name: 22.2 Unit Testing
-        run: make unittest
+        run: make unittest-all
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
