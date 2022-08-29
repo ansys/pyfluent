@@ -30,7 +30,9 @@ def test_meshing_mode(load_mixing_elbow_meshing):
     session_dir = dir(meshing_session)
     for attr in ("field_data", "field_info", "meshing", "workflow"):
         assert attr in session_dir
-    assert meshing_session.workflow.TaskObject["Import Geometry"].Execute()
+    assert meshing_session.workflow.InitializeWorkflow(
+        WorkflowType="Watertight Geometry"
+    )
     assert meshing_session.switch_to_solver()
 
 
