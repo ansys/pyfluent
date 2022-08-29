@@ -433,4 +433,4 @@ class _Uploader:
         if self.file_service.file_exist(file_name):
             self.file_service.download_file(file_name, local_file_path)
         else:
-            raise FileNotFoundError("Uploaded remote file name is different.")
+            raise FileNotFoundError("Remote file does not exist.")
