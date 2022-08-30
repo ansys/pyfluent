@@ -135,3 +135,8 @@ class Quantity(float):
                 f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
             )
         return Quantity(temp.magnitude, temp.units)
+
+    def __eq__(self, other):
+        if isinstance(other, Quantity):
+            return other._quantity == self._quantity
+        return False
