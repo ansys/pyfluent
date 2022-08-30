@@ -58,10 +58,8 @@ def get_container_ids_set():
     proc = subprocess.Popen(["docker", "ps", "-q"], stdout=subprocess.PIPE)
     output_bytes = proc.stdout.read()
     output_str = output_bytes.decode()
-    output_split = output_str.split(" ")
-    output_split_at_n = output_str.split("\n")
-    del output_split_at_n[-1]
-    return set(output_split_at_n)
+    ids = output_str.strip().split()
+    return set(ids)
 
 
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
