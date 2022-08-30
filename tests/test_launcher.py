@@ -19,6 +19,10 @@ def test_manual_fluent_version_setting():
     with pytest.raises(RuntimeError):
         pyfluent.set_ansys_version(22.1)
 
+    # Resets the global variable to its original state
+    pyfluent.set_ansys_version(version=pyfluent.FluentVersion.version_22R2)
+    assert FLUENT_VERSION[0] == "22.2"
+
 
 def test_manual_fluent_path_setting():
     """Test case for setting up the path to fluent.exe via program"""
