@@ -50,7 +50,8 @@ class MeshingWorkflow:
         def _refreshed_command(self):
             task_arg_state = self.Arguments.get_state()
             cmd = self._command()
-            cmd.set_state(task_arg_state)
+            if task_arg_state:
+                cmd.update_dict(task_arg_state)
             return cmd
 
         def _command(self):
