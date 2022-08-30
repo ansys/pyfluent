@@ -1,5 +1,3 @@
-from itertools import permutations
-
 import pint
 from pint import Unit
 
@@ -8,85 +6,34 @@ ureg.default_system = "SI"
 
 quantity = ureg.Quantity
 
-restricted_units = ["Hz", "hertz", "rad/s", "radian/s", "rpm", "rps", "cps"]
-restricted_conversions = list((permutations(restricted_units, 2)))
-
-std_prefixes = [
-    "y",
-    "z",
-    "a",
-    "f",
-    "p",
-    "n",
-    "u",
-    "c",
-    "d",
-    "da",
-    "h",
-    "m",
-    "k",
-    "M",
-    "G",
-    "T",
-    "P",
-    "E",
-    "Z",
-    "Y",
-    "",
-]
-
-restricted_unit_expansion = {
-    "Hz": [prefix + "Hz" for prefix in std_prefixes],
-    "hertz": [prefix + "hertz" for prefix in std_prefixes],
-    "rad/s": ["radian/s", "rad/s"],
-    "radian/s": ["rad/s", "radian/s"],
-    "rpm": ["revolutions_per_minute", "rpm"],
-    "rps": ["revolutions_per_second", "rps"],
-    "cps": ["counts_per_second", "cps"],
-}
-
-
-def build_restricted_conversions(conversions, unit_expansion):
-    """This function generates required final restricted mappings."""
-
-    keys = set([i[0] for i in conversions])
-    restricted_units_dict = {unit[0]: [] for unit in conversions}
-
-    for key in keys:
-        temp_list = [unit_expansion[i] for i in keys.difference(set([key]))]
-        for temp in temp_list:
-            restricted_units_dict[key] += temp
-    for key in keys:
-        restricted_units_dict[key] = list(set(restricted_units_dict[key]))
-    return restricted_units_dict
-
-
-restricted_units = build_restricted_conversions(
-    restricted_conversions, restricted_unit_expansion
-)
-
 
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units. Attributes of every instance of this class are used to construct a
     new quantity instance supported by unit registry of pint module.
 
+    Attributes
+    ----------
+    float: Real value
+        Value of quantity is stored as float.
+
+    unit: Unit string
+        Unit of quantity is stored as string.
+
+    Methods
+    -------
+    to(to_unit)
+        Converts to given unit string.
+
+    Returns
+    -------
+    Quantity instance.
+
     The pint module supports methods for unit conversions, unit compatibility and
     dimensionality check.
 
     All the instances of this class are converted to base SI units system to have
     consistency in all arithmetic operations.
-
-    Any conversion between "Hz", "hertz", "rad/s", "radian/s", "rpm",
-    "rps", "cps" is restricted.
-
-    Certain conversions allowed by pint are disallowed here because they
-    are not dimensionally consistent. For instance conversions between
-    Hz and rad/s are not allowed because the former represents the
-    number of times a dimensionless quantity is changing per unit time
-    and latter represents the amount by which an angular quantity
-    changes per unit time. A ValueError exception will be thrown in such
-    cases.
     """
 
     def __new__(self, real_value, units_string):
@@ -97,7 +44,6 @@ class Quantity(float):
         self.unit = units_string
         self._quantity = quantity(self.__float__(), self.unit)
         self._base_si_quantity = self._quantity.to_base_units()
-        self._restricted_conversions = restricted_units
 
     def __str__(self):
         return f'({self.__float__()}, "{self.unit}")'
@@ -110,14 +56,6 @@ class Quantity(float):
         """This method checks the compatibility between current instance unit
         and user provided unit, if both of them are compatible, then only it
         performs required conversion otherwise raises a Value Error."""
-
-        if (
-            self.unit in self._restricted_conversions.keys()
-            and to_unit in self._restricted_conversions[self.unit]
-        ):
-            raise ValueError(
-                f"Conversion between '{self.unit}' and '{to_unit}' is restricted."
-            )
 
         user_unit = Unit(to_unit)
 
@@ -148,8 +86,6 @@ class Quantity(float):
         return Quantity(temp.magnitude, temp.units)
 
     def __add__(self, other):
-        if self.unit in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is restricted.")
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity + other._quantity
@@ -169,8 +105,6 @@ class Quantity(float):
         return self.__add__(other)
 
     def __sub__(self, other):
-        if self.unit in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is restricted.")
 
         if isinstance(other, Quantity):
             temp = self._base_si_quantity - other._quantity
@@ -187,8 +121,6 @@ class Quantity(float):
         return Quantity(temp.magnitude, temp.units)
 
     def __rsub__(self, other):
-        if self.unit in self._restricted_conversions.keys():
-            raise ValueError("This arithmetic operation is restricted.")
 
         if isinstance(other, Quantity):
             temp = other._quantity - self._base_si_quantity
