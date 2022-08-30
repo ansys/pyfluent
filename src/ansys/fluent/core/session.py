@@ -8,11 +8,7 @@ import warnings
 import grpc
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
@@ -235,9 +231,7 @@ class Session:
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
         self._settings_service = self.fluent_connection.settings_service
 
-        self.solver = Session.Solver(
-            self._datamodel_service_tui, self._settings_service
-        )
+        self.solver = Session.Solver(self.fluent_connection)
 
     @classmethod
     def create_from_server_info_file(
@@ -320,14 +314,17 @@ class Session:
         )
 
     class Solver:
-        def __init__(
-            self, tui_service: DatamodelService_TUI, settings_service: SettingsService
-        ):
-            self._tui_service = tui_service
-            self._settings_service = settings_service
+        def __init__(self, fluent_connection: _FluentConnection):
+            self._fluent_connection = fluent_connection
+            self._tui_service = fluent_connection.datamodel_service_tui
+            self._settings_service = fluent_connection.settings_service
             self._tui = None
             self._settings_root = None
             self._version = None
+
+        def get_fluent_version(self):
+            """Gets and returns the fluent version."""
+            return self._fluent_connection.get_fluent_version()
 
         @property
         def version(self):
