@@ -24,5 +24,5 @@ def with_launching_container(monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture(autouse=True)
 def clean_examples():
     if os.path.exists(pyfluent.EXAMPLES_PATH):
-        shutil.rmtree(pyfluent.EXAMPLES_PATH)
+        shutil.rmtree(pyfluent.EXAMPLES_PATH, ignore_errors=True)
     os.mkdir(pyfluent.EXAMPLES_PATH)
