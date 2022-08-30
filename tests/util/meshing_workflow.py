@@ -11,7 +11,7 @@ def assign_task_arguments(
     task.Arguments = kwargs
     if check_state:
         # the state that we have set must be a subset of the total state
-        assert kwargs.items() <= task.Arguments().items()
+        assert kwargs.items() <= task.Arguments.items()
 
 
 def check_task_execute_preconditions(task) -> None:
