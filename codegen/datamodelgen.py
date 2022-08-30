@@ -135,7 +135,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             info.mode == "solver" for _, info in self._static_info.items()
         )
-        run_icing_mode = "PYFLUENT_FLUENT_ROOT" in os.environ.keys() and any(
+        run_icing_mode = int(self.version) >= 231 and any(
             info.mode == "flicing" for _, info in self._static_info.items()
         )
         import ansys.fluent.core as pyfluent

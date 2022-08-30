@@ -40,15 +40,9 @@ class SolverIcing(Solver):
         """root datamodel object."""
         if self._flserver_root is None:
             se = self.fluent_connection.datamodel_service_se
-            print("BEFORE DM MODULE")
-            try:
-                dm_module = tui_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self.version}.flicing"
-                )
-            except Exception as ex:
-                print(str(ex))
-            print("AFTER DM MODULE")
-            print(dir(dm_module))
+            dm_module = tui_module = importlib.import_module(
+                f"ansys.fluent.core.datamodel_{self.version}.flicing"
+            )
             self._flserver_root = dm_module.Root(se, "flserver", [])
         return self._flserver_root
 
