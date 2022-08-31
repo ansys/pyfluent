@@ -1,8 +1,11 @@
+import os
+
 import pytest
 
 
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
 def test_methods(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"
