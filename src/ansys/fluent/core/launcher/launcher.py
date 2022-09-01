@@ -20,6 +20,7 @@ from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_f
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
@@ -77,10 +78,12 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
 class LaunchModes(Enum):
     """Provides the standard Fluent launch modes."""
 
-    MESHING_MODE = ("meshing", Meshing, True)
-    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True)
-    SOLVER = ("solver", Solver, False)
-    SOLVER_LITE = ("solver-lite", SolverLite, False)
+    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    MESHING_MODE = ("meshing", Meshing, True, [])
+    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
+    SOLVER = ("solver", Solver, False, [])
+    SOLVER_LITE = ("solver-lite", SolverLite, False, [])
+    SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
     def get_mode(mode: str) -> "LaunchModes":
@@ -140,7 +143,6 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
-    fluent_env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
     kwargs.update(env=fluent_env)
     return kwargs
 
@@ -361,6 +363,8 @@ def launch_fluent(
             mode = LaunchModes.get_mode(mode)
         new_session = mode.value[1]
         meshing_mode = mode.value[2]
+        for k, v in mode.value[3]:
+            argvals[k] = v
 
     if start_instance is None:
         start_instance = bool(
@@ -379,6 +383,7 @@ def launch_fluent(
         launch_string += _build_fluent_launch_args_string(**argvals)
         if meshing_mode:
             launch_string += " -meshing"
+
         server_info_filepath = _get_server_info_filepath()
         try:
             launch_string += f" {additional_arguments}"
@@ -392,6 +397,8 @@ def launch_fluent(
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
+            if mode != LaunchModes.SOLVER_ICING:
+                env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             subprocess.Popen(launch_string, **kwargs)
             while True:

@@ -34,5 +34,13 @@
     "case_filepath": {
         "type": "str",
         "fluent_format": " -case {}"
+    },
+    "fluent_icing": {
+        "type": "bool",
+        "fluent_map": {
+            "true": " -flicing",
+            "false": ""
+        },
+        "fluent_format": "{}"
     }
 }
