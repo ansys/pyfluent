@@ -13,6 +13,8 @@ def test_read():
         ["(1 . (2 . 3))", [1, [2, 3]]],
         ["(x 1)", ["x", 1]],
         ['(x . "1.0 [m/s]")', ["x", "1.0 [m/s]"]],  # should be "'1.0 [m/s]'" ?
+        ["(define x 1)", ["define", "x", 1]],
+        ["(define x)", ["define", "x", None]],
     ]
 
     for in_out in in_outs:
