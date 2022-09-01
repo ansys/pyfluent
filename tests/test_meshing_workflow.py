@@ -200,6 +200,18 @@ def test_command_args_datamodel_se(new_mesh_session):
 
 
 @pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+def test_command_args_including_task_object_datamodel_se(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.TaskObject["Import Geometry"]
+    assert igt.Arguments == {}
+    assert igt.CommandArguments.CadImportOptions()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+
+
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
 def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session_new = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_py_journal.txt")
@@ -216,3 +228,14 @@ def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PA
         os.remove(file_path)
 
     assert returned
+
+
+@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+def test_attribute_query_list_types(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.TaskObject["Import Geometry"]
+    assert ["CAD", "Mesh"] == igt.CommandArguments.FileFormat.getAttribValue(
+        "allowedValues"
+    )

@@ -433,7 +433,7 @@ def launch_fluent(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
-                _FluentConnection(
+                fluent_connection=_FluentConnection(
                     port=port,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
