@@ -1,13 +1,10 @@
-import os
-
 import pytest
 from util.solver import copy_database_material
 
 
-@pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
-@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+@pytest.mark.fluent_231
 def test_solver_material(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     copy_database_material(
