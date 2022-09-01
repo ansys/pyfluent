@@ -3,6 +3,7 @@ import pytest
 
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.fluent_231
 def test_methods(load_mixing_elbow_mesh):
     solver = load_mixing_elbow_mesh
     solver.setup.models.multiphase.models = "vof"
