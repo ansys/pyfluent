@@ -14,7 +14,7 @@ class Quantity(float):
 
     Attributes
     ----------
-    float: Real value
+    value: Real value
         Value of quantity is stored as float.
 
     unit: Unit string
