@@ -193,3 +193,10 @@ def test_old_style_session(with_launching_container):
     session.solver.root.file.read(file_type="case", file_name=case_path)
     session.solver.tui.report.system.sys_stats()
     session.exit()
+
+
+def test_get_fluent_mode(new_mesh_session):
+    session = new_mesh_session
+    assert session.fluent_connection.get_current_fluent_mode() == "meshing"
+    session = session.switch_to_solver()
+    assert session.fluent_connection.get_current_fluent_mode() == "solver"

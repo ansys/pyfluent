@@ -149,14 +149,6 @@ class _BaseSession:
         """Gets and returns the fluent version."""
         return self.fluent_connection.get_fluent_version()
 
-    def get_current_fluent_mode(self):
-        """Gets and returns the mode of the current instance of fluent (meshing
-        or solver)."""
-        if self.fluent_connection.scheme_eval.scheme_eval("(cx-solver-mode?)"):
-            return "solver"
-        else:
-            return "meshing"
-
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self

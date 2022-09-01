@@ -3,7 +3,6 @@
 This module supports both starting Fluent locally and connecting to a
 remote instance with gRPC.
 """
-
 from enum import Enum
 import json
 import os
@@ -13,10 +12,11 @@ import subprocess
 import tempfile
 import time
 from typing import Any, Dict, Union
+import warnings
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import Session, _BaseSession
+from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -267,6 +267,7 @@ def launch_fluent(
     case_filepath: str = None,
     meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
+    server_info_filepath: str = None,
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -336,6 +337,8 @@ def launch_fluent(
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
         ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
+    server_info_filepath: str
+        Path to server-info file written out by Fluent server. The default is ``None``.
 
     Returns
     -------
@@ -440,13 +443,44 @@ def launch_fluent(
                 )
             )
         else:
+            run_via_server_info = False
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
-            return new_session(
-                fluent_connection=_FluentConnection(
-                    ip=ip,
-                    port=port,
-                    cleanup_on_exit=cleanup_on_exit,
-                    start_transcript=start_transcript,
+            if ip and port:
+                password = None
+                if not mode:
+                    raise RuntimeError(
+                        "Please provide a mode while running with ip and port."
+                    )
+                warnings.warn(
+                    "The server-info file was not parsed because ip and port were provided."
                 )
+            elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
+                password = None
+                if not mode:
+                    raise RuntimeError(
+                        "Please provide a mode while running with ip and port."
+                    )
+                warnings.warn(
+                    "The server-info file was not parsed because ip and port were provided."
+                )
+            else:
+                ip, port, password = parse_server_info_file(server_info_filepath)
+                run_via_server_info = True
+
+            fluent_connection = _FluentConnection(
+                ip=ip,
+                port=port,
+                password=password,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
             )
+            if run_via_server_info:
+                session_mode = LaunchModes.get_mode(
+                    fluent_connection.get_current_fluent_mode()
+                )
+            else:
+                session_mode = mode
+
+            new_session = session_mode.value[1]
+            return new_session(fluent_connection=fluent_connection)
