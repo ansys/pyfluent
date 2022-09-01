@@ -450,14 +450,16 @@ def launch_fluent(
             port = argvals.get("port", None)
             if ip and port:
                 warnings.warn(
-                    "The server-info file was not parsed because ip and port were provided."
+                    "The server-info file was not parsed because ip and port were provided explicitly."
                 )
-            elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
-                warnings.warn(
-                    "The server-info file was not parsed because ip and port were provided."
-                )
-            else:
+            elif server_info_filepath:
                 ip, port, password = parse_server_info_file(server_info_filepath)
+            elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
+                pass
+            else:
+                raise RuntimeError(
+                    "Please provide either ip and port data or server-info file."
+                )
 
             fluent_connection = _FluentConnection(
                 ip=ip,
@@ -466,16 +468,15 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
             )
-            if password:
-                session_mode = LaunchModes.get_mode(
-                    fluent_connection.get_current_fluent_mode()
-                )
-            elif mode:
+            if mode:
                 session_mode = mode
             else:
-                raise RuntimeError(
-                    "Please provide a mode while running with ip and port."
-                )
+                try:
+                    session_mode = LaunchModes.get_mode(
+                        fluent_connection.get_current_fluent_mode()
+                    )
+                except BaseException:
+                    raise RuntimeError("Fluent session password mismatch")
 
             new_session = session_mode.value[1]
             return new_session(fluent_connection=fluent_connection)
