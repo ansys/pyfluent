@@ -6,13 +6,13 @@ import ansys.fluent.core.quantity as q
 def test_viscosity():
     v = q.Quantity(1, "P")  # poise
     conversion_output = v.to("kg m^-1 s^-1")
-    assert conversion_output.real == 0.1
+    assert conversion_output.value == 0.1
 
 
 def test_dynamic_viscosity():
     vd = q.Quantity(1, "Pa s")
     conversion_output = vd.to("P")
-    assert conversion_output.real == 10.0
+    assert conversion_output.value == 10.0
 
 
 def test_dynamic_viscosity_equality():
@@ -23,25 +23,25 @@ def test_dynamic_viscosity_equality():
 def test_viscosity_slugs():
     vd = q.Quantity(1, "slugs ft^-1 s^-1")
     conversion_output = vd.to("kg m^-1 s^-1")
-    assert conversion_output.real == pytest.approx(47.880, 0.0002)
+    assert conversion_output.value == pytest.approx(47.880, 0.0002)
 
 
 def test_viscosity_lb():
     vd = q.Quantity(1, "lb ft^-1 s^-1")
     conversion_output = vd.to("kg m^-1 s^-1")
-    assert conversion_output.real == pytest.approx(1.488164, 0.000001)
+    assert conversion_output.value == pytest.approx(1.488164, 0.000001)
 
 
 def test_volume():
     v = q.Quantity(1, "gal")
     conversion_output = v.to("m^3")
-    assert conversion_output.real == pytest.approx(0.00378541)
+    assert conversion_output.value == pytest.approx(0.00378541)
 
 
 def test_youngs_modulus():
     ym = q.Quantity(1, "lbf ft^-2")
     conversion_output = ym.to("N m^-2")
-    assert conversion_output.real == pytest.approx(47.89, 0.1)
+    assert conversion_output.value == pytest.approx(47.89, 0.1)
 
 
 def test_temperature():
@@ -57,169 +57,169 @@ def test_temperature():
 def test_collision_rate():
     cr = q.Quantity(1, "ft^-3 s^-1")
     conversion_output = cr.to("m^-3 s^-1")
-    assert conversion_output.real == pytest.approx(35.3147, 0.001)
+    assert conversion_output.value == pytest.approx(35.3147, 0.001)
 
 
 def test_area_inverse():
     in_sq_m = q.Quantity(1, "m^-2")
     conversion_output = in_sq_m.to("cm^-2")
-    assert conversion_output.real == pytest.approx(0.0001)
+    assert conversion_output.value == pytest.approx(0.0001)
 
 
 def test_area():
     in_sq_m = q.Quantity(1, "m^2")
     conversion_output = in_sq_m.to("in^2")
-    assert conversion_output.real == pytest.approx(1550, 0.1)
+    assert conversion_output.value == pytest.approx(1550, 0.1)
 
 
 def test_angular_velocity():
     degps = q.Quantity(1, "deg/s")
     conversion_output = degps.to("rad/s")
-    assert conversion_output.real == pytest.approx(0.01745, 0.001)
+    assert conversion_output.value == pytest.approx(0.01745, 0.001)
 
 
 def test_dyne():
     x = q.Quantity(1, "dyn cm^-2")
     conversion_output = x.to("N m^-2")
-    assert conversion_output.real == pytest.approx(0.1)
+    assert conversion_output.value == pytest.approx(0.1)
 
 
 def test_gal():
     x = q.Quantity(1, "gal^-1")
     conversion_output = x.to("m^-3")
-    assert conversion_output.real == pytest.approx(264.17, 0.002)
+    assert conversion_output.value == pytest.approx(264.17, 0.002)
 
 
 def test_mph():
     x = q.Quantity(1, "m s^-1")
     conversion_output = x.to("mph")
-    assert conversion_output.real == pytest.approx(2.23694, 0.00002)
+    assert conversion_output.value == pytest.approx(2.23694, 0.00002)
 
 
 def test_inches_water():
     x = q.Quantity(1, "inch_H2O_39F")
     conversion_output = x.to("Pa")
-    assert conversion_output.real == pytest.approx(249, 0.1)
+    assert conversion_output.value == pytest.approx(249, 0.1)
 
 
 def test_torr():
     x = q.Quantity(1, "torr")
     conversion_output = x.to("Pa")
-    assert conversion_output.real == pytest.approx(133.3220, 0.0003)
+    assert conversion_output.value == pytest.approx(133.3220, 0.0003)
 
 
 def test_psi():
     x = q.Quantity(1, "psi")
     conversion_output = x.to("Pa")
-    assert conversion_output.real == pytest.approx(6894.757, 0.0002)
+    assert conversion_output.value == pytest.approx(6894.757, 0.0002)
 
 
 def test_atm():
     x = q.Quantity(1, "atm")
     conversion_output = x.to("Pa")
-    assert conversion_output.real == pytest.approx(101325.0)
+    assert conversion_output.value == pytest.approx(101325.0)
 
 
 def test_mole_con_henry_const():
     x = q.Quantity(1, "atm m^3 kg mol^-1")
     conversion_output = x.to("Pa m^3 kg mol^-1")
-    assert conversion_output.real == pytest.approx(101325.0)
+    assert conversion_output.value == pytest.approx(101325.0)
 
 
 def test_pdl():
     x = q.Quantity(1, "pdl")
     conversion_output = x.to("N")
-    assert conversion_output.real == pytest.approx(0.13826, 0.0001)
+    assert conversion_output.value == pytest.approx(0.13826, 0.0001)
 
 
 def test_ozf():
     x = q.Quantity(1, "ozf")  # force_ounce
     conversion_output = x.to("N")
-    assert conversion_output.real == pytest.approx(0.27802, 0.0001)
+    assert conversion_output.value == pytest.approx(0.27802, 0.0001)
 
 
 def test_lbf():
     x = q.Quantity(1, "lbf")  # force_pound
     conversion_output = x.to("N")
-    assert conversion_output.real == pytest.approx(4.44820, 0.00002)
+    assert conversion_output.value == pytest.approx(4.44820, 0.00002)
 
 
 def test_kgf():
     x = q.Quantity(1, "kgf")
     conversion_output = x.to("N")
-    assert conversion_output.real == pytest.approx(9.806805, 0.0002)
+    assert conversion_output.value == pytest.approx(9.806805, 0.0002)
 
 
 def test_cal():
     x = q.Quantity(1, "cal")
     conversion_output = x.to("J")
-    assert conversion_output.real == pytest.approx(4.1868, 0.002)
+    assert conversion_output.value == pytest.approx(4.1868, 0.002)
 
 
 def test_kcal():
     x = q.Quantity(1, "kcal")
     conversion_output = x.to("J")
-    assert conversion_output.real == pytest.approx(4186.8, 2)
+    assert conversion_output.value == pytest.approx(4186.8, 2)
 
 
 def test_hp():
     x = q.Quantity(1, "hp")
     conversion_output = x.to("W")
-    assert conversion_output.real == pytest.approx(745.70, 0.01)
+    assert conversion_output.value == pytest.approx(745.70, 0.01)
 
 
 def test_ohm():
     x = q.Quantity(1, "ohm cm")
     conversion_output = x.to("ohm m")
-    assert conversion_output.real == 0.01
+    assert conversion_output.value == 0.01
 
 
 def test_hp_h():
     x = q.Quantity(1, "hp h")  # hp_hour
     conversion_output = x.to("J")
-    assert conversion_output.real == pytest.approx(2.6845 * 10**6, 19)
+    assert conversion_output.value == pytest.approx(2.6845 * 10**6, 19)
 
 
 def test_erg():
     x = q.Quantity(1, "erg")
     conversion_output = x.to("J")
-    assert conversion_output.real == pytest.approx(1.0 * 10**-7)
+    assert conversion_output.value == pytest.approx(1.0 * 10**-7)
 
 
 def test_energy_density():
     x = q.Quantity(1, "BTU ft^-2")
     conversion_output = x.to("J m^-2")
-    assert conversion_output.real == pytest.approx(11356.36, 0.2)
+    assert conversion_output.value == pytest.approx(11356.36, 0.2)
 
 
 def test_degree_rankine():
     x = q.Quantity(1, "BTU lb^-1 degR^-1")
     conversion_output = x.to("J kg^-1 degK^-1")
-    assert conversion_output.real == pytest.approx(4186.69, 0.2)
+    assert conversion_output.value == pytest.approx(4186.69, 0.2)
 
 
 def test_degree_fahrenheit():
     x = q.Quantity(1, "BTU lb^-1 degF^-1")
     conversion_output = x.to("J kg^-1 degK^-1")
-    assert conversion_output.real == pytest.approx(4186.69, 0.2)
+    assert conversion_output.value == pytest.approx(4186.69, 0.2)
 
 
 def test_degree_celsius():
     x = q.Quantity(1, "cal g^-1 degC^-1")
     conversion_output = x.to("J kg^-1 degK^-1")
-    assert conversion_output.real == pytest.approx(4186.69, 2)
+    assert conversion_output.value == pytest.approx(4186.69, 2)
 
 
 def test_mol():
     x = q.Quantity(1, "lb mol ft^-3 s^-1")
     conversion_output = x.to("kg mol m^-3 s^-1")
-    assert conversion_output.real == pytest.approx(16.01846, 0.000003)
+    assert conversion_output.value == pytest.approx(16.01846, 0.000003)
 
 
 def test_rpm():
     x = q.Quantity(1, "rpm")
     conversion_output = x.to("rad s^-1")
-    assert conversion_output.real == pytest.approx(0.1047198, 0.000001)
+    assert conversion_output.value == pytest.approx(0.1047198, 0.000001)
 
 
 if __name__ == "__main__":

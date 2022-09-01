@@ -41,6 +41,7 @@ class Quantity(float):
 
     def __init__(self, real_value, units_string):
         float.__init__(real_value)
+        self.value = self.__float__()
         self.unit = units_string
         self._quantity = quantity(self.__float__(), self.unit)
         self._base_si_quantity = self._quantity.to_base_units()
@@ -137,6 +138,6 @@ class Quantity(float):
         return Quantity(temp.magnitude, temp.units)
 
     def __eq__(self, other):
-        if isinstance(other, Quantity):
-            return other._quantity == self._quantity
-        return False
+        return (
+            other._quantity == self._quantity if isinstance(other, Quantity) else False
+        )
