@@ -198,6 +198,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 
 
 def launch_remote_fluent(
+    session_cls,
     product_version: str = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
@@ -244,7 +245,7 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return _BaseSession(
+    return session_cls(
         fluent_connection=_FluentConnection(
             channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
         )
@@ -428,6 +429,7 @@ def launch_fluent(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(
+                session_cls=new_session,
                 product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
