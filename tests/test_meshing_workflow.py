@@ -204,7 +204,7 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
-    assert igt.Arguments == {}
+    assert igt.Arguments() == {}
     assert igt.CommandArguments.CadImportOptions()
     assert igt.CommandArguments.CadImportOptions.OneZonePer()
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
