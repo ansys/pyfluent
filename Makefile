@@ -17,15 +17,27 @@ docker-pull:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-unittest:
+unittest: unittest-dev-222
+
+unittest-dev-222:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@pytest -v -m "unmarked" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@pytest -v -m "dev and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
-unittest-all:
+unittest-dev-231:
+	@echo "Running unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@pytest -v -m "dev and not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+
+unittest-all-222:
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@pytest -v --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@pytest -v -m "not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+
+unittest-all-231:
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 api-codegen:
 	@echo "Running API codegen"

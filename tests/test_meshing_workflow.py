@@ -1,9 +1,3 @@
-""".. _ref_mixing_elbow_tui_api:
-
-Fluid Flow and Heat Transfer in a Mixing Elbow
----------------------------------------------------
-This test covers generic meshing workflow behaviour
-"""
 from functools import partial
 import os
 
@@ -26,6 +20,9 @@ def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
 ):
+    """
+    This test covers generic meshing workflow behaviour
+    """
     meshing_session = shared_watertight_workflow_session
     workflow = meshing_session.workflow
 
@@ -188,7 +185,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+@pytest.mark.dev
+@pytest.mark.fluent_231
 def test_command_args_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
@@ -199,7 +197,8 @@ def test_command_args_datamodel_se(new_mesh_session):
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+@pytest.mark.dev
+@pytest.mark.fluent_231
 def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
@@ -211,7 +210,8 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
 
 
-@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+@pytest.mark.dev
+@pytest.mark.fluent_231
 def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session_new = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_py_journal.txt")
@@ -230,7 +230,8 @@ def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PA
     assert returned
 
 
-@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+@pytest.mark.dev
+@pytest.mark.fluent_231
 def test_attribute_query_list_types(new_mesh_session):
     session_new = new_mesh_session
     w = session_new.workflow
