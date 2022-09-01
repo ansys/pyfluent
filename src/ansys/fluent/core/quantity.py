@@ -43,14 +43,14 @@ class Quantity(float):
         float.__init__(real_value)
         self.value = self.__float__()
         self.unit = units_string
-        self._quantity = quantity(self.__float__(), self.unit)
+        self._quantity = quantity(self.value, self.unit)
         self._base_si_quantity = self._quantity.to_base_units()
 
     def __str__(self):
-        return f'({self.__float__()}, "{self.unit}")'
+        return f'({self.value}, "{self.unit}")'
 
     def __repr__(self):
-        return f'(Quantity ({self.__float__()}, "{self.unit}"))'
+        return f'(Quantity ({self.value}, "{self.unit}"))'
 
     def to(self, to_unit):
 
@@ -97,9 +97,7 @@ class Quantity(float):
                 self._base_si_quantity.magnitude + other, self._base_si_quantity.units
             )
         else:
-            raise ValueError(
-                f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
-            )
+            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
         return Quantity(temp.magnitude, temp.units)
 
     def __radd__(self, other):
@@ -116,9 +114,7 @@ class Quantity(float):
                 self._base_si_quantity.magnitude - other, self._base_si_quantity.units
             )
         else:
-            raise ValueError(
-                f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
-            )
+            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
         return Quantity(temp.magnitude, temp.units)
 
     def __rsub__(self, other):
@@ -132,9 +128,7 @@ class Quantity(float):
                 other - self._base_si_quantity.magnitude, self._base_si_quantity.units
             )
         else:
-            raise ValueError(
-                f"Quantity{(self.__float__(), self.unit)} is not dimensionless."
-            )
+            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
         return Quantity(temp.magnitude, temp.units)
 
     def __eq__(self, other):
