@@ -268,6 +268,7 @@ def launch_fluent(
     meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
+    password: str = None,
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -339,6 +340,8 @@ def launch_fluent(
         ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
     server_info_filepath: str
         Path to server-info file written out by Fluent server. The default is ``None``.
+    password : str, optional
+            Password to connect to existing Fluent instance.
 
     Returns
     -------
@@ -443,30 +446,18 @@ def launch_fluent(
                 )
             )
         else:
-            run_via_server_info = False
             ip = argvals.get("ip", None)
             port = argvals.get("port", None)
             if ip and port:
-                password = None
-                if not mode:
-                    raise RuntimeError(
-                        "Please provide a mode while running with ip and port."
-                    )
                 warnings.warn(
                     "The server-info file was not parsed because ip and port were provided."
                 )
             elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
-                password = None
-                if not mode:
-                    raise RuntimeError(
-                        "Please provide a mode while running with ip and port."
-                    )
                 warnings.warn(
                     "The server-info file was not parsed because ip and port were provided."
                 )
             else:
                 ip, port, password = parse_server_info_file(server_info_filepath)
-                run_via_server_info = True
 
             fluent_connection = _FluentConnection(
                 ip=ip,
@@ -475,12 +466,16 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
             )
-            if run_via_server_info:
+            if password:
                 session_mode = LaunchModes.get_mode(
                     fluent_connection.get_current_fluent_mode()
                 )
-            else:
+            elif mode:
                 session_mode = mode
+            else:
+                raise RuntimeError(
+                    "Please provide a mode while running with ip and port."
+                )
 
             new_session = session_mode.value[1]
             return new_session(fluent_connection=fluent_connection)
