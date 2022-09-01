@@ -2,8 +2,6 @@
 
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
-import grpc
-
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -14,23 +12,9 @@ class SolverLite(Solver):
 
     def __init__(
         self,
-        ip: str = None,
-        port: int = None,
-        password: str = None,
-        channel: grpc.Channel = None,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        remote_instance=None,
         fluent_connection=None,
     ):
         super().__init__(
-            ip=ip,
-            port=port,
-            password=password,
-            channel=channel,
-            cleanup_on_exit=cleanup_on_exit,
-            start_transcript=start_transcript,
-            remote_instance=remote_instance,
             fluent_connection=fluent_connection,
         )
         self._tui_service = self.fluent_connection.datamodel_service_tui
