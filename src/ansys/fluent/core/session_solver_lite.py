@@ -2,8 +2,6 @@
 
 **********PRESENTLY SAME AS SOLVER WITH A SWITCH TO SOLVER***********
 """
-import grpc
-
 from ansys.fluent.core.session_solver import Solver
 
 
