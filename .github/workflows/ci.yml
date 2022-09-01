@@ -231,7 +231,7 @@ jobs:
           CLEAN: true
 
   build-test:
-    name: Unit Testing
+    name: Build and Unit Testing
     needs: test-import
     runs-on: ubuntu-latest
 
@@ -340,7 +340,7 @@ jobs:
           make install > /dev/null
 
       - name: 22.2 Unit Testing
-        run: make unittest
+        run: make unittest-dev-222
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
@@ -354,7 +354,7 @@ jobs:
           retention-days: 7
 
       - name: 23.1 Unit Testing
-        run: make unittest
+        run: make unittest-dev-231
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
