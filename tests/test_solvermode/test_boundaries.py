@@ -81,7 +81,7 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
 
 @pytest.mark.integration
 @pytest.mark.setup
-@pytest.mark.skipif(os.getenv("FLUENT_IMAGE_TAG") == "v22.2.0", reason="Skip on 22.2")
+@pytest.mark.fluent_231
 def test_boundaries_periodic(load_periodic_rot_cas):
     solver_session = load_periodic_rot_cas
     print(__file__)
