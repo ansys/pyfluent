@@ -74,7 +74,7 @@ modification of solve settings in a manner that is familiar to existing Fluent u
 
     tui = solver_session.tui
 
-    tui.file.read_case(case_file_name="pipe.cas.h5")
+    tui.file.read_case("pipe.cas.h5")
 
     tui.define.models.energy("yes")
 

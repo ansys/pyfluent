@@ -93,7 +93,7 @@ You can use the ``session.solver.tui`` interface to run all Fluent TUI commands:
 
 .. code:: python
 
-  session.solver.tui.file.read_case(case_file_name='elbow.cas.h5')
+  session.solver.tui.file.read_case('elbow.cas.h5')
   session.solver.tui.define.models.unsteady_2nd_order("yes")
   session.solver.tui.solve.initialize.initialize_flow()
   session.solver.tui.solve.dual_time_iterate(2, 3)

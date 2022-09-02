@@ -29,7 +29,7 @@ Python code for defining velocity boundary conditions at inlets.
 
     import ansys.fluent.core as pyfluent
     solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
-    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.file.read_case('file.cas.h5')
     solver.tui.define.boundary_conditions.set.velocity_inlet(
         'cold-inlet',
         (),
