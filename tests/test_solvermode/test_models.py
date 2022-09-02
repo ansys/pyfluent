@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.integration
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.fluent_231
 def test_solver_models(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert not solver_session.setup.models.energy.enabled()
@@ -24,6 +25,7 @@ def test_solver_models(load_mixing_elbow_mesh):
 
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.fluent_231
 def test_disk_2d_models(load_disk_mesh):
     solver_session = load_disk_mesh
     solver_session.setup.general.solver.two_dim_space = "axisymmetric"

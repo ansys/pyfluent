@@ -225,6 +225,14 @@ class _FluentConnection:
             except StopIteration:
                 break
 
+    def get_current_fluent_mode(self):
+        """Gets and returns the mode of the current instance of fluent (meshing
+        or solver)."""
+        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
+            return "solver"
+        else:
+            return "meshing"
+
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(

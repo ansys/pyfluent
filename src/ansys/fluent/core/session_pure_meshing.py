@@ -21,5 +21,28 @@ class PureMeshing(_BaseSession):
 
         self._base_meshing = _BaseMeshing(self.execute_tui, fluent_connection)
 
-        for attr in _BaseMeshing.meshing_attrs:
-            setattr(self, attr, getattr(self._base_meshing, attr))
+    @property
+    def tui(self):
+        """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
+        executed."""
+        return self._base_meshing.tui
+
+    @property
+    def meshing(self):
+        """meshing datamodel root."""
+        return self._base_meshing.meshing
+
+    @property
+    def workflow(self):
+        """workflow datamodel root."""
+        return self._base_meshing.workflow
+
+    @property
+    def PartManagement(self):
+        """PartManagement datamodel root."""
+        return self._base_meshing.PartManagement
+
+    @property
+    def PMFileManagement(self):
+        """PMFileManagement datamodel root."""
+        return self._base_meshing.PMFileManagement

@@ -3,6 +3,7 @@ import pytest
 
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.fluent_231
 def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert solver_session._root.get_attr("active?")
@@ -44,6 +45,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
 
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.fluent_231
 def test_disk_2d_setup(load_disk_mesh):
     session = load_disk_mesh
     assert session._root.get_attr("active?")

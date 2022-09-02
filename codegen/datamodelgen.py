@@ -82,10 +82,12 @@ def _build_command_docstring(name: str, info: Any, indent: str):
 
 
 class DataModelStaticInfo:
-    def __init__(self, rules: str, mode: str, version: str):
+    def __init__(self, rules: str, mode: str, version: str, rules_save_name: str = ""):
         self.rules = rules
         self.mode = mode
         self.static_info = None
+        if rules_save_name == "":
+            rules_save_name = rules
         datamodel_dir = (
             _THIS_DIR
             / ".."
@@ -96,7 +98,7 @@ class DataModelStaticInfo:
             / f"datamodel_{version}"
         )
         datamodel_dir.mkdir(exist_ok=True)
-        self.filepath = (datamodel_dir / f"{rules}.py").resolve()
+        self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
 
 
 class DataModelGenerator:
@@ -110,6 +112,9 @@ class DataModelGenerator:
             ),
             "PMFileManagement": DataModelStaticInfo(
                 "PMFileManagement", "meshing", self.version
+            ),
+            "icing": DataModelStaticInfo(
+                "flserver", "flicing", self.version, "flicing"
             ),
         }
         self._delete_generated_files()
@@ -130,6 +135,9 @@ class DataModelGenerator:
         run_solver_mode = any(
             info.mode == "solver" for _, info in self._static_info.items()
         )
+        run_icing_mode = int(self.version) >= 231 and any(
+            info.mode == "flicing" for _, info in self._static_info.items()
+        )
         import ansys.fluent.core as pyfluent
 
         if run_meshing_mode:
@@ -144,6 +152,29 @@ class DataModelGenerator:
             for _, info in self._static_info.items():
                 if info.mode == "solver":
                     info.static_info = self._get_static_info(info.rules, session)
+            session.exit()
+
+        if run_icing_mode:
+            session = pyfluent.launch_fluent(mode="solver-icing")
+            for _, info in self._static_info.items():
+                if info.mode == "flicing":
+                    info.static_info = self._get_static_info(info.rules, session)
+                    try:
+                        if (
+                            len(
+                                info.static_info.singletons["Case"]
+                                .singletons["App"]
+                                .singletons
+                            )
+                            == 0
+                        ):
+                            print(
+                                "Information: Icing settings not generated ( R23.1+ is required )\n"
+                            )
+                    except:
+                        print(
+                            "Information: Problem accessing flserver datamodel for icing settings\n"
+                        )
             session.exit()
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
@@ -286,6 +317,8 @@ class DataModelGenerator:
                 f.write("   :hidden:\n\n")
 
         for name, info in self._static_info.items():
+            if info.static_info == None:
+                continue
             with open(info.filepath, "w", encoding="utf8") as f:
                 f.write("#\n")
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")

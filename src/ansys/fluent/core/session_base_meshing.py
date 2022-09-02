@@ -11,9 +11,6 @@ from ansys.fluent.core.utils.logging import LOG
 
 
 class _BaseMeshing:
-
-    meshing_attrs = ("tui", "meshing", "workflow", "PartManagement", "PMFileManagement")
-
     def __init__(self, session_execute_tui, fluent_connection: _FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se

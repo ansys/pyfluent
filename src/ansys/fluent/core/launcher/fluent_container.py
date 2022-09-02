@@ -38,7 +38,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     license_server = os.environ["ANSYSLMD_LICENSE_FILE"]
     port = _get_free_port()
     container_sifile = mounted_to + "/" + Path(sifile).name
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "latest")
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
 
     try:
         subprocess.run(
