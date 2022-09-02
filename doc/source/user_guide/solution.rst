@@ -30,7 +30,7 @@ the gradient options. Five solution methods (Index-Model) are available:
 
     import ansys.fluent.core as pyfluent
     solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
-    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.file.read_case('file.cas.h5')
     solver.tui.solve.set.p_v_coupling(24) # Coupled
     solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
     solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based

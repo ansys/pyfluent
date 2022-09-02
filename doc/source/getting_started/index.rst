@@ -54,7 +54,7 @@ case file, update a setting, and iterate the solver with:
 
 .. code:: python
 
-  solver.tui.file.read_case(case_file_name='elbow.cas.h5')
+  solver.tui.file.read_case('elbow.cas.h5')
   solver.tui.define.models.unsteady_2nd_order("yes")
   solver.tui.solve.initialize.initialize_flow()
   solver.tui.solve.dual_time_iterate(2, 3)

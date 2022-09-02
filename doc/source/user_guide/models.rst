@@ -24,7 +24,7 @@ Python code for enabling and disabling the energy model.
 
     import ansys.fluent.core as pyfluent
     solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
-    solver.tui.file.read_case(case_file_name='file.cas.h5')
+    solver.tui.file.read_case('file.cas.h5')
     solver.tui.define.models.energy('yes', 'no', 'no', 'no', 'yes')
 
 Define the viscous model
