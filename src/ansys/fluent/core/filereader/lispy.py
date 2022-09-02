@@ -329,8 +329,11 @@ def eval(x, env=global_env):
             env.find(var)[var] = eval(exp, env)
             return None
         elif x[0] is _define:  # (define var exp)
-            (_, var, exp) = x
-            env[var] = eval(exp, env)
+            if len(x) == 3:
+                (_, var, exp) = x
+                env[var] = eval(exp, env)
+            else:
+                env[x[1]] = None
             return None
         elif x[0] is _lambda:  # (lambda (var*) exp)
             (_, vars, exp) = x
@@ -374,15 +377,16 @@ def expand(x, toplevel=False):
         require(x, isa(var, Symbol), "can set! only a symbol")
         return [_set, var, expand(x[2])]
     elif x[0] is _define or x[0] is _definemacro:
-        require(x, len(x) >= 3)
+        require(x, len(x) >= 2)
         _def, v, body = x[0], x[1], x[2:]
         if isa(v, list) and v:  # (define (f args) body)
             f, args = v[0], v[1:]  #  => (define f (lambda (args) body))
             return expand([_def, f, [_lambda, args] + body])
         else:
-            require(x, len(x) == 3)  # (define non-var/list exp) => Error
-            require(x, isa(v, Symbol), "can define only a symbol")
-            exp = expand(x[2])
+            require(x, len(x) in (2, 3))  # (define non-var/list exp) => Error
+            if not isa(v, Symbol):
+                return []
+            exp = expand(x[2]) if len(x) == 3 else None
             if _def is _definemacro:
                 require(x, toplevel, "define-macro only allowed at top level")
                 proc = eval(exp)
