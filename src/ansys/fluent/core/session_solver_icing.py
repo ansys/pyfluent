@@ -6,7 +6,7 @@ import importlib
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath_lite
 
 
 class SolverIcing(Solver):
@@ -32,7 +32,9 @@ class SolverIcing(Solver):
     @property
     def version(self):
         if self._version is None:
-            self._version = get_version_for_filepath(session=self)
+            self._version = get_version_for_filepath_lite(
+                self._fluent_connection._channel, self._fluent_connection._metadata
+            )
         return self._version
 
     @property

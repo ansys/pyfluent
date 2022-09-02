@@ -5,7 +5,7 @@ import importlib
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session import _CODEGEN_MSG_TUI, _BaseSession
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath_lite
 from ansys.fluent.core.utils.logging import LOG
 
 
@@ -28,7 +28,9 @@ class Solver(_BaseSession):
     @property
     def version(self):
         if self._version is None:
-            self._version = get_version_for_filepath(session=self)
+            self._version = get_version_for_filepath_lite(
+                self.fluent_connection._channel, self.fluent_connection._metadata
+            )
         return self._version
 
     @property

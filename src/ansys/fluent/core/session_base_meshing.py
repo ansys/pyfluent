@@ -6,7 +6,7 @@ from ansys.fluent.core.meshing.workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath_lite
 from ansys.fluent.core.utils.logging import LOG
 
 
@@ -30,7 +30,9 @@ class _BaseMeshing:
     @property
     def version(self):
         if self._version is None:
-            self._version = get_version_for_filepath(session=self)
+            self._version = get_version_for_filepath_lite(
+                self._fluent_connection._channel, self._fluent_connection._metadata
+            )
         return self._version
 
     @property

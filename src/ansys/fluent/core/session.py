@@ -13,7 +13,7 @@ from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
-from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath_lite
 from ansys.fluent.core.utils.logging import LOG
 
 try:
@@ -357,7 +357,9 @@ class Session:
         @property
         def version(self):
             if self._version is None:
-                self._version = get_version_for_filepath(session=self)
+                self._version = get_version_for_filepath_lite(
+                    self._fluent_connection._channel, self._fluent_connection._metadata
+                )
             return self._version
 
         @property
