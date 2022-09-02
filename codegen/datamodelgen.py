@@ -82,9 +82,11 @@ def _build_command_docstring(name: str, info: Any, indent: str):
 
 
 class DataModelStaticInfo:
-    def __init__(self, rules: str, mode: str, version: str, rules_save_name: str = ""):
+    def __init__(
+        self, rules: str, modes: tuple, version: str, rules_save_name: str = ""
+    ):
         self.rules = rules
-        self.mode = mode
+        self.modes = modes
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
@@ -105,16 +107,19 @@ class DataModelGenerator:
     def __init__(self):
         self.version = get_version_for_filepath()
         self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo("workflow", "meshing", self.version),
-            "meshing": DataModelStaticInfo("meshing", "meshing", self.version),
+            "workflow": DataModelStaticInfo("workflow", ("meshing",), self.version),
+            "meshing": DataModelStaticInfo("meshing", ("meshing",), self.version),
             "PartManagement": DataModelStaticInfo(
-                "PartManagement", "meshing", self.version
+                "PartManagement", ("meshing",), self.version
             ),
             "PMFileManagement": DataModelStaticInfo(
-                "PMFileManagement", "meshing", self.version
+                "PMFileManagement", ("meshing",), self.version
             ),
             "icing": DataModelStaticInfo(
-                "flserver", "flicing", self.version, "flicing"
+                "flserver", ("flicing",), self.version, "flicing"
+            ),
+            "preferences": DataModelStaticInfo(
+                "preferences", ("meshing", "solver", "flicing,"), self.version
             ),
         }
         self._delete_generated_files()
@@ -130,34 +135,34 @@ class DataModelGenerator:
 
     def _populate_static_info(self):
         run_meshing_mode = any(
-            info.mode == "meshing" for _, info in self._static_info.items()
+            "meshing" in info.modes for _, info in self._static_info.items()
         )
         run_solver_mode = any(
-            info.mode == "solver" for _, info in self._static_info.items()
+            "solver" in info.modes for _, info in self._static_info.items()
         )
         run_icing_mode = int(self.version) >= 231 and any(
-            info.mode == "flicing" for _, info in self._static_info.items()
+            "flicing" in info.modes for _, info in self._static_info.items()
         )
         import ansys.fluent.core as pyfluent
 
         if run_meshing_mode:
             session = pyfluent.launch_fluent(mode="meshing")
             for _, info in self._static_info.items():
-                if info.mode == "meshing":
+                if "meshing" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
         if run_solver_mode:
             session = pyfluent.launch_fluent(mode="solver")
             for _, info in self._static_info.items():
-                if info.mode == "solver":
+                if "solver" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
             session.exit()
 
         if run_icing_mode:
             session = pyfluent.launch_fluent(mode="solver-icing")
             for _, info in self._static_info.items():
-                if info.mode == "flicing":
+                if "flicing" in info.modes:
                     info.static_info = self._get_static_info(info.rules, session)
                     try:
                         if (
@@ -178,6 +183,8 @@ class DataModelGenerator:
             session.exit()
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
+        if " " in name:
+            return
         indent = " " * level * 4
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
@@ -194,10 +201,11 @@ class DataModelGenerator:
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in singletons:
-            f.write(
-                f"{indent}        self.{k} = "
-                f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
-            )
+            if " " not in k:
+                f.write(
+                    f"{indent}        self.{k} = "
+                    f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
+                )
         for k in parameters:
             f.write(
                 f"{indent}        self.{k} = "
@@ -219,7 +227,11 @@ class DataModelGenerator:
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
         for k in singletons:
-            self._write_static_info(k, info.singletons[k], f, level + 1)
+            if " " not in k:
+                print("included", k)
+                self._write_static_info(k, info.singletons[k], f, level + 1)
+            else:
+                print("\t\texcluded", k)
         for k in parameters:
             k_type = _PY_TYPE_BY_DM_TYPE[info.parameters[k].type]
             if k_type in ["str", "List[str]"]:
@@ -336,7 +348,7 @@ class DataModelGenerator:
                 self._write_static_info("Root", info.static_info, f)
                 doc_dir = Path(
                     _MESHING_DM_DOC_DIR
-                    if info.mode == "meshing"
+                    if "meshing" in info.modes
                     else _SOLVER_DM_DOC_DIR
                 )
                 index_file = doc_dir / "index.rst"
@@ -345,7 +357,7 @@ class DataModelGenerator:
                 self._write_doc_for_model_object(
                     info.static_info,
                     doc_dir / name,
-                    f"{info.mode}.datamodel.{name}",
+                    f"{info.modes[0]}.datamodel.{name}",
                     f"ansys.fluent.core.datamodel_{self.version}.{name}",
                     "Root",
                 )

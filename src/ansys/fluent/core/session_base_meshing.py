@@ -20,6 +20,7 @@ class _BaseMeshing:
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
+        self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._version = None
 
@@ -126,3 +127,19 @@ class _BaseMeshing:
                     self._se_service, "PMFileManagement"
                 )
         return self._pm_file_management
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            try:
+                preferences_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.preferences"
+                )
+                self._preferences = preferences_module.Root(
+                    self._se_service, "preferences", []
+                )
+            except (ImportError, ModuleNotFoundError):
+                LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                self._preferences = PyMenuGeneric(self._se_service, "preferences")
+        return self._preferences

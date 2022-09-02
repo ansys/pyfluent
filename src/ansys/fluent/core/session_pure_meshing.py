@@ -18,7 +18,6 @@ class PureMeshing(_BaseSession):
 
     def __init__(self, fluent_connection: _FluentConnection):
         super(PureMeshing, self).__init__(fluent_connection=fluent_connection)
-
         self._base_meshing = _BaseMeshing(self.execute_tui, fluent_connection)
 
     @property
@@ -46,3 +45,8 @@ class PureMeshing(_BaseSession):
     def PMFileManagement(self):
         """PMFileManagement datamodel root."""
         return self._base_meshing.PMFileManagement
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        return self._base_meshing.preferences

@@ -9,9 +9,10 @@ import warnings
 import grpc
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
+from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
+from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
@@ -65,6 +66,7 @@ class _BaseSession:
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
         self._uploader = None
+        self._preferences = None
 
     @classmethod
     def create_from_server_info_file(
@@ -180,6 +182,26 @@ class _BaseSession:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.download(file_name, local_file_path)
 
+    '''
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            try:
+                preferences_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.preferences"
+                )
+                self._preferences = preferences_module.Root(
+                    self._se_service, "preferences", []
+                )
+            except (ImportError, ModuleNotFoundError):
+                LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                self._preferences = PyMenuGeneric(
+                    self._se_service, "preferences"
+                )
+        return self._preferences
+    '''
+
 
 class Session:
     """Instantiates a Fluent connection. This is a deprecated class. This has
@@ -248,6 +270,7 @@ class Session:
         self.solver = Session.Solver(self.fluent_connection)
 
         self._uploader = None
+        self._preferences = None
 
     @classmethod
     def create_from_server_info_file(
@@ -340,6 +363,22 @@ class Session:
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.download(file_name, local_file_path)
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            try:
+                preferences_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.preferences"
+                )
+                self._preferences = preferences_module.Root(
+                    self._se_service, "preferences", []
+                )
+            except (ImportError, ModuleNotFoundError):
+                LOG.warning(_CODEGEN_MSG_DATAMODEL)
+                self._preferences = PyMenuGeneric(self._se_service, "preferences")
+        return self._preferences
 
     class Solver:
         def __init__(self, fluent_connection: _FluentConnection):
