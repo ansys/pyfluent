@@ -15,6 +15,7 @@ def test_read():
         ['(x . "1.0 [m/s]")', ["x", "1.0 [m/s]"]],  # should be "'1.0 [m/s]'" ?
         ["(define x 1)", ["define", "x", 1]],
         ["(define x)", ["define", "x", None]],
+        ['(define "x")', []],
     ]
 
     for in_out in in_outs:

@@ -384,7 +384,8 @@ def expand(x, toplevel=False):
             return expand([_def, f, [_lambda, args] + body])
         else:
             require(x, len(x) in (2, 3))  # (define non-var/list exp) => Error
-            require(x, isa(v, Symbol), "can define only a symbol")
+            if not isa(v, Symbol):
+                return []
             exp = expand(x[2]) if len(x) == 3 else None
             if _def is _definemacro:
                 require(x, toplevel, "define-macro only allowed at top level")
