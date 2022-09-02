@@ -6,6 +6,9 @@ from ansys.fluent.core.launcher.launcher import FLUENT_VERSION
 
 def test_manual_fluent_version_setting():
     """Test case for setting up the Ansys / Fluent version via program"""
+
+    initial_version_info = FLUENT_VERSION[0]
+
     pyfluent.set_ansys_version("23.1")
     assert FLUENT_VERSION[0] == "23.1"
 
@@ -18,6 +21,9 @@ def test_manual_fluent_version_setting():
     # version does not exist
     with pytest.raises(RuntimeError):
         pyfluent.set_ansys_version(22.1)
+
+    # Resets the global variable to its original state
+    pyfluent.set_ansys_version(initial_version_info)
 
 
 def test_manual_fluent_path_setting():

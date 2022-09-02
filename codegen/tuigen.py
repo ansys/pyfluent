@@ -20,6 +20,7 @@ import shutil
 import string
 import subprocess
 from typing import Any, Dict
+import uuid
 import xml.etree.ElementTree as ET
 
 from data.fluent_gui_help_patch import XML_HELP_PATCH
@@ -27,86 +28,71 @@ from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
-from ansys.fluent.core.launcher.launcher import FLUENT_VERSION, get_fluent_path
+from ansys.fluent.core.launcher.launcher import get_fluent_path
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 _THIS_DIRNAME = os.path.dirname(__file__)
-_MESHING_TUI_FILE = os.path.normpath(
-    os.path.join(
-        _THIS_DIRNAME,
-        "..",
-        "src",
-        "ansys",
-        "fluent",
-        "core",
-        "meshing",
-        "tui.py",
+
+
+def _get_tui_filepath(mode: str, version: str):
+    return os.path.normpath(
+        os.path.join(
+            _THIS_DIRNAME,
+            "..",
+            "src",
+            "ansys",
+            "fluent",
+            "core",
+            mode,
+            f"tui_{version}.py",
+        )
     )
-)
-_SOLVER_TUI_FILE = os.path.normpath(
-    os.path.join(
-        _THIS_DIRNAME,
-        "..",
-        "src",
-        "ansys",
-        "fluent",
-        "core",
-        "solver",
-        "tui.py",
-    )
-)
+
+
 _INDENT_STEP = 4
 
-_MESHING_TUI_DOC_DIR = os.path.normpath(
-    os.path.join(
-        _THIS_DIRNAME,
-        "..",
-        "doc",
-        "source",
-        "api",
-        "core",
-        "meshing",
-        "tui",
+
+def _get_tui_docdir(mode: str):
+    return os.path.normpath(
+        os.path.join(
+            _THIS_DIRNAME,
+            "..",
+            "doc",
+            "source",
+            "api",
+            "core",
+            mode,
+            f"tui",
+        )
     )
-)
-_SOLVER_TUI_DOC_DIR = os.path.normpath(
-    os.path.join(
-        _THIS_DIRNAME,
-        "..",
-        "doc",
-        "source",
-        "api",
-        "core",
-        "solver",
-        "tui",
-    )
-)
+
 
 _XML_HELP_FILE = os.path.normpath(
     os.path.join(_THIS_DIRNAME, "data", "fluent_gui_help.xml")
 )
 _XML_HELPSTRINGS = {}
 
-_FLUENT_IMAGE_TAG = os.getenv("FLUENT_IMAGE_TAG", "latest")
-_FLUENT_IMAGE_NAME = f"ghcr.io/pyansys/pyfluent:{_FLUENT_IMAGE_TAG}"
 
-
-def _copy_tui_help_xml_file():
+def _copy_tui_help_xml_file(version: str):
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        import docker
-
-        client = docker.from_env()
-        container = client.containers.create(_FLUENT_IMAGE_NAME)
-        xml_source = f"/ansys_inc/v{FLUENT_VERSION[0].replace('.', '')}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
+        image_name = f"ghcr.io/pyansys/pyfluent:{image_tag}"
+        container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
         subprocess.run(
-            f"docker cp {container.name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
+            f"docker container create --name {container_name} {image_name}",
+            shell=is_linux,
         )
-        container.remove()
+        xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
+        subprocess.run(
+            f"docker cp {container_name}:{xml_source} {_XML_HELP_FILE}", shell=is_linux
+        )
+        subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
         xml_source = (
@@ -180,23 +166,18 @@ class _TUIMenu:
 class TUIGenerator:
     """Class to generate explicit TUI menu classes."""
 
-    def __init__(
-        self,
-        meshing_tui_file: str = _MESHING_TUI_FILE,
-        solver_tui_file: str = _SOLVER_TUI_FILE,
-        meshing_tui_doc_dir: str = _MESHING_TUI_DOC_DIR,
-        solver_tui_doc_dir: str = _SOLVER_TUI_DOC_DIR,
-        meshing: bool = False,
-    ):
-        self._tui_file = meshing_tui_file if meshing else solver_tui_file
+    def __init__(self, mode: str, version: str):
+        self._mode = mode
+        self._version = version
+        self._tui_file = _get_tui_filepath(mode, version)
         if Path(self._tui_file).exists():
             Path(self._tui_file).unlink()
-        self._tui_doc_dir = meshing_tui_doc_dir if meshing else solver_tui_doc_dir
-        self._tui_heading = ("meshing" if meshing else "solver") + ".tui"
-        self._tui_module = "ansys.fluent.core." + self._tui_heading
+        self._tui_doc_dir = _get_tui_docdir(mode)
+        self._tui_heading = mode + ".tui"
+        self._tui_module = "ansys.fluent.core." + self._tui_heading + f"_{version}"
         if Path(self._tui_doc_dir).exists():
             shutil.rmtree(Path(self._tui_doc_dir))
-        self.session = pyfluent.launch_fluent(mode="meshing" if meshing else "solver")
+        self.session = pyfluent.launch_fluent(mode=mode)
         self._service = self.session.fluent_connection.datamodel_service_tui
         self._main_menu = _TUIMenu([], "")
 
@@ -311,11 +292,12 @@ class TUIGenerator:
     def generate(self) -> None:
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            mode = "meshing" if self._tui_file == _MESHING_TUI_FILE else "solver"
-            if self.session.get_fluent_version() == "22.2.0":
+            if self._version == "222":
                 with open(
                     os.path.join(
-                        _THIS_DIRNAME, "data", f"static_info_222_{mode}.pickle"
+                        _THIS_DIRNAME,
+                        "data",
+                        f"static_info_{self._version}_{self._mode}.pickle",
                     ),
                     "rb",
                 ) as f:
@@ -324,12 +306,10 @@ class TUIGenerator:
                 info = PyMenu(self._service, self._main_menu.path).get_static_info()
                 self._populate_menu(self._main_menu, info)
             self.session.exit()
-            if mode == "meshing":
-                self._write_code_to_tui_file('"""Fluent Meshing TUI Commands"""\n')
-                self._main_menu.doc = "Fluent meshing main menu."
-            else:
-                self._write_code_to_tui_file('"""Fluent Solver TUI Commands"""\n')
-                self._main_menu.doc = "Fluent solver main menu."
+            self._write_code_to_tui_file(
+                f'"""Fluent {self._mode.title()} TUI Commands"""\n'
+            )
+            self._main_menu.doc = f"Fluent {self._mode} main menu."
             self._write_code_to_tui_file(
                 "#\n"
                 "# This is an auto-generated file.  DO NOT EDIT!\n"
@@ -350,11 +330,12 @@ class TUIGenerator:
 
 def generate():
     # pyfluent.set_log_level("WARNING")
-    if FLUENT_VERSION[0] > "22.2":
-        _copy_tui_help_xml_file()
+    version = get_version_for_filepath()
+    if version > "222":
+        _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    TUIGenerator(meshing=True).generate()
-    TUIGenerator(meshing=False).generate()
+    TUIGenerator("meshing", version).generate()
+    TUIGenerator("solver", version).generate()
     LOG.warning(
         "XML help is available but not picked for the following %i paths:",
         len(_XML_HELPSTRINGS),

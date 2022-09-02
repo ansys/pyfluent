@@ -17,6 +17,7 @@ r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 import collections
 import hashlib
+import importlib
 import keyword
 import pickle
 import string
@@ -944,7 +945,7 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
-def get_root(flproxy) -> Group:
+def get_root(flproxy, version: str = "") -> Group:
     """Get the root settings object.
 
     Parameters
@@ -958,7 +959,9 @@ def get_root(flproxy) -> Group:
     """
     obj_info = flproxy.get_static_info()
     try:
-        from ansys.fluent.core.solver import settings
+        settings = importlib.import_module(
+            f"ansys.fluent.core.solver.settings_{version}"
+        )
 
         if settings.SHASH != _gethash(obj_info):
             LOG.warning(
@@ -968,7 +971,7 @@ def get_root(flproxy) -> Group:
             )
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
-    except (ImportError, RuntimeError):
+    except Exception:
         cls = get_cls("", obj_info)
     root = cls()
     root.set_flproxy(flproxy)

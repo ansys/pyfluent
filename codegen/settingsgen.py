@@ -32,6 +32,7 @@ import pprint
 import shutil
 
 from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 hash_dict = {}
 files_dict = {}
@@ -300,6 +301,8 @@ def _populate_init(parent_dir, sinfo):
 def generate():
     from ansys.fluent.core.launcher.launcher import launch_fluent
 
+    session = launch_fluent(mode="solver")
+    version = get_version_for_filepath(session=session)
     dirname = os.path.dirname(__file__)
     parent_dir = os.path.normpath(
         os.path.join(
@@ -310,7 +313,7 @@ def generate():
             "fluent",
             "core",
             "solver",
-            "settings",
+            f"settings_{version}",
         )
     )
 
@@ -319,7 +322,6 @@ def generate():
         shutil.rmtree(parent_dir)
     os.makedirs(parent_dir)
 
-    session = launch_fluent(mode="solver")
     sinfo = session._settings_service.get_static_info()
     session.exit()
     cls = flobject.get_cls("", sinfo)

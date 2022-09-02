@@ -1,20 +1,19 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
+import importlib
 import json
+import os
 from typing import Any
 import warnings
 
 import grpc
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
 
 try:
@@ -65,6 +64,7 @@ class _BaseSession:
     def __init__(self, fluent_connection: _FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
+        self._uploader = None
 
     @classmethod
     def create_from_server_info_file(
@@ -147,9 +147,7 @@ class _BaseSession:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return ".".join(
-            map(str, self.fluent_connection.scheme_eval.scheme_eval("(cx-version)"))
-        )
+        return self.fluent_connection.get_fluent_version()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
@@ -169,6 +167,18 @@ class _BaseSession:
                 + dir(self.fluent_connection)
             )
         )
+
+    def _upload(self, file_path: str, remote_file_name: str = None):
+        """Uploads a file on the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.upload(file_path, remote_file_name)
+
+    def _download(self, file_name: str, local_file_path: str = None):
+        """Downloads a file from the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.download(file_name, local_file_path)
 
 
 class Session:
@@ -235,9 +245,9 @@ class Session:
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
         self._settings_service = self.fluent_connection.settings_service
 
-        self.solver = Session.Solver(
-            self._datamodel_service_tui, self._settings_service
-        )
+        self.solver = Session.Solver(self.fluent_connection)
+
+        self._uploader = None
 
     @classmethod
     def create_from_server_info_file(
@@ -319,14 +329,36 @@ class Session:
             )
         )
 
+    def _upload(self, file_path: str, remote_file_name: str = None):
+        """Uploads a file on the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.upload(file_path, remote_file_name)
+
+    def _download(self, file_name: str, local_file_path: str = None):
+        """Downloads a file from the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.download(file_name, local_file_path)
+
     class Solver:
-        def __init__(
-            self, tui_service: DatamodelService_TUI, settings_service: SettingsService
-        ):
-            self._tui_service = tui_service
-            self._settings_service = settings_service
+        def __init__(self, fluent_connection: _FluentConnection):
+            self._fluent_connection = fluent_connection
+            self._tui_service = fluent_connection.datamodel_service_tui
+            self._settings_service = fluent_connection.settings_service
             self._tui = None
             self._settings_root = None
+            self._version = None
+
+        def get_fluent_version(self):
+            """Gets and returns the fluent version."""
+            return self._fluent_connection.get_fluent_version()
+
+        @property
+        def version(self):
+            if self._version is None:
+                self._version = get_version_for_filepath(session=self)
+            return self._version
 
         @property
         def tui(self):
@@ -334,9 +366,10 @@ class Session:
             can be executed."""
             if self._tui is None:
                 try:
-                    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-
-                    self._tui = SolverMainMenu([], self._tui_service)
+                    tui_module = importlib.import_module(
+                        f"ansys.fluent.core.solver.tui_{self.version}"
+                    )
+                    self._tui = tui_module.main_menu([], self._tui_service)
                 except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
                     self._tui = TUIMenuGeneric([], self._tui_service)
@@ -346,5 +379,65 @@ class Session:
         def root(self):
             """root settings object."""
             if self._settings_root is None:
-                self._settings_root = settings_get_root(flproxy=self._settings_service)
+                self._settings_root = settings_get_root(
+                    flproxy=self._settings_service, version=self.version
+                )
             return self._settings_root
+
+
+class _Uploader:
+    """Instantiates a file uploader and downloader to have a seamless file
+    reading / writing in the cloud particularly in Ansys lab . Here we are
+    exposing upload and download methods on session objects. These would be no-
+    ops if PyPIM is not configured or not authorized with the appropriate
+    service. This will be used for internal purpose only.
+
+    Attributes
+    ----------
+    pim_instance: PIM instance
+        Instance of PIM which supports upload server services.
+
+    file_service: Client instance
+        Instance of Client which supports upload and download methods.
+
+    Methods
+    -------
+    upload(
+        file_path, remote_file_name
+        )
+        Upload a file to the server.
+
+    download(
+        file_name, local_file_path
+        )
+        Download a file from the server.
+    """
+
+    def __init__(self, pim_instance):
+        self.pim_instance = pim_instance
+
+        try:
+            upload_server = self.pim_instance.services["http-simple-upload-server"]
+        except AttributeError:
+            LOG.error("PIM is not installed or not authorized.")
+        except KeyError:
+            self.file_service = None
+        else:
+            from simple_upload_server.client import Client
+
+            self.file_service = Client(
+                token="token", url=upload_server.uri, headers=upload_server.headers
+            )
+
+    def upload(self, file_path: str, remote_file_name: str = None):
+        """Uploads a file on the server."""
+        expanded_file_path = os.path.expandvars(file_path)
+        upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
+        self.file_service.upload_file(expanded_file_path, upload_file_name)
+
+    def download(self, file_name: str, local_file_path: str = None):
+        """Downloads a file from the server."""
+        if self.file_service.file_exist(file_name):
+            self.file_service.download_file(file_name, local_file_path)
+        else:
+            raise FileNotFoundError("Remote file does not exist.")

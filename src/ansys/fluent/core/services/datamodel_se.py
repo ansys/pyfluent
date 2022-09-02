@@ -72,11 +72,7 @@ class DatamodelService:
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        ret = self.__stub.getAttributeValue(request, metadata=self.__metadata)
-        try:
-            return ret.item
-        except AttributeError:
-            return ret
+        return self.__stub.getAttributeValue(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_state(
@@ -168,13 +164,13 @@ def _convert_variant_to_value(var: Variant):
     elif var.HasField("string_state"):
         return var.string_state
     elif var.HasField("bool_vector_state"):
-        return var.bool_vector_state
+        return var.bool_vector_state.item
     elif var.HasField("int64_vector_state"):
-        return var.int64_vector_state
+        return var.int64_vector_state.item
     elif var.HasField("double_vector_state"):
-        return var.double_vector_state
+        return var.double_vector_state.item
     elif var.HasField("string_vector_state"):
-        return var.string_vector_state
+        return var.string_vector_state.item
     elif var.HasField("variant_vector_state"):
         val = []
         for item in var.variant_vector_state.item:

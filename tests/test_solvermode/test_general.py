@@ -3,6 +3,7 @@ import pytest
 
 @pytest.mark.quick
 @pytest.mark.setup
+@pytest.mark.fluent_231
 def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert solver_session._root.get_attr("active?")
@@ -17,3 +18,53 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
         solver_session.scheme_eval.scheme_eval('(units/quantity-info "length")')[-1]
         == "in"
     )
+    solver_session.setup.general.solver.time.get_attr("allowed-values")
+    solver_session.setup.general.solver.time = "unsteady-2nd-order"
+    solver_session.setup.general.solver.time = "unsteady-1st-order"
+    solver_session.setup.general.solver.time = "unsteady-2nd-order-bounded"
+    solver_session.setup.general.solver.time = "steady"
+
+    # solver.setup.general.gravity = {"gravity": True, "y_component": -9.81}
+    # solver.mesh.scale(x_scale=0.001, y_scale=0.001, z_scale=0.001)
+    solver_session.setup.general.solver.type.get_attr("allowed-values")
+    solver_session.setup.general.solver.type = "density-based-implicit"
+    assert solver_session.setup.general.solver.type() == "density-based-implicit"
+    solver_session.setup.general.solver.type = "density-based-explicit"
+    assert solver_session.setup.general.solver.type() == "density-based-explicit"
+    solver_session.setup.general.solver.type = "pressure-based"
+    assert solver_session.setup.general.solver.type() == "pressure-based"
+
+    solver_session.file.auto_save.data_frequency = 10
+    assert solver_session.file.auto_save.data_frequency() == 10
+    solver_session.file.auto_save.case_frequency = "each-time"
+    assert solver_session.file.auto_save.case_frequency() == "each-time"
+    solver_session.file.auto_save.root_name = "file_auto_save"
+    assert solver_session.file.auto_save.root_name() == "file_auto_save"
+    solver_session.setup.reference_values.compute(from_zone_name="outlet")
+
+
+@pytest.mark.quick
+@pytest.mark.setup
+@pytest.mark.fluent_231
+def test_disk_2d_setup(load_disk_mesh):
+    session = load_disk_mesh
+    assert session._root.get_attr("active?")
+    assert session.check_health() == "SERVING"
+    ###
+    assert not session.setup.models.energy.enabled()
+    assert session.scheme_eval.scheme_eval("(case-valid?)")
+    session.tui.mesh.check()
+    assert session.setup.general.solver.two_dim_space.get_attr("allowed-values") == [
+        "swirl",
+        "axisymmetric",
+        "planar",
+    ]
+    assert session.setup.general.solver.two_dim_space() == "planar"
+    session.setup.general.solver.two_dim_space = "axisymmetric"
+    assert session.setup.general.solver.two_dim_space() == "axisymmetric"
+    session.setup.general.solver.two_dim_space = "swirl"
+    assert session.setup.general.solver.two_dim_space() == "swirl"
+    session.setup.general.solver.two_dim_space = "planar"
+    assert session.setup.general.solver.two_dim_space() == "planar"
+    # Bug 682773
+    # session.setup.general.gravity = {"gravity": True, "x_component": -9.81}

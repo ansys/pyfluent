@@ -225,6 +225,14 @@ class _FluentConnection:
             except StopIteration:
                 break
 
+    def get_current_fluent_mode(self):
+        """Gets and returns the mode of the current instance of fluent (meshing
+        or solver)."""
+        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
+            return "solver"
+        else:
+            return "meshing"
+
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
         self._transcript_thread = threading.Thread(
@@ -247,6 +255,10 @@ class _FluentConnection:
                 return HealthCheckService.Status.NOT_SERVING.name
         else:
             return HealthCheckService.Status.NOT_SERVING.name
+
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return ".".join(map(str, self.scheme_eval.scheme_eval("(cx-version)")))
 
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
