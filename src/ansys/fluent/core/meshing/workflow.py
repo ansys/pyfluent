@@ -38,10 +38,14 @@ class MeshingWorkflow:
 
     class Task(PyCallableStateObject):
         def __init__(self, meshing, name):
-            self._workflow = meshing._workflow
-            self._meshing = meshing._meshing
-            self._task = self._workflow.TaskObject[name]
-            self._cmd = None
+            self.__dict__.update(
+                dict(
+                    _workflow=meshing._workflow,
+                    _meshing=meshing._meshing,
+                    _task=meshing._workflow.TaskObject[name],
+                    _cmd=None,
+                )
+            )
 
         @property
         def CommandArguments(self):
@@ -61,6 +65,12 @@ class MeshingWorkflow:
 
         def __getattr__(self, attr):
             return getattr(self._task, attr)
+
+        def __setattr__(self, attr, value):
+            if attr in self.__dict__:
+                self.__dict__[attr] = value
+            else:
+                setattr(self._task, attr, value)
 
         def __dir__(self):
             return sorted(
