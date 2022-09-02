@@ -49,7 +49,6 @@ api-codegen:
 
 build-doc:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
-	@pip cache purge
 	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html
 	@touch doc/_build/html/.nojekyll
