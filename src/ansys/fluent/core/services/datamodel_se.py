@@ -354,6 +354,18 @@ class PyMenu(PyBasicStateContainer):
                 f"{self.__class__.__name__} is not a named object class."
             )
 
+    def delete_child(self):
+        raise AttributeError("This method is still not implemented in pyfluent.")
+
+    def delete_child_objects(self):
+        raise AttributeError("This method is still not implemented in pyfluent.")
+
+    def delete_all_child_objects(self):
+        raise AttributeError("This method is still not implemented in pyfluent.")
+
+    def fix_state(self):
+        raise AttributeError("This method is still not implemented in pyfluent.")
+
     def create_command_arguments(self, command):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules

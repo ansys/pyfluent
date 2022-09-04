@@ -240,3 +240,42 @@ def test_attribute_query_list_types(new_mesh_session):
     assert ["CAD", "Mesh"] == igt.CommandArguments.FileFormat.getAttribValue(
         "allowedValues"
     )
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_accessors_for_argument_sub_items(new_mesh_session):
+    session_new = new_mesh_session
+
+    w = session_new.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_read_only()
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
+    assert w.task("Import Geometry").CommandArguments.FileName.is_read_only()
+    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_dummy_journal_data_model_methods(new_mesh_session):
+    session_new = new_mesh_session
+
+    w = session_new.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").delete_child()
+    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+    with pytest.raises(AttributeError):
+        w.task("Import Geometry").delete_child()
+    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+    with pytest.raises(AttributeError):
+        w.task("Import Geometry").delete_child()
+    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+    with pytest.raises(AttributeError):
+        w.task("Import Geometry").delete_child()
+    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
