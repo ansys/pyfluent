@@ -2,6 +2,7 @@ from ctypes import c_int, sizeof
 import itertools
 import os
 import threading
+import time
 from typing import Callable, List, Optional, Tuple
 import weakref
 
@@ -82,6 +83,7 @@ class _FluentConnection:
 
     def __init__(
         self,
+        start_timeout: int = 100,
         ip: str = None,
         port: int = None,
         password: str = None,
@@ -94,6 +96,9 @@ class _FluentConnection:
 
         Parameters
         ----------
+        start_timeout: int, optional
+            Maximum allowable time in seconds for connecting to the Fluent
+            server. The default is ``100``.
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
@@ -147,6 +152,18 @@ class _FluentConnection:
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
+
+        self._health_check_service = HealthCheckService(self._channel, self._metadata)
+
+        counter = 0
+        while self.check_health() != "SERVING":
+            time.sleep(1)
+            counter += 1
+            if counter > start_timeout:
+                raise RuntimeError(
+                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
+                )
+
         self._id = f"session-{next(_FluentConnection._id_iter)}"
 
         if not _FluentConnection._monitor_thread:
@@ -176,8 +193,6 @@ class _FluentConnection:
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service, self.field_info)
-
-        self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)

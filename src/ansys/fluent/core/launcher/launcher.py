@@ -199,6 +199,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 
 def launch_remote_fluent(
     session_cls,
+    start_transcript: bool,
+    start_timeout: int = 100,
     product_version: str = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
@@ -214,6 +216,15 @@ def launch_remote_fluent(
 
     Parameters
     ----------
+    session_cls: [_BaseSession, Session]
+        Instance of the Session class
+    start_transcript: bool
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
+    start_timeout : int, optional
+        Maximum allowable time in seconds for connecting to the Fluent
+        server. The default is ``100``.
     product_version : str, optional
         Version of Fluent to use in the three-digit format (such as ``"212"``
         for 2021 R2). The default is ``None``, in which case the active version
@@ -247,7 +258,11 @@ def launch_remote_fluent(
     channel = instance.build_grpc_channel()
     return session_cls(
         fluent_connection=_FluentConnection(
-            channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+            channel=channel,
+            cleanup_on_exit=cleanup_on_exit,
+            remote_instance=instance,
+            start_timeout=start_timeout,
+            start_transcript=start_transcript,
         )
     )
 
@@ -430,6 +445,8 @@ def launch_fluent(
             )
             return launch_remote_fluent(
                 session_cls=new_session,
+                start_timeout=start_timeout,
+                start_transcript=start_transcript,
                 product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
@@ -449,6 +466,7 @@ def launch_fluent(
             )
             return new_session(
                 fluent_connection=_FluentConnection(
+                    start_timeout=start_timeout,
                     port=port,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
