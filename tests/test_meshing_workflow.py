@@ -258,8 +258,6 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
 
 
-@pytest.mark.dev
-@pytest.mark.fluent_231
 def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
 
