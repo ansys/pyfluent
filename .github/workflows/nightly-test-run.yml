@@ -45,12 +45,12 @@ jobs:
           username: ${{ secrets.GH_USERNAME }}
           password: ${{ secrets.REPO_DOWNLOAD_PAT }}
 
-      - name: Pull Fluent docker image
+      - name: Pull 22.2 Fluent docker image
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: v22.2.0
 
-      - name: Run API codegen
+      - name: Run 22.2 API codegen
         run: make api-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -58,12 +58,12 @@ jobs:
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v22.2.0
 
-      - name: Pull Fluent docker image
+      - name: Pull 23.1 Fluent docker image
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: v23.1.0
 
-      - name: Run API codegen
+      - name: Run 23.1 API codegen
         run: make api-codegen
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -76,21 +76,21 @@ jobs:
           rm -rf dist
           make install > /dev/null
 
-      - name: Unit Testing
+      - name: 22.2 Unit Testing
         run: make unittest-all-222
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v22.2.0
 
-      - name: Upload Coverage Results
+      - name: Upload 22.2 Coverage Results
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Coverage-tag-222
           path: cov_html
           retention-days: 7
 
-      - name: Unit Testing
+      - name: 23.1 Unit Testing
         run: make unittest-all-231
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}

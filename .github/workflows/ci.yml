@@ -346,7 +346,7 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v22.2.0
 
-      - name: Upload Coverage Results
+      - name: Upload 22.2 Coverage Results
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Coverage-tag-222
