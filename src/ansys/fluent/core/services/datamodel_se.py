@@ -217,7 +217,7 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-class PyBasicStateContainerReadOnly(PyCallableStateObject):
+class PyReadOnlyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -295,7 +295,7 @@ class PyBasicStateContainerReadOnly(PyCallableStateObject):
         print(help_string)
 
 
-class PyBasicStateContainer(PyBasicStateContainerReadOnly):
+class PyStateContainer(PyReadOnlyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -334,7 +334,7 @@ class PyBasicStateContainer(PyBasicStateContainerReadOnly):
     setState = set_state
 
 
-class PyMenu(PyBasicStateContainer):
+class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -358,9 +358,7 @@ class PyMenu(PyBasicStateContainer):
         value : Any
             state
         """
-        if hasattr(self, name) and isinstance(
-            getattr(self, name), PyBasicStateContainer
-        ):
+        if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -389,7 +387,7 @@ class PyMenu(PyBasicStateContainer):
         return response.commandid
 
 
-class PyParameter(PyBasicStateContainer):
+class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
     Use this class instead of directly calling DatamodelService's
@@ -702,7 +700,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         pass
 
 
-class PyCommandArguments(PyBasicStateContainerReadOnly):
+class PyCommandArguments(PyReadOnlyStateContainer):
     def __init__(
         self, service: DatamodelService, rules: str, command: str, path: Path, id: str
     ):
