@@ -168,13 +168,13 @@ class _BaseSession:
             )
         )
 
-    def _upload(self, file_path: str, remote_file_name: str = None):
+    def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.upload(file_path, remote_file_name)
 
-    def _download(self, file_name: str, local_file_path: str = None):
+    def download(self, file_name: str, local_file_path: str = None):
         """Downloads a file from the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
@@ -329,13 +329,13 @@ class Session:
             )
         )
 
-    def _upload(self, file_path: str, remote_file_name: str = None):
+    def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.upload(file_path, remote_file_name)
 
-    def _download(self, file_name: str, local_file_path: str = None):
+    def download(self, file_name: str, local_file_path: str = None):
         """Downloads a file from the server."""
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)

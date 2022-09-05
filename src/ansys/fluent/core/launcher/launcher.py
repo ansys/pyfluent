@@ -199,6 +199,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 
 def launch_remote_fluent(
     session_cls,
+    start_timeout: int,
+    start_transcript: bool,
     product_version: str = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
@@ -247,7 +249,11 @@ def launch_remote_fluent(
     channel = instance.build_grpc_channel()
     return session_cls(
         fluent_connection=_FluentConnection(
-            channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+            channel=channel,
+            cleanup_on_exit=cleanup_on_exit,
+            remote_instance=instance,
+            start_timeout=start_timeout,
+            start_transcript=start_transcript,
         )
     )
 
@@ -430,6 +436,8 @@ def launch_fluent(
             )
             return launch_remote_fluent(
                 session_cls=new_session,
+                start_timeout=start_timeout,
+                start_transcript=start_transcript,
                 product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,

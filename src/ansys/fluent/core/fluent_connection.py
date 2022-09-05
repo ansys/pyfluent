@@ -2,6 +2,7 @@ from ctypes import c_int, sizeof
 import itertools
 import os
 import threading
+import time
 from typing import Callable, List, Optional, Tuple
 import weakref
 
@@ -82,6 +83,7 @@ class _FluentConnection:
 
     def __init__(
         self,
+        start_timeout: int,
         ip: str = None,
         port: int = None,
         password: str = None,
@@ -147,6 +149,19 @@ class _FluentConnection:
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
+
+        self._health_check_service = HealthCheckService(self._channel, self._metadata)
+
+        time_increment = 1
+        counter = 0
+        while self.check_health() != "SERVING":
+            time.sleep(time_increment)
+            counter += 1
+            if counter > start_timeout:
+                raise RuntimeError(
+                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
+                )
+
         self._id = f"session-{next(_FluentConnection._id_iter)}"
 
         if not _FluentConnection._monitor_thread:
@@ -176,8 +191,6 @@ class _FluentConnection:
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
         self.field_data = FieldData(self._field_data_service, self.field_info)
-
-        self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
