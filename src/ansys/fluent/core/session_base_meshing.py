@@ -132,14 +132,7 @@ class _BaseMeshing:
     def preferences(self):
         """preferences datamodel root."""
         if self._preferences is None:
-            try:
-                preferences_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self.version}.preferences"
-                )
-                self._preferences = preferences_module.Root(
-                    self._se_service, "preferences", []
-                )
-            except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                self._preferences = PyMenuGeneric(self._se_service, "preferences")
+            from ansys.fluent.core.session import _get_preferences
+
+            self._preferences = _get_preferences(self)
         return self._preferences

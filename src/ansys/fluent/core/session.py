@@ -9,7 +9,6 @@ import warnings
 import grpc
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
@@ -31,6 +30,16 @@ def parse_server_info_file(filename: str):
     port = int(ip_and_port[1])
     password = lines[1].strip()
     return ip, port, password
+
+
+def _get_preferences(session):
+    try:
+        preferences_module = importlib.import_module(
+            f"ansys.fluent.core.datamodel_{session.version}.preferences"
+        )
+        return preferences_module.Root(session._se_service, "preferences", [])
+    except (ImportError, ModuleNotFoundError):
+        LOG.warning(_CODEGEN_MSG_DATAMODEL)
 
 
 class _BaseSession:
@@ -181,26 +190,6 @@ class _BaseSession:
         if not self._uploader:
             self._uploader = _Uploader(self.fluent_connection._remote_instance)
         return self._uploader.download(file_name, local_file_path)
-
-    '''
-    @property
-    def preferences(self):
-        """preferences datamodel root."""
-        if self._preferences is None:
-            try:
-                preferences_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self.version}.preferences"
-                )
-                self._preferences = preferences_module.Root(
-                    self._se_service, "preferences", []
-                )
-            except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                self._preferences = PyMenuGeneric(
-                    self._se_service, "preferences"
-                )
-        return self._preferences
-    '''
 
 
 class Session:
@@ -368,16 +357,7 @@ class Session:
     def preferences(self):
         """preferences datamodel root."""
         if self._preferences is None:
-            try:
-                preferences_module = importlib.import_module(
-                    f"ansys.fluent.core.datamodel_{self.version}.preferences"
-                )
-                self._preferences = preferences_module.Root(
-                    self._se_service, "preferences", []
-                )
-            except (ImportError, ModuleNotFoundError):
-                LOG.warning(_CODEGEN_MSG_DATAMODEL)
-                self._preferences = PyMenuGeneric(self._se_service, "preferences")
+            self._preferences = _get_preferences(self)
         return self._preferences
 
     class Solver:
