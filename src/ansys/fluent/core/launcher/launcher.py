@@ -199,8 +199,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
 
 def launch_remote_fluent(
     session_cls,
-    start_timeout: int,
     start_transcript: bool,
+    start_timeout: int = 100,
     product_version: str = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
@@ -216,6 +216,15 @@ def launch_remote_fluent(
 
     Parameters
     ----------
+    session_cls: [_BaseSession, Session]
+        Instance of the Session class
+    start_transcript: bool
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
+    start_timeout : int, optional
+        Maximum allowable time in seconds for connecting to the Fluent
+        server. The default is ``100``.
     product_version : str, optional
         Version of Fluent to use in the three-digit format (such as ``"212"``
         for 2021 R2). The default is ``None``, in which case the active version

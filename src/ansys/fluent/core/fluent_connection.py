@@ -83,7 +83,7 @@ class _FluentConnection:
 
     def __init__(
         self,
-        start_timeout: int,
+        start_timeout: int = 100,
         ip: str = None,
         port: int = None,
         password: str = None,
@@ -96,6 +96,9 @@ class _FluentConnection:
 
         Parameters
         ----------
+        start_timeout: int, optional
+            Maximum allowable time in seconds for connecting to the Fluent
+            server. The default is ``100``.
         ip : str, optional
             IP address to connect to existing Fluent instance. Used only
             when ``channel`` is ``None``.  Defaults to ``"127.0.0.1"``
@@ -152,10 +155,9 @@ class _FluentConnection:
 
         self._health_check_service = HealthCheckService(self._channel, self._metadata)
 
-        time_increment = 1
         counter = 0
         while self.check_health() != "SERVING":
-            time.sleep(time_increment)
+            time.sleep(1)
             counter += 1
             if counter > start_timeout:
                 raise RuntimeError(
