@@ -267,13 +267,13 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
     with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_child()
-    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError):
-        w.task("Import Geometry").delete_child()
-    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+        w.task("Import Geometry").delete_child_objects()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError):
-        w.task("Import Geometry").delete_child()
-    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+        w.task("Import Geometry").delete_all_child_objects()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
     with pytest.raises(AttributeError):
-        w.task("Import Geometry").delete_child()
-    assert msg.value.args[0] == "This method is still not implemented in pyfluent."
+        w.task("Import Geometry").fix_state()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
