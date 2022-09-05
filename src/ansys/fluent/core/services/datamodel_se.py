@@ -217,7 +217,7 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-class PyBasicStateContainer(PyCallableStateObject):
+class PyReadOnlyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -235,10 +235,6 @@ class PyBasicStateContainer(PyCallableStateObject):
     getState()
         Get the state of the current object. (This method is the
         same as the __call__() method.)
-    set_state(state)
-        Set the state of the current object.
-    setState(state)
-        Set state of the current object (same as set_state(state))
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -260,15 +256,6 @@ class PyBasicStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     getState = get_state
-
-    def set_state(self, state: Any) -> None:
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
-
-    setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -308,7 +295,36 @@ class PyBasicStateContainer(PyCallableStateObject):
         print(help_string)
 
 
-class PyMenu(PyBasicStateContainer):
+class PyStateContainer(PyReadOnlyStateContainer):
+    """Object class using StateEngine based DatamodelService as backend. Use
+    this class instead of directly calling DatamodelService's method.
+
+    Methods
+    -------
+    get_state()
+        Get the state of the current object. (This method is the
+        same as the __call__() method.)
+    getState()
+        Get the state of the current object. (This method is the
+        same as the __call__() method.)
+    """
+
+    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        super().__init__(service, rules, path)
+
+    docstring = None
+
+    def set_state(self, state: Any) -> None:
+        request = DataModelProtoModule.SetStateRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(state, request.state)
+        self.service.set_state(request)
+
+    setState = set_state
+
+
+class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -332,9 +348,7 @@ class PyMenu(PyBasicStateContainer):
         value : Any
             state
         """
-        if hasattr(self, name) and isinstance(
-            getattr(self, name), PyBasicStateContainer
-        ):
+        if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -378,7 +392,7 @@ class PyMenu(PyBasicStateContainer):
         return response.commandid
 
 
-class PyParameter(PyBasicStateContainer):
+class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
     Use this class instead of directly calling DatamodelService's
@@ -708,11 +722,6 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     getState = get_state
 
-    def set_state(self, state: Any) -> None:
-        self.parent.set_state({self.name: state})
-
-    setState = set_state
-
     def get_attrib_value(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"
         return self.parent.get_attrib_value(attrib_path)
@@ -723,7 +732,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         pass
 
 
-class PyCommandArguments(PyBasicStateContainer):
+class PyCommandArguments(PyReadOnlyStateContainer):
     def __init__(
         self,
         service: DatamodelService,
