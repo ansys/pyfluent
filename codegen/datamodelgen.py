@@ -183,7 +183,10 @@ class DataModelGenerator:
             session.exit()
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
-        if " " in name:
+        # preferences contains a deprecated object Meshing Workflow (with a space)
+        # which migrates to MeshingWorkflow automatically. Simplest thing to do is
+        # filter out invalid names.
+        if not name.isidentifier():
             return
         indent = " " * level * 4
         f.write(f"{indent}class {name}(PyMenu):\n")
@@ -201,7 +204,8 @@ class DataModelGenerator:
                 f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in singletons:
-            if " " not in k:
+            # This is where filtering these names out really matters (see commsent above)
+            if k.isidentifier():
                 f.write(
                     f"{indent}        self.{k} = "
                     f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
