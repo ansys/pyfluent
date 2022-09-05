@@ -457,6 +457,7 @@ def launch_fluent(
             )
             return new_session(
                 fluent_connection=_FluentConnection(
+                    start_timeout=start_timeout,
                     port=port,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
