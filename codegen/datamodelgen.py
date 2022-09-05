@@ -351,21 +351,23 @@ class DataModelGenerator:
                 f.write("    PyCommand\n")
                 f.write(")\n\n\n")
                 self._write_static_info("Root", info.static_info, f)
-                doc_dir = Path(
-                    _MESHING_DM_DOC_DIR
-                    if "meshing" in info.modes
-                    else _SOLVER_DM_DOC_DIR
+                mode_to_dir = dict(
+                    meshing=_MESHING_DM_DOC_DIR, solver=_SOLVER_DM_DOC_DIR
                 )
-                index_file = doc_dir / "index.rst"
-                with open(index_file, "a", encoding="utf8") as f:
-                    f.write(f"   {name}/index\n")
-                self._write_doc_for_model_object(
-                    info.static_info,
-                    doc_dir / name,
-                    f"{info.modes[0]}.datamodel.{name}",
-                    f"ansys.fluent.core.datamodel_{self.version}.{name}",
-                    "Root",
-                )
+                for mode in info.modes:
+                    dir_type = mode_to_dir.get(mode)
+                    if dir_type:
+                        doc_dir = Path(dir_type)
+                        index_file = doc_dir / "index.rst"
+                        with open(index_file, "a", encoding="utf8") as f:
+                            f.write(f"   {name}/index\n")
+                        self._write_doc_for_model_object(
+                            info.static_info,
+                            doc_dir / name,
+                            f"{mode}.datamodel.{name}",
+                            f"ansys.fluent.core.datamodel_{self.version}.{name}",
+                            "Root",
+                        )
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
