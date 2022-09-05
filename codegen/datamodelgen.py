@@ -231,7 +231,7 @@ class DataModelGenerator:
             f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
         for k in singletons:
-            if " " not in k:
+            if k.isidentifier():
                 print("included", k)
                 self._write_static_info(k, info.singletons[k], f, level + 1)
             else:
@@ -294,14 +294,15 @@ class DataModelGenerator:
                 f.write("   :hidden:\n\n")
 
                 for k in singletons:
-                    f.write(f"   {k}/index\n")
-                    self._write_doc_for_model_object(
-                        info.singletons[k],
-                        doc_dir / k,
-                        heading + "." + k,
-                        module_name,
-                        class_name + "." + k,
-                    )
+                    if k.isidentifier():
+                        f.write(f"   {k}/index\n")
+                        self._write_doc_for_model_object(
+                            info.singletons[k],
+                            doc_dir / k,
+                            heading + "." + k,
+                            module_name,
+                            class_name + "." + k,
+                        )
 
                 for k in named_objects:
                     f.write(f"   {k}/index\n")
