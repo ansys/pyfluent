@@ -235,10 +235,6 @@ class PyBasicStateContainer(PyCallableStateObject):
     getState()
         Get the state of the current object. (This method is the
         same as the __call__() method.)
-    set_state(state)
-        Set the state of the current object.
-    setState(state)
-        Set state of the current object (same as set_state(state))
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -260,15 +256,6 @@ class PyBasicStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     getState = get_state
-
-    def set_state(self, state: Any) -> None:
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
-
-    setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -317,6 +304,10 @@ class PyMenu(PyBasicStateContainer):
     __setattr__(name, value)
         Set state of the child object
     create_command_arguments(command)
+    set_state(state)
+        Set the state of the current object.
+    setState(state)
+        Set state of the current object (same as set_state(state))
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -338,6 +329,15 @@ class PyMenu(PyBasicStateContainer):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
+
+    def set_state(self, state: Any) -> None:
+        request = DataModelProtoModule.SetStateRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(state, request.state)
+        self.service.set_state(request)
+
+    setState = set_state
 
     def rename(self, new_name: str) -> None:
         """Rename the named object.
@@ -665,11 +665,6 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
             pass
 
     getState = get_state
-
-    def set_state(self, state: Any) -> None:
-        self.parent.set_state({self.name: state})
-
-    setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"
