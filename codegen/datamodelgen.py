@@ -368,6 +368,11 @@ class DataModelGenerator:
                             f"ansys.fluent.core.datamodel_{self.version}.{name}",
                             "Root",
                         )
+                        """
+                        other instance in api/core/meshing/datamodel/preferences/index,
+                        use :noindex: for one of them
+                        """
+                        break
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
