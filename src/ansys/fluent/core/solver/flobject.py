@@ -367,6 +367,13 @@ class Group(SettingsBase[DictStateType]):
             cls = getattr(self.__class__, query)
             self._setattr(query, cls(None, self))
 
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            return self.set_state(kwargs)
+        elif args:
+            return self.set_state(args)
+        return self.get_state()
+
     @classmethod
     def to_scheme_keys(cls, value):
         """Convert value to have keys with scheme names."""
