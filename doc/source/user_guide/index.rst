@@ -30,7 +30,7 @@ Overview
 You use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
 to launch an instance of Fluent that runs as a server in the background.
 
-You can launch Fluent in solution mode with no arguments:
+You can launch Fluent in solution mode with:
 
 .. code:: python
 

@@ -45,19 +45,19 @@ To launch Fluent from PyFluent, use the ``launch_fluent`` method:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
-  solver.check_health()
+  solver_session = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
+  solver_session.check_health()
 
-Once Fluent is active, you can use the ``session.solver.tui`` interface to send
+Once Fluent is active, you can use the ``solver_session.tui`` interface to send
 Fluent TUI commands to Fluent. For example, you can read a
 case file, update a setting, and iterate the solver with:
 
 .. code:: python
 
-  solver.tui.file.read_case('elbow.cas.h5')
-  solver.tui.define.models.unsteady_2nd_order("yes")
-  solver.tui.solve.initialize.initialize_flow()
-  solver.tui.solve.dual_time_iterate(2, 3)
+  solver_session.tui.file.read_case('elbow.cas.h5')
+  solver_session.tui.define.models.unsteady_2nd_order("yes")
+  solver_session.tui.solve.initialize.initialize_flow()
+  solver_session.tui.solve.dual_time_iterate(2, 3)
 
 If you want to interact with the Fluent graphical user interface, pass ``show_gui=True``
 to the ``launch_fluent`` function:
