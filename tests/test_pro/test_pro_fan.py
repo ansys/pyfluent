@@ -1,8 +1,11 @@
 import os
 
+import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.solve
+@pytest.mark.fluent_231
 def test_pro_fan(launch_fluent_solver_3ddp_t2):
     if not os.path.exists("out"):
         os.mkdir("out")

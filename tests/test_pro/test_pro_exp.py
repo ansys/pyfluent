@@ -1,8 +1,11 @@
 import os
 
+import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.solve
+@pytest.mark.fluent_231
 def test_pro_exp(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     _THIS_DIR = os.path.dirname(__file__)

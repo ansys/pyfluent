@@ -1,13 +1,13 @@
+import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.mesh
+@pytest.mark.fluent_231
 def test_pro_wtm_tet(new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     input_type, input_name = download_input_file("pyfluent/cylinder", "cylinder.agdb")
     workflow = meshing.workflow
-    # workflow.GlobalSettings.LengthUnit.setState(r'mm')
-    # meshing.GlobalSettings.AreaUnit.setState(r'mm^2')
-    # meshing.GlobalSettings.VolumeUnit.setState(r'mm^3')
     workflow.TaskObject["Import Geometry"].Arguments.setState(
         {
             r"FileName": r"%s" % input_name,
@@ -15,6 +15,7 @@ def test_pro_wtm_tet(new_watertight_workflow_session):
     )
     workflow.TaskObject["Import Geometry"].Execute()
     workflow.TaskObject["Add Local Sizing"].AddChildAndUpdate()
+
     workflow.TaskObject["Generate the Surface Mesh"].Arguments.setState(
         {
             r"SeparationRequired": r"Yes",
@@ -138,6 +139,8 @@ def test_pro_wtm_tet(new_watertight_workflow_session):
     solver.exit()
 
 
+@pytest.mark.mesh
+@pytest.mark.fluent_231
 def test_pro_wtm_hex(new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     input_type, input_name = download_input_file("pyfluent/cylinder", "cylinder.agdb")
@@ -253,6 +256,8 @@ def test_pro_wtm_hex(new_watertight_workflow_session):
     solver.exit()
 
 
+@pytest.mark.mesh
+@pytest.mark.fluent_231
 def test_pro_wtm_poly(new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     input_type, input_name = download_input_file("pyfluent/cylinder", "cylinder.agdb")
@@ -360,6 +365,8 @@ def test_pro_wtm_poly(new_watertight_workflow_session):
     solver.exit()
 
 
+@pytest.mark.mesh
+@pytest.mark.fluent_231
 def test_pro_wtm_polyhexcore(new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     input_type, input_name = download_input_file("pyfluent/cylinder", "cylinder.agdb")

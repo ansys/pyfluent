@@ -1,6 +1,9 @@
+import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.solve
+@pytest.mark.fluent_231
 def test_pro_porous(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(

@@ -1,6 +1,9 @@
+import pytest
 from util.fixture_fluent import download_input_file
 
 
+@pytest.mark.solve
+@pytest.mark.fluent_231
 def test_pro_ht(new_watertight_workflow_session):
     meshing = new_watertight_workflow_session
     input_type, input_name = download_input_file(
