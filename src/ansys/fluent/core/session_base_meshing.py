@@ -20,6 +20,7 @@ class _BaseMeshing:
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
+        self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._version = None
 
@@ -126,3 +127,12 @@ class _BaseMeshing:
                     self._se_service, "PMFileManagement"
                 )
         return self._pm_file_management
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            from ansys.fluent.core.session import _get_preferences
+
+            self._preferences = _get_preferences(self)
+        return self._preferences

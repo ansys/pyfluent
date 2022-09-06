@@ -54,3 +54,8 @@ class Meshing(PureMeshing):
     def PMFileManagement(self):
         """PMFileManagement datamodel root."""
         return super(Meshing, self).PMFileManagement if not self.switched else None
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        return super(Meshing, self).preferences if not self.switched else None

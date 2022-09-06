@@ -3,7 +3,7 @@
 import importlib
 
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, _BaseSession
+from ansys.fluent.core.session import _CODEGEN_MSG_TUI, _BaseSession, _get_preferences
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
@@ -20,6 +20,7 @@ class Solver(_BaseSession):
     ):
         super(Solver, self).__init__(fluent_connection=fluent_connection)
         self._tui_service = self.fluent_connection.datamodel_service_tui
+        self._se_service = fluent_connection.datamodel_service_se
         self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._settings_root = None
@@ -99,3 +100,10 @@ class Solver(_BaseSession):
     def report(self):
         """report settings."""
         return self._root.report
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            self._preferences = _get_preferences(self)
+        return self._preferences
