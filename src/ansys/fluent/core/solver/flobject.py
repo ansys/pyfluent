@@ -240,6 +240,8 @@ class SettingsBase(Base, Generic[StateT]):
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
         elif kwargs:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
+        else:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out=sys.stdout, indent=0, indent_factor=2):
