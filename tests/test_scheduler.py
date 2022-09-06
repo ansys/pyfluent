@@ -6,6 +6,7 @@ from builtins import range
 import os
 import unittest
 
+from ansys.fluent.core.scheduler import build_parallel_options
 from ansys.fluent.core.scheduler.load_machines import (
     _construct_machine_list_slurm,
     _parse_host_info,
@@ -162,6 +163,8 @@ class TestLoadMachines(unittest.TestCase):
             self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
         self.assertEqual(machineList.machines[0].host_name, "M0")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t4 -cnf=M0:1,M1:2,M2:1")
 
     def test_constrain_machines2(self):
         machineList = load_machines(host_info="M0:2,M1:3,M2:2", ncores=3)
@@ -171,6 +174,8 @@ class TestLoadMachines(unittest.TestCase):
             self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
         self.assertEqual(machineList.machines[0].host_name, "M0")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t3 -cnf=M0:1,M1:1,M2:1")
 
     def test_overload_machines1(self):
         machineList = load_machines(host_info="M0:2,M1:1", ncores=10)
@@ -180,6 +185,8 @@ class TestLoadMachines(unittest.TestCase):
             self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
         self.assertEqual(machineList.machines[0].host_name, "M0")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t3 -cnf=M0:2,M1:1")
 
     def test_overload_machines2(self):
         machineList = load_machines(host_info="M0,M0,M1", ncores=10)
@@ -189,6 +196,8 @@ class TestLoadMachines(unittest.TestCase):
             self.assertEqual(machine.number_of_cores, expectedValue[machine.host_name])
         # Ensure that the order is preserved
         self.assertEqual(machineList.machines[0].host_name, "M0")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t3 -cnf=M0:2,M1:1")
 
     def test_winhpc(self):
         os.environ["CCP_NODES"] = "3 M0 8 M1 8 M2 16"
@@ -198,6 +207,8 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(machineList.machines[0].host_name, "M0")
         self.assertEqual(machineList.machines[1].host_name, "M1")
         self.assertEqual(machineList.machines[2].host_name, "M2")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t32 -cnf=M0:8,M1:8,M2:16")
 
     def test_slurm_no_brackets(self):
         os.environ["SLURM_JOB_NODELIST"] = "M0,M1,M2"
@@ -209,6 +220,8 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(machineList.machines[0].host_name, "M0")
         self.assertEqual(machineList.machines[1].host_name, "M1")
         self.assertEqual(machineList.machines[2].host_name, "M2")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t24 -cnf=M0:8,M1:8,M2:8")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
@@ -222,6 +235,8 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(machineList.machines[0].host_name, "M0")
         self.assertEqual(machineList.machines[1].host_name, "M1")
         self.assertEqual(machineList.machines[2].host_name, "M2")
+        fluentOpts = build_parallel_options(machineList)
+        self.assertEqual(fluentOpts, "-t36 -cnf=M0:12,M1:12,M2:12")
         del os.environ["SLURM_JOB_NODELIST"]
         del os.environ["SLURM_NTASKS_PER_NODE"]
 
