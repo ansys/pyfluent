@@ -9,6 +9,13 @@ _machineSep = ","
 
 
 def build_parallel_options(machine_list: MachineList) -> str:
+    """Constructs Fluent's parallel arguments given a list of machines.
+
+    Parameters
+    ----------
+    machine_list : MachineList
+        List of machines obtained by calling `load_machines`.
+    """
     parOpt = _fluentOpt.replace("%n%", str(machine_list.number_of_cores))
     cnfList = (
         machine_list[0].host_name + _procSep + str(machine_list[0].number_of_cores)
