@@ -79,8 +79,8 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  session = pyfluent.launch_fluent(mode="solver")
-  session.check_health()
+  solver_session = pyfluent.launch_fluent(mode="solver")
+  solver_session.check_health()
 
 To use a non-default installation location, set the ``PYFLUENT_FLUENT_ROOT``
 environment variable to the ``<version>/fluent`` directory, where ``<version>``
@@ -89,14 +89,14 @@ uses release 2022 R2.
 
 Basic Usage
 ~~~~~~~~~~~
-You can use the ``session.solver.tui`` interface to run all Fluent TUI commands:
+You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 
 .. code:: python
 
-  session.solver.tui.file.read_case('elbow.cas.h5')
-  session.solver.tui.define.models.unsteady_2nd_order("yes")
-  session.solver.tui.solve.initialize.initialize_flow()
-  session.solver.tui.solve.dual_time_iterate(2, 3)
+  solver_session.tui.file.read_case('elbow.cas.h5')
+  solver_session.tui.define.models.unsteady_2nd_order("yes")
+  solver_session.tui.solve.initialize.initialize_flow()
+  solver_session.tui.solve.dual_time_iterate(2, 3)
 
 You can also install and use these PyFluent libraries:
 
