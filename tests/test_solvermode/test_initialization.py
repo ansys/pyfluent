@@ -9,7 +9,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/wigley_hull", "wigley.msh")
     solver.file.read(file_type=input_type, file_name=input_name)
-    solver.parallel.partition.set.use_laplace_smoothing = True
+    solver.parallel.partition.set.laplace_smoothing.enabled = True
     solver.parallel.partition.method(partition_method="metis", count=2)
     solver.setup.materials.database.copy_by_name(type="fluid", name="air")
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
@@ -40,7 +40,7 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
 
     solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
     solver.solution.methods.p_v_coupling.coupled_form = True
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
+    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
         True
     )
     solver.solution.initialization.open_channel_auto_init = {

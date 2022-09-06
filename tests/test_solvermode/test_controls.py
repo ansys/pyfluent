@@ -12,24 +12,24 @@ def test_controls(load_mixing_elbow_mesh):
     assert solver.setup.general.gravity.components() == [0, 0, -9.81]
     solver.setup.general.solver.time = "steady"
     assert solver.setup.general.solver.time() == "steady"
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
+    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
         True
     )
-    assert solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters() == {
+    assert solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters() == {
         "max_coarse_levels": 40,
         "coarsen_by_interval": 8,
         "conservative_coarsening": False,
         "aggressive_coarsening": False,
         "laplace_coarsening": True,
     }
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels = (
+    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels = (
         45
     )
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels()
+        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels()
         == 45
     )
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters = {
+    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters = {
         "max_coarse_levels": 48,
         "coarsen_by_interval": 9,
         "conservative_coarsening": True,
@@ -37,34 +37,34 @@ def test_controls(load_mixing_elbow_mesh):
         "laplace_coarsening": True,
     }
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels()
+        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.max_coarse_levels()
         == 48
     )
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.coarsen_by_interval()
+        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.coarsen_by_interval()
         == 9
     )
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.conservative_coarsening()
+        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.conservative_coarsening()
         == True
     )
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.coupled_parameters.coarsening_parameters.aggressive_coarsening()
+        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.aggressive_coarsening()
         == True
     )
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.scalar_parameters.fixed_cycle_parameters.max_cycle = (
+    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters.max_cycle = (
         300
     )
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.scalar_parameters.fixed_cycle_parameters.max_cycle()
+        solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters.max_cycle()
         == 300
     )
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.scalar_parameters.fixed_cycle_parameters = {
+    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters = {
         "pre_sweeps": 1,
         "post_sweeps": 2,
         "max_cycle": 350,
     }
-    assert solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.scalar_parameters.fixed_cycle_parameters() == {
+    assert solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters() == {
         "pre_sweeps": 1,
         "post_sweeps": 2,
         "max_cycle": 350,
@@ -73,11 +73,11 @@ def test_controls(load_mixing_elbow_mesh):
     assert solver.solution.methods.p_v_coupling.flow_scheme() == "Coupled"
     solver.solution.methods.p_v_coupling.coupled_form = True
     assert solver.solution.methods.p_v_coupling.coupled_form() == True
-    solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.scalar_parameters.smoother_type = (
+    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type = (
         "gauss-seidel"
     )
     assert (
-        solver.solution.controls.advanced.multi_grid.algebraic_mg_controls.scalar_parameters.smoother_type()
+        solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type()
         == "gauss-seidel"
     )
     assert solver.solution.controls.pseudo_time_explicit_relaxation_factor() == {
