@@ -236,9 +236,7 @@ class SettingsBase(Base, Generic[StateT]):
 
     def set_state(self, state: StateT = None, **kwargs):
         """Set the state of the object."""
-        if state:
-            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
-        elif kwargs:
+        if kwargs:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
         else:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
