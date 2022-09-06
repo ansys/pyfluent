@@ -234,9 +234,12 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT):
+    def set_state(self, state: StateT = None, **kwargs):
         """Set the state of the object."""
-        return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+        if state:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+        elif kwargs:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
 
     @staticmethod
     def _print_state_helper(state, out=sys.stdout, indent=0, indent_factor=2):
