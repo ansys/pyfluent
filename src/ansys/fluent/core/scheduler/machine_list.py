@@ -87,8 +87,14 @@ class MachineList(object):
         for machine in machinesIn:
             self._machines.append(machine)
 
+    def __len__(self):
+        return self.num_machines
+
     def __iter__(self):
         return self._machines.__iter__()
+
+    def __getitem__(self, index):
+        return self._machines[index]
 
     def __deepcopy__(self, memo):
         machineList = []
