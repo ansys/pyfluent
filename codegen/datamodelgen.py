@@ -372,7 +372,7 @@ class DataModelGenerator:
                         other instance in api/core/meshing/datamodel/preferences/index,
                         use :noindex: for one of them
                         """
-                        break
+                        # break
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
