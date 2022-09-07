@@ -234,9 +234,12 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT):
+    def set_state(self, state: StateT = None, **kwargs):
         """Set the state of the object."""
-        return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+        if kwargs:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
+        else:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out=sys.stdout, indent=0, indent_factor=2):
@@ -363,6 +366,13 @@ class Group(SettingsBase[DictStateType]):
         for query in self.query_names:
             cls = getattr(self.__class__, query)
             self._setattr(query, cls(None, self))
+
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            return self.set_state(kwargs)
+        elif args:
+            return self.set_state(args)
+        return self.get_state()
 
     @classmethod
     def to_scheme_keys(cls, value):
