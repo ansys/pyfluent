@@ -2,6 +2,7 @@ import pytest
 
 pytest_plugins = [
     "util.fixture_fluent",
+    "util.meshing_workflow",
 ]
 
 
