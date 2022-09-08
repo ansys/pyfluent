@@ -84,7 +84,7 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 
   >>> root.setup.models.viscous.model = 'laminar'
   >>> root.setup.models.energy = { 'enabled' : False }
-  >>> root.setup.boundary_conditions.velocity['inlet1'].vmag.constant = 14
+  >>> root.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
 
 
 You can also access the state of an object with the ``get_state`` method and
