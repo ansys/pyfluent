@@ -252,10 +252,18 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_read_only()
+    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
     assert w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
     assert w.task("Import Geometry").CommandArguments.FileName.is_read_only()
-    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.OneZonePer.default_value()
+        == "Body"
+    )
 
 
 def test_dummy_journal_data_model_methods(new_mesh_session):

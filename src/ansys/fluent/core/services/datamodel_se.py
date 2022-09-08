@@ -709,9 +709,60 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.static_info = static_info
 
     def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(
-            self, attr, self.service, self.rules, self.path, self.static_info
-        )
+        if self.static_info.info.parameters[attr].type in ["String", "String List"]:
+            return PyTextualCommandArgumentsSubItem(
+                self,
+                attr,
+                self.service,
+                self.rules,
+                self.path,
+                self.static_info,
+            )
+        elif self.static_info.info.parameters[attr].type in [
+            "Real",
+            "Int",
+            "Real List",
+            "Integer",
+        ]:
+            return PyNumericalCommandArgumentsSubItem(
+                self,
+                attr,
+                self.service,
+                self.rules,
+                self.path,
+                self.static_info,
+            )
+        elif self.static_info.info.parameters[attr].type == "Dict":
+            return PyDictionaryCommandArgumentsSubItem(
+                self,
+                attr,
+                self.service,
+                self.rules,
+                self.path,
+                self.static_info,
+            )
+        elif self.static_info.info.parameters[attr].type in [
+            "Bool",
+            "Logical",
+            "Logical List",
+        ]:
+            return PyParameterCommandArgumentsSubItem(
+                self,
+                attr,
+                self.service,
+                self.rules,
+                self.path,
+                self.static_info,
+            )
+        else:
+            return PyCommandArgumentsSubItem(
+                self,
+                attr,
+                self.service,
+                self.rules,
+                self.path,
+                self.static_info.info.parameters[attr],
+            )
 
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
@@ -807,7 +858,7 @@ class PyCommandArguments(PyReadOnlyStateContainer):
                         self.service,
                         self.rules,
                         self.path,
-                        self.static_info,
+                        arg,
                     )
 
 
