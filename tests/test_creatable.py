@@ -1,7 +1,9 @@
+import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 
-def test_session_starts_transcript_by_default(new_solver_session) -> None:
+@pytest.mark.fluent_231
+def test_creatable(new_solver_session) -> None:
 
     has_not = (
         new_solver_session.setup.boundary_conditions.velocity_inlet,
