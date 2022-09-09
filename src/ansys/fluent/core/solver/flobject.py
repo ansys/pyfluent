@@ -369,10 +369,11 @@ class Group(SettingsBase[DictStateType]):
 
     def __call__(self, *args, **kwargs):
         if kwargs:
-            return self.set_state(kwargs)
+            self.set_state(kwargs)
         elif args:
-            return self.set_state(args)
-        return self.get_state()
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     @classmethod
     def to_scheme_keys(cls, value):
