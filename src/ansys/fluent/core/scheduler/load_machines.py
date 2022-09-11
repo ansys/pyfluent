@@ -101,7 +101,7 @@ def load_machines(
     elif ncores is None:
         machine_list = _get_local_machine(1)
 
-    if ncores is not None and machine_list.number_of_cores != ncores:
+    if ncores is not None and ncores < machine_list.number_of_cores:
         # If both machine list and number of cores are provided, edit the
         # machine list to use exactly the number of cores indicated.
         machine_list = _restrict_machines_to_core_count(machine_list, ncores)
