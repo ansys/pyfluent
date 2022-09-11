@@ -48,12 +48,12 @@ def load_machines(
     list for LSF, PBS_NODEFILE for PBS and SLURM_JOB_NODELIST on SLURM.
     Unsupported job schedulers may provide alternative ways of providing a list
     of machines, in that case the list must be pre-parsed and provided via the
-    machineDict parameter.
+    `machine_info` or `host_info` parameters.
 
-    Depending on the SLURM environment, the hostnames contained within the
-    SLURM_JOB_NODELIST variable may not be valid to ssh to. In that case we
-    cannot pass these names to the solver. So, in the SLURM branch there is a
-    test to check if we can ssh to the first host, if not, get 'actual' machine
+    In some SLURM environments, the hostnames contained within the variable
+    SLURM_JOB_NODELIST may not be valid to ssh to. In that case those names
+    cannot be passed to the solver. So, in the SLURM branch there is a test to
+    check if ssh to the first host is working, and if not, get 'actual' machine
     names using scontrol.
     """
 
