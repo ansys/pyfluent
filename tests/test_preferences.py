@@ -5,8 +5,8 @@ from util.solver_workflow import new_solver_session  # noqa: F401
 def test_solver_preferences(new_solver_session):
     solver = new_solver_session
 
-    solver.preferences.MeshingWorkflow.Verbosity = 10.5
-    assert solver.preferences.MeshingWorkflow.Verbosity() == "10.5"
+    solver.preferences.MeshingWorkflow.Verbosity = "off"
+    assert solver.preferences.MeshingWorkflow.Verbosity() == "off"
 
     solver.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"
     assert (
@@ -37,8 +37,8 @@ def test_solver_preferences(new_solver_session):
 def test_meshing_test_solver_preferences(new_mesh_session):
     meshing = new_mesh_session
 
-    meshing.preferences.MeshingWorkflow.Verbosity = 15.5
-    assert meshing.preferences.MeshingWorkflow.Verbosity() == "15.5"
+    meshing.preferences.MeshingWorkflow.Verbosity = "off"
+    assert meshing.preferences.MeshingWorkflow.Verbosity() == "off"
 
     meshing.preferences.MeshingWorkflow.CheckpointingOption = "Write into memory"
     assert (
