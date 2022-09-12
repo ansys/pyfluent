@@ -34,7 +34,7 @@ def test_solver_preferences(new_solver_session):
     solver.exit()
 
 
-def test_meshing_test_solver_preferences(new_mesh_session):
+def test_meshing_preferences(new_mesh_session):
     meshing = new_mesh_session
 
     meshing.preferences.MeshingWorkflow.Verbosity = "off"
