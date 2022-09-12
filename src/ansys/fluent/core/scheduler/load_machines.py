@@ -8,11 +8,14 @@ variables, respectively.
 import csv
 import os
 import subprocess
+from typing import Dict, List
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
-def load_machines(machine_info=None, host_info=None, ncores=None):
+def load_machines(
+    machine_info: List[Dict[str, int]] = None, host_info: str = None, ncores: int = None
+) -> MachineList:
     """Provide a function to construct a machine list from allocated machines.
 
     Parameters
@@ -54,7 +57,7 @@ def load_machines(machine_info=None, host_info=None, ncores=None):
     names using scontrol.
     """
 
-    machine_list = []
+    machine_list = MachineList()
 
     if machine_info:
         machine_list = _construct_machine_list_manual(machine_info)
@@ -95,8 +98,10 @@ def load_machines(machine_info=None, host_info=None, ncores=None):
         machine_list = _construct_machine_list_ccs(hostList)
     elif ncores:
         machine_list = _get_local_machine(ncores)
+    elif ncores is None:
+        machine_list = _get_local_machine(1)
 
-    if machine_list and ncores:
+    if ncores is not None and machine_list.number_of_cores != ncores:
         # If both machine list and number of cores are provided, edit the
         # machine list to use exactly the number of cores indicated.
         machine_list = _restrict_machines_to_core_count(machine_list, ncores)

@@ -4,6 +4,7 @@ for machines to run on.
 """
 from builtins import range
 import os
+import socket
 import unittest
 
 from ansys.fluent.core.scheduler import build_parallel_options
@@ -155,6 +156,16 @@ class TestLoadMachines(unittest.TestCase):
     def tearDown(self):
         self._machineList.reset()
 
+    def test_no_environment(self):
+        machineList = load_machines()
+        self.assertEqual(machineList[0].host_name, socket.gethostname())
+        self.assertEqual(machineList.number_of_cores, 1)
+
+    def test_no_environment_cores(self):
+        machineList = load_machines(ncores=4)
+        self.assertEqual(machineList[0].host_name, socket.gethostname())
+        self.assertEqual(machineList.number_of_cores, 4)
+
     def test_constrain_machines1(self):
         machineList = load_machines(host_info="M0:2,M1:3,M2:2", ncores=4)
         expectedValue = {"M0": 1, "M1": 2, "M2": 1}
@@ -209,6 +220,7 @@ class TestLoadMachines(unittest.TestCase):
         self.assertEqual(machineList.machines[2].host_name, "M2")
         fluentOpts = build_parallel_options(machineList)
         self.assertEqual(fluentOpts, "-t32 -cnf=M0:8,M1:8,M2:16")
+        del os.environ["CCP_NODES"]
 
     def test_slurm_no_brackets(self):
         os.environ["SLURM_JOB_NODELIST"] = "M0,M1,M2"

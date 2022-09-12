@@ -25,7 +25,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
-from ansys.fluent.core.utils.logging import LOG
+from .logging import LOG
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -369,10 +369,11 @@ class Group(SettingsBase[DictStateType]):
 
     def __call__(self, *args, **kwargs):
         if kwargs:
-            return self.set_state(kwargs)
+            self.set_state(kwargs)
         elif args:
-            return self.set_state(args)
-        return self.get_state()
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -862,7 +863,7 @@ def get_cls(name, info, parent=None):
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
         include_child_named_objects = info.get("include_child_named_objects", False)
-        user_creatable = info.get("user_creatable", True)
+        user_creatable = info.get("user_creatable", False)
 
         bases = (base,)
         if include_child_named_objects:
