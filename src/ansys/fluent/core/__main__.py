@@ -9,8 +9,11 @@ def setup_for_fluent(version: str, mode: str):
     """Uses global PyConsole objects."""
     session = launch_fluent(version=version, mode=mode)
     if mode == "meshing":
-        globals()["meshing"] = session
+        globals()["meshing"] = session.meshing
         globals()["workflow"] = session.workflow
+        globals()["PartManagement"] = session.PartManagement
+        globals()["PMFileManagement"] = session.PMFileManagement
+        globals()["preferences"] = session.preferences
         globals()["solver"] = Solver(fluent_connection=session.fluent_connection)
     elif mode == "solver":
         globals()["solver"] = session
