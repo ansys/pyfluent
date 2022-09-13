@@ -17,6 +17,7 @@ def setup_for_fluent(version: str, mode: str):
         globals()["solver"] = Solver(fluent_connection=session.fluent_connection)
     elif mode == "solver":
         globals()["solver"] = session
+        globals()["solver"] = session.preferences
 
 
 # File name parsing and line by line execution
