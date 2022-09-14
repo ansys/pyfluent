@@ -58,7 +58,9 @@ number of processors for local parallel execution:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="2d", processor_count=2, mode="solver")
+   solver_session = pyfluent.launch_fluent(
+      precision="double", version="2d", processor_count=2, mode="solver"
+   )
 
 Distributed parallel
 ~~~~~~~~~~~~~~~~~~~~
@@ -67,8 +69,13 @@ distributed across more than one machine:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="3d", processor_count=16,  mode="solver", additional_arguments="-cnf=m1:8,m2:8")
-
+   solver_session = pyfluent.launch_fluent(
+      precision="double",
+      version="3d",
+      processor_count=16,
+      mode="solver",
+      additional_arguments="-cnf=m1:8,m2:8",
+   )
 
 Scheduler support
 -----------------
@@ -129,9 +136,11 @@ provide the ``processor_count`` option:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="3d", processor_count=16, mode="solver")
+   solver_session = pyfluent.launch_fluent(
+      precision="double", version="3d", processor_count=16, mode="solver"
+   )
 
-Passing the ``processor_count`` like this will force execution of Fluent on 16
+Passing the ``processor_count`` like this forces execution of Fluent on 16
 cores despite the fact that the Slurm submission requests 32 total cores from
 the job scheduler. This behavior may be useful in situations where the scheduler
 environment allocates all the cores on a machine and you know that Fluent may
@@ -144,10 +153,17 @@ or ``-t`` and ``-cnf`` arguments to :func:`launch_fluent()
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="3d", mode="solver", additional_arguments="-t16")
+   solver_session = pyfluent.launch_fluent(
+      precision="double", version="3d", mode="solver", additional_arguments="-t16"
+   )
 
 and for distributed parallel you would usually pass both parameters:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="3d", mode="solver", additional_arguments="-t16 -cnf=m1:8,m2:8")
+   solver_session = pyfluent.launch_fluent(
+      precision="double",
+      version="3d",
+      mode="solver",
+      additional_arguments="-t16 -cnf=m1:8,m2:8",
+   )
