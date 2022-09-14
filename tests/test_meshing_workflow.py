@@ -264,6 +264,13 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
         ).CommandArguments.CadImportOptions.OneZonePer.default_value()
         == "Body"
     )
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
+        "Body",
+        "Face",
+        "Object",
+    ]
 
 
 def test_dummy_journal_data_model_methods(new_mesh_session):
