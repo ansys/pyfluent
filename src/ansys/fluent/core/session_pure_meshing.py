@@ -56,16 +56,38 @@ class PureMeshing(_BaseSession):
     def transfer_mesh_to_solvers(
         self,
         solvers,
-        mesh_only=False,
-        file_name_stem=None,
-        num_files_to_try=1,
-        clean_up_mesh_file=True,
-        overwrite_previous=True,
+        file_type: str = "case",
+        file_name_stem: str = None,
+        num_files_to_try: int = 1,
+        clean_up_mesh_file: bool = True,
+        overwrite_previous: bool = True,
     ):
+        """Transfer mesh to Fluent solver instances.
+
+        Parameters
+        ----------
+        solvers : iterable
+            Sequence of solver instances
+        file_type : str, default "case"
+            "case" or "mesh"
+        file_name_stem : str
+            Optional file name stem
+        num_files_to_try : int, default 1
+            Optional number of files to try to write,
+            each with a different generated name.
+            Defaults to 1
+        clean_up_mesh_file: bool, default True
+            Whether to remove the file at the end
+        overwrite_previous: bool, default True
+            Whether to overwrite the file if it already exists
+        Returns
+        -------
+        None
+        """
         transfer_case(
             self,
             solvers,
-            mesh_only,
+            file_type,
             file_name_stem,
             num_files_to_try,
             clean_up_mesh_file,
