@@ -16,6 +16,7 @@ import warnings
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
+from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -53,7 +54,7 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
 
     This supersedes the Fluent path set in the environment variable.
     """
-    if Path(fluent_exe_path).exists() and Path(fluent_exe_path).name == "fluent.exe":
+    if Path(fluent_exe_path).exists():
         FLUENT_EXE_PATH.append(str(fluent_exe_path))
     else:
         raise RuntimeError(
@@ -194,6 +195,10 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
+    addArgs = kwargs["additional_arguments"]
+    if "-t" not in addArgs and "-cnf=" not in addArgs:
+        mlist = load_machines(ncores=kwargs["processor_count"])
+        launch_args_string += " " + build_parallel_options(mlist)
     return launch_args_string
 
 
@@ -301,7 +306,8 @@ def launch_fluent(
         is used. Options are ``"double"`` and ``"single"``.
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
-        is used.
+        processor is used.  In job scheduler environments the total number of
+        allocated cores is clamped to this value.
     journal_filename : str, optional
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
@@ -365,6 +371,12 @@ def launch_fluent(
     -------
     ansys.fluent.session.Session
         Fluent session.
+
+    Notes
+    -----
+    In job scheduler environments such as SLURM, LSF, PBS, etc... the allocated
+    machines and core counts are queried from the scheduler environment and
+    passed to Fluent.
     """
     argvals = locals()
 
@@ -408,7 +420,14 @@ def launch_fluent(
             if (show_gui is False) or (
                 show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
             ):
-                launch_string += " -hidden"
+                aargs = additional_arguments
+                if (
+                    "-g " not in aargs
+                    and "-gu " not in aargs
+                    and not aargs.endswith("-g")
+                    and not aargs.endswith("-gu")
+                ):
+                    launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:

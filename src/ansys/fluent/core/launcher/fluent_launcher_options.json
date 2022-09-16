@@ -23,10 +23,6 @@
         },
         "fluent_format": "{}"
     },
-    "processor_count": {
-        "type": "int",
-        "fluent_format": " -t{}"
-    },
     "journal_filename": {
         "type": "str",
         "fluent_format": " -i {}"

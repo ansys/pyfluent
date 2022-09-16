@@ -434,13 +434,11 @@ class _Uploader:
 
     def __init__(self, pim_instance):
         self.pim_instance = pim_instance
-
+        self.file_service = None
         try:
             upload_server = self.pim_instance.services["http-simple-upload-server"]
-        except AttributeError:
-            LOG.error("PIM is not installed or not authorized.")
-        except KeyError:
-            self.file_service = None
+        except (AttributeError, KeyError):
+            pass
         else:
             from simple_upload_server.client import Client
 
@@ -450,13 +448,15 @@ class _Uploader:
 
     def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
-        expanded_file_path = os.path.expandvars(file_path)
-        upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
-        self.file_service.upload_file(expanded_file_path, upload_file_name)
+        if self.file_service:
+            expanded_file_path = os.path.expandvars(file_path)
+            upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
+            self.file_service.upload_file(expanded_file_path, upload_file_name)
 
     def download(self, file_name: str, local_file_path: str = None):
         """Downloads a file from the server."""
-        if self.file_service.file_exist(file_name):
-            self.file_service.download_file(file_name, local_file_path)
-        else:
-            raise FileNotFoundError("Remote file does not exist.")
+        if self.file_service:
+            if self.file_service.file_exist(file_name):
+                self.file_service.download_file(file_name, local_file_path)
+            else:
+                raise FileNotFoundError("Remote file does not exist.")

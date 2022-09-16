@@ -312,13 +312,23 @@ class PyStateContainer(PyReadOnlyStateContainer):
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
         super().__init__(service, rules, path)
 
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
+
     docstring = None
 
-    def set_state(self, state: Any) -> None:
+    def set_state(self, state: Any = None, **kwargs) -> None:
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(state, request.state)
+        _convert_value_to_variant(
+            kwargs, request.state
+        ) if kwargs else _convert_value_to_variant(state, request.state)
         self.service.set_state(request)
 
     setState = set_state
