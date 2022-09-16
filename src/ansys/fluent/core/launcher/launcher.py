@@ -420,7 +420,14 @@ def launch_fluent(
             if (show_gui is False) or (
                 show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
             ):
-                launch_string += " -hidden"
+                aargs = additional_arguments
+                if (
+                    "-g " not in aargs
+                    and "-gu " not in aargs
+                    and not aargs.endswith("-g")
+                    and not aargs.endswith("-gu")
+                ):
+                    launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
