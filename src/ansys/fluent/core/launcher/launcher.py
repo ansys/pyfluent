@@ -54,7 +54,7 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
 
     This supersedes the Fluent path set in the environment variable.
     """
-    if Path(fluent_exe_path).exists() and Path(fluent_exe_path).name == "fluent.exe":
+    if Path(fluent_exe_path).exists():
         FLUENT_EXE_PATH.append(str(fluent_exe_path))
     else:
         raise RuntimeError(
