@@ -708,7 +708,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        parent_arg,
     ):
         self.parent = parent
         self.name = name
@@ -716,12 +716,14 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.service = service
         self.rules = rules
         self.path = path
-        self.static_info = static_info
+        self.parent_arg = parent_arg
 
     def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(
-            self, attr, self.service, self.rules, self.path, self.static_info
-        )
+        arg = self.parent_arg.info.parameters[attr]
+
+        mode = AccessorModes.get_mode(arg.type)
+        py_class = mode.value[1]
+        return py_class(self, attr, self.service, self.rules, self.path, arg)
 
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
@@ -774,51 +776,9 @@ class PyCommandArguments(PyReadOnlyStateContainer):
 
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
-                if arg.type in ["String", "ListString"]:
-                    return PyTextualCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                elif arg.type in ["Real", "Int", "ListReal"]:
-                    return PyNumericalCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                elif arg.type == "Dict":
-                    return PyDictionaryCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                elif arg.type in ["Bool", "Logical"]:
-                    return PyParameterCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                else:
-                    return PyCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
+                mode = AccessorModes.get_mode(arg.type)
+                py_class = mode.value[1]
+                return py_class(self, attr, self.service, self.rules, self.path, arg)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
@@ -829,10 +789,10 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyTextual.__init__(self, service, rules, path)
 
@@ -845,10 +805,10 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyNumerical.__init__(self, service, rules, path)
 
@@ -861,10 +821,10 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyDictionary.__init__(self, service, rules, path)
 
@@ -877,12 +837,38 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyParameter.__init__(self, service, rules, path)
+
+
+class AccessorModes(Enum):
+    """Provides the standard Fluent launch modes."""
+
+    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
+    NUMBER = (
+        ["Real", "Int", "ListReal", "Real List", "Integer"],
+        PyNumericalCommandArgumentsSubItem,
+    )
+    DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)
+    PARAMETER = (
+        ["Bool", "Logical", "Logical List"],
+        PyParameterCommandArgumentsSubItem,
+    )
+    GENERIC = ([], PyCommandArgumentsSubItem)
+
+    @staticmethod
+    def get_mode(mode: str) -> "AccessorModes":
+        """Returns the LaunchMode based on the mode in string format."""
+        for m in AccessorModes:
+            if mode in m.value[0]:
+                return m
+        else:
+            return AccessorModes.GENERIC
 
 
 class PyMenuGeneric(PyMenu):
