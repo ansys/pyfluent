@@ -33,6 +33,8 @@ extraction is considered. The example also includes a known small leakage
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
+
 ###############################################################################
 # Example Setup
 # -------------
