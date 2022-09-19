@@ -19,8 +19,6 @@ boundary conditions are given in SI units. Because the Reynolds number for the
 flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings_api.png'
-
 ###############################################################################
 # Perform required imports
 # ~~~~~~~~~~~~~~~~~~~~~~~~
