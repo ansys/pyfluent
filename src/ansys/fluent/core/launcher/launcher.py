@@ -16,7 +16,6 @@ import warnings
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-import ansys.fluent.core.launcher.launcher
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
@@ -385,13 +384,9 @@ def launch_fluent(
     argvals = locals()
 
     if product_version == "22.2.0":
-        ansys.fluent.core.launcher.launcher.set_ansys_version(
-            ansys.fluent.core.FluentVersion.version_22R2
-        )
+        set_ansys_version(FluentVersion.version_22R2)
     elif product_version == "23.1.0":
-        ansys.fluent.core.launcher.launcher.set_ansys_version(
-            ansys.fluent.core.FluentVersion.version_23R1
-        )
+        set_ansys_version(FluentVersion.version_23R1)
 
     if mode is None:
         new_session = Session
