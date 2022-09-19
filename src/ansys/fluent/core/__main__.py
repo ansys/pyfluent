@@ -5,17 +5,17 @@ from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.session_solver import Solver
 
 
-def setup_for_fluent(version: str, mode: str):
+def setup_for_fluent(*args, **kwargs):
     """Uses global PyConsole objects."""
-    session = launch_fluent(version=version, mode=mode)
-    if mode == "meshing":
-        globals()["meshing"] = session.meshing
+    session = launch_fluent(*args, **kwargs)
+    if "mode" in kwargs.keys() and kwargs["mode"] == "meshing":
+        globals()["meshing"] = session
         globals()["workflow"] = session.workflow
         globals()["PartManagement"] = session.PartManagement
         globals()["PMFileManagement"] = session.PMFileManagement
         globals()["preferences"] = session.preferences
         globals()["solver"] = Solver(fluent_connection=session.fluent_connection)
-    elif mode == "solver":
+    elif "mode" in kwargs.keys() and kwargs["mode"] == "solver":
         globals()["solver"] = session
         globals()["preferences"] = session.preferences
 
