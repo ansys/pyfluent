@@ -252,10 +252,45 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_read_only()
+    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
     assert w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
     assert w.task("Import Geometry").CommandArguments.FileName.is_read_only()
-    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.OneZonePer.default_value()
+        == "Body"
+    )
+
+    # Test particular to string type (allowed_values() only available in string types)
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
+        "Body",
+        "Face",
+        "Object",
+    ]
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.FeatureAngle.default_value()
+        == 40.0
+    )
+
+    # Test particular to numerical type (min() only available in numerical types)
+    assert (
+        w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
+        == 0.0
+    )
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError):
+        assert w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
 
 
 def test_dummy_journal_data_model_methods(new_mesh_session):
