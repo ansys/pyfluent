@@ -611,7 +611,7 @@ Switch to solution mode
 
 Sample use of CommandArguments
 ---------------------------------------------------
-This simple example shows how you use the CommandArgument attributes and explicit attribute accessor methods in a watertight geometry meshing workflow.
+This simple example shows how you use the CommandArgument attributes and explicit attribute access methods in a watertight geometry meshing workflow.
 Note: CommandArgument attributes are read-only.
 
 Import geometry
