@@ -274,7 +274,6 @@ def launch_remote_fluent(
 
 #   pylint: disable=unused-argument
 def launch_fluent(
-    product_version: str = None,
     version: str = None,
     precision: str = None,
     processor_count: int = None,
@@ -299,9 +298,6 @@ def launch_fluent(
 
     Parameters
     ----------
-    product_version: str, optional
-        Sets the product version. Options are ``"22.2"``, ``"22.2.0"``, ``"23.1"`` and
-        ``"23.1.0"``.
     version : str, optional
         Dimensions for modeling. The default is ``None``, in which case ``"3d"``
         is used. Options are ``"3d"`` and ``"2d"``.
@@ -383,11 +379,6 @@ def launch_fluent(
     passed to Fluent.
     """
     argvals = locals()
-
-    if product_version == "22.2.0" or "22.2":
-        set_ansys_version(FluentVersion.version_22R2)
-    elif product_version == "23.1.0" or "23.1":
-        set_ansys_version(FluentVersion.version_23R1)
 
     if mode is None:
         new_session = Session
