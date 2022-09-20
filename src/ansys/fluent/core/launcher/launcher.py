@@ -411,7 +411,7 @@ def launch_fluent(
             exe_path = FLUENT_EXE_PATH[0]
         else:
             exe_path = _get_fluent_exe_path()
-        launch_string = r"D:\ANSYSDev\vNNN\fluent\ntbin\win64\fluent.exe"  # exe_path
+        launch_string = exe_path
         launch_string += _build_fluent_launch_args_string(**argvals)
         if meshing_mode:
             launch_string += " -meshing"
