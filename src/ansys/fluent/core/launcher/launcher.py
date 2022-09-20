@@ -292,6 +292,7 @@ def launch_fluent(
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
+    py: bool = None,
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -366,6 +367,9 @@ def launch_fluent(
         Path to server-info file written out by Fluent server. The default is ``None``.
     password : str, optional
             Password to connect to existing Fluent instance.
+    py : bool, optional
+        Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
+        The default is ``None``.
 
     Returns
     -------
@@ -411,7 +415,6 @@ def launch_fluent(
         launch_string += _build_fluent_launch_args_string(**argvals)
         if meshing_mode:
             launch_string += " -meshing"
-
         server_info_filepath = _get_server_info_filepath()
         try:
             launch_string += f" {additional_arguments}"
