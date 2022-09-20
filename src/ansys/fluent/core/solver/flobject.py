@@ -864,7 +864,7 @@ def get_cls(name, info, parent=None):
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
         include_child_named_objects = info.get("include_child_named_objects", False)
-        user_creatable = info.get("user_creatable", False)
+        user_creatable = info.get("user_creatable", True)
 
         bases = (base,)
         if include_child_named_objects:
