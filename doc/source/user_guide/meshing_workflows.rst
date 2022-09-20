@@ -609,7 +609,7 @@ Switch to solution mode
 
     solver = meshing.switch_to_solver()
 
-Sample use of CommandArguments and accessor methods
+Sample use of CommandArguments
 ---------------------------------------------------
 This simple example shows how you use the CommandArgument attributes and explicit attribute accessor methods in a watertight geometry meshing workflow.
 Note: CommandArgument attributes are read-only.
