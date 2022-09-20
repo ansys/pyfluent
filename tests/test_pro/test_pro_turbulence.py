@@ -6,7 +6,7 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
-def test_pro_exp(launch_fluent_solver_3ddp_t2):
+def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
     if not os.path.exists("out"):
         os.mkdir("out")
     solver = launch_fluent_solver_3ddp_t2
@@ -31,7 +31,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure1.srp",
+        file_name=os.path.join("out", "pressure1.srp"),
     )
     solver.results.graphics.contour["contour-1"] = {}
     solver.results.graphics.contour["contour-1"] = {
@@ -57,7 +57,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure2.srp",
+        file_name=os.path.join("out", "pressure2.srp"),
     )
     solver.results.graphics.contour["contour-2"] = {}
     solver.results.graphics.contour["contour-2"] = {
@@ -73,7 +73,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure3.srp",
+        file_name=os.path.join("out", "pressure3.srp"),
     )
     solver.results.graphics.contour["contour-3"] = {}
     solver.results.graphics.contour["contour-3"] = {
@@ -97,7 +97,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure4.srp",
+        file_name=os.path.join("out", "pressure4.srp"),
     )
     solver.results.graphics.contour["contour-4"] = {}
     solver.results.graphics.contour["contour-4"] = {
@@ -114,7 +114,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure5.srp",
+        file_name=os.path.join("out", "pressure5.srp"),
     )
     solver.results.graphics.contour["contour-5"] = {}
     solver.results.graphics.contour["contour-5"] = {
@@ -130,7 +130,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure6.srp",
+        file_name=os.path.join("out", "pressure6.srp"),
     )
     solver.results.graphics.contour["contour-6"] = {}
     solver.results.graphics.contour["contour-6"] = {
@@ -158,7 +158,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["symmetry-xyplane"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/pressure7.srp",
+        file_name=os.path.join("out", "pressure7.srp"),
     )
     solver.results.graphics.contour["contour-7"] = {}
     solver.results.graphics.contour["contour-7"] = {

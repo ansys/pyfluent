@@ -82,7 +82,7 @@ def test_pro_fan(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(r"""/solve/monitors/residual/plot? no """)
     solver.solution.initialization.standard_initialize()
     solver.execute_tui(r"""it 1000 """)
-    solver.file.write(file_type="case-data", file_name="out/fan.cas")
+    solver.file.write(file_type="case-data", file_name=os.path.join("out", "fan.cas"))
     solver.results.graphics.contour["contour-1"] = {}
     solver.results.graphics.contour["contour-1"] = {
         "field": "pressure",
@@ -137,7 +137,7 @@ def test_pro_fan(launch_fluent_solver_3ddp_t2):
         all_bndry_zones=False,
         zone_list=["fan-8"],
         write_to_file=True,
-        file_name="out/mfr-fan.flp",
+        file_name=os.path.join("out", "mfr-fan.flp"),
     )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)

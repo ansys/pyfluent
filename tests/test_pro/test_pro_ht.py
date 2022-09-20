@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from util.fixture_fluent import download_input_file
 
@@ -120,7 +122,7 @@ def test_pro_ht(new_watertight_workflow_session):
     solver.solution.monitor.report_files["outlet-temp-avg-rfile"] = {}
     solver.solution.monitor.report_files["outlet-temp-avg-rfile"] = {
         "report_defs": ["outlet-temp-avg"],
-        "file_name": r"out\\outlet-temp-avg-rfile.out",
+        "file_name": os.path.join("out", "outlet-temp-avg-rfile.out"),
         "print": True,
         "frequency": 3,
     }

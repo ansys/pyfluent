@@ -74,7 +74,7 @@ def test_pro_parameters(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["outlet-temp-avg-rfile"] = {
         "report_defs": ["outlet-temp-avg"],
         "print": True,
-        "file_name": r"out\\outlet-temp-avg-rfile.out",
+        "file_name": os.path.join("out", "outlet-temp-avg-rfile.out"),
     }
     solver.solution.monitor.report_plots["outlet-temp-avg-rplot"] = {}
     solver.solution.monitor.report_plots["outlet-temp-avg-rplot"] = {
@@ -96,7 +96,9 @@ def test_pro_parameters(launch_fluent_solver_3ddp_t2):
         "texture_size": 2,
     }
     solver.results.graphics.lic.display(object_name="lic-temp")
-    solver.file.write(file_type="case-data", file_name="out/StaticMixer.cas.h5")
+    solver.file.write(
+        file_type="case-data", file_name=os.path.join("out", "StaticMixer.cas.h5")
+    )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)
     solver.exit()

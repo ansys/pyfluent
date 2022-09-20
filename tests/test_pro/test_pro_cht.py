@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
@@ -113,7 +114,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["point-vel-rfile"] = {
         "print": True,
         "report_defs": ["point-vel"],
-        "file_name": r"out\\point-vel-rfile.out",
+        "file_name": os.path.join("out", "point-vel-rfile.out"),
     }
     solver.solution.monitor.report_plots["point-vel-rplot"] = {}
     solver.solution.monitor.report_plots["point-vel-rplot"] = {
@@ -123,10 +124,9 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     assert solver.solution.monitor.report_plots["point-vel-rplot"].report_defs() == [
         "point-vel"
     ]
-    assert (
+    assert Path(
         solver.solution.monitor.report_files["point-vel-rfile"].file_name()
-        == "out\\\\point-vel-rfile.out"
-    )
+    ) == Path("out", "point-vel-rfile.out")
     solver.solution.report_definitions.flux["mass-in"] = {}
     solver.solution.report_definitions.flux["mass-in"].report_type = "flux-massflow"
     solver.solution.report_definitions.flux["mass-in"] = {
@@ -144,7 +144,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["mass-in-rfile"] = {
         "print": True,
         "report_defs": ["mass-in"],
-        "file_name": r"out\\mass-in-rfile.out",
+        "file_name": os.path.join("out", "mass-in-rfile.out"),
     }
     solver.solution.monitor.report_plots["mass-in-rplot"] = {}
     solver.solution.monitor.report_plots["mass-in-rplot"] = {
@@ -174,7 +174,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["mass-tot-rfile"] = {
         "print": True,
         "report_defs": ["mass-tot"],
-        "file_name": r"out\\mass-tot-rfile.out",
+        "file_name": os.path.join("out", "mass-tot-rfile.out"),
     }
     solver.solution.monitor.report_plots["mass-tot-rplot"] = {}
     solver.solution.monitor.report_plots["mass-tot-rplot"] = {
@@ -191,7 +191,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
         all_bndry_zones=False,
         zone_list=["outlet", "inlet2", "inlet1", "inlet"],
         write_to_file=True,
-        file_name="out/mass_flow.flp",
+        file_name=os.path.join("out", "mass_flow.flp"),
     )
     solver.results.graphics.pathline["pathlines-1"] = {}
     solver.results.graphics.pathline["pathlines-1"] = {
@@ -271,7 +271,9 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
         == "temperature"
     )
     solver.results.graphics.contour.display(object_name="contour-temperature-manifold")
-    solver.file.write(file_type="case-data", file_name="out/manifold_solution.cas.h5")
+    solver.file.write(
+        file_type="case-data", file_name=os.path.join("out", "manifold_solution.cas.h5")
+    )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)
     solver.exit()

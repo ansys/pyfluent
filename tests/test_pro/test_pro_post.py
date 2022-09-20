@@ -6,7 +6,7 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
-def test_pro_exp(launch_fluent_solver_3ddp_t2):
+def test_pro_post(launch_fluent_solver_3ddp_t2):
     if not os.path.exists("out"):
         os.mkdir("out")
     solver = launch_fluent_solver_3ddp_t2
@@ -34,10 +34,13 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     )
     solver.execute_tui(r"""/solve/monitors/residual/plot? no """)
     solver.solution.initialization.hybrid_initialize()
-    solver.file.write(file_type="case-data", file_name="out/pro_poly_ini")
+    solver.file.write(
+        file_type="case-data", file_name=os.path.join("out", "pro_poly_ini")
+    )
     solver.mesh.check()
     solver.execute_tui(
-        r"""/file/write-profile "out/test1" symmetry bottom front left right top () pressure velocity-magnitude x-wall-shear pressure-coefficient x-velocity quit """
+        r"""/file/write-profile "%s" symmetry bottom front left right top () pressure velocity-magnitude x-wall-shear pressure-coefficient x-velocity quit """
+        % os.path.join("out", "test1")
     )
     solver.mesh.check()
     solver.execute_tui(r"""/define/reference-frames/list """)
@@ -122,7 +125,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     }
     solver.solution.monitor.report_files["report-file-0"] = {}
     solver.solution.monitor.report_files["report-file-0"] = {
-        "file_name": r"out\\force-rep.out",
+        "file_name": os.path.join("out", "force-rep.out"),
         "report_defs": ["report-def-0"],
     }
     solver.execute_tui(r"""/solve/report-files/list """)
@@ -139,7 +142,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     }
     solver.solution.monitor.report_files["report-file-1"] = {}
     solver.solution.monitor.report_files["report-file-1"] = {
-        "file_name": r"out\\surface-rep.out",
+        "file_name": os.path.join("out", "surface-rep.out"),
         "report_defs": ["report-def-1"],
     }
     solver.solution.monitor.report_plots["report-plot-1"] = {}
@@ -162,7 +165,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(r"""/solve/report-plots/list """)
     solver.solution.monitor.report_files["report-file-2"] = {}
     solver.solution.monitor.report_files["report-file-2"] = {
-        "file_name": r"out\\vol-rep.out",
+        "file_name": os.path.join("out", "vol-rep.out"),
         "report_defs": ["report-def-2"],
         "print": True,
     }
@@ -226,7 +229,9 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     ]
     assert solver.results.graphics.contour["contour-1"].field() == "pressure"
     solver.results.graphics.contour.add_to_graphics(object_name="contour-1")
-    solver.file.read(file_type="case-data", file_name="out/pro_poly_ini")
+    solver.file.read(
+        file_type="case-data", file_name=os.path.join("out", "pro_poly_ini")
+    )
     solver.execute_tui(r"""it 500 """)
     solver.execute_tui(r"""/surface/point-array point-array-7 10 0. 0. 0. 1 0. 0. """)
     solver.execute_tui(r"""/surface/point-surface point-8 0. 0. 0. """)
@@ -337,22 +342,26 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     )
     solver.execute_tui(r"""/plot/cumulative-plot/print "cumulative-plot-1" """)
     solver.execute_tui(
-        r"""/plot/cumulative-plot/write "cumulative-plot-1" "out/cum-force.xy" """
+        r"""/plot/cumulative-plot/write "cumulative-plot-1" "%s" """
+        % os.path.join("out", "cum-force.xy")
     )
     solver.results.report.report_menu.fluxes.mass_flow(
         all_bndry_zones=False,
         zone_list=["front", "right", "left", "bottom", "top"],
         write_to_file=True,
-        file_name="out/mfr",
+        file_name=os.path.join("out", "mfr"),
     )
     solver.execute_tui(
-        r"""/report/forces/pressure-center yes no yes 0.5 yes "out/forces" """
+        r"""/report/forces/pressure-center yes no yes 0.5 yes "%s" """
+        % os.path.join("out", "forces")
     )
     solver.execute_tui(
-        r"""/report/forces/wall-forces yes 1 1 1 yes "out/wall-forces" """
+        r"""/report/forces/wall-forces yes 1 1 1 yes "%s" """
+        % os.path.join("out", "wall-forces")
     )
     solver.execute_tui(
-        r"""/report/forces/wall-moments yes 1 1 1 1 0 0 yes "out/wall-mom" """
+        r"""/report/forces/wall-moments yes 1 1 1 1 0 0 yes "%s" """
+        % os.path.join("out", "wall-mon")
     )
     solver.results.report.report_menu.projected_surface_area(
         surface_id_val=[2, 1, 5, 4, 6],
@@ -364,7 +373,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         surface_id=["top", "bottom", "left", "right", "front"],
         cell_report="pressure",
         write_to_file=True,
-        file_name="out/vertex-max-pressure",
+        file_name=os.path.join("out", "vertex-max-pressure"),
     )
     solver.results.report.report_menu.volume_integrals(
         report_type="mass", thread_id_list=["fluid"], write_to_file=False
@@ -374,17 +383,19 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         thread_id_list=["fluid"],
         cell_function="pressure",
         write_to_file=True,
-        file_name="out/sum",
+        file_name=os.path.join("out", "sum"),
     )
     solver.results.report.report_menu.summary(
-        write_to_file=True, file_name="out/summary"
+        write_to_file=True, file_name=os.path.join("out", "summary")
     )
     solver.execute_tui(r"""/report/reference-values/pressure 0. """)
     solver.execute_tui(r"""/report/reference-values/density 1.225 """)
     solver.results.report.report_menu.system.sys_statistics()
     solver.results.report.report_menu.system.time_statistics()
     solver.execute_tui(r"""it 5 """)
-    solver.file.write(file_type="case-data", file_name="out/pro_poly-final_s1")
+    solver.file.write(
+        file_type="case-data", file_name=os.path.join("out", "pro_poly-final_s1")
+    )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)
     solver.exit()

@@ -1,4 +1,5 @@
 import os
+import platform
 
 import pytest
 
@@ -71,7 +72,10 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     with open(file_path) as fp:
         for count, line in enumerate(fp):
             pass
-    assert count == 12
+    if platform.system() == "Windows":
+        assert count == 13
+    else:
+        assert count == 12
     fp.close()
     solver_session.execute_tui(r"""/file/read-journal %s""" % file_path)
     assert solver_session.file.auto_save.root_name() == "file_auto_save"

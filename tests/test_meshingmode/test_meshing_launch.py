@@ -6,7 +6,7 @@ from util.fixture_fluent import download_input_file
 import ansys.fluent.core as pyfluent
 
 
-@pytest.mark.meshing
+@pytest.mark.mesh
 @pytest.mark.fluent_231
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
@@ -57,7 +57,7 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     with open(file_path) as fp:
         for count, line in enumerate(fp):
             pass
-    assert count == 17
+    assert count == 18
     fp.close()
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()
