@@ -180,8 +180,10 @@ solver.solution.initialization.hybrid_initialize()
 # Solve for 150 iterations.
 
 solver.solution.run_calculation.iterate.get_attr("arguments")
-solver.solution.run_calculation.iter_count = 150
-solver.solution.run_calculation.iterate()
+if float(solver.get_fluent_version().split('.')[0]) >= 23.0:
+    solver.solution.run_calculation.iterate(iter_count=150)
+else:
+    solver.solution.run_calculation.iterate(number_of_iterations=150)
 
 ###############################################################################
 # Create velocity vectors
