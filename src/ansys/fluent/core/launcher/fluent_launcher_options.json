@@ -38,5 +38,15 @@
             "false": ""
         },
         "fluent_format": "{}"
+    },
+    "py": {
+        "type": "bool",
+        "default": "null",
+        "fluent_required": false,
+        "fluent_map": {
+            "true": " -py",
+            "false": ""
+        },
+        "fluent_format": "{}"
     }
 }
