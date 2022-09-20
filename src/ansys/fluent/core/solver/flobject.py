@@ -145,7 +145,7 @@ class Base:
         """Get the requested attribute for the object."""
         attrs = self.get_attrs([attr])
         attrs = attrs.get("attrs", attrs)
-        if attr != "active?" and attrs.get("active?", True) is False:
+        if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
         return attrs[attr] if attrs else None
 
