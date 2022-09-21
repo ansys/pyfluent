@@ -611,7 +611,8 @@ Switch to solution mode
 
 Sample use of CommandArguments
 ---------------------------------------------------
-This simple example shows how you use the CommandArgument attributes and explicit attribute access methods in a watertight geometry meshing workflow.
+This simple example shows how you use the CommandArgument attributes and explicit
+attribute access methods in a watertight geometry meshing workflow.
 Note: CommandArgument attributes are read-only.
 
 Import geometry
@@ -630,6 +631,8 @@ w.InitializeWorkflow(WorkflowType='Watertight Geometry')
 w.task("Import Geometry").CommandArguments()
 w.task("Import Geometry").CommandArguments.FileName.is_read_only()
 w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
-w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer.default_value()
-w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer.allowed_values()
+w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values()
+w.task("Import Geometry").CommandArguments.LengthUnit.default_value()
+w.task("Import Geometry").CommandArguments.LengthUnit()
+w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
 w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
