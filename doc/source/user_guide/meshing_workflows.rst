@@ -615,9 +615,6 @@ This simple example shows you how to use the CommandArgument attributes and expl
 attribute access methods in a watertight geometry meshing workflow.
 Note: CommandArgument attributes are read-only.
 
-Import geometry
-~~~~~~~~~~~~~~~
-
 .. code:: python
 
     import ansys.fluent.core as pyfluent
