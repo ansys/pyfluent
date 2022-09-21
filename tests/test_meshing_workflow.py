@@ -1,6 +1,7 @@
 from functools import partial
 import os
 
+os.environ["PYFLUENT_FLUENT_ROOT"] = "C:/ANSYSDev/ANSYSDev/vNNN/fluent/"
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
@@ -309,6 +310,27 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
     assert msg.value.args[0] == "Command Arguments are read-only."
 
     assert "set_state" in dir(m.ImportGeometry.new())
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_sample_use_of_command_arguments(new_mesh_session):
+    w = new_mesh_session.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
 
 
 def test_dummy_journal_data_model_methods(new_mesh_session):
