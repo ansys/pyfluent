@@ -87,7 +87,7 @@ def test_pro_parameters(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(r"""/solve/initialize/compute-defaults/velocity-inlet in1 """)
     solver.solution.run_calculation.iter_count = 350
     assert solver.solution.run_calculation.iter_count() == 350
-    solver.solution.run_calculation.iterate(number_of_iterations=350)
+    solver.solution.run_calculation.iterate(iter_count=350)
     solver.execute_tui(r"""/display/surface/plane-surface plane-4 xy-plane 1. """)
     solver.results.graphics.lic["lic-temp"] = {}
     solver.results.graphics.lic["lic-temp"] = {

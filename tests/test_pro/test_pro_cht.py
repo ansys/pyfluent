@@ -186,7 +186,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     ]
     solver.solution.initialization.standard_initialize()
     solver.execute_tui(r"""/solve/set/pseudo-transient yes yes 1 5 0 yes 1. """)
-    solver.solution.run_calculation.iterate(number_of_iterations=100)
+    solver.solution.run_calculation.iterate(iter_count=100)
     solver.results.report.report_menu.fluxes.mass_flow(
         all_bndry_zones=False,
         zone_list=["outlet", "inlet2", "inlet1", "inlet"],

@@ -142,7 +142,7 @@ def test_pro_ht(new_watertight_workflow_session):
         "frequency": 3,
     }
     solver.solution.initialization.hybrid_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=150)
+    solver.solution.run_calculation.iterate(iter_count=150)
     solver.results.graphics.contour["contour-vel"] = {}
     solver.results.graphics.contour["contour-vel"] = {
         "field": "velocity-magnitude",

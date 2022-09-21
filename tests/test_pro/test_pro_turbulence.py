@@ -25,7 +25,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
     }
     solver.setup.models.viscous.model = "inviscid"
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
@@ -51,7 +51,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
         r"""/define/models/viscous/curvature-correction-ccurv yes 0.9 """
     )
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
@@ -67,7 +67,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
     solver.results.graphics.contour.display(object_name="contour-2")
     solver.execute_tui(r"""/define/models/viscous/spalart-allmaras? yes """)
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
@@ -91,7 +91,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
     )
     solver.setup.models.viscous.turbulence_expert.turb_non_newtonian = True
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
@@ -108,7 +108,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
     solver.setup.models.viscous.model = "k-omega"
     solver.setup.models.viscous.k_omega_model = "sst"
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
@@ -124,7 +124,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
     solver.results.graphics.contour.display(object_name="contour-5")
     solver.setup.models.viscous.model = "k-epsilon"
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
@@ -152,7 +152,7 @@ def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
         "non-equilibrium-wall-fn"
     )
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=200)
+    solver.solution.run_calculation.iterate(iter_count=200)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["symmetry-xyplane"],
