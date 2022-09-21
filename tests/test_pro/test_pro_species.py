@@ -1,14 +1,18 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
+
+import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_species(launch_fluent_solver_2ddp_t2):
-    if not os.path.exists("out"):
-        os.mkdir("out")
+    out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
+    if not Path(out).exists():
+        Path(out).mkdir(parents=True, exist_ok=False)
     solver = launch_fluent_solver_2ddp_t2
     input_type, input_name = download_input_file("pyfluent/2d_box", "pro_species.cas")
     solver.file.read(file_type=input_type, file_name=input_name)
@@ -80,19 +84,19 @@ def test_pro_species(launch_fluent_solver_2ddp_t2):
     }
     solver.solution.monitor.report_files["mf_co2_outlet"] = {}
     solver.solution.monitor.report_files["mf_co2_outlet"] = {
-        "file_name": os.path.join("out", "mf_co2_outlet.out"),
+        "file_name": os.path.join(out, "mf_co2_outlet.out"),
         "report_defs": ["mf_co2_outlet"],
         "print": True,
     }
     solver.solution.monitor.report_files["mf_h20_outlet"] = {}
     solver.solution.monitor.report_files["mf_h20_outlet"] = {
-        "file_name": os.path.join("out", "mf_h20_outlet.out"),
+        "file_name": os.path.join(out, "mf_h20_outlet.out"),
         "report_defs": ["mf_h20_outlet"],
         "print": True,
     }
     solver.solution.monitor.report_files["mf_temp_outlet"] = {}
     solver.solution.monitor.report_files["mf_temp_outlet"] = {
-        "file_name": os.path.join("out", "mf_temp_outlet.out"),
+        "file_name": os.path.join(out, "mf_temp_outlet.out"),
         "report_defs": ["mf_temp_outlet"],
         "print": True,
     }
@@ -100,31 +104,31 @@ def test_pro_species(launch_fluent_solver_2ddp_t2):
     solver.execute_tui(r"""(benchmark '(iterate 150))  """)
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no ch4 yes 0 1 po () """
-        % os.path.join("out", "mass_ch4_outlet.xy")
+        % os.path.join(out, "mass_ch4_outlet.xy")
     )
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no o2 yes 0 1 po () """
-        % os.path.join("out", "mass_o2_outlet.xy")
+        % os.path.join(out, "mass_o2_outlet.xy")
     )
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no co2 yes 0 1 po () """
-        % os.path.join("out", "mass_co2_outlet.xy")
+        % os.path.join(out, "mass_co2_outlet.xy")
     )
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no h2o yes 0 1 po () """
-        % os.path.join("out", "mass_h2o_outlet.xy")
+        % os.path.join(out, "mass_h2o_outlet.xy")
     )
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no n2 yes 0 1 po () """
-        % os.path.join("out", "mass_n2_outlet.xy")
+        % os.path.join(out, "mass_n2_outlet.xy")
     )
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no velocity-magnitude yes 0 1 po () """
-        % os.path.join("out", "vmag_outlet.xy")
+        % os.path.join(out, "vmag_outlet.xy")
     )
     solver.execute_tui(
         r"""/plot/plot yes "%s" no no no turb-kinetic-energy yes 0 1 po () """
-        % os.path.join("out", "k_outlet.xy")
+        % os.path.join(out, "k_outlet.xy")
     )
     solver.results.graphics.contour["mf_co2"] = {}
     solver.results.graphics.contour["mf_co2"] = {
@@ -143,12 +147,12 @@ def test_pro_species(launch_fluent_solver_2ddp_t2):
     solver.execute_tui(r"""/solve/monitors/residual/plot? yes """)
     solver.execute_tui(
         r"""/plot/residuals-set/plot-to-file "%s" """
-        % os.path.join("out", "pro_species_s1.res")
+        % os.path.join(out, "pro_species_s1.res")
     )
     solver.execute_tui(r"""it 0 """)
     solver.execute_tui(
         r"""(define port (open-output-file "%s"))  """
-        % os.path.join("out", "pro_species_s1_no.conv")
+        % os.path.join(out, "pro_species_s1_no.conv")
     )
     solver.execute_tui(r"""(write (%iterate 0) port)  """)
     solver.execute_tui(r"""(close-output-port port)  """)

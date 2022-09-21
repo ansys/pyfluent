@@ -1,14 +1,18 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
+
+import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_fan(launch_fluent_solver_3ddp_t2):
-    if not os.path.exists("out"):
-        os.mkdir("out")
+    out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
+    if not Path(out).exists():
+        Path(out).mkdir(parents=True, exist_ok=False)
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/fan", "fan_bc_vent.msh")
     solver.file.read(file_type=input_type, file_name=input_name)
@@ -82,7 +86,7 @@ def test_pro_fan(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(r"""/solve/monitors/residual/plot? no """)
     solver.solution.initialization.standard_initialize()
     solver.execute_tui(r"""it 1000 """)
-    solver.file.write(file_type="case-data", file_name=os.path.join("out", "fan.cas"))
+    solver.file.write(file_type="case-data", file_name=os.path.join(out, "fan.cas"))
     solver.results.graphics.contour["contour-1"] = {}
     solver.results.graphics.contour["contour-1"] = {
         "field": "pressure",
@@ -137,7 +141,7 @@ def test_pro_fan(launch_fluent_solver_3ddp_t2):
         all_bndry_zones=False,
         zone_list=["fan-8"],
         write_to_file=True,
-        file_name=os.path.join("out", "mfr-fan.flp"),
+        file_name=os.path.join(out, "mfr-fan.flp"),
     )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)

@@ -1,14 +1,18 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
+
+import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_settings_pbcs(launch_fluent_solver_3ddp_t2):
-    if not os.path.exists("out"):
-        os.mkdir("out")
+    out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
+    if not Path(out).exists():
+        Path(out).mkdir(parents=True, exist_ok=False)
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/nozzle", "nozzle_3d.msh")
     solver.file.read(file_type=input_type, file_name=input_name)
@@ -71,7 +75,7 @@ def test_pro_settings_pbcs(launch_fluent_solver_3ddp_t2):
         r"""/solve/monitors/residual/convergence-criteria 1e-05 1e-05 1e-05 1e-05 1e-05 """
     )
     solver.execute_tui(r"""/solve/monitors/residual/plot? no """)
-    solver.file.write(file_type="case", file_name=os.path.join("out", "nozzle3d-ini"))
+    solver.file.write(file_type="case", file_name=os.path.join(out, "nozzle3d-ini"))
     solver.solution.initialization.hybrid_initialize()
     solver.execute_tui(r"""/solve/set/equations/flow yes """)
     solver.execute_tui(r"""/solve/set/equations/temperature yes """)
@@ -197,32 +201,32 @@ def test_pro_settings_pbcs(launch_fluent_solver_3ddp_t2):
         solver.solution.initialization.hybrid_init_options.turbulent_setting.averaged_turbulent_parameters()
         == False
     )
-    solver.file.read(file_type="case", file_name=os.path.join("out", "nozzle3d-ini"))
+    solver.file.read(file_type="case", file_name=os.path.join(out, "nozzle3d-ini"))
     solver.solution.initialization.standard_initialize()
     solver.execute_tui(r"""(benchmark '(iterate 500))  """)
     solver.execute_tui(r"""/surface/line-surface center-line 0 0 0 2 0 0 """)
     solver.file.write(
         file_type="case-data",
-        file_name=os.path.join("out", "nozzle-3d-supsonic_r1.cas"),
+        file_name=os.path.join(out, "nozzle-3d-supsonic_r1.cas"),
     )
     solver.execute_tui(
         r"""/plot/plot no "%s" no no no temperature yes 1 0 0 center-line () """
-        % os.path.join("out", "temp.xy")
+        % os.path.join(out, "temp.xy")
     )
     solver.execute_tui(
         r"""/plot/plot no "%s" no no no mach-number no no x-coordinate center-line () """
-        % os.path.join("out", "mach.xy")
+        % os.path.join(out, "mach.xy")
     )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""/solve/monitors/residual/plot? yes """)
     solver.execute_tui(
         r"""/plot/residuals-set/plot-to-file "%s" """
-        % os.path.join("out", "nozzle-settings_s1.res")
+        % os.path.join(out, "nozzle-settings_s1.res")
     )
     solver.execute_tui(r"""it 0 """)
     solver.execute_tui(
         r"""(define port (open-output-file "%s"))  """
-        % os.path.join("out", "nozzle-settings_s1_no.conv")
+        % os.path.join(out, "nozzle-settings_s1_no.conv")
     )
     solver.execute_tui(r"""(write (%iterate 0) port)  """)
     solver.execute_tui(r"""(close-output-port port)  """)

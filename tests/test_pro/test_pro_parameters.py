@@ -1,14 +1,18 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
+
+import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_parameters(launch_fluent_solver_3ddp_t2):
-    if not os.path.exists("out"):
-        os.mkdir("out")
+    out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
+    if not Path(out).exists():
+        Path(out).mkdir(parents=True, exist_ok=False)
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(
         "pyfluent/static_mixer", "StaticMixer.msh"
@@ -74,7 +78,7 @@ def test_pro_parameters(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["outlet-temp-avg-rfile"] = {
         "report_defs": ["outlet-temp-avg"],
         "print": True,
-        "file_name": os.path.join("out", "outlet-temp-avg-rfile.out"),
+        "file_name": os.path.join(out, "outlet-temp-avg-rfile.out"),
     }
     solver.solution.monitor.report_plots["outlet-temp-avg-rplot"] = {}
     solver.solution.monitor.report_plots["outlet-temp-avg-rplot"] = {
@@ -97,7 +101,7 @@ def test_pro_parameters(launch_fluent_solver_3ddp_t2):
     }
     solver.results.graphics.lic.display(object_name="lic-temp")
     solver.file.write(
-        file_type="case-data", file_name=os.path.join("out", "StaticMixer.cas.h5")
+        file_type="case-data", file_name=os.path.join(out, "StaticMixer.cas.h5")
     )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)
