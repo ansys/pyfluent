@@ -217,7 +217,7 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-class PyReadOnlyStateContainer(PyCallableStateObject):
+class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -234,6 +234,12 @@ class PyReadOnlyStateContainer(PyCallableStateObject):
         same as the __call__() method.)
     getState()
         Get the state of the current object. (This method is the
+        same as the __call__() method.)
+    set_state()
+        Set the state of the current object. (This method is the
+        same as the __call__() method.)
+    setState()
+        Set the state of the current object. (This method is the
         same as the __call__() method.)
     """
 
@@ -256,6 +262,17 @@ class PyReadOnlyStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     getState = get_state
+
+    def set_state(self, state: Any = None, **kwargs) -> None:
+        request = DataModelProtoModule.SetStateRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(
+            kwargs, request.state
+        ) if kwargs else _convert_value_to_variant(state, request.state)
+        self.service.set_state(request)
+
+    setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -294,24 +311,6 @@ class PyReadOnlyStateContainer(PyCallableStateObject):
         ).common.helpstring
         print(help_string)
 
-
-class PyStateContainer(PyReadOnlyStateContainer):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
-
-    Methods
-    -------
-    get_state()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
-    getState()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
-    """
-
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
-        super().__init__(service, rules, path)
-
     def __call__(self, *args, **kwargs):
         if kwargs:
             self.set_state(kwargs)
@@ -321,17 +320,6 @@ class PyStateContainer(PyReadOnlyStateContainer):
             return self.get_state()
 
     docstring = None
-
-    def set_state(self, state: Any = None, **kwargs) -> None:
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(
-            kwargs, request.state
-        ) if kwargs else _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
-
-    setState = set_state
 
 
 class PyMenu(PyStateContainer):
@@ -723,7 +711,9 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
         mode = AccessorModes.get_mode(arg.type)
         py_class = mode.value[1]
-        return py_class(self, attr, self.service, self.rules, self.path, arg)
+        return MakeReadOnly(
+            py_class(self, attr, self.service, self.rules, self.path, arg)
+        )
 
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
@@ -744,7 +734,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         pass
 
 
-class PyCommandArguments(PyReadOnlyStateContainer):
+class PyCommandArguments(PyStateContainer):
     def __init__(
         self,
         service: DatamodelService,
@@ -778,7 +768,9 @@ class PyCommandArguments(PyReadOnlyStateContainer):
             if arg.name == attr:
                 mode = AccessorModes.get_mode(arg.type)
                 py_class = mode.value[1]
-                return py_class(self, attr, self.service, self.rules, self.path, arg)
+                return MakeReadOnly(
+                    py_class(self, attr, self.service, self.rules, self.path, arg)
+                )
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
@@ -869,6 +861,30 @@ class AccessorModes(Enum):
                 return m
         else:
             return AccessorModes.GENERIC
+
+
+class MakeReadOnly:
+    """Removes 'set_state()' attribute to implement read-only behaviour."""
+
+    def __init__(self, cmd):
+        self._cmd = cmd
+        self._unwanted_attr = ["set_state", "setState"]
+
+    def __getattr__(self, attr):
+        if attr in self._unwanted_attr:
+            raise AttributeError("Command Arguments are read-only.")
+        return getattr(self._cmd, attr)
+
+    def __dir__(self):
+        returned_list = sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
+        )
+        for attr in self._unwanted_attr:
+            returned_list.remove(attr)
+        return returned_list
+
+    def __call__(self):
+        return self._cmd()
 
 
 class PyMenuGeneric(PyMenu):
