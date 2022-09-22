@@ -147,6 +147,9 @@ class Base:
         attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
+        if attr in ["min", "max"]:
+            if attrs[attr] is False:
+                attrs[attr] = None
         return attrs[attr] if attrs else None
 
     def is_active(self) -> bool:
