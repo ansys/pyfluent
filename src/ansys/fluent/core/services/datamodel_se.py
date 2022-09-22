@@ -233,8 +233,7 @@ class PyStateContainer(PyCallableStateObject):
         Get the state of the current object. (This method is the
         same as the __call__() method.)
     getState()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
+        Deprecated camel case alias of get_state.
     set_state()
         Set the state of the current object. (This method is the
         same as the __call__() method.)
