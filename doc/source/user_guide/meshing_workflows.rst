@@ -609,7 +609,7 @@ Switch to solution mode
 
     solver = meshing.switch_to_solver()
 
-Sample use of CommandArguments
+Sample use of CommandArguments<!--novale.begin-->should use sentence-style capitalization<!--novale.end-->
 ---------------------------------------------------
 This simple example shows you how to use the CommandArgument attributes and explicit
 attribute access methods in a watertight geometry meshing workflow.
