@@ -211,3 +211,4 @@ def test_unsuccessful_fluent_connection(with_launching_container):
     with pytest.raises(RuntimeError) as msg:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
     assert msg.value.args[0] == "The fluent connection could not be established."
+    logging.disable(logging.NOTSET)
