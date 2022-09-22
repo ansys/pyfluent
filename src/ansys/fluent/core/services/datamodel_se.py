@@ -230,15 +230,15 @@ class PyStateContainer(PyCallableStateObject):
         (This method is the same as the get_attrib_value(attrib)
         method.)
     get_state()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
+        Get the state of the current object.
     getState()
         Deprecated camel case alias of get_state.
     set_state()
-        Set the state of the current object. (This method is the
-        same as the __call__() method.)
+        Set the state of the current object.
     setState()
         Deprecated camel case alias of set_state.
+    __call__()
+        Set the state of the current object if state is provided else get its state.
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -864,12 +864,13 @@ class AccessorModes(Enum):
 class MakeReadOnly:
     """Removes 'set_state()' attribute to implement read-only behaviour."""
 
+    _unwanted_attr = ["set_state", "setState"]
+
     def __init__(self, cmd):
         self._cmd = cmd
-        self._unwanted_attr = ["set_state", "setState"]
 
     def __getattr__(self, attr):
-        if attr in self._unwanted_attr:
+        if attr in MakeReadOnly._unwanted_attr:
             raise AttributeError("Command Arguments are read-only.")
         return getattr(self._cmd, attr)
 
@@ -877,7 +878,7 @@ class MakeReadOnly:
         returned_list = sorted(
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
         )
-        for attr in self._unwanted_attr:
+        for attr in MakeReadOnly._unwanted_attr:
             returned_list.remove(attr)
         return returned_list
 

@@ -1,7 +1,6 @@
 from functools import partial
 import os
 
-os.environ["PYFLUENT_FLUENT_ROOT"] = "C:/ANSYSDev/ANSYSDev/vNNN/fluent/"
 import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
