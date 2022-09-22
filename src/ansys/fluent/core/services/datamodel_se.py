@@ -239,8 +239,7 @@ class PyStateContainer(PyCallableStateObject):
         Set the state of the current object. (This method is the
         same as the __call__() method.)
     setState()
-        Set the state of the current object. (This method is the
-        same as the __call__() method.)
+        Deprecated camel case alias of set_state.
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
