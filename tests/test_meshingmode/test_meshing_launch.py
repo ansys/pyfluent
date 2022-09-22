@@ -54,11 +54,6 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     }
     workflow.TaskObject["Generate the Volume Mesh"].Execute()
     pure_meshing_session.stop_journal()
-    with open(file_path) as fp:
-        for count, line in enumerate(fp):
-            pass
-    assert count == 18
-    fp.close()
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")

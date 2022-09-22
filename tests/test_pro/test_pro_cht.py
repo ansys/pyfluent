@@ -246,13 +246,17 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
         "field": "temperature",
         "surfaces_list": ["inlet", "inlet1", "inlet2", "mid-plane-z", "outlet", "out1"],
     }
-    assert solver.results.graphics.contour["contour-temperature"].surfaces_list() == [
+    surface_list = solver.results.graphics.contour[
+        "contour-temperature"
+    ].surfaces_list()
+    surface_list.sort()
+    assert surface_list == [
         "inlet",
         "inlet1",
         "inlet2",
         "mid-plane-z",
-        "outlet",
         "out1",
+        "outlet",
     ]
     solver.execute_tui(r"""/display/surface-mesh clip-z-coordinate () """)
     solver.results.graphics.contour.add_to_graphics(object_name="contour-temperature")
