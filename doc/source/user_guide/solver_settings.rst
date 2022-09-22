@@ -69,3 +69,25 @@ Python code for setting the gravitational acceleration.
 .. code:: python
 
     solver.tui.define.operating_conditions.gravity('yes','0','-9.81','0')
+
+Sample use of explicit attribute access methods
+-----------------------------------------------
+This simple example shows how you use the explicit attribute access methods
+in a simple solver session.
+
+**Python code**
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+    solver = pyfluent.launch_fluent(mode="solver")
+
+    solver.setup.models.viscous.is_active()
+    solver.setup.models.viscous.model.is_read_only()
+    solver.setup.models.viscous.model.default_value()
+    solver.setup.models.viscous.model.allowed_values()
+    solver.setup.models.discrete_phase.tracking.tracking_parameters.max_number_of_steps.min()
+    solver.setup.models.discrete_phase.tracking.tracking_parameters.max_number_of_steps.max()
