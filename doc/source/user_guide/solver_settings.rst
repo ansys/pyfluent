@@ -70,8 +70,8 @@ Python code for setting the gravitational acceleration.
 
     solver.tui.define.operating_conditions.gravity('yes','0','-9.81','0')
 
-Sample use of accessor methods
-------------------------------
+Sample use of explicit attribute access methods
+-----------------------------------------------
 This simple example shows how you use the explicit attribute access methods
 in a simple solver session.
 
