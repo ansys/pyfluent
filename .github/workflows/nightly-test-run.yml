@@ -88,6 +88,7 @@ jobs:
 
       - name: 22.2 Unit Testing
         run: make unittest-all-222
+        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
@@ -95,6 +96,7 @@ jobs:
 
       - name: Upload 22.2 Coverage Results
         uses: actions/upload-artifact@v3
+        continue-on-error: true
         with:
           name: HTML-Coverage-tag-222
           path: cov_html
