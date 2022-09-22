@@ -79,15 +79,15 @@ in a simple solver session.
 
 .. code:: python
 
-import ansys.fluent.core as pyfluent
-from ansys.fluent.core import examples
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
 
-import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-solver = pyfluent.launch_fluent(mode="solver")
+    import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+    solver = pyfluent.launch_fluent(mode="solver")
 
-solver.setup.models.viscous.is_active()
-solver.setup.models.viscous.model.is_read_only()
-solver.setup.models.viscous.model.default_value()
-solver.setup.models.viscous.model.allowed_values()
-solver.setup.models.discrete_phase.tracking.tracking_parameters.max_number_of_steps.min()
-solver.setup.models.discrete_phase.tracking.tracking_parameters.max_number_of_steps.max()
+    solver.setup.models.viscous.is_active()
+    solver.setup.models.viscous.model.is_read_only()
+    solver.setup.models.viscous.model.default_value()
+    solver.setup.models.viscous.model.allowed_values()
+    solver.setup.models.discrete_phase.tracking.tracking_parameters.max_number_of_steps.min()
+    solver.setup.models.discrete_phase.tracking.tracking_parameters.max_number_of_steps.max()
