@@ -1,5 +1,4 @@
 from concurrent import futures
-import logging
 import os
 from pathlib import Path
 
@@ -203,13 +202,3 @@ def test_get_fluent_mode(new_mesh_session):
     assert session.fluent_connection.get_current_fluent_mode() == "meshing"
     session = session.switch_to_solver()
     assert session.fluent_connection.get_current_fluent_mode() == "solver"
-
-
-@pytest.mark.skip(reason="Can be used only locally.")
-def test_unsuccessful_fluent_connection(with_launching_container):
-    # start-timeout is intentionally provided to be 2s for the connection to fail
-    logging.disable(logging.CRITICAL)
-    with pytest.raises(RuntimeError) as msg:
-        pyfluent.launch_fluent(mode="solver", start_timeout=2)
-    assert msg.value.args[0] == "The fluent connection could not be established."
-    logging.disable(logging.NOTSET)
