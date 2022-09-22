@@ -205,6 +205,7 @@ def test_get_fluent_mode(new_mesh_session):
     assert session.fluent_connection.get_current_fluent_mode() == "solver"
 
 
+@pytest.mark.skip(reason="Can be used only locally.")
 def test_unsuccessful_fluent_connection(with_launching_container):
     # start-timeout is intentionally provided to be 2s for the connection to fail
     logging.disable(logging.CRITICAL)
