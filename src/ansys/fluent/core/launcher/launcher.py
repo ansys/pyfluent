@@ -446,7 +446,9 @@ def launch_fluent(
                     break
                 if start_timeout == 0:
                     LOG.error("The launch process has been timed out.")
-                    break
+                    raise RuntimeError(
+                        "The fluent connection could not be established."
+                    )
                 time.sleep(1)
                 start_timeout -= 1
                 LOG.info(

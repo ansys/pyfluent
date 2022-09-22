@@ -25,14 +25,11 @@ except Exception:
 def parse_server_info_file(filename: str):
     with open(filename, encoding="utf-8") as f:
         lines = f.readlines()
-    try:
-        ip_and_port = lines[0].strip().split(":")
-        ip = ip_and_port[0]
-        port = int(ip_and_port[1])
-        password = lines[1].strip()
-        return ip, port, password
-    except Exception:
-        raise RuntimeError("The fluent connection could not be established.")
+    ip_and_port = lines[0].strip().split(":")
+    ip = ip_and_port[0]
+    port = int(ip_and_port[1])
+    password = lines[1].strip()
+    return ip, port, password
 
 
 def _get_preferences(session):
