@@ -8,7 +8,7 @@ settings and issue commands to be executed in the Fluent solver.
 Accessing solver settings
 -------------------------
 An appropriate call to ``launch_fluent`` returns an object (named ``solver`` in
-the following code snippet) whose interface directly exposes the
+the following code snippets) whose interface directly exposes the
 :ref:`root<settings_root_section>` of the solver settings hierarchy.
 
 .. code-block::
@@ -19,7 +19,7 @@ the following code snippet) whose interface directly exposes the
 
 The ``solver`` object contains attributes such as ``file``, ``setup``, ``solution`` and
 ``results``, which are also instances of settings objects. Note that the last three are
-top-level nodes in the outline tree view in Fluent graphical user interface (GUI) - much
+top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) - much
 of this settings hierarchy has been designed in close alignment with that GUI hierarchy.
 
 Types of settings objects
