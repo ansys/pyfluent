@@ -278,7 +278,7 @@ def launch_fluent(
     precision: str = None,
     processor_count: int = None,
     journal_filename: str = None,
-    start_timeout: int = 1000,
+    start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
     start_instance: bool = None,
