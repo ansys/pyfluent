@@ -275,7 +275,7 @@ def launch_remote_fluent(
     )
 
 
-def get_session_info(
+def _get_session_info(
     argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
 ):
     """Updates the session information."""
@@ -296,9 +296,9 @@ def get_session_info(
     return new_session, meshing_mode, argvals, mode
 
 
-def update_launch_string_wrt_gui_options(
+def _update_launch_string_wrt_gui_options(
     launch_string: str, show_gui: bool = None, additional_arguments: str = ""
-):
+) -> str:
     """Checks for all gui options in additional arguments and updates the
     launch string with hidden, if none of the options are met."""
     if (show_gui is False) or (
@@ -315,7 +315,9 @@ def update_launch_string_wrt_gui_options(
     return launch_string
 
 
-def await_fluent_launch(server_info_filepath, start_timeout: int, sifile_last_mtime):
+def _await_fluent_launch(
+    server_info_filepath: str, start_timeout: int, sifile_last_mtime: float
+):
     """Wait for successful fluent launch or raise an error."""
     while True:
         if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
@@ -332,7 +334,7 @@ def await_fluent_launch(server_info_filepath, start_timeout: int, sifile_last_mt
         )
 
 
-def connect_to_running_server(argvals, server_info_filepath):
+def _connect_to_running_server(argvals, server_info_filepath: str):
     """Connect to an already running session."""
     ip = argvals.get("ip", None)
     port = argvals.get("port", None)
@@ -353,7 +355,9 @@ def connect_to_running_server(argvals, server_info_filepath):
     return ip, port, password
 
 
-def get_running_session_mode(mode, fluent_connection):
+def _get_running_session_mode(
+    fluent_connection: _FluentConnection, mode: LaunchModes = None
+):
     """Get the mode of the running session if the mode has not been mentioned
     explicitly."""
     if mode:
@@ -480,7 +484,7 @@ def launch_fluent(
     """
     argvals = locals()
 
-    new_session, meshing_mode, argvals, mode = get_session_info(
+    new_session, meshing_mode, argvals, mode = _get_session_info(
         argvals, mode, meshing_mode
     )
 
@@ -504,7 +508,7 @@ def launch_fluent(
             launch_string += f" {additional_arguments}"
             launch_string += f' -sifile="{server_info_filepath}"'
             launch_string += " -nm"
-            launch_string = update_launch_string_wrt_gui_options(
+            launch_string = _update_launch_string_wrt_gui_options(
                 launch_string, show_gui, additional_arguments
             )
             LOG.info("Launching Fluent with cmd: %s", launch_string)
@@ -516,7 +520,7 @@ def launch_fluent(
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             subprocess.Popen(launch_string, **kwargs)
 
-            await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
+            _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
 
             return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
@@ -560,7 +564,7 @@ def launch_fluent(
                 )
             )
         else:
-            ip, port, password = connect_to_running_server(
+            ip, port, password = _connect_to_running_server(
                 argvals, server_info_filepath
             )
             fluent_connection = _FluentConnection(
@@ -570,5 +574,5 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
             )
-            new_session = get_running_session_mode(mode, fluent_connection)
+            new_session = _get_running_session_mode(fluent_connection, mode)
             return new_session(fluent_connection=fluent_connection)
