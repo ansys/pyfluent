@@ -1,4 +1,4 @@
-from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
+from ansys.fluent.core.services.datamodel_se import MakeReadOnly, PyCallableStateObject
 
 
 def _new_command_for_task(task, meshing):
@@ -55,8 +55,8 @@ class MeshingWorkflow:
             task_arg_state = self.Arguments.get_state()
             cmd = self._command()
             if task_arg_state:
-                cmd.update_dict(task_arg_state)
-            return cmd
+                cmd.set_state(task_arg_state)
+            return MakeReadOnly(cmd)
 
         def _command(self):
             if not self._cmd:

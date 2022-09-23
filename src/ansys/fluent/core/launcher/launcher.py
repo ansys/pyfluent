@@ -445,8 +445,7 @@ def launch_fluent(
                     LOG.info("Fluent process is successfully launched.")
                     break
                 if start_timeout == 0:
-                    LOG.error("The launch process has been timed out.")
-                    break
+                    raise RuntimeError("The launch process has been timed out.")
                 time.sleep(1)
                 start_timeout -= 1
                 LOG.info(

@@ -33,3 +33,11 @@ def test_manual_fluent_path_setting():
 
     with pytest.raises(RuntimeError):
         pyfluent.set_fluent_path("X:/dir_1/dir2/fluent.bat")
+
+
+@pytest.mark.skip(reason="Can be used only locally.")
+def test_unsuccessful_fluent_connection(with_launching_container):
+    # start-timeout is intentionally provided to be 2s for the connection to fail
+    with pytest.raises(RuntimeError) as msg:
+        pyfluent.launch_fluent(mode="solver", start_timeout=2)
+    assert msg.value.args[0] == "The launch process has been timed out."
