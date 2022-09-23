@@ -140,7 +140,7 @@ are both explicit and generic (get_attr, get_attrs).
 
 The following examples access the list of allowed values for a particular state of
 the viscous model. All string and string list objects have an ``allowed_values``
-method. It returns a list of allowed string values if the constraint currently applies
+method. It returns a list of allowed string values if such a constraint currently applies
 for that object and None otherwise.
 
 
