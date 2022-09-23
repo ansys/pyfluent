@@ -608,3 +608,28 @@ Switch to solution mode
 .. code:: python
 
     solver = meshing.switch_to_solver()
+
+Sample use of CommandArguments
+------------------------------
+This simple example shows you how to use the CommandArgument attributes and explicit
+attribute access methods in a watertight geometry meshing workflow.
+Note: CommandArgument attributes are read-only.
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_filename = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
+    meshing = pyfluent.launch_fluent(mode="meshing", precision='double', processor_count=2)
+    w = meshing.workflow
+    w.InitializeWorkflow(WorkflowType='Watertight Geometry')
+
+    w.task("Import Geometry").CommandArguments()
+    w.task("Import Geometry").CommandArguments.FileName.is_read_only()
+    w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
+    w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values()
+    w.task("Import Geometry").CommandArguments.LengthUnit.default_value()
+    w.task("Import Geometry").CommandArguments.LengthUnit()
+    w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
+    w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()

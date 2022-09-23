@@ -293,6 +293,45 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
         ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
 
 
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_read_only_behaviour_of_command_arguments(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    m = session_new.meshing
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments)
+    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments.LengthUnit)
+
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").CommandArguments.MeshUnit.set_state("in")
+    assert msg.value.args[0] == "Command Arguments are read-only."
+
+    assert "set_state" in dir(m.ImportGeometry.new())
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_sample_use_of_command_arguments(new_mesh_session):
+    w = new_mesh_session.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
+
+
 def test_dummy_journal_data_model_methods(new_mesh_session):
     session_new = new_mesh_session
 
@@ -303,12 +342,12 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_child()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_child_objects()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_all_child_objects()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").fix_state()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."

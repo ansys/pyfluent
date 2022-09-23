@@ -144,8 +144,9 @@ class Base:
     def get_attr(self, attr) -> Any:
         """Get the requested attribute for the object."""
         attrs = self.get_attrs([attr])
-        attrs = attrs.get("attrs", attrs)
-        if attr != "active?" and attrs.get("active?", True) is False:
+        if attrs:
+            attrs = attrs.get("attrs", attrs)
+        if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
         return attrs[attr] if attrs else None
 
@@ -864,7 +865,7 @@ def get_cls(name, info, parent=None):
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
         include_child_named_objects = info.get("include_child_named_objects", False)
-        user_creatable = info.get("user_creatable", False)
+        user_creatable = info.get("user_creatable", True)
 
         bases = (base,)
         if include_child_named_objects:

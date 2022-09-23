@@ -19,7 +19,7 @@ boundary conditions are given in SI units. Because the Reynolds number for the
 flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings_api.png'
+# sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
 
 ###############################################################################
 # Perform required imports
@@ -180,7 +180,10 @@ solver.solution.initialization.hybrid_initialize()
 # Solve for 150 iterations.
 
 solver.solution.run_calculation.iterate.get_attr("arguments")
-solver.solution.run_calculation.iterate(number_of_iterations=150)
+if solver.get_fluent_version() >= "23.1.0":
+    solver.solution.run_calculation.iterate(iter_count=150)
+else:
+    solver.solution.run_calculation.iterate(number_of_iterations=150)
 
 ###############################################################################
 # Create velocity vectors
