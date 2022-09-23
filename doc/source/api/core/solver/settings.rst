@@ -204,10 +204,10 @@ min                min                yes                int, float         int 
 max                max                yes                int, float         int or float
 =================  =================  =================  =================  =================
 
-Using ``get-attr`` requires knowledge of attribute names and applicability and the ability to
-interpret the raw value of an attribute. You can avoid all these issues by using the explicitly
-named methods. Attributes are dynamic - values can change based on the application
-state. A ``None`` value signifies that no value is currently designated for that attribute.
+Using ``get-attr`` requires knowledge of attribute names and their applicability, as well as the 
+ability to interpret the raw value of an attribute. You can avoid all these issues by using the 
+explicitly named methods. Note also that attributes are dynamic - values can change based on the
+application state. A ``None`` value signifies that no value is currently designated for that attribute.
 
 
 Active objects and commands
