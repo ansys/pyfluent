@@ -191,10 +191,11 @@ These examples accesses the list of zone surfaces:
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
 
-Below is a table of attribute names, corresponding methods and applicable object types: 
+Below is a table of metadata names, corresponding methods to access those metadata, 
+applicable object types and returned data types: 
 
 ==================  ==================  =================  =================  =================
-Name                Method              Can return None    Applicability      Data type
+Metadata name       Method              Can return None    Applicability      Data type
 ==================  ==================  =================  =================  =================
 ``is-active?``      ``is_active``       no                 all                bool
 ``is-read-only?``   ``is_read_only``    no                 all                bool
@@ -204,10 +205,47 @@ Name                Method              Can return None    Applicability      Da
 ``max``             ``max``             yes                int, float         int or float
 ==================  ==================  =================  =================  =================
 
-Using ``get-attr`` requires knowledge of attribute names and their applicability, as well as the 
-ability to interpret the raw value of an attribute. You can avoid all these issues by using the 
-explicitly named methods. Note also that attributes are dynamic - values can change based on the
-application state. A ``None`` value signifies that no value is currently designated for that attribute.
+Using ``get-attr`` requires knowledge of metadata names and their applicability, as well as the 
+ability to interpret the raw value of the metadata. You can avoid all these issues by using the 
+explicitly named methods. Note also that these metadata are dynamic - values can change based on the
+application state. A ``None`` value signifies that no value is currently designated for that metadata.
+
+
+This simple example shows you how to use a number of these explicit metadata access methods
+in a single solver session:
+
+.. code-block::
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+  >>> from pprint import pprint
+  >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver.file.read(file_type="case", file_name=import_filename)
+  Fast-loading...
+  ...Done
+  >>> solver.setup.models.viscous.is_active()
+  True
+  >>> solver.setup.models.viscous.model.is_read_only()
+  False
+  >>> solver.setup.models.viscous.model.default_value()
+  >>> pprint(solver.setup.models.viscous.model.allowed_values())
+  ['inviscid',
+   'laminar',
+   'k-epsilon',
+   'k-omega',
+   'mixing-length',
+   'spalart-allmaras',
+   'k-kl-w',
+   'transition-sst',
+   'reynolds-stress',
+   'scale-adaptive-simulation',
+   'detached-eddy-simulation',
+   'large-eddy-simulation']
+  >>> solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].turb_intensity.min()
+  0
+  >>> solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].turb_intensity.max()
+  1
 
 
 Active objects and commands
