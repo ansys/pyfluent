@@ -136,7 +136,7 @@ and can be of either primitive or container type.
 Additional metadata
 -------------------
 Settings object methods are provided to access some additional metadata. Methods
-are both explicit and generic (get_attr, get_attrs).
+are both explicit and generic (``get_attr``, ``get_attrs``).
 
 The following examples access the list of allowed values for a particular state of
 the viscous model. All string and string list objects have an ``allowed_values``
@@ -193,16 +193,16 @@ These examples accesses the list of zone surfaces:
 
 Below is a table of attribute names, corresponding methods and applicable object types: 
 
-=================  =================  =================  =================  =================
-Name               Method             Can return None    Applicability      Data type          
-=================  =================  =================  =================  =================
-is-active?         is_active          no                 all                bool
-is-read-only?      is_read_only       no                 all                bool
-default-value      default            yes                all primitives     type of primitive
-allowed-values     allowed_values     yes                str, str list      str list
-min                min                yes                int, float         int or float
-max                max                yes                int, float         int or float
-=================  =================  =================  =================  =================
+==================  ==================  =================  =================  =================
+Name                Method              Can return None    Applicability      Data type
+==================  ==================  =================  =================  =================
+``is-active?``      ``is_active``       no                 all                bool
+``is-read-only?``   ``is_read_only``    no                 all                bool
+``default-value``   ``default``         yes                all primitives     type of primitive
+``allowed-values``  ``allowed_values``  yes                str, str list      str list
+``min``             ``min``             yes                int, float         int or float
+``max``             ``max``             yes                int, float         int or float
+==================  ==================  =================  =================  =================
 
 Using ``get-attr`` requires knowledge of attribute names and their applicability, as well as the 
 ability to interpret the raw value of an attribute. You can avoid all these issues by using the 
