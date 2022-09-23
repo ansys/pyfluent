@@ -205,6 +205,7 @@ Metadata name       Method              Can return None    Applicability      Da
 ``max``             ``max``             yes                int, float         int or float
 ==================  ==================  =================  =================  =================
 
+
 Using ``get-attr`` requires knowledge of metadata names and their applicability, as well as the 
 ability to interpret the raw value of the metadata. You can avoid all these issues by using the 
 explicitly named methods. Note also that these metadata are dynamic - values can change based on the
