@@ -372,6 +372,41 @@ def _get_running_session_mode(
     return session_mode.value[1]
 
 
+def _start_instance(start_instance: bool = None):
+    """Sets up how to start an instance of fluent."""
+    if not start_instance:
+        start_instance = bool(
+            int(
+                os.getenv(
+                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
+                )
+            )
+        )
+    return start_instance
+
+
+def _generate_launch_string(
+    argvals,
+    meshing_mode: bool,
+    show_gui: bool,
+    additional_arguments: str,
+    server_info_filepath: str,
+):
+    """Generates the launch string to launch fluent."""
+    exe_path = _get_fluent_exe_path()
+    launch_string = exe_path
+    launch_string += _build_fluent_launch_args_string(**argvals)
+    if meshing_mode:
+        launch_string += " -meshing"
+    launch_string += f" {additional_arguments}"
+    launch_string += f' -sifile="{server_info_filepath}"'
+    launch_string += " -nm"
+    launch_string = _update_launch_string_wrt_gui_options(
+        launch_string, show_gui, additional_arguments
+    )
+    return launch_string
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     version: str = None,
@@ -487,30 +522,13 @@ def launch_fluent(
     new_session, meshing_mode, argvals, mode = _get_session_info(
         argvals, mode, meshing_mode
     )
-
-    if start_instance is None:
-        start_instance = bool(
-            int(
-                os.getenv(
-                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
-                )
-            )
-        )
-    if start_instance:
-        exe_path = _get_fluent_exe_path()
-        launch_string = exe_path
-        launch_string += _build_fluent_launch_args_string(**argvals)
-        if meshing_mode:
-            launch_string += " -meshing"
+    if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
+        launch_string = _generate_launch_string(
+            argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
+        )
 
         try:
-            launch_string += f" {additional_arguments}"
-            launch_string += f' -sifile="{server_info_filepath}"'
-            launch_string += " -nm"
-            launch_string = _update_launch_string_wrt_gui_options(
-                launch_string, show_gui, additional_arguments
-            )
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
