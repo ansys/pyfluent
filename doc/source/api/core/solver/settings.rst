@@ -57,20 +57,20 @@ as a dictionary for ``Group`` and ``NamedObject`` types or as a list for ``ListO
 
 .. code-block::
 
-  >>> root.setup.models.viscous.model()
+  >>> solver.setup.models.viscous.model()
   'k-epsilon-standard'
 
 
 .. code-block::
 
   >>> from pprint import pprint
-  >>> pprint (root.setup.models.energy())
+  >>> pprint (solver.setup.models.energy())
   {'enabled': True,
    'inlet_diffusion': True,
    'kinetic_energy': False,
    'pressure_work': False,
    'viscous_dissipation': False}
-  >>> root.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
+  >>> solver.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant()
   10.0
 
 
@@ -81,9 +81,9 @@ and ``NamedObject`` types, the state value is a dictionary. For the
 
 .. code-block::
 
-  >>> root.setup.models.viscous.model = 'laminar'
-  >>> root.setup.models.energy = { 'enabled' : False }
-  >>> root.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
+  >>> solver.setup.models.viscous.model = 'laminar'
+  >>> solver.setup.models.energy = { 'enabled' : False }
+  >>> solver.setup.boundary_conditions.velocity_inlet['inlet1'].vmag.constant = 14
 
 
 You can also access the state of an object with the ``get_state`` method and
@@ -94,7 +94,7 @@ You can print the current state in a simple text format with the
 
 .. code-block::
 
-  >>> root.setup.models.print_state()
+  >>> solver.setup.models.print_state()
 
 
 The following output is returned:
@@ -146,19 +146,19 @@ for that object and None otherwise.
 
 .. code-block::
 
-  >>> root.setup.models.viscous.model.allowed_values()
+  >>> solver.setup.models.viscous.model.allowed_values()
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 
 .. code-block::
 
-  >>> root.setup.models.viscous.model.get_attr('allowed-values')
+  >>> solver.setup.models.viscous.model.get_attr('allowed-values')
   ['inviscid', 'laminar', 'k-epsilon-standard', 'k-omega-standard', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']
 
 
 .. code-block::
 
-  >>> root.setup.models.viscous.model.get_attrs(['allowed-values'])
+  >>> solver.setup.models.viscous.model.get_attrs(['allowed-values'])
   {'allowed-values': ['inviscid', 'laminar', 'k-epsilon', 'k-omega', 'mixing-length', 'spalart-allmaras', 'k-kl-w', 'transition-sst', 'reynolds-stress', 'scale-adaptive-simulation', 'detached-eddy-simulation', 'large-eddy-simulation']}
 
 
@@ -194,16 +194,16 @@ These examples accesses the list of zone surfaces:
 Below is a table of metadata names, corresponding methods to access those metadata, 
 applicable object types and returned data types: 
 
-==================  ==================  =================  =================  =================
-Metadata name       Method              Can return None    Applicability      Data type
-==================  ==================  =================  =================  =================
-``is-active?``      ``is_active``       no                 all                bool
-``is-read-only?``   ``is_read_only``    no                 all                bool
-``default-value``   ``default``         yes                all primitives     type of primitive
-``allowed-values``  ``allowed_values``  yes                str, str list      str list
-``min``             ``min``             yes                int, float         int or float
-``max``             ``max``             yes                int, float         int or float
-==================  ==================  =================  =================  =================
+==================  ==================  =================  =====================  ====================
+Metadata name       Method              Can return None    Applicability          Data type
+==================  ==================  =================  =====================  ====================
+``is-active?``      ``is_active``       no                 all                    ``bool``
+``is-read-only?``   ``is_read_only``    no                 all                    ``bool``
+``default-value``   ``default``         yes                all primitives         type of primitive
+``allowed-values``  ``allowed_values``  yes                ``str``, ``str list``  ``str list``
+``min``             ``min``             yes                ``int``, ``float``     ``int`` or ``float``
+``max``             ``max``             yes                ``int``, ``float``     ``int`` or ``float``
+==================  ==================  =================  =====================  ====================
 
 
 Using ``get-attr`` requires knowledge of metadata names and their applicability, as well as the 

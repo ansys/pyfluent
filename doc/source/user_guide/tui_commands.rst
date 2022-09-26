@@ -68,9 +68,9 @@ code launches Fluent and makes the call to set velocity inlet properties:
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent(mode="solver")
+    solver = launch_fluent(mode="solver")
 
-    tui = solver_session.solver.tui
+    tui = solver.solver.tui
 
     tui.define.boundary_conditions.set.velocity_inlet(
       "velocity-inlet-5", [], "temperature", "no", 293.15, "quit"
