@@ -197,7 +197,7 @@ applicable object types and returned data types:
 ==================  ==================  =================  =====================  ====================
 Metadata name       Method              Can return None    Applicability          Data type
 ==================  ==================  =================  =====================  ====================
-``is-active?``      ``is_active``       no                 all                    ``bool``
+``is-active?``      ``is_active``       no                 all                    bool
 ``is-read-only?``   ``is_read_only``    no                 all                    ``bool``
 ``default-value``   ``default``         yes                all primitives         type of primitive
 ``allowed-values``  ``allowed_values``  yes                ``str``, ``str list``  ``str list``
