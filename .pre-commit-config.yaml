@@ -5,7 +5,7 @@ repos:
   hooks:
   - id: black
     args: [
-      --force-exclude, src/ansys/fluent/core/meshing/tui|src/ansys/fluent/core/solver/tui|src/ansys/fluent/core/solver/settings/|src/ansys/fluent/core/datamodel,
+      --force-exclude, src/ansys/fluent/core/meshing/tui|src/ansys/fluent/core/solver/tui|src/ansys/fluent/core/solver/settings|src/ansys/fluent/core/datamodel,
       src/ansys, codegen, doc, examples, tests
     ]
 
