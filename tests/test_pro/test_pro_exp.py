@@ -51,7 +51,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         "value": "IF(AND((Maximum(TotalTemperature,['interior-part-heatsource'])> 310 [K]),(Average(VelocityMagnitude,['inlet1'])== 1 [m/s])), 1 [m/s], 0.2 [m/s])",
     }
     solver.solution.initialization.standard_initialize()
-    solver.solution.run_calculation.iterate(number_of_iterations=150)
+    solver.solution.run_calculation.iterate(iter_count=150)
     solver.results.report.report_menu.surface_integrals(
         report_type="area-weighted-avg",
         surface_id=["inlet1"],
