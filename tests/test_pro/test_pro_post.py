@@ -6,7 +6,7 @@ from util.fixture_fluent import download_input_file
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
-def test_pro_exp(launch_fluent_solver_3ddp_t2):
+def test_pro_post(launch_fluent_solver_3ddp_t2):
     if not os.path.exists("out"):
         os.mkdir("out")
     solver = launch_fluent_solver_3ddp_t2
@@ -192,12 +192,12 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         "partitions": False,
         "overset": False,
     }
-    assert solver.results.graphics.mesh["mesh-1"].surfaces_list() == [
-        "top",
+    assert sorted(solver.results.graphics.mesh["mesh-1"].surfaces_list()) == [
         "bottom",
+        "front",
         "left",
         "right",
-        "front",
+        "top",
     ]
     solver.results.graphics.mesh.add_to_graphics(object_name="mesh-1")
     solver.results.graphics.mesh.display(object_name="mesh-1")
@@ -215,14 +215,14 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         ],
         "field": "pressure",
     }
-    assert solver.results.graphics.contour["contour-1"].surfaces_list() == [
-        "left",
-        "front",
+    assert sorted(solver.results.graphics.contour["contour-1"].surfaces_list()) == [
         "bottom",
         "default-interior",
-        "top",
-        "symmetry",
+        "front",
+        "left",
         "right",
+        "symmetry",
+        "top",
     ]
     assert solver.results.graphics.contour["contour-1"].field() == "pressure"
     solver.results.graphics.contour.add_to_graphics(object_name="contour-1")
@@ -255,12 +255,12 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         },
         "shrink_factor": 0.5,
     }
-    assert solver.results.graphics.mesh["mesh-1"].surfaces_list() == [
-        "top",
+    assert sorted(solver.results.graphics.mesh["mesh-1"].surfaces_list()) == [
         "bottom",
+        "front",
         "left",
         "right",
-        "front",
+        "top",
     ]
     assert solver.results.graphics.mesh["mesh-1"].options() == {
         "nodes": False,
@@ -284,23 +284,23 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         "surfaces_list": ["top", "bottom", "front", "left", "right"]
     }
     solver.results.graphics.pathline.display(object_name="pathlines-1")
-    assert solver.results.graphics.pathline["pathlines-1"].surfaces_list() == [
-        "top",
+    assert sorted(solver.results.graphics.pathline["pathlines-1"].surfaces_list()) == [
         "bottom",
         "front",
         "left",
         "right",
+        "top",
     ]
     solver.results.plot.xy_plot["xy-plot-1"] = {}
     solver.results.plot.xy_plot["xy-plot-1"] = {
         "surfaces_list": ["top", "bottom", "left", "right", "front"]
     }
-    assert solver.results.plot.xy_plot["xy-plot-1"].surfaces_list() == [
-        "top",
+    assert sorted(solver.results.plot.xy_plot["xy-plot-1"].surfaces_list()) == [
         "bottom",
+        "front",
         "left",
         "right",
-        "front",
+        "top",
     ]
     solver.results.plot.xy_plot.display(object_name="xy-plot-1")
     solver.results.scene["scene-1"] = {}
