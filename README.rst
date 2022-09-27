@@ -24,26 +24,26 @@ PyFluent
 
 Overview
 --------
-The PyFluent project provides Pythonic access to Ansys Fluent.  The package
-provides features to enable seamless use of Fluent within the Python ecosystem
-as well as broad access to Fluent features including:
+PyFluent provides Pythonic access to Ansys Fluent. Its features enable the seamless use of
+Fluent within the Python ecosystem and broad access to native Fluent features, including the
+ability to:
 
-- Ability to launch Fluent using a local Ansys installation
-- Ability to use Fluent TUI commands for both meshing and solver features
-- Ability to use Fluent's in-built post processing capabilities
+- Launch Fluent using a local Ansys installation
+- Use Fluent's TUI (text user interface) commands for both meshing and solver features
+- Use Fluent's built-in postprocessing capabilities
 
-Documentation and Issues
+Documentation and issues
 ------------------------
-Please see the latest release `documentation <https://fluentdocs.pyansys.com>`_
-page for more details.
+For comprehesive information on PyFluent, see the latest release
+`documentation <https://fluent.docs.pyansys.com>`_.
 
-Please feel free to post issues and other questions at `PyFluent Issues
-<https://github.com/pyansys/pyfluent/issues>`_.  This is the best place
-to post questions and code.
+On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
+issues to submit questions, report bugs, and request new features. To reach
+the PyAnsys support team, email `pyansys.support@ansys.com <pyansys.support@ansys.com>`_.
 
 Installation
 ------------
-The ``ansys-fluent-core`` package currently supports Python 3.7 through Python
+The ``ansys-fluent-core`` package supports Python 3.7 through Python
 3.10 on Windows and Linux.
 
 Install the latest release from `PyPI
@@ -53,15 +53,8 @@ Install the latest release from `PyPI
 
    pip install ansys-fluent-core
 
-Alternatively, install the latest from `PyFluent GitHub
-<https://github.com/pyansys/pyfluent>`_ via:
-
-.. code:: console
-
-   pip install git+https://github.com/pyansys/pyfluent.git
-
-If you plan on doing local "development" of PyFluent with Git, then install
-with:
+If you plan on doing local *development* of PyFluent with Git, install
+the latest release with:
 
 .. code:: console
 
@@ -69,57 +62,66 @@ with:
    cd pyfluent
    pip install pip -U
    pip install -e .
-   python codegen/allapigen.py  # Generates the API files, requires Fluent
+   python codegen/allapigen.py  # Generates the API files
 
 Dependencies
 ------------
-You will need a locally installed licensed copy of ANSYS to run Fluent, with the
-first supported version being Ansys 2022 R2.
+You must have a licensed copy of Ansys Fluent installed locally. PyFluent
+supports Fluent 2022 R2 and later.
 
-Getting Started
+Getting started
 ---------------
 
 Launching Fluent
 ~~~~~~~~~~~~~~~~
-You can launch Fluent from Python using the ``launch_fluent`` function:
+To launch Fluent from Python, use the ``launch_fluent`` method:
 
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  session = pyfluent.launch_fluent()
-  session.check_health()
+  solver_session = pyfluent.launch_fluent(mode="solver")
+  solver_session.check_health()
 
-To use a non-default install location set the ``PYFLUENT_FLUENT_ROOT``
-environment variable to the ``<version>/fluent`` directory where ``<version>``
-is the Ansys release version you would like to use (eg: v222).
+On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
+when Fluent is installed, where ``<ver>`` is the Fluent release number such as
+``222`` for release 2022 R2.  PyFluent automatically uses this environment
+variable to locate the Fluent installation. On Linux systems configure
+``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
+``/apps/ansys_inc/v222``.  
+
+To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
+``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install
+location>/<version>/fluent`` directory, where ``<version>`` is the Fluent
+release that you would like to use. For example, ``v222`` uses release 2022 R2.
 
 Basic Usage
 ~~~~~~~~~~~
-You can run Fluent TUI commands using the ``session.tui`` interface:
+You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 
 .. code:: python
 
-  session.solver.tui.file.read_case(case_file_name='elbow.cas.h5')
-  session.solver.tui.define.models.unsteady_2nd_order("yes")
-  session.solver.tui.solve.initialize.initialize_flow()
-  session.solver.tui.solve.dual_time_iterate(2, 3)
+  solver_session.tui.file.read_case('elbow.cas.h5')
+  solver_session.tui.define.models.unsteady_2nd_order("yes")
+  solver_session.tui.solve.initialize.initialize_flow()
+  solver_session.tui.solve.dual_time_iterate(2, 3)
 
-In addition to all TUI commands being available there are the
-`PyFluent Parametric <https://fluentparametric.docs.pyansys.com/>`_ and
-`PyFluent Visualization <https://fluentvisualization.docs.pyansys.com/>`_ packages.
-The PyFluent Parametric package provides access to Fluent's parametric workflows and
-the PyFluent Visualization package provides post-processing and visualization
-capabilities using `pyvista <https://docs.pyvista.org/>`_ and
-`matplotlib <https://matplotlib.org/>`_.
+You can also install and use these PyFluent libraries:
 
-License and Acknowledgments
+- `PyFluent Parametric <https://fluentparametric.docs.pyansys.com/>`_, which provides
+  access to Fluent's parametric workflows.
+- `PyFluent Visualization <https://fluentvisualization.docs.pyansys.com/>`_, which
+  provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
+  and `matplotlib <https://matplotlib.org/>`_ packages.
+
+License and acknowledgments
 ---------------------------
-``PyFluent`` is licensed under the MIT license.
+PyFluent is licensed under the MIT license.
 
-This module, ``ansys-fluent`` makes no commercial claim over Ansys whatsoever.
-This tool extends the functionality of ``Fluent`` by adding a Python interface
-to the Fluent without changing the core behavior or license of the original
-software.  The use of the interactive Fluent control of ``PyFluent`` requires a
-legally licensed local copy of Ansys.
+PyFluent makes no commercial claim over Ansys whatsoever. This library
+extends the functionality of Ansys Fluent by adding a Python interface
+to Fluent without changing the core behavior or license of the original
+software. The use of the interactive Fluent control of PyFluent requires a
+legally licensed local copy of Fluent.
 
-To get a copy of Ansys, please visit `Ansys <https://www.ansys.com/>`_.
+For more information on Fluent, see the `Ansys Fluent <https://www.ansys.com/products/fluids/ansys-fluent>`_
+page on the Ansys website.

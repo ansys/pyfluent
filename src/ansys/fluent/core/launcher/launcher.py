@@ -1,9 +1,9 @@
-"""Provide a module for launching Fluent.
+"""Provides a module for launching Fluent.
 
-This module supports both starting Fluent locally or connecting to a
+This module supports both starting Fluent locally and connecting to a
 remote instance with gRPC.
 """
-
+from enum import Enum
 import json
 import os
 from pathlib import Path
@@ -11,17 +11,91 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Union
+import warnings
 
+from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import Session
+from ansys.fluent.core.scheduler import build_parallel_options, load_machines
+from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
+from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-FLUENT_VERSION = "22.2"
-PIM_FLUENT_PRODUCT_VERSION = FLUENT_VERSION.replace(".", "")
+FLUENT_VERSION = ["22.2"]
+PIM_FLUENT_PRODUCT_VERSION = [FLUENT_VERSION[0].replace(".", "")]
+FLUENT_EXE_PATH = []
+
+
+class FluentVersion(Enum):
+    """Contains the standard Ansys Fluent release."""
+
+    version_22R2 = "22.2"
+    version_23R1 = "23.1"
+
+    @staticmethod
+    def get_version(version: str) -> "FluentVersion":
+        """Get the available versions based on the version in string format."""
+        for v in FluentVersion:
+            if version == v.value:
+                return v
+        else:
+            raise RuntimeError(f"The passed version '{version}' does not exist.")
+
+
+def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
+    """Set the Fluent installation path manually.
+
+    This supersedes the Fluent path set in the environment variable.
+    """
+    if Path(fluent_exe_path).exists():
+        FLUENT_EXE_PATH.append(str(fluent_exe_path))
+    else:
+        raise RuntimeError(
+            f"The passed path '{fluent_exe_path}' does not contain a valid Fluent executable file."
+        )
+
+
+def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
+    """Set the Fluent version manually.
+
+    This method only works if the provided Fluent version is installed
+    and the environment variables are updated properly. This supersedes
+    the Fluent path set in the environment variable.
+    """
+    if type(version) in [float, str]:
+        version = FluentVersion.get_version(str(version))
+    if version in FluentVersion or str(version) in FluentVersion.value:
+        FLUENT_VERSION[0] = version.value
+        PIM_FLUENT_PRODUCT_VERSION[0] = FLUENT_VERSION[0].replace(".", "")
+
+
+class LaunchModes(Enum):
+    """Provides the standard Fluent launch modes."""
+
+    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    MESHING_MODE = ("meshing", Meshing, True, [])
+    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
+    SOLVER = ("solver", Solver, False, [])
+    SOLVER_LITE = ("solver-lite", SolverLite, False, [])
+    SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
+
+    @staticmethod
+    def get_mode(mode: str) -> "LaunchModes":
+        """Returns the LaunchMode based on the mode in string format."""
+        for m in LaunchModes:
+            if mode == m.value[0]:
+                return m
+        else:
+            raise RuntimeError(
+                f"The passed mode '{mode}' matches none of the allowed modes."
+            )
 
 
 def get_fluent_path() -> Path:
@@ -37,16 +111,19 @@ def get_fluent_path() -> Path:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
         return Path(path)
     else:
-        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
+        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION[0].split("."))]
         return Path(path) / "fluent"
 
 
 def _get_fluent_exe_path():
-    exe_path = get_fluent_path()
-    if platform.system() == "Windows":
-        exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
+    if FLUENT_EXE_PATH:
+        exe_path = FLUENT_EXE_PATH[0]
     else:
-        exe_path = exe_path / "bin" / "fluent"
+        exe_path = get_fluent_path()
+        if platform.system() == "Windows":
+            exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
+        else:
+            exe_path = exe_path / "bin" / "fluent"
     return str(exe_path)
 
 
@@ -76,10 +153,11 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
     """Build Fluent's launch arguments string from keyword arguments.
+
     Returns
     -------
     str
-        Fluent's launch arguments string
+        Fluent's launch arguments string.
     """
     all_options = None
     with open(_OPTIONS_FILE, encoding="utf-8") as fp:
@@ -120,36 +198,59 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
+    addArgs = kwargs["additional_arguments"]
+    if "-t" not in addArgs and "-cnf=" not in addArgs:
+        mlist = load_machines(ncores=kwargs["processor_count"])
+        launch_args_string += " " + build_parallel_options(mlist)
     return launch_args_string
 
 
 def launch_remote_fluent(
+    session_cls,
+    start_transcript: bool,
+    start_timeout: int = 100,
     product_version: str = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
     dimensionality: str = None,
 ):
 
-    """Start Fluent remotely using the product instance management API.
+    """Launch Fluent remotely using the PIM (Product Instance Management) API.
 
-    When calling this method, you need to ensure that you are in an
-    environment where PyPIM is configured. This can be verified with :func:
-    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`.
+    When calling this method, you must ensure that you are in an
+    environment where PyPIM is configured. You can use the :func:
+    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
+    method to verify that PYPIM is configured.
 
     Parameters
     ----------
-    version : str, optional
-        The Fluent version to run, in the 3 digits format, such as "212".
-        If unspecified, the version will be chosen by the server.
+    session_cls: [_BaseSession, Session]
+        Instance of the Session class
+    start_transcript: bool
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
+    start_timeout : int, optional
+        Maximum allowable time in seconds for connecting to the Fluent
+        server. The default is ``100``.
+    product_version : str, optional
+        Version of Fluent to use in the three-digit format (such as ``"212"``
+        for 2021 R2). The default is ``None``, in which case the active version
+        or latest installed version is used.
     cleanup_on_exit : bool, optional
-        Exit Fluent when python exits or the Fluent Python instance is
-        garbage collected.
-        If unspecified, it will be cleaned up.
+        Whether to clean up and exit Fluent when Python exits or when garbage
+        is collected for the Fluent Python instance. The default is ``True``.
+    meshing_mode : bool, optional
+        Whether to launch Fluent remotely in meshing mode. The default is
+        ``False``.
+    dimensionality : str, optional
+        Number of dimensions for modeling. The default is ``None``, in which
+        case ``"3s"`` is used. Options are ``"3d"`` and ``"2d"``.
 
     Returns
     -------
     ansys.fluent.core.session.Session
-        An instance of Session.
+        Instance of the session.
     """
     pim = pypim.connect()
     instance = pim.create_instance(
@@ -163,9 +264,147 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return Session(
-        channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+    return session_cls(
+        fluent_connection=_FluentConnection(
+            channel=channel,
+            cleanup_on_exit=cleanup_on_exit,
+            remote_instance=instance,
+            start_timeout=start_timeout,
+            start_transcript=start_transcript,
+        )
     )
+
+
+def _get_session_info(
+    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+):
+    """Updates the session information."""
+    if mode is None:
+        new_session = Session
+    elif mode and meshing_mode:
+        raise RuntimeError(
+            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
+        )
+    else:
+        if type(mode) == str:
+            mode = LaunchModes.get_mode(mode)
+        new_session = mode.value[1]
+        meshing_mode = mode.value[2]
+        for k, v in mode.value[3]:
+            argvals[k] = v
+
+    return new_session, meshing_mode, argvals, mode
+
+
+def _update_launch_string_wrt_gui_options(
+    launch_string: str, show_gui: bool = None, additional_arguments: str = ""
+) -> str:
+    """Checks for all gui options in additional arguments and updates the
+    launch string with hidden, if none of the options are met."""
+    if (show_gui is False) or (
+        show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
+    ):
+        if (
+            "-g " not in additional_arguments
+            and "-gu " not in additional_arguments
+            and not additional_arguments.endswith("-g")
+            and not additional_arguments.endswith("-gu")
+        ):
+            launch_string += " -hidden"
+
+    return launch_string
+
+
+def _await_fluent_launch(
+    server_info_filepath: str, start_timeout: int, sifile_last_mtime: float
+):
+    """Wait for successful fluent launch or raise an error."""
+    while True:
+        if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
+            time.sleep(1)
+            LOG.info("Fluent process is successfully launched.")
+            break
+        if start_timeout == 0:
+            raise RuntimeError("The launch process has been timed out.")
+        time.sleep(1)
+        start_timeout -= 1
+        LOG.info(
+            "Waiting for Fluent to launch...%02d seconds remaining",
+            start_timeout,
+        )
+
+
+def _connect_to_running_server(argvals, server_info_filepath: str):
+    """Connect to an already running session."""
+    ip = argvals.get("ip", None)
+    port = argvals.get("port", None)
+    password = argvals.get("password", None)
+    if ip and port:
+        warnings.warn(
+            "The server-info file was not parsed because ip and port were provided explicitly."
+        )
+    elif server_info_filepath:
+        ip, port, password = parse_server_info_file(server_info_filepath)
+    elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
+        ip = port = password = None
+    else:
+        raise RuntimeError(
+            "Please provide either ip and port data or server-info file."
+        )
+
+    return ip, port, password
+
+
+def _get_running_session_mode(
+    fluent_connection: _FluentConnection, mode: LaunchModes = None
+):
+    """Get the mode of the running session if the mode has not been mentioned
+    explicitly."""
+    if mode:
+        session_mode = mode
+    else:
+        try:
+            session_mode = LaunchModes.get_mode(
+                fluent_connection.get_current_fluent_mode()
+            )
+        except BaseException:
+            raise RuntimeError("Fluent session password mismatch")
+    return session_mode.value[1]
+
+
+def _start_instance(start_instance: bool = None):
+    """Sets up how to start an instance of fluent."""
+    if not start_instance:
+        start_instance = bool(
+            int(
+                os.getenv(
+                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
+                )
+            )
+        )
+    return start_instance
+
+
+def _generate_launch_string(
+    argvals,
+    meshing_mode: bool,
+    show_gui: bool,
+    additional_arguments: str,
+    server_info_filepath: str,
+):
+    """Generates the launch string to launch fluent."""
+    exe_path = _get_fluent_exe_path()
+    launch_string = exe_path
+    launch_string += _build_fluent_launch_args_string(**argvals)
+    if meshing_mode:
+        launch_string += " -meshing"
+    launch_string += f" {additional_arguments}"
+    launch_string += f' -sifile="{server_info_filepath}"'
+    launch_string += " -nm"
+    launch_string = _update_launch_string_wrt_gui_options(
+        launch_string, show_gui, additional_arguments
+    )
+    return launch_string
 
 
 #   pylint: disable=unused-argument
@@ -174,7 +413,6 @@ def launch_fluent(
     precision: str = None,
     processor_count: int = None,
     journal_filename: str = None,
-    meshing_mode: bool = None,
     start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
@@ -184,124 +422,125 @@ def launch_fluent(
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
     show_gui: bool = None,
-) -> Session:
-    """Start Fluent locally in server mode or connect to a running Fluent
+    case_filepath: str = None,
+    meshing_mode: bool = None,
+    mode: Union[LaunchModes, str, None] = None,
+    server_info_filepath: str = None,
+    password: str = None,
+    py: bool = None,
+) -> Union[_BaseSession, Session]:
+    """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
     Parameters
     ----------
     version : str, optional
-        Selects either the ``"2d"`` or ``"3d"`` version of Fluent.
-        Default is ``"3d"``.
-
+        Dimensions for modeling. The default is ``None``, in which case ``"3d"``
+        is used. Options are ``"3d"`` and ``"2d"``.
     precision : str, optional
-        Selects either the ``"single"`` precision or ``"double"``
-        precision version of Fluent. Default is ``"double"`` precision.
-
+        Floating point precision. The default is ``None``, in which case ``"double"``
+        is used. Options are ``"double"`` and ``"single"``.
     processor_count : int, optional
-        Specify number of processors. Default is 1.
-
+        Number of processors. The default is ``None``, in which case ``1``
+        processor is used.  In job scheduler environments the total number of
+        allocated cores is clamped to this value.
     journal_filename : str, optional
-        Read the specified journal file.
-
-    meshing_mode : bool, optional
-        Launch Fluent in meshing mode
-
+        Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
-        Maximum allowable time in seconds to connect to the Fluent
-        server. Default is 100 seconds.
-
+        Maximum allowable time in seconds for connecting to the Fluent
+        server. The default is ``100``.
     additional_arguments : str, optional
-        Additional arguments in string format which will be sent to
-        Fluent as is.
-
-    env : Dict[str, str], optional
-        Mapping to modify environment variables in Fluent
-
+        Additional arguments to send to Fluent. The default is ``""``.
+    env : dict[str, str], optional
+        Mapping to modify environment variables in Fluent. The default
+        is ``None``.
     start_instance : bool, optional
-        When False, connect to an existing Fluent instance at ``ip``
-        and ``port``. Otherwise, launch a local instance of Fluent.
-        Defaults to True and can also be set by the environment variable
-        ``PYFLUENT_START_INSTANCE=<0 or 1>``.
-
+        Whether to connect to an existing Fluent instance at a specified IP
+        address on a specified port. The default is ``None``, in which
+        case a local instance of Fluent is started. When ``False``, use
+        the next two parameters to specify the IP address and port. You
+        can also use the environment variable ``PYFLUENT_START_INSTANCE=<0 or 1>``
+        to set this parameter.
     ip : str, optional
-        IP address to connect to existing Fluent instance. Used only
-        when ``start_instance`` is ``False``.  Defaults to
-        ``"127.0.0.1"`` and can also be set by the environment variable
-        ``PYFLUENT_FLUENT_IP=<ip>``.
-
+        IP address for connecting to an existing Fluent instance. This parameter
+        is used only when ``start_instance`` is ``False``. Otherwise, the
+        IP address defaults to ``"127.0.0.1"``. You can also use the environment
+        variable ``PYFLUENT_FLUENT_IP=<ip>`` to set this parameter.
     port : int, optional
-        Port to connect to existing Fluent instance. Used only when
-        ``start_instance`` is ``False``. Default value can be set
-        by the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
-
+        Port to listen on for an existing Fluent instance. This parameter is
+        used only when ``start_instance`` is ``False``. You can use the
+        environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
+        value.
     cleanup_on_exit : bool, optional
-        When True, the connected Fluent session will be shut down when
-        PyFluent is exited or exit() is called on the session instance,
-        by default True.
-
+        Whether to shut down the connected Fluent session when PyFluent is
+        exited or the ``exit()`` method is called on the session instance.
+        The default is ``True``.
     start_transcript : bool, optional
-        The Fluent transcript is started in the client only when
-        start_transcript is True. It can be started and stopped
-        subsequently via method calls on the Session object.
-
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
     show_gui : bool, optional
-        When True, the Fluent GUI will be displayed as long as start_instance
-        is also True, which can also be set by the environment
-        variable PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``. The show-gui argument has
-        the effect of overriding the PYFLUENT_SHOW_SERVER_GUI variable. E.g., if
-        PYFLUENT_SHOW_SERVER_GUI is set to 1, the gui is hidden if show-gui is
-        set to False. The default is None so that explicit False settings can
-        be detected.
+        Whether to display the Fluent GUI when ``start_instance``
+        is set to ''True``. The default is ``None`` so that explicit
+        ``False`` settings can be detected. This is because you can use
+        also use the environment variable ``PYFLUENT_SHOW_SERVER_GUI=<0 or 1>``
+        to set this parameter. The ``show-gui`` parameter overrides the
+        PYFLUENT_SHOW_SERVER_GUI environment variable. For example, if
+        PYFLUENT_SHOW_SERVER_GUI is set to ``1`` and the ``show-gui``
+        parameter is set to ``False``, the GUI is hidden.
+    case_filepath : str, optional
+        If provided, reads a fluent case file and sets the required settings
+        in the fluent session
+    meshing_mode : bool, optional
+        Whether to launch Fluent in meshing mode. The default is ``None``,
+        in which case Fluent is launched in meshing mode.
+    mode : str, optional
+        Launch mode of Fluent to point to a specific session type.
+        The default value is ``None``. Options are ``"meshing"``,
+        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
+    server_info_filepath: str
+        Path to server-info file written out by Fluent server. The default is ``None``.
+    password : str, optional
+            Password to connect to existing Fluent instance.
+    py : bool, optional
+        Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
+        The default is ``None``.
 
     Returns
     -------
     ansys.fluent.session.Session
         Fluent session.
+
+    Notes
+    -----
+    In job scheduler environments such as SLURM, LSF, PBS, etc... the allocated
+    machines and core counts are queried from the scheduler environment and
+    passed to Fluent.
     """
     argvals = locals()
-    if start_instance is None:
-        start_instance = bool(
-            int(
-                os.getenv(
-                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
-                )
-            )
-        )
-    if start_instance:
-        exe_path = _get_fluent_exe_path()
-        launch_string = exe_path
-        launch_string += _build_fluent_launch_args_string(**argvals)
+
+    new_session, meshing_mode, argvals, mode = _get_session_info(
+        argvals, mode, meshing_mode
+    )
+    if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
+        launch_string = _generate_launch_string(
+            argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
+        )
+
         try:
-            launch_string += f" {additional_arguments}"
-            launch_string += f' -sifile="{server_info_filepath}"'
-            launch_string += " -nm"
-            if (show_gui is False) or (
-                show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
-            ):
-                launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
+            if mode != LaunchModes.SOLVER_ICING:
+                env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             subprocess.Popen(launch_string, **kwargs)
-            while True:
-                if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
-                    time.sleep(1)
-                    LOG.info("Fluent process is successfully launched.")
-                    break
-                if start_timeout == 0:
-                    LOG.error("The launch process has been timed out.")
-                    break
-                time.sleep(1)
-                start_timeout -= 1
-                LOG.info(
-                    "Waiting for Fluent to launch...%02d seconds remaining",
-                    start_timeout,
-                )
-            return Session.create_from_server_info_file(
+
+            _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
+
+            return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
         finally:
@@ -314,7 +553,10 @@ def launch_fluent(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(
-                product_version=PIM_FLUENT_PRODUCT_VERSION,
+                session_cls=new_session,
+                start_timeout=start_timeout,
+                start_transcript=start_transcript,
+                product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
@@ -323,23 +565,32 @@ def launch_fluent(
 
         if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             args = _build_fluent_launch_args_string(**argvals).split()
+            if meshing_mode:
+                args.append(" -meshing")
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
             port = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
-            return Session(
-                port=port,
-                cleanup_on_exit=cleanup_on_exit,
-                start_transcript=start_transcript,
+            return new_session(
+                fluent_connection=_FluentConnection(
+                    start_timeout=start_timeout,
+                    port=port,
+                    cleanup_on_exit=cleanup_on_exit,
+                    start_transcript=start_transcript,
+                )
             )
         else:
-            ip = argvals.get("ip", None)
-            port = argvals.get("port", None)
-            return Session(
+            ip, port, password = _connect_to_running_server(
+                argvals, server_info_filepath
+            )
+            fluent_connection = _FluentConnection(
                 ip=ip,
                 port=port,
+                password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
             )
+            new_session = _get_running_session_mode(fluent_connection, mode)
+            return new_session(fluent_connection=fluent_connection)

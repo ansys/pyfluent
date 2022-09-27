@@ -8,7 +8,7 @@ from ansys.api.fluent.v0 import monitor_pb2_grpc as MonitorGrpcModule
 
 
 class MonitorsService:
-    """Class wrapping the monitor grpc service of Fluent."""
+    """Class wrapping the monitor gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
         self.__stub = MonitorGrpcModule.MonitorStub(channel)
@@ -16,7 +16,7 @@ class MonitorsService:
         self._streams = None
 
     def get_monitors_info(self) -> dict:
-        """Get monitors info.
+        """Get monitors information.
 
         Parameters
         ----------
@@ -25,7 +25,7 @@ class MonitorsService:
         Returns
         -------
         dict
-            Dictionary containing monitors info.
+            Dictionary containing the monitors information.
         """
         monitors_info = {}
         request = MonitorModule.GetMonitorsRequest()

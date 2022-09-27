@@ -7,3 +7,41 @@ def check_report_definition_result(
         ][0]
         == expected_result
     )
+
+
+def assign_settings_value_from_value_dict(setting, value):
+    try:
+        setting.set_state({"option": "value", "value": value})
+    except RuntimeError:
+        setting.set_state({"option": "constant or expression", "constant": value})
+
+
+def settings_value_from_value_dict(dict_value) -> bool:
+    if "option" in dict_value:
+        option = dict_value["option"]
+        key = None
+        if option == "value":
+            key = "value"
+        elif option == "constant or expression":
+            key = "constant"
+        if key:
+            return dict_value[key]
+
+
+def assert_settings_values_equal(left, right):
+    assert settings_value_from_value_dict(left) == right
+
+
+class SettingsValDict:
+    def __init__(self, val):
+        self._val = val
+
+    def __eq__(self, other):
+        return settings_value_from_value_dict(other) == self._val
+
+
+def copy_database_material(materials, type, name):
+    try:
+        materials.database.copy_by_name(type=type, name=name)
+    except AttributeError:
+        materials.copy_database_material_by_name(type=type, name=name)

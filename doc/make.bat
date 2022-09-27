@@ -11,7 +11,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=_build
-set SPHINXOPTS=-v -j auto -W --keep-going -w build_errors.txt -N
+set SPHINXOPTS=-j auto -W --keep-going -w build_errors.txt -N -q
 
 if "%1" == "" goto help
 if "%1" == "clean" goto clean
@@ -37,6 +37,7 @@ goto end
 rmdir /s /q %BUILDDIR% > /NUL 2>&1
 rmdir /s /q %SOURCEDIR%\examples > /NUL 2>&1
 for /d /r %SOURCEDIR% %%d in (_autosummary) do @if exist "%%d" rmdir /s /q "%%d"
+del build_errors.txt > /NUL 2>&1
 goto end
 
 :help

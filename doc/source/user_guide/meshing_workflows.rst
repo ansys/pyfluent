@@ -1,16 +1,16 @@
 .. _ref_user_guide_meshing_workflows:
 
-Using the Meshing Workflows
-===========================
-PyFluent supports accessing all the Fluent Meshing functionalities including 
-the guided Meshing Workflows.
+Using meshing workflows
+=======================
+PyFluent supports accessing all Fluent meshing functionalities, including 
+guided meshing workflows.
 
-Using the Watertight Geometry Meshing Workflow
-----------------------------------------------
-Here is a simple example demonstrating the the Watertight Geometry Workflow usage:
+Watertight geometry meshing workflow
+------------------------------------
+This simple example shows how you use the watertight geometry meshing workflow.
 
-Importing Your Geometry
-~~~~~~~~~~~~~~~~~~~~~~~
+Import geometry
+~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -18,108 +18,108 @@ Importing Your Geometry
     from ansys.fluent.core import examples
 
     import_filename = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    session = pyfluent.launch_fluent(
-        meshing_mode=True, precision='double', processor_count=2
+    meshing = pyfluent.launch_fluent(
+        mode="meshing", precision='double', processor_count=2
     )
-    session.meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
-    session.meshing.workflow.TaskObject['Import Geometry'].Arguments = dict(
+    meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
+    meshing.workflow.TaskObject['Import Geometry'].Arguments = dict(
         FileName=import_filename, LengthUnit='in'
     )
-    session.meshing.workflow.TaskObject['Import Geometry'].Execute()
+    meshing.workflow.TaskObject['Import Geometry'].Execute()
 
-Adding Local Sizing
-~~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    session.meshing.workflow.TaskObject['Add Local Sizing'].AddChildToTask()
-    session.meshing.workflow.TaskObject['Add Local Sizing'].Execute()
-
-Generating the Surface Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add local sizing
+~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Generate the Surface Mesh'].Arguments = {
+    meshing.workflow.TaskObject['Add Local Sizing'].AddChildToTask()
+    meshing.workflow.TaskObject['Add Local Sizing'].Execute()
+
+Generate surface mesh
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject['Generate the Surface Mesh'].Arguments = {
         'CFDSurfaceMeshControls': {'MaxSize': 0.3}
     }
-    session.meshing.workflow.TaskObject['Generate the Surface Mesh'].Execute()
+    meshing.workflow.TaskObject['Generate the Surface Mesh'].Execute()
 
-Describing the Geometry
-~~~~~~~~~~~~~~~~~~~~~~~
+Describe geometry
+~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Describe Geometry'].UpdateChildTasks(
+    meshing.workflow.TaskObject['Describe Geometry'].UpdateChildTasks(
         SetupTypeChanged=False
     )
-    session.meshing.workflow.TaskObject['Describe Geometry'].Arguments = dict(
+    meshing.workflow.TaskObject['Describe Geometry'].Arguments = dict(
         SetupType='The geometry consists of only fluid regions with no voids'
     )
-    session.meshing.workflow.TaskObject['Describe Geometry'].UpdateChildTasks(
+    meshing.workflow.TaskObject['Describe Geometry'].UpdateChildTasks(
         SetupTypeChanged=True
     )
-    session.meshing.workflow.TaskObject['Describe Geometry'].Execute()
+    meshing.workflow.TaskObject['Describe Geometry'].Execute()
 
-Updating Boundaries
-~~~~~~~~~~~~~~~~~~~
+Update boundaries
+~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Update Boundaries'].Arguments = {
+    meshing.workflow.TaskObject['Update Boundaries'].Arguments = {
         'BoundaryLabelList': ['wall-inlet'],
         'BoundaryLabelTypeList': ['wall'],
         'OldBoundaryLabelList': ['wall-inlet'],
         'OldBoundaryLabelTypeList': ['velocity-inlet'],
     }
-    session.meshing.workflow.TaskObject['Update Boundaries'].Execute()
+    meshing.workflow.TaskObject['Update Boundaries'].Execute()
 
-Updating Regions
-~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    session.meshing.workflow.TaskObject['Update Regions'].Execute()
-
-Adding Boundary Layers
-~~~~~~~~~~~~~~~~~~~~~~
+Update regions
+~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Add Boundary Layers'].AddChildToTask()
-    session.meshing.workflow.TaskObject['Add Boundary Layers'].InsertCompoundChildTask()
-    session.meshing.workflow.TaskObject['smooth-transition_1'].Arguments = {
+    meshing.workflow.TaskObject['Update Regions'].Execute()
+
+Add boundary layers
+~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject['Add Boundary Layers'].AddChildToTask()
+    meshing.workflow.TaskObject['Add Boundary Layers'].InsertCompoundChildTask()
+    meshing.workflow.TaskObject['smooth-transition_1'].Arguments = {
         'BLControlName': 'smooth-transition_1',
     }
-    session.meshing.workflow.TaskObject['Add Boundary Layers'].Arguments = {}
-    session.meshing.workflow.TaskObject['smooth-transition_1'].Execute()
+    meshing.workflow.TaskObject['Add Boundary Layers'].Arguments = {}
+    meshing.workflow.TaskObject['smooth-transition_1'].Execute()
 
-Generating the Volume Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate volume mesh
+~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Generate the Volume Mesh'].Arguments = {
+    meshing.workflow.TaskObject['Generate the Volume Mesh'].Arguments = {
         'VolumeFill': 'poly-hexcore',
         'VolumeFillControls': {
             'HexMaxCellLength': 0.3,
         },
     }
-    session.meshing.workflow.TaskObject['Generate the Volume Mesh'].Execute()
+    meshing.workflow.TaskObject['Generate the Volume Mesh'].Execute()
 
-Switching to Solution Mode
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Switch to solution mode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.tui.switch_to_solution_mode('yes')
+    solver = meshing.switch_to_solver()
 
-Using the Fault-tolerant Meshing Workflow
------------------------------------------
-Here is a simple example demonstrating the the Fault-tolerant Meshing Workflow usage:
+Fault-tolerant meshing workflow
+-------------------------------
+This simple example shows how you use the fault-tolerant meshing workflow.
 
-Importing CAD and Part Management
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Import CAD and part management
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -129,15 +129,15 @@ Importing CAD and Part Management
     import_filename = examples.download_file(
         'exhaust_system.fmd', 'pyfluent/exhaust_system'
     )
-    session = pyfluent.launch_fluent(
-        meshing_mode=True, precision='double', processor_count=2
+    meshing = pyfluent.launch_fluent(
+        precision='double', processor_count=2, mode="meshing"
     )
-    session.meshing.workflow.InitializeWorkflow(WorkflowType='Fault-tolerant Meshing')
-    session.meshing.PartManagement.InputFileChanged(
+    meshing.workflow.InitializeWorkflow(WorkflowType='Fault-tolerant Meshing')
+    meshing.PartManagement.InputFileChanged(
         FilePath=import_filename, IgnoreSolidNames=False, PartPerBody=False
     )
-    session.meshing.PMFileManagement.FileManager.LoadFiles()
-    session.meshing.PartManagement.Node['Meshing Model'].Copy(
+    meshing.PMFileManagement.FileManager.LoadFiles()
+    meshing.PartManagement.Node['Meshing Model'].Copy(
         Paths=[
             '/dirty_manifold-for-wrapper,' + '1/dirty_manifold-for-wrapper,1/main,1',
             '/dirty_manifold-for-wrapper,' + '1/dirty_manifold-for-wrapper,1/flow-pipe,1',
@@ -146,10 +146,10 @@ Importing CAD and Part Management
             '/dirty_manifold-for-wrapper,' + '1/dirty_manifold-for-wrapper,1/object1,1',
         ]
     )
-    session.meshing.PartManagement.ObjectSetting[
+    meshing.PartManagement.ObjectSetting[
         'DefaultObjectSetting'
     ].OneZonePer.setState('part')
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Import CAD and Part Management'
     ].Arguments.setState(
         {
@@ -165,24 +165,24 @@ Importing CAD and Part Management
             },
         }
     )
-    session.meshing.workflow.TaskObject['Import CAD and Part Management'].Execute()
+    meshing.workflow.TaskObject['Import CAD and Part Management'].Execute()
 
-Describing Geometry and Flow
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Describe geometry and flow
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(
+    meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(
         {
             'AddEnclosure': 'No',
             'CloseCaps': 'Yes',
             'FlowType': 'Internal flow through the object',
         }
     )
-    session.meshing.workflow.TaskObject['Describe Geometry and Flow'].UpdateChildTasks(
+    meshing.workflow.TaskObject['Describe Geometry and Flow'].UpdateChildTasks(
         SetupTypeChanged=False
     )
-    session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(
+    meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(
         {
             'AddEnclosure': 'No',
             'CloseCaps': 'Yes',
@@ -193,17 +193,17 @@ Describing Geometry and Flow
             'FlowType': 'Internal flow through the object',
         }
     )
-    session.meshing.workflow.TaskObject['Describe Geometry and Flow'].UpdateChildTasks(
+    meshing.workflow.TaskObject['Describe Geometry and Flow'].UpdateChildTasks(
         SetupTypeChanged=False
     )
-    session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Execute()
+    meshing.workflow.TaskObject['Describe Geometry and Flow'].Execute()
 
-Enclosing Fluid Regions (Capping)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Enclose fluid regions (capping)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -215,7 +215,7 @@ Enclosing Fluid Regions (Capping)
             'ZoneSelectionList': ['inlet.1'],
         }
     )
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -237,16 +237,16 @@ Enclosing Fluid Regions (Capping)
             'ZoneSelectionList': ['inlet.1'],
         }
     )
-    session.meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
+    meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].InsertCompoundChildTask()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState({})
-    session.meshing.workflow.TaskObject['inlet-1'].Execute()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject['inlet-1'].Execute()
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -255,7 +255,7 @@ Enclosing Fluid Regions (Capping)
             'ZoneSelectionList': ['inlet.2'],
         }
     )
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -274,16 +274,16 @@ Enclosing Fluid Regions (Capping)
             'ZoneSelectionList': ['inlet.2'],
         }
     )
-    session.meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
+    meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].InsertCompoundChildTask()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState({})
-    session.meshing.workflow.TaskObject['inlet-2'].Execute()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject['inlet-2'].Execute()
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -292,7 +292,7 @@ Enclosing Fluid Regions (Capping)
             'ZoneSelectionList': ['inlet'],
         }
     )
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -311,16 +311,16 @@ Enclosing Fluid Regions (Capping)
             'ZoneSelectionList': ['inlet'],
         }
     )
-    session.meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
+    meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].InsertCompoundChildTask()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState({})
-    session.meshing.workflow.TaskObject['inlet-3'].Execute()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject['inlet-3'].Execute()
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -330,7 +330,7 @@ Enclosing Fluid Regions (Capping)
             'ZoneType': 'pressure-outlet',
         }
     )
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState(
         {
@@ -350,48 +350,48 @@ Enclosing Fluid Regions (Capping)
             'ZoneType': 'pressure-outlet',
         }
     )
-    session.meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
+    meshing.workflow.TaskObject['Enclose Fluid Regions (Capping)'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].InsertCompoundChildTask()
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Enclose Fluid Regions (Capping)'
     ].Arguments.setState({})
-    session.meshing.workflow.TaskObject['outlet-1'].Execute()
+    meshing.workflow.TaskObject['outlet-1'].Execute()
 
-Extracting Edge Features
-~~~~~~~~~~~~~~~~~~~~~~~~
+Extract edge features
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Extract Edge Features'].Arguments.setState(
+    meshing.workflow.TaskObject['Extract Edge Features'].Arguments.setState(
         {
             'ExtractMethodType': 'Intersection Loops',
             'ObjectSelectionList': ['flow_pipe', 'main'],
         }
     )
-    session.meshing.workflow.TaskObject['Extract Edge Features'].AddChildToTask()
+    meshing.workflow.TaskObject['Extract Edge Features'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject['Extract Edge Features'].InsertCompoundChildTask()
+    meshing.workflow.TaskObject['Extract Edge Features'].InsertCompoundChildTask()
 
-    session.meshing.workflow.TaskObject['edge-group-1'].Arguments.setState(
+    meshing.workflow.TaskObject['edge-group-1'].Arguments.setState(
         {
             'ExtractEdgesName': 'edge-group-1',
             'ExtractMethodType': 'Intersection Loops',
             'ObjectSelectionList': ['flow_pipe', 'main'],
         }
     )
-    session.meshing.workflow.TaskObject['Extract Edge Features'].Arguments.setState({})
+    meshing.workflow.TaskObject['Extract Edge Features'].Arguments.setState({})
 
-    session.meshing.workflow.TaskObject['edge-group-1'].Execute()
+    meshing.workflow.TaskObject['edge-group-1'].Execute()
 
-Identifying Regions
-~~~~~~~~~~~~~~~~~~~
+Identify regions
+~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Identify Regions'].Arguments.setState(
+    meshing.workflow.TaskObject['Identify Regions'].Arguments.setState(
         {
             'SelectionType': 'zone',
             'X': 377.322045740589,
@@ -400,7 +400,7 @@ Identifying Regions
             'ZoneSelectionList': ['main.1'],
         }
     )
-    session.meshing.workflow.TaskObject['Identify Regions'].Arguments.setState(
+    meshing.workflow.TaskObject['Identify Regions'].Arguments.setState(
         {
             'SelectionType': 'zone',
             'X': 377.322045740589,
@@ -419,11 +419,11 @@ Identifying Regions
             'ZoneSelectionList': ['main.1'],
         }
     )
-    session.meshing.workflow.TaskObject['Identify Regions'].AddChildToTask()
+    meshing.workflow.TaskObject['Identify Regions'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject['Identify Regions'].InsertCompoundChildTask()
+    meshing.workflow.TaskObject['Identify Regions'].InsertCompoundChildTask()
 
-    session.meshing.workflow.TaskObject['fluid-region-1'].Arguments.setState(
+    meshing.workflow.TaskObject['fluid-region-1'].Arguments.setState(
         {
             'MaterialPointsName': 'fluid-region-1',
             'SelectionType': 'zone',
@@ -443,10 +443,10 @@ Identifying Regions
             'ZoneSelectionList': ['main.1'],
         }
     )
-    session.meshing.workflow.TaskObject['Identify Regions'].Arguments.setState({})
+    meshing.workflow.TaskObject['Identify Regions'].Arguments.setState({})
 
-    session.meshing.workflow.TaskObject['fluid-region-1'].Execute()
-    session.meshing.workflow.TaskObject['Identify Regions'].Arguments.setState(
+    meshing.workflow.TaskObject['fluid-region-1'].Execute()
+    meshing.workflow.TaskObject['Identify Regions'].Arguments.setState(
         {
             'MaterialPointsName': 'void-region-1',
             'NewRegionType': 'void',
@@ -456,20 +456,20 @@ Identifying Regions
             'Z': -161.1700719416913,
         }
     )
-    session.meshing.workflow.TaskObject['Identify Regions'].AddChildToTask()
+    meshing.workflow.TaskObject['Identify Regions'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject['Identify Regions'].InsertCompoundChildTask()
+    meshing.workflow.TaskObject['Identify Regions'].InsertCompoundChildTask()
 
-    session.meshing.workflow.TaskObject['Identify Regions'].Arguments.setState({})
+    meshing.workflow.TaskObject['Identify Regions'].Arguments.setState({})
 
-    session.meshing.workflow.TaskObject['void-region-1'].Execute()
+    meshing.workflow.TaskObject['void-region-1'].Execute()
 
-Defining Leakage Threshold
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Define leakage threshold
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Define Leakage Threshold'].Arguments.setState(
+    meshing.workflow.TaskObject['Define Leakage Threshold'].Arguments.setState(
         {
             'AddChild': 'yes',
             'FlipDirection': True,
@@ -477,12 +477,12 @@ Defining Leakage Threshold
             'RegionSelectionSingle': 'void-region-1',
         }
     )
-    session.meshing.workflow.TaskObject['Define Leakage Threshold'].AddChildToTask()
+    meshing.workflow.TaskObject['Define Leakage Threshold'].AddChildToTask()
 
-    session.meshing.workflow.TaskObject[
+    meshing.workflow.TaskObject[
         'Define Leakage Threshold'
     ].InsertCompoundChildTask()
-    session.meshing.workflow.TaskObject['leakage-1'].Arguments.setState(
+    meshing.workflow.TaskObject['leakage-1'].Arguments.setState(
         {
             'AddChild': 'yes',
             'FlipDirection': True,
@@ -491,19 +491,19 @@ Defining Leakage Threshold
             'RegionSelectionSingle': 'void-region-1',
         }
     )
-    session.meshing.workflow.TaskObject['Define Leakage Threshold'].Arguments.setState(
+    meshing.workflow.TaskObject['Define Leakage Threshold'].Arguments.setState(
         {
             'AddChild': 'yes',
         }
     )
-    session.meshing.workflow.TaskObject['leakage-1'].Execute()
+    meshing.workflow.TaskObject['leakage-1'].Execute()
 
-Updating Regions Settings
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Update regions settings
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Update Region Settings'].Arguments.setState(
+    meshing.workflow.TaskObject['Update Region Settings'].Arguments.setState(
         {
             'AllRegionFilterCategories': ['2'] * 5 + ['1'] * 2,
             'AllRegionLeakageSizeList': ['none'] * 6 + ['6.4'],
@@ -537,54 +537,54 @@ Updating Regions Settings
             'RegionVolumeFillList': ['tet'],
         }
     )
-    session.meshing.workflow.TaskObject['Update Region Settings'].Execute()
+    meshing.workflow.TaskObject['Update Region Settings'].Execute()
 
 
-Choosing Mesh Control Options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    session.meshing.workflow.TaskObject['Choose Mesh Control Options'].Execute()
-
-Generating the Surface Mesh
+Choose mesh control options
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Generate the Surface Mesh'].Execute()
+    meshing.workflow.TaskObject['Choose Mesh Control Options'].Execute()
 
-Updating Boundaries
+Generating surface mesh
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject['Generate the Surface Mesh'].Execute()
+
+Update boundaries
+~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    meshing.workflow.TaskObject['Update Boundaries'].Execute()
+
+Add boundary layers
 ~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Update Boundaries'].Execute()
+    meshing.workflow.TaskObject['Add Boundary Layers'].AddChildToTask()
 
-Adding Boundary Layers
-~~~~~~~~~~~~~~~~~~~~~~
+    meshing.workflow.TaskObject['Add Boundary Layers'].InsertCompoundChildTask()
 
-.. code:: python
-
-    session.meshing.workflow.TaskObject['Add Boundary Layers'].AddChildToTask()
-
-    session.meshing.workflow.TaskObject['Add Boundary Layers'].InsertCompoundChildTask()
-
-    session.meshing.workflow.TaskObject['aspect-ratio_1'].Arguments.setState(
+    meshing.workflow.TaskObject['aspect-ratio_1'].Arguments.setState(
         {
             'BLControlName': 'aspect-ratio_1',
         }
     )
-    session.meshing.workflow.TaskObject['Add Boundary Layers'].Arguments.setState({})
+    meshing.workflow.TaskObject['Add Boundary Layers'].Arguments.setState({})
 
-    session.meshing.workflow.TaskObject['aspect-ratio_1'].Execute()
+    meshing.workflow.TaskObject['aspect-ratio_1'].Execute()
 
-Generating the Volume Mesh
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate volume mesh
+~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.workflow.TaskObject['Generate the Volume Mesh'].Arguments.setState(
+    meshing.workflow.TaskObject['Generate the Volume Mesh'].Arguments.setState(
         {
             'AllRegionNameList': [
                 'main',
@@ -600,11 +600,36 @@ Generating the Volume Mesh
             'EnableParallel': True,
         }
     )
-    session.meshing.workflow.TaskObject['Generate the Volume Mesh'].Execute()
+    meshing.workflow.TaskObject['Generate the Volume Mesh'].Execute()
 
-Switching to Solution Mode
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Switch to solution mode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    session.meshing.tui.switch_to_solution_mode('yes')
+    solver = meshing.switch_to_solver()
+
+Sample use of CommandArguments
+------------------------------
+This simple example shows you how to use the CommandArgument attributes and explicit
+attribute access methods in a watertight geometry meshing workflow.
+Note: CommandArgument attributes are read-only.
+
+.. code:: python
+
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_filename = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
+    meshing = pyfluent.launch_fluent(mode="meshing", precision='double', processor_count=2)
+    w = meshing.workflow
+    w.InitializeWorkflow(WorkflowType='Watertight Geometry')
+
+    w.task("Import Geometry").CommandArguments()
+    w.task("Import Geometry").CommandArguments.FileName.is_read_only()
+    w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
+    w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values()
+    w.task("Import Geometry").CommandArguments.LengthUnit.default_value()
+    w.task("Import Geometry").CommandArguments.LengthUnit()
+    w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer()
+    w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()

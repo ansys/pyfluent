@@ -19,18 +19,18 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     Parameters
     ----------
     mounted_from : str
-        Path to mount from. ``mounted_from`` will be mounted as ``mount_to``
-        within the container.
+        Path to mount from. Within the container, ``mounted_from`` is mounted as
+        ``mount_to``.
     mounted_to : str
-        Path to mount to. ``mounted_from`` will be mounted as ``mount_to``
-        within the container.
+        Path to mount to. Within the container, ``mounted_from`` is mounted as
+        ``mount_to``.
     args : List[str]
-        List of Fluent launch arguments
+        List of Fluent launch arguments.
 
     Returns
     -------
     int
-        gPRC server port exposed from container
+        gPRC server port exposed from the container.
     """
     fd, sifile = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=mounted_from)
     os.close(fd)
@@ -38,6 +38,8 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     license_server = os.environ["ANSYSLMD_LICENSE_FILE"]
     port = _get_free_port()
     container_sifile = mounted_to + "/" + Path(sifile).name
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
+    test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
 
     try:
         subprocess.run(
@@ -56,8 +58,10 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"REMOTING_PORTS={port}/portspan=2",
                 "-e",
                 "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
-                "ghcr.io/pyansys/pyfluent",
-                "-g",
+                "-l",
+                f"test_name={test_name}",
+                f"ghcr.io/pyansys/pyfluent:{image_tag}",
+                "-gu",
                 f"-sifile={container_sifile}",
             ]
             + args

@@ -1,47 +1,73 @@
-Applying Solution Settings
+Applying solution settings
 ==========================
 
-PyFluent allows you to apply solution settings, initialize and solve using both 
-:ref:`ref_solver_tui_commands` and :ref:`ref_settings`.
+PyFluent allows you to use :ref:`ref_solver_tui_commands` and
+:ref:`ref_settings` to apply solution settings, initialize, and solve.
 
-Solver TUI Commands
--------------------
-The following example demonstrates how you can apply solution settings
-using :ref:`ref_solver_tui_commands`:
+Use solver TUI commands
+-----------------------
+The examples in this section show how you use :ref:`ref_solver_tui_commands`
+to apply solution settings.
 
-Selecting Solution Methods 
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-solve/set/p-v-coupling TUI: Selects which pressure-velocity coupling scheme is to be used.
+Select solution method 
+~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
+Python code for selecting the pressure velocity coupling scheme and setting
+the gradient options. Five solution methods (Index-Model) are available:
+20-SIMPLE, 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.
 
-Five schemes are available: (Index-Model) 20-SIMPLE, 21-SIMPLEC, 22-PISO,
-24-Coupled, 25-Fractional Step
+**TUI command**
 
-solve/set/gradient-scheme: Sets gradient options.
+.. code:: scheme
+
+    /solve/set/p-v-coupling 24
+    /solve/set/gradient-scheme yes
+    /solve/set/gradient-scheme no yes 
+
+**Python code**
 
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    session = pyfluent.launch_fluent(precision='double', processor_count=2)
-    session.solver.tui.file.read_case(case_file_name='file.cas.h5')
-    session.solver.tui.solve.set.p_v_coupling(24) # Coupled
-    session.solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
-    session.solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based
+    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
+    solver.tui.file.read_case('file.cas.h5')
+    solver.tui.solve.set.p_v_coupling(24) # Coupled
+    solver.tui.solve.set.gradient_scheme('yes')    # Green-Gauss Node Based
+    solver.tui.solve.set.gradient_scheme('no','yes') # Least Squares Cell Based
     
-Selecting Solution Controls 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-solve/set/p-v-controls TUI: Sets pressure-velocity controls.
+Select solution controls 
+~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
+Python code for selecting the pressure velocity controls.
+
+**TUI command**
+
+.. code:: scheme
+
+    /solve/set/p-v-controls 0.3 0.4
+
+**Python code**
 
 .. code:: python
 
-    session.solver.tui.solve.set.p_v_controls(0.3,0.4) # Momentum and Pressure
+    solver.tui.solve.set.p_v_controls(0.3,0.4) # Momentum and Pressure
 
-Creating Report Definition 
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-solve/report-definitions TUI: Enters the report definitions menu.
+Create report definition
+~~~~~~~~~~~~~~~~~~~~~~~~
+This example shows a comparison between the TUI command and the
+Python code for creating a report definition.
+
+**TUI command**
+
+.. code:: scheme
+
+    /solve/report-definitions outlet-temp-avg surface-massavg field temperature surface-names outlet () quit
+
+**Python code**
 
 .. code:: python
 
-    session.solver.tui.solve.report_definitions.add(
+    solver.tui.solve.report_definitions.add(
         'outlet-temp-avg',
         'surface-massavg',
         'field',
@@ -52,26 +78,33 @@ solve/report-definitions TUI: Enters the report definitions menu.
         'quit',
     )
 
-Initialize and Solve 
+Initialize and solve 
 ~~~~~~~~~~~~~~~~~~~~
-solve/initialize TUI: Enters the flow initialization menu.
+This example shows a comparison between the TUI command and the
+Python code for initializing and performing a specified number of iterations.
 
-solve/initialize/hyb-initialization TUI: Initializes using the hybrid
-initialization method.
+**TUI command**
 
-solve/iterate TUI: Performs a specified number of iterations.
+.. code:: scheme
 
-.. code:: python
+    /solve/initialize/hyb-initialization
+    /solve/iterate 100
 
-    session.solver.tui.solve.initialize.hyb_initialization()
-    session.solver.tui.solve.iterate(100)
-
-Settings Objects
-----------------
-The following example demonstrates how you can apply solution settings
-using the :ref:`ref_settings`:
+**Python code**
 
 .. code:: python
 
-    session.solver.root.solution.initialization.hybrid_initialize()
-    session.solver.root.solution.run_calculation.iterate(number_of_iterations=150)
+    solver.tui.solve.initialize.hyb_initialization()
+    solver.tui.solve.iterate(100)
+
+Use settings objects
+--------------------
+This example shows how you use :ref:`ref_settings` to apply solution
+settings.
+
+**Python code**
+
+.. code:: python
+
+    solver.solution.initialization.hybrid_initialize()
+    solver.solution.run_calculation.iterate(number_of_iterations=150)

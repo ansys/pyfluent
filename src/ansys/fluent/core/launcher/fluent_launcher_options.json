@@ -23,18 +23,28 @@
         },
         "fluent_format": "{}"
     },
-    "processor_count": {
-        "type": "int",
-        "fluent_format": " -t{}"
-    },
     "journal_filename": {
         "type": "str",
         "fluent_format": " -i {}"
     },
-    "meshing_mode": {
+    "case_filepath": {
+        "type": "str",
+        "fluent_format": " -case {}"
+    },
+    "fluent_icing": {
         "type": "bool",
         "fluent_map": {
-            "true": " -meshing",
+            "true": " -flicing",
+            "false": ""
+        },
+        "fluent_format": "{}"
+    },
+    "py": {
+        "type": "bool",
+        "default": "null",
+        "fluent_required": false,
+        "fluent_map": {
+            "true": " -py",
             "false": ""
         },
         "fluent_format": "{}"

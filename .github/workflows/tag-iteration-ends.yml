@@ -1,0 +1,25 @@
+name: Tag Iteration Ends
+
+on:
+  schedule:  # 0400 UTC next day (end of US day)
+    - cron:  '0 4 6 8 *'
+    - cron:  '0 4 27 8 *'
+    - cron:  '0 4 17 9 *'
+    - cron:  '0 4 8 10 *'
+    - cron:  '0 4 5 11 *'
+    - cron:  '0 4 3 12 *'
+  workflow_dispatch:
+
+jobs:
+  tag:
+    name: tag-iteration-ends
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get last date of iteration
+        id: date
+        run: echo "::set-output name=date::$(date -u --date yesterday +'%m%d')"
+      - name: Create tag
+        run: |
+          git tag ${{ format('date-{0}', steps.date.outputs.date) }}
+          git push origin ${{ format('date-{0}', steps.date.outputs.date) }}

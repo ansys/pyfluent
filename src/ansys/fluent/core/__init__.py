@@ -6,9 +6,16 @@ from typing import Any, Optional
 import appdirs
 
 from ansys.fluent.core._version import __version__  # noqa: F401
-from ansys.fluent.core.launcher.launcher import launch_fluent  # noqa: F401
-from ansys.fluent.core.session import Session as Fluent  # noqa: F401
+from ansys.fluent.core.launcher.launcher import (  # noqa: F401
+    FluentVersion,
+    LaunchModes,
+    launch_fluent,
+    set_ansys_version,
+    set_fluent_path,
+)
+from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils.logging import LOG
+from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""

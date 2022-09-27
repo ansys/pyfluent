@@ -1,29 +1,30 @@
-""".. _ref_mixing_elbow_tui_api:
-
-Fluid Flow and Heat Transfer in a Mixing Elbow
----------------------------------------------------
-This test covers generic meshing workflow behaviour
-"""
-
 from functools import partial
+import os
 
+import pytest
 from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
     mixing_elbow_geometry,
+    new_mesh_session,
     shared_mesh_session,
     shared_watertight_workflow,
     shared_watertight_workflow_session,
 )
 
+import ansys.fluent.core as pyfluent
 
+
+@pytest.mark.nightly
 def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
 ):
-
-    session = shared_watertight_workflow_session
-    workflow = session.meshing.workflow
+    """
+    This test covers generic meshing workflow behaviour
+    """
+    meshing_session = shared_watertight_workflow_session
+    workflow = meshing_session.workflow
 
     ###############################################################################
 
@@ -117,7 +118,9 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    session.meshing.tui.mesh.check_mesh()
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(meshing_session.get_fluent_version()[:-2]) < 23.0:
+        meshing_session.tui.mesh.check_mesh()
 
 
 def test_meshing_workflow_raises_exception_on_invalid_task_name(
@@ -180,3 +183,171 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
     else:
         assert False
 """
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_command_args_datamodel_se(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.task("Import Geometry")
+    assert igt.CommandArguments.CadImportOptions()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_command_args_including_task_object_datamodel_se(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.TaskObject["Import Geometry"]
+    assert igt.Arguments() == {}
+    assert igt.CommandArguments.CadImportOptions()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer()
+    assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_meshing_object_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+    session_new = new_mesh_session
+    file_path = os.path.join(tmp_path, "sample_py_journal.txt")
+    m = session_new.meshing
+    m.execute_tui("(api-setup-python-console)")
+    m.execute_tui(f'(api-start-python-journal "{file_path}")')
+    m.switch_to_solver()
+    m.execute_tui(f"(api-stop-python-journal)")
+
+    with open(file_path) as f:
+        returned = f.readlines()
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    assert returned
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_attribute_query_list_types(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    igt = w.TaskObject["Import Geometry"]
+    assert ["CAD", "Mesh"] == igt.CommandArguments.FileFormat.getAttribValue(
+        "allowedValues"
+    )
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_accessors_for_argument_sub_items(new_mesh_session):
+    session_new = new_mesh_session
+
+    w = session_new.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
+    assert w.task("Import Geometry").CommandArguments.FileName.is_read_only()
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.OneZonePer.default_value()
+        == "Body"
+    )
+
+    # Test particular to string type (allowed_values() only available in string types)
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
+        "Body",
+        "Face",
+        "Object",
+    ]
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.FeatureAngle.default_value()
+        == 40.0
+    )
+
+    # Test particular to numerical type (min() only available in numerical types)
+    assert (
+        w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
+        == 0.0
+    )
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError):
+        assert w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_read_only_behaviour_of_command_arguments(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    m = session_new.meshing
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments)
+    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments.LengthUnit)
+
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").CommandArguments.MeshUnit.set_state("in")
+    assert msg.value.args[0] == "Command Arguments are read-only."
+
+    assert "set_state" in dir(m.ImportGeometry.new())
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_sample_use_of_command_arguments(new_mesh_session):
+    w = new_mesh_session.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
+
+
+def test_dummy_journal_data_model_methods(new_mesh_session):
+    session_new = new_mesh_session
+
+    w = session_new.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").delete_child()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").delete_child_objects()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").delete_all_child_objects()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").fix_state()
+    assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."

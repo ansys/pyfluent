@@ -1,4 +1,4 @@
-"""Wrapper to settings grpc service of Fluent."""
+"""Wrapper to settings gRPC service of Fluent."""
 import collections.abc
 from typing import Any, List
 
@@ -165,7 +165,7 @@ class SettingsService:
 
     @_trace
     def create(self, path: str, name: str):
-        """Create a new named object child for the given path."""
+        """Create a named object child for the given path."""
         request = _get_request_instance_for_path(SettingsModule.CreateRequest, path)
         request.name = name
 
@@ -173,7 +173,7 @@ class SettingsService:
 
     @_trace
     def delete(self, path: str, name: str):
-        """Delete the object with the given name at the give path."""
+        """Delete the object with the given name at the given path."""
         request = _get_request_instance_for_path(SettingsModule.DeleteRequest, path)
         request.name = name
 
@@ -181,7 +181,7 @@ class SettingsService:
 
     @_trace
     def get_object_names(self, path: str) -> List[int]:
-        """Get the list of named objects."""
+        """Get a list of named objects."""
         request = _get_request_instance_for_path(
             SettingsModule.GetObjectNamesRequest, path
         )
@@ -203,26 +203,6 @@ class SettingsService:
         )
         request.size = size
         return self.__service_impl.resize_list_object(request)
-
-    @_trace
-    def _extract_info(self, info):
-        ret = {}
-        ret["type"] = info.type
-        if info.children:
-            ret["children"] = {
-                k: self._extract_info(v) for k, v in info.children.items()
-            }
-        if info.commands:
-            ret["commands"] = {
-                k: self._extract_info(v) for k, v in info.commands.items()
-            }
-        if info.arguments:
-            ret["arguments"] = {
-                k: self._extract_info(v) for k, v in info.arguments.items()
-            }
-        if info.HasField("object_type"):
-            ret["object-type"] = self._extract_info(info.object_type)
-        return ret
 
     @_trace
     def _extract_static_info(self, info):
@@ -249,35 +229,41 @@ class SettingsService:
             ret["object-type"] = self._extract_static_info(info.object_type)
         if info.help:
             ret["help"] = info.help
+
+        try:
+            if info.include_child_named_objects:
+                ret["include_child_named_objects"] = info.include_child_named_objects
+        except AttributeError:
+            pass
+
+        try:
+            if info.list_size:
+                ret["list_size"] = info.list_size
+        except AttributeError:
+            pass
+
+        try:
+            if info.user_creatable:
+                ret["user_creatable"] = info.user_creatable
+        except AttributeError:
+            ret["user_creatable"] = True
+
         return ret
-
-    @_trace
-    def get_obj_static_info(self):
-        request = SettingsModule.GetObjectStaticInfoRequest()
-        request.root = "fluent"
-        response = self.__service_impl.get_obj_static_info(request)
-
-        return self._extract_info(response.info)
 
     @_trace
     def get_static_info(self):
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
-        # temporary code to fall back to get_obj_static_info()
-        try:
-            response = self.__service_impl.get_static_info(request)
-            # The rpc calls no longer raise an exception. Force an exception if
-            # type is empty
-            if not response.info.type:
-                raise RuntimeError
-            return self._extract_static_info(response.info)
-        except Exception:
-            return self.get_obj_static_info()
+        response = self.__service_impl.get_static_info(request)
+        # The rpc calls no longer raise an exception. Force an exception if
+        # type is empty
+        if not response.info.type:
+            raise RuntimeError
+        return self._extract_static_info(response.info)
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute a command of given name with the provided keyword
-        arguments."""
+        """Execute a given command with the provided keyword arguments."""
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteCommandRequest, path
         )

@@ -1,0 +1,110 @@
+name: Nightly Test Run
+
+on:
+  schedule:  # UTC at 0400
+    - cron:  '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Unit Testing
+    runs-on: [self-hosted, pyfluent]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull 22.2 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v22.2.0
+
+      - name: Run 22.2 API codegen
+        run: make api-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: v22.2.0
+
+      - name: Print 22.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_222.py
+          python -c "from ansys.fluent.core.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Pull 23.1 Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v23.1.0
+
+      - name: Run 23.1 API codegen
+        run: make api-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: v23.1.0
+
+      - name: Print 23.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_231.py
+          python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: 22.2 Unit Testing
+        run: make unittest-all-222
+        continue-on-error: true
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: v22.2.0
+
+      - name: Upload 22.2 Coverage Results
+        uses: actions/upload-artifact@v3
+        continue-on-error: true
+        with:
+          name: HTML-Coverage-tag-222
+          path: cov_html
+          retention-days: 7
+
+      - name: 23.1 Unit Testing
+        run: make unittest-all-231
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: v23.1.0

@@ -8,14 +8,14 @@ from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 
 
 class EventsManager:
-    """Manages the server side events.
+    """Manages server-side events.
 
-    Allows client to register/unregister callbacks with server events.
+    This class allows the client to register and unregister callbacks with server events.
 
     Parameters
     ----------
     session_id : str
-        Session id.
+        Session ID.
     service :
         Event streaming service.
 
@@ -36,8 +36,8 @@ class EventsManager:
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]
 
-    def _listen_events(self):
-        responses = self._events_service.begin_streaming()
+    def _listen_events(self, started_evt):
+        responses = self._events_service.begin_streaming(started_evt)
         while True:
             try:
                 response = next(responses)
@@ -54,7 +54,7 @@ class EventsManager:
 
     @property
     def events_list(self) -> List[str]:
-        """Returns the list of supported events.
+        """Get a list of supported events.
 
         Parameters
         ----------
@@ -70,12 +70,12 @@ class EventsManager:
     def register_callback(
         self, event_name: str, call_back: Callable, *args, **kwargs
     ) -> str:
-        """Register `Callback`.
+        """Register the callback.
 
         Parameters
         ----------
         event_name : str
-            Event name to which callback should be registered.
+            Event name to register the callback to.
 
         call_back : Callable
             Callback to register.
@@ -83,7 +83,7 @@ class EventsManager:
         Returns
         -------
         str
-            Registered callback Id.
+            Registered callback ID.
 
         Raises
         ------
@@ -105,12 +105,12 @@ class EventsManager:
             return id
 
     def unregister_callback(self, callback_id: str):
-        """Unregister `Callback`.
+        """Unregister the callback.
 
         Parameters
         ----------
         callback_id : str
-            Registered callback Id.
+            ID of the registered callback.
         """
         with self._lock:
             for callbacks_map in self._events_to_callbacks_map.values():
@@ -118,7 +118,7 @@ class EventsManager:
                     del callbacks_map[callback_id]
 
     def start(self):
-        """Start Events manager.
+        """Start EventsManager.
 
         Parameters
         ----------
@@ -129,13 +129,15 @@ class EventsManager:
         None
         """
         if self._events_thread is None:
+            started_evt = threading.Event()
             self._events_thread: threading.Thread = threading.Thread(
-                target=EventsManager._listen_events, args=(self,)
+                target=EventsManager._listen_events, args=(self, started_evt)
             )
             self._events_thread.start()
+            started_evt.wait()
 
     def stop(self):
-        """Stop Events manager.
+        """Stop EventsManager.
 
         Parameters
         ----------
