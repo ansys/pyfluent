@@ -116,11 +116,14 @@ def get_fluent_path() -> Path:
 
 
 def _get_fluent_exe_path():
-    exe_path = get_fluent_path()
-    if platform.system() == "Windows":
-        exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
+    if FLUENT_EXE_PATH:
+        exe_path = FLUENT_EXE_PATH[0]
     else:
-        exe_path = exe_path / "bin" / "fluent"
+        exe_path = get_fluent_path()
+        if platform.system() == "Windows":
+            exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
+        else:
+            exe_path = exe_path / "bin" / "fluent"
     return str(exe_path)
 
 
@@ -272,6 +275,138 @@ def launch_remote_fluent(
     )
 
 
+def _get_session_info(
+    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+):
+    """Updates the session information."""
+    if mode is None:
+        new_session = Session
+    elif mode and meshing_mode:
+        raise RuntimeError(
+            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
+        )
+    else:
+        if type(mode) == str:
+            mode = LaunchModes.get_mode(mode)
+        new_session = mode.value[1]
+        meshing_mode = mode.value[2]
+        for k, v in mode.value[3]:
+            argvals[k] = v
+
+    return new_session, meshing_mode, argvals, mode
+
+
+def _update_launch_string_wrt_gui_options(
+    launch_string: str, show_gui: bool = None, additional_arguments: str = ""
+) -> str:
+    """Checks for all gui options in additional arguments and updates the
+    launch string with hidden, if none of the options are met."""
+    if (show_gui is False) or (
+        show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
+    ):
+        if (
+            "-g " not in additional_arguments
+            and "-gu " not in additional_arguments
+            and not additional_arguments.endswith("-g")
+            and not additional_arguments.endswith("-gu")
+        ):
+            launch_string += " -hidden"
+
+    return launch_string
+
+
+def _await_fluent_launch(
+    server_info_filepath: str, start_timeout: int, sifile_last_mtime: float
+):
+    """Wait for successful fluent launch or raise an error."""
+    while True:
+        if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
+            time.sleep(1)
+            LOG.info("Fluent process is successfully launched.")
+            break
+        if start_timeout == 0:
+            raise RuntimeError("The launch process has been timed out.")
+        time.sleep(1)
+        start_timeout -= 1
+        LOG.info(
+            "Waiting for Fluent to launch...%02d seconds remaining",
+            start_timeout,
+        )
+
+
+def _connect_to_running_server(argvals, server_info_filepath: str):
+    """Connect to an already running session."""
+    ip = argvals.get("ip", None)
+    port = argvals.get("port", None)
+    password = argvals.get("password", None)
+    if ip and port:
+        warnings.warn(
+            "The server-info file was not parsed because ip and port were provided explicitly."
+        )
+    elif server_info_filepath:
+        ip, port, password = parse_server_info_file(server_info_filepath)
+    elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
+        ip = port = password = None
+    else:
+        raise RuntimeError(
+            "Please provide either ip and port data or server-info file."
+        )
+
+    return ip, port, password
+
+
+def _get_running_session_mode(
+    fluent_connection: _FluentConnection, mode: LaunchModes = None
+):
+    """Get the mode of the running session if the mode has not been mentioned
+    explicitly."""
+    if mode:
+        session_mode = mode
+    else:
+        try:
+            session_mode = LaunchModes.get_mode(
+                fluent_connection.get_current_fluent_mode()
+            )
+        except BaseException:
+            raise RuntimeError("Fluent session password mismatch")
+    return session_mode.value[1]
+
+
+def _start_instance(start_instance: bool = None):
+    """Sets up how to start an instance of fluent."""
+    if not start_instance:
+        start_instance = bool(
+            int(
+                os.getenv(
+                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
+                )
+            )
+        )
+    return start_instance
+
+
+def _generate_launch_string(
+    argvals,
+    meshing_mode: bool,
+    show_gui: bool,
+    additional_arguments: str,
+    server_info_filepath: str,
+):
+    """Generates the launch string to launch fluent."""
+    exe_path = _get_fluent_exe_path()
+    launch_string = exe_path
+    launch_string += _build_fluent_launch_args_string(**argvals)
+    if meshing_mode:
+        launch_string += " -meshing"
+    launch_string += f" {additional_arguments}"
+    launch_string += f' -sifile="{server_info_filepath}"'
+    launch_string += " -nm"
+    launch_string = _update_launch_string_wrt_gui_options(
+        launch_string, show_gui, additional_arguments
+    )
+    return launch_string
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     version: str = None,
@@ -384,53 +519,16 @@ def launch_fluent(
     """
     argvals = locals()
 
-    if mode is None:
-        new_session = Session
-    elif mode and meshing_mode:
-        raise RuntimeError(
-            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
-        )
-    else:
-        if type(mode) == str:
-            mode = LaunchModes.get_mode(mode)
-        new_session = mode.value[1]
-        meshing_mode = mode.value[2]
-        for k, v in mode.value[3]:
-            argvals[k] = v
-
-    if start_instance is None:
-        start_instance = bool(
-            int(
-                os.getenv(
-                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
-                )
-            )
-        )
-    if start_instance:
-        if FLUENT_EXE_PATH:
-            exe_path = FLUENT_EXE_PATH[0]
-        else:
-            exe_path = _get_fluent_exe_path()
-        launch_string = exe_path
-        launch_string += _build_fluent_launch_args_string(**argvals)
-        if meshing_mode:
-            launch_string += " -meshing"
+    new_session, meshing_mode, argvals, mode = _get_session_info(
+        argvals, mode, meshing_mode
+    )
+    if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
+        launch_string = _generate_launch_string(
+            argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
+        )
+
         try:
-            launch_string += f" {additional_arguments}"
-            launch_string += f' -sifile="{server_info_filepath}"'
-            launch_string += " -nm"
-            if (show_gui is False) or (
-                show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
-            ):
-                aargs = additional_arguments
-                if (
-                    "-g " not in aargs
-                    and "-gu " not in aargs
-                    and not aargs.endswith("-g")
-                    and not aargs.endswith("-gu")
-                ):
-                    launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
@@ -439,19 +537,9 @@ def launch_fluent(
                 env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             subprocess.Popen(launch_string, **kwargs)
-            while True:
-                if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
-                    time.sleep(1)
-                    LOG.info("Fluent process is successfully launched.")
-                    break
-                if start_timeout == 0:
-                    raise RuntimeError("The launch process has been timed out.")
-                time.sleep(1)
-                start_timeout -= 1
-                LOG.info(
-                    "Waiting for Fluent to launch...%02d seconds remaining",
-                    start_timeout,
-                )
+
+            _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
+
             return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
@@ -494,21 +582,9 @@ def launch_fluent(
                 )
             )
         else:
-            ip = argvals.get("ip", None)
-            port = argvals.get("port", None)
-            if ip and port:
-                warnings.warn(
-                    "The server-info file was not parsed because ip and port were provided explicitly."
-                )
-            elif server_info_filepath:
-                ip, port, password = parse_server_info_file(server_info_filepath)
-            elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
-                pass
-            else:
-                raise RuntimeError(
-                    "Please provide either ip and port data or server-info file."
-                )
-
+            ip, port, password = _connect_to_running_server(
+                argvals, server_info_filepath
+            )
             fluent_connection = _FluentConnection(
                 ip=ip,
                 port=port,
@@ -516,15 +592,5 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
             )
-            if mode:
-                session_mode = mode
-            else:
-                try:
-                    session_mode = LaunchModes.get_mode(
-                        fluent_connection.get_current_fluent_mode()
-                    )
-                except BaseException:
-                    raise RuntimeError("Fluent session password mismatch")
-
-            new_session = session_mode.value[1]
+            new_session = _get_running_session_mode(fluent_connection, mode)
             return new_session(fluent_connection=fluent_connection)

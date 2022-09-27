@@ -48,7 +48,7 @@ def test_pro_porous(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(r"""/solve/initialize/compute-defaults/velocity-inlet inlet """)
     solver.solution.initialization.standard_initialize()
     solver.solution.run_calculation.iter_count = 2
-    solver.solution.run_calculation.iterate(number_of_iterations=2)
+    solver.solution.run_calculation.iterate(iter_count=2)
     solver.results.report.report_menu.fluxes.mass_flow(
         all_bndry_zones=False,
         zone_list=["outlet"],

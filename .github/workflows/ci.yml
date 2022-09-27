@@ -120,7 +120,7 @@ jobs:
       - name: Get Bot Application Token
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
         id: get_workflow_token
-        uses: peter-murray/workflow-application-token-action@v1
+        uses: peter-murray/workflow-application-token-action@v2
         with:
           application_id: ${{ secrets.BOT_APPLICATION_ID }}
           application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}

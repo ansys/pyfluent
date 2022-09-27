@@ -1,14 +1,18 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
+
+import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_cht(launch_fluent_solver_3ddp_t2):
-    if not os.path.exists("out"):
-        os.mkdir("out")
+    out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
+    if not Path(out).exists():
+        Path(out).mkdir(parents=True, exist_ok=False)
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file(
         "pyfluent/exhaust_manifold", "manifold.msh"
@@ -113,7 +117,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["point-vel-rfile"] = {
         "print": True,
         "report_defs": ["point-vel"],
-        "file_name": r"out\\point-vel-rfile.out",
+        "file_name": os.path.join(out, "point-vel-rfile.out"),
     }
     solver.solution.monitor.report_plots["point-vel-rplot"] = {}
     solver.solution.monitor.report_plots["point-vel-rplot"] = {
@@ -123,10 +127,9 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     assert solver.solution.monitor.report_plots["point-vel-rplot"].report_defs() == [
         "point-vel"
     ]
-    assert (
+    assert Path(
         solver.solution.monitor.report_files["point-vel-rfile"].file_name()
-        == "out\\\\point-vel-rfile.out"
-    )
+    ) == Path(out, "point-vel-rfile.out")
     solver.solution.report_definitions.flux["mass-in"] = {}
     solver.solution.report_definitions.flux["mass-in"].report_type = "flux-massflow"
     solver.solution.report_definitions.flux["mass-in"] = {
@@ -144,7 +147,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["mass-in-rfile"] = {
         "print": True,
         "report_defs": ["mass-in"],
-        "file_name": r"out\\mass-in-rfile.out",
+        "file_name": os.path.join(out, "mass-in-rfile.out"),
     }
     solver.solution.monitor.report_plots["mass-in-rplot"] = {}
     solver.solution.monitor.report_plots["mass-in-rplot"] = {
@@ -174,7 +177,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.solution.monitor.report_files["mass-tot-rfile"] = {
         "print": True,
         "report_defs": ["mass-tot"],
-        "file_name": r"out\\mass-tot-rfile.out",
+        "file_name": os.path.join(out, "mass-tot-rfile.out"),
     }
     solver.solution.monitor.report_plots["mass-tot-rplot"] = {}
     solver.solution.monitor.report_plots["mass-tot-rplot"] = {
@@ -186,12 +189,12 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     ]
     solver.solution.initialization.standard_initialize()
     solver.execute_tui(r"""/solve/set/pseudo-transient yes yes 1 5 0 yes 1. """)
-    solver.solution.run_calculation.iterate(number_of_iterations=100)
+    solver.solution.run_calculation.iterate(iter_count=100)
     solver.results.report.report_menu.fluxes.mass_flow(
         all_bndry_zones=False,
         zone_list=["outlet", "inlet2", "inlet1", "inlet"],
         write_to_file=True,
-        file_name="out/mass_flow.flp",
+        file_name=os.path.join(out, "mass_flow.flp"),
     )
     solver.results.graphics.pathline["pathlines-1"] = {}
     solver.results.graphics.pathline["pathlines-1"] = {
@@ -243,13 +246,17 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
         "field": "temperature",
         "surfaces_list": ["inlet", "inlet1", "inlet2", "mid-plane-z", "outlet", "out1"],
     }
-    assert solver.results.graphics.contour["contour-temperature"].surfaces_list() == [
+    surface_list = solver.results.graphics.contour[
+        "contour-temperature"
+    ].surfaces_list()
+    surface_list.sort()
+    assert surface_list == [
         "inlet",
         "inlet1",
         "inlet2",
         "mid-plane-z",
-        "outlet",
         "out1",
+        "outlet",
     ]
     solver.execute_tui(r"""/display/surface-mesh clip-z-coordinate () """)
     solver.results.graphics.contour.add_to_graphics(object_name="contour-temperature")
@@ -271,7 +278,9 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
         == "temperature"
     )
     solver.results.graphics.contour.display(object_name="contour-temperature-manifold")
-    solver.file.write(file_type="case-data", file_name="out/manifold_solution.cas.h5")
+    solver.file.write(
+        file_type="case-data", file_name=os.path.join(out, "manifold_solution.cas.h5")
+    )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""(display "testing finished")  """)
     solver.exit()
