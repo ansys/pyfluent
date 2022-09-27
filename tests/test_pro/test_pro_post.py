@@ -227,7 +227,6 @@ def test_pro_post(launch_fluent_solver_3ddp_t2):
     }
 
     assert sorted(solver.results.graphics.contour["contour-1"].surfaces_list()) == [
-
         "bottom",
         "default-interior",
         "front",
