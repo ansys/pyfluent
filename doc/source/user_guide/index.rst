@@ -116,7 +116,7 @@ to existing Fluent users:
 
 .. code:: python
 
-    tui = _meshing.tui
+    tui = meshing_session.tui
 
     tui.mesh.prepare_for_solve("yes")
 
@@ -134,7 +134,7 @@ exposes directly:
 
 .. code:: python
 
-    workflow = _meshing.workflow
+    workflow = meshing_session.workflow
 
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
@@ -144,7 +144,7 @@ exposes directly:
 
     import_geometry.Execute()
 
-    meshing = _meshing.meshing
+    meshing = meshing_session.meshing
 
     meshing.GlobalSettings.LengthUnit.setState("mm")
 

@@ -103,9 +103,9 @@ TUI commands example
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    _meshing = pyfluent.launch_fluent(mode="meshing")
-    _meshing.tui.file.read_case("elbow.cas.gz")
-    solver = _meshing.switch_to_solver()
+    meshing_session = pyfluent.launch_fluent(mode="meshing")
+    meshing_session.tui.file.read_case("elbow.cas.gz")
+    solver = meshing_session.switch_to_solver()
     solver.tui.define.models.unsteady_2nd_order("yes")
     exit()
 

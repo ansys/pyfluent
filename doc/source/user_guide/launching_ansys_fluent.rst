@@ -31,7 +31,7 @@ This example shows you how to launch Fluent in meshing mode:
 
 .. code:: python
 
-   _meshing = pyfluent.launch_fluent(mode="meshing")
+   meshing_session = pyfluent.launch_fluent(mode="meshing")
 
 Precision
 ~~~~~~~~~
