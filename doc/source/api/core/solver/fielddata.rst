@@ -73,7 +73,7 @@ THe above example employs a separate method for requesting each type of field:
 - ``get_scalar_field_data`` for scalar field data.
 - ``get_vector_field_data`` for vector field data.
 
-For a surface or scalar field request, the response contains a dictoinary of surface IDs to numpy array of 
+For a surface or scalar field request, the response contains a dictionary of surface IDs to numpy array of 
 the requested field. 
 
 ``surface_id [int] -> field[numpy.array]``
@@ -108,7 +108,7 @@ Add some field data requests
                                             )
 
 
-Temperature data for the following request will be returned in tag_id 4.
+Temperature data for the following request in returned with ``tag_id`` 4.
 
 .. code-block::
 
@@ -117,7 +117,7 @@ Temperature data for the following request will be returned in tag_id 4.
                                              )
 
 
-Pressure data for the following request will be returned in tag_id 2. 
+Pressure data for the following request is returned with ``tag_id`` 2. 
 
 .. code-block::
 
@@ -128,7 +128,7 @@ Pressure data for the following request will be returned in tag_id 2.
 
 Make the query to get the data for all these requests. ``payload_data`` is a dictionary with 
 the following order (see below to find out about ``tag id``s):
-  `tag_id [int]-> surface_id [int] -> field_name [str] -> field_data [numpy.array]`
+``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data [numpy.array]``
 
 .. code-block::
 
