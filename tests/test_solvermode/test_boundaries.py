@@ -36,16 +36,28 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
     assign_dict_val(
         solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"].t, 293.15
     )
-    assert {
-        "velocity_spec": "Magnitude, Normal to Boundary",
-        "frame_of_reference": "Absolute",
-        "vmag": D(0.4),
-        "p_sup": D(0),
-        "t": D(293.15),
-        "ke_spec": "Intensity and Hydraulic Diameter",
-        "turb_intensity": 0.05,
-        "turb_hydraulic_diam": {"constant": 1, "expression": "4 [in]"},
-    } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
+    if float(solver_session.get_fluent_version()[:-2]) < 23.0:
+        assert {
+            "velocity_spec": "Magnitude, Normal to Boundary",
+            "frame_of_reference": "Absolute",
+            "vmag": D(0.4),
+            "p_sup": D(0),
+            "t": D(293.15),
+            "ke_spec": "Intensity and Hydraulic Diameter",
+            "turb_intensity": 0.05,
+            "turb_hydraulic_diam": {"constant": 1, "expression": "4 [in]"},
+        } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
+    else:
+        assert {
+            "frame_of_reference": "Absolute",
+            "initial_gauge_pressure": {"option": "value", "value": 0},
+            "ke_spec": "Intensity and Hydraulic Diameter",
+            "t": {"option": "value", "value": 293.15},
+            "turb_hydraulic_diam": {"constant": 1, "expression": "4 [in]"},
+            "turb_intensity": 0.05,
+            "velocity_spec": "Magnitude, Normal to Boundary",
+            "vmag": {"option": "value", "value": 0.4},
+        } == solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]()
     assign_dict_val(
         solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag, 1.2
     )
@@ -58,16 +70,29 @@ def test_boundaries_elbow(load_mixing_elbow_mesh):
     assign_dict_val(
         solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"].t, 313.15
     )
-    assert {
-        "velocity_spec": "Magnitude, Normal to Boundary",
-        "frame_of_reference": "Absolute",
-        "vmag": D(1.2),
-        "p_sup": D(0),
-        "t": D(313.15),
-        "ke_spec": "Intensity and Hydraulic Diameter",
-        "turb_intensity": 0.05,
-        "turb_hydraulic_diam": {"expression": "1 [in]", "constant": 1},
-    } == solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]()
+    if float(solver_session.get_fluent_version()[:-2]) < 23.0:
+        assert {
+            "velocity_spec": "Magnitude, Normal to Boundary",
+            "frame_of_reference": "Absolute",
+            "vmag": D(1.2),
+            "p_sup": D(0),
+            "t": D(313.15),
+            "ke_spec": "Intensity and Hydraulic Diameter",
+            "turb_intensity": 0.05,
+            "turb_hydraulic_diam": {"expression": "1 [in]", "constant": 1},
+        } == solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]()
+    else:
+        assert {
+            "frame_of_reference": "Absolute",
+            "initial_gauge_pressure": {"option": "value", "value": 0},
+            "ke_spec": "Intensity and Hydraulic Diameter",
+            "t": {"option": "value", "value": 313.15},
+            "turb_hydraulic_diam": {"constant": 1, "expression": "1 [in]"},
+            "turb_intensity": 0.05,
+            "velocity_spec": "Magnitude, Normal to Boundary",
+            "vmag": {"option": "value", "value": 1.2},
+        } == solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]()
+
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
     ].turb_viscosity_ratio = 4
