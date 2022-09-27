@@ -2,13 +2,128 @@
 
 Field data
 ==========
-Field data is an attribute of a session and thus an object. With PyFluent, you
-can access Fluent surface, scalar, and vector field data.
 
-Multiple fields in a request
+You can use field data objects to access Fluent surface field data, both 
+scalar and vector.
+
+Accessing field data objects
 ----------------------------
-You can get data for multiple fields in a single request and see
-the data for all of these fields in a single response.
+
+Launch the Fluent solver, e.g.:
+
+.. code-block:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.launch_fluent(mode="solver")
+  >>> solver.file.read(file_type="case", file_name=case_path)
+  >>> solver.solution.initialization.hybrid_initialize()
+  >>> solver.solution.run_calculation.iterate()
+
+The field data object is an attribute of the solver object:
+
+.. code-block:: python
+
+  >>> field_data = solver.field_data
+
+Simple requests
+---------------
+
+Request surface vertices. Each key in the returned dictionary is a surface ID, 
+and each value holds the corresponding vertices in a numpy array:
+
+.. code-block:: python
+
+  >>> from ansys.fluent.core.services.field_data import SurfaceDataType
+
+  >>> field_data.get_surface_data(surface_name="wall-elbow", data_type=SurfaceDataType.Vertices)
+  {0: array([ 0.1509247 , -0.1312225 ,  0.        , ..., -0.00996254,
+      -0.10107055,  0.00970755], dtype=float32)}
+
+Make a similar request for surface face normals:
+
+.. code-block:: python
+
+  >>> field_data.get_surface_data(surface_name="wall-elbow", data_type=SurfaceDataType.FacesNormal)
+  {0: array([ 1.3146671e-06, -1.1612752e-06,  5.7278072e-08, ...,
+       -2.6233408e-08,  1.6844007e-05,  1.0690871e-06], dtype=float32)}
+    
+For the same surface, request temperature field data:
+   
+.. code-block:: python
+
+  >>> field_data.get_scalar_field_data(surface_name="wall-elbow", field_name="temperature")
+  {0: array([0., 0., 0., ..., 0., 0., 0.], dtype=float32)}
+    
+Request velocity field data:
+
+.. code-block:: python
+    
+  >>> field_data.get_vector_field_data(surface_name="wall-elbow", vector_field="velocity")
+  {0: (array([0., 0., 0., ..., 0., 0., 0.], dtype=float32), 1.0)}
+
+There is a separate method for requesting each type of field:
+
+- ``get_surface_data`` gets surface data.
+- ``get_scalar_field_data`` gets scalar field data.
+- ``get_vector_field_data`` gets vector field data.
+        
+For a surface or scalar field request, the response contains a dictoinary of surface IDs to numpy array of 
+the requested field. 
+
+``surface_id [int] -> field[numpy.array]``
+  
+For a vector field request, the response is a dictionary of surface IDs to a tuple containing a
+numpy array of ``vector field`` and ``vector-scale``. 
+
+``surface_id [int] -> (vector field [numpy.array],  vector-scale [float])``
+
+.. note:: 
+   In Fluent, you can associate a surface name with multiple surface IDs.
+   Thus, a response can contain a surface ID as a key of the returned dictionary. 
+
+
+Making multiple requests in a single transaction
+------------------------------------------------
+
+.. code-block::
+
+  Add some field data requests
+
+  >>> field_data.add_get_surfaces_request(surface_ids=[1], provide_vertices=True, 
+                                        provide_faces=False, provide_faces_centroid=True
+                                       )
+
+  >>> field_data.add_get_surfaces_request(surface_ids=[2], provide_vertices=True, 
+                                       provide_faces=True                                        
+                                       )                                       
+
+  >>> field_data.add_get_scalar_fields_request(surface_ids=[1,2], field_name="temperature", 
+                                            node_value=True, boundary_value=True
+                                            )
+    
+  Temperature data for the following request will be returned in tag_id 4.
+  >>> field_data.add_get_scalar_fields_request(surface_ids=[3], field_name="temperature", 
+                                             node_value=True, boundary_value=False
+                                             )
+    
+  Pressure data for the following request will be returned in tag_id 2. 
+  >>> field_data.add_get_scalar_fields_request(surface_ids=[1,4], field_name="pressure",
+                                            node_value=False, boundary_value=False
+                                            )
+    
+  Make the query to get the data for all these requests.
+    
+  >>> payload_data = field_data.get_fields()
+  
+  ``payload_data`` is a dictionary with the following order
+  (see below to find out about ``tag id``s):
+  `tag_id [int]-> surface_id [int] -> field_name [str] -> field_data [numpy.array]`
+
+
+Building requests for multiple data
+-----------------------------------
+In the above examples, you can get data for multiple fields in a single request
+and see the data for all of these fields in a single response.
 
 **Request**
 
@@ -22,7 +137,7 @@ The ``add_get_<items>_request`` methods combine requests for multiple fields in 
 The ``get_fields`` method returns all requested fields in a single response. It provides 
 a dictionary containing the requested fields as a numpy array in the following order:
 
-``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data[np.array]``
+``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data[numpy.array]``
 
   
 Tag ID
@@ -69,134 +184,8 @@ The response to a vector field request contains two fields:
 
 - ``vector field``, with the same name as the vector field name that is passed in the request 
 - ``vector-scale``, a float value indicating the vector scale.
- 
 
-Example
-~~~~~~~
 
-.. code-block:: python
-
-    #Get field data 
-    field_data = session.field_data
-
-    #Add requests
-        
-    #Data for surfaces for following requests will be returned in tag_id 0. As there is no tag.
-    
-    field_data.add_get_surfaces_request(surface_ids=[1], provide_vertices=True, 
-                                        provide_faces=False, provide_faces_centroid=True
-                                       )
-                                       
-    field_data.add_get_surfaces_request(surface_ids=[2], provide_vertices=True, 
-                                       provide_faces=True                                        
-                                       )                                       
-    
-    #Data for tempaeraure for following request will be returned in tag_id 12 i.e. 4|8.
-    field_data.add_get_scalar_fields_request(surface_ids=[1,2], field_name="temperature", 
-                                            node_value=True, boundary_value=True
-                                            )
-    
-    #Data for tempaeraure for following request will be returned in tag_id 4.
-    field_data.add_get_scalar_fields_request(surface_ids=[3], field_name="temperature", 
-                                             node_value=True, boundary_value=False
-                                             )
-    
-    #Data for pressure for following request will be returned in tag_id 2. 
-    field_data.add_get_scalar_fields_request(surface_ids=[1,4], field_name="pressure",
-                                            node_value=False, boundary_value=False
-                                            )
-    
-    #Get fields
-    
-    payload_data = field_data.get_fields()
-    
-    
-    #Data will be returned in dictionary with order 
-    #`tag_id [int]-> surface_id [int] -> field_name [str] -> field_data [np.array]`
-    {
-      0:{
-         1:{
-           "vertices": np.array #for vertices.
-           "centroid": np.array #for faces centroid.
-           },
-         2:{
-           "vertices": np.array #for vertices.
-           "faces": np.array #for faces connectivity.
-           },           
-        },    
-      12:{
-         1:{
-           "temperature": np.array #for temperature at node location with boundary values.
-           },
-         2:{
-           "temperature": np.array #for temperature at node location with boundary values.
-           },           
-        }, 
-      4:{
-         3:{
-           "temperature": np.array #for temperature at node location.
-           }         
-        },       
-      2:{
-         1:{
-           "pressure": np.array #for pressure at element location.
-           },
-         4:{
-           "pressure": np.array #for pressure at element location.
-           },           
-        },           
-    }
-
-One field per request
----------------------
-You can receive one field for each request. There is a separate method for each type of field (surface, scalar, 
-or vector):
-
-- ``get_surface_data`` gets surface data.
-- ``get_scalar_field_data`` gets scalar field data.
-- ``get_vector_field_data`` gets vector field data.
-        
-For a surface or scalar field request, the response contains a dictionary of surface IDs and a numpy array of 
-the requested field. 
-
-``surface_id [int] -> field[np.array]``
-  
-For a vector field request, the response is a dictionary of surface IDs and a tuple of a numpy array of ``vector field`` 
-and ``vector-scale``. 
-
-``surface_id [int] -> (vector field [np.array],  vector-scale [float])``
-
-.. note:: 
-   In Fluent, you can associate a surface name with multiple surface IDs.
-   Thus, a response can contain a surface ID as a key of the returned dictionary. 
-  
-Example
-~~~~~~~
-
-.. code-block:: python
-
-    from ansys.fluent.core.services.field_data import SurfaceDataType
-
-    #Get field data object
-    field_data = session.field_data
-    
-    #wall surface is associated with two IDs i.e. id1 and id2
-    
-    #Get surface data 
-    vertices = field_data.get_surface_data("wall", SurfaceDataType.Vertices)
-    #return value>> {id1: np.array, id2: np.array}
-    normals = field_data.get_surface_data("wall", SurfaceDataType.FacesNormal)
-    #return value>> {id1: np.array, id2: np.array}
-    
-    #Get scalar field data 
-    scalar_field_data = field_data.get_scalar_field_data("wall", "temperature")
-    #return value>> {id1: np.array, id2: np.array}
-    
-    #Get vector field data 
-    vector_field_data = field_data.get_vector_field_data("wall", "velocity")
-    #return value>> {id1: (np.array, float), id2: (np.array, float)}
-
-    
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
