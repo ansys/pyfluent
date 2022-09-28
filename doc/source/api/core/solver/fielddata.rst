@@ -10,7 +10,7 @@ Accessing field data objects
 ----------------------------
 
 In order to access field data, launch the fluent solver, and make field
-data available (e.g., by reading case and data files):
+data available (for example, by reading case and data files):
 
 .. code-block:: python
 
@@ -127,8 +127,8 @@ Pressure data for the following request is returned with ``tag_id`` 2.
                                             )
 
 
-You can call ``get_fields`` to get the data for all these requests. That call will also
-clear all requests, so that subsequent calls to ``get_fields`` will yield nothing until
+You can call ``get_fields`` to get the data for all these requests. That call also
+clears all requests, so that subsequent calls to ``get_fields`` yield nothing until
 more requests are added.
 
 .. code-block::
