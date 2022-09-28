@@ -209,7 +209,7 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(
         r"""/surface/iso-clip z-coordinate clip-z-coordinate solid_up:1 -101.8218025565147 -44. """
     )
-    assert solver.results.graphics.pathline["pathlines-1"].surfaces_list() == [
+    assert sorted(solver.results.graphics.pathline["pathlines-1"].surfaces_list()) == [
         "inlet",
         "inlet1",
         "inlet2",
@@ -246,18 +246,11 @@ def test_pro_cht(launch_fluent_solver_3ddp_t2):
         "field": "temperature",
         "surfaces_list": ["inlet", "inlet1", "inlet2", "mid-plane-z", "outlet", "out1"],
     }
-    surface_list = solver.results.graphics.contour[
-        "contour-temperature"
-    ].surfaces_list()
-    surface_list.sort()
-    assert surface_list == [
-        "inlet",
-        "inlet1",
-        "inlet2",
-        "mid-plane-z",
-        "out1",
-        "outlet",
-    ]
+
+    assert sorted(
+        solver.results.graphics.contour["contour-temperature"].surfaces_list()
+    ) == ["inlet", "inlet1", "inlet2", "mid-plane-z", "out1", "outlet"]
+
     solver.execute_tui(r"""/display/surface-mesh clip-z-coordinate () """)
     solver.results.graphics.contour.add_to_graphics(object_name="contour-temperature")
     solver.results.graphics.contour["contour-temperature-manifold"] = {}

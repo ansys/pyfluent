@@ -10,6 +10,7 @@ import ansys.fluent.core as pyfluent
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_post(launch_fluent_solver_3ddp_t2):
+
     out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
     if not Path(out).exists():
         Path(out).mkdir(parents=True, exist_ok=False)
@@ -199,9 +200,15 @@ def test_pro_post(launch_fluent_solver_3ddp_t2):
         "partitions": False,
         "overset": False,
     }
-    surface_list = solver.results.graphics.mesh["mesh-1"].surfaces_list()
-    surface_list.sort()
-    assert surface_list == ["bottom", "front", "left", "right", "top"]
+
+    assert sorted(solver.results.graphics.mesh["mesh-1"].surfaces_list()) == [
+        "bottom",
+        "front",
+        "left",
+        "right",
+        "top",
+    ]
+
     solver.results.graphics.mesh.add_to_graphics(object_name="mesh-1")
     solver.results.graphics.mesh.display(object_name="mesh-1")
     solver.execute_tui(r"""/display/set/rendering-options/driver quit """)
@@ -218,9 +225,8 @@ def test_pro_post(launch_fluent_solver_3ddp_t2):
         ],
         "field": "pressure",
     }
-    surface_list = solver.results.graphics.contour["contour-1"].surfaces_list()
-    surface_list.sort()
-    assert surface_list == [
+
+    assert sorted(solver.results.graphics.contour["contour-1"].surfaces_list()) == [
         "bottom",
         "default-interior",
         "front",
@@ -260,9 +266,15 @@ def test_pro_post(launch_fluent_solver_3ddp_t2):
         },
         "shrink_factor": 0.5,
     }
-    surfaces_list = solver.results.graphics.mesh["mesh-1"].surfaces_list()
-    surfaces_list.sort()
-    assert surfaces_list == ["bottom", "front", "left", "right", "top"]
+
+    assert sorted(solver.results.graphics.mesh["mesh-1"].surfaces_list()) == [
+        "bottom",
+        "front",
+        "left",
+        "right",
+        "top",
+    ]
+
     assert solver.results.graphics.mesh["mesh-1"].options() == {
         "nodes": False,
         "edges": True,
@@ -285,16 +297,28 @@ def test_pro_post(launch_fluent_solver_3ddp_t2):
         "surfaces_list": ["top", "bottom", "front", "left", "right"]
     }
     solver.results.graphics.pathline.display(object_name="pathlines-1")
-    surface_list = solver.results.graphics.pathline["pathlines-1"].surfaces_list()
-    surface_list.sort()
-    assert surface_list == ["bottom", "front", "left", "right", "top"]
+
+    assert sorted(solver.results.graphics.pathline["pathlines-1"].surfaces_list()) == [
+        "bottom",
+        "front",
+        "left",
+        "right",
+        "top",
+    ]
+
     solver.results.plot.xy_plot["xy-plot-1"] = {}
     solver.results.plot.xy_plot["xy-plot-1"] = {
         "surfaces_list": ["top", "bottom", "left", "right", "front"]
     }
-    surface_list = solver.results.plot.xy_plot["xy-plot-1"].surfaces_list()
-    surface_list.sort()
-    assert surface_list == ["bottom", "front", "left", "right", "top"]
+
+    assert sorted(solver.results.plot.xy_plot["xy-plot-1"].surfaces_list()) == [
+        "bottom",
+        "front",
+        "left",
+        "right",
+        "top",
+    ]
+
     solver.results.plot.xy_plot.display(object_name="xy-plot-1")
     solver.results.scene["scene-1"] = {}
     solver.results.scene["scene-1"].graphics_objects["contour-1"] = {}

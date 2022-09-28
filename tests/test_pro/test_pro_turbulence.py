@@ -10,9 +10,11 @@ import ansys.fluent.core as pyfluent
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_turbulence(launch_fluent_solver_3ddp_t2):
+
     out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
     if not Path(out).exists():
         Path(out).mkdir(parents=True, exist_ok=False)
+
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/elbow", "elbow.msh.h5")
     solver.file.read(file_type=input_type, file_name=input_name)

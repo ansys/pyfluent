@@ -10,9 +10,11 @@ import ansys.fluent.core as pyfluent
 @pytest.mark.solve
 @pytest.mark.fluent_231
 def test_pro_species(launch_fluent_solver_2ddp_t2):
+
     out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
     if not Path(out).exists():
         Path(out).mkdir(parents=True, exist_ok=False)
+
     solver = launch_fluent_solver_2ddp_t2
     input_type, input_name = download_input_file("pyfluent/2d_box", "pro_species.cas")
     solver.file.read(file_type=input_type, file_name=input_name)
