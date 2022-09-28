@@ -206,7 +206,7 @@ Metadata name       Method              Can return None    Type applicability   
 ==================  ==================  =================  =====================  ====================
 
 
-Using ``get-attr`` requires knowledge of metadata names and their applicability, as well as the 
+Using ``get_attr`` requires knowledge of metadata names and their applicability, as well as the 
 ability to interpret the raw value of the metadata. You can avoid all these issues by using the 
 explicitly named methods. Note also that these metadata are dynamic - values can change based on the
 application state. A ``None`` value signifies that no value is currently designated for that metadata.
