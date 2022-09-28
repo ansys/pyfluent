@@ -195,7 +195,7 @@ Below is a table of metadata names, corresponding methods to access those metada
 applicable object types and returned data types: 
 
 ==================  ==================  =================  =====================  ====================
-Metadata name       Method              Can return None    Type applicability          Metadata type
+Metadata name       Method              Can return None    Type applicability     Metadata type
 ==================  ==================  =================  =====================  ====================
 ``is-active?``      ``is_active``       no                 all                    ``bool``
 ``is-read-only?``   ``is_read_only``    no                 all                    ``bool``
