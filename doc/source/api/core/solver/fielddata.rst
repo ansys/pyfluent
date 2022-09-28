@@ -9,15 +9,14 @@ scalar and vector.
 Accessing field data objects
 ----------------------------
 
-Launch the Fluent solver, e.g.:
+In order to access field data, launch the fluent solver, and make field
+data available (e.g., by reading case and data files):
 
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent(mode="solver")
-  >>> solver.file.read(file_type="case", file_name=case_path)
-  >>> solver.solution.initialization.hybrid_initialize()
-  >>> solver.solution.run_calculation.iterate()
+  >>> solver.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
 
 
 The field data object is an attribute of the solver object:
@@ -30,8 +29,10 @@ The field data object is an attribute of the solver object:
 Simple requests
 ---------------
 
-Request surface vertices. Each key in the returned dictionary is a surface ID, 
-and each value holds the corresponding vertices in a numpy array:
+You can request surface vertices for a given ``surface_name``by calling
+``get_surface_data``and specifying ``Vertices`` for the data_type.
+Each key in the returned dictionary is a surface ID, and each value holds
+the corresponding vertices in a numpy array:
 
 .. code-block:: python
 
@@ -42,7 +43,7 @@ and each value holds the corresponding vertices in a numpy array:
       -0.10107055,  0.00970755], dtype=float32)}
 
 
-Make a similar request for surface face normals:
+You can call the same method to get the corresponding surface face normals:
 
 .. code-block:: python
 
@@ -51,7 +52,7 @@ Make a similar request for surface face normals:
        -2.6233408e-08,  1.6844007e-05,  1.0690871e-06], dtype=float32)}
 
 
-For the same surface, request temperature field data:
+You can call ``get_scalar_field_data`` to get scalar field data, such as temperature:
 
 .. code-block:: python
 
@@ -59,7 +60,7 @@ For the same surface, request temperature field data:
   {0: array([0., 0., 0., ..., 0., 0., 0.], dtype=float32)}
 
 
-Request velocity field data:
+You can call ``get_vector_field_data`` to get vector scalar field data, such as velocity:
 
 .. code-block:: python
 
@@ -67,7 +68,7 @@ Request velocity field data:
   {0: (array([0., 0., 0., ..., 0., 0., 0.], dtype=float32), 1.0)}
 
 
-THe above example employs a separate method for requesting each type of field:
+The above example employs a separate method for requesting each type of field:
 
 - ``get_surface_data`` for surface data.
 - ``get_scalar_field_data`` for scalar field data.
@@ -91,7 +92,7 @@ numpy array of ``vector field`` and ``vector-scale``.
 Making multiple requests in a single transaction
 ------------------------------------------------
 
-Add some field data requests
+You can build a request by making multiple calls on the field data object, as follows:
 
 .. code-block::
 
@@ -117,7 +118,7 @@ Temperature data for the following request in returned with ``tag_id`` 4.
                                              )
 
 
-Pressure data for the following request is returned with ``tag_id`` 2. 
+Pressure data for the following request is returned with ``tag_id`` 2.
 
 .. code-block::
 
@@ -126,21 +127,22 @@ Pressure data for the following request is returned with ``tag_id`` 2.
                                             )
 
 
-Make the query to get the data for all these requests. ``payload_data`` is a dictionary with 
-the following order (see below to find out about ``tag id``s):
-``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data [numpy.array]``
+You can call ``get_fields`` to get the data for all these requests. That call will also
+clear all requests, so that subsequent calls to ``get_fields`` will yield nothing until
+more requests are added.
 
 .. code-block::
 
 >>> payload_data = field_data.get_fields()
 
+``payload_data`` is a dictionary with 
+the following order (see below to find out about ``tag id``s):
+``tag_id [int]-> surface_id [int] -> field_name [str] -> field_data [numpy.array]``
 
 Building requests for multiple data
 -----------------------------------
 In the above examples, you can get data for multiple fields in a single request
-and see the data for all of these fields in a single response.
-
-**Request**
+and receive all the requested data in a single response.
 
 The ``add_get_<items>_request`` methods combine requests for multiple fields in a single request: 
 
@@ -148,7 +150,6 @@ The ``add_get_<items>_request`` methods combine requests for multiple fields in 
 - ``add_get_scalar_fields_request`` adds a scalar fields request.
 - ``add_get_vector_fields_request`` adds a vector fields request. 
 
-**Response**
 The ``get_fields`` method returns all requested fields in a single response. It provides 
 a dictionary containing the requested fields as a numpy array in the following order:
 
@@ -167,7 +168,7 @@ of supported tags and their values:
 
 For example, if you request the scalar field data for element location[2], in the
 dictionary,  ``tag_id`` is ``2``. Similarly, if you request the boundary values[8] for 
-node location[4], ``tag_id`` is ``(4|8)``, or 12.
+node location[4], ``tag_id`` is ``(4|8)`` or 12.
 
 Surface ID
 ----------
@@ -177,14 +178,14 @@ Field name
 ----------
 A request returns multiple fields. The number of fields depends on the request type.
 
-Surface request 
+Surface request
 ~~~~~~~~~~~~~~~
 The response to a surface request contains any of the following fields, depending on the
 request arguments:
 
-- ``faces``, which contain face connectivity    
+- ``faces``, which contain face connectivity
 - ``vertices``, which contain node coordinates
-- ``centroid``, which contains face centroids    
+- ``centroid``, which contains face centroids
 - ``face-normal``, which contains face normals
 
 
