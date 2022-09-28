@@ -136,7 +136,7 @@ and can be of either primitive or container type.
 Additional metadata
 -------------------
 Settings object methods are provided to access some additional metadata. There are
-a number of explict methods and two generic methods: ``get_attr`` and ``get_attrs``.
+a number of explicit methods and two generic methods: ``get_attr`` and ``get_attrs``.
 
 The following examples access the list of allowed values for a particular state of
 the viscous model. All string and string list objects have an ``allowed_values``
