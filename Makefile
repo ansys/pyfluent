@@ -32,12 +32,12 @@ unittest-dev-231:
 unittest-all-222:
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@pytest -v -m "not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@pytest -v -m "not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 unittest-all-231:
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 api-codegen:
 	@echo "Running API codegen"

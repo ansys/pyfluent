@@ -131,7 +131,7 @@ def test_pro_wtm_tet(new_watertight_workflow_session):
         file_name="wtm_tet_s2.srp",
     )
     solver.solution.run_calculation.iter_count = 10
-    solver.solution.run_calculation.iterate(number_of_iterations=10)
+    solver.solution.run_calculation.iterate(iter_count=10)
     solver.file.write(file_type="case-data", file_name="wtm_tet_s2.cas.h5")
     solver.file.read(file_type="case-data", file_name="wtm_tet_s2.cas.h5")
     solver.execute_tui(r"""(proc-stats)  """)
@@ -248,7 +248,7 @@ def test_pro_wtm_hex(new_watertight_workflow_session):
         file_name="wtm_hex_s4.srp",
     )
     solver.solution.run_calculation.iter_count = 10
-    solver.solution.run_calculation.iterate(number_of_iterations=10)
+    solver.solution.run_calculation.iterate(iter_count=10)
     solver.file.write(file_type="case-data", file_name="wtm_hex_s4.cas.h5")
     solver.file.read(file_type="case-data", file_name="wtm_hex_s4.cas.h5")
     solver.execute_tui(r"""(proc-stats)  """)
@@ -357,7 +357,7 @@ def test_pro_wtm_poly(new_watertight_workflow_session):
         file_name="wtm_poly_s3.srp",
     )
     solver.solution.run_calculation.iter_count = 10
-    solver.solution.run_calculation.iterate(number_of_iterations=10)
+    solver.solution.run_calculation.iterate(iter_count=10)
     solver.file.write(file_type="case-data", file_name="wtm_poly_s3.cas.h5")
     solver.file.read(file_type="case-data", file_name="wtm_poly_s3.cas.h5")
     solver.execute_tui(r"""(proc-stats)  """)
@@ -477,7 +477,7 @@ def test_pro_wtm_polyhexcore(new_watertight_workflow_session):
         file_name="wtm_poly_hexcore_s1.srp",
     )
     solver.solution.run_calculation.iter_count = 10
-    solver.solution.run_calculation.iterate(number_of_iterations=10)
+    solver.solution.run_calculation.iterate(iter_count=10)
     solver.file.write(file_type="case-data", file_name="wtm_poly_hexcore_s1.cas.h5")
     solver.file.read(file_type="case-data", file_name="wtm_poly_hexcore_s1.cas.h5")
     solver.execute_tui(r"""(proc-stats)  """)

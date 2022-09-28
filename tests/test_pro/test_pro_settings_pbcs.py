@@ -1,14 +1,20 @@
 import os
+from pathlib import Path
 
 import pytest
 from util.fixture_fluent import download_input_file
 
+import ansys.fluent.core as pyfluent
+
 
 @pytest.mark.solve
 @pytest.mark.fluent_231
-def test_pro_exp(launch_fluent_solver_3ddp_t2):
-    if not os.path.exists("out"):
-        os.mkdir("out")
+def test_pro_settings_pbcs(launch_fluent_solver_3ddp_t2):
+
+    out = str(Path(pyfluent.EXAMPLES_PATH) / "out")
+    if not Path(out).exists():
+        Path(out).mkdir(parents=True, exist_ok=False)
+
     solver = launch_fluent_solver_3ddp_t2
     input_type, input_name = download_input_file("pyfluent/nozzle", "nozzle_3d.msh")
     solver.file.read(file_type=input_type, file_name=input_name)
@@ -21,20 +27,32 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
     solver.execute_tui(
         r"""/define/materials/change-create air air yes ideal-gas yes constant 1006.43 yes constant 0.0242 yes constant 1.7894e-05 yes 28.966 no no """
     )
-    solver.setup.boundary_conditions.pressure_inlet["inlet"] = {
-        "p0": 200000.0,
-        "supersonic_or_initial_gauge_pressure": 190000.0,
-        "t0": 500.0,
-    }
-    assert solver.setup.boundary_conditions.pressure_inlet["inlet"].p0() == {
+    solver.setup.boundary_conditions.pressure_inlet["inlet"].gauge_total_pressure = {
         "option": "value",
         "value": 200000.0,
     }
+    solver.setup.boundary_conditions.pressure_inlet["inlet"].gauge_pressure = {
+        "option": "value",
+        "value": 190000.0,
+    }
+    solver.setup.boundary_conditions.pressure_inlet["inlet"].t0 = {
+        "option": "value",
+        "value": 500,
+    }
+
     assert solver.setup.boundary_conditions.pressure_inlet[
         "inlet"
-    ].supersonic_or_initial_gauge_pressure() == {"option": "value", "value": 190000.0}
-    solver.setup.boundary_conditions.pressure_outlet["outlet"] = {"p": 75000.0}
-    assert solver.setup.boundary_conditions.pressure_outlet["outlet"].p() == {
+    ].gauge_total_pressure() == {"option": "value", "value": 200000.0}
+    assert solver.setup.boundary_conditions.pressure_inlet[
+        "inlet"
+    ].gauge_pressure() == {"option": "value", "value": 190000.0}
+    solver.setup.boundary_conditions.pressure_outlet["outlet"].gauge_pressure = {
+        "option": "value",
+        "value": 75000.0,
+    }
+    assert solver.setup.boundary_conditions.pressure_outlet[
+        "outlet"
+    ].gauge_pressure() == {
         "option": "value",
         "value": 75000.0,
     }
@@ -59,7 +77,7 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         r"""/solve/monitors/residual/convergence-criteria 1e-05 1e-05 1e-05 1e-05 1e-05 """
     )
     solver.execute_tui(r"""/solve/monitors/residual/plot? no """)
-    solver.file.write(file_type="case", file_name="out/nozzle3d-ini")
+    solver.file.write(file_type="case", file_name=os.path.join(out, "nozzle3d-ini"))
     solver.solution.initialization.hybrid_initialize()
     solver.execute_tui(r"""/solve/set/equations/flow yes """)
     solver.execute_tui(r"""/solve/set/equations/temperature yes """)
@@ -185,25 +203,32 @@ def test_pro_exp(launch_fluent_solver_3ddp_t2):
         solver.solution.initialization.hybrid_init_options.turbulent_setting.averaged_turbulent_parameters()
         == False
     )
-    solver.file.read(file_type="case", file_name="out/nozzle3d-ini")
+    solver.file.read(file_type="case", file_name=os.path.join(out, "nozzle3d-ini"))
     solver.solution.initialization.standard_initialize()
     solver.execute_tui(r"""(benchmark '(iterate 500))  """)
     solver.execute_tui(r"""/surface/line-surface center-line 0 0 0 2 0 0 """)
-    solver.file.write(file_type="case-data", file_name="out/nozzle-3d-supsonic_r1.cas")
-    solver.execute_tui(
-        r"""/plot/plot no "out/temp.xy" no no no temperature yes 1 0 0 center-line () """
+    solver.file.write(
+        file_type="case-data",
+        file_name=os.path.join(out, "nozzle-3d-supsonic_r1.cas"),
     )
     solver.execute_tui(
-        r"""/plot/plot no "out/mach.xy" no no no mach-number no no x-coordinate center-line () """
+        r"""/plot/plot no "%s" no no no temperature yes 1 0 0 center-line () """
+        % os.path.join(out, "temp.xy")
+    )
+    solver.execute_tui(
+        r"""/plot/plot no "%s" no no no mach-number no no x-coordinate center-line () """
+        % os.path.join(out, "mach.xy")
     )
     solver.execute_tui(r"""(proc-stats)  """)
     solver.execute_tui(r"""/solve/monitors/residual/plot? yes """)
     solver.execute_tui(
-        r"""/plot/residuals-set/plot-to-file "out/nozzle-settings_s1.res" """
+        r"""/plot/residuals-set/plot-to-file "%s" """
+        % os.path.join(out, "nozzle-settings_s1.res")
     )
     solver.execute_tui(r"""it 0 """)
     solver.execute_tui(
-        r"""(define port (open-output-file "out/nozzle-settings_s1_no.conv"))  """
+        r"""(define port (open-output-file "%s"))  """
+        % os.path.join(out, "nozzle-settings_s1_no.conv")
     )
     solver.execute_tui(r"""(write (%iterate 0) port)  """)
     solver.execute_tui(r"""(close-output-port port)  """)

@@ -82,10 +82,17 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
   solver_session = pyfluent.launch_fluent(mode="solver")
   solver_session.check_health()
 
-To use a non-default installation location, set the ``PYFLUENT_FLUENT_ROOT``
-environment variable to the ``<version>/fluent`` directory, where ``<version>``
-is the Fluent release that you would like to use. For example, ``v222``
-uses release 2022 R2.
+On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
+when Fluent is installed, where ``<ver>`` is the Fluent release number such as
+``222`` for release 2022 R2.  PyFluent automatically uses this environment
+variable to locate the Fluent installation. On Linux systems configure
+``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
+``/apps/ansys_inc/v222``.  
+
+To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
+``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install
+location>/<version>/fluent`` directory, where ``<version>`` is the Fluent
+release that you would like to use. For example, ``v222`` uses release 2022 R2.
 
 Basic Usage
 ~~~~~~~~~~~
