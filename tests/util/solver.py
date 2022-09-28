@@ -16,6 +16,18 @@ def assign_settings_value_from_value_dict(setting, value):
         setting.set_state({"option": "constant or expression", "constant": value})
 
 
+class ApiNames:
+    def __init__(self, session):
+        self.session = session
+
+    @property
+    def initial_gauge_pressure(self):
+        if self.session.get_fluent_version() == "22.2.0":
+            return "p_sup"
+        else:
+            return "initial_gauge_pressure"
+
+
 def settings_value_from_value_dict(dict_value) -> bool:
     if "option" in dict_value:
         option = dict_value["option"]
