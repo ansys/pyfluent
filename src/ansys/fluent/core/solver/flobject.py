@@ -864,8 +864,12 @@ def get_cls(name, info, parent=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = info.get("include_child_named_objects", False)
-        user_creatable = info.get("user_creatable", True)
+        include_child_named_objects = info.get(
+            "include-child-named-objects?", False
+        ) or info.get("include_child_named_objects", False)
+        user_creatable = info.get("user-creatable?", False) or info.get(
+            "user_creatable", False
+        )
 
         bases = (base,)
         if include_child_named_objects:
@@ -936,7 +940,7 @@ def get_cls(name, info, parent=None):
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
-        object_type = info.get("object-type")
+        object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
             cls.child_object_type = get_cls("child-object-type", object_type, cls)
             cls.child_object_type.rename = lambda self, name: self._parent.rename(
