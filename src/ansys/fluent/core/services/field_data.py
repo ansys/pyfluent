@@ -126,8 +126,7 @@ class SurfaceDataType(IntEnum):
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo):
-        self.field_data = FieldData(service, field_info)
+    def __init__(self, service: FieldDataService):
         self._service = service
         self._fields_request = get_fields_request()
 
@@ -360,7 +359,7 @@ class FieldData:
         self._field_info = field_info
 
     def new_transaction(self):
-        return FieldTransaction(self._service, self._field_info)
+        return FieldTransaction(self._service)
 
     def get_surface_data(
         self,
