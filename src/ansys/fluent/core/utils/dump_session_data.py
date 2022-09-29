@@ -45,24 +45,25 @@ def dump_session_data(session, file_path: str, fields: list = [], surfaces: list
                 "cell_value"
             ] = session.field_info.get_range(field, False, [surface])
 
-    session.field_data.add_get_surfaces_request(
+    transaction = session.field_data.new_transaction()
+    transaction.add_surfaces_request(
         surfaces_id, provide_faces_centroid=True, provide_faces_normal=True
     )
     for field in fields:
-        session.field_data.add_get_scalar_fields_request(
+        transaction.add_scalar_fields_request(
             surfaces_id, field, True, boundary_value=False
         )
-        session.field_data.add_get_scalar_fields_request(
+        transaction.add_scalar_fields_request(
             surfaces_id, field, False, boundary_value=False
         )
-        session.field_data.add_get_scalar_fields_request(
+        transaction.add_scalar_fields_request(
             surfaces_id, field, True, boundary_value=True
         )
-        session.field_data.add_get_scalar_fields_request(
+        transaction.add_scalar_fields_request(
             surfaces_id, field, False, boundary_value=True
         )
-    session.field_data.add_get_vector_fields_request(surfaces_id, "velocity")
-    session_data["fields"] = session.field_data.get_fields()
+    transaction.add_vector_fields_request(surfaces_id, "velocity")
+    session_data["fields"] = transaction.get_fields()
 
     with open(file_path, "wb") as pickle_obj:
         pickle.dump(session_data, pickle_obj)

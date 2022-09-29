@@ -124,6 +124,8 @@ class SurfaceDataType(IntEnum):
 
 
 class FieldTransaction:
+    """Populates Fluent field data on surfaces."""
+
     def __init__(self, service: FieldDataService, field_info: FieldInfo):
         self.field_data = FieldData(service, field_info)
         self._service = service
@@ -278,7 +280,7 @@ class _FieldDataConstants:
 
 
 def get_fields_request():
-    """Populate a new field request."""
+    """Populates a new field request."""
     return FieldDataProtoModule.GetFieldsRequest(
         provideBytesStream=_FieldDataConstants.bytes_stream,
         chunkSize=_FieldDataConstants.chunk_size,
@@ -286,7 +288,7 @@ def get_fields_request():
 
 
 def extract_fields(chunk_iterator):
-    """Extracts a field data via a server call."""
+    """Extracts field data via a server call."""
 
     def _extract_field(field_datatype, field_size, chunk_iterator):
         if not chunk_iterator.is_active():
@@ -385,7 +387,6 @@ class FieldData:
         """
         surface_ids = self._field_info.get_surfaces_info()[surface_name]["surface_id"]
         fields_request = get_fields_request()
-
         fields_request.surfaceRequest.extend(
             [
                 FieldDataProtoModule.SurfaceRequest(
