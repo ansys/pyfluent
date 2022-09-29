@@ -4,40 +4,47 @@
 API reference
 =============
 
-This section describes the core Pythonic interfaces for Fluent. 
-Here, you can find the application programming interfaces for 
-such things as launching Fluent, assorted utilities, as well as 
-the interfaces for the meshing and solver components of Fluent. 
+This page details the public modules, functions, classes and methods
+provided by PyFluent, describing what they are and what they do. To
+learn how to use PyFluent, see the :ref:`ref_user_guide`.
+
+As explained in the :ref:`ref_user_guide`, each Fluent server mode
+provides a specific set of API objects. You can access those API
+objects by first calling ``launch_fluent``.
 
 Launching Fluent
 ----------------
 
-This component provides access to starting Fluent locally in 
-server mode or connecting to a running Fluent server instance.
-
-Pythonic utilities
-------------------
-
-This component consists solely of a function to allow for 
-asynchronous execution.
+A ``launch_fluent`` function is provided to start and connect to Fluent
+locally or connect to a running Fluent, either locally or remote.
 
 Meshing mode
 ------------
 
-The meshing mode is dedicated to capturing the capabilities of 
-the Fluent Meshing guided workflows and associated tools. This component 
-consists of an interface that is derived from the Fluent (meshing) 
-TUI, as well as a meshing workflow interface that manages workflow 
-tasks, meshing functions, and part management.
+In Fluent meshing mode, the API consists of:
+* a ``tui`` object to provide Pythonic object-based access to all of
+  Fluent's TUI (text user interface) commands in meshing mode, precisely 
+  following the TUI format
+* a ``meshing`` and a ``workflow`` object, which together provide access 
+  to Fluent's meshing workflow feature. The same objects have been in 
+  Fluent meshing's Python console over several releases
+* a PartManagement and a PMFileManagement object, which together
+  provide access to Fluent meshing's part management capability, Again
+  these objects have been in the Python console for some time
+* a preferences object for managing Fluent user preferences
 
 Solver mode
 -----------
 
-The solver mode is dedicated to capturing the power of the 
-Fluent solver. This component consists of a :ref:`ref_settings`-based 
-interface or a :ref:`ref_solver_tui`-based interface that is derived 
-from the Fluent (solver) TUI, as well as access to Fluent surface, 
-scalar and vector field data. 
+In Fluent meshing mode, the API consists of:
+* a ``tui`` object to provide Pythonic object-based access to all of
+  Fluent's TUI (text user interface) commands in solver mode,
+  precisely following the TUI format
+* a ``solver`` object providing access to :ref:`_ref_settings` providing 
+  a natural way to access and modify Fluent solver
+  settings and issue commands following a new format
+* a preferences object for managing Fluent user preferences
+
 
 .. currentmodule:: ansys.fluent
 
@@ -48,4 +55,11 @@ scalar and vector field data.
    :maxdepth: 4
    :hidden:
    
-   core/index
+   launcher
+   meshing/index
+   solver/index
+   utils
+   filereader
+
+
+
