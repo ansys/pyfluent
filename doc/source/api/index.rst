@@ -40,7 +40,7 @@ In Fluent meshing mode, the API consists of:
 * a ``tui`` object to provide Pythonic object-based access to all of
   Fluent's TUI (text user interface) commands in solver mode,
   precisely following the TUI format
-* a ``solver`` object providing access to :ref:`_ref_settings` providing 
+* a ``solver`` object providing access to :ref:`ref_settings` providing 
   a natural way to access and modify Fluent solver
   settings and issue commands following a new format
 * a preferences object for managing Fluent user preferences
