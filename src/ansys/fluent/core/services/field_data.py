@@ -329,7 +329,7 @@ class FieldData:
     def get_vector_field_data(
         self,
         surface_name: str,
-        vector_field: Optional[str] = "velocity",
+        field_name: str,
     ) -> Dict[int, Tuple[np.array, float]]:
         """Get vector field data on a surface.
 
@@ -337,7 +337,7 @@ class FieldData:
         ----------
         surface_name : str
             Name of the surface.
-        vector_field : str, optional
+        field_name : str
             Name of the vector field.
 
         Returns
@@ -350,7 +350,7 @@ class FieldData:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=vector_field,
+                    vectorFieldName=field_name,
                 )
                 for surface_id in surface_ids
             ]
@@ -361,7 +361,7 @@ class FieldData:
         fields = self._extract_fields(self._service.get_fields(request))
         return {
             surface_id: (
-                fields[tag_id][surface_id][vector_field],
+                fields[tag_id][surface_id][field_name],
                 fields[tag_id][surface_id]["vector-scale"][0],
             )
             for surface_id in surface_ids
@@ -455,7 +455,7 @@ class FieldData:
     def add_get_vector_fields_request(
         self,
         surface_ids: List[int],
-        vector_field: Optional[str] = "velocity",
+        field_name: str,
     ) -> None:
         """Add request to get vector field data on surfaces.
 
@@ -463,7 +463,7 @@ class FieldData:
         ----------
         surface_ids : List[int]
             List of surface IDs for vector field data.
-        vector_field : str, optional
+        field_name : str
             Name of the vector field.
 
         Returns
@@ -474,7 +474,7 @@ class FieldData:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=vector_field,
+                    vectorFieldName=field_name,
                 )
                 for surface_id in surface_ids
             ]

@@ -61,7 +61,7 @@ def dump_session_data(session, file_path: str, fields: list = [], surfaces: list
         session.field_data.add_get_scalar_fields_request(
             surfaces_id, field, False, boundary_value=True
         )
-    session.field_data.add_get_vector_fields_request(surfaces_id)
+    session.field_data.add_get_vector_fields_request(surfaces_id, "velocity")
     session_data["fields"] = session.field_data.get_fields()
 
     with open(file_path, "wb") as pickle_obj:
