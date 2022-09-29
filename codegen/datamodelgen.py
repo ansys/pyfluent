@@ -41,7 +41,6 @@ _MESHING_DM_DOC_DIR = os.path.normpath(
         "doc",
         "source",
         "api",
-        "core",
         "meshing",
         "datamodel",
     )
@@ -53,7 +52,6 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
         "doc",
         "source",
         "api",
-        "core",
         "solver",
         "datamodel",
     )
