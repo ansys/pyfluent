@@ -208,10 +208,10 @@ The response to a vector field request contains two fields:
    :toctree: _autosummary
 
 
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.add_get_surfaces_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.add_get_scalar_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.add_get_vector_fields_request
-.. automethod:: ansys.fluent.core.services.field_data.FieldData.get_fields
+.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_surfaces_request
+.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_scalar_fields_request
+.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_vector_fields_request
+.. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.get_fields
 
 .. automethod:: ansys.fluent.core.services.field_data.FieldData.get_surface_data
 .. automethod:: ansys.fluent.core.services.field_data.FieldData.get_scalar_field_data
