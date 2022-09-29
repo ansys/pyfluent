@@ -2,13 +2,13 @@
 
 Example
 -------
->>> from ansys.fluent.services.scheme_eval import Symbol as S
+>>> from ansys.fluent.core.services.scheme_eval import Symbol as S
 >>> session.scheme_eval.eval([S('+'), 2, 3])
 5
 >>> session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])  # noqa: E501
 0.7
 >>> session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))  # noqa: E501
->>> # prints Fluent TUI output
+>>> # Returns TUI output string
 >>> session.scheme_eval.string_eval("(+ 2 3)")
 '5'
 >>> session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")
@@ -53,7 +53,7 @@ class SchemeEvalService:
 
 
 class Symbol:
-    """Class representing the symbol datatype in the scheme.
+    """Class representing the symbol datatype in Fluent.
 
     Attributes
     ----------
@@ -61,8 +61,8 @@ class Symbol:
         Underlying string representation
     """
 
-    def __init__(self, str_: str):
-        self.str = str_
+    def __init__(self, str: str):
+        self.str = str
 
 
 def _convert_pair_to_scheme_pointer(val: Tuple[Any, Any], p: SchemePointer):
@@ -169,9 +169,9 @@ class SchemeEval:
     exec(commands, wait, silent)
         Executes a sequence of scheme commands, returns TUI output
         string
-    string_eval(input_)
+    string_eval(input)
         Evaluates a scheme expression in string format, returns string
-    scheme_eval(input_)
+    scheme_eval(input)
         Evaluates a scheme expression in string format, returns Python
         value
     """
@@ -224,7 +224,7 @@ class SchemeEval:
         response = self.service.exec(request)
         return response.output
 
-    def string_eval(self, input_: str) -> str:
+    def string_eval(self, input: str) -> str:
         """Evaluates a scheme expression in string format.
 
         Parameters
@@ -238,11 +238,11 @@ class SchemeEval:
             Output scheme value in string format
         """
         request = SchemeEvalProtoModule.StringEvalRequest()
-        request.input = input_
+        request.input = input
         response = self.service.string_eval(request)
         return response.output
 
-    def scheme_eval(self, input_: str) -> Any:
+    def scheme_eval(self, input: str) -> Any:
         """Evaluates a scheme expression in string format.
 
         Parameters
@@ -259,7 +259,7 @@ class SchemeEval:
         S = Symbol  # noqa N806
         val = (
             S("eval"),
-            (S("with-input-from-string"), input_, S("read")),
+            (S("with-input-from-string"), input, S("read")),
             S("user-initial-environment"),
         )
         _convert_py_value_to_scheme_pointer(val, request)
