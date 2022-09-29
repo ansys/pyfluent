@@ -305,10 +305,8 @@ def _update_launch_string_wrt_gui_options(
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
     ):
         if (
-            "-g " not in additional_arguments
-            and "-gu " not in additional_arguments
-            and not additional_arguments.endswith("-g")
-            and not additional_arguments.endswith("-gu")
+            "-g" not in additional_arguments.split()
+            and "-gu" not in additional_arguments.split()
         ):
             launch_string += " -hidden"
 
