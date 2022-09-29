@@ -119,8 +119,7 @@ class CaseReader:
         except BaseException:
             raise RuntimeError(f"Could not read case file {case_filepath}")
 
-        self._rp_vars = lispy.parse(rp_vars_str)[1]
-        self._rp_var_cache = {}
+        self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
 
     def input_parameters(self) -> List[InputParameter]:
         exprs = self._named_expressions()
@@ -149,6 +148,9 @@ class CaseReader:
             if attr[0] == "rp-double?":
                 return 2 if attr[1] is True else 1
 
+    def rp_vars(self):
+        return self._rp_vars
+
     def _named_expressions(self):
         return self._find_rp_var("named-expressions")
 
@@ -156,13 +158,7 @@ class CaseReader:
         return self._find_rp_var("case-config")
 
     def _find_rp_var(self, name: str):
-        try:
-            return self._rp_var_cache[name]
-        except KeyError:
-            for var in self._rp_vars:
-                if type(var) == list and len(var) and var[0] == name:
-                    self._rp_var_cache[name] = var[1]
-                    return var[1]
+        return self._rp_vars[name]
 
 
 def _get_processed_string(input_string: bytes) -> str:
