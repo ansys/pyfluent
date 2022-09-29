@@ -146,9 +146,9 @@ and receive all the requested data in a single response.
 
 The ``add_get_<items>_request`` methods combine requests for multiple fields in a single request: 
 
-- ``add_get_surfaces_request`` adds a surfaces request.
-- ``add_get_scalar_fields_request`` adds a scalar fields request.
-- ``add_get_vector_fields_request`` adds a vector fields request. 
+- ``add_surfaces_request`` adds a surfaces request.
+- ``add_scalar_fields_request`` adds a scalar fields request.
+- ``add_vector_fields_request`` adds a vector fields request.
 
 The ``get_fields`` method returns all requested fields in a single response. It provides 
 a dictionary containing the requested fields as a numpy array in the following order:
