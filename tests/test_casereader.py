@@ -195,8 +195,8 @@ def test_case_reader_get_rp_and_config_vars():
     assert hasattr(config_vars, "__getitem__")
     assert config_vars["rp-3d?"] is True
     assert reader.config_var("rp-3d?") is True
-    assert reader.config_var.rp_3d__q__() is True
+    assert reader.config_var.rp_3d__q() is True
     assert reader.rp_var.smooth_mesh.niter() is 4
-    assert reader.rp_var.pressure.output_dpdt__q__() is True
-    assert len(reader.rp_var.context.map_r17__plus__()) == 53
-    assert reader.rp_var.defaults.pre_r19__dot__0_early__q__() is False
+    assert reader.rp_var.pressure.output_dpdt__q() is True
+    assert len(reader.rp_var.context.map_r17__plus()) == 53
+    assert reader.rp_var.defaults.pre_r19__dot0_early__q() is False

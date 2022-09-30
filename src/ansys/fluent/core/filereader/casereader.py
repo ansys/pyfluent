@@ -76,9 +76,9 @@ class _CaseVariable:
 
     def __getattr__(self, name: str):
         for orig, sub in (
-            ("__q__", "?"),
-            ("__dot__", "."),
-            ("__plus__", "+"),
+            ("__q", "?"),
+            ("__dot", "."),
+            ("__plus", "+"),
             ("_", "-"),
         ):
             name = name.replace(orig, sub)
@@ -110,7 +110,19 @@ class CaseReader:
         the Scheme name:
             `reader.rp_var("rad/enable-netm?")`
         or a pythonic version:
-            `reader.rp_var.rad.enable_netm_qm`
+            `reader.rp_var.rad.enable_netm__q()`
+    has_rp_var
+        Whether case has particular RP var
+    config_vars
+        Get dictionary of all RP vars
+    config_var
+        Get specific config var by name, either by providing
+        the Scheme name:
+            `reader.config_var("rp-3d?")`
+        or a pythonic version:
+            `reader.config_var.rp_3d__q()`
+    has_config_var
+        Whether case has particular config var
     """
 
     def __init__(self, case_filepath: str = None, project_filepath: str = None):
