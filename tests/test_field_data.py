@@ -1,7 +1,10 @@
+import numpy as np
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
+
+HOT_INLET_TEMPERATURE = 313.15
 
 
 @pytest.mark.fluent_231
@@ -37,7 +40,9 @@ def test_field_data(new_solver_session) -> None:
         "hot-inlet"
     ].turb_hydraulic_diam = "1 [in]"
 
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = 313.15
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].t = HOT_INLET_TEMPERATURE
 
     solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
 
@@ -54,14 +59,17 @@ def test_field_data(new_solver_session) -> None:
 
     transaction = field_data.new_transaction()
 
+    hot_inlet_surf_id = solver.field_info.get_surfaces_info()["hot-inlet"][
+        "surface_id"
+    ][0]
     transaction.add_surfaces_request(
-        surface_ids=[1],
+        surface_ids=[1, hot_inlet_surf_id],
         provide_vertices=True,
         provide_faces=False,
         provide_faces_centroid=True,
     )
     transaction.add_scalar_fields_request(
-        surface_ids=[1, 2],
+        surface_ids=[1, hot_inlet_surf_id],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
@@ -70,6 +78,13 @@ def test_field_data(new_solver_session) -> None:
     data = transaction.get_fields()
 
     assert len(data) == 2
-    assert list(data[0][1].keys()) == ["vertices", "centroid"]
-    assert list(data[12][1].keys()) == ["temperature"]
-    assert len(data[12][1]["temperature"]) > 0
+    assert list(data[0][hot_inlet_surf_id].keys()) == ["vertices", "centroid"]
+    assert list(data[12][hot_inlet_surf_id].keys()) == ["temperature"]
+    assert (
+        len(data[12][hot_inlet_surf_id]["temperature"])
+        == len(data[0][hot_inlet_surf_id]["vertices"]) / 3
+    )
+    assert (
+        round(float(np.average(data[12][hot_inlet_surf_id]["temperature"])), 2)
+        == HOT_INLET_TEMPERATURE
+    )
