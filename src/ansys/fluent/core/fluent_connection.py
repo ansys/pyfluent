@@ -81,6 +81,7 @@ class _FluentConnection:
     _on_exit_cbs: List[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: Optional[MonitorThread] = None
+    _transcript_data_filepath = None
 
     def __init__(
         self,
@@ -218,7 +219,6 @@ class _FluentConnection:
         )
         _FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
-        self._transcript_data_filepath = None
         self._transcript_callbacks = {}
         self._transcript_callback_id = 0
 
@@ -231,7 +231,8 @@ class _FluentConnection:
     def _print_transcript(transcript: str):
         print(transcript)
 
-    def _process_transcript(self, transcript_service):
+    @staticmethod
+    def _process_transcript(transcript_service):
         responses = transcript_service.begin_streaming()
         transcript = ""
         while True:
@@ -239,10 +240,12 @@ class _FluentConnection:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    if self._transcript_data_filepath:
-                        with open(self._transcript_data_filepath, "a") as f:
+                    _FluentConnection._print_transcript(transcript[0:-1])
+                    if _FluentConnection._transcript_data_filepath:
+                        with open(
+                            _FluentConnection._transcript_data_filepath, "a"
+                        ) as f:
                             f.write(transcript)
-                    self._print_transcript(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break
@@ -266,7 +269,7 @@ class _FluentConnection:
         if file_path:
             if Path(file_path).exists():
                 os.remove(file_path)
-        self._transcript_data_filepath = file_path
+        _FluentConnection._transcript_data_filepath = file_path
         self._transcript_thread = threading.Thread(
             target=self._process_transcript,
             args=(self._transcript_service,),
