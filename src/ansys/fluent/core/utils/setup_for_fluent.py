@@ -19,7 +19,7 @@ def setup_for_fluent(*args, **kwargs):
     session = launch_fluent(*args, **kwargs)
     globals = {}
     if "mode" in kwargs.keys() and kwargs["mode"] == "meshing":
-        globals["meshing"] = session
+        globals["meshing"] = session.meshing
         globals["workflow"] = session.workflow
         globals["PartManagement"] = session.PartManagement
         globals["PMFileManagement"] = session.PMFileManagement
