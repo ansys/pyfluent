@@ -271,7 +271,7 @@ class _FluentConnection:
                 os.remove(file_path)
         _FluentConnection._transcript_data_filepath = file_path
         self._transcript_thread = threading.Thread(
-            target=self._process_transcript,
+            target=_FluentConnection._process_transcript,
             args=(self._transcript_service,),
         )
 
