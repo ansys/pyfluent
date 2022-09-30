@@ -76,7 +76,6 @@ class _BaseSession:
         self.scheme_eval = self.fluent_connection.scheme_eval
         self._uploader = None
         self._preferences = None
-        self._write_transcript_flag = False
 
     @classmethod
     def create_from_server_info_file(
@@ -124,7 +123,13 @@ class _BaseSession:
         return self.fluent_connection.id
 
     def start_transcript(self, file_path: str = None) -> None:
-        """Start streaming of Fluent transcript."""
+        """Start streaming of Fluent transcript.
+
+        Parameters
+        ----------
+        file_path: str
+            File path to write the transcript stream.
+        """
         self.fluent_connection.start_transcript(file_path)
 
     def stop_transcript(self) -> None:
