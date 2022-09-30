@@ -1,4 +1,12 @@
-setup_for_fluent(version="23.1.0", mode="meshing")
+try:
+    import ansys.fluent.core as pyfluent
+
+    flglobals = pyfluent.setup_for_fluent(
+        product_version="23.1.0", mode="meshing", version="2d", precision="double"
+    )
+    globals().update(flglobals)
+except Exception:
+    pass
 workflow.Workflow.TaskList.set_state(None)
 workflow.set_state(
     {
