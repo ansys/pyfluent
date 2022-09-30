@@ -3,7 +3,6 @@ Session."""
 import importlib
 import json
 import os
-from pathlib import Path
 from typing import Any
 import warnings
 
@@ -126,20 +125,11 @@ class _BaseSession:
 
     def start_transcript(self, file_path: str = None) -> None:
         """Start streaming of Fluent transcript."""
-        if file_path:
-            if Path(file_path).exists():
-                os.remove(file_path)
-            self.execute_tui(f'(cx-start-transcript "{file_path}")')
-            self._write_transcript_flag = True
-        else:
-            self.fluent_connection.start_transcript()
+        self.fluent_connection.start_transcript(file_path)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
-        if self._write_transcript_flag:
-            self.execute_tui(f"(cx-stop-transcript)")
-        else:
-            self.fluent_connection.stop_transcript()
+        self.fluent_connection.stop_transcript()
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""

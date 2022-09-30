@@ -1,6 +1,7 @@
 from ctypes import c_int, sizeof
 import itertools
 import os
+from pathlib import Path
 import threading
 import time
 from typing import Callable, List, Optional, Tuple
@@ -217,6 +218,10 @@ class _FluentConnection:
         )
         _FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
+        self._transcript_data_filepath = None
+        self._transcript_callbacks = {}
+        self._transcript_callback_id = 0
+
     @property
     def id(self) -> str:
         """Return the session id."""
@@ -226,8 +231,7 @@ class _FluentConnection:
     def _print_transcript(transcript: str):
         print(transcript)
 
-    @staticmethod
-    def _process_transcript(transcript_service):
+    def _process_transcript(self, transcript_service):
         responses = transcript_service.begin_streaming()
         transcript = ""
         while True:
@@ -235,7 +239,10 @@ class _FluentConnection:
                 response = next(responses)
                 transcript += response.transcript
                 if transcript[-1] == "\n":
-                    _FluentConnection._print_transcript(transcript[0:-1])
+                    if self._transcript_data_filepath:
+                        with open(self._transcript_data_filepath, "a") as f:
+                            f.write(transcript)
+                    self._print_transcript(transcript[0:-1])
                     transcript = ""
             except StopIteration:
                 break
@@ -248,10 +255,14 @@ class _FluentConnection:
         else:
             return "meshing"
 
-    def start_transcript(self) -> None:
+    def start_transcript(self, file_path: str = None) -> None:
         """Start streaming of Fluent transcript."""
+        if file_path:
+            if Path(file_path).exists():
+                os.remove(file_path)
+        self._transcript_data_filepath = file_path
         self._transcript_thread = threading.Thread(
-            target=_FluentConnection._process_transcript,
+            target=self._process_transcript,
             args=(self._transcript_service,),
         )
 
