@@ -71,7 +71,8 @@ class _CaseVariable:
 
     def __call__(self, name: str = ""):
         if not name:
-            raise RuntimeError(f"Invalid variable {self._path + name}")
+            error_name = self._path[:-1] if self._path else self._path
+            raise RuntimeError(f"Invalid variable {error_name}")
         return self._variables[name]
 
     def __getattr__(self, name: str):

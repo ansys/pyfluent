@@ -200,3 +200,5 @@ def test_case_reader_get_rp_and_config_vars():
     assert reader.rp_var.pressure.output_dpdt__q() is True
     assert len(reader.rp_var.context.map_r17__plus()) == 53
     assert reader.rp_var.defaults.pre_r19__dot0_early__q() is False
+    with pytest.raises(BaseException):
+        reader.rp_var.defaults.pre_r19__dot0_early()
