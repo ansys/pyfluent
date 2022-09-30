@@ -256,7 +256,13 @@ class _FluentConnection:
             return "meshing"
 
     def start_transcript(self, file_path: str = None) -> None:
-        """Start streaming of Fluent transcript."""
+        """Start streaming of Fluent transcript.
+
+         Parameters
+        ----------
+        file_path: str, optional
+            File path to write the transcript stream.
+        """
         if file_path:
             if Path(file_path).exists():
                 os.remove(file_path)

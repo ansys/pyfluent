@@ -127,7 +127,7 @@ class _BaseSession:
 
         Parameters
         ----------
-        file_path: str
+        file_path: str, optional
             File path to write the transcript stream.
         """
         self.fluent_connection.start_transcript(file_path)
