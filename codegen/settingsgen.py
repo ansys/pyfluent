@@ -31,6 +31,8 @@ import pickle
 import pprint
 import shutil
 
+from fix_doc import fix_settings_doc
+
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
@@ -218,7 +220,7 @@ def _populate_classes(parent_dir):
                 f'({", ".join(f"{c.__name__}[{hash_dict.get(object_hash)[0].__name__}]" if object_hash else c.__name__ for c in cls.__bases__)}):\n'
             )
 
-            doc = cls.__doc__
+            doc = fix_settings_doc(cls.__doc__)
             # Custom doc for child object type
             if cls.fluent_name == "child-object-type":
                 doc = f"'child_object_type' of {file_name[: file_name.find('_child')]}."
