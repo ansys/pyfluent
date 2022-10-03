@@ -121,6 +121,9 @@ class DataModelGenerator:
             "preferences": DataModelStaticInfo(
                 "preferences", ("meshing", "solver", "flicing,"), self.version
             ),
+            "solver_workflow": DataModelStaticInfo(
+                "solverworkflow", ("solver",), self.version
+            ),
         }
         self._delete_generated_files()
         self._populate_static_info()

@@ -3,7 +3,12 @@
 import importlib
 
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.session import _CODEGEN_MSG_TUI, _BaseSession, _get_preferences
+from ansys.fluent.core.session import (
+    _CODEGEN_MSG_TUI,
+    _BaseSession,
+    _get_preferences,
+    _get_solver_workflow,
+)
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
@@ -25,6 +30,7 @@ class Solver(_BaseSession):
         self._tui = None
         self._settings_root = None
         self._version = None
+        self._solver_workflow = None
 
     @property
     def version(self):
@@ -107,3 +113,10 @@ class Solver(_BaseSession):
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
+
+    @property
+    def solver_workflow(self):
+        """solver_workflow datamodel root."""
+        if self._solver_workflow is None:
+            self._solver_workflow = _get_solver_workflow(self)
+        return self._solver_workflow

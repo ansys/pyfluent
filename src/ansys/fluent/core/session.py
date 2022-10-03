@@ -32,14 +32,22 @@ def parse_server_info_file(filename: str):
     return ip, port, password
 
 
-def _get_preferences(session):
+def _get_datamodel_attributes(session, attribute: str):
     try:
         preferences_module = importlib.import_module(
-            f"ansys.fluent.core.datamodel_{session.version}.preferences"
+            f"ansys.fluent.core.datamodel_{session.version}." + attribute
         )
-        return preferences_module.Root(session._se_service, "preferences", [])
+        return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
         LOG.warning(_CODEGEN_MSG_DATAMODEL)
+
+
+def _get_preferences(session):
+    return _get_datamodel_attributes(session, "preferences")
+
+
+def _get_solver_workflow(session):
+    return _get_datamodel_attributes(session, "solver_workflow")
 
 
 class _BaseSession:
@@ -76,6 +84,7 @@ class _BaseSession:
         self.scheme_eval = self.fluent_connection.scheme_eval
         self._uploader = None
         self._preferences = None
+        self._solver_workflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -260,6 +269,7 @@ class Session:
 
         self._uploader = None
         self._preferences = None
+        self._solver_workflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -359,6 +369,13 @@ class Session:
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
+
+    @property
+    def solver_workflow(self):
+        """solver_workflow datamodel root."""
+        if self._solver_workflow is None:
+            self._solver_workflow = _get_solver_workflow(self)
+        return self._solver_workflow
 
     class Solver:
         def __init__(self, fluent_connection: _FluentConnection):
