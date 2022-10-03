@@ -107,7 +107,14 @@ class DataModelGenerator:
     def __init__(self):
         self.version = get_version_for_filepath()
         self._static_info: Dict[str, DataModelStaticInfo] = {
-            "workflow": DataModelStaticInfo("workflow", ("meshing",), self.version),
+            "workflow": DataModelStaticInfo(
+                "workflow",
+                (
+                    "meshing",
+                    "solver",
+                ),
+                self.version,
+            ),
             "meshing": DataModelStaticInfo("meshing", ("meshing",), self.version),
             "PartManagement": DataModelStaticInfo(
                 "PartManagement", ("meshing",), self.version
@@ -121,7 +128,7 @@ class DataModelGenerator:
             "preferences": DataModelStaticInfo(
                 "preferences", ("meshing", "solver", "flicing,"), self.version
             ),
-            "solver_workflow": DataModelStaticInfo(
+            "solverworkflow": DataModelStaticInfo(
                 "solverworkflow", ("solver",), self.version
             )
             if int(self.version) >= 231
