@@ -25,6 +25,8 @@ from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
 from ansys.fluent.core.solver.monitors_manager import MonitorsManager
 
+lock = threading.Lock()
+
 
 def _get_max_c_int_limit() -> int:
     """Get the maximum limit of a C int.
@@ -60,6 +62,68 @@ class MonitorThread(threading.Thread):
             cb()
 
 
+class AppendToFile:
+    def __init__(self, file_path: str):
+        self.f = open(file_path, "a")
+
+    def __call__(self, transcript):
+        self.f.write(transcript)
+
+    def __del__(self):
+        self.f.close()
+
+
+class Transcript:
+    def __init__(self, channel, metadata):
+        self._channel = channel
+        self._metadata = metadata
+        self.transcript_service = TranscriptService(self._channel, self._metadata)
+        self._transcript_thread: Optional[threading.Thread] = None
+        self._transcript_callbacks = {}
+        self._transcript_callback_id = 0
+
+    def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
+        with lock:
+            self._transcript_callbacks[self._transcript_callback_id] = (
+                callback_fn,
+                keep_new_lines,
+            )
+            returned_callback_id = self._transcript_callback_id
+            self._transcript_callback_id = self._transcript_callback_id + 1
+        if len(self._transcript_callbacks) == 1:
+            self._transcript_thread = threading.Thread(
+                target=self._process_transcript,
+                args=(self.transcript_service,),
+            )
+            self._transcript_thread.start()
+        return returned_callback_id
+
+    def remove_transcript_callback(self, callback_id):
+        del self._transcript_callbacks[callback_id]
+        if len(self._transcript_callbacks) == 0:
+            self.transcript_service.end_streaming()
+
+    def _process_transcript(self, transcript_service):
+        responses = transcript_service.begin_streaming()
+        transcript = ""
+        while True:
+            try:
+                response = next(responses)
+                transcript += response.transcript
+                if transcript[-1] == "\n":
+                    for (
+                        callback_function,
+                        keep_new_lines,
+                    ) in self._transcript_callbacks.values():
+                        if keep_new_lines:
+                            callback_function(transcript)
+                        else:
+                            callback_function(transcript[0:-1])
+                    transcript = ""
+            except StopIteration:
+                break
+
+
 class _FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -81,7 +145,7 @@ class _FluentConnection:
     _on_exit_cbs: List[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: Optional[MonitorThread] = None
-    _transcript_data_filepath = None
+    _writing_transcript_to_interpreter = False
 
     def __init__(
         self,
@@ -172,8 +236,7 @@ class _FluentConnection:
             _FluentConnection._monitor_thread = MonitorThread()
             _FluentConnection._monitor_thread.start()
 
-        self._transcript_service = TranscriptService(self._channel, self._metadata)
-        self._transcript_thread: Optional[threading.Thread] = None
+        self._transcript = Transcript(self._channel, self._metadata)
 
         self._events_service = EventsService(self._channel, self._metadata)
         self.events_manager = EventsManager(self._id, self._events_service)
@@ -213,42 +276,19 @@ class _FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
-            self._transcript_service,
+            self._transcript.transcript_service,
             self.events_manager,
             self._remote_instance,
         )
         _FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
-        self._transcript_callbacks = {}
-        self._transcript_callback_id = 0
+        self.callback_id1 = None
+        self.callback_id2 = None
 
     @property
     def id(self) -> str:
         """Return the session id."""
         return self._id
-
-    @staticmethod
-    def _print_transcript(transcript: str):
-        print(transcript)
-
-    @staticmethod
-    def _process_transcript(transcript_service):
-        responses = transcript_service.begin_streaming()
-        transcript = ""
-        while True:
-            try:
-                response = next(responses)
-                transcript += response.transcript
-                if transcript[-1] == "\n":
-                    _FluentConnection._print_transcript(transcript[0:-1])
-                    if _FluentConnection._transcript_data_filepath:
-                        with open(
-                            _FluentConnection._transcript_data_filepath, "a"
-                        ) as f:
-                            f.write(transcript)
-                    transcript = ""
-            except StopIteration:
-                break
 
     def get_current_fluent_mode(self):
         """Gets and returns the mode of the current instance of fluent (meshing
@@ -258,28 +298,41 @@ class _FluentConnection:
         else:
             return "meshing"
 
-    def start_transcript(self, file_path: str = None) -> None:
+    def start_transcript(
+        self, file_path: str = None, write_to_interpreter: bool = True
+    ) -> None:
         """Start streaming of Fluent transcript.
 
          Parameters
         ----------
         file_path: str, optional
             File path to write the transcript stream.
+        write_to_interpreter: bool, optional
+            Flag to print transcript on the screen or not
         """
+        if not _FluentConnection._writing_transcript_to_interpreter:
+            if write_to_interpreter:
+                self.callback_id1 = self._transcript.add_transcript_callback(print)
+                _FluentConnection._writing_transcript_to_interpreter = True
         if file_path:
             if Path(file_path).exists():
                 os.remove(file_path)
-        _FluentConnection._transcript_data_filepath = file_path
-        self._transcript_thread = threading.Thread(
-            target=_FluentConnection._process_transcript,
-            args=(self._transcript_service,),
-        )
-
-        self._transcript_thread.start()
+            append_to_file = AppendToFile(file_path)
+            self.callback_id2 = self._transcript.add_transcript_callback(
+                append_to_file, keep_new_lines=True
+            )
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
-        self._transcript_service.end_streaming()
+        for callback_id in (self.callback_id1, self.callback_id2):
+            if callback_id:
+                self._transcript.remove_transcript_callback(callback_id)
+
+    def add_transcript_callback(self, callback_fn):
+        self._transcript.add_transcript_callback(callback_fn)
+
+    def remove_transcript_callback(self, callback_id):
+        self._transcript.remove_transcript_callback(callback_id)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
