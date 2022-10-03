@@ -46,8 +46,8 @@ def _get_preferences(session):
     return _get_datamodel_attributes(session, "preferences")
 
 
-def _get_solver_workflow(session):
-    return _get_datamodel_attributes(session, "solver_workflow")
+def _get_solverworkflow(session):
+    return _get_datamodel_attributes(session, "solverworkflow")
 
 
 class _BaseSession:
@@ -84,7 +84,7 @@ class _BaseSession:
         self.scheme_eval = self.fluent_connection.scheme_eval
         self._uploader = None
         self._preferences = None
-        self._solver_workflow = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -269,7 +269,7 @@ class Session:
 
         self._uploader = None
         self._preferences = None
-        self._solver_workflow = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -371,11 +371,11 @@ class Session:
         return self._preferences
 
     @property
-    def solver_workflow(self):
-        """solver_workflow datamodel root."""
-        if self._solver_workflow is None:
-            self._solver_workflow = _get_solver_workflow(self)
-        return self._solver_workflow
+    def solverworkflow(self):
+        """solverworkflow datamodel root."""
+        if self._solverworkflow is None:
+            self._solverworkflow = _get_solverworkflow(self)
+        return self._solverworkflow
 
     class Solver:
         def __init__(self, fluent_connection: _FluentConnection):
