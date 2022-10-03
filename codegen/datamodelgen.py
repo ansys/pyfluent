@@ -123,8 +123,12 @@ class DataModelGenerator:
             ),
             "solver_workflow": DataModelStaticInfo(
                 "solverworkflow", ("solver",), self.version
-            ),
+            )
+            if int(self.version) >= 231
+            else None,
         }
+        if not self._static_info["solver_workflow"]:
+            del self._static_info["solver_workflow"]
         self._delete_generated_files()
         self._populate_static_info()
 
