@@ -21,11 +21,9 @@ from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.solver.events_manager import EventsManager
 from ansys.fluent.core.solver.monitors_manager import MonitorsManager
-
-lock = threading.Lock()
+from ansys.fluent.core.transcript import Transcript
 
 
 def _get_max_c_int_limit() -> int:
@@ -71,57 +69,6 @@ class AppendToFile:
 
     def __del__(self):
         self.f.close()
-
-
-class Transcript:
-    def __init__(self, channel, metadata):
-        self._channel = channel
-        self._metadata = metadata
-        self.transcript_service = TranscriptService(self._channel, self._metadata)
-        self._transcript_thread: Optional[threading.Thread] = None
-        self._transcript_callbacks = {}
-        self._transcript_callback_id = 0
-
-    def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
-        with lock:
-            self._transcript_callbacks[self._transcript_callback_id] = (
-                callback_fn,
-                keep_new_lines,
-            )
-            returned_callback_id = self._transcript_callback_id
-            self._transcript_callback_id = self._transcript_callback_id + 1
-        if len(self._transcript_callbacks) == 1:
-            self._transcript_thread = threading.Thread(
-                target=self._process_transcript,
-                args=(self.transcript_service,),
-            )
-            self._transcript_thread.start()
-        return returned_callback_id
-
-    def remove_transcript_callback(self, callback_id):
-        del self._transcript_callbacks[callback_id]
-        if len(self._transcript_callbacks) == 0:
-            self.transcript_service.end_streaming()
-
-    def _process_transcript(self, transcript_service):
-        responses = transcript_service.begin_streaming()
-        transcript = ""
-        while True:
-            try:
-                response = next(responses)
-                transcript += response.transcript
-                if transcript[-1] == "\n":
-                    for (
-                        callback_function,
-                        keep_new_lines,
-                    ) in self._transcript_callbacks.values():
-                        if keep_new_lines:
-                            callback_function(transcript)
-                        else:
-                            callback_function(transcript[0:-1])
-                    transcript = ""
-            except StopIteration:
-                break
 
 
 class _FluentConnection:
@@ -328,10 +275,17 @@ class _FluentConnection:
             if callback_id:
                 self._transcript.remove_transcript_callback(callback_id)
 
-    def add_transcript_callback(self, callback_fn):
+    def add_transcript_callback(self, callback_fn: Callable):
+        """Initiates a fluent transcript streaming depending on the
+        callback_fn.
+
+        For eg.: add_transcript_callback(print) prints the transcript on
+        the interpreter screen.
+        """
         self._transcript.add_transcript_callback(callback_fn)
 
-    def remove_transcript_callback(self, callback_id):
+    def remove_transcript_callback(self, callback_id: int):
+        """Stops each transcript streaming based on the callback_id."""
         self._transcript.remove_transcript_callback(callback_id)
 
     def check_health(self) -> str:
