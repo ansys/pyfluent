@@ -1,7 +1,6 @@
 from concurrent import futures
 import os
 from pathlib import Path
-import time
 
 import grpc
 import pytest
@@ -210,21 +209,13 @@ def test_get_fluent_mode(new_mesh_session):
 def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_transcript.txt")
-
     session.start_transcript(file_path)
-
     session = session.switch_to_solver()
-
     session.stop_transcript()
+    session.exit()
 
     with open(file_path) as f:
         returned = f.readlines()
-
     assert returned
-
-    session.exit()
-    while session.check_health() != "NOT_SERVING":
-        time.sleep(1)
-    time.sleep(1)
     if os.path.exists(file_path):
         os.remove(file_path)
