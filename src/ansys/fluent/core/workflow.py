@@ -41,7 +41,7 @@ class WorkflowWrapper:
             self.__dict__.update(
                 dict(
                     _workflow=command_source._workflow,
-                    _meshing=command_source._command_source,
+                    _source=command_source._command_source,
                     _task=command_source._workflow.TaskObject[name],
                     _cmd=None,
                 )
@@ -60,7 +60,7 @@ class WorkflowWrapper:
 
         def _command(self):
             if not self._cmd:
-                self._cmd = _new_command_for_task(self._task, self._command_source)
+                self._cmd = _new_command_for_task(self._task, self._source)
             return self._cmd
 
         def __getattr__(self, attr):
