@@ -5,6 +5,7 @@ from pathlib import Path
 import grpc
 import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
+from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
 import ansys.fluent.core as pyfluent
@@ -202,3 +203,11 @@ def test_get_fluent_mode(new_mesh_session):
     assert session.fluent_connection.get_current_fluent_mode() == "meshing"
     session = session.switch_to_solver()
     assert session.fluent_connection.get_current_fluent_mode() == "solver"
+
+
+@pytest.mark.fluent_231
+def test_solverworkflow_in_solver_session(new_solver_session):
+    solver = new_solver_session
+    solver_dir = dir(solver)
+    for attr in ("preferences", "solverworkflow", "tui", "workflow"):
+        assert attr in solver_dir
