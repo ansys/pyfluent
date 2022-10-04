@@ -150,6 +150,14 @@ class Base:
             raise RuntimeError("Object is not active")
         return attrs[attr] if attrs else None
 
+    def arguments(self) -> Any:
+        attrs = self.get_attrs(["arguments"])
+        if attrs:
+            attrs = attrs.get("attrs", attrs)
+        if "arguments" != "active?" and attrs and attrs.get("active?", True) is False:
+            raise RuntimeError("Object is not active")
+        return attrs["arguments"] if attrs else None
+
     def is_active(self) -> bool:
         """Whether the object is active."""
         return self.get_attr("active?")
