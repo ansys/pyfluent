@@ -212,6 +212,9 @@ class _FluentConnection:
         self._cleanup_on_exit = cleanup_on_exit
         self._start_transcript = start_transcript
 
+        self.callback_id1 = None
+        self.callback_id2 = None
+
         if start_transcript:
             self.start_transcript()
 
@@ -228,9 +231,6 @@ class _FluentConnection:
             self._remote_instance,
         )
         _FluentConnection._monitor_thread.cbs.append(self._finalizer)
-
-        self.callback_id1 = None
-        self.callback_id2 = None
 
     @property
     def id(self) -> str:
@@ -272,7 +272,7 @@ class _FluentConnection:
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
         for callback_id in (self.callback_id1, self.callback_id2):
-            if callback_id:
+            if callback_id is not None:
                 self._transcript.remove_transcript_callback(callback_id)
 
     def add_transcript_callback(self, callback_fn: Callable):

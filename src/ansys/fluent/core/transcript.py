@@ -1,3 +1,4 @@
+import itertools
 import threading
 from typing import Callable, Optional
 
@@ -15,7 +16,8 @@ class Transcript:
         self.transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
         self._transcript_callbacks = {}
-        self._transcript_callback_id = 0
+        self._id_count = itertools.count()
+        self._transcript_callback_id = next(self._id_count)
 
     def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
         """Initiates a fluent transcript streaming depending on the
@@ -30,7 +32,7 @@ class Transcript:
                 keep_new_lines,
             )
             returned_callback_id = self._transcript_callback_id
-            self._transcript_callback_id = self._transcript_callback_id + 1
+            self._transcript_callback_id = next(self._id_count)
         if len(self._transcript_callbacks) == 1:
             self._transcript_thread = threading.Thread(
                 target=self._process_transcript,
@@ -44,6 +46,7 @@ class Transcript:
         del self._transcript_callbacks[callback_id]
         if len(self._transcript_callbacks) == 0:
             self.transcript_service.end_streaming()
+            self._transcript_thread.join()
 
     def _process_transcript(self, transcript_service):
         """Performs processes on transcript depending on the callback
