@@ -17,12 +17,12 @@ def _new_command_for_task(task, session):
 
 class WorkflowWrapper:
     class TaskContainer(PyCallableStateObject):
-        def __init__(self, meshing):
-            self._meshing_container = meshing
-            self._task_container = meshing._workflow.TaskObject
+        def __init__(self, command_source):
+            self._container = command_source
+            self._task_container = command_source._workflow.TaskObject
 
         def __getitem__(self, name):
-            return WorkflowWrapper.Task(self._meshing_container, name)
+            return WorkflowWrapper.Task(self._container, name)
 
         def __getattr__(self, attr):
             return getattr(self._task_container, attr)
@@ -37,12 +37,12 @@ class WorkflowWrapper:
             )
 
     class Task(PyCallableStateObject):
-        def __init__(self, meshing, name):
+        def __init__(self, command_source, name):
             self.__dict__.update(
                 dict(
-                    _workflow=meshing._workflow,
-                    _meshing=meshing._meshing,
-                    _task=meshing._workflow.TaskObject[name],
+                    _workflow=command_source._workflow,
+                    _meshing=command_source._command_source,
+                    _task=command_source._workflow.TaskObject[name],
                     _cmd=None,
                 )
             )
@@ -60,7 +60,7 @@ class WorkflowWrapper:
 
         def _command(self):
             if not self._cmd:
-                self._cmd = _new_command_for_task(self._task, self._meshing)
+                self._cmd = _new_command_for_task(self._task, self._command_source)
             return self._cmd
 
         def __getattr__(self, attr):
@@ -77,9 +77,9 @@ class WorkflowWrapper:
                 set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
             )
 
-    def __init__(self, workflow, meshing):
+    def __init__(self, workflow, command_source):
         self._workflow = workflow
-        self._meshing = meshing
+        self._command_source = command_source
 
     def task(self, name):
         return WorkflowWrapper.Task(self, name)
