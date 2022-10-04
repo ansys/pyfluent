@@ -46,12 +46,14 @@ def call_casereader_static_mixer(
     )
 
 
-def test_casereader_static_mixer_h5():
-    call_casereader_static_mixer(
-        case_filepath=examples.download_file(
-            "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
-        )
+def static_mixer_file():
+    return examples.download_file(
+        "Static_Mixer_Parameters.cas.h5", "pyfluent/static_mixer"
     )
+
+
+def test_casereader_static_mixer_h5():
+    call_casereader_static_mixer(case_filepath=static_mixer_file())
 
 
 def test_casereader_static_mixer_binary_cas():
@@ -181,3 +183,22 @@ def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_di
             },
         ),
     )
+
+
+def test_case_reader_get_rp_and_config_vars():
+    reader = CaseReader(case_filepath=static_mixer_file())
+    rp_vars = reader.rp_vars()
+    assert rp_vars
+    assert hasattr(rp_vars, "__getitem__")
+    config_vars = reader.config_vars()
+    assert config_vars
+    assert hasattr(config_vars, "__getitem__")
+    assert config_vars["rp-3d?"] is True
+    assert reader.config_var("rp-3d?") is True
+    assert reader.config_var.rp_3d__q() is True
+    assert reader.rp_var.smooth_mesh.niter() is 4
+    assert reader.rp_var.pressure.output_dpdt__q() is True
+    assert len(reader.rp_var.context.map_r17__plus()) == 53
+    assert reader.rp_var.defaults.pre_r19__dot0_early__q() is False
+    with pytest.raises(BaseException):
+        reader.rp_var.defaults.pre_r19__dot0_early()

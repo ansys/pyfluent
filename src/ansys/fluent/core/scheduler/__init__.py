@@ -1,6 +1,8 @@
 """A package providing job scheduler support."""
 
+import os
 import socket
+import sys
 
 from ansys.fluent.core.scheduler.load_machines import load_machines  # noqa: F401
 from ansys.fluent.core.scheduler.machine_list import MachineList
@@ -25,13 +27,18 @@ def build_parallel_options(machine_list: MachineList) -> str:
     be started without additional arguments in that case.
 
     If the parallel options are being built on the same machine as Fluent is run
-    on, and it's local parallel, then the -cnf argument is not constructed.
+    on, and it's local parallel, then the -cnf argument is not constructed.  On
+    Windows HPC the job scheduler returns hostnames as upper case but the socket
+    module may return lower case.
     """
     parOpt = ""
-    if (
-        machine_list.num_machines == 1
-        and socket.gethostname() == machine_list[0].host_name
-    ):
+    if sys.platform == "win32" and "CCP_NODES" in os.environ:
+        localParallel = (
+            socket.gethostname().upper() == machine_list[0].host_name.upper()
+        )
+    else:
+        localParallel = socket.gethostname() == machine_list[0].host_name
+    if machine_list.num_machines == 1 and localParallel:
         if machine_list.number_of_cores > 1:
             parOpt = _ncoresOpt.replace("%n%", str(machine_list.number_of_cores))
     else:
