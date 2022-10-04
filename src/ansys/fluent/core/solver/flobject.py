@@ -154,8 +154,8 @@ class Base:
         attrs = self.get_attrs(["arguments"])
         if attrs:
             attrs = attrs.get("attrs", attrs)
-        if "arguments" != "active?" and attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Object is not active")
+        if attrs and attrs.get("active?", True) is False:
+            raise RuntimeError("Command is not active")
         return attrs["arguments"] if attrs else None
 
     def is_active(self) -> bool:
