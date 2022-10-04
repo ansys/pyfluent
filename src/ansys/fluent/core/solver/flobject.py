@@ -151,6 +151,7 @@ class Base:
         return attrs[attr] if attrs else None
 
     def arguments(self) -> Any:
+        """Get the arguments for the command."""
         attrs = self.get_attrs(["arguments"])
         if attrs:
             attrs = attrs.get("attrs", attrs)
