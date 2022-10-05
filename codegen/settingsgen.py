@@ -324,7 +324,7 @@ def generate():
 
     sinfo = session._settings_service.get_static_info()
     session.exit()
-    cls = flobject.get_cls("", sinfo)
+    cls = flobject.get_cls("", sinfo, version=version)
 
     _populate_hash_dict("", sinfo, cls)
     _populate_classes(parent_dir)
