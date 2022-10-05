@@ -205,6 +205,24 @@ def test_get_fluent_mode(new_mesh_session):
     assert session.fluent_connection.get_current_fluent_mode() == "solver"
 
 
+@pytest.mark.dev
+def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+    session = new_mesh_session
+    file_path = os.path.join(tmp_path, "sample_transcript.txt")
+    session.start_transcript(file_path)
+    session = session.switch_to_solver()
+    session.stop_transcript()
+
+    with open(file_path) as f:
+        returned = f.readlines()
+
+    session.exit()
+
+    assert returned
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+
 @pytest.mark.fluent_231
 def test_solverworkflow_in_solver_session(new_solver_session):
     solver = new_solver_session

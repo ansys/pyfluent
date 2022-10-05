@@ -10,7 +10,6 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.session import _FluentConnection
 
 
 def _read_case(session):
@@ -29,7 +28,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
     print_transcript.called = False
     print_transcript.transcript = None
 
-    _FluentConnection._print_transcript = print_transcript
+    session.add_transcript_callback(print_transcript)
 
     _read_case(session=session)
 
@@ -47,7 +46,7 @@ def test_session_starts_no_transcript_if_disabled(
 
     print_transcript.called = False
 
-    session._print_transcript = print_transcript
+    session.start_transcript(write_to_interpreter=False)
 
     _read_case(session=session)
 

@@ -131,9 +131,19 @@ class _BaseSession:
         """Return the session id."""
         return self.fluent_connection.id
 
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self.fluent_connection.start_transcript()
+    def start_transcript(
+        self, file_path: str = None, write_to_interpreter: bool = True
+    ) -> None:
+        """Start streaming of Fluent transcript.
+
+        Parameters
+        ----------
+        file_path: str, optional
+            File path to write the transcript stream.
+        write_to_interpreter: bool, optional
+            Flag to print transcript on the screen or not
+        """
+        self.fluent_connection.start_transcript(file_path, write_to_interpreter)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
