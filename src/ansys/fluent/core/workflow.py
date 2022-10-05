@@ -1,13 +1,13 @@
 from ansys.fluent.core.services.datamodel_se import MakeReadOnly, PyCallableStateObject
 
 
-def _new_command_for_task(task, meshing):
+def _new_command_for_task(task, session):
     class NewCommandError(Exception):
         def __init__(self, task_name):
             super().__init__(f"Could not create command for meshing task {task_name}")
 
     task_cmd_name = task.CommandName()
-    cmd_creator = getattr(meshing, task_cmd_name)
+    cmd_creator = getattr(session, task_cmd_name)
     if cmd_creator:
         new_cmd = cmd_creator.new()
         if new_cmd:
@@ -15,14 +15,14 @@ def _new_command_for_task(task, meshing):
     raise NewCommandError(task._name_())
 
 
-class MeshingWorkflow:
+class WorkflowWrapper:
     class TaskContainer(PyCallableStateObject):
-        def __init__(self, meshing):
-            self._meshing_container = meshing
-            self._task_container = meshing._workflow.TaskObject
+        def __init__(self, command_source):
+            self._container = command_source
+            self._task_container = command_source._workflow.TaskObject
 
         def __getitem__(self, name):
-            return MeshingWorkflow.Task(self._meshing_container, name)
+            return WorkflowWrapper.Task(self._container, name)
 
         def __getattr__(self, attr):
             return getattr(self._task_container, attr)
@@ -37,12 +37,12 @@ class MeshingWorkflow:
             )
 
     class Task(PyCallableStateObject):
-        def __init__(self, meshing, name):
+        def __init__(self, command_source, name):
             self.__dict__.update(
                 dict(
-                    _workflow=meshing._workflow,
-                    _meshing=meshing._meshing,
-                    _task=meshing._workflow.TaskObject[name],
+                    _workflow=command_source._workflow,
+                    _source=command_source._command_source,
+                    _task=command_source._workflow.TaskObject[name],
                     _cmd=None,
                 )
             )
@@ -60,7 +60,7 @@ class MeshingWorkflow:
 
         def _command(self):
             if not self._cmd:
-                self._cmd = _new_command_for_task(self._task, self._meshing)
+                self._cmd = _new_command_for_task(self._task, self._source)
             return self._cmd
 
         def __getattr__(self, attr):
@@ -77,16 +77,16 @@ class MeshingWorkflow:
                 set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
             )
 
-    def __init__(self, workflow, meshing):
+    def __init__(self, workflow, command_source):
         self._workflow = workflow
-        self._meshing = meshing
+        self._command_source = command_source
 
     def task(self, name):
-        return MeshingWorkflow.Task(self, name)
+        return WorkflowWrapper.Task(self, name)
 
     @property
     def TaskObject(self):
-        return MeshingWorkflow.TaskContainer(self)
+        return WorkflowWrapper.TaskContainer(self)
 
     def __getattr__(self, attr):
         return getattr(self._workflow, attr)
