@@ -291,7 +291,7 @@ def extract_fields(chunk_iterator):
 
     def _extract_field(field_datatype, field_size, chunk_iterator):
         if not chunk_iterator.is_active():
-            raise RuntimeError("Chunk is Empty.")
+            raise RuntimeError("Unexpectedly encountered empty chunk during field extraction.")
         field_arr = np.empty(field_size, dtype=field_datatype)
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
