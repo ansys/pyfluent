@@ -32,14 +32,22 @@ def parse_server_info_file(filename: str):
     return ip, port, password
 
 
-def _get_preferences(session):
+def _get_datamodel_attributes(session, attribute: str):
     try:
         preferences_module = importlib.import_module(
-            f"ansys.fluent.core.datamodel_{session.version}.preferences"
+            f"ansys.fluent.core.datamodel_{session.version}." + attribute
         )
-        return preferences_module.Root(session._se_service, "preferences", [])
+        return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
         LOG.warning(_CODEGEN_MSG_DATAMODEL)
+
+
+def _get_preferences(session):
+    return _get_datamodel_attributes(session, "preferences")
+
+
+def _get_solverworkflow(session):
+    return _get_datamodel_attributes(session, "solverworkflow")
 
 
 class _BaseSession:
@@ -76,6 +84,7 @@ class _BaseSession:
         self.scheme_eval = self.fluent_connection.scheme_eval
         self._uploader = None
         self._preferences = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -122,9 +131,19 @@ class _BaseSession:
         """Return the session id."""
         return self.fluent_connection.id
 
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self.fluent_connection.start_transcript()
+    def start_transcript(
+        self, file_path: str = None, write_to_interpreter: bool = True
+    ) -> None:
+        """Start streaming of Fluent transcript.
+
+        Parameters
+        ----------
+        file_path: str, optional
+            File path to write the transcript stream.
+        write_to_interpreter: bool, optional
+            Flag to print transcript on the screen or not
+        """
+        self.fluent_connection.start_transcript(file_path, write_to_interpreter)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
@@ -260,6 +279,7 @@ class Session:
 
         self._uploader = None
         self._preferences = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -359,6 +379,13 @@ class Session:
         if self._preferences is None:
             self._preferences = _get_preferences(self)
         return self._preferences
+
+    @property
+    def solverworkflow(self):
+        """solverworkflow datamodel root."""
+        if self._solverworkflow is None:
+            self._solverworkflow = _get_solverworkflow(self)
+        return self._solverworkflow
 
     class Solver:
         def __init__(self, fluent_connection: _FluentConnection):
