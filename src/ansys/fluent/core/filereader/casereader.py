@@ -64,6 +64,33 @@ class OutputParameter:
                 self.units = elem[1].strip()
 
 
+class _CaseVariable:
+    def __init__(self, variables: dict, path: str = ""):
+        self._variables = variables
+        self._path = path
+
+    def __call__(self, name: str = ""):
+        if not name:
+            error_name = self._path[:-1] if self._path else self._path
+            raise RuntimeError(f"Invalid variable {error_name}")
+        return self._variables[name]
+
+    def __getattr__(self, name: str):
+        for orig, sub in (
+            ("__q", "?"),
+            ("__dot", "."),
+            ("__plus", "+"),
+            ("_", "-"),
+        ):
+            name = name.replace(orig, sub)
+        try:
+            name = self._path + name
+            result = self._variables[name]
+            return lambda: result
+        except KeyError:
+            return _CaseVariable(self._variables, name + "/")
+
+
 class CaseReader:
     """Class to read a Fluent case file.
 
@@ -77,6 +104,26 @@ class CaseReader:
         Get the dimensionality of the case (2 or 3)
     precision
         Get the precision (1 or 2 for 1D of 2D)
+    rp_vars
+        Get dictionary of all RP vars
+    rp_var
+        Get specific RP var by name, either by providing
+        the Scheme name:
+            `reader.rp_var("rad/enable-netm?")`
+        or a pythonic version:
+            `reader.rp_var.rad.enable_netm__q()`
+    has_rp_var
+        Whether case has particular RP var
+    config_vars
+        Get dictionary of all RP vars
+    config_var
+        Get specific config var by name, either by providing
+        the Scheme name:
+            `reader.config_var("rp-3d?")`
+        or a pythonic version:
+            `reader.config_var.rp_3d__q()`
+    has_config_var
+        Whether case has particular config var
     """
 
     def __init__(self, case_filepath: str = None, project_filepath: str = None):
@@ -119,8 +166,9 @@ class CaseReader:
         except BaseException:
             raise RuntimeError(f"Could not read case file {case_filepath}")
 
-        self._rp_vars = lispy.parse(rp_vars_str)[1]
-        self._rp_var_cache = {}
+        self._rp_vars = {v[0]: v[1] for v in lispy.parse(rp_vars_str)[1]}
+
+        self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
     def input_parameters(self) -> List[InputParameter]:
         exprs = self._named_expressions()
@@ -149,6 +197,26 @@ class CaseReader:
             if attr[0] == "rp-double?":
                 return 2 if attr[1] is True else 1
 
+    def rp_vars(self) -> dict:
+        return self._rp_vars
+
+    @property
+    def rp_var(self):
+        return _CaseVariable(self._rp_vars)
+
+    def has_rp_var(self, name):
+        return name in self._rp_vars
+
+    def config_vars(self):
+        return self._config_vars
+
+    @property
+    def config_var(self):
+        return _CaseVariable(self._config_vars)
+
+    def has_config_var(self, name):
+        return name in self._config_vars
+
     def _named_expressions(self):
         return self._find_rp_var("named-expressions")
 
@@ -156,13 +224,7 @@ class CaseReader:
         return self._find_rp_var("case-config")
 
     def _find_rp_var(self, name: str):
-        try:
-            return self._rp_var_cache[name]
-        except KeyError:
-            for var in self._rp_vars:
-                if type(var) == list and len(var) and var[0] == name:
-                    self._rp_var_cache[name] = var[1]
-                    return var[1]
+        return self._rp_vars[name]
 
 
 def _get_processed_string(input_string: bytes) -> str:
