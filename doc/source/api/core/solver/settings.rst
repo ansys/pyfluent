@@ -7,7 +7,7 @@ settings and issue commands to be executed in the Fluent solver.
 
 Accessing solver settings
 -------------------------
-An appropriate call to ``launch_fluent`` returns an object (named ``solver`` in
+An appropriate call to the ``launch_fluent`` function returns an object (named ``solver`` in
 the following code snippets) whose interface directly exposes the
 :ref:`root<settings_root_section>` of the solver settings hierarchy.
 
