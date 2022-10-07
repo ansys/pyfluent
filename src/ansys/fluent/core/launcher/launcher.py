@@ -508,8 +508,8 @@ def launch_fluent(
         The default is ``None``.
 
     cwd: str, Optional
-        Path to specify current working direcotory to launch fluent from the defined directory as 
-        current working directory.    
+        Path to specify current working directory to launch fluent from the defined directory as
+        current working directory.
 
     Returns
     -------
@@ -541,7 +541,7 @@ def launch_fluent(
             if mode != LaunchModes.SOLVER_ICING:
                 env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
-            kwargs.update(cwd = cwd)
+            kwargs.update(cwd=cwd)
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
