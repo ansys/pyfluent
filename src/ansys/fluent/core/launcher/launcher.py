@@ -428,6 +428,7 @@ def launch_fluent(
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
+    cwd: str = None,
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -506,6 +507,10 @@ def launch_fluent(
         Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
         The default is ``None``.
 
+    cwd: str, Optional
+        Path to specify current working direcotory to launch fluent from the defined directory as 
+        current working directory.    
+
     Returns
     -------
     ansys.fluent.session.Session
@@ -536,6 +541,7 @@ def launch_fluent(
             if mode != LaunchModes.SOLVER_ICING:
                 env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
+            kwargs.update(cwd = cwd)
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
