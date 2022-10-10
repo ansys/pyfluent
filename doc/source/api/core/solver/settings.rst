@@ -38,7 +38,7 @@ A settings object can be one of the primitive types: ``Integer``, ``Real``,``Str
   a given ``NamedObject`` container, each contained object is of the same
   specific type. A given named object can be accessed using the index operator. For example,
   ``solver.setup.boundary_conditions.velocity_inlet['inlet2']`` yields a ``velocity_inlet``
-  object with the name ``inlet2`` - assuming it exists. The current list of named object
+  object with the name ``inlet2``, assuming it exists. The current list of named object
   children can be accessed via ``<NamedObject>.get_object_names()``.
 
 - The ``ListObject`` type is a container holding dynamically created unnamed objects of
