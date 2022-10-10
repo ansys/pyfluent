@@ -277,6 +277,6 @@ commands:
 
 Root object
 -----------
-The ``root`` object (named solver in the above examples) is the top-level
+The ``root`` object (named solver in the preceding examples) is the top-level
 solver settings object. It contains all other settings objects in a hierarchical structure.
 For more information, see :ref:`root`.
