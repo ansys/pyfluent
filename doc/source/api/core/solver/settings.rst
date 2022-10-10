@@ -34,7 +34,7 @@ A settings object can be one of the primitive types: ``Integer``, ``Real``,``Str
   three objects is a ``Group``. The names of the child objects of a group can be accessed 
   via ``<Group>.child_names``.
 
-- ``NamedObject`` is a container holding dynamically created named objects. For
+- The ``NamedObject`` type is a container holding dynamically created named objects. For
   a given ``NamedObject`` container, each contained object is of the same
   specific type. A given named object can be accessed using the index operator. For example,
   ``solver.setup.boundary_conditions.velocity_inlet['inlet2']`` yields a ``velocity_inlet``
