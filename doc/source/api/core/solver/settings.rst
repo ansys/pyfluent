@@ -24,9 +24,9 @@ of this settings hierarchy has been designed in close alignment with that GUI hi
 
 Types of settings objects
 -------------------------
-A settings object can be one of the primitive types: ``Integer``, ``Real``,``String`` and
-``Boolean``, or a container object, of which there are three types: ``Group``, ``NamedObject``
-and ``ListObject``.
+A settings object can be one of the primitive types: ``Integer``, ``Real``,``String``, and
+``Boolean``. A settings object can also be one of the three types of container objects:
+``Group``, ``NamedObject``, and ``ListObject``.
 
 - The ``Group`` type is a static container with predefined child objects that
   can be accessed as attributes. For example, in ``setup.models.energy``
