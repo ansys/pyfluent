@@ -36,7 +36,7 @@ You can launch Fluent in solution mode with:
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent(mode="solver")
+    solver = launch_fluent(mode="solver")
 
 You can launch Fluent in meshing mode with: 
 
@@ -44,7 +44,7 @@ You can launch Fluent in meshing mode with:
 
     from ansys.fluent.core import launch_fluent
 
-    meshing_session = launch_fluent(mode="meshing")
+    meshing = launch_fluent(mode="meshing")
 
 
 For more information, see :ref:`ref_user_guide_launch` 
@@ -72,7 +72,7 @@ modification of solve settings in a manner that is familiar to existing Fluent u
 
 .. code:: python
 
-    tui = solver_session.tui
+    tui = solver.tui
 
     tui.file.read_case("pipe.cas.h5")
 
@@ -89,13 +89,11 @@ via the ``tui`` object:
 
 .. code:: python
 
-    root = solver_session
+    solver.file.read(file_type="case", file_name="pipe.cas.h5")
 
-    root.file.read(file_type="case", file_name="pipe.cas.h5")
+    solver.setup.models.energy.enabled = True
 
-    root.setup.models.energy.enabled = True
-
-    energy_is_enabled = root.setup.models.energy.enabled()
+    energy_is_enabled = solver.setup.models.energy.enabled()
 
 For the full hierarchy under the solver ``root`` object, see :ref:`ref_solver_tui`.
 For additional interface features, see :ref:`ref_settings`.
@@ -160,7 +158,7 @@ a more direct interaction via its ``scheme_eval`` attribute:
 
 .. code:: python
 
-    unsteady = solver_session.scheme_eval.scheme_eval("(rp-unsteady?)")
+    unsteady = solver.scheme_eval.scheme_eval("(rp-unsteady?)")
 
 The argument to ``scheme_eval`` is a string that contains any scheme
 code that can be executed in Fluent for the current mode.
@@ -170,7 +168,7 @@ the ``field_data`` object attribute of the session object:
 
 .. code:: python
 
-    surface_data = solver_session.field_data.get_fields()
+    surface_data = solver.field_data.get_fields()
 
 For more information, see :ref:`ref_field_data`.
 
@@ -178,7 +176,7 @@ The connection status of any session can be verified with:
 
 .. code:: python
 
-    health = solver_session.check_health()
+    health = solver.check_health()
 
 ``"SERVING"`` is returned if and only if the connection is healthy.
 
@@ -189,16 +187,16 @@ You can stop and start the streaming of a transcript manually with:
  
 .. code:: python
 
-    solver_session.stop_transcript()
+    solver.stop_transcript()
 
-    solver_session.start_transcript()
+    solver.start_transcript()
 
 You can enable and disable the streaming of events pertaining to various
 solver event types via the ``events_manager`` attribute of a solution mode session:
 
 .. code:: python
 
-    solver_session.events_manager.start()
+    solver.events_manager.start()
 
 For more information, see :ref:`ref_events`.
 
