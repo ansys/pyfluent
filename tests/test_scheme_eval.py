@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
+from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.scheme_eval import (
@@ -21,7 +22,7 @@ from ansys.fluent.core.services.scheme_eval import (
         (5.0, {"flonum": 5.0}),
         ("abc", {"str": "abc"}),
         ((), {}),
-        (("abc",), {"pair": {"car": {"str": "abc"}}}),
+        (("abc",), {"list": {"item": [{"str": "abc"}]}}),
         (
             ("abc", 5.0),
             {
@@ -33,74 +34,37 @@ from ansys.fluent.core.services.scheme_eval import (
         ),
         (
             (False, 5.0, "abc"),
-            {
-                "pair": {
-                    "car": {"b": False},
-                    "cdr": {
-                        "pair": {
-                            "car": {"flonum": 5.0},
-                            "cdr": {"pair": {"car": {"str": "abc"}}},
-                        }
-                    },
-                }
-            },
+            {"list": {"item": [{"b": False}, {"flonum": 5.0}, {"str": "abc"}]}},
         ),
         ([], {}),
-        (["abc"], {"pair": {"car": {"str": "abc"}}}),
+        (["abc"], {"list": {"item": [{"str": "abc"}]}}),
         (
-            [False, 5.0, "abc"],
-            {
-                "pair": {
-                    "car": {"b": False},
-                    "cdr": {
-                        "pair": {
-                            "car": {"flonum": 5.0},
-                            "cdr": {"pair": {"car": {"str": "abc"}}},
-                        }
-                    },
-                }
-            },
+            [False, 5.0],
+            {"list": {"item": [{"b": False}, {"flonum": 5.0}]}},
         ),
         ({}, {}),
         (
             {"a": 5.0},
             {
-                "pair": {
-                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
+                "list": {
+                    "item": [{"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}}],
                 }
             },
         ),
         (
             {"a": 5.0, "b": 10.0},
             {
-                "pair": {
-                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
-                    "cdr": {
-                        "pair": {
-                            "car": {
-                                "pair": {
-                                    "car": {"str": "b"},
-                                    "cdr": {"flonum": 10.0},
-                                }
-                            }
-                        }
-                    },
+                "list": {
+                    "item": [
+                        {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
+                        {"pair": {"car": {"str": "b"}, "cdr": {"flonum": 10.0}}},
+                    ]
                 }
             },
         ),
         (
             [Symbol("+"), 2.0, 3.0],
-            {
-                "pair": {
-                    "car": {"sym": "+"},
-                    "cdr": {
-                        "pair": {
-                            "car": {"flonum": 2.0},
-                            "cdr": {"pair": {"car": {"flonum": 3.0}}},
-                        }
-                    },
-                }
-            },
+            {"list": {"item": [{"sym": "+"}, {"flonum": 2.0}, {"flonum": 3.0}]}},
         ),
     ],
 )
@@ -121,121 +85,74 @@ def test_convert_py_value_to_scheme_pointer(
         (5, {"fixednum": "5"}),
         (5.0, {"flonum": 5.0}),
         ("abc", {"str": "abc"}),
-        (["abc"], {"pair": {"car": {"str": "abc"}}}),
+        (["abc"], {"list": {"item": [{"str": "abc"}]}}),
         (
             [False, 5.0, "abc"],
             {
-                "pair": {
-                    "car": {"b": False},
-                    "cdr": {
-                        "pair": {
-                            "car": {"flonum": 5.0},
-                            "cdr": {"pair": {"car": {"str": "abc"}}},
-                        }
-                    },
-                }
+                "list": {"item": [{"b": False}, {"flonum": 5.0}, {"str": "abc"}]},
             },
         ),
         (None, {}),
         (
             {"a": 5.0, "b": 10.0},
             {
-                "pair": {
-                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
-                    "cdr": {
-                        "pair": {
-                            "car": {
-                                "pair": {
-                                    "car": {"str": "b"},
-                                    "cdr": {"flonum": 10.0},
-                                }
-                            }
-                        }
-                    },
-                }
-            },
-        ),
-        (
-            [("a", 5.0), (5, 10.0)],
-            {
-                "pair": {
-                    "car": {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
-                    "cdr": {
-                        "pair": {
-                            "car": {
-                                "pair": {
-                                    "car": {"fixednum": "5"},
-                                    "cdr": {"flonum": 10.0},
-                                }
-                            }
-                        }
-                    },
+                "list": {
+                    "item": [
+                        {"pair": {"car": {"str": "a"}, "cdr": {"flonum": 5.0}}},
+                        {"pair": {"car": {"str": "b"}, "cdr": {"flonum": 10.0}}},
+                    ]
                 }
             },
         ),
         (
             {"a": [5.0, False], "b": [10.0, True]},
             {
-                "pair": {
-                    "car": {
-                        "pair": {
-                            "car": {"str": "a"},
-                            "cdr": {
-                                "pair": {
-                                    "car": {"flonum": 5.0},
-                                    "cdr": {"pair": {"car": {"b": False}}},
-                                }
-                            },
-                        }
-                    },
-                    "cdr": {
-                        "pair": {
-                            "car": {
-                                "pair": {
-                                    "car": {"str": "b"},
-                                    "cdr": {
-                                        "pair": {
-                                            "car": {"flonum": 10.0},
-                                            "cdr": {"pair": {"car": {"b": True}}},
-                                        }
-                                    },
-                                }
+                "list": {
+                    "item": [
+                        {
+                            "pair": {
+                                "car": {"str": "a"},
+                                "cdr": {
+                                    "list": {
+                                        "item": [{"flonum": 5.0}, {"b": False}],
+                                    }
+                                },
                             }
-                        }
-                    },
+                        },
+                        {
+                            "pair": {
+                                "car": {"str": "b"},
+                                "cdr": {
+                                    "list": {
+                                        "item": [{"flonum": 10.0}, {"b": True}],
+                                    }
+                                },
+                            }
+                        },
+                    ]
                 }
             },
         ),
         (
             [["a", 5.0, False], [5, 10.0, True]],
             {
-                "pair": {
-                    "car": {
-                        "pair": {
-                            "car": {"str": "a"},
-                            "cdr": {
-                                "pair": {
-                                    "car": {"flonum": 5.0},
-                                    "cdr": {"pair": {"car": {"b": False}}},
-                                }
-                            },
-                        }
-                    },
-                    "cdr": {
-                        "pair": {
-                            "car": {
-                                "pair": {
-                                    "car": {"fixednum": "5"},
-                                    "cdr": {
-                                        "pair": {
-                                            "car": {"flonum": 10.0},
-                                            "cdr": {"pair": {"car": {"b": True}}},
-                                        }
-                                    },
-                                }
+                "list": {
+                    "item": [
+                        {
+                            "list": {
+                                "item": [{"str": "a"}, {"flonum": 5.0}, {"b": False}],
                             }
-                        }
-                    },
+                        },
+                        {
+                            "list": {
+                                "item": [
+                                    {"fixednum": 5},
+                                    {"flonum": 10.0},
+                                    {"b": True},
+                                ],
+                            }
+                        },
+                    ]
                 }
             },
         ),
@@ -266,29 +183,6 @@ def test_convert_scheme_pointer_having_symbol_to_py_value() -> None:
     assert len(val) == 2
     assert val[0] == "abc"
     assert val[1] == 5.0
-
-
-def test_convert_scheme_pointer_having_pair_to_py_value() -> None:
-    p = SchemePointer()
-    ParseDict(
-        {
-            "pair": {
-                "car": {"sym": "+"},
-                "cdr": {
-                    "pair": {
-                        "car": {"flonum": 2.0},
-                        "cdr": {"pair": {"car": {"flonum": 3.0}}},
-                    }
-                },
-            }
-        },
-        p,
-    )
-    val = _convert_scheme_pointer_to_py_value(p)
-    assert isinstance(val, list)
-    assert isinstance(val[0], Symbol)
-    assert val[0].str == "+"
-    assert val[1:] == [2.0, 3.0]
 
 
 @pytest.mark.parametrize(
@@ -336,3 +230,13 @@ def test_two_way_conversion_for_pairs() -> None:
     assert len(val) == 2
     assert val[0] == "abc"
     assert val[1] == 5.0
+
+
+def test_long_list(new_solver_session) -> None:
+    length = 10**6
+    assert new_solver_session.scheme_eval.eval(
+        [Symbol("+")] + list(range(length))
+    ) == sum(range(length))
+    assert sum(new_solver_session.scheme_eval.eval([Symbol("range"), length])) == sum(
+        range(length)
+    )
