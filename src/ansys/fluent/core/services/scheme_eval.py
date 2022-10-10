@@ -65,19 +65,6 @@ class Symbol:
         self.str = str
 
 
-def _convert_pair_to_scheme_pointer(val: Tuple[Any, Any], p: SchemePointer):
-    _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
-    _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
-
-
-def _convert_list_of_pairs_to_scheme_pointer(
-    val: List[Tuple[Any, Any]], p: SchemePointer
-):
-    if len(val) > 0:
-        _convert_pair_to_scheme_pointer(val[0], p.pair.car)
-        _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr)
-
-
 def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer):
     """Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
@@ -94,40 +81,13 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer):
         _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
     elif isinstance(val, list) or isinstance(val, tuple):
-        if val:
-            val = list(val)
-            _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
-            _convert_py_value_to_scheme_pointer(val[1:], p.pair.cdr)
+        for item in val:
+            _convert_py_value_to_scheme_pointer(item, p.list.item.add())
     elif isinstance(val, dict):
-        as_list = list(val.items())
-        if as_list:
-            _convert_pair_to_scheme_pointer(as_list[0], p.pair.car)
-            _convert_list_of_pairs_to_scheme_pointer(as_list[1:], p.pair.cdr)
-
-
-def _convert_scheme_pointer_to_py_list(p: SchemePointer):
-    val = []
-    val.append(_convert_scheme_pointer_to_py_value(p.pair.car))
-    if p.pair.cdr.HasField("pair"):
-        tail = _convert_scheme_pointer_to_py_list(p.pair.cdr)
-        val.extend([tail] if isinstance(tail, dict) else tail)
-    if all(
-        isinstance(x, dict)
-        or (
-            (isinstance(x, tuple) or isinstance(x, list))
-            and x
-            and isinstance(x[0], str)
-        )
-        for x in val
-    ):
-        d = {}
-        for x in val:
-            if isinstance(x, dict):
-                d.update(x)
-            else:
-                d[x[0]] = x[1:] if len(x) > 2 else x[1]
-        return d
-    return val
+        for k, v in val.items():
+            item = p.list.item.add()
+            _convert_py_value_to_scheme_pointer(k, item.pair.car)
+            _convert_py_value_to_scheme_pointer(v, item.pair.cdr)
 
 
 def _convert_scheme_pointer_to_py_value(p: SchemePointer):
@@ -145,17 +105,22 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer):
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        if any(
-            p.pair.cdr.HasField(x)
-            for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
-        ):
-            return (
-                _convert_scheme_pointer_to_py_value(p.pair.car),
-                _convert_scheme_pointer_to_py_value(p.pair.cdr),
-            )
+        return (
+            _convert_scheme_pointer_to_py_value(p.pair.car),
+            _convert_scheme_pointer_to_py_value(p.pair.cdr),
+        )
+    elif p.HasField("list"):
+        is_dict = all(item.HasField("pair") for item in p.list.item)
+        if is_dict:
+            return {
+                _convert_scheme_pointer_to_py_value(
+                    item.pair.car
+                ): _convert_scheme_pointer_to_py_value(item.pair.cdr)
+                for item in p.list.item
+            }
         else:
-            val = _convert_scheme_pointer_to_py_list(p)
-            return val
+            return [_convert_scheme_pointer_to_py_value(item) for item in p.list.item]
+
     return None
 
 
