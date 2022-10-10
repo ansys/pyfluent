@@ -10,10 +10,12 @@ from parsers._variant_value_convertor import (
     _convert_value_to_variant,
     _convert_variant_to_value,
 )
+import pytest
 
 from ansys.api.fluent.v0 import state_engine_pb2, state_engine_pb2_grpc
 
 
+@pytest.mark.skip
 def test_run_models_energy():
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
@@ -45,6 +47,7 @@ def test_run_models_energy():
         )
 
 
+@pytest.mark.skip
 def test_run_models_input_data():
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
