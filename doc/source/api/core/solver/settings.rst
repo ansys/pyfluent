@@ -20,7 +20,7 @@ the following code snippets) whose interface directly exposes the
 The ``solver`` object contains attributes such as ``file``, ``setup``, ``solution`` and
 ``results``, which are also instances of settings objects. Note that the last three are
 top-level nodes in the outline tree view in Fluent's graphical user interface (GUI) --- much
-of this settings hierarchy has been designed in close alignment with that GUI hierarchy.
+of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
 Types of settings objects
 -------------------------
