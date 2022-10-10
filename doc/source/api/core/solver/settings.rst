@@ -191,8 +191,7 @@ These examples accesses the list of zone surfaces:
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
 
-Below is a table of metadata names, corresponding methods to access those metadata, 
-applicable object types and returned data types: 
+The following table contains metadata names, corresponding methods to access this metadata, whether the method can return None, applicable object types, and returned data types: 
 
 ==================  ==================  =================  =====================  ====================
 Metadata name       Method              Can return None    Type applicability     Metadata type
