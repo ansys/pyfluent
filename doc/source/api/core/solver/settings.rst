@@ -255,7 +255,7 @@ Objects and commands can be active or inactive based on the application state.
 The ``is_active()`` method returns ``True`` if an object or command
 is currently active.
 
-The ``get_active_child_names`` method returns the list of
+The ``get_active_child_names`` method returns a list of
 active children:
 
 .. code-block::
