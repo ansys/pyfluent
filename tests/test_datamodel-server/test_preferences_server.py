@@ -105,6 +105,29 @@ def test_run_appearance_color_theme():
         )
 
 
+@pytest.mark.skip
+def test_preferences_static_info():
+    with grpc.insecure_channel("localhost:50055") as channel:
+        stub = state_engine_pb2_grpc.StateEngineStub(channel)
+
+        # Gets the static info
+        static_info = stub.GetStaticInfo(
+            state_engine_pb2.GetStaticInfoRequest(rules="preferences")
+        )
+
+        assert (
+            static_info.info.singletons["Appearance"]
+            .singletons["AnsysLogo"]
+            .parameters["Visible"]
+            .type
+            == "Logical"
+        )
+        assert (
+            static_info.info.singletons["Appearance"].parameters["DefaultView"].type
+            == "String"
+        )
+
+
 if __name__ == "__main__":
     logging.basicConfig()
     test_run_appearance_ansys_logo()

@@ -85,6 +85,28 @@ def test_run_models_input_data():
         stub.SetState(request)
 
 
+@pytest.mark.skip
+def test_models_static_info():
+    with grpc.insecure_channel("localhost:50055") as channel:
+        stub = state_engine_pb2_grpc.StateEngineStub(channel)
+
+        # Gets the static info
+        static_info = stub.GetStaticInfo(
+            state_engine_pb2.GetStaticInfoRequest(rules="models")
+        )
+
+        assert (
+            static_info.info.singletons["Models"].parameters["Energy"].type == "Logical"
+        )
+        assert (
+            static_info.info.singletons["Models"]
+            .singletons["Viscous"]
+            .parameters["TurbulenceModel"]
+            .type
+            == "String"
+        )
+
+
 if __name__ == "__main__":
     logging.basicConfig()
     test_run_models_energy()
