@@ -50,7 +50,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-test_datamodel_server/
+tests/test_datamodel_server/
 
 # Translations
 *.mo
