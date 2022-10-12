@@ -208,6 +208,8 @@ class _FluentConnection:
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
+        version = self.scheme_eval.string_eval("(cx-version)")
+        self.scheme_eval.version = ".".join(version.strip("()").split()[0:2])
 
         self._cleanup_on_exit = cleanup_on_exit
         self._start_transcript = start_transcript
