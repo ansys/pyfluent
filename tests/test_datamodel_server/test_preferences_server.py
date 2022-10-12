@@ -1,19 +1,21 @@
 """
 This test file is provided for manual testing (a sample client).
-1. Run the server -> 'preferences'
+1. Run the server - preferences
 2. Run the test
 """
 import logging
 
 import grpc
 from parsers._variant_value_convertor import _convert_variant_to_value
-import pytest
 
 from ansys.api.fluent.v0 import state_engine_pb2, state_engine_pb2_grpc
+from tests.run_stateengine_server import kill_server, run_server
+
+BATCH_COMMAND = r"-----Batch-Script-Path----- preferences"
 
 
-@pytest.mark.skip
 def test_run_appearance_ansys_logo():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
 
@@ -44,10 +46,11 @@ def test_run_appearance_ansys_logo():
                 path="Appearance/AnsysLogo/Visible", state={"bool_state": default_val}
             )
         )
+    kill_server()
 
 
-@pytest.mark.skip
 def test_run_appearance_color_theme():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
 
@@ -103,10 +106,11 @@ def test_run_appearance_color_theme():
                 state={"string_state": default_val_graphics_color_theme},
             )
         )
+    kill_server()
 
 
-@pytest.mark.skip
 def test_preferences_static_info():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
 
@@ -126,6 +130,7 @@ def test_preferences_static_info():
             static_info.info.singletons["Appearance"].parameters["DefaultView"].type
             == "String"
         )
+    kill_server()
 
 
 if __name__ == "__main__":

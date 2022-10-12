@@ -1,6 +1,6 @@
 """
 This test file is provided for manual testing (a sample client).
-1. Run the server -> 'models'
+1. Run the server - models
 2. Run the test
 """
 import logging
@@ -10,13 +10,15 @@ from parsers._variant_value_convertor import (
     _convert_value_to_variant,
     _convert_variant_to_value,
 )
-import pytest
 
 from ansys.api.fluent.v0 import state_engine_pb2, state_engine_pb2_grpc
+from tests.run_stateengine_server import kill_server, run_server
+
+BATCH_COMMAND = r"-----Batch-Script-Path----- models"
 
 
-@pytest.mark.skip
 def test_run_models_energy():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
 
@@ -45,10 +47,11 @@ def test_run_models_energy():
                 path="Models/Energy", state={"bool_state": default_val}
             )
         )
+    kill_server()
 
 
-@pytest.mark.skip
 def test_run_models_input_data():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
         request = state_engine_pb2.SetStateRequest()
@@ -83,10 +86,11 @@ def test_run_models_input_data():
             request.state,
         )
         stub.SetState(request)
+    kill_server()
 
 
-@pytest.mark.skip
 def test_models_static_info():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
 
@@ -105,8 +109,11 @@ def test_models_static_info():
             .type
             == "String"
         )
+    kill_server()
 
 
 if __name__ == "__main__":
     logging.basicConfig()
     test_run_models_energy()
+    test_run_models_input_data()
+    test_models_static_info()

@@ -4,13 +4,15 @@ This test file is provided for manual testing (a sample client).
 2. Run the test
 """
 import grpc
-import pytest
 
 from ansys.api.fluent.v0 import state_engine_pb2, state_engine_pb2_grpc
+from tests.run_stateengine_server import kill_server, run_server
+
+BATCH_COMMAND = r"-----Batch-Script-Path----- dummy"
 
 
-@pytest.mark.skip
 def test_models_static_info():
+    run_server(BATCH_COMMAND)
     with grpc.insecure_channel("localhost:50055") as channel:
         stub = state_engine_pb2_grpc.StateEngineStub(channel)
 
@@ -41,3 +43,4 @@ def test_models_static_info():
             == "Logical"
         )
         assert static_info.info.commands["Member_2"].type == "Command"
+    kill_server()
