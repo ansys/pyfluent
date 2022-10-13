@@ -50,25 +50,27 @@ You can launch Fluent in meshing mode with:
 For more information, see :ref:`ref_user_guide_launch` 
 and :ref:`ref_launcher_launcher`.
 
-You can use PyFluent to create and initialize multiple, independent session objects.
-Each session object provides full access to the Fluent components relevant to the
-session's current mode (solution or meshing).
+You can use PyFluent to create and initialize multiple, independent session
+objects. Each session object provides full access to the Fluent components
+relevant to the session's current mode (solution or meshing).
 
 Solution mode session
 ---------------------
-A solution mode session has an active ``solver`` object that provides two distinct
-interfaces to the solver:
+A solution mode session has an active ``solver`` object that provides two
+distinct interfaces to the solver:
 
 - ``tui`` object
 - ``root`` object
 
-For general guidance on using these two objects, see :ref:`ref_user_guide_solver_settings`.
+For general guidance on using these two objects, see
+:ref:`ref_user_guide_solver_settings`.
 
 Solver ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~
-The solver ``tui`` object is a complete Python exposure of the Fluent solver TUI (text 
-user interface). This object allows straightforward execution of solver commands and 
-modification of solve settings in a manner that is familiar to existing Fluent users:
+The solver ``tui`` object is a complete Python exposure of the Fluent solver TUI
+(text user interface). This object allows straightforward execution of solver
+commands and modification of solve settings in a manner that is familiar to
+existing Fluent users:
 
 .. code:: python
 
@@ -83,9 +85,9 @@ For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_command
 
 Solver ``root`` object
 ~~~~~~~~~~~~~~~~~~~~~~
-The solver ``root`` object exposes most of the solver capabilities covered by the solver
-``tui`` object and provides significant additional interface features that are not possible
-via the ``tui`` object:
+The solver ``root`` object exposes most of the solver capabilities covered by
+the solver ``tui`` object and provides significant additional interface features
+that are not possible via the ``tui`` object:
 
 .. code:: python
 
@@ -109,10 +111,10 @@ distinct interfaces to the mesher:
 
 Meshing ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~~
-The meshing ``tui`` object is a complete Python exposure of the Fluent meshing TUI
-(text user interface). This object allows straightforward execution of meshing
-commands and modification of meshing settings in a manner that is familiar
-to existing Fluent users:
+The meshing ``tui`` object is a complete Python exposure of the Fluent meshing
+TUI (text user interface). This object allows straightforward execution of
+meshing commands and modification of meshing settings in a manner that is
+familiar to existing Fluent users:
 
 .. code:: python
 
@@ -122,15 +124,15 @@ to existing Fluent users:
 
     tui.file.write_case("pipe.cas.h5")
     
-For the full hierarchy under the meshing ``tui`` object, see :ref:`ref_meshing_tui`.
-For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_commands`. 
+For the full hierarchy under the meshing ``tui`` object, see
+:ref:`ref_meshing_tui`. For general guidance on using TUI commands, see
+:ref:`ref_user_guide_tui_commands`. 
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``meshing`` object has ``meshing`` and ``workflow`` properties that
-together provide access to Fluent's meshing workflows. This interface
-is consistent with the Python meshing workflow interface that Fluent meshing
-exposes directly:
+The ``meshing`` object has ``meshing`` and ``workflow`` properties that together
+provide access to Fluent's meshing workflows. This interface is consistent with
+the Python meshing workflow interface that Fluent meshing exposes directly:
 
 .. code:: python
 
@@ -146,25 +148,25 @@ exposes directly:
 
     meshing = meshing_session.meshing
 
-    meshing.GlobalSettings.LengthUnit.setState("mm")
+    meshing.GlobalSettings.LengthUnit.set_state("mm")
 
 For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
 For information on the full interface, see :ref:`ref_meshing_datamodel`.
 
 Session object
 --------------
-In either a solution or meshing mode session, the ``session`` object provides
-a more direct interaction via its ``scheme_eval`` attribute:
+In either a solution or meshing mode session, the ``session`` object provides a
+more direct interaction via its ``scheme_eval`` attribute:
 
 .. code:: python
 
     unsteady = solver.scheme_eval.scheme_eval("(rp-unsteady?)")
 
-The argument to ``scheme_eval`` is a string that contains any scheme
-code that can be executed in Fluent for the current mode.
+The argument to ``scheme_eval`` is a string that contains any scheme code that
+can be executed in Fluent for the current mode.
 
-Surface field and mesh data services are available in solution mode only via
-the ``field_data`` object attribute of the session object:
+Surface field and mesh data services are available in solution mode only via the
+``field_data`` object attribute of the session object:
 
 .. code:: python
 
@@ -182,8 +184,8 @@ The connection status of any session can be verified with:
 
 Streaming
 ---------
-Streaming of a Fluent transcript is automatically started by default.
-You can stop and start the streaming of a transcript manually with:
+Streaming of a Fluent transcript is automatically started by default. You can
+stop and start the streaming of a transcript manually with:
  
 .. code:: python
 
@@ -191,8 +193,8 @@ You can stop and start the streaming of a transcript manually with:
 
     solver.start_transcript()
 
-You can enable and disable the streaming of events pertaining to various
-solver event types via the ``events_manager`` attribute of a solution mode session:
+You can enable and disable the streaming of events pertaining to various solver
+event types via the ``events_manager`` attribute of a solution mode session:
 
 .. code:: python
 
@@ -207,5 +209,5 @@ You can control the global logging level at any time with:
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    pyfluent.set_log_level('DEBUG') # by default, only errors are shown
+    pyfluent.set_log_level("DEBUG") # by default, only errors are shown
 
