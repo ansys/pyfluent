@@ -2,7 +2,6 @@
 from enum import IntEnum
 from functools import reduce
 from typing import Dict, List, Optional, Tuple
-import warnings
 
 import grpc
 import numpy as np
@@ -325,7 +324,7 @@ def _get_surface_ids(
     List[int]
     """
     if surface_ids and (surface_name or surface_names):
-        warnings.warn("Both ids' and names provided. Ignoring the names...")
+        raise RuntimeError("Please provide either surface names or surface ids.")
     if not surface_ids:
         surface_ids = []
         if surface_names:
