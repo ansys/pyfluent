@@ -10,7 +10,7 @@ Python interpreter.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    solver_session = pyfluent.launch_fluent(mode="solver")
+    solver = pyfluent.launch_fluent(mode="solver")
 
 Launcher options
 ----------------
@@ -23,7 +23,7 @@ This example shows you how to launch Fluent in solution mode:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(mode="solver")
+   solver = pyfluent.launch_fluent(mode="solver")
 
 Meshing mode
 ~~~~~~~~~~~~
@@ -40,7 +40,7 @@ and set the floating point precision:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", mode="solver")
 
 Dimension
 ~~~~~~~~~
@@ -49,7 +49,7 @@ modeling dimension:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="2d", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", version="2d", mode="solver")
 
 Local parallel
 ~~~~~~~~~~~~~~
@@ -58,7 +58,7 @@ number of processors for local parallel execution:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(
+   solver = pyfluent.launch_fluent(
       precision="double", version="2d", processor_count=2, mode="solver"
    )
 
@@ -69,7 +69,7 @@ distributed across more than one machine:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(
+   solver = pyfluent.launch_fluent(
       precision="double",
       version="3d",
       processor_count=16,
@@ -129,14 +129,14 @@ double precision version of Fluent on all the requested machines and cores:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(precision="double", version="3d", mode="solver")
+   solver = pyfluent.launch_fluent(precision="double", version="3d", mode="solver")
 
 If you want to clamp the number of cores that Fluent is launched on you can
 provide the ``processor_count`` option:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(
+   solver = pyfluent.launch_fluent(
       precision="double", version="3d", processor_count=16, mode="solver"
    )
 
@@ -153,7 +153,7 @@ or ``-t`` and ``-cnf`` arguments to :func:`launch_fluent()
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(
+   solver = pyfluent.launch_fluent(
       precision="double", version="3d", mode="solver", additional_arguments="-t16"
    )
 
@@ -161,7 +161,7 @@ and for distributed parallel you would usually pass both parameters:
 
 .. code:: python
 
-   solver_session = pyfluent.launch_fluent(
+   solver = pyfluent.launch_fluent(
       precision="double",
       version="3d",
       mode="solver",

@@ -1,8 +1,0 @@
-BasedOnStyle: Google
-IndentWidth: 2
-ColumnLimit: 0
----
-Language: Proto
-AllowShortBlocksOnASingleLine: Empty
----
-Language: Cpp
