@@ -111,14 +111,13 @@ def load_mixing_elbow_case_dat(launch_fluent_solver_3ddp_t2):
 
 
 @pytest.fixture
-def sample_solver_with_mixing_elbow_case_dat(sample_solver_session):
-    solver_session = sample_solver_session
-    input_type, input_name = download_input_file(
-        "pyfluent/mixing_elbow", "mixing_elbow.cas.h5", "mixing_elbow.dat.h5"
-    )
-    solver_session.file.read(file_type=input_type, file_name=input_name)
-    yield solver_session
-    solver_session.exit()
+def load_static_mixer_case(sample_solver_session):
+    solver = sample_solver_session
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    print(case_path)
+    solver.file.read(file_type="case", file_name=case_path)
+    yield solver
+    solver.exit()
 
 
 @pytest.fixture
