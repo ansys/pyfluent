@@ -61,4 +61,4 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver = load_static_mixer_case
     solver2 = load_static_mixer_case_2
     _test_locn_extraction(solver, solver2)
-    #_test_area_average(solver)
+    _test_area_average(solver)
