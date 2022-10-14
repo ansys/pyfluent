@@ -21,3 +21,7 @@ postprocessing
 postprocess
 pyvista
 Pythonic
+Slurm
+Univa
+sbatch
+CommandArguments

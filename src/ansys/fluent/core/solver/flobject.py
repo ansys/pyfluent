@@ -25,7 +25,7 @@ import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
-from ansys.fluent.core.utils.logging import LOG
+from .logging import LOG
 
 # Type hints
 RealType = NewType("real", Union[float, str])  # constant or expression
@@ -144,9 +144,11 @@ class Base:
     def get_attr(self, attr) -> Any:
         """Get the requested attribute for the object."""
         attrs = self.get_attrs([attr])
-        if attr != "active?" and attrs.get("active?", True) is False:
+        if attrs:
+            attrs = attrs.get("attrs", attrs)
+        if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
-        return attrs[attr]
+        return attrs[attr] if attrs else None
 
     def is_active(self) -> bool:
         """Whether the object is active."""
@@ -234,9 +236,12 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    def set_state(self, state: StateT):
+    def set_state(self, state: StateT = None, **kwargs):
         """Set the state of the object."""
-        return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+        if kwargs:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
+        else:
+            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
     def _print_state_helper(state, out=sys.stdout, indent=0, indent_factor=2):
@@ -363,6 +368,14 @@ class Group(SettingsBase[DictStateType]):
         for query in self.query_names:
             cls = getattr(self.__class__, query)
             self._setattr(query, cls(None, self))
+
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     @classmethod
     def to_scheme_keys(cls, value):
@@ -820,7 +833,7 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
-def get_cls(name, info, parent=None):
+def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
         if name == "":
@@ -851,8 +864,14 @@ def get_cls(name, info, parent=None):
                 else:
                     dct["__doc__"] = f"'{pname.strip('_')}' child."
 
-        include_child_named_objects = info.get("include_child_named_objects", False)
-        user_creatable = info.get("user_creatable", True)
+        include_child_named_objects = info.get(
+            "include-child-named-objects?", False
+        ) or info.get("include_child_named_objects", False)
+        user_creatable = info.get("user-creatable?", False) or info.get(
+            "user_creatable", False
+        )
+        if version == "222":
+            user_creatable = True
 
         bases = (base,)
         if include_child_named_objects:
@@ -876,7 +895,7 @@ def get_cls(name, info, parent=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls = get_cls(cname, cinfo, cls)
+                ccls = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
 
                 i = 0
@@ -923,9 +942,11 @@ def get_cls(name, info, parent=None):
             _process_cls_names(arguments, cls.argument_names, write_doc=True)
             cls.__doc__ = doc
 
-        object_type = info.get("object-type")
+        object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
-            cls.child_object_type = get_cls("child-object-type", object_type, cls)
+            cls.child_object_type = get_cls(
+                "child-object-type", object_type, cls, version=version
+            )
             cls.child_object_type.rename = lambda self, name: self._parent.rename(
                 name, self._name
             )
@@ -972,7 +993,7 @@ def get_root(flproxy, version: str = "") -> Group:
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
     except Exception:
-        cls = get_cls("", obj_info)
+        cls = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
     root._setattr("_static_info", obj_info)

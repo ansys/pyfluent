@@ -217,7 +217,7 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-class PyReadOnlyStateContainer(PyCallableStateObject):
+class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -230,11 +230,15 @@ class PyReadOnlyStateContainer(PyCallableStateObject):
         (This method is the same as the get_attrib_value(attrib)
         method.)
     get_state()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
+        Get the state of the current object.
     getState()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
+        Deprecated camel case alias of get_state.
+    set_state()
+        Set the state of the current object.
+    setState()
+        Deprecated camel case alias of set_state.
+    __call__()
+        Set the state of the current object if state is provided else get its state.
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -256,6 +260,17 @@ class PyReadOnlyStateContainer(PyCallableStateObject):
         return _convert_variant_to_value(response.state)
 
     getState = get_state
+
+    def set_state(self, state: Any = None, **kwargs) -> None:
+        request = DataModelProtoModule.SetStateRequest()
+        request.rules = self.rules
+        request.path = _convert_path_to_se_path(self.path)
+        _convert_value_to_variant(
+            kwargs, request.state
+        ) if kwargs else _convert_value_to_variant(state, request.state)
+        self.service.set_state(request)
+
+    setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -294,34 +309,15 @@ class PyReadOnlyStateContainer(PyCallableStateObject):
         ).common.helpstring
         print(help_string)
 
-
-class PyStateContainer(PyReadOnlyStateContainer):
-    """Object class using StateEngine based DatamodelService as backend. Use
-    this class instead of directly calling DatamodelService's method.
-
-    Methods
-    -------
-    get_state()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
-    getState()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
-    """
-
-    def __init__(self, service: DatamodelService, rules: str, path: Path = None):
-        super().__init__(service, rules, path)
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     docstring = None
-
-    def set_state(self, state: Any) -> None:
-        request = DataModelProtoModule.SetStateRequest()
-        request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(state, request.state)
-        self.service.set_state(request)
-
-    setState = set_state
 
 
 class PyMenu(PyStateContainer):
@@ -698,7 +694,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        parent_arg,
     ):
         self.parent = parent
         self.name = name
@@ -706,11 +702,15 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.service = service
         self.rules = rules
         self.path = path
-        self.static_info = static_info
+        self.parent_arg = parent_arg
 
     def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(
-            self, attr, self.service, self.rules, self.path, self.static_info
+        arg = self.parent_arg.info.parameters[attr]
+
+        mode = AccessorModes.get_mode(arg.type)
+        py_class = mode.value[1]
+        return MakeReadOnly(
+            py_class(self, attr, self.service, self.rules, self.path, arg)
         )
 
     def get_state(self) -> Any:
@@ -732,7 +732,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         pass
 
 
-class PyCommandArguments(PyReadOnlyStateContainer):
+class PyCommandArguments(PyStateContainer):
     def __init__(
         self,
         service: DatamodelService,
@@ -764,51 +764,11 @@ class PyCommandArguments(PyReadOnlyStateContainer):
 
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
-                if arg.type in ["String", "ListString"]:
-                    return PyTextualCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                elif arg.type in ["Real", "Int", "ListReal"]:
-                    return PyNumericalCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                elif arg.type == "Dict":
-                    return PyDictionaryCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                elif arg.type in ["Bool", "Logical"]:
-                    return PyParameterCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
-                else:
-                    return PyCommandArgumentsSubItem(
-                        self,
-                        attr,
-                        self.service,
-                        self.rules,
-                        self.path,
-                        self.static_info,
-                    )
+                mode = AccessorModes.get_mode(arg.type)
+                py_class = mode.value[1]
+                return MakeReadOnly(
+                    py_class(self, attr, self.service, self.rules, self.path, arg)
+                )
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
@@ -819,10 +779,10 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyTextual.__init__(self, service, rules, path)
 
@@ -835,10 +795,10 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyNumerical.__init__(self, service, rules, path)
 
@@ -851,10 +811,10 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyDictionary.__init__(self, service, rules, path)
 
@@ -867,12 +827,63 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         service: DatamodelService,
         rules: str,
         path: Path,
-        static_info,
+        arg,
     ):
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, static_info
+            self, parent, attr, service, rules, path, arg
         )
         PyParameter.__init__(self, service, rules, path)
+
+
+class AccessorModes(Enum):
+    """Provides the standard Fluent launch modes."""
+
+    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
+    NUMBER = (
+        ["Real", "Int", "ListReal", "Real List", "Integer"],
+        PyNumericalCommandArgumentsSubItem,
+    )
+    DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)
+    PARAMETER = (
+        ["Bool", "Logical", "Logical List"],
+        PyParameterCommandArgumentsSubItem,
+    )
+    GENERIC = ([], PyCommandArgumentsSubItem)
+
+    @staticmethod
+    def get_mode(mode: str) -> "AccessorModes":
+        """Returns the LaunchMode based on the mode in string format."""
+        for m in AccessorModes:
+            if mode in m.value[0]:
+                return m
+        else:
+            return AccessorModes.GENERIC
+
+
+class MakeReadOnly:
+    """Removes 'set_state()' attribute to implement read-only behaviour."""
+
+    _unwanted_attr = ["set_state", "setState"]
+
+    def __init__(self, cmd):
+        self._cmd = cmd
+
+    def __getattr__(self, attr):
+        if attr in MakeReadOnly._unwanted_attr:
+            raise AttributeError("Command Arguments are read-only.")
+        return getattr(self._cmd, attr)
+
+    def __dir__(self):
+        returned_list = sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
+        )
+        for attr in MakeReadOnly._unwanted_attr:
+            returned_list.remove(attr)
+        return returned_list
+
+    def __call__(self):
+        return self._cmd()
 
 
 class PyMenuGeneric(PyMenu):

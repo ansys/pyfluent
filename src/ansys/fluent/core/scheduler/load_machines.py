@@ -8,11 +8,14 @@ variables, respectively.
 import csv
 import os
 import subprocess
+from typing import Dict, List
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
-def load_machines(machine_info=None, host_info=None, ncores=None):
+def load_machines(
+    machine_info: List[Dict[str, int]] = None, host_info: str = None, ncores: int = None
+) -> MachineList:
     """Provide a function to construct a machine list from allocated machines.
 
     Parameters
@@ -45,16 +48,16 @@ def load_machines(machine_info=None, host_info=None, ncores=None):
     list for LSF, PBS_NODEFILE for PBS and SLURM_JOB_NODELIST on SLURM.
     Unsupported job schedulers may provide alternative ways of providing a list
     of machines, in that case the list must be pre-parsed and provided via the
-    machineDict parameter.
+    `machine_info` or `host_info` parameters.
 
-    Depending on the SLURM environment, the hostnames contained within the
-    SLURM_JOB_NODELIST variable may not be valid to ssh to. In that case we
-    cannot pass these names to the solver. So, in the SLURM branch there is a
-    test to check if we can ssh to the first host, if not, get 'actual' machine
+    In some SLURM environments, the hostnames contained within the variable
+    SLURM_JOB_NODELIST may not be valid to ssh to. In that case those names
+    cannot be passed to the solver. So, in the SLURM branch there is a test to
+    check if ssh to the first host is working, and if not, get 'actual' machine
     names using scontrol.
     """
 
-    machine_list = []
+    machine_list = MachineList()
 
     if machine_info:
         machine_list = _construct_machine_list_manual(machine_info)
@@ -95,8 +98,10 @@ def load_machines(machine_info=None, host_info=None, ncores=None):
         machine_list = _construct_machine_list_ccs(hostList)
     elif ncores:
         machine_list = _get_local_machine(ncores)
+    elif ncores is None:
+        machine_list = _get_local_machine(1)
 
-    if machine_list and ncores:
+    if ncores is not None and ncores < machine_list.number_of_cores:
         # If both machine list and number of cores are provided, edit the
         # machine list to use exactly the number of cores indicated.
         machine_list = _restrict_machines_to_core_count(machine_list, ncores)

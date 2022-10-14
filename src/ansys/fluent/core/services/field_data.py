@@ -481,7 +481,7 @@ class FieldData:
         )
 
     def get_fields(self) -> Dict[int, Dict[int, Dict[str, np.array]]]:
-        """Get data for previously added requests.
+        """Get data for previously added requests, and clear all requests.
 
         Returns
         -------

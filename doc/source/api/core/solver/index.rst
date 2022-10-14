@@ -19,6 +19,7 @@ events, monitoring, and field data (surface, scalar, and vector).
    settings
    tuicommands
    datamodel/index
+   schemeeval
    fielddata
    events
    monitors

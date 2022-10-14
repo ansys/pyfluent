@@ -252,10 +252,84 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
-    assert w.task("Import Geometry").CommandArguments.LengthUnit.is_read_only()
+    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
     assert w.task("Import Geometry").CommandArguments.LengthUnit.is_active()
     assert w.task("Import Geometry").CommandArguments.FileName.is_read_only()
-    assert w.task("Import Geometry").CommandArguments.MeshUnit.is_read_only()
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.OneZonePer.default_value()
+        == "Body"
+    )
+
+    # Test particular to string type (allowed_values() only available in string types)
+    assert w.task(
+        "Import Geometry"
+    ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
+        "Body",
+        "Face",
+        "Object",
+    ]
+    assert (
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.FeatureAngle.default_value()
+        == 40.0
+    )
+
+    # Test particular to numerical type (min() only available in numerical types)
+    assert (
+        w.task("Import Geometry").CommandArguments.CadImportOptions.FeatureAngle.min()
+        == 0.0
+    )
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError):
+        assert w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_read_only_behaviour_of_command_arguments(new_mesh_session):
+    session_new = new_mesh_session
+    w = session_new.workflow
+    m = session_new.meshing
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments)
+    assert "set_state" not in dir(w.task("Import Geometry").CommandArguments.LengthUnit)
+
+    with pytest.raises(AttributeError) as msg:
+        w.task("Import Geometry").CommandArguments.MeshUnit.set_state("in")
+    assert msg.value.args[0] == "Command Arguments are read-only."
+
+    assert "set_state" in dir(m.ImportGeometry.new())
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_sample_use_of_command_arguments(new_mesh_session):
+    w = new_mesh_session.workflow
+
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
+    ]
+    assert w.task("Import Geometry").CommandArguments.LengthUnit.default_value() == "mm"
+    w.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    assert w.task("Import Geometry").CommandArguments.LengthUnit() == "in"
 
 
 def test_dummy_journal_data_model_methods(new_mesh_session):
@@ -268,12 +342,12 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_child()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_child_objects()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").delete_all_child_objects()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").fix_state()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."

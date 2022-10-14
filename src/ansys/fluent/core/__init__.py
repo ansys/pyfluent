@@ -15,6 +15,7 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
 )
 from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils.logging import LOG
+from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""

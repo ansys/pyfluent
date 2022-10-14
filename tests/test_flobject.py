@@ -424,6 +424,28 @@ def test_group():
     return True
 
 
+def test_settings_input_set_state():
+    r = flobject.get_root(Proxy())
+    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1.set_state(s_4="bar")
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
+    r.g_1.set_state(i_2=4)
+    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
+
+
+def test_settings_input():
+    r = flobject.get_root(Proxy())
+    r.g_1 = {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1(r_1=3.2, i_2=-3, b_3=False, s_4="foo")
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "foo"}
+    r.g_1(s_4="bar")
+    assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
+    r.g_1(i_2=4)
+    assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
+
+
 def test_named_object():
     r = flobject.get_root(Proxy())
     assert r.n_1.get_object_names() == []

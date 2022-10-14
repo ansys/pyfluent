@@ -32,14 +32,22 @@ def parse_server_info_file(filename: str):
     return ip, port, password
 
 
-def _get_preferences(session):
+def _get_datamodel_attributes(session, attribute: str):
     try:
         preferences_module = importlib.import_module(
-            f"ansys.fluent.core.datamodel_{session.version}.preferences"
+            f"ansys.fluent.core.datamodel_{session.version}." + attribute
         )
-        return preferences_module.Root(session._se_service, "preferences", [])
+        return preferences_module.Root(session._se_service, attribute, [])
     except (ImportError, ModuleNotFoundError):
         LOG.warning(_CODEGEN_MSG_DATAMODEL)
+
+
+def _get_preferences(session):
+    return _get_datamodel_attributes(session, "preferences")
+
+
+def _get_solverworkflow(session):
+    return _get_datamodel_attributes(session, "solverworkflow")
 
 
 class _BaseSession:
@@ -76,6 +84,7 @@ class _BaseSession:
         self.scheme_eval = self.fluent_connection.scheme_eval
         self._uploader = None
         self._preferences = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -122,9 +131,19 @@ class _BaseSession:
         """Return the session id."""
         return self.fluent_connection.id
 
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self.fluent_connection.start_transcript()
+    def start_transcript(
+        self, file_path: str = None, write_to_interpreter: bool = True
+    ) -> None:
+        """Start streaming of Fluent transcript.
+
+        Parameters
+        ----------
+        file_path: str, optional
+            File path to write the transcript stream.
+        write_to_interpreter: bool, optional
+            Flag to print transcript on the screen or not
+        """
+        self.fluent_connection.start_transcript(file_path, write_to_interpreter)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
@@ -260,6 +279,7 @@ class Session:
 
         self._uploader = None
         self._preferences = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -360,6 +380,13 @@ class Session:
             self._preferences = _get_preferences(self)
         return self._preferences
 
+    @property
+    def solverworkflow(self):
+        """solverworkflow datamodel root."""
+        if self._solverworkflow is None:
+            self._solverworkflow = _get_solverworkflow(self)
+        return self._solverworkflow
+
     class Solver:
         def __init__(self, fluent_connection: _FluentConnection):
             self._fluent_connection = fluent_connection
@@ -434,13 +461,11 @@ class _Uploader:
 
     def __init__(self, pim_instance):
         self.pim_instance = pim_instance
-
+        self.file_service = None
         try:
             upload_server = self.pim_instance.services["http-simple-upload-server"]
-        except AttributeError:
-            LOG.error("PIM is not installed or not authorized.")
-        except KeyError:
-            self.file_service = None
+        except (AttributeError, KeyError):
+            pass
         else:
             from simple_upload_server.client import Client
 
@@ -450,13 +475,15 @@ class _Uploader:
 
     def upload(self, file_path: str, remote_file_name: str = None):
         """Uploads a file on the server."""
-        expanded_file_path = os.path.expandvars(file_path)
-        upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
-        self.file_service.upload_file(expanded_file_path, upload_file_name)
+        if self.file_service:
+            expanded_file_path = os.path.expandvars(file_path)
+            upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
+            self.file_service.upload_file(expanded_file_path, upload_file_name)
 
     def download(self, file_name: str, local_file_path: str = None):
         """Downloads a file from the server."""
-        if self.file_service.file_exist(file_name):
-            self.file_service.download_file(file_name, local_file_path)
-        else:
-            raise FileNotFoundError("Remote file does not exist.")
+        if self.file_service:
+            if self.file_service.file_exist(file_name):
+                self.file_service.download_file(file_name, local_file_path)
+            else:
+                raise FileNotFoundError("Remote file does not exist.")
