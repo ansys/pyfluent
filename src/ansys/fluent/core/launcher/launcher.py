@@ -531,6 +531,11 @@ def launch_fluent(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
 
+        if (platform.system() == "Windows") and (
+            ("-g" in launch_string) or ("-gu" in launch_string)
+        ):
+            raise ValueError("'-g' and '-gu' is not supported on windows platform.")
+
         try:
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
