@@ -22,7 +22,6 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.session_solver_lite import SolverLite
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
 
@@ -83,7 +82,6 @@ class LaunchModes(Enum):
     MESHING_MODE = ("meshing", Meshing, True, [])
     PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
     SOLVER = ("solver", Solver, False, [])
-    SOLVER_LITE = ("solver-lite", SolverLite, False, [])
     SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
@@ -498,7 +496,7 @@ def launch_fluent(
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
-        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
+        ``"pure-meshing"`` and ``"solver"``.
     server_info_filepath: str
         Path to server-info file written out by Fluent server. The default is ``None``.
     password : str, optional
