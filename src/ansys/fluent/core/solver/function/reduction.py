@@ -1,8 +1,85 @@
+"""
+Module providing reductions functions that can be applied to Fluent data
+from one or across multiple remote Fluent sessions.
+
+The following parameters are relevant for the reduction functions. The
+expr parameter is not relevant to all reductions functions.
+
+Parameters
+----------
+expr : Any
+    Expression that can be either a string or an
+    instance of a specific settings API named_expressions
+    object. The expression can be a field variable or a
+    a valid Fluent expression. A specified named expression
+    can be handled for multiple solvers as long as the
+    expression's definition is valid in each solver (it
+    does not need to be created in each solver)
+locations : Any
+    A list of location strings, or an API object that can be
+    resolved to a list of location strings
+    (e.g., setup.boundary_conditions,
+    or results.surfaces.plane_surface),
+    or a list of such objects. If location strings are
+    included in the list, then only string must be included
+ctxt : Any, optional
+    An optional API object (e.g., the root solver session
+    object but any solver API object will suffice) to set
+    the context of the call's execution. If the location 
+    objects are strings, then such a context is required
+Returns
+-------
+float
+    The result of the reduction
+
+Examples
+--------
+
+>>> from ansys.fluent.core.solver.function import reduction
+>>> # Compute the area average of absolute pressure across all boundary
+>>> # condition surfaces of the given solver
+>>> reduction.area_average(
+...     expr = "AbsolutePressure",
+...     locations = solver.setup.boundary_conditions.velocity_inlet
+... )
+10623.0
+
+>>> from ansys.fluent.core.solver.function import reduction
+>>> # Compute the minimum of the square of velocity magnitude
+>>> # for all pressure outlets across two solvers
+>>> named_exprs = solver1.setup.named_expressions
+>>> vsquared = named_exprs["vsquared"] = {}
+>>> vsquared.definition = "VelocityMagnitude ** 2"
+>>> reduction.minimum(
+...     expr = vsquared,
+...     locations = [
+...         solver1.setup.boundary_conditions.pressure_outlet,
+...         solver2.setup.boundary_conditions.pressure_outlet
+...     ])
+19.28151
+
+>>> from ansys.fluent.core.solver.function import reduction
+>>> # Compute the minimum of the square of velocity magnitude
+>>> # for all pressure outlets across two solvers
+>>> named_exprs = solver1.setup.named_expressions
+>>> vsquared = named_exprs["vsquared"] = {}
+>>> vsquared.definition = "VelocityMagnitude ** 2"
+>>> reduction.find_minimum(
+...     expr = vsquared,
+...     locations = [
+...         solver1.setup.boundary_conditions.pressure_outlet,
+...         solver2.setup.boundary_conditions.pressure_outlet
+...     ])
+[('session-1', 'outlet1')]
+
+"""
 
 from collections import defaultdict
 from os import name
 
+
 class BadReductionRequest(Exception):
+
     def __init__(self, err):
         super().__init__(f"Could not complete reduction function request: {err}")
 
@@ -160,35 +237,126 @@ def _find_limit(limit, expr, locations, ctxt):
             results.append((solver, names))
     return results
 
-# allow expr obj and extract defn
 
 def area_average(expr, locations, ctxt=None):
+    """Compute the area average of the specified
+       expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _extent_average("Area", expr, locations, ctxt)
 
 
 def volume_average(expr, locations, ctxt=None):
+    """Compute the volume average of the specified
+       expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _extent_average("Volume", expr, locations, ctxt)
 
 
 def area(locations, ctxt=None):
+    """Compute the total area of the specified locations.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _extent("Area", locations, ctxt)
 
 
 def volume(locations, ctxt=None):
+    """Compute the total volume of the specified locations.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _extent("Volume", locations, ctxt)
 
 
 def minumum(expr, locations, ctxt=None):
+    """Compute the minimum of the specified
+       expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _limit(min, expr, locations, ctxt)
 
 
 def maximum(expr, locations, ctxt=None):
+    """Compute the maximum of the specified
+       expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _limit(max, expr, locations, ctxt)
 
 
 def find_minumum(expr, locations, ctxt=None):
+    """Compute the volume average of the specified
+       expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _find_limit(min, expr, locations, ctxt)
 
 
 def find_maximum(expr, locations, ctxt=None):
+    """Compute the volume average of the specified
+       expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
     return _find_limit(max, expr, locations, ctxt)
