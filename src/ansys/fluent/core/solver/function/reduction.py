@@ -160,7 +160,7 @@ def _eval_expr(solver, expr_str):
     # request feature: anonymous name object creation
     expr_obj = named_exprs["temp_expr_1"]
     expr_obj.definition = expr_str
-    val = 42 # expr.get_value()
+    val = expr_obj.get_value()
     named_exprs.pop(expr_name)
     return val
 

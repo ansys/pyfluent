@@ -45,8 +45,8 @@ def _test_locn_extraction(solver, solver2):
 def _test_area_average(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
-    solver.setup.named_expressions["test_expr_1"].definition = "AreaAverage(AbsolutePressure, ['inlet1'])"
-    expr_val = 42.0 # solver.setup.named_expressions["test_expr_1"].get_value()
+    solver.setup.named_expressions["test_expr_1"].definition = "AreaAve(AbsolutePressure, ['inlet1'])"
+    expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert type(expr_val) == float and expr_val != 0.0
     val = reduction.area_average(
         expr = "AbsolutePressure",
