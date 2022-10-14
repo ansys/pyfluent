@@ -155,6 +155,7 @@ def _find_limit(limit, expr, locations, ctxt):
             results.append((solver, names))
     return results
 
+# allow expr obj and extract defn
 
 def area_average(expr, locations, ctxt=None):
     return _extent_average("Area", expr, locations, ctxt)
