@@ -23,9 +23,10 @@ Python code for enabling and disabling the energy model.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
-    solver.tui.file.read_case('file.cas.h5')
-    solver.tui.define.models.energy('yes', 'no', 'no', 'no', 'yes')
+
+    solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
+    solver.tui.file.read_case("file.cas.h5")
+    solver.tui.define.models.energy("yes", "no", "no", "no", "yes")
 
 Define the viscous model
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,9 +45,9 @@ Python code for enabling and disabling various viscous models.
 
 .. code:: python
 
-    solver.tui.define.models.viscous.laminar('yes')
-    solver.tui.define.models.viscous.kw_sst('yes')
-    solver.tui.define.models.viscous.ke_standard('yes')
+    solver.tui.define.models.viscous.laminar("yes")
+    solver.tui.define.models.viscous.kw_sst("yes")
+    solver.tui.define.models.viscous.ke_standard("yes")
 
 Define the radiation model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,8 +65,8 @@ Python code for enabling and disabling various radiation models.
 
 .. code:: python
 
-    solver.tui.define.models.radiation.s2s('yes')
-    solver.tui.define.models.radiation.p1('yes')
+    solver.tui.define.models.radiation.s2s("yes")
+    solver.tui.define.models.radiation.p1("yes")
 
 Define the multiphase model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,10 +86,10 @@ Python code for defining different multiphase models.
 
 .. code:: python
 
-    solver.tui.define.models.multiphase.model('vof')
-    solver.tui.define.models.multiphase.model('eulerian')
-    solver.tui.define.models.multiphase.model('mixture')
-    solver.tui.define.models.multiphase.model('wetsteam')
+    solver.tui.define.models.multiphase.model("vof")
+    solver.tui.define.models.multiphase.model("eulerian")
+    solver.tui.define.models.multiphase.model("mixture")
+    solver.tui.define.models.multiphase.model("wetsteam")
 
 Use settings objects
 --------------------
