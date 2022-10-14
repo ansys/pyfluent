@@ -1,5 +1,4 @@
-"""
-Module providing reductions functions that can be applied to Fluent data
+"""Module providing reductions functions that can be applied to Fluent data
 from one or across multiple remote Fluent sessions.
 
 The following parameters are relevant for the reduction functions. The
@@ -25,7 +24,7 @@ locations : Any
 ctxt : Any, optional
     An optional API object (e.g., the root solver session
     object but any solver API object will suffice) to set
-    the context of the call's execution. If the location 
+    the context of the call's execution. If the location
     objects are strings, then such a context is required
 Returns
 -------
@@ -71,21 +70,16 @@ Examples
 ...         solver2.setup.boundary_conditions.pressure_outlet
 ...     ])
 [('session-1', 'outlet1')]
-
 """
-
-from collections import defaultdict
-from os import name
 
 
 class BadReductionRequest(Exception):
-
     def __init__(self, err):
         super().__init__(f"Could not complete reduction function request: {err}")
 
 
 def _is_iterable(obj):
-    return hasattr(type(obj), '__iter__')
+    return hasattr(type(obj), "__iter__")
 
 
 def _expand_locn_container(locns):
@@ -110,11 +104,11 @@ def _locn_names_and_objs(locns):
         names_and_objs = []
         for locn in locns:
             name_and_obj = _locn_name_and_obj(locn, locns)
-            if _is_iterable(name_and_obj): 
-               if isinstance(name_and_obj[0], str):
-                   names_and_objs.append(name_and_obj)
-               else:
-                   names_and_objs.extend(name_and_obj)
+            if _is_iterable(name_and_obj):
+                if isinstance(name_and_obj[0], str):
+                    names_and_objs.append(name_and_obj)
+                else:
+                    names_and_objs.extend(name_and_obj)
         return names_and_objs
     else:
         return _expand_locn_container(locns)
@@ -127,7 +121,7 @@ def _root(obj):
 def _validate_locn_list(locn_list, ctxt):
     if not all(locn[0] for locn in locn_list) and (
         any(locn[0] for locn in locn_list) or not ctxt
-        ):
+    ):
         raise BadReductionRequest("Invalid combination of arguments")
 
 
@@ -168,9 +162,12 @@ def _eval_reduction(solver, reduction, locations, expr=None):
     expr_str = _expr_to_expr_str(expr)
     return _eval_expr(
         solver,
-        (f"{reduction}({locations})" if expr_str is None else
-         f"{reduction}({expr_str},{locations})"
-    ))
+        (
+            f"{reduction}({locations})"
+            if expr_str is None
+            else f"{reduction}({expr_str},{locations})"
+        ),
+    )
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
@@ -204,18 +201,15 @@ def _limit(limit, expr, locations, ctxt):
     for solver, names in locns:
         solver = solver or _root(ctxt)
         val = _eval_reduction(
-            solver,
-            "Minimum" if limit is min else "Maximum", 
-            names,
-            expr
+            solver, "Minimum" if limit is min else "Maximum", names, expr
         )
         limit_val = val if limit_val is None else limit(val, limit_val)
     return limit_val
 
 
 def area_average(expr, locations, ctxt=None):
-    """Compute the area average of the specified
-       expression over the specified locations.
+    """Compute the area average of the specified expression over the specified
+    locations.
 
     Parameters
     ----------
@@ -230,8 +224,8 @@ def area_average(expr, locations, ctxt=None):
 
 
 def volume_average(expr, locations, ctxt=None):
-    """Compute the volume average of the specified
-       expression over the specified locations.
+    """Compute the volume average of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -274,8 +268,8 @@ def volume(locations, ctxt=None):
 
 
 def minimum(expr, locations, ctxt=None):
-    """Compute the minimum of the specified
-       expression over the specified locations.
+    """Compute the minimum of the specified expression over the specified
+    locations.
 
     Parameters
     ----------
@@ -290,8 +284,8 @@ def minimum(expr, locations, ctxt=None):
 
 
 def maximum(expr, locations, ctxt=None):
-    """Compute the maximum of the specified
-       expression over the specified locations.
+    """Compute the maximum of the specified expression over the specified
+    locations.
 
     Parameters
     ----------
