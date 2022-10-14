@@ -121,12 +121,7 @@ def _locn_names_and_objs(locns):
 
 
 def _root(obj):
-    name = getattr(obj, "obj_name", None)
-    if name is None:
-        return None
-    if name == "":
-        return obj
-    return _root(obj._parent)
+    return obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
 
 
 def _validate_locn_list(locn_list, ctxt):
@@ -218,26 +213,6 @@ def _limit(limit, expr, locations, ctxt):
     return limit_val
 
 
-def _find_limit(limit, expr, locations, ctxt):
-    locns = _locns(locations, ctxt)
-    limit_val = None
-    results = None
-    for solver, names in locns:
-        solver = solver or _root(ctxt)
-        val = _eval_reduction(
-            solver,
-            "Minimum" if limit is min else "Maximum",
-            names,
-            expr
-        )
-        if limit_val is None or limit(val, limit_val) != limit_val:
-            limit_val = val
-            results = [(solver, names)]
-        elif val == limit_val:
-            results.append((solver, names))
-    return results
-
-
 def area_average(expr, locations, ctxt=None):
     """Compute the area average of the specified
        expression over the specified locations.
@@ -298,7 +273,7 @@ def volume(locations, ctxt=None):
     return _extent("Volume", locations, ctxt)
 
 
-def minumum(expr, locations, ctxt=None):
+def minimum(expr, locations, ctxt=None):
     """Compute the minimum of the specified
        expression over the specified locations.
 
@@ -328,35 +303,3 @@ def maximum(expr, locations, ctxt=None):
     float
     """
     return _limit(max, expr, locations, ctxt)
-
-
-def find_minumum(expr, locations, ctxt=None):
-    """Compute the volume average of the specified
-       expression over the specified locations.
-
-    Parameters
-    ----------
-    expr : Any
-    locations : Any
-    ctxt : Any, optional
-    Returns
-    -------
-    float
-    """
-    return _find_limit(min, expr, locations, ctxt)
-
-
-def find_maximum(expr, locations, ctxt=None):
-    """Compute the volume average of the specified
-       expression over the specified locations.
-
-    Parameters
-    ----------
-    expr : Any
-    locations : Any
-    ctxt : Any, optional
-    Returns
-    -------
-    float
-    """
-    return _find_limit(max, expr, locations, ctxt)
