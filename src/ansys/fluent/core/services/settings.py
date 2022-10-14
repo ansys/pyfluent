@@ -62,6 +62,10 @@ class _SettingsServiceImpl:
         return self.__stub.ExecuteCommand(request, metadata=self.__metadata)
 
     @catch_grpc_error
+    def execute_query(self, request):
+        return self.__stub.ExecuteQuery(request, metadata=self.__metadata)
+
+    @catch_grpc_error
     def get_attrs(self, request):
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
 
@@ -220,6 +224,11 @@ class SettingsService:
                 child.name: self._extract_static_info(child.value)
                 for child in info.commands
             }
+        if info.queries:
+            ret["queries"] = {
+                child.name: self._extract_static_info(child.value)
+                for child in info.queries
+            }
         if info.arguments:
             ret["arguments"] = {
                 child.name: self._extract_static_info(child.value)
@@ -271,6 +280,18 @@ class SettingsService:
         self._set_state_from_value(request.args, kwds)
 
         response = self.__service_impl.execute_cmd(request)
+        return self._get_state_from_value(response.reply)
+
+    @_trace
+    def execute_query(self, path: str, query: str, **kwds) -> Any:
+        """Execute a given query with the provided keyword arguments."""
+        request = _get_request_instance_for_path(
+            SettingsModule.ExecuteQueryRequest, path
+        )
+        request.query = query
+        self._set_state_from_value(request.args, kwds)
+
+        response = self.__service_impl.execute_query(request)
         return self._get_state_from_value(response.reply)
 
     @_trace
