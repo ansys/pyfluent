@@ -1,4 +1,5 @@
 """Sample testing code (next)."""
+from enum import Enum
 from pathlib import Path
 from typing import Dict, Union
 
@@ -10,6 +11,11 @@ from parsers._variant_value_convertor import (
 
 from ansys.api.fluent.v0 import datamodel_se_pb2, datamodel_se_pb2_grpc
 from tests.run_stateengine_server import kill_server, run_server
+
+
+class StateType(Enum):
+    string = (str, "string_state")
+    boolean = (bool, "bool_state")
 
 
 class _PreferencesClient:
@@ -24,10 +30,15 @@ class _PreferencesClient:
         self._stub = datamodel_se_pb2_grpc.DataModelStub(self._channel)
 
     def set_state(self, path: str, state: str):
+        state_type = None
+        # TODO: Later use the Enum class StateType.
+        if type(state) == str:
+            state_type = "string_state"
+        if type(state) == bool:
+            state_type = "bool_state"
         # Sets the color theme to be dark.
-        # TODO: Later set this to be of different types
         self._stub.setState(
-            datamodel_se_pb2.SetStateRequest(path=path, state={"string_state": state})
+            datamodel_se_pb2.SetStateRequest(path=path, state={state_type: state})
         )
 
     def get_state(self, path: str):
