@@ -80,18 +80,21 @@ def _eval_expr(solver, expr_str):
     named_exprs.pop(expr_name)
     return val
 
+def _eval_reduction(solver, reduction, expr, locations=None):
+    return _eval_expr(
+        solver,
+        (f"{reduction}({expr})" if locations is None else
+         f"{reduction}({expr},{locations})"
+    ))
+
 def area_average(expr, locations, ctxt=None):
     locns = _locns(locations, ctxt)
-    multi_solver = len(locns) > 1
     numerator = 0.0
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        val = _eval_expr(solver, f"AreaAverage({expr},{names})")
-        if multi_solver:
-            extent = _eval_expr(solver, f"Area({names})")
-        else:
-            extent = 1
+        val = _eval_reduction(solver, "AreaAverage", expr, names)
+        extent = _eval_expr(solver, f"Area({names})") if len(locns) > 1 else 1
         numerator += val * extent
         denominator += extent
     if denominator == 0.0:
