@@ -88,11 +88,16 @@ def _eval_expr(solver, expr_str):
     return val
 
 
+def _expr_to_expr_str(expr):
+    return getattr(expr, "definition", expr) if expr is not None else expr
+
+
 def _eval_reduction(solver, reduction, locations, expr=None):
+    expr_str = _expr_to_expr_str(expr)
     return _eval_expr(
         solver,
-        (f"{reduction}({locations})" if expr is None else
-         f"{reduction}({expr},{locations})"
+        (f"{reduction}({locations})" if expr_str is None else
+         f"{reduction}({expr_str},{locations})"
     ))
 
 
@@ -102,7 +107,7 @@ def _extent_average(extent_name, expr, locations, ctxt):
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        val = _eval_reduction(solver, f"{extent_name}Average", names, expr)
+        val = _eval_reduction(solver, f"{extent_name}Ave", names, expr)
         extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
         numerator += val * extent
         denominator += extent
