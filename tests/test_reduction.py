@@ -1,8 +1,6 @@
 import pytest
 import weakref
-from util.fixture_fluent import (  # load_static_mixer_case_2; noqa: F401
-    load_static_mixer_case,
-)
+from util.fixture_fluent import load_static_mixer_case # noqa: F401
 from ansys.fluent.core.solver import function
 from ansys.fluent.core.solver.function import reduction
 
