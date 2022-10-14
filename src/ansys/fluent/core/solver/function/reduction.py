@@ -47,17 +47,14 @@ def _root(obj):
         return obj
     return _root(obj._parent)
 
-'''
-API objects no hashable so avoid dict
-def _locns(locns):
-    locn_names_and_objs = _locn_names_and_objs(locns)
-    locn_dict = defaultdict(list)
-    for name, obj in locn_names_and_objs:
-        locn_dict[_root(obj)].append(name)
-    return locn_dict
-'''
+def _validate_locn_list(locn_list, ctxt):
+    if not all(locn[0] for locn in locn_list) and (
+        any(locn[0] for locn in locn_list) or not ctxt
+        ):
+        raise BadReductionRequest("Invalid combination of arguments")
 
-def _locns(locns):
+
+def _locns(locns, ctxt):
     locn_names_and_objs = _locn_names_and_objs(locns)
     locn_list = []
     for name, obj in locn_names_and_objs:
@@ -70,36 +67,33 @@ def _locns(locns):
                 break
         if not found:
             locn_list.append([root, [name]])
+    _validate_locn_list(locn_list, ctxt)
     return locn_list
 
+def _eval_expr(solver, expr_str):
+    named_exprs = solver.setup.named_expressions
+    expr_name = "temp_expr_1"
+    named_exprs[expr_name] = {}
+    expr_obj = named_exprs["temp_expr_1"] # request anonymous name object creation
+    expr_obj.definition = expr_str
+    val = 42 # expr.get_value()
+    named_exprs.pop(expr_name)
+    return val
+
 def area_average(expr, locations, ctxt=None):
-    locns = _locns(locations)
-    if not all(locn[0] for locn in locns) and (
-        any(locn[0] for locn in locns) or not ctxt
-        ):
-        raise BadReductionRequest("Invlaid combination of arguments")
+    locns = _locns(locations, ctxt)
     multi_solver = len(locns) > 1
     numerator = 0.0
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        named_exprs = solver.setup.named_expressions
-        expr_name = "temp_expr_1"
-        named_exprs[expr_name] = {}
-        expr = named_exprs["temp_expr_1"] # request anonymous name object creation
-        expr.definition = f"AreaAverage({expr},{names})"
-        val = 42 # expr.get_value()
+        val = _eval_expr(solver, f"AreaAverage({expr},{names})")
         if multi_solver:
-            expr_name_2 = "temp_expr_2"
-            expr = named_exprs[expr_name_2]
-            expr.definition = f"Area({names})"
-            extent = 1 # expr.get_value()
-            named_exprs.pop(expr_name_2)
+            extent = _eval_expr(solver, f"Area({names})")
         else:
             extent = 1
         numerator += val * extent
         denominator += extent
-        named_exprs.pop(expr_name)
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
