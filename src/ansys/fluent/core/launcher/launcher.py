@@ -302,13 +302,11 @@ def _update_launch_string_wrt_gui_options(
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
     ):
-        if (
-            "-g " not in additional_arguments
-            and "-gu " not in additional_arguments
-            and not additional_arguments.endswith("-g")
-            and not additional_arguments.endswith("-gu")
-        ):
+        if not {"-g", "-gu"} & set(additional_arguments.split()):
             launch_string += " -hidden"
+        else:
+            if platform.system() == "Windows":
+                raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
     return launch_string
 
@@ -530,11 +528,6 @@ def launch_fluent(
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
-
-        if (platform.system() == "Windows") and (
-            ("-g" in launch_string) or ("-gu" in launch_string)
-        ):
-            raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
         try:
             LOG.info("Launching Fluent with cmd: %s", launch_string)
