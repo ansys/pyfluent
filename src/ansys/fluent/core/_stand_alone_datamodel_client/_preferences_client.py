@@ -4,12 +4,13 @@ from pathlib import Path
 from typing import Dict, Union
 
 import grpc
-from parsers._variant_value_convertor import (
-    _convert_value_to_variant,
-    _convert_variant_to_value,
-)
 
-from ansys.api.fluent.v0 import datamodel_se_pb2, datamodel_se_pb2_grpc
+from ansys.fluent.core.services.datamodel_se import (
+    DatamodelService,
+    PyCommand,
+    PyDictionary,
+    PyMenu,
+)
 from tests.run_stateengine_server import kill_server, run_server
 
 
@@ -21,48 +22,41 @@ class StateType(Enum):
 class _PreferencesClient:
     def __init__(self):
         self._channel = None
-        self._stub = None
+        self._data_model_service = None
 
     def run_preferences_server(self, batch_file_path: Union[str, Path]):
         run_command = str(batch_file_path) + " preferences"
         run_server(run_command)
         self._channel = grpc.insecure_channel("localhost:50055")
-        self._stub = datamodel_se_pb2_grpc.DataModelStub(self._channel)
+        self._data_model_service = DatamodelService(channel=self._channel, metadata=[])
 
     def set_state(self, path: str, state: str):
-        state_type = None
-        # TODO: Later use the Enum class StateType.
-        if type(state) == str:
-            state_type = "string_state"
-        if type(state) == bool:
-            state_type = "bool_state"
-        # Sets the color theme to be dark.
-        self._stub.setState(
-            datamodel_se_pb2.SetStateRequest(path=path, state={state_type: state})
+        py_menu = PyMenu(
+            self._data_model_service, rules="preferences", path=[(path, "")]
         )
+        return py_menu.set_state(state)
 
     def get_state(self, path: str):
-        updated_preferences_dict = self._stub.getState(
-            datamodel_se_pb2.GetStateRequest(path=path)
+        py_menu = PyMenu(
+            self._data_model_service, rules="preferences", path=[(path, "")]
         )
-        return _convert_variant_to_value(updated_preferences_dict.state)
+        return py_menu.get_state()
 
     def get_static_info(self, rules: str):
-        return self._stub.getStaticInfo(
-            datamodel_se_pb2.GetStaticInfoRequest(rules=rules)
-        )
+        py_command = PyCommand(self._data_model_service, rules=rules, command="")
+        return py_command._get_static_info()
 
     def update_dict(self, rules: str, path: str, dict_to_merge: Dict):
-        request = datamodel_se_pb2.UpdateDictRequest()
-        request.rules = rules
-        request.path = path
-        _convert_value_to_variant(dict_to_merge, request.dicttomerge)
-        request.wait = True
-        self._stub.updateDict(request)
+        py_dictionary = PyDictionary(
+            self._data_model_service, rules=rules, path=[(path, "")]
+        )
+        return py_dictionary.update_dict(dict_to_merge)
 
-    def getAttributeValue(self):
-        # TODO: to be implemented
-        pass
+    def get_attrib_value(self, path: str, attribute: str):
+        py_menu = PyMenu(
+            self._data_model_service, rules="preferences", path=[(path, "")]
+        )
+        return py_menu.get_attrib_value(attribute)
 
     def deleteObject(self):
         # TODO: to be implemented
@@ -73,14 +67,16 @@ class _PreferencesClient:
         pass
 
     def create_command_arguments(self):
-        self._stub.createCommandArguments(
-            datamodel_se_pb2.CreateCommandArgumentsRequest()
-        )
+        pass
+        # self._stub.createCommandArguments(
+        #     datamodel_se_pb2.CreateCommandArgumentsRequest()
+        # )
 
     def delete_command_arguments(self):
-        self._stub.deleteCommandArguments(
-            datamodel_se_pb2.DeleteCommandArgumentsRequest()
-        )
+        pass
+        # self._stub.deleteCommandArguments(
+        #     datamodel_se_pb2.DeleteCommandArgumentsRequest()
+        # )
 
     def close_server(self):
         self._channel.close()
