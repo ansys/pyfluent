@@ -700,7 +700,7 @@ class Query(Base):
     """Query object."""
 
     def __init__(self, name: str = None, parent=None):
-        """__init__ of Command class."""
+        """__init__ of Query class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
             for argument in self.argument_names:
