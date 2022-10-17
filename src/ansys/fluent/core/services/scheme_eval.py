@@ -296,7 +296,6 @@ class SchemeEval:
             (S("with-input-from-string"), input, S("read")),
             S("user-initial-environment"),
         )
-        print(type(self.version), self.version)
         _convert_py_value_to_scheme_pointer(val, request, self.version)
         response = self.service.eval(request)
         return _convert_scheme_pointer_to_py_value(response, self.version)
