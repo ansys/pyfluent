@@ -302,6 +302,11 @@ jobs:
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v22.2.0
 
+      - name: Print 22.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_222.py
+          python -c "from ansys.fluent.core.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Cache 23.1 API Code
         uses: actions/cache@v3
         id: cache-231-api-code
@@ -333,6 +338,11 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           PYFLUENT_LAUNCH_CONTAINER: 1
           FLUENT_IMAGE_TAG: v23.1.0
+
+      - name: Print 23.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_231.py
+          python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
