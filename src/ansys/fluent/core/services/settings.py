@@ -224,7 +224,7 @@ class SettingsService:
                 child.name: self._extract_static_info(child.value)
                 for child in info.commands
             }
-        if info.queries:
+        if hasattr(info, "queries") and info.queries:
             ret["queries"] = {
                 child.name: self._extract_static_info(child.value)
                 for child in info.queries
