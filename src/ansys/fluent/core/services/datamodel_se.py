@@ -932,6 +932,26 @@ class PyMenuGeneric(PyMenu):
             return self._get_child(name)
 
 
+class PySimpleMenuGeneric(PyMenu, PyDictionary):
+    """A simple implementation of PyMenuGeneric applicable only for SINGLETONS.
+
+    This is required for the stand-alone datamodel server to avoid the
+    usage of 'service.get_specs'
+    """
+
+    attrs = ("service", "rules", "path")
+
+    def _get_child(self, name: str):
+        child_path = self.path + [(name, "")]
+        return PySimpleMenuGeneric(self.service, self.rules, child_path)
+
+    def __getattr__(self, name: str):
+        if name in PySimpleMenuGeneric.attrs:
+            return super().__getattr__(name)
+        else:
+            return self._get_child(name)
+
+
 class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
     def __iter__(self):
         for name in self._get_child_object_display_names():
