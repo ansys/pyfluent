@@ -11,7 +11,7 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
@@ -294,16 +294,19 @@ def _get_session_info(
     return new_session, meshing_mode, argvals, mode
 
 
+def _raise_exception_g_gu_in_windows_os(launch_string: Union[str, List[str]]) -> None:
+    """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    if (platform.system() == "Windows") and (
+        ("-g" in launch_string) or ("-gu" in launch_string)
+    ):
+        raise ValueError("'-g' and '-gu' is not supported on windows platform.")
+
+
 def _update_launch_string_wrt_gui_options(
     launch_string: str, show_gui: bool = None, additional_arguments: str = ""
 ) -> str:
     """Checks for all gui options in additional arguments and updates the
     launch string with hidden, if none of the options are met."""
-
-    if (platform.system() == "Windows") and (
-        ("-g" in launch_string) or ("-gu" in launch_string)
-    ):
-        raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
@@ -531,6 +534,7 @@ def launch_fluent(
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
+        _raise_exception_g_gu_in_windows_os(launch_string)
 
         try:
             LOG.info("Launching Fluent with cmd: %s", launch_string)
@@ -573,6 +577,7 @@ def launch_fluent(
             args = _build_fluent_launch_args_string(**argvals).split()
             if meshing_mode:
                 args.append(" -meshing")
+            _raise_exception_g_gu_in_windows_os(args)
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.

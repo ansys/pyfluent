@@ -1,3 +1,5 @@
+import platform
+
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -43,11 +45,18 @@ def test_unsuccessful_fluent_connection(with_launching_container):
     assert msg.value.args[0] == "The launch process has been timed out."
 
 
-def test_additonal_argument_g_gu():
-    with pytest.raises(ValueError) as msg:
-        pyfluent.launch_fluent(mode="solver", show_gui=True, additional_arguments="-g")
-    assert msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
+def test_additional_argument_g_gu(with_launching_container):
+    if platform.system() == "Windows":
+        with pytest.raises(ValueError) as msg:
+            pyfluent.launch_fluent(
+                mode="solver", show_gui=True, additional_arguments="-g"
+            )
+        assert (
+            msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
+        )
 
-    with pytest.raises(ValueError) as msg:
-        pyfluent.launch_fluent(mode="solver", additional_arguments="-gu")
-    assert msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
+        with pytest.raises(ValueError) as msg:
+            pyfluent.launch_fluent(mode="solver", additional_arguments="-gu")
+        assert (
+            msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
+        )
