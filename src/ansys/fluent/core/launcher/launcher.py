@@ -299,14 +299,17 @@ def _update_launch_string_wrt_gui_options(
 ) -> str:
     """Checks for all gui options in additional arguments and updates the
     launch string with hidden, if none of the options are met."""
+
+    if (platform.system() == "Windows") and (
+        ("-g" in launch_string) or ("-gu" in launch_string)
+    ):
+        raise ValueError("'-g' and '-gu' is not supported on windows platform.")
+
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
     ):
         if not {"-g", "-gu"} & set(additional_arguments.split()):
             launch_string += " -hidden"
-        else:
-            if platform.system() == "Windows":
-                raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
     return launch_string
 
