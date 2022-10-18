@@ -3,6 +3,6 @@ from ansys.fluent.core._stand_alone_datamodel_client._datamodel_client import (
 )
 
 
-class _PreferencesClient(_DataModelClient):
+class _ModelsClient(_DataModelClient):
     def __init__(self):
-        super().__init__("preferences")
+        super().__init__("models")
