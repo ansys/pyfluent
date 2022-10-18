@@ -60,3 +60,6 @@ def test_additional_argument_g_gu(with_launching_container):
         assert (
             msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
         )
+
+    if not platform.system() == "Windows":
+        pyfluent.launch_fluent(mode="solver", show_gui=True, additional_arguments="-g")
