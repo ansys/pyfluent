@@ -1,4 +1,3 @@
-# TODO: Later move this to test directory.
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._stand_alone_datamodel_client._dummy_client import _DummyClient
 from ansys.fluent.core._stand_alone_datamodel_client._preferences_client import (
