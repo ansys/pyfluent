@@ -699,6 +699,14 @@ class Command(Base):
 class Query(Base):
     """Query object."""
 
+    def __init__(self, name: str = None, parent=None):
+        """__init__ of Query class."""
+        super().__init__(name, parent)
+        if hasattr(self, "argument_names"):
+            for argument in self.argument_names:
+                cls = getattr(self.__class__, argument)
+                self._setattr(argument, cls(None, self))
+
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
