@@ -118,7 +118,7 @@ def _get_fluent_exe_path():
         exe_path = FLUENT_EXE_PATH[0]
     else:
         exe_path = get_fluent_path()
-        if platform.system() == "Windows":
+        if _is_windows():
             exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
         else:
             exe_path = exe_path / "bin" / "fluent"
@@ -136,7 +136,7 @@ def _get_server_info_filepath():
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if platform.system() == "Windows":
+    if _is_windows():
         kwargs.update(
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
             | subprocess.DETACHED_PROCESS
@@ -294,11 +294,14 @@ def _get_session_info(
     return new_session, meshing_mode, argvals, mode
 
 
+def _is_windows():
+    """Check if the current operating system is windows."""
+    return platform.system() == "Windows"
+
+
 def _raise_exception_g_gu_in_windows_os(launch_string: Union[str, List[str]]) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
-    if (platform.system() == "Windows") and (
-        ("-g" in launch_string) or ("-gu" in launch_string)
-    ):
+    if _is_windows() and (("-g" in launch_string) or ("-gu" in launch_string)):
         raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
 
