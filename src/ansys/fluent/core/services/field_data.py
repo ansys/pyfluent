@@ -65,6 +65,8 @@ class FieldInfo:
     def get_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
+        if not surface_ids:
+            surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
         request.fieldName = field
         request.nodeValue = node_value
