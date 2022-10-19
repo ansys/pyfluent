@@ -7,12 +7,7 @@ import pytest
 from util.meshing_workflow import new_mesh_session  # noqa: F401
 from util.solver_workflow import new_solver_session  # noqa: F401
 
-from ansys.api.fluent.v0 import (
-    health_pb2,
-    health_pb2_grpc,
-    scheme_eval_pb2,
-    scheme_eval_pb2_grpc,
-)
+from ansys.api.fluent.v0 import health_pb2, health_pb2_grpc
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.examples import download_file
@@ -34,12 +29,6 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
         )
 
 
-class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
-    def StringEval(self, request, context):
-        if request.input == "(cx-version)":
-            return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
-
-
 def test_create_session_by_passing_ip_and_port(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -48,9 +37,6 @@ def test_create_session_by_passing_ip_and_port(
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     session = _BaseSession(_FluentConnection(ip=ip, port=port, cleanup_on_exit=False))
@@ -68,9 +54,6 @@ def test_create_session_by_setting_ip_and_port_env_var(
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
@@ -90,9 +73,6 @@ def test_create_session_by_passing_grpc_channel(
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
@@ -109,9 +89,6 @@ def test_create_session_from_server_info_file(tmp_path: Path) -> None:
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n12345")
@@ -132,9 +109,6 @@ def test_create_session_from_server_info_file_with_wrong_password(
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     server.start()
     server_info_file = tmp_path / "server_info.txt"
     server_info_file.write_text(f"{ip}:{port}\n1234")
@@ -156,9 +130,6 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port(
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     session = launch_fluent(
@@ -182,9 +153,6 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
     health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
-    scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
-        MockSchemeEvalServicer(), server
-    )
     monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
@@ -222,7 +190,6 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
     assert returned
 
 
-@pytest.mark.skip("Failing in GitHub CI")
 def test_old_style_session(with_launching_container):
     session = pyfluent.launch_fluent()
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

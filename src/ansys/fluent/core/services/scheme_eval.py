@@ -65,20 +65,20 @@ class Symbol:
         self.str = str
 
 
-def _convert_pair_to_scheme_pointer(val: Tuple[Any, Any], p: SchemePointer, version):
-    _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
-    _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
+def _convert_pair_to_scheme_pointer(val: Tuple[Any, Any], p: SchemePointer):
+    _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
+    _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
 
 
 def _convert_list_of_pairs_to_scheme_pointer(
-    val: List[Tuple[Any, Any]], p: SchemePointer, version
+    val: List[Tuple[Any, Any]], p: SchemePointer
 ):
     if len(val) > 0:
-        _convert_pair_to_scheme_pointer(val[0], p.pair.car, version)
-        _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr, version)
+        _convert_pair_to_scheme_pointer(val[0], p.pair.car)
+        _convert_list_of_pairs_to_scheme_pointer(val[1:], p.pair.cdr)
 
 
-def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
+def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer):
     """Convert Python datatype to Scheme pointer."""
     if isinstance(val, bool):
         p.b = val
@@ -91,37 +91,25 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
     elif isinstance(val, Symbol):
         p.sym = val.str
     elif isinstance(val, tuple) and len(val) == 2:
-        _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
-        _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
+        _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
+        _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
     elif isinstance(val, list) or isinstance(val, tuple):
-        if version < "23.1":
-            if val:
-                val = list(val)
-                _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
-                _convert_py_value_to_scheme_pointer(val[1:], p.pair.cdr, version)
-        else:
-            for item in val:
-                _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
+        if val:
+            val = list(val)
+            _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
+            _convert_py_value_to_scheme_pointer(val[1:], p.pair.cdr)
     elif isinstance(val, dict):
-        if version < "23.1":
-            as_list = list(val.items())
-            if as_list:
-                _convert_pair_to_scheme_pointer(as_list[0], p.pair.car, version)
-                _convert_list_of_pairs_to_scheme_pointer(
-                    as_list[1:], p.pair.cdr, version
-                )
-        else:
-            for k, v in val.items():
-                item = p.list.item.add()
-                _convert_py_value_to_scheme_pointer(k, item.pair.car, version)
-                _convert_py_value_to_scheme_pointer(v, item.pair.cdr, version)
+        as_list = list(val.items())
+        if as_list:
+            _convert_pair_to_scheme_pointer(as_list[0], p.pair.car)
+            _convert_list_of_pairs_to_scheme_pointer(as_list[1:], p.pair.cdr)
 
 
-def _convert_scheme_pointer_to_py_list(p: SchemePointer, version):
+def _convert_scheme_pointer_to_py_list(p: SchemePointer):
     val = []
-    val.append(_convert_scheme_pointer_to_py_value(p.pair.car, version))
+    val.append(_convert_scheme_pointer_to_py_value(p.pair.car))
     if p.pair.cdr.HasField("pair"):
-        tail = _convert_scheme_pointer_to_py_list(p.pair.cdr, version)
+        tail = _convert_scheme_pointer_to_py_list(p.pair.cdr)
         val.extend([tail] if isinstance(tail, dict) else tail)
     if all(
         isinstance(x, dict)
@@ -142,7 +130,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer, version):
     return val
 
 
-def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
+def _convert_scheme_pointer_to_py_value(p: SchemePointer):
     """Convert Scheme pointer to Python datatype."""
     if p.HasField("b"):
         return p.b
@@ -157,38 +145,17 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        if version < "23.1":
-            if any(
-                p.pair.cdr.HasField(x)
-                for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
-            ):
-                return (
-                    _convert_scheme_pointer_to_py_value(p.pair.car, version),
-                    _convert_scheme_pointer_to_py_value(p.pair.cdr, version),
-                )
-            else:
-                val = _convert_scheme_pointer_to_py_list(p, version)
-                return val
-        else:
+        if any(
+            p.pair.cdr.HasField(x)
+            for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
+        ):
             return (
-                _convert_scheme_pointer_to_py_value(p.pair.car, version),
-                _convert_scheme_pointer_to_py_value(p.pair.cdr, version),
+                _convert_scheme_pointer_to_py_value(p.pair.car),
+                _convert_scheme_pointer_to_py_value(p.pair.cdr),
             )
-    elif p.HasField("list"):
-        is_dict = all(item.HasField("pair") for item in p.list.item)
-        if is_dict:
-            return {
-                _convert_scheme_pointer_to_py_value(
-                    item.pair.car, version
-                ): _convert_scheme_pointer_to_py_value(item.pair.cdr, version)
-                for item in p.list.item
-            }
         else:
-            return [
-                _convert_scheme_pointer_to_py_value(item, version)
-                for item in p.list.item
-            ]
-
+            val = _convert_scheme_pointer_to_py_list(p)
+            return val
     return None
 
 
@@ -209,9 +176,8 @@ class SchemeEval:
         value
     """
 
-    def __init__(self, service: SchemeEvalService, version=None):
+    def __init__(self, service: SchemeEvalService):
         self.service = service
-        self.version = version
 
     def eval(self, val: Any) -> Any:
         """Evaluates a scheme expression.
@@ -227,9 +193,9 @@ class SchemeEval:
             Output scheme value represented as Python datatype
         """
         request = SchemePointer()
-        _convert_py_value_to_scheme_pointer(val, request, self.version)
+        _convert_py_value_to_scheme_pointer(val, request)
         response = self.service.eval(request)
-        return _convert_scheme_pointer_to_py_value(response, self.version)
+        return _convert_scheme_pointer_to_py_value(response)
 
     def exec(
         self, commands: Sequence[str], wait: bool = True, silent: bool = True
@@ -296,6 +262,6 @@ class SchemeEval:
             (S("with-input-from-string"), input, S("read")),
             S("user-initial-environment"),
         )
-        _convert_py_value_to_scheme_pointer(val, request, self.version)
+        _convert_py_value_to_scheme_pointer(val, request)
         response = self.service.eval(request)
-        return _convert_scheme_pointer_to_py_value(response, self.version)
+        return _convert_scheme_pointer_to_py_value(response)
