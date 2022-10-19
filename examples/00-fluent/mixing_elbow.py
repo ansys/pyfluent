@@ -75,9 +75,10 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import the CAD geometry and set the length units to inches.
 
-meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-    FileName=import_filename, LengthUnit="in"
-)
+meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+    "FileName": import_filename,
+    "LengthUnit": "in",
+}
 
 # Import geometry
 # ~~~~~~~~~~~~~~~
@@ -115,9 +116,9 @@ meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
     SetupTypeChanged=False
 )
-meshing.workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    SetupType="The geometry consists of only fluid regions with no voids"
-)
+meshing.workflow.TaskObject["Describe Geometry"].Arguments = {
+    "SetupType": "The geometry consists of only fluid regions with no voids"
+}
 meshing.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 meshing.workflow.TaskObject["Describe Geometry"].Execute()
 

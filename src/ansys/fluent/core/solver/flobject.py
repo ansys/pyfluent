@@ -708,6 +708,14 @@ class Command(Base):
 class Query(Base):
     """Query object."""
 
+    def __init__(self, name: str = None, parent=None):
+        """__init__ of Query class."""
+        super().__init__(name, parent)
+        if hasattr(self, "argument_names"):
+            for argument in self.argument_names:
+                cls = getattr(self.__class__, argument)
+                self._setattr(argument, cls(None, self))
+
     def arguments(self) -> Any:
         """Get the arguments for the query."""
         attrs = self.get_attrs(["arguments"])
@@ -851,7 +859,7 @@ class _NonCreatableNamedObjectMixin(
         child.set_state(value)
 
 
-def get_cls(name, info, parent=None):
+def get_cls(name, info, parent=None, version=None):
     """Create a class for the object identified by "path"."""
     try:
         if name == "":
@@ -888,6 +896,8 @@ def get_cls(name, info, parent=None):
         user_creatable = info.get("user-creatable?", False) or info.get(
             "user_creatable", False
         )
+        if version == "222":
+            user_creatable = True
 
         bases = (base,)
         if include_child_named_objects:
@@ -911,7 +921,7 @@ def get_cls(name, info, parent=None):
             nonlocal cls
 
             for cname, cinfo in info_dict.items():
-                ccls = get_cls(cname, cinfo, cls)
+                ccls = get_cls(cname, cinfo, cls, version=version)
                 ccls_name = ccls.__name__
 
                 i = 0
@@ -960,7 +970,9 @@ def get_cls(name, info, parent=None):
 
         object_type = info.get("object-type", False) or info.get("object_type", False)
         if object_type:
-            cls.child_object_type = get_cls("child-object-type", object_type, cls)
+            cls.child_object_type = get_cls(
+                "child-object-type", object_type, cls, version=version
+            )
             cls.child_object_type.rename = lambda self, name: self._parent.rename(
                 name, self._name
             )
@@ -1007,7 +1019,7 @@ def get_root(flproxy, version: str = "") -> Group:
             raise RuntimeError("Mismatch in hash values")
         cls = settings.root
     except Exception:
-        cls = get_cls("", obj_info)
+        cls = get_cls("", obj_info, version=version)
     root = cls()
     root.set_flproxy(flproxy)
     root._setattr("_static_info", obj_info)

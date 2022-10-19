@@ -8,12 +8,11 @@ to run solver meshing commands and set up units.
 
 Check the mesh
 --------------
-This example shows a comparison between the TUI command and the
-Python code for performing mesh consistency checks and displaying a
-report in the console. This report lists domain extents, volume statistics,
-face area statistics, any warnings, and information about failures.
-The level of information shown depends on the setting specified for
-the verbosity (level 0 to 3).
+This example shows a comparison between the TUI command and the Python code for
+performing mesh consistency checks and displaying a report in the console. This
+report lists domain extents, volume statistics, face area statistics, any
+warnings, and information about failures. The level of information shown depends
+on the setting specified for the verbosity (level 0 to 3).
 
 **TUI command**
 
@@ -33,9 +32,9 @@ the verbosity (level 0 to 3).
 
 Report mesh quality
 -------------------
-This example shows a comparison between the TUI command and the
-Python code for displaying information about the quality of the mesh in the
-console, including the minimum orthogonal quality and maximum aspect ratio.
+This example shows a comparison between the TUI command and the Python code for
+displaying information about the quality of the mesh in the console, including
+the minimum orthogonal quality and maximum aspect ratio.
 
 **TUI command**
 
@@ -51,9 +50,8 @@ console, including the minimum orthogonal quality and maximum aspect ratio.
 
 Scale mesh
 ------------
-This example shows a comparison between the TUI command and the
-Python code for scaling the mesh in each of the active Cartesian
-coordinate directions.
+This example shows a comparison between the TUI command and the Python code for
+scaling the mesh in each of the active Cartesian coordinate directions.
 
 **TUI command**
 
@@ -69,8 +67,8 @@ coordinate directions.
 
 Define units
 --------------
-The following example shows a comparison between the TUI command and the
-Python code for setting the unit conversion factors.
+The following example shows a comparison between the TUI command and the Python
+code for setting the unit conversion factors.
 
 **TUI command**
 
@@ -82,4 +80,4 @@ Python code for setting the unit conversion factors.
 
 .. code:: python
 
-    solver.tui.define.units('length', 'in')
+    solver.tui.define.units("length", "in")

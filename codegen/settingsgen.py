@@ -31,6 +31,8 @@ import pickle
 import pprint
 import shutil
 
+from fix_doc import fix_settings_doc
+
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
@@ -74,6 +76,18 @@ def _populate_hash_dict(name, info, cls):
     else:
         commands_hash = None
 
+    queries = info.get("queries")
+    if queries:
+        queries_hash = []
+        for qname, qinfo in queries.items():
+            for query in getattr(cls, "query_names", None):
+                query_cls = getattr(cls, query)
+                if qname == query_cls.fluent_name:
+                    queries_hash.append(_populate_hash_dict(qname, qinfo, query_cls))
+                    break
+    else:
+        queries_hash = None
+
     arguments = info.get("arguments")
     if arguments:
         arguments_hash = []
@@ -104,6 +118,7 @@ def _populate_hash_dict(name, info, cls):
         info.get("help"),
         children_hash,
         commands_hash,
+        queries_hash,
         arguments_hash,
         object_hash,
     )
@@ -113,6 +128,7 @@ def _populate_hash_dict(name, info, cls):
             cls,
             children_hash,
             commands_hash,
+            queries_hash,
             arguments_hash,
             object_hash,
         )
@@ -129,6 +145,7 @@ def _populate_classes(parent_dir):
         cls,
         children_hash,
         commands_hash,
+        queries_hash,
         arguments_hash,
         object_hash,
     ) in hash_dict.items():
@@ -139,6 +156,7 @@ def _populate_classes(parent_dir):
                 cls1,
                 children_hash1,
                 commands_hash1,
+                queries_hash1,
                 arguments_hash1,
                 object_hash1,
             ) in hash_dict.values():
@@ -169,6 +187,7 @@ def _populate_classes(parent_dir):
         cls,
         children_hash,
         commands_hash,
+        queries_hash,
         arguments_hash,
         object_hash,
     ) in hash_dict.items():
@@ -203,6 +222,11 @@ def _populate_classes(parent_dir):
                     pchild_name = hash_dict.get(child)[0].__name__
                     f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
 
+            if queries_hash:
+                for child in queries_hash:
+                    pchild_name = hash_dict.get(child)[0].__name__
+                    f.write(f"from .{files_dict.get(child)} import {pchild_name}\n")
+
             if arguments_hash:
                 for child in arguments_hash:
                     pchild_name = hash_dict.get(child)[0].__name__
@@ -218,7 +242,7 @@ def _populate_classes(parent_dir):
                 f'({", ".join(f"{c.__name__}[{hash_dict.get(object_hash)[0].__name__}]" if object_hash else c.__name__ for c in cls.__bases__)}):\n'
             )
 
-            doc = cls.__doc__
+            doc = fix_settings_doc(cls.__doc__)
             # Custom doc for child object type
             if cls.fluent_name == "child-object-type":
                 doc = f"'child_object_type' of {file_name[: file_name.find('_child')]}."
@@ -257,6 +281,21 @@ def _populate_classes(parent_dir):
                     f.write(f"{istr1}{command}: {command} = {command}\n")
                     f.write(f'{istr1}"""\n')
                     f.write(f"{istr1}{command} command of {cls_name}.")
+                    f.write(f'\n{istr1}"""\n')
+
+            # write query objects
+            query_names = getattr(cls, "query_names", None)
+            if query_names:
+                f.write(f"{istr1}query_names = \\\n")
+                strout = io.StringIO()
+                pprint.pprint(query_names, stream=strout, compact=True, width=70)
+                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
+                f.write(f"{istr2}{mn}\n\n")
+
+                for query in query_names:
+                    f.write(f"{istr1}{query}: {query} = {query}\n")
+                    f.write(f'{istr1}"""\n')
+                    f.write(f"{istr1}{query} query of {cls_name}.")
                     f.write(f'\n{istr1}"""\n')
 
             # write arguments
@@ -324,7 +363,7 @@ def generate():
 
     sinfo = session._settings_service.get_static_info()
     session.exit()
-    cls = flobject.get_cls("", sinfo)
+    cls = flobject.get_cls("", sinfo, version=version)
 
     _populate_hash_dict("", sinfo, cls)
     _populate_classes(parent_dir)
