@@ -11,7 +11,7 @@ import platform
 import subprocess
 import tempfile
 import time
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, Union
 import warnings
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
@@ -299,9 +299,11 @@ def _is_windows():
     return platform.system() == "Windows"
 
 
-def _raise_exception_g_gu_in_windows_os(launch_string: Union[str, List[str]]) -> None:
+def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
-    if _is_windows() and (("-g" in launch_string) or ("-gu" in launch_string)):
+    if _is_windows() and (
+        ("-g" in additional_arguments) or ("-gu" in additional_arguments)
+    ):
         raise ValueError("'-g' and '-gu' is not supported on windows platform.")
 
 
