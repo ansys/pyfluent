@@ -25,9 +25,9 @@ def setup_for_fluent(*args, **kwargs):
         globals["solver"] = Solver(fluent_connection=session.fluent_connection)
     elif "mode" in kwargs.keys() and kwargs["mode"] == "solver":
         globals["solver"] = session
+        globals["solverworkflow"] = session.solverworkflow
 
     globals["preferences"] = session.preferences
-    globals["solverworkflow"] = session.solverworkflow
     globals["workflow"] = session.workflow
 
     return globals
