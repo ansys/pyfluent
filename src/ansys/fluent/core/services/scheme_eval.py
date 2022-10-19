@@ -91,8 +91,12 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer):
     elif isinstance(val, Symbol):
         p.sym = val.str
     elif isinstance(val, tuple) and len(val) == 2:
-        _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
-        _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
+        if len(val) >= 10:
+            for item in val:
+                _convert_py_value_to_scheme_pointer(item, p.list.item.add())
+        else:
+            _convert_py_value_to_scheme_pointer(val[0], p.pair.car)
+            _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr)
     elif isinstance(val, list) or isinstance(val, tuple):
         if val:
             val = list(val)

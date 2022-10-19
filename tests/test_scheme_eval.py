@@ -336,3 +336,11 @@ def test_two_way_conversion_for_pairs() -> None:
     assert len(val) == 2
     assert val[0] == "abc"
     assert val[1] == 5.0
+
+
+@pytest.mark.fluent_231
+def test_long_list(new_solver_session) -> None:
+    length = 10**6
+    assert new_solver_session.scheme_eval.eval(
+        [Symbol("+")] + list(range(length))
+    ) == sum(range(length))
