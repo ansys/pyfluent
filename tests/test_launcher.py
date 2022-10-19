@@ -46,6 +46,7 @@ def test_unsuccessful_fluent_connection(with_launching_container):
 
 def test_additional_argument_g_gu(with_launching_container):
 
+    default_windows_flag = launcher._is_windows()
     launcher._is_windows = lambda: True
 
     with pytest.raises(ValueError) as msg:
@@ -55,3 +56,5 @@ def test_additional_argument_g_gu(with_launching_container):
     with pytest.raises(ValueError) as msg:
         pyfluent.launch_fluent(mode="solver", additional_arguments="-gu")
     assert msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
+
+    launcher._is_windows = lambda: default_windows_flag

@@ -532,12 +532,12 @@ def launch_fluent(
     new_session, meshing_mode, argvals, mode = _get_session_info(
         argvals, mode, meshing_mode
     )
+    _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
         )
-        _raise_exception_g_gu_in_windows_os(launch_string)
 
         try:
             LOG.info("Launching Fluent with cmd: %s", launch_string)
@@ -580,7 +580,6 @@ def launch_fluent(
             args = _build_fluent_launch_args_string(**argvals).split()
             if meshing_mode:
                 args.append(" -meshing")
-            _raise_exception_g_gu_in_windows_os(args)
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
