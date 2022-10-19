@@ -5,7 +5,6 @@ style:
 install:
 	@pip install -r requirements/requirements_build.txt
 	@python -m build
-	@pip uninstall ansys-api-fluent
 	@pip install -q --force-reinstall dist/*.whl
 
 version-info:
