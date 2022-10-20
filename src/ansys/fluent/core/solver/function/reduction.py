@@ -345,3 +345,17 @@ def mass_flow_average_absolute(expr, locations, ctxt=None):
     float
     """
     return abs(_extent_average("MassFlow", expr, locations, ctxt))
+
+
+def mass_flow(locations, ctxt=None):
+    """Compute the total mass flow rate of the specified locations.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent("MassFlow", locations, ctxt)
