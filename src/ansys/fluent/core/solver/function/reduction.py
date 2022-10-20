@@ -222,8 +222,8 @@ def _limit(limit, expr, locations, ctxt):
 
 
 def area_average(expr, locations, ctxt=None):
-    """Compute the area average of the specified expression over the specified
-    locations.
+    """Compute the area averaged value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -238,8 +238,8 @@ def area_average(expr, locations, ctxt=None):
 
 
 def area_integrated_average(expr, locations, ctxt=None):
-    """Compute the area integrated average of the specified expression over the
-    specified locations.
+    """Compute the area integrated averaged of the specified expression over
+    the specified locations.
 
     Parameters
     ----------
@@ -254,8 +254,8 @@ def area_integrated_average(expr, locations, ctxt=None):
 
 
 def volume_average(expr, locations, ctxt=None):
-    """Compute the volume average of the specified expression over the
-    specified locations.
+    """Compute the volume-weighted average value of the specified expression
+    over the specified locations.
 
     Parameters
     ----------
@@ -270,8 +270,8 @@ def volume_average(expr, locations, ctxt=None):
 
 
 def volume_integrated_average(expr, locations, ctxt=None):
-    """Compute the volume integrated average of the specified expression over
-    the specified locations.
+    """Compute the volume-weighted total of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -360,8 +360,8 @@ def maximum(expr, locations, ctxt=None):
 
 
 def mass_average(expr, locations, ctxt=None):
-    """Compute the mass average of the specified expression over the specified
-    locations.
+    """Compute the mass-weighted average value of the specified expression over
+    the specified locations.
 
     Parameters
     ----------
@@ -376,8 +376,8 @@ def mass_average(expr, locations, ctxt=None):
 
 
 def mass_integrated_average(expr, locations, ctxt=None):
-    """Compute the mass integrated average of the specified expression over the
-    specified locations.
+    """Compute the total mass-weighted value of the specified expression over
+    the specified locations.
 
     Parameters
     ----------
@@ -392,8 +392,8 @@ def mass_integrated_average(expr, locations, ctxt=None):
 
 
 def mass_flow_average(expr, locations, ctxt=None):
-    """Compute the mass flow average of the specified expression over the
-    specified locations.
+    """Compute the mass-flow-weighted average value of the specified expression
+    over the specified locations.
 
     Parameters
     ----------
@@ -408,8 +408,7 @@ def mass_flow_average(expr, locations, ctxt=None):
 
 
 def mass_flow_integrated_average(expr, locations, ctxt=None):
-    """Compute the mass flow integrated average of the specified expression
-    over the specified locations.
+    """Compute the total mass flow over the specified locations.
 
     Parameters
     ----------
