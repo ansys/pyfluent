@@ -40,6 +40,17 @@ def _test_locn_extraction(solver1, solver2):
     ]
 
 
+def _test_ctxt(solver):
+    solver.solution.initialization.hybrid_initialize()
+
+    assert reduction.area(
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
+        ctxt=solver,
+    )
+
+    assert reduction.area(locations=["inlet1"], ctxt=solver)
+
+
 def _test_area_average(solver):
     solver.solution.initialization.hybrid_initialize()
     solver.setup.named_expressions["test_expr_1"] = {}
@@ -81,10 +92,122 @@ def _test_min(solver1, solver2):
     solver1.setup.named_expressions.pop(key="test_expr_2")
 
 
+def _test_count(solver):
+    solver.solution.initialization.hybrid_initialize()
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions["test_expr_1"].definition = "Count(['inlet1'])"
+    expr_val_1 = solver.setup.named_expressions["test_expr_1"].get_value()
+    solver.setup.named_expressions["test_expr_1"].definition = "Count(['inlet2'])"
+    expr_val_2 = solver.setup.named_expressions["test_expr_1"].get_value()
+    solver.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "Count(['inlet1', 'inlet2'])"
+    expr_val_3 = solver.setup.named_expressions["test_expr_1"].get_value()
+    assert expr_val_3 == expr_val_1 + expr_val_2
+    red_val_1 = reduction.count(
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]]
+    )
+    red_val_2 = reduction.count(
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
+    )
+    red_val_3 = reduction.count(
+        locations=[solver.setup.boundary_conditions.velocity_inlet]
+    )
+    assert red_val_1 == expr_val_1
+    assert red_val_2 == expr_val_2
+    assert red_val_3 == expr_val_3
+    solver.setup.named_expressions.pop(key="test_expr_1")
+
+
+def _test_area_integrated_average(solver1, solver2):
+    solver1.solution.initialization.hybrid_initialize()
+    solver2.solution.initialization.hybrid_initialize()
+
+    solver1.setup.named_expressions["test_expr_1"] = {}
+    solver1.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "AreaInt(AbsolutePressure, ['inlet1'])"
+    expr_val_1 = solver1.setup.named_expressions["test_expr_1"].get_value()
+    solver1.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "AreaInt(AbsolutePressure, ['inlet2'])"
+    expr_val_2 = solver1.setup.named_expressions["test_expr_1"].get_value()
+    solver1.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "AreaInt(AbsolutePressure, ['inlet1', 'inlet2'])"
+    expr_val_3 = solver1.setup.named_expressions["test_expr_1"].get_value()
+    assert expr_val_3 - (expr_val_1 + expr_val_2) <= 0.000000001
+
+    red_val_1 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[solver1.setup.boundary_conditions.velocity_inlet["inlet1"]],
+    )
+    red_val_2 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[solver1.setup.boundary_conditions.velocity_inlet["inlet2"]],
+    )
+    red_val_3 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[solver1.setup.boundary_conditions.velocity_inlet],
+    )
+
+    assert red_val_1 == expr_val_1
+    assert red_val_2 == expr_val_2
+    assert red_val_3 == expr_val_3
+
+    solver2.setup.named_expressions["test_expr_1"] = {}
+    solver2.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "AreaInt(AbsolutePressure, ['inlet1'])"
+    expr_val_4 = solver2.setup.named_expressions["test_expr_1"].get_value()
+    solver2.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "AreaInt(AbsolutePressure, ['inlet2'])"
+    expr_val_5 = solver2.setup.named_expressions["test_expr_1"].get_value()
+    solver2.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "AreaInt(AbsolutePressure, ['inlet1', 'inlet2'])"
+    expr_val_6 = solver2.setup.named_expressions["test_expr_1"].get_value()
+    assert expr_val_6 - (expr_val_4 + expr_val_5) <= 0.000000001
+
+    red_val_4 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[solver2.setup.boundary_conditions.velocity_inlet["inlet1"]],
+    )
+    red_val_5 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[solver2.setup.boundary_conditions.velocity_inlet["inlet2"]],
+    )
+    red_val_6 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[solver2.setup.boundary_conditions.velocity_inlet],
+    )
+
+    assert red_val_4 == expr_val_4
+    assert red_val_5 == expr_val_5
+    assert red_val_6 == expr_val_6
+
+    red_val_7 = reduction.area_integrated_average(
+        expr="AbsolutePressure",
+        locations=[
+            solver1.setup.boundary_conditions.velocity_inlet,
+            solver2.setup.boundary_conditions.velocity_inlet,
+        ],
+    )
+
+    assert red_val_7 - (expr_val_3 + expr_val_6) <= 0.000000001
+
+    solver1.setup.named_expressions.pop(key="test_expr_1")
+
+
+@pytest.mark.dev
 @pytest.mark.fluent_231
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2
+    _test_ctxt(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
     _test_min(solver1, solver2)
+    _test_count(solver1)
+    _test_area_integrated_average(solver1, solver2)
