@@ -115,7 +115,13 @@ def _locn_names_and_objs(locns):
 
 
 def _root(obj):
-    return obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
+    return (
+        None
+        if isinstance(obj, list)
+        else obj
+        if not getattr(obj, "obj_name", None)
+        else _root(obj._parent)
+    )
 
 
 def _validate_locn_list(locn_list, ctxt):
