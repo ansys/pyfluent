@@ -209,6 +209,15 @@ def _extent(extent_name, locations, ctxt):
     return total
 
 
+def _extent_vectors(extent_name, locations, ctxt):
+    locns = _locns(locations, ctxt)
+    extent = []
+    for solver, names in locns:
+        solver = solver or _root(ctxt)
+        extent = _eval_expr(solver, f"{extent_name}({names})")
+    return extent
+
+
 def _limit(limit, expr, locations, ctxt):
     locns = _locns(locations, ctxt)
     limit_val = None
@@ -325,6 +334,20 @@ def count(locations, ctxt=None):
     float
     """
     return _extent("Count", locations, ctxt)
+
+
+def centroid(locations, ctxt=None):
+    """Compute the geometric centroid of the specified location(s) as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("Centroid", locations, ctxt)
 
 
 def minimum(expr, locations, ctxt=None):
