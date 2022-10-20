@@ -170,19 +170,27 @@ def _eval_reduction(solver, reduction, locations, expr=None):
     )
 
 
-def _extent_average(extent_name, expr, locations, ctxt):
+def _extent_expression(f_string, extent_name, expr, locations, ctxt):
     locns = _locns(locations, ctxt)
     numerator = 0.0
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        val = _eval_reduction(solver, f"{extent_name}Ave", names, expr)
+        val = _eval_reduction(solver, f_string, names, expr)
         extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
         numerator += val * extent
         denominator += extent
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
+
+
+def _extent_average(extent_name, expr, locations, ctxt):
+    return _extent_expression(f"{extent_name}Ave", extent_name, expr, locations, ctxt)
+
+
+def _extent_integrated_average(extent_name, expr, locations, ctxt):
+    return _extent_expression(f"{extent_name}Int", extent_name, expr, locations, ctxt)
 
 
 def _extent(extent_name, locations, ctxt):
@@ -223,6 +231,22 @@ def area_average(expr, locations, ctxt=None):
     return _extent_average("Area", expr, locations, ctxt)
 
 
+def area_integrated_average(expr, locations, ctxt=None):
+    """Compute the area integrated average of the specified expression over the
+    specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Area", expr, locations, ctxt)
+
+
 def volume_average(expr, locations, ctxt=None):
     """Compute the volume average of the specified expression over the
     specified locations.
@@ -237,6 +261,22 @@ def volume_average(expr, locations, ctxt=None):
     float
     """
     return _extent_average("Volume", expr, locations, ctxt)
+
+
+def volume_integrated_average(expr, locations, ctxt=None):
+    """Compute the volume integrated average of the specified expression over
+    the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Volume", expr, locations, ctxt)
 
 
 def area(locations, ctxt=None):
@@ -315,6 +355,22 @@ def mass_average(expr, locations, ctxt=None):
     return _extent_average("Mass", expr, locations, ctxt)
 
 
+def mass_integrated_average(expr, locations, ctxt=None):
+    """Compute the mass integrated average of the specified expression over the
+    specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Mass", expr, locations, ctxt)
+
+
 def mass_flow_average(expr, locations, ctxt=None):
     """Compute the mass flow average of the specified expression over the
     specified locations.
@@ -331,9 +387,9 @@ def mass_flow_average(expr, locations, ctxt=None):
     return _extent_average("MassFlow", expr, locations, ctxt)
 
 
-def mass_flow_average_absolute(expr, locations, ctxt=None):
-    """Compute the absolute value of mass flow average of the specified
-    expression over the specified locations.
+def mass_flow_integrated_average(expr, locations, ctxt=None):
+    """Compute the mass flow integrated average of the specified expression
+    over the specified locations.
 
     Parameters
     ----------
@@ -344,7 +400,7 @@ def mass_flow_average_absolute(expr, locations, ctxt=None):
     -------
     float
     """
-    return abs(_extent_average("MassFlow", expr, locations, ctxt))
+    return _extent_integrated_average("MassFlow", expr, locations, ctxt)
 
 
 def mass_flow(locations, ctxt=None):
