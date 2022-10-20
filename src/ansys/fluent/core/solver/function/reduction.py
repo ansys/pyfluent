@@ -297,3 +297,51 @@ def maximum(expr, locations, ctxt=None):
     float
     """
     return _limit(max, expr, locations, ctxt)
+
+
+def mass_average(expr, locations, ctxt=None):
+    """Compute the mass average of the specified expression over the specified
+    locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_average("Mass", expr, locations, ctxt)
+
+
+def mass_flow_average(expr, locations, ctxt=None):
+    """Compute the mass flow average of the specified expression over the
+    specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_average("MassFlow", expr, locations, ctxt)
+
+
+def mass_flow_average_absolute(expr, locations, ctxt=None):
+    """Compute the absolute value of mass flow average of the specified
+    expression over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return abs(_extent_average("MassFlow", expr, locations, ctxt))
