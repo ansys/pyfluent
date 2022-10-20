@@ -690,6 +690,15 @@ class Command(Base):
                 cls = getattr(self.__class__, argument)
                 self._setattr(argument, cls(None, self))
 
+    def arguments(self) -> Any:
+        """Get the arguments for the command."""
+        attrs = self.get_attrs(["arguments"])
+        if attrs:
+            attrs = attrs.get("attrs", attrs)
+        if attrs and attrs.get("active?", True) is False:
+            raise RuntimeError("Command is not active")
+        return attrs["arguments"] if attrs else None
+
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
@@ -706,6 +715,15 @@ class Query(Base):
             for argument in self.argument_names:
                 cls = getattr(self.__class__, argument)
                 self._setattr(argument, cls(None, self))
+
+    def arguments(self) -> Any:
+        """Get the arguments for the query."""
+        attrs = self.get_attrs(["arguments"])
+        if attrs:
+            attrs = attrs.get("attrs", attrs)
+        if attrs and attrs.get("active?", True) is False:
+            raise RuntimeError("Query is not active")
+        return attrs["arguments"] if attrs else None
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
