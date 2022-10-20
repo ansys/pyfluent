@@ -307,6 +307,20 @@ def volume(locations, ctxt=None):
     return _extent("Volume", locations, ctxt)
 
 
+def count(locations, ctxt=None):
+    """Compute the total number of cells included in the specified locations.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent("Count", locations, ctxt)
+
+
 def minimum(expr, locations, ctxt=None):
     """Compute the minimum of the specified expression over the specified
     locations.
