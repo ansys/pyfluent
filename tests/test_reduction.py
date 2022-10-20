@@ -81,6 +81,7 @@ def _test_min(solver1, solver2):
     solver1.setup.named_expressions.pop(key="test_expr_2")
 
 
+@pytest.mark.dev
 @pytest.mark.fluent_231
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
