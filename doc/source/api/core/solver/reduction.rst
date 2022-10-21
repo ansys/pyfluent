@@ -29,7 +29,7 @@ You can use the reduction functions from PyFluent simply by initializing the sol
 and accessing the select functions with the required parameters.
 
 For example, in the below case, do hybrid initialization of the solution and perform
-an area-average of absolute pressure over the velocity inlets.
+an area-average of absolute pressure over the velocity inlet.
 
 .. code-block:: python
 
