@@ -679,11 +679,11 @@ def _get_new_keywords(obj, kwds):
     return newkwds
 
 
-class IBase(Base):
+class ActionBase(Base):
     """Intermediate Base class for Command and Query class."""
 
     def __init__(self, name: str = None, parent=None):
-        """__init__ of IBase class."""
+        """__init__ of ActionBase class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
             for argument in self.argument_names:
@@ -691,7 +691,7 @@ class IBase(Base):
                 self._setattr(argument, cls(None, self))
 
     def arguments(self, class_name) -> Any:
-        """Get the arguments for the IBase."""
+        """Get the arguments for the ActionBase."""
         attrs = self.get_attrs(["arguments"])
         if attrs:
             attrs = attrs.get("attrs", attrs)
@@ -705,7 +705,7 @@ class IBase(Base):
         return func_handle(self._parent.path, self.obj_name, **newkwds)
 
 
-class Command(IBase):
+class Command(ActionBase):
     """Command object."""
 
     def __init__(self, name: str = None, parent=None):
@@ -721,7 +721,7 @@ class Command(IBase):
         return super().__call__(self.flproxy.execute_cmd, **kwds)
 
 
-class Query(IBase):
+class Query(ActionBase):
     """Query object."""
 
     def __init__(self, name: str = None, parent=None):
