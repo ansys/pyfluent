@@ -35,8 +35,8 @@ class Quantity(float):
     consistency in all arithmetic operations.
     """
 
-    def __new__(self, real_value, units_string):
-        return float.__new__(self, real_value)
+    def __new__(cls, real_value, units_string):
+        return float.__new__(cls, real_value)
 
     def __init__(self, real_value, units_string):
         float.__init__(real_value)
