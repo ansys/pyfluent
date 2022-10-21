@@ -23,7 +23,7 @@ class TranscriptService:
         self.__streams = None
 
     def begin_streaming(
-        self,
+        self, started_evt
     ) -> Generator[TranscriptModule.TranscriptResponse, None, None]:
         """Begin transcript streaming from Fluent.
 
@@ -34,7 +34,7 @@ class TranscriptService:
         """
         request = TranscriptModule.TranscriptRequest()
         self.__streams = self.__stub.BeginStreaming(request, metadata=self.__metadata)
-
+        started_evt.set()
         while True:
             try:
                 yield next(self.__streams)
