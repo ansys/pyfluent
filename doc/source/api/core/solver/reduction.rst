@@ -25,10 +25,10 @@ Then, make boundary conditions data, etc. available (for example, by reading cas
 Simple usage
 ------------
 
-You can use the reduction functions from pyfluent simply by initializing the solution
+You can use the reduction functions from PyFluent simply by initializing the solution
 and accessing the select functions with the required parameters.
 
-For example, in the below case, we do hybrid initialization of the solution and perform
+For example, in the below case, do hybrid initialization of the solution and perform
 an area-average of absolute pressure over the velocity inlets.
 
 .. code-block:: python
@@ -39,7 +39,7 @@ an area-average of absolute pressure over the velocity inlets.
   >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
   >>> )
 
-Similarly one can use the other functions available currently with pyfluent.
+Similarly one can use the other functions available currently with PyFluent.
 
 Usage of context
 ----------------
@@ -64,9 +64,9 @@ Instead, one can use the context argument:
   >>> reduction.area(locations=["inlet1"], ctxt=solver)
 
 
-Current Capabilities
+Current capabilities
 --------------------
-At present, pyfluent allows the usage of the following reduction functions:
+At present, PyFluent allows the usage of the following reduction functions:
 
 Area
 ~~~~
@@ -76,7 +76,7 @@ Compute the total area of the specified locations.
 
   >>> reduction.area(locations)
 
-Area Average
+Area average
 ~~~~~~~~~~~~
 Compute the area averaged value of the specified expression over the specified locations.
 
@@ -84,7 +84,7 @@ Compute the area averaged value of the specified expression over the specified l
 
   >>> reduction.area_average(expression, locations)
 
-Area Integrated Average
+Area integrated average
 ~~~~~~~~~~~~~~~~~~~~~~~
 Compute the area integrated averaged of the specified expression over the specified locations.
 
@@ -100,7 +100,7 @@ Compute the total volume of the specified locations.
 
   >>> reduction.volume(locations)
 
-Volume Average
+Volume average
 ~~~~~~~~~~~~~~
 Compute the volume averaged value of the specified expression over the specified locations.
 
@@ -108,7 +108,7 @@ Compute the volume averaged value of the specified expression over the specified
 
   >>> reduction.volume_average(expression, locations)
 
-Volume Integrated Average
+Volume integrated average
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 Compute the volume integrated averaged of the specified expression over the specified locations.
 
@@ -118,7 +118,7 @@ Compute the volume integrated averaged of the specified expression over the spec
 
 Centroid
 ~~~~~~~~
-Compute the geometric centroid of the specified location(s) as a vector.
+Compute the geometric centroid of the specified locations as a vector.
 
 .. code-block:: python
 
@@ -148,7 +148,7 @@ Compute the maximum of the specified expression over the specified locations.
 
   >>> reduction.maximum(expression, locations)
 
-Mass Average
+Mass average
 ~~~~~~~~~~~~
 Compute the mass-weighted average value of the specified expression over the specified locations.
 
@@ -156,15 +156,15 @@ Compute the mass-weighted average value of the specified expression over the spe
 
   >>> reduction.mass_average(expression, locations)
 
-Mass Integrated Average
+Mass integrated average
 ~~~~~~~~~~~~~~~~~~~~~~~
-Compute the total mass-weighted value of the specified expression overthe specified locations.
+Compute the total mass-weighted value of the specified expression over the specified locations.
 
 .. code-block:: python
 
   >>> reduction.mass_integrated_average(expression, locations)
 
-Mass Flow
+Mass flow
 ~~~~~~~~~
 Compute the total mass flow rate of the specified locations.
 
@@ -172,7 +172,7 @@ Compute the total mass flow rate of the specified locations.
 
   >>> reduction.mass_flow(locations)
 
-Mass Flow Average
+Mass flow average
 ~~~~~~~~~~~~~~~~~
 Compute the mass-flow-weighted average value of the specified expression over the specified locations.
 
@@ -180,7 +180,7 @@ Compute the mass-flow-weighted average value of the specified expression over th
 
   >>> reduction.mass_flow_average(expression, locations)
 
-Mass Flow Integrated Average
+Mass flow integrated average
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Compute the total mass-flow-weighted value of the specified expression over the specified locations.
 
@@ -189,7 +189,7 @@ Compute the total mass-flow-weighted value of the specified expression over the 
   >>> reduction.mass_flow_integrated_average(expression, locations)
 
 
-Example Use Cases
+Example use cases
 -----------------
 You can either calculate the area of one inlet or the combine area of all
 the velocity inlets with the below examples:
