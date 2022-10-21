@@ -38,6 +38,7 @@ an area-average of absolute pressure over the velocity inlet.
   >>>   expr="AbsolutePressure",
   >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
   >>> )
+  101325.0000000001
 
 Similarly one can use the other functions available currently with PyFluent.
 
@@ -56,6 +57,7 @@ For example, to calculate area of a location one has to do:
   >>> reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]]
   >>> )
+  7.565427133371293e-07
 
 Instead, one can use the context argument:
 
@@ -63,6 +65,7 @@ Instead, one can use the context argument:
 
   >>> solver.solution.initialization.hybrid_initialize()
   >>> reduction.area(locations=["inlet1"], ctxt=solver)
+  7.565427133371293e-07
 
 
 Current capabilities
@@ -200,10 +203,12 @@ the velocity inlets with the below examples:
   >>> area_inlet_1 = reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
+  7.565427133371293e-07
 
   >>> area_inlet = reduction.area(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet],
   >>> )
+  1.513085401926681e-06
 
 You can calculate the area average of "Absolute Pressure" over the entire set of velocity
 inlets as shown:
@@ -214,6 +219,7 @@ inlets as shown:
   >>>   expr="AbsolutePressure",
   >>>   locations=solver.setup.boundary_conditions.velocity_inlet,
   >>> )
+  101325.0000000001
 
 You can calculate the area integrated average of "Absolute Pressure" over the velocity inlet 1
 as shown:
@@ -224,7 +230,7 @@ as shown:
   >>>   expr="AbsolutePressure",
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
-
+  0.07665669042888468
 
 You can calculate the geometric centroid of the velocity inlet 2 as shown:
 
@@ -233,5 +239,4 @@ You can calculate the geometric centroid of the velocity inlet 2 as shown:
   >>> reduction.centroid(
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
-
-
+  [-0.001000006193379666, -0.002999999999999999, 0.001500047988232209]
