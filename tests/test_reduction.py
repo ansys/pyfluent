@@ -40,7 +40,7 @@ def _test_locn_extraction(solver1, solver2):
     ]
 
 
-def _test_ctxt(solver):
+def _test_context(solver):
     solver.solution.initialization.hybrid_initialize()
 
     assert reduction.area(
@@ -231,7 +231,7 @@ def _test_area_integrated_average(solver1, solver2):
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     solver1 = load_static_mixer_case
     solver2 = load_static_mixer_case_2
-    _test_ctxt(solver1)
+    _test_context(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
     _test_min(solver1, solver2)
