@@ -7,7 +7,7 @@ from ansys.fluent.core.filereader.casereader import CaseReader
 
 Instantiate a case reader
 
-reader = CaseReader(hdf5_case_filepath=case_filepath)
+reader = CaseReader(case_filepath=case_filepath)
 
 Get lists of input and output parameters
 
