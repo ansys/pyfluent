@@ -15,6 +15,18 @@ class Quantity(float):
     to(to_unit)
         Converts to given unit string.
 
+    toSystem(baseSystem)
+        Converts to given base system.
+
+    getDimensions(unit)
+        Extracts dimensions from unit.
+
+    isDimensionless()
+        Determines type of quantity.
+
+    checkDimensionsMatch(quantity1, quantity2)
+        Compares dimensions of 2 quantities.
+
     Returns
     -------
     Quantity instance.
