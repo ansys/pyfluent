@@ -114,7 +114,6 @@ def load_mixing_elbow_case_dat(launch_fluent_solver_3ddp_t2):
 def load_static_mixer_case(sample_solver_session):
     solver = sample_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    print(case_path)
     solver.file.read(file_type="case", file_name=case_path)
     yield solver
     solver.exit()
