@@ -45,9 +45,9 @@ case file path.
 
   >>> reader = CaseReader(project_filepath="Dir1/Dir2/project.flprj")
 
-Capability to read 'rp' and 'config' vars
+Capability to read rp and config vars
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Case reader can provide the 'rp' and 'config' vars as well.
+Case reader can provide the rp and config vars as well.
 
 .. code-block:: python
 
