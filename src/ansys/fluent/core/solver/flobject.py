@@ -679,56 +679,62 @@ def _get_new_keywords(obj, kwds):
     return newkwds
 
 
-class Command(Base):
+class IBase(Base):
+    """Intermediate Base class for Command and Query class."""
+
+    def __init__(self, name: str = None, parent=None):
+        """__init__ of IBase class."""
+        super().__init__(name, parent)
+        if hasattr(self, "argument_names"):
+            for argument in self.argument_names:
+                cls = getattr(self.__class__, argument)
+                self._setattr(argument, cls(None, self))
+
+    def arguments(self, class_name) -> Any:
+        """Get the arguments for the IBase."""
+        attrs = self.get_attrs(["arguments"])
+        if attrs:
+            attrs = attrs.get("attrs", attrs)
+        if attrs and attrs.get("active?", True) is False:
+            raise RuntimeError(f"{class_name} is not active")
+        return attrs["arguments"] if attrs else None
+
+    def __call__(self, func_handle, **kwds):
+        """Call a command with the specified keyword arguments."""
+        newkwds = _get_new_keywords(self, kwds)
+        return func_handle(self._parent.path, self.obj_name, **newkwds)
+
+
+class Command(IBase):
     """Command object."""
 
     def __init__(self, name: str = None, parent=None):
         """__init__ of Command class."""
         super().__init__(name, parent)
-        if hasattr(self, "argument_names"):
-            for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
-                self._setattr(argument, cls(None, self))
 
     def arguments(self) -> Any:
         """Get the arguments for the command."""
-        attrs = self.get_attrs(["arguments"])
-        if attrs:
-            attrs = attrs.get("attrs", attrs)
-        if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Command is not active")
-        return attrs["arguments"] if attrs else None
+        return super().arguments("Command")
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
-        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        return super().__call__(self.flproxy.execute_cmd, **kwds)
 
 
-class Query(Base):
+class Query(IBase):
     """Query object."""
 
     def __init__(self, name: str = None, parent=None):
         """__init__ of Query class."""
         super().__init__(name, parent)
-        if hasattr(self, "argument_names"):
-            for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
-                self._setattr(argument, cls(None, self))
 
     def arguments(self) -> Any:
         """Get the arguments for the query."""
-        attrs = self.get_attrs(["arguments"])
-        if attrs:
-            attrs = attrs.get("attrs", attrs)
-        if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Query is not active")
-        return attrs["arguments"] if attrs else None
+        return super().arguments("Query")
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
-        return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
+        return super().__call__(self.flproxy.execute_query, **kwds)
 
 
 _baseTypes = {
