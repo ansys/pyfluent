@@ -8,7 +8,7 @@ Case reader provides a reader for fluent case files.
 Sample usage
 ------------
 
-You can use the case reader by importing it and passing a case filepath.
+You can use the case reader by importing it and passing a case file path.
 The following example show the usage of case reader with a case file (.cas.h5)
 read from examples repository as shown:
 
