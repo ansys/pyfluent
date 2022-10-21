@@ -82,6 +82,8 @@ def _build_command_docstring(name: str, info: Any, indent: str):
 
 
 class DataModelStaticInfo:
+    _noindices = []
+
     def __init__(
         self, rules: str, modes: tuple, version: str, rules_save_name: str = ""
     ):
@@ -101,6 +103,9 @@ class DataModelStaticInfo:
         )
         datamodel_dir.mkdir(exist_ok=True)
         self.filepath = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        if len(modes) > 1:
+            for mode in modes[1:]:
+                DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
 
 
 class DataModelGenerator:
@@ -301,7 +306,10 @@ class DataModelGenerator:
 
             f.write(f".. autoclass:: {module_name}::{class_name}\n")
             if parameters or commands:
-                f.write(f"   :members: {', '.join(parameters + commands)}\n\n")
+                f.write(f"   :members: {', '.join(parameters + commands)}\n")
+            if any(heading.startswith(x) for x in DataModelStaticInfo._noindices):
+                f.write("   :noindex:\n")
+            f.write("\n")
 
             if singletons or named_objects:
                 f.write(".. toctree::\n")
@@ -382,11 +390,6 @@ class DataModelGenerator:
                             f"ansys.fluent.core.datamodel_{self.version}.{name}",
                             "Root",
                         )
-                        """
-                        other instance in api/core/meshing/datamodel/preferences/index,
-                        use :noindex: for one of them
-                        """
-                        break
 
     def _delete_generated_files(self):
         for _, info in self._static_info.items():
