@@ -1,6 +1,6 @@
 .. _ref_casereader:
 
-Case Reader
+Case reader
 ===========
 
 Case reader provides a reader for fluent case files.
@@ -8,9 +8,9 @@ Case reader provides a reader for fluent case files.
 Sample usage
 ------------
 
-You can use the case reader by importing it and passing a case_filepath.
+You can use the case reader by importing it and passing a case filepath.
 The following example show the usage of case reader with a case file (.cas.h5)
-read from examples repo as shown:
+read from examples repository as shown:
 
 .. code-block:: python
 
@@ -45,9 +45,9 @@ case file path.
 
   >>> reader = CaseReader(project_filepath="Dir1/Dir2/project.flprj")
 
-Capability to read rp and config vars
+Capability to read 'rp' and 'config' vars
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Case reader can provide the rp and config vars aw well.
+Case reader can provide the 'rp' and 'config' vars as well.
 
 .. code-block:: python
 
