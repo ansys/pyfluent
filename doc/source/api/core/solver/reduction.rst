@@ -9,7 +9,7 @@ or across multiple remote Fluent sessions.
 Accessing reduction functions
 -----------------------------
 
-In order to access reduction functions, import it and launch the fluent solver.
+In order to access reduction function, import it and launch the fluent solver.
 Then, make boundary conditions data, etc. available (for example, by reading case files):
 
 .. code-block:: python
@@ -19,7 +19,7 @@ Then, make boundary conditions data, etc. available (for example, by reading cas
   >>> from ansys.fluent.core.examples import download_file
   >>> solver = pyfluent.launch_fluent(mode="solver")
   >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-  >>> solver.file.read(file_type="case", file_name=mixing_elbow_case_path)
+  >>> solver.file.read(file_type="case", file_name=case_path)
 
 
 Simple usage
@@ -53,14 +53,15 @@ For example, to calculate area of a location one has to do:
 .. code-block:: python
 
   >>> solver.solution.initialization.hybrid_initialize()
-  >>> assert reduction.area(
-  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
+  >>> reduction.area(
+  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]]
   >>> )
 
 Instead, one can use the context argument:
 
 .. code-block:: python
 
+  >>> solver.solution.initialization.hybrid_initialize()
   >>> reduction.area(locations=["inlet1"], ctxt=solver)
 
 
@@ -221,7 +222,7 @@ as shown:
 
   >>> reduction.area_integrated_average(
   >>>   expr="AbsolutePressure",
-  >>>   locations=[solver1.setup.boundary_conditions.velocity_inlet["inlet1"]],
+  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
   >>> )
 
 
