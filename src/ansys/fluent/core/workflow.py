@@ -56,7 +56,17 @@ class WorkflowWrapper:
             cmd = self._command()
             if task_arg_state:
                 cmd.set_state(task_arg_state)
-            return MakeReadOnly(cmd)
+            return MakeReadOnly(self._cmd_sub_items_read_only(cmd))
+
+        def _cmd_sub_items_read_only(self, cmd):
+            for item in cmd():
+                if type(getattr(cmd, item).get_state()) == dict:
+                    setattr(
+                        cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item))
+                    )
+                    # cmd = self._cmd_sub_items_read_only(getattr(cmd, item))
+                setattr(cmd, item, MakeReadOnly(getattr(cmd, item)))
+            return cmd
 
         def _command(self):
             if not self._cmd:

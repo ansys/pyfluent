@@ -709,9 +709,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
         mode = AccessorModes.get_mode(arg.type)
         py_class = mode.value[1]
-        return MakeReadOnly(
-            py_class(self, attr, self.service, self.rules, self.path, arg)
-        )
+        return py_class(self, attr, self.service, self.rules, self.path, arg)
 
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
@@ -766,9 +764,7 @@ class PyCommandArguments(PyStateContainer):
             if arg.name == attr:
                 mode = AccessorModes.get_mode(arg.type)
                 py_class = mode.value[1]
-                return MakeReadOnly(
-                    py_class(self, attr, self.service, self.rules, self.path, arg)
-                )
+                return py_class(self, attr, self.service, self.rules, self.path, arg)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
