@@ -232,6 +232,7 @@ def test_two_way_conversion_for_pairs() -> None:
     assert val[1] == 5.0
 
 
+@pytest.mark.dev
 @pytest.mark.fluent_231
 def test_long_list(new_solver_session) -> None:
     length = 10**6
