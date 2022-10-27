@@ -51,6 +51,11 @@ class SchemeEvalService:
     ) -> SchemeEvalProtoModule.StringEvalResponse:
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
+    def scheme_eval(
+        self, request: SchemeEvalProtoModule.SchemeEvalRequest
+    ) -> SchemeEvalProtoModule.SchemeEvalResponse:
+        return self.__stub.SchemeEval(request, metadata=self.__metadata)
+
 
 class Symbol:
     """Class representing the symbol datatype in Fluent.
@@ -226,10 +231,16 @@ class SchemeEval:
         Any
             Output scheme value represented as Python datatype
         """
-        request = SchemePointer()
-        _convert_py_value_to_scheme_pointer(val, request, self.version)
-        response = self.service.eval(request)
-        return _convert_scheme_pointer_to_py_value(response, self.version)
+        if self.version < "23.1":
+            request = SchemePointer()
+            _convert_py_value_to_scheme_pointer(val, request, self.version)
+            response = self.service.eval(request)
+            return _convert_scheme_pointer_to_py_value(response, self.version)
+        else:
+            request = SchemeEvalProtoModule.SchemeEvalRequest()
+            _convert_py_value_to_scheme_pointer(val, request.input, self.version)
+            response = self.service.scheme_eval(request)
+            return _convert_scheme_pointer_to_py_value(response.output, self.version)
 
     def exec(
         self, commands: Sequence[str], wait: bool = True, silent: bool = True
@@ -289,13 +300,10 @@ class SchemeEval:
         str
             Output scheme value represented as Python datatype
         """
-        request = SchemePointer()
         S = Symbol  # noqa N806
         val = (
             S("eval"),
             (S("with-input-from-string"), input, S("read")),
             S("user-initial-environment"),
         )
-        _convert_py_value_to_scheme_pointer(val, request, self.version)
-        response = self.service.eval(request)
-        return _convert_scheme_pointer_to_py_value(response, self.version)
+        return self.eval(val)
