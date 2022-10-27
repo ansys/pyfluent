@@ -705,6 +705,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.parent_arg = parent_arg
 
     def __getattr__(self, attr):
+        self._raise_attr_error_for_common_accessor_methods(attr)
         arg = self.parent_arg.info.parameters[attr]
 
         mode = AccessorModes.get_mode(arg.type)
@@ -714,14 +715,18 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
         try:
-            # TODO: check if a better implementation is possible.
-            if self.name in dir(PyTextual) + dir(PyNumerical) + dir(PyDictionary):
-                raise AttributeError(f"Attribute name '{self.name}' not found.")
+            self._raise_attr_error_for_common_accessor_methods(self.name)
             return parent_state[self.name]
         except KeyError:
             pass
 
     getState = get_state
+
+    @staticmethod
+    def _raise_attr_error_for_common_accessor_methods(attr):
+        # TODO: check if a better implementation is possible.
+        if attr in dir(PyTextual) + dir(PyNumerical) + dir(PyDictionary):
+            raise AttributeError(f"Attribute name '{attr}' not found.")
 
     def get_attrib_value(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"

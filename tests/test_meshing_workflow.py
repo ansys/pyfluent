@@ -287,10 +287,21 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         assert w.task(
             "Import Geometry"
         ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
+    assert msg.value.args[0] == "Attribute name 'allowed_values' not found."
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError) as msg:
+        assert w.task("Import Geometry").CommandArguments.NumParts.allowed_values()
+    assert msg.value.args[0] == "Attribute name 'allowed_values' not found."
+
+    # Test intended to fail in string type (min() only available in numerical types)
+    with pytest.raises(AttributeError) as msg:
+        assert w.task("Import Geometry").CommandArguments.LengthUnit.min()
+    assert msg.value.args[0] == "Attribute name 'min' not found."
 
 
 @pytest.mark.dev
