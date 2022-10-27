@@ -210,7 +210,6 @@ if __name__ == "__main__":
             dirname,
             "source",
             "api",
-            "core",
             "solver",
             "_autosummary",
             "settings",
