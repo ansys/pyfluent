@@ -127,7 +127,8 @@ class _MakeReadOnly:
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
         )
         for attr in _MakeReadOnly._unwanted_attr:
-            returned_list.remove(attr)
+            if attr in returned_list:
+                returned_list.remove(attr)
         return returned_list
 
     def __call__(self):
