@@ -118,7 +118,7 @@ def _get_fluent_exe_path():
         exe_path = FLUENT_EXE_PATH[0]
     else:
         exe_path = get_fluent_path()
-        if platform.system() == "Windows":
+        if _is_windows():
             exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
         else:
             exe_path = exe_path / "bin" / "fluent"
@@ -136,7 +136,7 @@ def _get_server_info_filepath():
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if platform.system() == "Windows":
+    if _is_windows():
         kwargs.update(
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
             | subprocess.DETACHED_PROCESS
@@ -294,20 +294,29 @@ def _get_session_info(
     return new_session, meshing_mode, argvals, mode
 
 
+def _is_windows():
+    """Check if the current operating system is windows."""
+    return platform.system() == "Windows"
+
+
+def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
+    """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    if _is_windows() and (
+        ("-g" in additional_arguments) or ("-gu" in additional_arguments)
+    ):
+        raise ValueError("'-g' and '-gu' is not supported on windows platform.")
+
+
 def _update_launch_string_wrt_gui_options(
     launch_string: str, show_gui: bool = None, additional_arguments: str = ""
 ) -> str:
     """Checks for all gui options in additional arguments and updates the
     launch string with hidden, if none of the options are met."""
+
     if (show_gui is False) or (
         show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
     ):
-        if (
-            "-g " not in additional_arguments
-            and "-gu " not in additional_arguments
-            and not additional_arguments.endswith("-g")
-            and not additional_arguments.endswith("-gu")
-        ):
+        if not {"-g", "-gu"} & set(additional_arguments.split()):
             launch_string += " -hidden"
 
     return launch_string
@@ -525,6 +534,7 @@ def launch_fluent(
     new_session, meshing_mode, argvals, mode = _get_session_info(
         argvals, mode, meshing_mode
     )
+    _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
