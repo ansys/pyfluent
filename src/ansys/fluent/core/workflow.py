@@ -1,4 +1,4 @@
-from ansys.fluent.core.services.datamodel_se import MakeReadOnly, PyCallableStateObject
+from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
 
 def _new_command_for_task(task, session):
@@ -56,7 +56,7 @@ class WorkflowWrapper:
             cmd = self._command()
             if task_arg_state:
                 cmd.set_state(task_arg_state)
-            return MakeReadOnly(self._cmd_sub_items_read_only(cmd))
+            return _MakeReadOnly(self._cmd_sub_items_read_only(cmd))
 
         def _cmd_sub_items_read_only(self, cmd):
             for item in cmd():
@@ -64,8 +64,7 @@ class WorkflowWrapper:
                     setattr(
                         cmd, item, self._cmd_sub_items_read_only(getattr(cmd, item))
                     )
-                    # cmd = self._cmd_sub_items_read_only(getattr(cmd, item))
-                setattr(cmd, item, MakeReadOnly(getattr(cmd, item)))
+                setattr(cmd, item, _MakeReadOnly(getattr(cmd, item)))
             return cmd
 
         def _command(self):
@@ -108,3 +107,28 @@ class WorkflowWrapper:
 
     def __call__(self):
         return self._workflow()
+
+
+class _MakeReadOnly:
+    """Removes 'set_state()' attribute to implement read-only behaviour."""
+
+    _unwanted_attr = ["set_state", "setState"]
+
+    def __init__(self, cmd):
+        self._cmd = cmd
+
+    def __getattr__(self, attr):
+        if attr in _MakeReadOnly._unwanted_attr:
+            raise AttributeError("Command Arguments are read-only.")
+        return getattr(self._cmd, attr)
+
+    def __dir__(self):
+        returned_list = sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
+        )
+        for attr in _MakeReadOnly._unwanted_attr:
+            returned_list.remove(attr)
+        return returned_list
+
+    def __call__(self):
+        return self._cmd()

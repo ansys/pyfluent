@@ -857,31 +857,6 @@ class AccessorModes(Enum):
             return AccessorModes.GENERIC
 
 
-class MakeReadOnly:
-    """Removes 'set_state()' attribute to implement read-only behaviour."""
-
-    _unwanted_attr = ["set_state", "setState"]
-
-    def __init__(self, cmd):
-        self._cmd = cmd
-
-    def __getattr__(self, attr):
-        if attr in MakeReadOnly._unwanted_attr:
-            raise AttributeError("Command Arguments are read-only.")
-        return getattr(self._cmd, attr)
-
-    def __dir__(self):
-        returned_list = sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
-        )
-        for attr in MakeReadOnly._unwanted_attr:
-            returned_list.remove(attr)
-        return returned_list
-
-    def __call__(self):
-        return self._cmd()
-
-
 class PyMenuGeneric(PyMenu):
     attrs = ("service", "rules", "path")
 
