@@ -714,6 +714,9 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
         try:
+            # TODO: check if a better implementation is possible.
+            if self.name in dir(PyTextual) + dir(PyNumerical) + dir(PyDictionary):
+                raise AttributeError(f"Attribute name '{self.name}' not found.")
             return parent_state[self.name]
         except KeyError:
             pass
