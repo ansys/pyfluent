@@ -551,4 +551,4 @@ class Quantity(float):
         return Quantity(temp_value, self.si_unit)
 
     def __rsub__(self, other):
-        return self.__sub__(other)
+        return Quantity(other, "") - self
