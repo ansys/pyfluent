@@ -49,6 +49,7 @@ def test_disk_2d_models(load_disk_mesh):
         solver_session.setup.models.viscous.near_wall_treatment.wall_function()
         == "standard-wall-fn"
     )
+
     solver_session.setup.models.viscous.near_wall_treatment.wall_function = (
         "non-equilibrium-wall-fn"
     )
@@ -119,15 +120,13 @@ def test_disk_2d_models(load_disk_mesh):
         solver_session.setup.models.viscous.turbulence_expert.kato_launder_model()
         == True
     )
+
     solver_session.setup.models.viscous.turbulence_expert.production_limiter.clip_factor = (
         9
     )
     assert (
         solver_session.setup.models.viscous.turbulence_expert.production_limiter.clip_factor()
         == 9
-    )
-    solver_session.execute_tui(
-        "/define/models/viscous/turbulence-expert/thermal-p-function? yes "
     )
     solver_session.setup.models.viscous.turbulence_expert.turb_non_newtonian = True
     assert (
