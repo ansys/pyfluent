@@ -490,7 +490,7 @@ class Quantity(float):
         temp_unit = get_si_unit_from_dim(temp_dim)
         return temp_unit
 
-    def pow(self, exponent):
+    def __pow__(self, exponent):
         new_dims = list(
             map(lambda x: x * exponent if x != 0 else x, self.get_dimensions_list())
         )
@@ -551,12 +551,4 @@ class Quantity(float):
         return Quantity(temp_value, self.si_unit)
 
     def __rsub__(self, other):
-        if isinstance(other, Quantity):
-            temp_value = other.si_value - self.si_value
-        elif self.is_dimension_less() and (
-            isinstance(other, int) or isinstance(other, float)
-        ):
-            temp_value = other - self.si_value
-        else:
-            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
-        return Quantity(temp_value, self.si_unit)
+        return self.__sub__(other)

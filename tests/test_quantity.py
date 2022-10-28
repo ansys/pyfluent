@@ -426,12 +426,12 @@ def testing_properties():
 
 
 # if __name__ == "__main__":
-
-# testing_dimensions()
-# testing_multipliers()
-# testing_to_systems()
-# testing_arithmetic_operators()
-# testing_properties
 #
-# x = q.Quantity(1, "ft")
-# print(f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x.si_value}")
+#     testing_dimensions()
+#     testing_multipliers()
+#     testing_to_systems()
+#     testing_arithmetic_operators()
+#     testing_properties
+#
+#     x = q.Quantity(1, "ft")
+#     print(f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x.si_value}")
