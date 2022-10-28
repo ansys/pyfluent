@@ -50,5 +50,6 @@ scalar and vector field data.
    
    launcher
    utils
+   casereader
    meshing/index
    solver/index

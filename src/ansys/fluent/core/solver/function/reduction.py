@@ -28,7 +28,7 @@ ctxt : Any, optional
     objects are strings, then such a context is required
 Returns
 -------
-float
+float or List[float]
     The result of the reduction
 
 Examples
