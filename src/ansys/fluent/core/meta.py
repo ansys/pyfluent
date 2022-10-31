@@ -132,8 +132,8 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
 
     @classmethod
     def __create_set_state(cls):
-        def wrapper(self, value):
-            self.value = self._validate(value)
+        def wrapper(self, value, validate=True):
+            self.value = self._validate(value) if validate else value
             for on_change_cb in self._on_change_cbs:
                 on_change_cb()
 
