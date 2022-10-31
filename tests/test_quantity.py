@@ -279,6 +279,15 @@ def test_to_39():
     assert convert.unit == "J m^-2"
 
 
+def test_prop_constants_40():
+    c = q.Quantity(10.5, "s^-0.5")
+    x = q.Quantity(5.7, "m")
+    t = q.Quantity(4.8, "s")
+
+    y = c * x * t
+    assert y == 287.28
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -454,9 +463,5 @@ if __name__ == "__main__":
     deg = q.Quantity(90, "degree")
     rad = q.Quantity(math.pi / 2, "radian")
 
-    print(math.sin(deg))
-    print(math.sin(rad))
-
-    print(deg.to("radian"))
-    print(math.sin(deg.to("radian")))
-    print(math.sin(1.5707963267948966))
+    print(math.sin(deg.si_value))  # prints 1.0
+    print(math.sin(rad))  # prints 1.0
