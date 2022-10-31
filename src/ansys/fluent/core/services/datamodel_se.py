@@ -704,29 +704,14 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.path = path
         self.parent_arg = parent_arg
 
-    def __getattr__(self, attr):
-        self._raise_attr_error_for_common_accessor_methods(attr)
-        arg = self.parent_arg.info.parameters[attr]
-
-        mode = AccessorModes.get_mode(arg.type)
-        py_class = mode.value[1]
-        return py_class(self, attr, self.service, self.rules, self.path, arg)
-
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
         try:
-            self._raise_attr_error_for_common_accessor_methods(self.name)
             return parent_state[self.name]
         except KeyError:
             pass
 
     getState = get_state
-
-    @staticmethod
-    def _raise_attr_error_for_common_accessor_methods(attr):
-        # TODO: check if a better implementation is possible.
-        if attr in dir(PyTextual) + dir(PyNumerical) + dir(PyDictionary):
-            raise AttributeError(f"Attribute name '{attr}' not found.")
 
     def get_attrib_value(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"
@@ -839,6 +824,28 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         PyParameter.__init__(self, service, rules, path)
 
 
+class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+
+    def __getattr__(self, attr):
+        arg = self.parent_arg.info.parameters[attr]
+
+        mode = AccessorModes.get_mode(arg.type)
+        py_class = mode.value[1]
+        return py_class(self, attr, self.service, self.rules, self.path, arg)
+
+
 class AccessorModes(Enum):
     """Provides the standard Fluent launch modes."""
 
@@ -853,6 +860,7 @@ class AccessorModes(Enum):
         ["Bool", "Logical", "Logical List"],
         PyParameterCommandArgumentsSubItem,
     )
+    MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
     GENERIC = ([], PyCommandArgumentsSubItem)
 
     @staticmethod
