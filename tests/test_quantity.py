@@ -1,3 +1,5 @@
+import math
+
 import pytest
 
 import ansys.fluent.core.quantity as q
@@ -31,17 +33,28 @@ def test_value_unit_4():
 
 def test_dims_5():
     v = q.Quantity(1.0, "kPa")
-    assert v.get_dimensions_list() == [1, -1, -2, 0, 0, 0, 0, 0, 0, 0]
+    assert v.get_dimensions_list() == [
+        1.0,
+        -1.0,
+        -2.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+    ]
 
 
 def test_dims_6():
     v = q.Quantity(1.0, "ft")
-    assert v.get_dimensions_list() == [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert v.get_dimensions_list() == [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
 def test_dims_7():
     v = q.Quantity(1.0, "m m^-1")
-    assert v.get_dimensions_list() == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert v.get_dimensions_list() == [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
 def test_to_8():
@@ -274,19 +287,19 @@ def testing_dimensions():
         print(f"{unit_str} : {qt.get_dimensions_list()}")
         assert qt.get_dimensions_list() == dim_list
 
-    dim_test("m", [0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("m s^-1", [0, 1, -1, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("kg m s^-2 m^-2", [1, -1, -2, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("Pa", [1, -1, -2, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("kPa", [1, -1, -2, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("Pa^2", [2, -2, -4, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("daPa", [1, -1, -2, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("MPa", [1, -1, -2, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("kPa^2", [2, -2, -4, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("slug in^-1 s^-1", [1, -1, -1, 0, 0, 0, 0, 0, 0, 0])
-    dim_test("radian", [0, 0, 0, 0, 1, 0, 0, 0, 0, 0])
-    dim_test("ohm", [1, 2, -3, 0, 0, 0, 0, -2, 0, 0])
-    dim_test("lb cm s^-2", [1, 1, -2, 0, 0, 0, 0, 0, 0, 0])
+    dim_test("m", [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("m s^-1", [0.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("kg m s^-2 m^-2", [1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("Pa", [1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("kPa", [1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("Pa^2", [2.0, -2.0, -4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("daPa", [1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("MPa", [1.0, -1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("kPa^2", [2.0, -2.0, -4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("slug in^-1 s^-1", [1.0, -1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("radian", [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+    dim_test("ohm", [1.0, 2.0, -3.0, 0.0, 0.0, 0.0, 0.0, -2.0, 0.0, 0.0])
+    dim_test("lb cm s^-2", [1.0, 1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     print("-" * 75)
 
 
@@ -350,17 +363,17 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} * {qt2} =  {qt3}")
     assert qt3.value == 50
-    assert qt3.unit == "m^2 s^-2"
+    assert qt3.unit == "m^2.0 s^-2.0"
 
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
     assert result.value == 20
-    assert result.unit == "m s^-1"
+    assert result.unit == "m s^-1.0"
 
     result1 = 2 * qt1
     print(f"{2} * {qt1} =  {result1}")
     assert result1.value == 20
-    assert result1.unit == "m s^-1"
+    assert result1.unit == "m s^-1.0"
 
     q3 = qt1 / qt2
 
@@ -371,13 +384,13 @@ def testing_arithmetic_operators():
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
     assert result3.value == 5
-    assert result3.unit == "m s^-1"
+    assert result3.unit == "m s^-1.0"
 
     qa3 = qt1 + qt2
 
     print(f"{qt1} + {qt2} =  {qa3}")
     assert qa3.value == 15
-    assert qa3.unit == "m s^-1"
+    assert qa3.unit == "m s^-1.0"
 
     try:
         result5 = qt1 + 2
@@ -395,7 +408,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} - {qt2} =  {qs3}")
     assert qs3.value == 5
-    assert qs3.unit == "m s^-1"
+    assert qs3.unit == "m s^-1.0"
 
     try:
         result7 = qt1 - 2
@@ -425,13 +438,25 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-# if __name__ == "__main__":
-#
-#     testing_dimensions()
-#     testing_multipliers()
-#     testing_to_systems()
-#     testing_arithmetic_operators()
-#     testing_properties
-#
-#     x = q.Quantity(1, "ft")
-#     print(f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x.si_value}")
+if __name__ == "__main__":
+
+    testing_dimensions()
+    testing_multipliers()
+    testing_to_systems()
+    testing_arithmetic_operators()
+    testing_properties
+
+    x = q.Quantity(1, "ft")
+    print(
+        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x.si_value}"
+    )
+
+    deg = q.Quantity(90, "degree")
+    rad = q.Quantity(math.pi / 2, "radian")
+
+    print(math.sin(deg))
+    print(math.sin(rad))
+
+    print(deg.to("radian"))
+    print(math.sin(deg.to("radian")))
+    print(math.sin(1.5707963267948966))

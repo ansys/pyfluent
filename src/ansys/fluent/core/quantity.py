@@ -222,9 +222,9 @@ class Unit(object):
             if "^" in term:
                 term_split = term.split("^")
                 if term_split[0] in term_power_dict.keys():
-                    term_power_dict[term_split[0]] += int(term_split[1])
+                    term_power_dict[term_split[0]] += float(term_split[1])
                 else:
-                    term_power_dict[term_split[0]] = int(term_split[1])
+                    term_power_dict[term_split[0]] = float(term_split[1])
             else:
                 if term in term_power_dict.keys():
                     term_power_dict[term] += 1
@@ -251,7 +251,7 @@ class Unit(object):
             term_power = 1
 
             if "^" in unit_str:
-                unit_str, term_power = unit_str[: unit_str.index("^")], int(
+                unit_str, term_power = unit_str[: unit_str.index("^")], float(
                     unit_str[unit_str.index("^") + 1 :]
                 )
 
@@ -299,16 +299,16 @@ class Unit(object):
 class Dimension(object):
     def __init__(self, unit_str):
         self._dimensions = {
-            "M": 0,
-            "L": 0,
-            "T": 0,
-            "K": 0,
-            "A": 0,
-            "mol": 0,
-            "cd": 0,
-            "Angle": 0,
-            "sr": 0,
-            "": 0,
+            "M": 0.0,
+            "L": 0.0,
+            "T": 0.0,
+            "K": 0.0,
+            "A": 0.0,
+            "mol": 0.0,
+            "cd": 0.0,
+            "Angle": 0.0,
+            "sr": 0.0,
+            "": 0.0,
         }
         self._parser(unit_str)
 
@@ -331,7 +331,7 @@ class Dimension(object):
             term_power = 1
 
             if "^" in term:
-                unit_str, term_power = term[: term.index("^")], int(
+                unit_str, term_power = term[: term.index("^")], float(
                     term[term.index("^") + 1 :]
                 )
                 has_multiplier = not (
