@@ -28,7 +28,7 @@ ctxt : Any, optional
     objects are strings, then such a context is required
 Returns
 -------
-float
+float or List[float]
     The result of the reduction
 
 Examples
@@ -115,7 +115,13 @@ def _locn_names_and_objs(locns):
 
 
 def _root(obj):
-    return obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
+    return (
+        None
+        if isinstance(obj, list)
+        else obj
+        if not getattr(obj, "obj_name", None)
+        else _root(obj._parent)
+    )
 
 
 def _validate_locn_list(locn_list, ctxt):
@@ -170,19 +176,27 @@ def _eval_reduction(solver, reduction, locations, expr=None):
     )
 
 
-def _extent_average(extent_name, expr, locations, ctxt):
+def _extent_expression(f_string, extent_name, expr, locations, ctxt):
     locns = _locns(locations, ctxt)
     numerator = 0.0
     denominator = 0.0
     for solver, names in locns:
         solver = solver or _root(ctxt)
-        val = _eval_reduction(solver, f"{extent_name}Ave", names, expr)
+        val = _eval_reduction(solver, f_string, names, expr)
         extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
         numerator += val * extent
         denominator += extent
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
+
+
+def _extent_average(extent_name, expr, locations, ctxt):
+    return _extent_expression(f"{extent_name}Ave", extent_name, expr, locations, ctxt)
+
+
+def _extent_integrated_average(extent_name, expr, locations, ctxt):
+    return _extent_expression(f"{extent_name}Int", extent_name, expr, locations, ctxt)
 
 
 def _extent(extent_name, locations, ctxt):
@@ -193,6 +207,15 @@ def _extent(extent_name, locations, ctxt):
         extent = _eval_expr(solver, f"{extent_name}({names})")
         total += extent
     return total
+
+
+def _extent_vectors(extent_name, locations, ctxt):
+    locns = _locns(locations, ctxt)
+    extent = []
+    for solver, names in locns:
+        solver = solver or _root(ctxt)
+        extent = _eval_expr(solver, f"{extent_name}({names})")
+    return extent
 
 
 def _limit(limit, expr, locations, ctxt):
@@ -208,8 +231,8 @@ def _limit(limit, expr, locations, ctxt):
 
 
 def area_average(expr, locations, ctxt=None):
-    """Compute the area average of the specified expression over the specified
-    locations.
+    """Compute the area averaged value of the specified expression over the
+    specified locations.
 
     Parameters
     ----------
@@ -223,9 +246,25 @@ def area_average(expr, locations, ctxt=None):
     return _extent_average("Area", expr, locations, ctxt)
 
 
+def area_integrated_average(expr, locations, ctxt=None):
+    """Compute the area integrated averaged of the specified expression over
+    the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Area", expr, locations, ctxt)
+
+
 def volume_average(expr, locations, ctxt=None):
-    """Compute the volume average of the specified expression over the
-    specified locations.
+    """Compute the volume-weighted average value of the specified expression
+    over the specified locations.
 
     Parameters
     ----------
@@ -237,6 +276,22 @@ def volume_average(expr, locations, ctxt=None):
     float
     """
     return _extent_average("Volume", expr, locations, ctxt)
+
+
+def volume_integrated_average(expr, locations, ctxt=None):
+    """Compute the volume-weighted total of the specified expression over the
+    specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Volume", expr, locations, ctxt)
 
 
 def area(locations, ctxt=None):
@@ -265,6 +320,34 @@ def volume(locations, ctxt=None):
     float
     """
     return _extent("Volume", locations, ctxt)
+
+
+def count(locations, ctxt=None):
+    """Compute the total number of cells included in the specified locations.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent("Count", locations, ctxt)
+
+
+def centroid(locations, ctxt=None):
+    """Compute the geometric centroid of the specified location(s) as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("Centroid", locations, ctxt)
 
 
 def minimum(expr, locations, ctxt=None):
@@ -297,3 +380,80 @@ def maximum(expr, locations, ctxt=None):
     float
     """
     return _limit(max, expr, locations, ctxt)
+
+
+def mass_average(expr, locations, ctxt=None):
+    """Compute the mass-weighted average value of the specified expression over
+    the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_average("Mass", expr, locations, ctxt)
+
+
+def mass_integrated_average(expr, locations, ctxt=None):
+    """Compute the total mass-weighted value of the specified expression over
+    the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("Mass", expr, locations, ctxt)
+
+
+def mass_flow_average(expr, locations, ctxt=None):
+    """Compute the mass-flow-weighted average value of the specified expression
+    over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_average("MassFlow", expr, locations, ctxt)
+
+
+def mass_flow_integrated_average(expr, locations, ctxt=None):
+    """Compute the total mass flow over the specified locations.
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_integrated_average("MassFlow", expr, locations, ctxt)
+
+
+def mass_flow(locations, ctxt=None):
+    """Compute the total mass flow rate of the specified locations.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent("MassFlow", locations, ctxt)
