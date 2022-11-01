@@ -18,6 +18,7 @@ and Fluent meshing and solver components.
   
    launcher
    utils
+   casereader
    meshing/index
    solver/index
    

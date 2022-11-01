@@ -215,13 +215,9 @@ class _FluentConnection:
             self.scheme_eval.version = "23.1"
 
         self._cleanup_on_exit = cleanup_on_exit
-        self._start_transcript = start_transcript
 
         self.callback_id1 = None
         self.callback_id2 = None
-
-        if start_transcript:
-            self.start_transcript()
 
         self._remote_instance = remote_instance
 
@@ -231,7 +227,7 @@ class _FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
-            self._transcript.transcript_service,
+            self._transcript._transcript_service,
             self.events_manager,
             self._remote_instance,
         )
@@ -243,8 +239,8 @@ class _FluentConnection:
         return self._id
 
     def get_current_fluent_mode(self):
-        """Gets and returns the mode of the current instance of fluent (meshing
-        or solver)."""
+        """Gets the mode of the current instance of Fluent (meshing or
+        solver)."""
         if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
             return "solver"
         else:
