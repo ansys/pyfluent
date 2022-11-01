@@ -1,7 +1,7 @@
 """Module for monitors management."""
 
 import threading
-from typing import Dict, List, Tuple, Union
+from typing import Any, Callable, Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -26,6 +26,13 @@ class MonitorsManager:
         self._monitors_info = None
         self._monitors_thread = None
         self._data_frames = {}
+        self._on_monitor_refresh_callback = None
+        self._streaming: bool = False
+
+    @property
+    def is_streaming(self):
+        with self._lock:
+            return self._streaming
 
     def get_monitor_set_names(self) -> List[str]:
         """Get monitor set names.
@@ -81,7 +88,7 @@ class MonitorsManager:
             return None if df.empty else df.plot(*args, **kwargs)
 
     def get_monitor_set_data(
-        self, monitor_set_name
+        self, monitor_set_name, start_index: int = 0, end_index: int = None
     ) -> Tuple[np.array, Dict[str, np.array]]:
         """Get monitor set data.
 
@@ -89,6 +96,10 @@ class MonitorsManager:
         ----------
         monitor_set_name : str
             Name of the monitor set.
+        start_index: int, optional
+            Start index to provide data.
+        end_index: int, optional
+            End index to provide data.
 
         Returns
         -------
@@ -98,16 +109,36 @@ class MonitorsManager:
         """
         with self._lock:
             df_data = self._data_frames[monitor_set_name]
-            df = df_data["df"]
-
+            try:
+                df = df_data["df"].iloc[start_index:end_index]
+            except IndexError:
+                return (np.array([]), {})
             return (
-                ([], {})
+                (np.array([]), {})
                 if df.empty
                 else (
                     df.index.to_numpy(),
                     {column: df[[column]].to_numpy() for column in df.columns},
                 )
             )
+
+    def register_on_monitor_refresh_callback(
+        self, on_monitor_refresh_callback: Callable[[], Any]
+    ):
+        """Register monitor refresh callback.
+
+        The callback is triggered whenever monitor data is updated.
+
+        Parameters
+        ----------
+        on_monitor_refresh_callback :  Callable[[], Any]
+            Callback.
+
+        Returns
+        -------
+        None
+        """
+        self._on_monitor_refresh_callback = on_monitor_refresh_callback
 
     def refresh(self, session_id, event_info) -> None:
         """Refresh plots on-initialized and data-read events.
@@ -144,6 +175,7 @@ class MonitorsManager:
                 for y_axis_value in response.yaxisvalues:
                     data_received[y_axis_value.name] = y_axis_value.value
                 with self._lock:
+                    self._streaming = True
                     for monitor_set_name, df_data in self._data_frames.items():
                         df = df_data["df"]
                         monitors = df_data["monitors"]
@@ -159,6 +191,8 @@ class MonitorsManager:
                             new_df.set_index("xvalues", inplace=True)
                             # df_data["df"] = df.append(new_df)
                             df_data["df"] = pd.concat([df, new_df])
+                            if self._on_monitor_refresh_callback:
+                                self._on_monitor_refresh_callback()
 
             except StopIteration:
                 break
@@ -188,4 +222,5 @@ class MonitorsManager:
         if self._monitors_thread:
             self._monitors_service.end_streaming()
             self._monitors_thread.join()
+            self._streaming = False
             self._monitors_thread = None

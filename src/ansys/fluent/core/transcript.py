@@ -11,11 +11,11 @@ class Transcript:
     def __init__(self, channel, metadata):
         self._channel = channel
         self._metadata = metadata
-        self.transcript_service = TranscriptService(self._channel, self._metadata)
+        self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
         self._transcript_callbacks = {}
         self._transcript_callback_id = itertools.count()
-        self.lock = threading.Lock()
+        self._lock = threading.Lock()
 
     def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
         """Initiates a fluent transcript streaming depending on the
@@ -24,7 +24,7 @@ class Transcript:
         For eg.: add_transcript_callback(print) prints the transcript on
         the interpreter screen.
         """
-        with self.lock:
+        with self._lock:
             callback_id = next(self._transcript_callback_id)
             self._transcript_callbacks[callback_id] = (
                 callback_fn,
@@ -32,33 +32,29 @@ class Transcript:
             )
             start_thread = len(self._transcript_callbacks) == 1
         if start_thread:
-            self._transcript_thread = threading.Thread(
-                target=self._process_transcript,
-                args=(self.transcript_service,),
-            )
-            self._transcript_thread.start()
+            self.start()
         return callback_id
 
     def remove_transcript_callback(self, callback_id):
         """Stops each transcript streaming based on the callback_id."""
-        with self.lock:
+        with self._lock:
             del self._transcript_callbacks[callback_id]
             stop_thread = len(self._transcript_callbacks) == 0
         if stop_thread:
-            self.transcript_service.end_streaming()
-            self._transcript_thread.join()
+            self.stop()
 
-    def _process_transcript(self, transcript_service):
+    def _process_transcript(self, started_evt):
         """Performs processes on transcript depending on the callback
         functions."""
-        responses = transcript_service.begin_streaming()
+        responses = self._transcript_service.begin_streaming(started_evt)
         transcript = ""
         while True:
             try:
                 response = next(responses)
-                transcript += response.transcript
-                if transcript[-1] == "\n":
-                    with self.lock:
+                with self._lock:
+                    self._streaming = True
+                    transcript += response.transcript
+                    if transcript[-1] == "\n":
                         for (
                             callback_function,
                             keep_new_lines,
@@ -67,6 +63,29 @@ class Transcript:
                                 callback_function(transcript)
                             else:
                                 callback_function(transcript[0:-1])
-                    transcript = ""
+                        transcript = ""
             except StopIteration:
                 break
+
+    @property
+    def is_streaming(self):
+        with self._lock:
+            return self._streaming
+
+    def start(self) -> None:
+        """Start streaming of Fluent transcript."""
+        with self._lock:
+            if self._transcript_thread is None:
+                started_evt = threading.Event()
+                self._transcript_thread = threading.Thread(
+                    target=Transcript._process_transcript, args=(self, started_evt)
+                )
+                self._transcript_thread.start()
+                started_evt.wait()
+
+    def stop(self) -> None:
+        """Stop streaming of Fluent transcript."""
+        self._transcript_service.end_streaming()
+        self._transcript_thread.join()
+        self._streaming = False
+        self._transcript_thread = None

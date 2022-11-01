@@ -63,6 +63,6 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
         FileName=input_name, LengthUnit="in"
     )
-    pure_meshing_session.execute_tui(r"""/file/read-journal %s""" % file_path)
+    pure_meshing_session.tui.file.read_journal(file_path)
     if os.path.exists(file_path):
         os.remove(file_path)
