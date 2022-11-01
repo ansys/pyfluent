@@ -861,7 +861,6 @@ class AccessorModes(Enum):
         PyParameterCommandArgumentsSubItem,
     )
     MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
-    GENERIC = ([], PyCommandArgumentsSubItem)
 
     @staticmethod
     def get_mode(mode: str) -> "AccessorModes":
@@ -870,7 +869,7 @@ class AccessorModes(Enum):
             if mode in m.value[0]:
                 return m
         else:
-            return AccessorModes.GENERIC
+            raise TypeError(f"The specified mode: {mode} was not found.")
 
 
 class PyMenuGeneric(PyMenu):
