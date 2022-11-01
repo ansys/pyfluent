@@ -470,3 +470,15 @@ if __name__ == "__main__":
     print(
         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     )
+
+    g = q.Quantity(1, "g")
+    m = q.Quantity(1, "m")
+    print(f"{g} * {m} = {g * m}")
+    print(" ")
+    print(f"{m} * 2 = {m * 2}")
+    print(" ")
+
+    l = q.Quantity(1, "cm")
+    r = q.Quantity(1, "m")
+    print(f"{l} + {r} = {l + r}")
+    print(" ")

@@ -420,6 +420,8 @@ class Quantity(float):
         self._value = float(real_value)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
+        self._si_value = self._unit.si_factor * self._value
+        self._si_unit = self._unit.si_unit
         float.__init__(self._si_value)
 
     def __new__(cls, real_value, unit_str):
@@ -441,14 +443,6 @@ class Quantity(float):
     @property
     def dimension(self):
         return self._dimension
-
-    @property
-    def _si_value(self):
-        return self._unit.si_factor * self._value
-
-    @property
-    def _si_unit(self):
-        return self._unit.si_unit
 
     def is_dimension_less(self):
         return all([value == 0 for value in self.get_dimensions_list()])
@@ -508,8 +502,7 @@ class Quantity(float):
             temp_unit = self._get_si_unit(other, lambda x, y: x + y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):
-            temp = Quantity(self._si_value * other, self._si_unit)
-            return temp
+            return Quantity(self._si_value * other, self._si_unit)
 
     def __rmul__(self, other):
         return self.__mul__(other)
