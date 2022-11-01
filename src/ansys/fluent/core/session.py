@@ -328,11 +328,11 @@ class Session:
 
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
-        self.fluent_connection.start_transcript()
+        self.transcript.start()
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
-        self.fluent_connection.stop_transcript()
+        self.transcript.stop()
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""

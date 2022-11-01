@@ -1,3 +1,0 @@
-
-name	definition	description	input-parameter	output-parameter
-"avg_vel_inlet2"	"Average(VelocityMagnitude,['inlet2'])"	""	#f	#f
