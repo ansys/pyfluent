@@ -13,6 +13,7 @@ class Transcript:
         self._metadata = metadata
         self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
+        self._streaming: bool = False
         self._transcript_callbacks = {}
         self._transcript_callback_id = itertools.count()
         self._lock = threading.Lock()
