@@ -524,29 +524,33 @@ class Quantity(float):
             return temp
 
     def __add__(self, other):
-        if isinstance(other, Quantity):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() == other.get_dimensions_list()
+        ):
             temp_value = self._si_value + other._si_value
         elif self.is_dimension_less() and (
             isinstance(other, int) or isinstance(other, float)
         ):
             temp_value = self._si_value + other
         else:
-            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
+            raise ValueError("Incompatible dimensions.")
         return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __sub__(self, other):
-        if isinstance(other, Quantity):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() == other.get_dimensions_list()
+        ):
             temp_value = self._si_value - other._si_value
         elif self.is_dimension_less() and (
             isinstance(other, int) or isinstance(other, float)
         ):
             temp_value = self._si_value - other
         else:
-            raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
+            raise ValueError("Incompatible dimensions.")
         return Quantity(temp_value, self._si_unit)
 
     def __rsub__(self, other):
-        return Quantity(other, "") - self
+        return self.__sub__(other)
