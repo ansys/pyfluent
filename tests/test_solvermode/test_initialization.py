@@ -16,10 +16,9 @@ def test_initialize(launch_fluent_solver_3ddp_t2):
     solver.setup.models.multiphase.models = "vof"
     solver.setup.general.gravity = {"enable": True, "components": [0.0, 0.0, -9.81]}
     solver.setup.general.solver.time = "steady"
-    solver.execute_tui("/define/models/multiphase/vof-sub-models yes no ")
-    solver.execute_tui(
-        "/define/phases/set-domain-properties/change-phases-names? water air "
-    )
+
+    solver.tui.define.models.multiphase.vof_sub_models("yes", "no")
+    solver.tui.define.phases.set_domain_properties.change_phases_names("water", "air")
     solver.setup.boundary_conditions.pressure_inlet["inflow"].phase["mixture"] = {
         "open_channel": True,
         "direction_spec": "Direction Vector",
@@ -64,10 +63,9 @@ def test_fmg_initialize(launch_fluent_solver_3ddp_t2):
         "pyfluent/vki_turbine", "vki_turbine.cas.gz"
     )
     solver.file.read(file_type=input_type, file_name=input_name)
-    solver.execute_tui("(rpsetvar 'fmg-init/reorder? #f)  ")
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()
     solver.solution.initialization.fmg_initialize = True
     # assert solver.solution.initialization.fmg_initialize() == True
-    solver.execute_tui("(benchmark '(iterate 2))  ")
+    solver.tui.solve.iterate(2)
     # solver.solution.initialization.hybrid_initialize()
