@@ -459,7 +459,7 @@ def testing_properties():
 
 
 if __name__ == "__main__":
-
+    test_value_unit_1()
     testing_dimensions()
     testing_multipliers()
     testing_to_systems()
@@ -470,9 +470,3 @@ if __name__ == "__main__":
     print(
         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x.si_value}"
     )
-
-    deg = q.Quantity(90, "degree")
-    rad = q.Quantity(math.pi / 2, "radian")
-
-    print(math.sin(deg.si_value))  # prints 1.0
-    print(math.sin(rad))  # prints 1.0

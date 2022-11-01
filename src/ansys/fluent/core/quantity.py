@@ -385,7 +385,7 @@ def get_si_unit_from_dim(dim_list):
     return si_unit
 
 
-class Quantity:
+class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units.
 
@@ -420,6 +420,11 @@ class Quantity:
         self._value = float(real_value)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
+        float.__init__(self.si_value)
+
+    def __new__(cls, real_value, unit_str):
+        _unit = Unit(unit_str)
+        return float.__new__(cls, _unit.si_factor * real_value)
 
     @property
     def value(self):
@@ -494,14 +499,11 @@ class Quantity:
         new_si_value = pow(self.si_value, exponent)
         return Quantity(new_si_value, new_si_unit)
 
-    def __float__(self):
-        return float(self.si_value)
-
     def __str__(self):
         return f'({self.value}, "{self.unit}")'
 
     def __repr__(self):
-        return f'(Quantity ({self.value}, "{self.unit}"))'
+        return f'Quantity ({self.value}, "{self.unit}")'
 
     def __mul__(self, other):
         if isinstance(other, Quantity):
