@@ -230,7 +230,7 @@ class _FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
-            self._transcript,
+            self._transcript._transcript_service,
             self.events_manager,
             self._remote_instance,
         )
