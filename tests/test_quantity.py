@@ -489,13 +489,13 @@ def testing_properties():
 # testing_multipliers()
 # testing_to_systems()
 # testing_arithmetic_operators()
-# testing_properties
-
+# testing_properties()
+#
 # x = q.Quantity(1, "ft")
 # print(
 #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
 # )
-#
+
 # g = q.Quantity(1, "g")
 # m = q.Quantity(1, "m")
 # print(f"{g} * {m} = {g * m}")
