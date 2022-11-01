@@ -285,7 +285,18 @@ def test_prop_constants_40():
     t = q.Quantity(4.8, "s")
 
     y = c * x * t
-    assert y == 287.28
+    assert float(y) == 287.28
+
+
+def test_math_fun():
+    deg = q.Quantity(90, "degree")
+    assert math.sin(deg) == 1.0
+
+    rad = q.Quantity(math.pi / 2, "radian")
+    assert math.sin(rad) == 1.0
+
+    root = q.Quantity(100.0, "")
+    assert math.sqrt(root) == 10.0
 
 
 def testing_dimensions():
