@@ -386,6 +386,51 @@ def get_si_unit_from_dim(dim_list):
     return si_unit
 
 
+class UnitSystem:
+
+    _dim_to_unit_sys_map = {
+        "M": {"SI": "kg", "CGS": "g", "BTU": "slug"},
+        "L": {"SI": "m", "CGS": "cm", "BTU": "ft"},
+        "T": {"SI": "s", "CGS": "s", "BTU": "s"},
+        "Temp": {"SI": "K", "CGS": "K", "BTU": "R"},
+        "I": {"SI": "A", "CGS": "A", "BTU": "A"},
+        "N": {"SI": "mol", "CGS": "mol", "BTU": "slugmol"},
+        "J": {"SI": "cd", "CGS": "cd", "BTU": "cd"},
+        "Angle": {"SI": "radian", "CGS": "radian", "BTU": "radian"},
+        "SAngle": {"SI": "sr", "CGS": "sr", "BTU": "sr"},
+        "": {"SI": "", "CGS": "", "BTU": ""},
+    }
+
+    _supported_unit_sys = ("SI", "CGS", "BTU")
+
+    def __init__(self, unit_sys):
+        self._unit_system = unit_sys.upper()
+
+        if self._unit_system not in UnitSystem._supported_unit_sys:
+            raise ValueError(
+                "Unsupported unit system, only 'SI', 'CGS', 'BTU' is allowed."
+            )
+
+    def _get_unit_from_dim(self, dim_list):
+        unit = ""
+
+        for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
+            unit_str = UnitSystem._dim_to_unit_sys_map[key][self._unit_system]
+            spacechar = " " if len(unit) > 0 else ""
+            if power > 0.0 or power < 0.0:
+                unit += spacechar + unit_str + "^" + str(power)
+            elif power == 1:
+                unit += spacechar + unit_str
+        return unit
+
+    def convert(self, quantity):
+        if not isinstance(quantity, Quantity):
+            raise TypeError("Not instance of Quantity.")
+        dims = quantity.get_dimensions_list()
+        unit_str = self._get_unit_from_dim(dims)
+        return quantity.to(unit_str)
+
+
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units.
@@ -548,3 +593,6 @@ class Quantity(float):
 
     def __rsub__(self, other):
         return self.__sub__(other)
+
+    def __eq__(self, other):
+        return self._si_value == other._si_value and self._si_unit == other._si_unit

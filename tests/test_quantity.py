@@ -289,6 +289,30 @@ def test_prop_constants_40():
     assert float(y) == 287.28
 
 
+def test_unit_system_41():
+    unitSysSI = q.UnitSystem("SI")
+    myVel = q.Quantity(3.0, "ft s^-1")
+    siVel = unitSysSI.convert(myVel)  # Returns velocity in m/s
+    assert siVel.value == pytest.approx(0.9143999, DELTA)
+    assert siVel.unit == "m^1.0 s^-1.0"
+
+    unitSysCGS = q.UnitSystem("CGS")
+    cgsVel = unitSysCGS.convert(myVel)  # Returns velocity in cm/s
+    assert cgsVel.value == 91.44
+    assert cgsVel.unit == "cm^1.0 s^-1.0"
+
+    unitSysBT = q.UnitSystem("BTU")
+    btuVel = unitSysBT.convert(myVel)  # Returns velocity in ft/s
+    assert btuVel.value == 3.0
+    assert btuVel.unit == "ft^1.0 s^-1.0"
+
+
+def test_equality_42():
+    qt1 = q.Quantity(5.0, "m s^-1")
+    qt2 = q.Quantity(5.0, "m s^-1")
+    assert qt1 == qt2
+
+
 def test_math_fun():
     deg = q.Quantity(90, "degree")
     assert math.sin(deg) == 1.0
@@ -459,30 +483,27 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-if __name__ == "__main__":
-    test_value_unit_1()
-    testing_dimensions()
-    testing_multipliers()
-    testing_to_systems()
-    testing_arithmetic_operators()
-    testing_properties
+# if __name__ == "__main__":
+# test_value_unit_1()
+# testing_dimensions()
+# testing_multipliers()
+# testing_to_systems()
+# testing_arithmetic_operators()
+# testing_properties
 
-    # x = q.Quantity(1, "ft")
-    # print(
-    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    # )
-    #
-    # g = q.Quantity(1, "g")
-    # m = q.Quantity(1, "m")
-    # print(f"{g} * {m} = {g * m}")
-    # print(" ")
-    # print(f"{m} * 2 = {m * 2}")
-    # print(" ")
-    #
-    # l = q.Quantity(1, "cm")
-    # r = q.Quantity(1, "kg m s")
-    # print(f"{l} + {r} = {l + r}")
-    # print(" ")
-
-    # cgs_unit = q.get_unit_from_dim(r.get_dimensions_list())
-    # print(cgs_unit)
+# x = q.Quantity(1, "ft")
+# print(
+#     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+# )
+#
+# g = q.Quantity(1, "g")
+# m = q.Quantity(1, "m")
+# print(f"{g} * {m} = {g * m}")
+# print(" ")
+# print(f"{m} * 2 = {m * 2}")
+# print(" ")
+#
+# l = q.Quantity(1, "cm")
+# r = q.Quantity(1, "")
+# print(f"{l} + {r} = {l + r}")
+# print(" ")
