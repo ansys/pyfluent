@@ -285,6 +285,7 @@ def test_prop_constants_40():
     t = q.Quantity(4.8, "s")
 
     y = c * x * t
+    print(y)
     assert float(y) == 287.28
 
 
@@ -388,12 +389,12 @@ def testing_arithmetic_operators():
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
     assert result.value == 20
-    assert result.unit == "m s^-1.0"
+    assert result.unit == "m^1.0 s^-1.0"
 
     result1 = 2 * qt1
     print(f"{2} * {qt1} =  {result1}")
     assert result1.value == 20
-    assert result1.unit == "m s^-1.0"
+    assert result1.unit == "m^1.0 s^-1.0"
 
     q3 = qt1 / qt2
 
@@ -404,13 +405,13 @@ def testing_arithmetic_operators():
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
     assert result3.value == 5
-    assert result3.unit == "m s^-1.0"
+    assert result3.unit == "m^1.0 s^-1.0"
 
     qa3 = qt1 + qt2
 
     print(f"{qt1} + {qt2} =  {qa3}")
     assert qa3.value == 15
-    assert qa3.unit == "m s^-1.0"
+    assert qa3.unit == "m^1.0 s^-1.0"
 
     try:
         result5 = qt1 + 2
@@ -428,7 +429,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} - {qt2} =  {qs3}")
     assert qs3.value == 5
-    assert qs3.unit == "m s^-1.0"
+    assert qs3.unit == "m^1.0 s^-1.0"
 
     try:
         result7 = qt1 - 2
@@ -466,19 +467,22 @@ if __name__ == "__main__":
     testing_arithmetic_operators()
     testing_properties
 
-    x = q.Quantity(1, "ft")
-    print(
-        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    )
+    # x = q.Quantity(1, "ft")
+    # print(
+    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    # )
+    #
+    # g = q.Quantity(1, "g")
+    # m = q.Quantity(1, "m")
+    # print(f"{g} * {m} = {g * m}")
+    # print(" ")
+    # print(f"{m} * 2 = {m * 2}")
+    # print(" ")
+    #
+    # l = q.Quantity(1, "cm")
+    # r = q.Quantity(1, "kg m s")
+    # print(f"{l} + {r} = {l + r}")
+    # print(" ")
 
-    g = q.Quantity(1, "g")
-    m = q.Quantity(1, "m")
-    print(f"{g} * {m} = {g * m}")
-    print(" ")
-    print(f"{m} * 2 = {m * 2}")
-    print(" ")
-
-    l = q.Quantity(1, "cm")
-    r = q.Quantity(1, "m")
-    print(f"{l} + {r} = {l + r}")
-    print(" ")
+    # cgs_unit = q.get_unit_from_dim(r.get_dimensions_list())
+    # print(cgs_unit)

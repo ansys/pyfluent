@@ -183,7 +183,7 @@ def filter_multiplier(unit_str, predicate=None):
 
 def remove_multiplier(unit_str):
     has_multiplier, prefix = filter_multiplier(
-        unit_str, lambda item, unit: len(unit) > 1 and unit.startswith(item)
+        unit_str, lambda item, unit: len(unit) > 0.0 and unit.startswith(item)
     )
     if has_multiplier:
         unit_str = unit_str[len(prefix) :]
@@ -235,7 +235,7 @@ class Unit(object):
 
         for key, power in term_power_dict.items():
             spacechar = " " if len(self._si_unit) > 0 else ""
-            if power > 1 or power < 0:
+            if power > 0.0 or power < 0.0:
                 self._si_unit += spacechar + key + "^" + str(power)
             else:
                 self._si_unit += spacechar + key
@@ -263,7 +263,8 @@ class Unit(object):
 
             if has_multiplier:
                 _, prefix = filter_multiplier(
-                    unit_str, lambda item, unit: len(unit) > 1 and unit.startswith(item)
+                    unit_str,
+                    lambda item, unit: len(unit) > 0.0 and unit.startswith(item),
                 )
 
                 if len(prefix):
@@ -274,7 +275,7 @@ class Unit(object):
             if unit_str in _UnitsTable.fundamental_units:
                 spacechar = " " if len(self._si_unit) > 0 else ""
 
-                if term_power > 1 or term_power < 0:
+                if term_power > 0.0 or term_power < 0.0:
                     self._si_unit += (
                         spacechar + _UnitsTable.si_map[unit_str] + "^" + str(term_power)
                     )
@@ -378,9 +379,9 @@ def get_si_unit_from_dim(dim_list):
     for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
         unit_str = dim_to_unit_map[key]
         spacechar = " " if len(si_unit) > 0 else ""
-        if power > 1 or power < 0:
+        if power > 0.0 or power < 0.0:
             si_unit += spacechar + unit_str + "^" + str(power)
-        elif power == 1:
+        elif power == 1.0:
             si_unit += spacechar + unit_str
     return si_unit
 
