@@ -40,12 +40,8 @@ extensions = [
 # Intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/dev", None),
-    # "scipy": ("https://docs.scipy.org/doc/scipy", None),
     "numpy": ("https://numpy.org/devdocs", None),
-    # "matplotlib": ("https://matplotlib.org/stable", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable", None),
-    # "pyvista": ("https://docs.pyvista.org/", None),
-    # "pypim": ("https://pypim.docs.pyansys.com/", None),
 }
 
 # SS01, SS02, SS03, GL08 all need clean up in the code to be reactivated.
