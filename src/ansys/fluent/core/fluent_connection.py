@@ -318,7 +318,10 @@ class _FluentConnection:
     ) -> None:
         if channel:
             if cleanup_on_exit:
-                scheme_eval.exec(("(exit-server)",))
+                try:
+                    scheme_eval.exec(("(exit-server)",))
+                except Exception:
+                    pass
             transcript_service.end_streaming()
             events_manager.stop()
             channel.close()
