@@ -287,10 +287,30 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError):
+    with pytest.raises(AttributeError) as msg:
         assert w.task(
             "Import Geometry"
         ).CommandArguments.CadImportOptions.FeatureAngle.allowed_values()
+    assert (
+        msg.value.args[0]
+        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+    )
+
+    # Test intended to fail in numerical type (allowed_values() only available in string types)
+    with pytest.raises(AttributeError) as msg:
+        assert w.task("Import Geometry").CommandArguments.NumParts.allowed_values()
+    assert (
+        msg.value.args[0]
+        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+    )
+
+    # Test intended to fail in string type (min() only available in numerical types)
+    with pytest.raises(AttributeError) as msg:
+        assert w.task("Import Geometry").CommandArguments.LengthUnit.min()
+    assert (
+        msg.value.args[0]
+        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
+    )
 
 
 @pytest.mark.dev
@@ -303,12 +323,25 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
 
     assert "set_state" not in dir(w.task("Import Geometry").CommandArguments)
     assert "set_state" not in dir(w.task("Import Geometry").CommandArguments.LengthUnit)
+    assert "set_state" not in dir(
+        w.task("Import Geometry").CommandArguments.CadImportOptions
+    )
+    assert "set_state" not in dir(
+        w.task("Import Geometry").CommandArguments.CadImportOptions.OneZonePer
+    )
 
     with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").CommandArguments.MeshUnit.set_state("in")
     assert msg.value.args[0] == "Command Arguments are read-only."
 
+    with pytest.raises(AttributeError) as msg:
+        w.task(
+            "Import Geometry"
+        ).CommandArguments.CadImportOptions.OneZonePer.set_state(None)
+    assert msg.value.args[0] == "Command Arguments are read-only."
+
     assert "set_state" in dir(m.ImportGeometry.new())
+    assert "set_state" in dir(m.ImportGeometry.new().NumParts)
 
 
 @pytest.mark.dev

@@ -704,15 +704,6 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         self.path = path
         self.parent_arg = parent_arg
 
-    def __getattr__(self, attr):
-        arg = self.parent_arg.info.parameters[attr]
-
-        mode = AccessorModes.get_mode(arg.type)
-        py_class = mode.value[1]
-        return MakeReadOnly(
-            py_class(self, attr, self.service, self.rules, self.path, arg)
-        )
-
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
         try:
@@ -766,9 +757,7 @@ class PyCommandArguments(PyStateContainer):
             if arg.name == attr:
                 mode = AccessorModes.get_mode(arg.type)
                 py_class = mode.value[1]
-                return MakeReadOnly(
-                    py_class(self, attr, self.service, self.rules, self.path, arg)
-                )
+                return py_class(self, attr, self.service, self.rules, self.path, arg)
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
@@ -835,6 +824,28 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         PyParameter.__init__(self, service, rules, path)
 
 
+class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+
+    def __getattr__(self, attr):
+        arg = self.parent_arg.info.parameters[attr]
+
+        mode = AccessorModes.get_mode(arg.type)
+        py_class = mode.value[1]
+        return py_class(self, attr, self.service, self.rules, self.path, arg)
+
+
 class AccessorModes(Enum):
     """Provides the standard Fluent launch modes."""
 
@@ -849,7 +860,7 @@ class AccessorModes(Enum):
         ["Bool", "Logical", "Logical List"],
         PyParameterCommandArgumentsSubItem,
     )
-    GENERIC = ([], PyCommandArgumentsSubItem)
+    MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
 
     @staticmethod
     def get_mode(mode: str) -> "AccessorModes":
@@ -858,32 +869,7 @@ class AccessorModes(Enum):
             if mode in m.value[0]:
                 return m
         else:
-            return AccessorModes.GENERIC
-
-
-class MakeReadOnly:
-    """Removes 'set_state()' attribute to implement read-only behaviour."""
-
-    _unwanted_attr = ["set_state", "setState"]
-
-    def __init__(self, cmd):
-        self._cmd = cmd
-
-    def __getattr__(self, attr):
-        if attr in MakeReadOnly._unwanted_attr:
-            raise AttributeError("Command Arguments are read-only.")
-        return getattr(self._cmd, attr)
-
-    def __dir__(self):
-        returned_list = sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._cmd))
-        )
-        for attr in MakeReadOnly._unwanted_attr:
-            returned_list.remove(attr)
-        return returned_list
-
-    def __call__(self):
-        return self._cmd()
+            raise TypeError(f"The specified mode: {mode} was not found.")
 
 
 class PyMenuGeneric(PyMenu):
