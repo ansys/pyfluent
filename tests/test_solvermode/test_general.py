@@ -49,10 +49,8 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
         "density-based-implicit",
         "density-based-explicit",
     ]
-
     # Below line is commented due to TFS Bug 714494
     # assert solver_session.setup.general.solver.type.default_value() == "pressure-based"
-
     assert solver_session.setup.general.solver.type.is_active()
     assert not solver_session.setup.general.solver.type.is_read_only()
     solver_session.setup.general.solver.type = "density-based-implicit"
