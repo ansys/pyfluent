@@ -1,8 +1,8 @@
 from collections import OrderedDict
 
 
-class UnitsTable(object):
-    _fundamental_units = {
+class _UnitsTable(object):
+    fundamental_units = {
         "kg": "M",
         "g": "M",
         "lb": "M",
@@ -25,7 +25,7 @@ class UnitsTable(object):
         "degree": "Angle",
     }
 
-    _derived_units = {
+    derived_units = {
         "N": "kg m s^-2",
         "Pa": "N m^-2",
         "W": "N m s^-1",
@@ -47,13 +47,13 @@ class UnitsTable(object):
         "Hz": "s^-1",
     }
 
-    _derived_units_with_conversion_factor = {
+    derived_units_with_conversion_factor = {
         "l": (0.001, "m^3"),
         "gal": (0.0037854117839999993, "m^3"),
         "BTU": (1055.056, "J"),
     }
 
-    _multipliers = {
+    multipliers = {
         "d": 10**-1,
         "c": 10**-2,
         "m": 10**-3,
@@ -76,7 +76,7 @@ class UnitsTable(object):
         "Y": 10**24,
     }
 
-    _dimension_order = OrderedDict(
+    dimension_order = OrderedDict(
         [
             ("Mass", "M"),
             ("Length", "L"),
@@ -91,7 +91,7 @@ class UnitsTable(object):
         ]
     )
 
-    _conversion_map = {
+    conversion_map = {
         "kg": 1,
         "g": 0.001,
         "lb": 0.45359237,
@@ -114,7 +114,7 @@ class UnitsTable(object):
         "R": 0.5555555555555556,
     }
 
-    _si_map = {
+    si_map = {
         "kg": "kg",
         "g": "kg",
         "lb": "kg",
@@ -138,14 +138,14 @@ class UnitsTable(object):
         "": "",
     }
 
-    _offset_conversions = {
+    offset_conversions = {
         "K": 1,
         "C": 274.15,
         "F": 255.92777777777778,
         "R": 0.5555555555555556,
     }
 
-    _offset_dict = {
+    offset_dict = {
         "K": {"C": 274.15, "F": 255.92777777777778, "R": 0.5555555555555556},
         "C": {"K": -272.15, "F": -17.2222222222222, "R": -272.59444444444443},
         "F": {"C": 33.79999999999993, "K": -457.87, "R": -458.67},
@@ -155,8 +155,8 @@ class UnitsTable(object):
 
 def get_si_conversion_factor(unit_str):
     return (
-        UnitsTable._conversion_map[unit_str]
-        if unit_str in UnitsTable._conversion_map.keys()
+        _UnitsTable.conversion_map[unit_str]
+        if unit_str in _UnitsTable.conversion_map.keys()
         else 1
     )
 
@@ -164,15 +164,15 @@ def get_si_conversion_factor(unit_str):
 def filter_multiplier(unit_str, predicate=None):
     result = False
     matched = ""
-    for item in UnitsTable._multipliers.keys():
+    for item in _UnitsTable.multipliers.keys():
         result = predicate(item, unit_str) if predicate else item == unit_str
         if result:
             matched = item
             result = True
             temp_unit_str = unit_str[len(item) :]
             if (
-                temp_unit_str in UnitsTable._fundamental_units
-                or temp_unit_str in UnitsTable._derived_units
+                temp_unit_str in _UnitsTable.fundamental_units
+                or temp_unit_str in _UnitsTable.derived_units
             ):
                 break
             else:
@@ -196,7 +196,7 @@ class Unit(object):
         self._si_multiplier = 1
         self._si_offset = 0
         self._si_unit = ""
-        self._compute_multipliers_and_offsets(unit_str, 1)
+        self._computemultipliers_and_offsets(unit_str, 1)
         self._reduce_to_si_unit(self._si_unit)
 
     @property
@@ -240,7 +240,7 @@ class Unit(object):
             else:
                 self._si_unit += spacechar + key
 
-    def _compute_multipliers_and_offsets(self, unit_str, power):
+    def _computemultipliers_and_offsets(self, unit_str, power):
         if len(unit_str) == 0:
             return
 
@@ -257,8 +257,8 @@ class Unit(object):
 
             term_power *= power
             has_multiplier = not (
-                unit_str in UnitsTable._fundamental_units
-                or unit_str in UnitsTable._derived_units
+                unit_str in _UnitsTable.fundamental_units
+                or unit_str in _UnitsTable.derived_units
             )
 
             if has_multiplier:
@@ -267,32 +267,32 @@ class Unit(object):
                 )
 
                 if len(prefix):
-                    self._si_multiplier *= UnitsTable._multipliers[prefix] ** term_power
+                    self._si_multiplier *= _UnitsTable.multipliers[prefix] ** term_power
 
                 unit_str = remove_multiplier(unit_str)
 
-            if unit_str in UnitsTable._fundamental_units:
+            if unit_str in _UnitsTable.fundamental_units:
                 spacechar = " " if len(self._si_unit) > 0 else ""
 
                 if term_power > 1 or term_power < 0:
                     self._si_unit += (
-                        spacechar + UnitsTable._si_map[unit_str] + "^" + str(term_power)
+                        spacechar + _UnitsTable.si_map[unit_str] + "^" + str(term_power)
                     )
                 else:
-                    self._si_unit += spacechar + UnitsTable._si_map[unit_str]
+                    self._si_unit += spacechar + _UnitsTable.si_map[unit_str]
 
                 self._si_multiplier *= get_si_conversion_factor(unit_str) ** term_power
 
-            elif unit_str in UnitsTable._derived_units_with_conversion_factor:
+            elif unit_str in _UnitsTable.derived_units_with_conversion_factor:
                 (
                     conversion_factor,
                     unit_str,
-                ) = UnitsTable._derived_units_with_conversion_factor[unit_str]
+                ) = _UnitsTable.derived_units_with_conversion_factor[unit_str]
                 self._si_multiplier *= conversion_factor**term_power
-                self._compute_multipliers_and_offsets(unit_str, term_power)
-            elif unit_str in UnitsTable._derived_units:
-                self._compute_multipliers_and_offsets(
-                    UnitsTable._derived_units[unit_str], term_power
+                self._computemultipliers_and_offsets(unit_str, term_power)
+            elif unit_str in _UnitsTable.derived_units:
+                self._computemultipliers_and_offsets(
+                    _UnitsTable.derived_units[unit_str], term_power
                 )
 
 
@@ -324,8 +324,8 @@ class Dimension(object):
         for term in unit_list:
             unit_dim = ""
             has_multiplier = not (
-                term in UnitsTable._fundamental_units
-                or term in UnitsTable._derived_units
+                term in _UnitsTable.fundamental_units
+                or term in _UnitsTable.derived_units
             )
             unit_str = remove_multiplier(term) if has_multiplier else term
             term_power = 1
@@ -335,8 +335,8 @@ class Dimension(object):
                     term[term.index("^") + 1 :]
                 )
                 has_multiplier = not (
-                    unit_str in UnitsTable._fundamental_units
-                    or unit_str in UnitsTable._derived_units
+                    unit_str in _UnitsTable.fundamental_units
+                    or unit_str in _UnitsTable.derived_units
                 )
                 unit_str = remove_multiplier(unit_str) if has_multiplier else unit_str
 
@@ -350,12 +350,12 @@ class Dimension(object):
         return self._dimensions
 
     def _get_dim(self, unit_str, power):
-        if unit_str in UnitsTable._fundamental_units:
-            return {UnitsTable._fundamental_units[unit_str]: power}
-        elif unit_str in UnitsTable._derived_units:
-            self._parser(UnitsTable._derived_units[unit_str], power)
-        elif unit_str in UnitsTable._derived_units_with_conversion_factor:
-            _, unit_str = UnitsTable._derived_units_with_conversion_factor[unit_str]
+        if unit_str in _UnitsTable.fundamental_units:
+            return {_UnitsTable.fundamental_units[unit_str]: power}
+        elif unit_str in _UnitsTable.derived_units:
+            self._parser(_UnitsTable.derived_units[unit_str], power)
+        elif unit_str in _UnitsTable.derived_units_with_conversion_factor:
+            _, unit_str = _UnitsTable.derived_units_with_conversion_factor[unit_str]
             self._parser(unit_str, power)
         else:
             raise ValueError("Not implemented")
@@ -375,7 +375,7 @@ def get_si_unit_from_dim(dim_list):
         "SAngle": "sr",
         "": "",
     }
-    for key, power in zip(UnitsTable._dimension_order.values(), dim_list):
+    for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
         unit_str = dim_to_unit_map[key]
         spacechar = " " if len(si_unit) > 0 else ""
         if power > 1 or power < 0:
@@ -455,8 +455,8 @@ class Quantity(float):
     def get_dimensions_list(self):
         dims = self._dimension.get_dimensions_dict()
         return [
-            dims[UnitsTable._dimension_order[key]]
-            for key in UnitsTable._dimension_order.keys()
+            dims[_UnitsTable.dimension_order[key]]
+            for key in _UnitsTable.dimension_order.keys()
         ]
 
     def to(self, to_unit_str):
