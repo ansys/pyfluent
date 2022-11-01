@@ -1,4 +1,4 @@
-.. _ref_casereader:
+.. _ref_case_reader:
 
 Case reader
 ===========
