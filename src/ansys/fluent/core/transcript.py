@@ -85,7 +85,8 @@ class Transcript:
 
     def stop(self) -> None:
         """Stop streaming of Fluent transcript."""
-        self._transcript_service.end_streaming()
-        self._transcript_thread.join()
-        self._streaming = False
-        self._transcript_thread = None
+        if self.is_streaming:
+            self._transcript_service.end_streaming()
+            self._transcript_thread.join()
+            self._streaming = False
+            self._transcript_thread = None
