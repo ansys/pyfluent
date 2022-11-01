@@ -230,7 +230,7 @@ class _FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
-            self._transcript._transcript_service,
+            self._transcript,
             self.events_manager,
             self._remote_instance,
         )
@@ -315,14 +315,14 @@ class _FluentConnection:
         channel,
         cleanup_on_exit,
         scheme_eval,
-        transcript_service,
+        transcript,
         events_manager,
         remote_instance,
     ) -> None:
         if channel:
             if cleanup_on_exit:
                 scheme_eval.exec(("(exit-server)",))
-            transcript_service.end_streaming()
+            transcript.stop()
             events_manager.stop()
             channel.close()
             channel = None
