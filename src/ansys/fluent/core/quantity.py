@@ -346,7 +346,7 @@ class Dimension(object):
             if unit_dim != None:
                 self._add_or_update_dimension(unit_dim)
 
-    def get_dimensions_dict(self):
+    def as_dict(self):
         return self._dimensions
 
     def _get_dim(self, unit_str, power):
@@ -454,7 +454,7 @@ class Quantity(float):
         return all([value == 0 for value in self.get_dimensions_list()])
 
     def get_dimensions_list(self):
-        dims = self._dimension.get_dimensions_dict()
+        dims = self._dimension.as_dict()
         return [
             dims[_UnitsTable.dimension_order[key]]
             for key in _UnitsTable.dimension_order.keys()
@@ -466,10 +466,7 @@ class Quantity(float):
         curr_unit_dim_obj = self.dimension
         to_unit_dim_obj = temp_quantity.dimension
 
-        if (
-            curr_unit_dim_obj.get_dimensions_dict()
-            != to_unit_dim_obj.get_dimensions_dict()
-        ):
+        if curr_unit_dim_obj.as_dict() != to_unit_dim_obj.as_dict():
             raise ValueError(
                 f"Incompatible conversion from {self.unit} : to {to_unit_str}"
             )
