@@ -21,7 +21,6 @@ import importlib
 import keyword
 import pickle
 import string
-import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
@@ -244,7 +243,7 @@ class SettingsBase(Base, Generic[StateT]):
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     @staticmethod
-    def _print_state_helper(state, out=sys.stdout, indent=0, indent_factor=2):
+    def _print_state_helper(state, out, indent=0, indent_factor=2):
         if isinstance(state, dict):
             out.write("\n")
             for key, value in state.items():
@@ -261,7 +260,7 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             out.write(f"{state}\n")
 
-    def print_state(self, out=sys.stdout, indent_factor=2):
+    def print_state(self, out=None, indent_factor=2):
         """Print the state of the object."""
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
 

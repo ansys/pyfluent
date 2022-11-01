@@ -77,6 +77,18 @@ distributed across more than one machine:
       additional_arguments="-cnf=m1:8,m2:8",
    )
 
+Logging Support
+---------------
+There is also an option to run PyFluent with logging enabled.
+You can use the following snippet to enable logging:
+
+.. code:: python
+
+   pyfluent.set_log_level("ERROR")
+
+The log level needs to be passed while enabling logging. It supports any of the
+logging level (CRITICAL, ERROR, WARNING, INFO, DEBUG) in string or enum format.
+
 Scheduler support
 -----------------
 When PyFluent is run within a job scheduler environment :func:`launch_fluent()

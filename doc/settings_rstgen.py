@@ -4,7 +4,7 @@ tree.
 Running this module generates a .rst files for the Fluent
 settings classes. The out is placed at:
 
-- doc/source/api/core/solver/_autosummary/settings
+- doc/source/api/solver/_autosummary/settings
 
 Process
 -------
@@ -210,7 +210,6 @@ if __name__ == "__main__":
             dirname,
             "source",
             "api",
-            "core",
             "solver",
             "_autosummary",
             "settings",
