@@ -23,3 +23,4 @@ events, monitoring, and field data (surface, scalar, and vector).
    fielddata
    events
    monitors
+   reduction

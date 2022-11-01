@@ -35,6 +35,12 @@ class EventsManager:
         self._events_list: List[str] = [
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]
+        self._streaming = False
+
+    @property
+    def is_streaming(self):
+        with self._lock:
+            return self._streaming
 
     def _listen_events(self, started_evt):
         responses = self._events_service.begin_streaming(started_evt)
@@ -43,6 +49,7 @@ class EventsManager:
                 response = next(responses)
                 event_name = response.WhichOneof("as")
                 with self._lock:
+                    self._streaming = True
                     callbacks_map = self._events_to_callbacks_map.get(event_name, {})
                     for call_back in callbacks_map.values():
                         call_back(
@@ -128,13 +135,14 @@ class EventsManager:
         -------
         None
         """
-        if self._events_thread is None:
-            started_evt = threading.Event()
-            self._events_thread: threading.Thread = threading.Thread(
-                target=EventsManager._listen_events, args=(self, started_evt)
-            )
-            self._events_thread.start()
-            started_evt.wait()
+        with self._lock:
+            if self._events_thread is None:
+                started_evt = threading.Event()
+                self._events_thread: threading.Thread = threading.Thread(
+                    target=EventsManager._listen_events, args=(self, started_evt)
+                )
+                self._events_thread.start()
+                started_evt.wait()
 
     def stop(self):
         """Stop EventsManager.
@@ -151,3 +159,4 @@ class EventsManager:
             self._events_service.end_streaming()
             self._events_thread.join()
             self._events_thread = None
+            self._streaming = False
