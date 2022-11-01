@@ -420,7 +420,7 @@ class Quantity(float):
         self._value = float(real_value)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
-        float.__init__(self.si_value)
+        float.__init__(self._si_value)
 
     def __new__(cls, real_value, unit_str):
         _unit = Unit(unit_str)
@@ -443,11 +443,11 @@ class Quantity(float):
         return self._dimension
 
     @property
-    def si_value(self):
+    def _si_value(self):
         return self._unit.si_factor * self._value
 
     @property
-    def si_unit(self):
+    def _si_unit(self):
         return self._unit.si_unit
 
     def is_dimension_less(self):
@@ -493,7 +493,7 @@ class Quantity(float):
             map(lambda x: x * exponent if x != 0 else x, self.get_dimensions_list())
         )
         new_si_unit = get_si_unit_from_dim(new_dims)
-        new_si_value = pow(self.si_value, exponent)
+        new_si_value = pow(self._si_value, exponent)
         return Quantity(new_si_value, new_si_unit)
 
     def __str__(self):
@@ -504,11 +504,11 @@ class Quantity(float):
 
     def __mul__(self, other):
         if isinstance(other, Quantity):
-            temp_value = self.si_value * other.si_value
+            temp_value = self._si_value * other._si_value
             temp_unit = self._get_si_unit(other, lambda x, y: x + y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):
-            temp = Quantity(self.si_value * other, self.si_unit)
+            temp = Quantity(self._si_value * other, self._si_unit)
             return temp
 
     def __rmul__(self, other):
@@ -516,37 +516,37 @@ class Quantity(float):
 
     def __truediv__(self, other):
         if isinstance(other, Quantity):
-            temp_value = self.si_value / other.si_value
+            temp_value = self._si_value / other._si_value
             temp_unit = self._get_si_unit(other, lambda x, y: x - y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):
-            temp = Quantity(self.si_value / other, self.si_unit)
+            temp = Quantity(self._si_value / other, self._si_unit)
             return temp
 
     def __add__(self, other):
         if isinstance(other, Quantity):
-            temp_value = self.si_value + other.si_value
+            temp_value = self._si_value + other._si_value
         elif self.is_dimension_less() and (
             isinstance(other, int) or isinstance(other, float)
         ):
-            temp_value = self.si_value + other
+            temp_value = self._si_value + other
         else:
             raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
-        return Quantity(temp_value, self.si_unit)
+        return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __sub__(self, other):
         if isinstance(other, Quantity):
-            temp_value = self.si_value - other.si_value
+            temp_value = self._si_value - other._si_value
         elif self.is_dimension_less() and (
             isinstance(other, int) or isinstance(other, float)
         ):
-            temp_value = self.si_value - other
+            temp_value = self._si_value - other
         else:
             raise ValueError(f"Quantity{(self.value, self.unit)} is not dimensionless.")
-        return Quantity(temp_value, self.si_unit)
+        return Quantity(temp_value, self._si_unit)
 
     def __rsub__(self, other):
         return Quantity(other, "") - self

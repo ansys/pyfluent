@@ -449,8 +449,8 @@ def testing_properties():
     v = q.Quantity(1, "cm s^-1")
     print(f"value = {v.value}")
     print(f"unit = {v.unit}")
-    print(f"si value = {v.si_value}")
-    print(f"si unit = {v.si_unit}")
+    print(f"si value = {v._si_value}")
+    print(f"si unit = {v._si_unit}")
     print(f"is dimensionless? = {v.is_dimension_less()}")
     print(f"dimensions = {v.get_dimensions_list()}")
 
@@ -468,5 +468,5 @@ if __name__ == "__main__":
 
     x = q.Quantity(1, "ft")
     print(
-        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x.si_value}"
+        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     )
