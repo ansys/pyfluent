@@ -551,34 +551,37 @@ if __name__ == "__main__":
     # b = q.Quantity(10.5, "m")
     # print(b)
 
-    q1 = q.Quantity(10.0, "m s^-1")
-    q2 = q.Quantity(5.0, "m s^-1")
+    # q1 = q.Quantity(10.0, "m s^-1")
+    # q2 = q.Quantity(5.0, "m s^-1")
+    #
+    # print(f"{q1} - {q2} = {q1 - q2}")
+    # print("")
+    #
+    # print(f"{q2} - {q1} = {q2 - q1}")
+    # print("")
+    #
+    # print(f"{float(q1)} - 2.0 = {float(q1) - 2.0}")
+    # print("")
+    #
+    # print(f"2.0 - {float(q1)} = {2.0 - float(q1)}")
+    # print("")
+    #
+    # print(f"{float(q1)} - 3 = {float(q1) - 3}")
+    # print("")
+    #
+    # print(f"3 - {float(q1)} = {3 - float(q1)}")
+    # print("")
+    #
+    # print(q1**2)
+    # print(q2**2)
+    #
+    # q3 = q.Quantity(10.0, "m s^-1")
+    # q4 = q.Quantity(10.0, "")
+    #
+    # print(q1 == q2)
+    # print(q1 == q3)
+    # print(float(q1) == 10.0)
+    # print(q4 == 10.0)
 
-    print(f"{q1} - {q2} = {q1 - q2}")
-    print("")
-
-    print(f"{q2} - {q1} = {q2 - q1}")
-    print("")
-
-    print(f"{float(q1)} - 2.0 = {float(q1) - 2.0}")
-    print("")
-
-    print(f"2.0 - {float(q1)} = {2.0 - float(q1)}")
-    print("")
-
-    print(f"{float(q1)} - 3 = {float(q1) - 3}")
-    print("")
-
-    print(f"3 - {float(q1)} = {3 - float(q1)}")
-    print("")
-
-    print(q1**2)
-    print(q2**2)
-
-    q3 = q.Quantity(10.0, "m s^-1")
-    q4 = q.Quantity(10.0, "")
-
-    print(q1 == q2)
-    print(q1 == q3)
-    print(float(q1) == 10.0)
-    print(q4 == 10.0)
+    rankine = q.Quantity(1.0, "R")
+    print(rankine.to("K"))
