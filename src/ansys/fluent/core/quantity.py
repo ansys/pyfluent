@@ -544,9 +544,7 @@ class Quantity(float):
         return temp_unit
 
     def __pow__(self, exponent):
-        new_dims = list(
-            map(lambda x: x * exponent if x != 0 else x, self.get_dimensions_list())
-        )
+        new_dims = list(map(lambda x: x * exponent, self.get_dimensions_list()))
         new_si_unit = get_si_unit_from_dim(new_dims)
         new_si_value = pow(self._si_value, exponent)
         return Quantity(new_si_value, new_si_unit)

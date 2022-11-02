@@ -536,3 +536,6 @@ if __name__ == "__main__":
 
     print(f"3 - {float(q1)} = {3 - float(q1)}")
     print("")
+
+    print(q1**2)
+    print(q2**2)
