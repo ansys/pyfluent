@@ -1,6 +1,8 @@
 from functools import partial
 import os
+import tempfile
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.async_execution import asynchronous
 from ansys.fluent.core.utils.logging import LOG
 
@@ -56,7 +58,9 @@ def transfer_case(
     """
     for idx in range(num_files_to_try):
         file_name = (file_name_stem or "temp_case_file_") + "_" + str(idx)
-        folder = os.getenv("TMP", os.getenv("TMPDIR", "."))
+        folder = tempfile.mkdtemp(
+            suffix=".txt", prefix="serverinfo-", dir=pyfluent.EXAMPLES_PATH
+        )
         file_name = os.path.join(folder, file_name)
         LOG.info(f"Trying to save mesh from meshing session: {file_name}")
         if overwrite_previous or not os.path.isfile(file_name):
