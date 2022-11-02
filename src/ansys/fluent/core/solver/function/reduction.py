@@ -56,20 +56,6 @@ Examples
 ...         solver2.setup.boundary_conditions.pressure_outlet
 ...     ])
 19.28151
-
->>> from ansys.fluent.core.solver.function import reduction
->>> # Compute the minimum of the square of velocity magnitude
->>> # for all pressure outlets across two solvers
->>> named_exprs = solver1.setup.named_expressions
->>> vsquared = named_exprs["vsquared"] = {}
->>> vsquared.definition = "VelocityMagnitude ** 2"
->>> reduction.find_minimum(
-...     expr = vsquared,
-...     locations = [
-...         solver1.setup.boundary_conditions.pressure_outlet,
-...         solver2.setup.boundary_conditions.pressure_outlet
-...     ])
-[('session-1', 'outlet1')]
 """
 
 

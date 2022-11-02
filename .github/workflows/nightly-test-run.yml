@@ -34,7 +34,7 @@ jobs:
 
       - name: Retrieve PyFluent version
         run: |
-          echo "::set-output name=PYFLUENT_VERSION::$(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(__version__)")" >> $GITHUB_OUTPUT
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
         id: version
 

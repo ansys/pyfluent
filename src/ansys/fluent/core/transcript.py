@@ -13,6 +13,7 @@ class Transcript:
         self._metadata = metadata
         self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
+        self._streaming: bool = False
         self._transcript_callbacks = {}
         self._transcript_callback_id = itertools.count()
         self._lock = threading.Lock()
@@ -85,7 +86,8 @@ class Transcript:
 
     def stop(self) -> None:
         """Stop streaming of Fluent transcript."""
-        self._transcript_service.end_streaming()
-        self._transcript_thread.join()
-        self._streaming = False
-        self._transcript_thread = None
+        if self.is_streaming:
+            self._transcript_service.end_streaming()
+            self._transcript_thread.join()
+            self._streaming = False
+            self._transcript_thread = None

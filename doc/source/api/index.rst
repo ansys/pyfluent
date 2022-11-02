@@ -48,4 +48,7 @@ scalar and vector field data.
    :maxdepth: 4
    :hidden:
    
-   core/index
+   launcher
+   utils
+   meshing/index
+   solver/index
