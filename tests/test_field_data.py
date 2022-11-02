@@ -1,3 +1,7 @@
+import os
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
+
 import numpy as np
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
@@ -77,14 +81,27 @@ def test_field_data(new_solver_session) -> None:
 
     data = transaction.get_fields()
 
+    surface_data_tag = (("type", "surface-data"),)  # tuple containing surface data info
+    scalar_field_tag = (
+        ("type", "scalar-field"),
+        ("dataLocation", 0),
+        ("boundaryValues", True),
+    )  # tuple containing scalar field info
+
     assert len(data) == 2
-    assert list(data[0][hot_inlet_surf_id].keys()) == ["vertices", "centroid"]
-    assert list(data[12][hot_inlet_surf_id].keys()) == ["temperature"]
+    assert list(data[surface_data_tag][hot_inlet_surf_id].keys()) == [
+        "vertices",
+        "centroid",
+    ]
+    assert list(data[scalar_field_tag][hot_inlet_surf_id].keys()) == ["temperature"]
     assert (
-        len(data[12][hot_inlet_surf_id]["temperature"])
-        == len(data[0][hot_inlet_surf_id]["vertices"]) / 3
+        len(data[scalar_field_tag][hot_inlet_surf_id]["temperature"])
+        == len(data[surface_data_tag][hot_inlet_surf_id]["vertices"]) / 3
     )
     assert (
-        round(float(np.average(data[12][hot_inlet_surf_id]["temperature"])), 2)
+        round(
+            float(np.average(data[scalar_field_tag][hot_inlet_surf_id]["temperature"])),
+            2,
+        )
         == HOT_INLET_TEMPERATURE
     )
