@@ -413,12 +413,12 @@ def testing_arithmetic_operators():
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
     assert result.value == 20
-    assert result.unit == "m^1.0 s^-1.0"
+    assert result.unit == "m^1 s^-1.0"
 
     result1 = 2 * qt1
     print(f"{2} * {qt1} =  {result1}")
     assert result1.value == 20
-    assert result1.unit == "m^1.0 s^-1.0"
+    assert result1.unit == "m^1 s^-1.0"
 
     q3 = qt1 / qt2
 
@@ -429,13 +429,13 @@ def testing_arithmetic_operators():
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
     assert result3.value == 5
-    assert result3.unit == "m^1.0 s^-1.0"
+    assert result3.unit == "m^1 s^-1.0"
 
     qa3 = qt1 + qt2
 
     print(f"{qt1} + {qt2} =  {qa3}")
     assert qa3.value == 15
-    assert qa3.unit == "m^1.0 s^-1.0"
+    assert qa3.unit == "m^1 s^-1.0"
 
     try:
         result5 = qt1 + 2
@@ -453,7 +453,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} - {qt2} =  {qs3}")
     assert qs3.value == 5
-    assert qs3.unit == "m^1.0 s^-1.0"
+    assert qs3.unit == "m^1 s^-1.0"
 
     try:
         result7 = qt1 - 2
@@ -484,31 +484,55 @@ def testing_properties():
 
 
 if __name__ == "__main__":
-    # test_value_unit_1()
-    # testing_dimensions()
-    # testing_multipliers()
-    # testing_to_systems()
-    # testing_arithmetic_operators()
-    # testing_properties()
-    #
-    # x = q.Quantity(1, "ft")
-    # print(
-    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    # )
+    test_value_unit_1()
+    testing_dimensions()
+    testing_multipliers()
+    testing_to_systems()
+    testing_arithmetic_operators()
+    testing_properties()
 
-    # g = q.Quantity(1, "g")
-    # m = q.Quantity(1, "m")
-    # print(f"{g} * {m} = {g * m}")
-    # print(" ")
-    # print(f"{m} * 2 = {m * 2}")
-    # print(" ")
-    #
+    x = q.Quantity(1, "ft")
+    print(
+        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    )
+
+    g = q.Quantity(1, "g")
+    m = q.Quantity(1, "m")
+    print(f"{g} * {m} = {g * m}")
+    print("here ")
+    print(f"{m} * 2 = {m * 2}")
+    print(" ")
+
     # l = q.Quantity(1, "cm")
     # r = q.Quantity(1, "")
     # print(f"{l} + {r} = {l + r}")
     # print(" ")
-    tk = q.Quantity(300.0, "K")
-    tr = q.Quantity(150.0, "R")
+    # tk = q.Quantity(300.0, "K")
+    # tr = q.Quantity(150.0, "R")
+    #
+    # print(tk.to("R"))
+    # print(tr.to("K"))
 
-    print(tk.to("R"))
-    print(tr.to("K"))
+    # b = q.Quantity(10.5, "m")
+    # print(b)
+
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
+
+    print(f"{q1} - {q2} = {q1 - q2}")
+    print("")
+
+    print(f"{q2} - {q1} = {q2 - q1}")
+    print("")
+
+    print(f"{float(q1)} - 2.0 = {float(q1) - 2.0}")
+    print("")
+
+    print(f"2.0 - {float(q1)} = {2.0 - float(q1)}")
+    print("")
+
+    print(f"{float(q1)} - 3 = {float(q1) - 3}")
+    print("")
+
+    print(f"3 - {float(q1)} = {3 - float(q1)}")
+    print("")

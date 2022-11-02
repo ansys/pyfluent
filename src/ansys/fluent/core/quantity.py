@@ -281,7 +281,9 @@ class Unit(object):
             if unit_str in _UnitsTable.fundamental_units:
                 spacechar = " " if len(self._si_unit) > 0 else ""
 
-                if term_power > 0.0 or term_power < 0.0:
+                if term_power == 1.0:
+                    self._si_unit += spacechar + _UnitsTable.si_map[unit_str]
+                elif term_power > 0.0 or term_power < 0.0:
                     self._si_unit += (
                         spacechar + _UnitsTable.si_map[unit_str] + "^" + str(term_power)
                     )
@@ -389,6 +391,13 @@ def get_si_unit_from_dim(dim_list):
             si_unit += spacechar + unit_str + "^" + str(power)
         elif power == 1.0:
             si_unit += spacechar + unit_str
+        elif power > 0.0 or power < 0.0:
+            si_unit += (
+                spacechar
+                + unit_str
+                + "^"
+                + str(int(power) if power.is_integer() else power)
+            )
     return si_unit
 
 
@@ -589,8 +598,10 @@ class Quantity(float):
             self.get_dimensions_list() == other.get_dimensions_list()
         ):
             temp_value = self._si_value - other._si_value
-        elif self.is_dimension_less() and (
-            isinstance(other, int) or isinstance(other, float)
+        elif (
+            not isinstance(other, Quantity)
+            and self.is_dimension_less()
+            and (isinstance(other, int) or isinstance(other, float))
         ):
             temp_value = self._si_value - other
         else:
