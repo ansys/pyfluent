@@ -59,9 +59,7 @@ def sample_solver_session(with_launching_container):
 
 @pytest.fixture
 def launch_fluent_pure_meshing(with_launching_container):
-    pure_meshing_session = pyfluent.launch_fluent(
-        mode=pyfluent.LaunchModes.PURE_MESHING_MODE
-    )
+    pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
     yield pure_meshing_session
     pure_meshing_session.exit()
 
