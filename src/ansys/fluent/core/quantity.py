@@ -380,7 +380,12 @@ def get_si_unit_from_dim(dim_list):
         if power == 1.0:
             si_unit += spacechar + unit_str
         elif power != 0.0:
-            si_unit += spacechar + unit_str + "^" + str(power)
+            si_unit += (
+                spacechar
+                + unit_str
+                + "^"
+                + str(int(power) if power.is_integer() else power)
+            )
     return si_unit
 
 

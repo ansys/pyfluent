@@ -341,7 +341,7 @@ def test_pow_45():
     q2 = q.Quantity(5.0, "m s^-1")
 
     q1_sq = q1**2
-    assert q1_sq.unit == "m^2.0 s^-2.0"
+    assert q1_sq.unit == "m^2 s^-2"
 
     assert float(q1) ** 2 == 100.0
     assert float(q2) ** 2 == 25.0
@@ -453,7 +453,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} * {qt2} =  {qt3}")
     assert qt3.value == 50
-    assert qt3.unit == "m^2.0 s^-2.0"
+    assert qt3.unit == "m^2 s^-2"
 
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
