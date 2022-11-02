@@ -539,3 +539,11 @@ if __name__ == "__main__":
 
     print(q1**2)
     print(q2**2)
+
+    q3 = q.Quantity(10.0, "m s^-1")
+    q4 = q.Quantity(10.0, "")
+
+    print(q1 == q2)
+    print(q1 == q3)
+    print(float(q1) == 10.0)
+    print(q4 == 10.0)

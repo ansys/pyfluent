@@ -610,4 +610,11 @@ class Quantity(float):
         return Quantity(other, "") - self
 
     def __eq__(self, other):
-        return self._si_value == other._si_value and self._si_unit == other._si_unit
+        if isinstance(other, Quantity):
+            return self._si_value == other._si_value and self._si_unit == other._si_unit
+        elif (
+            self.is_dimension_less()
+            and not isinstance(other, Quantity)
+            and isinstance(other, float)
+        ):
+            return float(self) == other
