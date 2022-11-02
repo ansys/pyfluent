@@ -1,3 +1,4 @@
+# -*- coding: latin-1 -*-
 from collections import OrderedDict
 
 
@@ -52,13 +53,15 @@ class _UnitsTable(object):
         "l": (0.001, "m^3"),
         "gal": (0.0037854117839999993, "m^3"),
         "BTU": (1055.056, "J"),
+        "C": (lambda c: c + 273.15, "K"),
+        "F": (lambda f: (f - 32) * (5 / 9) + 273.15, "K"),
     }
 
     multipliers = {
         "d": 10**-1,
         "c": 10**-2,
         "m": 10**-3,
-        "μ": 10**-6,
+        "?": 10**-6,
         "n": 10**-9,
         "p": 10**-12,
         "f": 10**-15,
@@ -595,7 +598,7 @@ class Quantity(float):
         return Quantity(temp_value, self._si_unit)
 
     def __rsub__(self, other):
-        return self.__sub__(other)
+        return Quantity(other, "") - self
 
     def __eq__(self, other):
         return self._si_value == other._si_value and self._si_unit == other._si_unit

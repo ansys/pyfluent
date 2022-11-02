@@ -483,27 +483,32 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-# if __name__ == "__main__":
-# test_value_unit_1()
-# testing_dimensions()
-# testing_multipliers()
-# testing_to_systems()
-# testing_arithmetic_operators()
-# testing_properties()
-#
-# x = q.Quantity(1, "ft")
-# print(
-#     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-# )
+if __name__ == "__main__":
+    # test_value_unit_1()
+    # testing_dimensions()
+    # testing_multipliers()
+    # testing_to_systems()
+    # testing_arithmetic_operators()
+    # testing_properties()
+    #
+    # x = q.Quantity(1, "ft")
+    # print(
+    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    # )
 
-# g = q.Quantity(1, "g")
-# m = q.Quantity(1, "m")
-# print(f"{g} * {m} = {g * m}")
-# print(" ")
-# print(f"{m} * 2 = {m * 2}")
-# print(" ")
-#
-# l = q.Quantity(1, "cm")
-# r = q.Quantity(1, "")
-# print(f"{l} + {r} = {l + r}")
-# print(" ")
+    # g = q.Quantity(1, "g")
+    # m = q.Quantity(1, "m")
+    # print(f"{g} * {m} = {g * m}")
+    # print(" ")
+    # print(f"{m} * 2 = {m * 2}")
+    # print(" ")
+    #
+    # l = q.Quantity(1, "cm")
+    # r = q.Quantity(1, "")
+    # print(f"{l} + {r} = {l + r}")
+    # print(" ")
+    tk = q.Quantity(300.0, "K")
+    tr = q.Quantity(150.0, "R")
+
+    print(tk.to("R"))
+    print(tr.to("K"))
