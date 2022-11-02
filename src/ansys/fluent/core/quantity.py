@@ -22,7 +22,7 @@ class _UnitsTable(object):
         "mol": "N",
         "slugmol": "N",
         "cd": "J",
-        "sr": "SAngle",
+        "sr": "?",
         "radian": "Angle",
         "degree": "Angle",
     }
@@ -90,7 +90,7 @@ class _UnitsTable(object):
             ("ChemicalAmount", "N"),
             ("Light", "J"),
             ("Current", "I"),
-            ("SolidAngle", "SAngle"),
+            ("SolidAngle", "?"),
             ("", ""),
         ]
     )
@@ -316,7 +316,7 @@ class Dimension(object):
             "N": 0.0,
             "J": 0.0,
             "Angle": 0.0,
-            "SAngle": 0.0,
+            "?": 0.0,
             "": 0.0,
         }
         self._parser(unit_str)
@@ -381,7 +381,7 @@ def get_si_unit_from_dim(dim_list):
         "N": "mol",
         "J": "cd",
         "Angle": "radian",
-        "SAngle": "sr",
+        "?": "sr",
         "": "",
     }
     for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
@@ -412,7 +412,7 @@ class UnitSystem:
         "N": {"SI": "mol", "CGS": "mol", "BTU": "slugmol"},
         "J": {"SI": "cd", "CGS": "cd", "BTU": "cd"},
         "Angle": {"SI": "radian", "CGS": "radian", "BTU": "radian"},
-        "SAngle": {"SI": "sr", "CGS": "sr", "BTU": "sr"},
+        "?": {"SI": "sr", "CGS": "sr", "BTU": "sr"},
         "": {"SI": "", "CGS": "", "BTU": ""},
     }
 
