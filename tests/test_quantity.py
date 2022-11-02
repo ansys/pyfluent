@@ -359,6 +359,16 @@ def test_eq_46():
     assert q4 == 10.0
 
 
+def test_rdiv_47():
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
+
+    assert float(q1) / float(q2) == 2.0
+    assert float(q2) / float(q1) == 0.5
+    assert float(q1) / 2 == 5.0
+    assert 2.0 / float(q1) == 0.2
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -551,8 +561,8 @@ if __name__ == "__main__":
     # b = q.Quantity(10.5, "m")
     # print(b)
 
-    # q1 = q.Quantity(10.0, "m s^-1")
-    # q2 = q.Quantity(5.0, "m s^-1")
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
     #
     # print(f"{q1} - {q2} = {q1 - q2}")
     # print("")
@@ -583,5 +593,7 @@ if __name__ == "__main__":
     # print(float(q1) == 10.0)
     # print(q4 == 10.0)
 
-    rankine = q.Quantity(1.0, "R")
-    print(rankine.to("K"))
+    print(q1 / q2)
+    print(q2 / q1)
+    print(q1 / 2)
+    print(2.0 / q1)

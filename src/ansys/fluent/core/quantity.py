@@ -575,6 +575,12 @@ class Quantity(float):
             temp = Quantity(self._si_value / other, self._si_unit)
             return temp
 
+    def __rtruediv__(self, other):
+        if not isinstance(other, Quantity) and isinstance(other, float):
+            return Quantity(other / self._si_value, self._si_unit)
+        else:
+            return other / self
+
     def __add__(self, other):
         if isinstance(other, Quantity) and (
             self.get_dimensions_list() == other.get_dimensions_list()
