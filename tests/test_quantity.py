@@ -313,7 +313,7 @@ def test_equality_42():
     assert qt1 == qt2
 
 
-def test_math_fun():
+def test_math_fun_43():
     deg = q.Quantity(90, "degree")
     assert math.sin(deg) == 1.0
 
@@ -322,6 +322,18 @@ def test_math_fun():
 
     root = q.Quantity(100.0, "")
     assert math.sqrt(root) == 10.0
+
+
+def test_subtraction_44():
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
+
+    assert float(q1 - q2) == 5.0
+    assert float(q2 - q1) == -5.0
+    assert float(q1) - 2.0 == 8.0
+    assert 2.0 - float(q1) == -8.0
+    assert float(q1) - 3 == 7.0
+    assert 3 - float(q1) == -7.0
 
 
 def testing_dimensions():
