@@ -58,9 +58,7 @@ def transfer_case(
     """
     for idx in range(num_files_to_try):
         file_name = (file_name_stem or "temp_case_file_") + "_" + str(idx)
-        folder = tempfile.mkdtemp(
-            suffix=".txt", prefix="serverinfo-", dir=pyfluent.EXAMPLES_PATH
-        )
+        folder = tempfile.mkdtemp(prefix="temp_store-", dir=pyfluent.EXAMPLES_PATH)
         file_name = os.path.join(folder, file_name)
         LOG.info(f"Trying to save mesh from meshing session: {file_name}")
         if overwrite_previous or not os.path.isfile(file_name):
