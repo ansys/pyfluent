@@ -294,17 +294,17 @@ def test_unit_system_41():
     myVel = q.Quantity(3.0, "ft s^-1")
     siVel = unitSysSI.convert(myVel)  # Returns velocity in m/s
     assert siVel.value == pytest.approx(0.9143999, DELTA)
-    assert siVel.unit == "m^1.0 s^-1.0"
+    assert siVel.unit == "m s^-1"
 
     unitSysCGS = q.UnitSystem("CGS")
     cgsVel = unitSysCGS.convert(myVel)  # Returns velocity in cm/s
     assert cgsVel.value == 91.44
-    assert cgsVel.unit == "cm^1.0 s^-1.0"
+    assert cgsVel.unit == "cm s^-1"
 
     unitSysBT = q.UnitSystem("BTU")
     btuVel = unitSysBT.convert(myVel)  # Returns velocity in ft/s
     assert btuVel.value == 3.0
-    assert btuVel.unit == "ft^1.0 s^-1.0"
+    assert btuVel.unit == "ft s^-1"
 
 
 def test_equality_42():

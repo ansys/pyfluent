@@ -372,18 +372,8 @@ class Dimension(object):
 
 def get_si_unit_from_dim(dim_list):
     si_unit = ""
-    dim_to_unit_map = {
-        "M": "kg",
-        "L": "m",
-        "T": "s",
-        "?": "K",
-        "I": "A",
-        "N": "mol",
-        "J": "cd",
-        "Angle": "radian",
-        "?": "sr",
-        "": "",
-    }
+    dim_to_unit_map = UnitSystem("SI").base_units()
+
     for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
         unit_str = dim_to_unit_map[key]
         spacechar = " " if len(si_unit) > 0 else ""
@@ -404,16 +394,42 @@ def get_si_unit_from_dim(dim_list):
 class UnitSystem:
 
     _dim_to_unit_sys_map = {
-        "M": {"SI": "kg", "CGS": "g", "BTU": "slug"},
-        "L": {"SI": "m", "CGS": "cm", "BTU": "ft"},
-        "T": {"SI": "s", "CGS": "s", "BTU": "s"},
-        "?": {"SI": "K", "CGS": "K", "BTU": "R"},
-        "I": {"SI": "A", "CGS": "A", "BTU": "A"},
-        "N": {"SI": "mol", "CGS": "mol", "BTU": "slugmol"},
-        "J": {"SI": "cd", "CGS": "cd", "BTU": "cd"},
-        "Angle": {"SI": "radian", "CGS": "radian", "BTU": "radian"},
-        "?": {"SI": "sr", "CGS": "sr", "BTU": "sr"},
-        "": {"SI": "", "CGS": "", "BTU": ""},
+        "SI": {
+            "M": "kg",
+            "L": "m",
+            "T": "s",
+            "?": "K",
+            "I": "A",
+            "N": "mol",
+            "J": "cd",
+            "Angle": "radian",
+            "?": "sr",
+            "": "",
+        },
+        "CGS": {
+            "M": "g",
+            "L": "cm",
+            "T": "s",
+            "?": "K",
+            "I": "A",
+            "N": "mol",
+            "J": "cd",
+            "Angle": "radian",
+            "?": "sr",
+            "": "",
+        },
+        "BTU": {
+            "M": "slug",
+            "L": "ft",
+            "T": "s",
+            "?": "R",
+            "I": "A",
+            "N": "slugmol",
+            "J": "cd",
+            "Angle": "radian",
+            "?": "sr",
+            "": "",
+        },
     }
 
     _supported_unit_sys = ("SI", "CGS", "BTU")
@@ -429,13 +445,18 @@ class UnitSystem:
     def _get_unit_from_dim(self, dim_list):
         unit = ""
 
+        base_units = UnitSystem._dim_to_unit_sys_map[self._unit_system]
         for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
-            unit_str = UnitSystem._dim_to_unit_sys_map[key][self._unit_system]
             spacechar = " " if len(unit) > 0 else ""
-            if power > 0.0 or power < 0.0:
-                unit += spacechar + unit_str + "^" + str(power)
-            elif power == 1:
-                unit += spacechar + unit_str
+            if power == 1:
+                unit += spacechar + base_units[key]
+            elif power != 0:
+                unit += (
+                    spacechar
+                    + base_units[key]
+                    + "^"
+                    + str(int(power) if power.is_integer() else power)
+                )
         return unit
 
     def convert(self, quantity):
@@ -444,6 +465,9 @@ class UnitSystem:
         dims = quantity.get_dimensions_list()
         unit_str = self._get_unit_from_dim(dims)
         return quantity.to(unit_str)
+
+    def base_units(self):
+        return UnitSystem._dim_to_unit_sys_map[self._unit_system]
 
 
 class Quantity(float):
