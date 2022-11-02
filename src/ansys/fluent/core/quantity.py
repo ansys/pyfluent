@@ -377,17 +377,10 @@ def get_si_unit_from_dim(dim_list):
     for key, power in zip(_UnitsTable.dimension_order.values(), dim_list):
         unit_str = dim_to_unit_map[key]
         spacechar = " " if len(si_unit) > 0 else ""
-        if power > 0.0 or power < 0.0:
-            si_unit += spacechar + unit_str + "^" + str(power)
-        elif power == 1.0:
+        if power == 1.0:
             si_unit += spacechar + unit_str
-        elif power > 0.0 or power < 0.0:
-            si_unit += (
-                spacechar
-                + unit_str
-                + "^"
-                + str(int(power) if power.is_integer() else power)
-            )
+        elif power != 0.0:
+            si_unit += spacechar + unit_str + "^" + str(power)
     return si_unit
 
 
