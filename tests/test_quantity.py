@@ -336,6 +336,29 @@ def test_subtraction_44():
     assert 3 - float(q1) == -7.0
 
 
+def test_pow_45():
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
+
+    q1_sq = q1**2
+    assert q1_sq.unit == "m^2.0 s^-2.0"
+
+    assert float(q1) ** 2 == 100.0
+    assert float(q2) ** 2 == 25.0
+
+
+def test_eq_46():
+    q1 = q.Quantity(10.0, "m s^-1")
+    q2 = q.Quantity(5.0, "m s^-1")
+    q3 = q.Quantity(10.0, "m s^-1")
+    q4 = q.Quantity(10.0, "")
+
+    assert q1 != q2
+    assert q1 == q3
+    assert float(q1) == 10.0
+    assert q4 == 10.0
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
