@@ -478,7 +478,41 @@ def test_temp_54():
     assert hcto7.unit == "BTU lb^-1 F^-1"
 
 
-def test_power_55():
+def test_temp_54():
+    temp_var = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
+
+    temp_varto1 = temp_var.to("g cm^-3 s^-1 K^2")
+
+    assert temp_varto1.value == pytest.approx(0.001, DELTA)
+    assert temp_varto1.unit == "g cm^-3 s^-1 K^2"
+
+    temp_varto2 = temp_var.to("kg mm^-3 s^-1 K^2")
+
+    assert temp_varto2.value == pytest.approx(1e-09, DELTA)
+    assert temp_varto2.unit == "kg mm^-3 s^-1 K^2"
+
+    temp_varto3 = temp_var.to("kg um^-3 s^-1 K^2")
+
+    assert temp_varto3.value == pytest.approx(9.999999999999999e-19, DELTA)
+    assert temp_varto3.unit == "kg um^-3 s^-1 K^2"
+
+    temp_varto4 = temp_var.to("mg mm^-3 ms^-1 K^2")
+
+    assert temp_varto4.value == pytest.approx(1.0000000000000002e-06, DELTA)
+    assert temp_varto4.unit == "mg mm^-3 ms^-1 K^2"
+
+    temp_varto5 = temp_var.to("g cm^-3 us^-1 K^2")
+
+    assert temp_varto5.value == pytest.approx(1e-09, DELTA)
+    assert temp_varto5.unit == "g cm^-3 us^-1 K^2"
+
+    temp_varto6 = temp_var.to("pg um^-3 ms^-1 K^2")
+
+    assert temp_varto6.value == pytest.approx(9.999999999999997e-07, DELTA)
+    assert temp_varto6.unit == "pg um^-3 ms^-1 K^2"
+
+
+def test_power_56():
     qt = q.Quantity(5.0, "m^0")
     qtm = qt * 2
 
@@ -645,31 +679,15 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-if __name__ == "__main__":
-    # test_value_unit_1()
-    # testing_dimensions()
-    # testing_multipliers()
-    # testing_to_systems()
-    # testing_arithmetic_operators()
-    # testing_properties()
+# if __name__ == "__main__":
+# test_value_unit_1()
+# testing_dimensions()
+# testing_multipliers()
+# testing_to_systems()
+# testing_arithmetic_operators()
+# testing_properties()
 
-    # x = q.Quantity(1, "ft")
-    # print(
-    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    # )
-
-    hc = q.Quantity(1.0, "J g^-1 K^-1")
-
-    print(hc.to("kJ kg^-1 K^-1"))
-
-    print(hc.to("J kg^-1 C^-1"))
-
-    print(hc.to("kJ kg^-1 C^-1"))
-
-    print(hc.to("cal g^-1 C^-1"))
-
-    print(hc.to("cal kg^-1 C^-1"))
-
-    print(hc.to("kcal kg^-1 C^-1"))
-
-    print(hc.to("BTU lb^-1 F^-1"))
+# x = q.Quantity(1, "ft")
+# print(
+#     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+# )
