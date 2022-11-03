@@ -46,12 +46,14 @@ class _UnitsTable(object):
         "psf": "lbf ft^-2",
         "ohm": "kg m^2 s^-3 A^-2",
         "Hz": "s^-1",
+        "cal": "J",
     }
 
     derived_units_with_conversion_factor = {
         "l": (0.001, "m^3"),
         "gal": (0.0037854117839999993, "m^3"),
         "BTU": (1055.056, "J"),
+        "cal": (4.184, "J"),
     }
 
     multipliers = {
@@ -714,3 +716,17 @@ class Quantity(float):
 
     def __neg__(self):
         return Quantity(-self.value, self.unit)
+
+    def __ge__(self, other):
+        if (
+            isinstance(other, Quantity)
+            and self.get_dimensions_list() == other.get_dimensions_list()
+            and self._si_unit == other._si_unit
+        ):
+            return float(self) > float(other)
+        elif (
+            self.is_dimension_less()
+            and (not isinstance(other, Quantity))
+            and isinstance(other, (float, int))
+        ):
+            return float(self) > other

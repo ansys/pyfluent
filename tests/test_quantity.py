@@ -439,7 +439,46 @@ def test_temp_53():
     assert k.value == pytest.approx(255.927, DELTA)
 
 
-def test_power_54():
+def test_temp_54():
+    hc = q.Quantity(1.0, "J g^-1 K^-1")
+
+    hcto1 = hc.to("kJ kg^-1 K^-1")
+
+    assert hcto1.value == pytest.approx(1.0, DELTA)
+    assert hcto1.unit == "kJ kg^-1 K^-1"
+
+    hcto2 = hc.to("J kg^-1 C^-1")
+
+    assert hcto2.value == pytest.approx(1000.0, DELTA)
+    assert hcto2.unit == "J kg^-1 C^-1"
+
+    hcto3 = hc.to("kJ kg^-1 C^-1")
+
+    assert hcto3.value == pytest.approx(1.0, DELTA)
+    assert hcto3.unit == "kJ kg^-1 C^-1"
+
+    hcto4 = hc.to("cal g^-1 C^-1")
+
+    assert hcto4.value == pytest.approx(0.2390057, DELTA)
+    assert hcto4.unit == "cal g^-1 C^-1"
+
+    hcto5 = hc.to("cal kg^-1 C^-1")
+
+    assert hcto5.value == pytest.approx(239.0057, DELTA)
+    assert hcto5.unit == "cal kg^-1 C^-1"
+
+    hcto6 = hc.to("kcal kg^-1 C^-1")
+
+    assert hcto6.value == pytest.approx(0.2390057, DELTA)
+    assert hcto6.unit == "kcal kg^-1 C^-1"
+
+    hcto7 = hc.to("BTU lb^-1 F^-1")
+
+    assert hcto7.value == pytest.approx(0.238845, DELTA)
+    assert hcto7.unit == "BTU lb^-1 F^-1"
+
+
+def test_power_55():
     qt = q.Quantity(5.0, "m^0")
     qtm = qt * 2
 
@@ -607,23 +646,30 @@ def testing_properties():
 
 
 if __name__ == "__main__":
-    test_value_unit_1()
-    testing_dimensions()
-    testing_multipliers()
-    testing_to_systems()
-    testing_arithmetic_operators()
-    testing_properties()
+    # test_value_unit_1()
+    # testing_dimensions()
+    # testing_multipliers()
+    # testing_to_systems()
+    # testing_arithmetic_operators()
+    # testing_properties()
 
     # x = q.Quantity(1, "ft")
     # print(
     #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     # )
 
-    a = q.Quantity(3.0, "m")
-    c = q.Quantity(4.0, "")
-    print(a + "a")
-    # print(f"{c} + 2 = {c + 2}")
-    # print("")
-    # print(f"2 + {c} = {2 + c}")
-    #
-    # print(f"-{a} = {-a}")
+    hc = q.Quantity(1.0, "J g^-1 K^-1")
+
+    print(hc.to("kJ kg^-1 K^-1"))
+
+    print(hc.to("J kg^-1 C^-1"))
+
+    print(hc.to("kJ kg^-1 C^-1"))
+
+    print(hc.to("cal g^-1 C^-1"))
+
+    print(hc.to("cal kg^-1 C^-1"))
+
+    print(hc.to("kcal kg^-1 C^-1"))
+
+    print(hc.to("BTU lb^-1 F^-1"))
