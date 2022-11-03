@@ -709,3 +709,6 @@ class Quantity(float):
             and isinstance(other, float)
         ):
             return float(self) == other
+
+    def __neg__(self):
+        return Quantity(-self.value, self.unit)
