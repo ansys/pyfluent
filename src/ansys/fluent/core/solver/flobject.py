@@ -690,19 +690,14 @@ class Action(Base):
                 cls = getattr(self.__class__, argument)
                 self._setattr(argument, cls(None, self))
 
-    def arguments(self, class_name) -> Any:
+    def arguments(self) -> Any:
         """Get the arguments for the Action."""
         attrs = self.get_attrs(["arguments"])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError(f"{class_name} is not active")
+            raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
-
-    def __call__(self, func_handle, **kwds):
-        """Call a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, kwds)
-        return func_handle(self._parent.path, self.obj_name, **newkwds)
 
 
 class Command(Action):
@@ -712,13 +707,10 @@ class Command(Action):
         """__init__ of Command class."""
         super().__init__(name, parent)
 
-    def arguments(self) -> Any:
-        """Get the arguments for the command."""
-        return super().arguments("Command")
-
     def __call__(self, **kwds):
-        """Call a command with the specified keyword arguments."""
-        return super().__call__(self.flproxy.execute_cmd, **kwds)
+        """Call a query with the specified keyword arguments."""
+        newkwds = _get_new_keywords(self, kwds)
+        return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
 class Query(Action):
@@ -728,13 +720,10 @@ class Query(Action):
         """__init__ of Query class."""
         super().__init__(name, parent)
 
-    def arguments(self) -> Any:
-        """Get the arguments for the query."""
-        return super().arguments("Query")
-
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        return super().__call__(self.flproxy.execute_query, **kwds)
+        newkwds = _get_new_keywords(self, kwds)
+        return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
 _baseTypes = {
