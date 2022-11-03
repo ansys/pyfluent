@@ -667,16 +667,18 @@ class Quantity(float):
             return other / self
 
     def __add__(self, other):
-        if isinstance(other, Quantity) and (
-            self.get_dimensions_list() == other.get_dimensions_list()
-        ):
-            temp_value = self._si_value + other._si_value
-        elif self.is_dimension_less() and (
-            isinstance(other, int) or isinstance(other, float)
-        ):
-            temp_value = self._si_value + other
+        if isinstance(other, Quantity):
+            if self.get_dimensions_list() == other.get_dimensions_list():
+                temp_value = float(self) + float(other)
+            else:
+                raise ValueError("Incompatible dimensions.")
+        elif isinstance(other, (float, int)):
+            if self.is_dimension_less():
+                temp_value = self._si_value + other
+            else:
+                raise ValueError("Incompatible dimensions.")
         else:
-            raise ValueError("Incompatible dimensions.")
+            return super().__add__(other)
         return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
