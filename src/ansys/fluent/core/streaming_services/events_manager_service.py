@@ -28,7 +28,6 @@ class EventsManager(StreamingService):
 
     def __init__(self, session_id: str, service):
         self._session_id: str = session_id
-        self._events_service = service
         self._events_to_callbacks_map: dict = {}
         self._id_iter = itertools.count()
         self._lock: threading.Lock = threading.Lock()
@@ -38,14 +37,12 @@ class EventsManager(StreamingService):
         ]
         self._streaming = False
         super().__init__(
-            lock=self._lock,
             target=EventsManager._listen_events,
-            streaming=self._streaming,
-            streaming_service=self._events_service,
+            streaming_service=service,
         )
 
     def _listen_events(self, started_evt):
-        responses = self._events_service.begin_streaming(started_evt)
+        responses = self._streaming_service.begin_streaming(started_evt)
         while True:
             try:
                 response = next(responses)

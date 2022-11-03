@@ -5,10 +5,10 @@ from typing import Optional
 class StreamingService:
     """Encapsulates a Fluent streaming service."""
 
-    def __init__(self, lock, target, streaming, streaming_service):
-        self._lock = lock
+    def __init__(self, target, streaming_service):
+        self._lock: threading.Lock = threading.Lock()
+        self._streaming: bool = False
         self._target = target
-        self._streaming = streaming
         self._streaming_service = streaming_service
         self._stream_thread: Optional[threading.Thread] = None
 

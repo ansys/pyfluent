@@ -12,17 +12,12 @@ class Transcript(StreamingService):
     def __init__(self, channel, metadata):
         self._channel = channel
         self._metadata = metadata
-        self._transcript_service = TranscriptService(self._channel, self._metadata)
         self._transcript_thread: Optional[threading.Thread] = None
-        self._streaming: bool = False
         self._transcript_callbacks = {}
         self._transcript_callback_id = itertools.count()
-        self._lock: threading.Lock = threading.Lock()
         super().__init__(
-            lock=self._lock,
             target=Transcript._process_transcript,
-            streaming=self._streaming,
-            streaming_service=self._transcript_service,
+            streaming_service=TranscriptService(self._channel, self._metadata),
         )
 
     def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
@@ -54,7 +49,7 @@ class Transcript(StreamingService):
     def _process_transcript(self, started_evt):
         """Performs processes on transcript depending on the callback
         functions."""
-        responses = self._transcript_service.begin_streaming(started_evt)
+        responses = self._streaming_service.begin_streaming(started_evt)
         transcript = ""
         while True:
             try:
@@ -74,27 +69,3 @@ class Transcript(StreamingService):
                         transcript = ""
             except StopIteration:
                 break
-
-    # @property
-    # def is_streaming(self):
-    #     with self._lock:
-    #         return self._streaming
-    #
-    # def start(self) -> None:
-    #     """Start streaming of Fluent transcript."""
-    #     with self._lock:
-    #         if self._transcript_thread is None:
-    #             started_evt = threading.Event()
-    #             self._transcript_thread = threading.Thread(
-    #                 target=Transcript._process_transcript, args=(self, started_evt)
-    #             )
-    #             self._transcript_thread.start()
-    #             started_evt.wait()
-    #
-    # def stop(self) -> None:
-    #     """Stop streaming of Fluent transcript."""
-    #     if self.is_streaming:
-    #         self._transcript_service.end_streaming()
-    #         self._transcript_thread.join()
-    #         self._streaming = False
-    #         self._transcript_thread = None
