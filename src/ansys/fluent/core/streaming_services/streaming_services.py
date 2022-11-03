@@ -1,4 +1,3 @@
-from functools import partial
 import itertools
 import threading
 from typing import Callable, Optional
@@ -22,33 +21,16 @@ class StreamingService:
         with self._lock:
             return self._streaming
 
-    def register_callback(
-        self, service_name: str, call_back: Callable, *args, **kwargs
-    ) -> str:
+    def register_callback(self, call_back: Callable, *args, **kwargs) -> str:
         with self._lock:
-            service_name = service_name.lower()
-            callback_id = f"{service_name}-{next(self._service_callback_id)}"
-            callbacks_map = self._service_callbacks.get(service_name)
-            if callbacks_map:
-                callbacks_map.update({callback_id: partial(call_back, *args, **kwargs)})
-            else:
-                self._service_callbacks[service_name] = {
-                    callback_id: partial(call_back, *args, **kwargs)
-                }
+            callback_id = f"{next(self._service_callback_id)}"
+            self._service_callbacks[callback_id] = [call_back, args, kwargs]
             return callback_id
 
     def unregister_callback(self, callback_id: str):
-        """Unregister the callback.
-
-        Parameters
-        ----------
-        callback_id : str
-            ID of the registered callback.
-        """
         with self._lock:
-            for callbacks_map in self._service_callbacks.values():
-                if callback_id in callbacks_map:
-                    del callbacks_map[callback_id]
+            if callback_id in self._service_callbacks:
+                del self._service_callbacks[callback_id]
 
     def start(self) -> None:
         """Start streaming of Fluent transcript."""

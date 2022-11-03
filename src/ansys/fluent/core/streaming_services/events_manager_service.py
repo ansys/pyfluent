@@ -1,5 +1,5 @@
 """Module for events management."""
-import itertools
+from functools import partial
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -30,7 +30,6 @@ class EventsManager(StreamingService):
             streaming_service=service,
         )
         self._session_id: str = session_id
-        self._id_iter = itertools.count()
         self._events_list: List[str] = [
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]
@@ -52,6 +51,60 @@ class EventsManager(StreamingService):
             except StopIteration:
                 break
 
+    def register_callback(
+        self, event_name: str = None, call_back: Callable = None, *args, **kwargs
+    ):
+        """Register the callback.
+
+        Parameters
+        ----------
+        event_name : str
+            Event name to register the callback to.
+
+        call_back : Callable
+            Callback to register.
+
+        Returns
+        -------
+        str
+            Registered callback ID.
+
+        Raises
+        ------
+        RuntimeError
+            If event name is not valid.
+        """
+        if event_name is None or call_back is None:
+            raise RuntimeError(
+                "Please provide compulsory arguments : 'event_name' and 'call_back'"
+            )
+
+        if event_name not in self.events_list:
+            raise RuntimeError(f"{event_name} is not a valid event.")
+        with self._lock:
+            event_name = event_name.lower()
+            callback_id = f"{event_name}-{next(self._service_callback_id)}"
+            callbacks_map = self._service_callbacks.get(event_name)
+            if callbacks_map:
+                callbacks_map.update({callback_id: partial(call_back, *args, **kwargs)})
+            else:
+                self._service_callbacks[event_name] = {
+                    callback_id: partial(call_back, *args, **kwargs)
+                }
+
+    def unregister_callback(self, callback_id: str):
+        """Unregister the callback.
+
+        Parameters
+        ----------
+        callback_id : str
+            ID of the registered callback.
+        """
+        with self._lock:
+            for callbacks_map in self._service_callbacks.values():
+                if callback_id in callbacks_map:
+                    del callbacks_map[callback_id]
+
     @property
     def events_list(self) -> List[str]:
         """Get a list of supported events.
@@ -66,12 +119,3 @@ class EventsManager(StreamingService):
             List of supported events.
         """
         return self._events_list
-
-    def register_callback(
-        self, event_name: str, call_back: Callable, *args, **kwargs
-    ) -> str:
-        if not event_name in self.events_list:
-            raise RuntimeError(f"{event_name} is not a valid event.")
-        return super().register_callback(
-            service_name=event_name, call_back=call_back, *args, **kwargs
-        )

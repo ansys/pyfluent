@@ -263,13 +263,14 @@ class _FluentConnection:
         """
         if not _FluentConnection._writing_transcript_to_interpreter:
             if write_to_interpreter:
-                self.callback_id1 = self._transcript.add_transcript_callback(print)
+                self.callback_id1 = self._transcript.register_callback(print)
+                self._transcript.start()
                 _FluentConnection._writing_transcript_to_interpreter = True
         if file_path:
             if Path(file_path).exists():
                 os.remove(file_path)
             append_to_file = AppendToFile(file_path)
-            self.callback_id2 = self._transcript.add_transcript_callback(
+            self.callback_id2 = self._transcript.register_callback(
                 append_to_file, keep_new_lines=True
             )
 
@@ -277,7 +278,8 @@ class _FluentConnection:
         """Stop streaming of Fluent transcript."""
         for callback_id in (self.callback_id1, self.callback_id2):
             if callback_id is not None:
-                self._transcript.remove_transcript_callback(callback_id)
+                self._transcript.unregister_callback(callback_id)
+        self._transcript.stop()
 
     def add_transcript_callback(self, callback_fn: Callable):
         """Initiates a fluent transcript streaming depending on the
@@ -286,11 +288,11 @@ class _FluentConnection:
         For eg.: add_transcript_callback(print) prints the transcript on
         the interpreter screen.
         """
-        self._transcript.add_transcript_callback(callback_fn)
+        self._transcript.register_callback(callback_fn)
 
-    def remove_transcript_callback(self, callback_id: int):
+    def remove_transcript_callback(self, callback_id: str):
         """Stops each transcript streaming based on the callback_id."""
-        self._transcript.remove_transcript_callback(callback_id)
+        self._transcript.unregister_callback(callback_id)
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
