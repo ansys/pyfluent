@@ -391,6 +391,62 @@ def test_temp_49():
     assert uc.value == -3.13150000e08
 
 
+def test_temp_50():
+    k = q.Quantity(1.0, "K")
+
+    f = k.to("F")
+    r = k.to("R")
+    c = k.to("C")
+
+    assert f.value == -457.87
+    assert r.value == 1.8
+    assert c.value == -272.15
+
+
+def test_temp_51():
+    c = q.Quantity(1.0, "C")
+
+    f = c.to("F")
+    r = c.to("R")
+    k = c.to("K")
+
+    assert f.value == 33.80
+    assert r.value == pytest.approx(493.469, DELTA)
+    assert k.value == 274.15
+
+
+def test_temp_52():
+    r = q.Quantity(1.0, "R")
+
+    f = r.to("F")
+    c = r.to("C")
+    k = r.to("K")
+
+    assert f.value == pytest.approx(-458.6699, DELTA)
+    assert c.value == pytest.approx(-272.5944, DELTA)
+    assert k.value == pytest.approx(0.555556, DELTA)
+
+
+def test_temp_53():
+    f = q.Quantity(1.0, "F")
+
+    c = f.to("C")
+    r = f.to("R")
+    k = f.to("K")
+
+    assert c.value == pytest.approx(-17.2222, DELTA)
+    assert r.value == pytest.approx(460.670, DELTA)
+    assert k.value == pytest.approx(255.927, DELTA)
+
+
+def test_power_54():
+    qt = q.Quantity(5.0, "m^0")
+    qtm = qt * 2
+
+    assert qtm.value == 10.0
+    assert qtm.unit == ""
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -551,24 +607,24 @@ def testing_properties():
 
 
 if __name__ == "__main__":
-    # test_value_unit_1()
-    # testing_dimensions()
-    # testing_multipliers()
-    # testing_to_systems()
-    # testing_arithmetic_operators()
-    # testing_properties()
-
-    x = q.Quantity(1, "ft")
-    print(
-        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    )
-
-    g = q.Quantity(1, "g")
-    m = q.Quantity(1, "m")
-    print(f"{g} * {m} = {g * m}")
-    print("here ")
-    print(f"{m} * 2 = {m * 2}")
-    print(" ")
+    test_value_unit_1()
+    testing_dimensions()
+    testing_multipliers()
+    testing_to_systems()
+    testing_arithmetic_operators()
+    testing_properties()
+    #
+    # x = q.Quantity(1, "ft")
+    # print(
+    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    # )
+    #
+    # g = q.Quantity(1, "g")
+    # m = q.Quantity(1, "m")
+    # print(f"{g} * {m} = {g * m}")
+    # print("here ")
+    # print(f"{m} * 2 = {m * 2}")
+    # print(" ")
 
     # l = q.Quantity(1, "cm")
     # r = q.Quantity(1, "")
@@ -619,6 +675,3 @@ if __name__ == "__main__":
     # print(q2 / q1)
     # print(q1 / 2)
     # print(2.0 / q1)
-
-    q = q.Quantity(5, "m^0")
-    print(f"{q} * 2 = {q * 2}")
