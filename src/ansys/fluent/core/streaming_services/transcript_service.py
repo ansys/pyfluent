@@ -3,9 +3,10 @@ import threading
 from typing import Callable, Optional
 
 from ansys.fluent.core.services.transcript import TranscriptService
+from ansys.fluent.core.streaming_services.streaming_services import StreamingService
 
 
-class Transcript:
+class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
 
     def __init__(self, channel, metadata):
@@ -17,6 +18,12 @@ class Transcript:
         self._transcript_callbacks = {}
         self._transcript_callback_id = itertools.count()
         self._lock: threading.Lock = threading.Lock()
+        super().__init__(
+            lock=self._lock,
+            target=Transcript._process_transcript,
+            streaming=self._streaming,
+            streaming_service=self._transcript_service,
+        )
 
     def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
         """Initiates a fluent transcript streaming depending on the
@@ -68,26 +75,26 @@ class Transcript:
             except StopIteration:
                 break
 
-    @property
-    def is_streaming(self):
-        with self._lock:
-            return self._streaming
-
-    def start(self) -> None:
-        """Start streaming of Fluent transcript."""
-        with self._lock:
-            if self._transcript_thread is None:
-                started_evt = threading.Event()
-                self._transcript_thread = threading.Thread(
-                    target=Transcript._process_transcript, args=(self, started_evt)
-                )
-                self._transcript_thread.start()
-                started_evt.wait()
-
-    def stop(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        if self.is_streaming:
-            self._transcript_service.end_streaming()
-            self._transcript_thread.join()
-            self._streaming = False
-            self._transcript_thread = None
+    # @property
+    # def is_streaming(self):
+    #     with self._lock:
+    #         return self._streaming
+    #
+    # def start(self) -> None:
+    #     """Start streaming of Fluent transcript."""
+    #     with self._lock:
+    #         if self._transcript_thread is None:
+    #             started_evt = threading.Event()
+    #             self._transcript_thread = threading.Thread(
+    #                 target=Transcript._process_transcript, args=(self, started_evt)
+    #             )
+    #             self._transcript_thread.start()
+    #             started_evt.wait()
+    #
+    # def stop(self) -> None:
+    #     """Stop streaming of Fluent transcript."""
+    #     if self.is_streaming:
+    #         self._transcript_service.end_streaming()
+    #         self._transcript_thread.join()
+    #         self._streaming = False
+    #         self._transcript_thread = None

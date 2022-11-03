@@ -21,9 +21,9 @@ from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
-from ansys.fluent.core.solver.events_manager import EventsManager
 from ansys.fluent.core.solver.monitors_manager import MonitorsManager
-from ansys.fluent.core.transcript import Transcript
+from ansys.fluent.core.streaming_services.events_manager_service import EventsManager
+from ansys.fluent.core.streaming_services.transcript_service import Transcript
 
 
 def _get_max_c_int_limit() -> int:
