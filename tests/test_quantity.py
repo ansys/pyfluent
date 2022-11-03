@@ -369,6 +369,28 @@ def test_rdiv_47():
     assert 2.0 / float(q1) == 0.2
 
 
+def test_tempK_48():
+    k = q.Quantity(-40, "K")
+
+    kc = k.to("C")
+    assert kc.value == -313.15
+    assert kc.unit == "C"
+
+    kc = k.to("R")
+    assert kc.value == -72.0
+    assert kc.unit == "R"
+
+    kc = k.to("F")
+    assert kc.value == pytest.approx(-531.67, DELTA)
+    assert kc.unit == "F"
+
+
+def test_temp_49():
+    mk = q.Quantity(-40_000, "mK")
+    uc = mk.to("uC^1")
+    assert uc.value == -3.13150000e08
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -458,12 +480,12 @@ def testing_arithmetic_operators():
     result = qt1 * 2
     print(f"{qt1} * {2} =  {result}")
     assert result.value == 20
-    assert result.unit == "m^1 s^-1.0"
+    assert result.unit == "m s^-1"
 
     result1 = 2 * qt1
     print(f"{2} * {qt1} =  {result1}")
     assert result1.value == 20
-    assert result1.unit == "m^1 s^-1.0"
+    assert result1.unit == "m s^-1"
 
     q3 = qt1 / qt2
 
@@ -474,13 +496,13 @@ def testing_arithmetic_operators():
     result3 = qt1 / 2
     print(f"{qt1} / {2} =  {qt1 / 2}")
     assert result3.value == 5
-    assert result3.unit == "m^1 s^-1.0"
+    assert result3.unit == "m s^-1"
 
     qa3 = qt1 + qt2
 
     print(f"{qt1} + {qt2} =  {qa3}")
     assert qa3.value == 15
-    assert qa3.unit == "m^1 s^-1.0"
+    assert qa3.unit == "m s^-1"
 
     try:
         result5 = qt1 + 2
@@ -498,7 +520,7 @@ def testing_arithmetic_operators():
 
     print(f"{qt1} - {qt2} =  {qs3}")
     assert qs3.value == 5
-    assert qs3.unit == "m^1 s^-1.0"
+    assert qs3.unit == "m s^-1"
 
     try:
         result7 = qt1 - 2
@@ -529,12 +551,12 @@ def testing_properties():
 
 
 if __name__ == "__main__":
-    test_value_unit_1()
-    testing_dimensions()
-    testing_multipliers()
-    testing_to_systems()
-    testing_arithmetic_operators()
-    testing_properties()
+    # test_value_unit_1()
+    # testing_dimensions()
+    # testing_multipliers()
+    # testing_to_systems()
+    # testing_arithmetic_operators()
+    # testing_properties()
 
     x = q.Quantity(1, "ft")
     print(
@@ -593,7 +615,10 @@ if __name__ == "__main__":
     # print(float(q1) == 10.0)
     # print(q4 == 10.0)
 
-    print(q1 / q2)
-    print(q2 / q1)
-    print(q1 / 2)
-    print(2.0 / q1)
+    # print(q1 / q2)
+    # print(q2 / q1)
+    # print(q1 / 2)
+    # print(2.0 / q1)
+
+    q = q.Quantity(5, "m^0")
+    print(f"{q} * 2 = {q * 2}")

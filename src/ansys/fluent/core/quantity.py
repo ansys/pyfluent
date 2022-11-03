@@ -1,4 +1,3 @@
-# -*- coding: latin-1 -*-
 from collections import OrderedDict
 
 
@@ -15,14 +14,14 @@ class _UnitsTable(object):
         "in": "L",
         "s": "T",
         "A": "I",
-        "K": "?",
-        "C": "?",
-        "F": "?",
-        "R": "?",
+        "K": "Temp",
+        "C": "Temp",
+        "F": "Temp",
+        "R": "Temp",
         "mol": "N",
         "slugmol": "N",
-        "cd": "J",
-        "sr": "?",
+        "cd": "Iv",
+        "sr": "SAngle",
         "radian": "Angle",
         "degree": "Angle",
     }
@@ -53,15 +52,13 @@ class _UnitsTable(object):
         "l": (0.001, "m^3"),
         "gal": (0.0037854117839999993, "m^3"),
         "BTU": (1055.056, "J"),
-        "C": (lambda c: c + 273.15, "K"),
-        "F": (lambda f: (f - 32) * (5 / 9) + 273.15, "K"),
     }
 
     multipliers = {
         "d": 10**-1,
         "c": 10**-2,
         "m": 10**-3,
-        "?": 10**-6,
+        "u": 10**-6,
         "n": 10**-9,
         "p": 10**-12,
         "f": 10**-15,
@@ -85,12 +82,12 @@ class _UnitsTable(object):
             ("Mass", "M"),
             ("Length", "L"),
             ("Time", "T"),
-            ("Temperature", "?"),
+            ("Temperature", "Temp"),
             ("Angle", "Angle"),
             ("ChemicalAmount", "N"),
-            ("Light", "J"),
+            ("Light", "Iv"),
             ("Current", "I"),
-            ("SolidAngle", "?"),
+            ("SolidAngle", "SAngle"),
             ("", ""),
         ]
     )
@@ -144,18 +141,32 @@ class _UnitsTable(object):
         "": "",
     }
 
-    offset_conversions = {
-        "K": 1,
-        "C": 274.15,
-        "F": 255.92777777777778,
-        "R": 0.5555555555555556,
-    }
-
-    offset_dict = {
-        "K": {"C": 274.15, "F": 255.92777777777778, "R": 0.5555555555555556},
-        "C": {"K": -272.15, "F": -17.2222222222222, "R": -272.59444444444443},
-        "F": {"C": 33.79999999999993, "K": -457.87, "R": -458.67},
-        "R": {"C": 493.4699999999999, "F": 460.66999999999996, "K": 1.7999999999999998},
+    temperature_conversions = {
+        # from : { to : formula }
+        "C": {
+            "K": lambda c: c + 273.15,
+            "R": lambda c: (c + 273.15) * 1.8,
+            "F": lambda c: c * 9 / 5 + 32,
+            "C": lambda c: c,
+        },
+        "F": {
+            "K": lambda f: (f - 32) * 5 / 9 + 273.15,
+            "R": lambda f: f + 459.67,
+            "F": lambda f: f,
+            "C": lambda f: (f - 32) * 5 / 9,
+        },
+        "R": {
+            "K": lambda r: r / 1.8,
+            "R": lambda r: r,
+            "F": lambda r: r - 459.67,
+            "C": lambda r: (r - 491.67) / 1.8,
+        },
+        "K": {
+            "K": lambda k: k,
+            "R": lambda k: k * 1.8,
+            "F": lambda k: k * 1.8 - 459.67,
+            "C": lambda k: k - 273.15,
+        },
     }
 
 
@@ -196,6 +207,12 @@ def remove_multiplier(unit_str):
     return unit_str
 
 
+def is_temperature_quantity(dim_obj):
+    temp_dim = dim_obj["Temp"]
+    total_dims_sum = sum([abs(val) for val in dim_obj.values()])
+    return temp_dim == 1 and total_dims_sum == temp_dim
+
+
 class Unit(object):
     def __init__(self, unit_str):
         self._unit = unit_str
@@ -233,16 +250,24 @@ class Unit(object):
                     term_power_dict[term_split[0]] = float(term_split[1])
             else:
                 if term in term_power_dict.keys():
-                    term_power_dict[term] += 1
+                    term_power_dict[term] += 1.0
                 else:
-                    term_power_dict[term] = 1
+                    term_power_dict[term] = 1.0
 
         self._si_unit = ""
 
         for key, power in term_power_dict.items():
             spacechar = " " if len(self._si_unit) > 0 else ""
-            if power > 0.0 or power < 0.0:
-                self._si_unit += spacechar + key + "^" + str(power)
+
+            if power == 1.0:
+                self._si_unit += spacechar + key
+            elif power != 0.0:
+                self._si_unit += (
+                    spacechar
+                    + key
+                    + "^"
+                    + str(int(power) if power.is_integer() else power)
+                )
             else:
                 self._si_unit += spacechar + key
 
@@ -283,10 +308,12 @@ class Unit(object):
 
                 if term_power == 1.0:
                     self._si_unit += spacechar + _UnitsTable.si_map[unit_str]
-                elif term_power > 0.0 or term_power < 0.0:
+                elif term_power != 0.0:
                     self._si_unit += (
                         spacechar + _UnitsTable.si_map[unit_str] + "^" + str(term_power)
                     )
+                elif term_power == 0.0:
+                    self._si_unit += ""
                 else:
                     self._si_unit += spacechar + _UnitsTable.si_map[unit_str]
 
@@ -311,12 +338,12 @@ class Dimension(object):
             "M": 0.0,
             "L": 0.0,
             "T": 0.0,
-            "?": 0.0,
+            "Temp": 0.0,
             "I": 0.0,
             "N": 0.0,
-            "J": 0.0,
+            "Iv": 0.0,
             "Angle": 0.0,
-            "?": 0.0,
+            "SAngle": 0.0,
             "": 0.0,
         }
         self._parser(unit_str)
@@ -396,36 +423,36 @@ class UnitSystem:
             "M": "kg",
             "L": "m",
             "T": "s",
-            "?": "K",
+            "Temp": "K",
             "I": "A",
             "N": "mol",
-            "J": "cd",
+            "Iv": "cd",
             "Angle": "radian",
-            "?": "sr",
+            "SAngle": "sr",
             "": "",
         },
         "CGS": {
             "M": "g",
             "L": "cm",
             "T": "s",
-            "?": "K",
+            "Temp": "K",
             "I": "A",
             "N": "mol",
-            "J": "cd",
+            "Iv": "cd",
             "Angle": "radian",
-            "?": "sr",
+            "SAngle": "sr",
             "": "",
         },
         "BTU": {
             "M": "slug",
             "L": "ft",
             "T": "s",
-            "?": "R",
+            "Temp": "R",
             "I": "A",
             "N": "slugmol",
-            "J": "cd",
+            "Iv": "cd",
             "Angle": "radian",
-            "?": "sr",
+            "SAngle": "sr",
             "": "",
         },
     }
@@ -550,13 +577,49 @@ class Quantity(float):
         else:
             pass
 
-        curr_unit_obj = self._unit
-        to_unit_obj = temp_quantity._unit
-        temp_quantity.value = (
-            curr_unit_obj.si_factor / to_unit_obj.si_factor
-        ) * self.value
+        if is_temperature_quantity(curr_unit_dim_obj.as_dict()):
+            return self._get_converted_temperature(to_unit_str)
+        else:
+            curr_unit_obj = self._unit
+            to_unit_obj = temp_quantity._unit
+            temp_quantity.value = (
+                curr_unit_obj.si_factor / to_unit_obj.si_factor
+            ) * self.value
+            return temp_quantity
 
-        return temp_quantity
+    def _get_converted_temperature(self, to_unit_str):
+        from_unit_str = self.unit
+
+        if "^" in from_unit_str:
+            from_unit_str = from_unit_str.split("^")[0]
+
+        if "^" in to_unit_str:
+            to_unit_str = to_unit_str.split("^")[0]
+
+        _, prefix = filter_multiplier(
+            from_unit_str, lambda item, unit: len(unit) > 0.0 and unit.startswith(item)
+        )
+        from_unit_multiplier = (
+            _UnitsTable.multipliers[prefix] if len(prefix) != 0 else 1.0
+        )
+
+        _, prefix = filter_multiplier(
+            to_unit_str, lambda item, unit: len(unit) > 0.0 and unit.startswith(item)
+        )
+        to_unit_multiplier = (
+            _UnitsTable.multipliers[prefix] if len(prefix) != 0 else 1.0
+        )
+
+        from_key = remove_multiplier(from_unit_str)
+        to_key = remove_multiplier(to_unit_str)
+
+        return Quantity(
+            _UnitsTable.temperature_conversions[from_key][to_key](
+                from_unit_multiplier * self.value
+            )
+            / to_unit_multiplier,
+            to_unit_str,
+        )
 
     def _get_si_unit(self, other, func):
         curr_dim = self.get_dimensions_list()
