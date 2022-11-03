@@ -680,7 +680,7 @@ class Quantity(float):
         return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
-        return self.__add__(other)
+        return super().__add__(other)
 
     def __sub__(self, other):
         if isinstance(other, Quantity) and (

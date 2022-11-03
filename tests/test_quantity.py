@@ -613,65 +613,13 @@ if __name__ == "__main__":
     testing_to_systems()
     testing_arithmetic_operators()
     testing_properties()
-    #
+
     # x = q.Quantity(1, "ft")
     # print(
     #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     # )
-    #
-    # g = q.Quantity(1, "g")
-    # m = q.Quantity(1, "m")
-    # print(f"{g} * {m} = {g * m}")
-    # print("here ")
-    # print(f"{m} * 2 = {m * 2}")
-    # print(" ")
 
-    # l = q.Quantity(1, "cm")
-    # r = q.Quantity(1, "")
-    # print(f"{l} + {r} = {l + r}")
-    # print(" ")
-    # tk = q.Quantity(300.0, "K")
-    # tr = q.Quantity(150.0, "R")
-    #
-    # print(tk.to("R"))
-    # print(tr.to("K"))
-
-    # b = q.Quantity(10.5, "m")
-    # print(b)
-
-    q1 = q.Quantity(10.0, "m s^-1")
-    q2 = q.Quantity(5.0, "m s^-1")
-    #
-    # print(f"{q1} - {q2} = {q1 - q2}")
-    # print("")
-    #
-    # print(f"{q2} - {q1} = {q2 - q1}")
-    # print("")
-    #
-    # print(f"{float(q1)} - 2.0 = {float(q1) - 2.0}")
-    # print("")
-    #
-    # print(f"2.0 - {float(q1)} = {2.0 - float(q1)}")
-    # print("")
-    #
-    # print(f"{float(q1)} - 3 = {float(q1) - 3}")
-    # print("")
-    #
-    # print(f"3 - {float(q1)} = {3 - float(q1)}")
-    # print("")
-    #
-    # print(q1**2)
-    # print(q2**2)
-    #
-    # q3 = q.Quantity(10.0, "m s^-1")
-    # q4 = q.Quantity(10.0, "")
-    #
-    # print(q1 == q2)
-    # print(q1 == q3)
-    # print(float(q1) == 10.0)
-    # print(q4 == 10.0)
-
-    # print(q1 / q2)
-    # print(q2 / q1)
-    # print(q1 / 2)
-    # print(2.0 / q1)
+    a = q.Quantity(3.0, "m")
+    c = q.Quantity(4.0, "")
+    # print(1 + "a")
+    print(f"{c} + 2 = {c + 2}")
