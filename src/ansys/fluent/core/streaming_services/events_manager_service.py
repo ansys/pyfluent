@@ -1,7 +1,6 @@
 """Module for events management."""
 from functools import partial
 import itertools
-import threading
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
@@ -27,19 +26,16 @@ class EventsManager(StreamingService):
     """
 
     def __init__(self, session_id: str, service):
-        self._session_id: str = session_id
-        self._events_to_callbacks_map: dict = {}
-        self._id_iter = itertools.count()
-        self._lock: threading.Lock = threading.Lock()
-        self._events_thread = None
-        self._events_list: List[str] = [
-            attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
-        ]
-        self._streaming = False
         super().__init__(
             target=EventsManager._listen_events,
             streaming_service=service,
         )
+        self._session_id: str = session_id
+        self._events_to_callbacks_map: dict = {}
+        self._id_iter = itertools.count()
+        self._events_list: List[str] = [
+            attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
+        ]
 
     def _listen_events(self, started_evt):
         responses = self._streaming_service.begin_streaming(started_evt)

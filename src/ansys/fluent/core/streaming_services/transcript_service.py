@@ -1,6 +1,5 @@
 import itertools
-import threading
-from typing import Callable, Optional
+from typing import Callable
 
 from ansys.fluent.core.services.transcript import TranscriptService
 from ansys.fluent.core.streaming_services.streaming_services import StreamingService
@@ -10,15 +9,12 @@ class Transcript(StreamingService):
     """Encapsulates a Fluent Transcript streaming service."""
 
     def __init__(self, channel, metadata):
-        self._channel = channel
-        self._metadata = metadata
-        self._transcript_thread: Optional[threading.Thread] = None
-        self._transcript_callbacks = {}
-        self._transcript_callback_id = itertools.count()
         super().__init__(
             target=Transcript._process_transcript,
-            streaming_service=TranscriptService(self._channel, self._metadata),
+            streaming_service=TranscriptService(channel, metadata),
         )
+        self._transcript_callbacks = {}
+        self._transcript_callback_id = itertools.count()
 
     def add_transcript_callback(self, callback_fn: Callable, keep_new_lines=False):
         """Initiates a fluent transcript streaming depending on the
