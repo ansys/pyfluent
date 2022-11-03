@@ -623,3 +623,5 @@ if __name__ == "__main__":
     c = q.Quantity(4.0, "")
     # print(1 + "a")
     print(f"{c} + 2 = {c + 2}")
+    print("")
+    print(f"2 + {c} = {2 + c}")
