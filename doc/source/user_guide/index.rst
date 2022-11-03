@@ -23,6 +23,8 @@ Python code to control and monitor Ansys Fluent.
    materials
    boundary_conditions
    solution
+   case_reader
+   data_transfer
 
 
 Overview
@@ -30,13 +32,13 @@ Overview
 You use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
 to launch an instance of Fluent that runs as a server in the background.
 
-You can launch Fluent in solution mode with no arguments:
+You can launch Fluent in solution mode with:
 
 .. code:: python
 
     from ansys.fluent.core import launch_fluent
 
-    solver_session = launch_fluent(mode="solver")
+    solver = launch_fluent(mode="solver")
 
 You can launch Fluent in meshing mode with: 
 
@@ -44,37 +46,39 @@ You can launch Fluent in meshing mode with:
 
     from ansys.fluent.core import launch_fluent
 
-    meshing_session = launch_fluent(mode="meshing")
+    meshing = launch_fluent(mode="meshing")
 
 
 For more information, see :ref:`ref_user_guide_launch` 
 and :ref:`ref_launcher_launcher`.
 
-You can use PyFluent to create and initialize multiple, independent session objects.
-Each session object provides full access to the Fluent components relevant to the
-session's current mode (solution or meshing).
+You can use PyFluent to create and initialize multiple, independent session
+objects. Each session object provides full access to the Fluent components
+relevant to the session's current mode (solution or meshing).
 
 Solution mode session
 ---------------------
-A solution mode session has an active ``solver`` object that provides two distinct
-interfaces to the solver:
+A solution mode session has an active ``solver`` object that provides two
+distinct interfaces to the solver:
 
 - ``tui`` object
 - ``root`` object
 
-For general guidance on using these two objects, see :ref:`ref_user_guide_solver_settings`.
+For general guidance on using these two objects, see
+:ref:`ref_user_guide_solver_settings`.
 
 Solver ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~
-The solver ``tui`` object is a complete Python exposure of the Fluent solver TUI (text 
-user interface). This object allows straightforward execution of solver commands and 
-modification of solve settings in a manner that is familiar to existing Fluent users:
+The solver ``tui`` object is a complete Python exposure of the Fluent solver TUI
+(text user interface). This object allows straightforward execution of solver
+commands and modification of solve settings in a manner that is familiar to
+existing Fluent users:
 
 .. code:: python
 
-    tui = solver_session.tui
+    tui = solver.tui
 
-    tui.file.read_case(case_file_name="pipe.cas.h5")
+    tui.file.read_case("pipe.cas.h5")
 
     tui.define.models.energy("yes")
 
@@ -83,19 +87,17 @@ For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_command
 
 Solver ``root`` object
 ~~~~~~~~~~~~~~~~~~~~~~
-The solver ``root`` object exposes most of the solver capabilities covered by the solver
-``tui`` object and provides significant additional interface features that are not possible
-via the ``tui`` object:
+The solver ``root`` object exposes most of the solver capabilities covered by
+the solver ``tui`` object and provides significant additional interface features
+that are not possible via the ``tui`` object:
 
 .. code:: python
 
-    root = solver_session
+    solver.file.read(file_type="case", file_name="pipe.cas.h5")
 
-    root.file.read(file_type="case", file_name="pipe.cas.h5")
+    solver.setup.models.energy.enabled = True
 
-    root.setup.models.energy.enabled = True
-
-    energy_is_enabled = root.setup.models.energy.enabled()
+    energy_is_enabled = solver.setup.models.energy.enabled()
 
 For the full hierarchy under the solver ``root`` object, see :ref:`ref_solver_tui`.
 For additional interface features, see :ref:`ref_settings`.
@@ -111,10 +113,10 @@ distinct interfaces to the mesher:
 
 Meshing ``tui`` object
 ~~~~~~~~~~~~~~~~~~~~~~
-The meshing ``tui`` object is a complete Python exposure of the Fluent meshing TUI
-(text user interface). This object allows straightforward execution of meshing
-commands and modification of meshing settings in a manner that is familiar
-to existing Fluent users:
+The meshing ``tui`` object is a complete Python exposure of the Fluent meshing
+TUI (text user interface). This object allows straightforward execution of
+meshing commands and modification of meshing settings in a manner that is
+familiar to existing Fluent users:
 
 .. code:: python
 
@@ -124,15 +126,15 @@ to existing Fluent users:
 
     tui.file.write_case("pipe.cas.h5")
     
-For the full hierarchy under the meshing ``tui`` object, see :ref:`ref_meshing_tui`.
-For general guidance on using TUI commands, see :ref:`ref_user_guide_tui_commands`. 
+For the full hierarchy under the meshing ``tui`` object, see
+:ref:`ref_meshing_tui`. For general guidance on using TUI commands, see
+:ref:`ref_user_guide_tui_commands`. 
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The ``meshing`` object has ``meshing`` and ``workflow`` properties that
-together provide access to Fluent's meshing workflows. This interface
-is consistent with the Python meshing workflow interface that Fluent meshing
-exposes directly:
+The ``meshing`` object has ``meshing`` and ``workflow`` properties that together
+provide access to Fluent's meshing workflows. This interface is consistent with
+the Python meshing workflow interface that Fluent meshing exposes directly:
 
 .. code:: python
 
@@ -148,29 +150,29 @@ exposes directly:
 
     meshing = meshing_session.meshing
 
-    meshing.GlobalSettings.LengthUnit.setState("mm")
+    meshing.GlobalSettings.LengthUnit.set_state("mm")
 
 For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
 For information on the full interface, see :ref:`ref_meshing_datamodel`.
 
 Session object
 --------------
-In either a solution or meshing mode session, the ``session`` object provides
-a more direct interaction via its ``scheme_eval`` attribute:
+In either a solution or meshing mode session, the ``session`` object provides a
+more direct interaction via its ``scheme_eval`` attribute:
 
 .. code:: python
 
-    unsteady = solver_session.scheme_eval.scheme_eval("(rp-unsteady?)")
+    unsteady = solver.scheme_eval.scheme_eval("(rp-unsteady?)")
 
-The argument to ``scheme_eval`` is a string that contains any scheme
-code that can be executed in Fluent for the current mode.
+The argument to ``scheme_eval`` is a string that contains any scheme code that
+can be executed in Fluent for the current mode.
 
-Surface field and mesh data services are available in solution mode only via
-the ``field_data`` object attribute of the session object:
+Surface field and mesh data services are available in solution mode only via the
+``field_data`` object attribute of the session object:
 
 .. code:: python
 
-    surface_data = solver_session.field_data.get_fields()
+    surface_data = solver.field_data.get_fields()
 
 For more information, see :ref:`ref_field_data`.
 
@@ -178,27 +180,27 @@ The connection status of any session can be verified with:
 
 .. code:: python
 
-    health = solver_session.check_health()
+    health = solver.check_health()
 
 ``"SERVING"`` is returned if and only if the connection is healthy.
 
 Streaming
 ---------
-Streaming of a Fluent transcript is automatically started by default.
-You can stop and start the streaming of a transcript manually with:
+Streaming of a Fluent transcript is automatically started by default. You can
+stop and start the streaming of a transcript manually with:
  
 .. code:: python
 
-    solver_session.stop_transcript()
+    solver.stop_transcript()
 
-    solver_session.start_transcript()
+    solver.start_transcript()
 
-You can enable and disable the streaming of events pertaining to various
-solver event types via the ``events_manager`` attribute of a solution mode session:
+You can enable and disable the streaming of events pertaining to various solver
+event types via the ``events_manager`` attribute of a solution mode session:
 
 .. code:: python
 
-    solver_session.events_manager.start()
+    solver.events_manager.start()
 
 For more information, see :ref:`ref_events`.
 
@@ -209,5 +211,5 @@ You can control the global logging level at any time with:
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    pyfluent.set_log_level('DEBUG') # by default, only errors are shown
+    pyfluent.set_log_level("DEBUG") # by default, only errors are shown
 

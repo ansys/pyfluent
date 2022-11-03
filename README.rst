@@ -79,24 +79,31 @@ To launch Fluent from Python, use the ``launch_fluent`` method:
 .. code:: python
 
   import ansys.fluent.core as pyfluent
-  session = pyfluent.launch_fluent(mode="solver")
-  session.check_health()
+  solver_session = pyfluent.launch_fluent(mode="solver")
+  solver_session.check_health()
 
-To use a non-default installation location, set the ``PYFLUENT_FLUENT_ROOT``
-environment variable to the ``<version>/fluent`` directory, where ``<version>``
-is the Fluent release that you would like to use. For example, ``v222``
-uses release 2022 R2.
+On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
+when Fluent is installed, where ``<ver>`` is the Fluent release number such as
+``222`` for release 2022 R2.  PyFluent automatically uses this environment
+variable to locate the Fluent installation. On Linux systems configure
+``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
+``/apps/ansys_inc/v222``.  
+
+To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
+``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install
+location>/<version>/fluent`` directory, where ``<version>`` is the Fluent
+release that you would like to use. For example, ``v222`` uses release 2022 R2.
 
 Basic Usage
 ~~~~~~~~~~~
-You can use the ``session.solver.tui`` interface to run all Fluent TUI commands:
+You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 
 .. code:: python
 
-  session.solver.tui.file.read_case(case_file_name='elbow.cas.h5')
-  session.solver.tui.define.models.unsteady_2nd_order("yes")
-  session.solver.tui.solve.initialize.initialize_flow()
-  session.solver.tui.solve.dual_time_iterate(2, 3)
+  solver_session.tui.file.read_case('elbow.cas.h5')
+  solver_session.tui.define.models.unsteady_2nd_order("yes")
+  solver_session.tui.solve.initialize.initialize_flow()
+  solver_session.tui.solve.dual_time_iterate(2, 3)
 
 You can also install and use these PyFluent libraries:
 

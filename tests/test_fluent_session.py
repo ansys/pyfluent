@@ -1,4 +1,5 @@
 import os
+import subprocess
 import time
 
 import psutil
@@ -9,8 +10,6 @@ from util.solver_workflow import (  # noqa: F401
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.session import _FluentConnection
-import docker
 
 
 def _read_case(session):
@@ -29,7 +28,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
     print_transcript.called = False
     print_transcript.transcript = None
 
-    _FluentConnection._print_transcript = print_transcript
+    session.add_transcript_callback(print_transcript)
 
     _read_case(session=session)
 
@@ -47,11 +46,19 @@ def test_session_starts_no_transcript_if_disabled(
 
     print_transcript.called = False
 
-    session._print_transcript = print_transcript
+    session.start_transcript(write_to_interpreter=False)
 
     _read_case(session=session)
 
     assert not print_transcript.called
+
+
+def get_container_ids_set():
+    proc = subprocess.Popen(["docker", "ps", "-q"], stdout=subprocess.PIPE)
+    output_bytes = proc.stdout.read()
+    output_str = output_bytes.decode()
+    ids = output_str.strip().split()
+    return set(ids)
 
 
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
@@ -60,12 +67,11 @@ def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
-        client = docker.from_env()
-        containers_before = client.containers.list()
+        containers_before = get_container_ids_set()
         f()
         time.sleep(10)
-        containers_after = client.containers.list()
-        new_containers = set(containers_after) - set(containers_before)
+        containers_after = get_container_ids_set()
+        new_containers = containers_after - containers_before
         assert not new_containers
     else:
         f()
@@ -81,15 +87,14 @@ def test_server_does_not_exit_when_session_goes_out_of_scope(
         f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
-        client = docker.from_env()
-        containers_before = client.containers.list()
+        containers_before = get_container_ids_set()
         f()
         time.sleep(10)
-        containers_after = client.containers.list()
-        new_containers = set(containers_after) - set(containers_before)
+        containers_after = get_container_ids_set()
+        new_containers = containers_after - containers_before
         assert new_containers
         for container in new_containers:
-            container.stop()
+            subprocess.Popen(["docker", "stop", container])
     else:
         f()
         time.sleep(10)

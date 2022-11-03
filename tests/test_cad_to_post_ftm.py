@@ -14,7 +14,7 @@ This test queries the following using PyTest:
 
 from functools import partial
 
-from pytest import approx
+import pytest
 from util.meshing_workflow import (  # noqa: F401
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
@@ -26,6 +26,7 @@ from util.meshing_workflow import (  # noqa: F401
 from util.solver import check_report_definition_result
 
 
+@pytest.mark.nightly
 def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geometry):
 
     meshing_session = new_fault_tolerant_workflow_session
@@ -498,7 +499,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
         check_report_definition(
             report_definition_name="mass_flow_rate",
-            expected_result=approx(-6.036667e-07, abs=1e-3),
+            expected_result=pytest.approx(-6.036667e-07, abs=1e-3),
         )
 
         ###############################################################################
@@ -524,7 +525,7 @@ def test_exhaust_system(new_fault_tolerant_workflow_session, exhaust_system_geom
 
         check_report_definition(
             report_definition_name="velocity_magnitude_outlet",
-            expected_result=approx(3.7988207, rel=1e-3),
+            expected_result=pytest.approx(3.7988207, rel=1e-3),
         )
 
         ###############################################################################

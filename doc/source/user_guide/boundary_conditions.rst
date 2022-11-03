@@ -28,53 +28,29 @@ Python code for defining velocity boundary conditions at inlets.
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-    solver = pyfluent.launch_fluent(precision='double', processor_count=2, mode="solver")
-    solver.tui.file.read_case(case_file_name='file.cas.h5')
+
+    solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
+    solver.tui.file.read_case("file.cas.h5")
     solver.tui.define.boundary_conditions.set.velocity_inlet(
-        'cold-inlet',
-        (),
-        'vmag',
-        'no',
-        0.4,
-        'quit'
+        "cold-inlet", (), "vmag", "no", 0.4, "quit"
     )
     solver.tui.define.boundary_conditions.set.velocity_inlet(
-        'cold-inlet',
-        (),
-        'ke-spec',
-        'no',
-        'no',
-        'no',
-        'yes',
-        'quit'
+        "cold-inlet", (), "ke-spec", "no", "no", "no", "yes", "quit"
     )
     solver.tui.define.boundary_conditions.set.velocity_inlet(
-        'cold-inlet',
-        (),
-        'turb-intensity',
-        5,
-        'quit'
+        "cold-inlet", (), "turb-intensity", 5, "quit"
     )
     solver.tui.define.boundary_conditions.set.velocity_inlet(
-        'cold-inlet',
-        (),
-        'turb-hydraulic-diam',
-        4,
-        'quit'
+        "cold-inlet", (), "turb-hydraulic-diam", 4, "quit"
     )
     solver.tui.define.boundary_conditions.set.velocity_inlet(
-        'cold-inlet',
-        (),
-        'temperature',
-        'no',
-        293.15,
-        'quit'
+        "cold-inlet", (), "temperature", "no", 293.15, "quit"
     )
 
 Copying boundary conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows a comparison between the TUI command and the
-Python code for copying boundary conditions to other zones.
+This example shows a comparison between the TUI command and the Python code for
+copying boundary conditions to other zones.
 
 **TUI command**
 
@@ -90,8 +66,8 @@ Python code for copying boundary conditions to other zones.
 
 Listing zones
 ~~~~~~~~~~~~~
-This example shows a comparison between the TUI command and the
-Python code for printing to the Fluent console the types and IDs of all zones.
+This example shows a comparison between the TUI command and the Python code for
+printing to the Fluent console the types and IDs of all zones.
 
 **TUI command**
 
@@ -107,8 +83,8 @@ Python code for printing to the Fluent console the types and IDs of all zones.
 
 Modifying cell zone conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-This example shows a comparison between the TUI command and the
-Python code for modifying cell zone conditions.
+This example shows a comparison between the TUI command and the Python code for
+modifying cell zone conditions.
 
 **TUI command**
 
@@ -120,31 +96,31 @@ Python code for modifying cell zone conditions.
 
 .. code:: python
 
-    #Enabling Laminar Zone
+    # Enabling Laminar Zone
     solver.tui.define.boundary_conditions.fluid(
-        'elbow-fluid',
-        'no',
-        'no',
-        'no',
-        'no',
-        'no',
+        "elbow-fluid",
+        "no",
+        "no",
+        "no",
+        "no",
+        "no",
         0,
-        'no',
+        "no",
         0,
-        'no',
+        "no",
         0,
-        'no',
+        "no",
         0,
-        'no',
+        "no",
         0,
-        'no',
+        "no",
         1,
-        'no',
-        'yes',
-        'yes',
-        'no',
-        'no',
-        'no'
+        "no",
+        "yes",
+        "yes",
+        "no",
+        "no",
+        "no",
     )
 
 Using settings objects
@@ -159,22 +135,20 @@ Define boundary conditions
 
 .. code:: python
 
-    solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].vmag = {
-        'option': 'constant or expression',
-        'constant': 0.4,
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag = {
+        "option": "constant or expression",
+        "constant": 0.4,
     }
     solver.setup.boundary_conditions.velocity_inlet[
-        'cold-inlet'
-    ].ke_spec = 'Intensity and Hydraulic Diameter'
+        "cold-inlet"
+    ].ke_spec = "Intensity and Hydraulic Diameter"
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 5
     solver.setup.boundary_conditions.velocity_inlet[
-        'cold-inlet'
-    ].turb_intensity = 5
-    solver.setup.boundary_conditions.velocity_inlet[
-        'cold-inlet'
-    ].turb_hydraulic_diam = '4 [in]'
-    solver.setup.boundary_conditions.velocity_inlet['cold-inlet'].t = {
-        'option': 'constant or expression',
-        'constant': 293.15,
+        "cold-inlet"
+    ].turb_hydraulic_diam = "4 [in]"
+    solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
+        "option": "constant or expression",
+        "constant": 293.15,
     }
 
 Modify cell zone conditions
@@ -184,5 +158,5 @@ Modify cell zone conditions
 
 .. code:: python
 
-    #Enabling Laminar Zone
-    solver.setup.cell_zone_conditions.fluid['elbow-fluid'] = {'laminar' : True}
+    # Enabling Laminar Zone
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"laminar": True}

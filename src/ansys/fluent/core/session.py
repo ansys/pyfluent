@@ -1,20 +1,19 @@
 """Module containing class encapsulating Fluent connection and the Base
 Session."""
+import importlib
 import json
+import os
 from typing import Any
 import warnings
 
 import grpc
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.services.datamodel_tui import (
-    DatamodelService as DatamodelService_TUI,
-)
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
-from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_TUI
+from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
 
 try:
@@ -31,6 +30,24 @@ def parse_server_info_file(filename: str):
     port = int(ip_and_port[1])
     password = lines[1].strip()
     return ip, port, password
+
+
+def _get_datamodel_attributes(session, attribute: str):
+    try:
+        preferences_module = importlib.import_module(
+            f"ansys.fluent.core.datamodel_{session.version}." + attribute
+        )
+        return preferences_module.Root(session._se_service, attribute, [])
+    except (ImportError, ModuleNotFoundError):
+        LOG.warning(_CODEGEN_MSG_DATAMODEL)
+
+
+def _get_preferences(session):
+    return _get_datamodel_attributes(session, "preferences")
+
+
+def _get_solverworkflow(session):
+    return _get_datamodel_attributes(session, "solverworkflow")
 
 
 class _BaseSession:
@@ -65,6 +82,9 @@ class _BaseSession:
     def __init__(self, fluent_connection: _FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
+        self._uploader = None
+        self._preferences = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -111,9 +131,19 @@ class _BaseSession:
         """Return the session id."""
         return self.fluent_connection.id
 
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self.fluent_connection.start_transcript()
+    def start_transcript(
+        self, file_path: str = None, write_to_interpreter: bool = True
+    ) -> None:
+        """Start streaming of Fluent transcript.
+
+        Parameters
+        ----------
+        file_path: str, optional
+            File path to write the transcript stream.
+        write_to_interpreter: bool, optional
+            Flag to print transcript on the screen or not
+        """
+        self.fluent_connection.start_transcript(file_path, write_to_interpreter)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
@@ -147,9 +177,7 @@ class _BaseSession:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return ".".join(
-            map(str, self.fluent_connection.scheme_eval.scheme_eval("(cx-version)"))
-        )
+        return self.fluent_connection.get_fluent_version()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
@@ -169,6 +197,18 @@ class _BaseSession:
                 + dir(self.fluent_connection)
             )
         )
+
+    def upload(self, file_path: str, remote_file_name: str = None):
+        """Uploads a file on the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.upload(file_path, remote_file_name)
+
+    def download(self, file_name: str, local_file_path: str = None):
+        """Downloads a file from the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.download(file_name, local_file_path)
 
 
 class Session:
@@ -229,15 +269,17 @@ class Session:
 
         self.scheme_eval = self.fluent_connection.scheme_eval
 
-        self.meshing = _BaseMeshing(self.fluent_connection)
+        self.meshing = _BaseMeshing(None, self.fluent_connection)
 
         self._datamodel_service_se = self.fluent_connection.datamodel_service_se
         self._datamodel_service_tui = self.fluent_connection.datamodel_service_tui
         self._settings_service = self.fluent_connection.settings_service
 
-        self.solver = Session.Solver(
-            self._datamodel_service_tui, self._settings_service
-        )
+        self.solver = Session.Solver(self.fluent_connection)
+
+        self._uploader = None
+        self._preferences = None
+        self._solverworkflow = None
 
     @classmethod
     def create_from_server_info_file(
@@ -286,11 +328,11 @@ class Session:
 
     def start_transcript(self) -> None:
         """Start streaming of Fluent transcript."""
-        self.fluent_connection.start_transcript()
+        self.transcript.start()
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
-        self.fluent_connection.stop_transcript()
+        self.transcript.stop()
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
@@ -319,14 +361,50 @@ class Session:
             )
         )
 
+    def upload(self, file_path: str, remote_file_name: str = None):
+        """Uploads a file on the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.upload(file_path, remote_file_name)
+
+    def download(self, file_name: str, local_file_path: str = None):
+        """Downloads a file from the server."""
+        if not self._uploader:
+            self._uploader = _Uploader(self.fluent_connection._remote_instance)
+        return self._uploader.download(file_name, local_file_path)
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            self._preferences = _get_preferences(self)
+        return self._preferences
+
+    @property
+    def solverworkflow(self):
+        """solverworkflow datamodel root."""
+        if self._solverworkflow is None:
+            self._solverworkflow = _get_solverworkflow(self)
+        return self._solverworkflow
+
     class Solver:
-        def __init__(
-            self, tui_service: DatamodelService_TUI, settings_service: SettingsService
-        ):
-            self._tui_service = tui_service
-            self._settings_service = settings_service
+        def __init__(self, fluent_connection: _FluentConnection):
+            self._fluent_connection = fluent_connection
+            self._tui_service = fluent_connection.datamodel_service_tui
+            self._settings_service = fluent_connection.settings_service
             self._tui = None
             self._settings_root = None
+            self._version = None
+
+        def get_fluent_version(self):
+            """Gets and returns the fluent version."""
+            return self._fluent_connection.get_fluent_version()
+
+        @property
+        def version(self):
+            if self._version is None:
+                self._version = get_version_for_filepath(session=self)
+            return self._version
 
         @property
         def tui(self):
@@ -334,9 +412,10 @@ class Session:
             can be executed."""
             if self._tui is None:
                 try:
-                    from ansys.fluent.core.solver.tui import main_menu as SolverMainMenu
-
-                    self._tui = SolverMainMenu([], self._tui_service)
+                    tui_module = importlib.import_module(
+                        f"ansys.fluent.core.solver.tui_{self.version}"
+                    )
+                    self._tui = tui_module.main_menu([], self._tui_service)
                 except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
                     self._tui = TUIMenuGeneric([], self._tui_service)
@@ -346,5 +425,65 @@ class Session:
         def root(self):
             """root settings object."""
             if self._settings_root is None:
-                self._settings_root = settings_get_root(flproxy=self._settings_service)
+                self._settings_root = settings_get_root(
+                    flproxy=self._settings_service, version=self.version
+                )
             return self._settings_root
+
+
+class _Uploader:
+    """Instantiates a file uploader and downloader to have a seamless file
+    reading / writing in the cloud particularly in Ansys lab . Here we are
+    exposing upload and download methods on session objects. These would be no-
+    ops if PyPIM is not configured or not authorized with the appropriate
+    service. This will be used for internal purpose only.
+
+    Attributes
+    ----------
+    pim_instance: PIM instance
+        Instance of PIM which supports upload server services.
+
+    file_service: Client instance
+        Instance of Client which supports upload and download methods.
+
+    Methods
+    -------
+    upload(
+        file_path, remote_file_name
+        )
+        Upload a file to the server.
+
+    download(
+        file_name, local_file_path
+        )
+        Download a file from the server.
+    """
+
+    def __init__(self, pim_instance):
+        self.pim_instance = pim_instance
+        self.file_service = None
+        try:
+            upload_server = self.pim_instance.services["http-simple-upload-server"]
+        except (AttributeError, KeyError):
+            pass
+        else:
+            from simple_upload_server.client import Client
+
+            self.file_service = Client(
+                token="token", url=upload_server.uri, headers=upload_server.headers
+            )
+
+    def upload(self, file_path: str, remote_file_name: str = None):
+        """Uploads a file on the server."""
+        if self.file_service:
+            expanded_file_path = os.path.expandvars(file_path)
+            upload_file_name = remote_file_name or os.path.basename(expanded_file_path)
+            self.file_service.upload_file(expanded_file_path, upload_file_name)
+
+    def download(self, file_name: str, local_file_path: str = None):
+        """Downloads a file from the server."""
+        if self.file_service:
+            if self.file_service.file_exist(file_name):
+                self.file_service.download_file(file_name, local_file_path)
+            else:
+                raise FileNotFoundError("Remote file does not exist.")

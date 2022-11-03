@@ -38,7 +38,8 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     license_server = os.environ["ANSYSLMD_LICENSE_FILE"]
     port = _get_free_port()
     container_sifile = mounted_to + "/" + Path(sifile).name
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "latest")
+    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
+    test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
 
     try:
         subprocess.run(
@@ -57,6 +58,8 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"REMOTING_PORTS={port}/portspan=2",
                 "-e",
                 "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
+                "-l",
+                f"test_name={test_name}",
                 f"ghcr.io/pyansys/pyfluent:{image_tag}",
                 "-gu",
                 f"-sifile={container_sifile}",

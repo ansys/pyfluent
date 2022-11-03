@@ -1,16 +1,16 @@
+import importlib
+
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.meshing.meshing import Meshing
-from ansys.fluent.core.meshing.workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
+from ansys.fluent.core.workflow import WorkflowWrapper
 
 
 class _BaseMeshing:
-
-    meshing_attrs = ("tui", "meshing", "workflow", "PartManagement", "PMFileManagement")
-
     def __init__(self, session_execute_tui, fluent_connection: _FluentConnection):
         self._tui_service = fluent_connection.datamodel_service_tui
         self._se_service = fluent_connection.datamodel_service_se
@@ -20,7 +20,19 @@ class _BaseMeshing:
         self._workflow = None
         self._part_management = None
         self._pm_file_management = None
+        self._preferences = None
         self._session_execute_tui = session_execute_tui
+        self._version = None
+
+    def get_fluent_version(self):
+        """Gets and returns the fluent version."""
+        return self._fluent_connection.get_fluent_version()
+
+    @property
+    def version(self):
+        if self._version is None:
+            self._version = get_version_for_filepath(session=self)
+        return self._version
 
     @property
     def tui(self):
@@ -28,9 +40,10 @@ class _BaseMeshing:
         executed."""
         if self._tui is None:
             try:
-                from ansys.fluent.core.meshing.tui import main_menu as MeshingMainMenu
-
-                self._tui = MeshingMainMenu([], self._tui_service)
+                tui_module = importlib.import_module(
+                    f"ansys.fluent.core.meshing.tui_{self.version}"
+                )
+                self._tui = tui_module.main_menu([], self._tui_service)
             except (ImportError, ModuleNotFoundError):
                 LOG.warning(_CODEGEN_MSG_TUI)
                 self._tui = TUIMenuGeneric([], self._tui_service)
@@ -40,9 +53,10 @@ class _BaseMeshing:
     def _meshing_root(self):
         """meshing datamodel root."""
         try:
-            from ansys.fluent.core.datamodel.meshing import Root as meshing_root
-
-            meshing_root = meshing_root(self._se_service, "meshing", [])
+            meshing_module = importlib.import_module(
+                f"ansys.fluent.core.datamodel_{self.version}.meshing"
+            )
+            meshing_root = meshing_module.Root(self._se_service, "meshing", [])
         except (ImportError, ModuleNotFoundError):
             LOG.warning(_CODEGEN_MSG_DATAMODEL)
             meshing_root = PyMenuGeneric(self._se_service, "meshing")
@@ -63,9 +77,10 @@ class _BaseMeshing:
     def _workflow_se(self):
         """workflow datamodel root."""
         try:
-            from ansys.fluent.core.datamodel.workflow import Root as workflow_root
-
-            workflow_se = workflow_root(self._se_service, "workflow", [])
+            workflow_module = importlib.import_module(
+                f"ansys.fluent.core.datamodel_{self.version}.workflow"
+            )
+            workflow_se = workflow_module.Root(self._se_service, "workflow", [])
         except (ImportError, ModuleNotFoundError):
             LOG.warning(_CODEGEN_MSG_DATAMODEL)
             workflow_se = PyMenuGeneric(self._se_service, "workflow")
@@ -74,7 +89,7 @@ class _BaseMeshing:
     @property
     def workflow(self):
         if not self._workflow:
-            self._workflow = MeshingWorkflow(self._workflow_se, self.meshing)
+            self._workflow = WorkflowWrapper(self._workflow_se, self.meshing)
         return self._workflow
 
     @property
@@ -82,11 +97,10 @@ class _BaseMeshing:
         """PartManagement datamodel root."""
         if self._part_management is None:
             try:
-                from ansys.fluent.core.datamodel.PartManagement import (
-                    Root as PartManagement_root,
+                pm_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.PartManagement"
                 )
-
-                self._part_management = PartManagement_root(
+                self._part_management = pm_module.Root(
                     self._se_service, "PartManagement", []
                 )
             except (ImportError, ModuleNotFoundError):
@@ -101,11 +115,10 @@ class _BaseMeshing:
         """PMFileManagement datamodel root."""
         if self._pm_file_management is None:
             try:
-                from ansys.fluent.core.datamodel.PMFileManagement import (
-                    Root as PMFileManagement_root,
+                pmfm_module = importlib.import_module(
+                    f"ansys.fluent.core.datamodel_{self.version}.PMFileManagement"
                 )
-
-                self._pm_file_management = PMFileManagement_root(
+                self._pm_file_management = pmfm_module.Root(
                     self._se_service, "PMFileManagement", []
                 )
             except (ImportError, ModuleNotFoundError):
@@ -114,3 +127,12 @@ class _BaseMeshing:
                     self._se_service, "PMFileManagement"
                 )
         return self._pm_file_management
+
+    @property
+    def preferences(self):
+        """preferences datamodel root."""
+        if self._preferences is None:
+            from ansys.fluent.core.session import _get_preferences
+
+            self._preferences = _get_preferences(self)
+        return self._preferences

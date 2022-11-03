@@ -72,11 +72,7 @@ class DatamodelService:
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        ret = self.__stub.getAttributeValue(request, metadata=self.__metadata)
-        try:
-            return ret.item
-        except AttributeError:
-            return ret
+        return self.__stub.getAttributeValue(request, metadata=self.__metadata)
 
     @catch_grpc_error
     def get_state(
@@ -168,13 +164,13 @@ def _convert_variant_to_value(var: Variant):
     elif var.HasField("string_state"):
         return var.string_state
     elif var.HasField("bool_vector_state"):
-        return var.bool_vector_state
+        return var.bool_vector_state.item
     elif var.HasField("int64_vector_state"):
-        return var.int64_vector_state
+        return var.int64_vector_state.item
     elif var.HasField("double_vector_state"):
-        return var.double_vector_state
+        return var.double_vector_state.item
     elif var.HasField("string_vector_state"):
-        return var.string_vector_state
+        return var.string_vector_state.item
     elif var.HasField("variant_vector_state"):
         val = []
         for item in var.variant_vector_state.item:
@@ -221,7 +217,7 @@ class PyCallableStateObject:
         return self.get_state()
 
 
-class PyBasicStateContainer(PyCallableStateObject):
+class PyStateContainer(PyCallableStateObject):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -234,15 +230,15 @@ class PyBasicStateContainer(PyCallableStateObject):
         (This method is the same as the get_attrib_value(attrib)
         method.)
     get_state()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
+        Get the state of the current object.
     getState()
-        Get the state of the current object. (This method is the
-        same as the __call__() method.)
-    set_state(state)
+        Deprecated camel case alias of get_state.
+    set_state()
         Set the state of the current object.
-    setState(state)
-        Set state of the current object (same as set_state(state))
+    setState()
+        Deprecated camel case alias of set_state.
+    __call__()
+        Set the state of the current object if state is provided else get its state.
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
@@ -265,11 +261,13 @@ class PyBasicStateContainer(PyCallableStateObject):
 
     getState = get_state
 
-    def set_state(self, state: Any) -> None:
+    def set_state(self, state: Any = None, **kwargs) -> None:
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
         request.path = _convert_path_to_se_path(self.path)
-        _convert_value_to_variant(state, request.state)
+        _convert_value_to_variant(
+            kwargs, request.state
+        ) if kwargs else _convert_value_to_variant(state, request.state)
         self.service.set_state(request)
 
     setState = set_state
@@ -311,8 +309,18 @@ class PyBasicStateContainer(PyCallableStateObject):
         ).common.helpstring
         print(help_string)
 
+    def __call__(self, *args, **kwargs):
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
 
-class PyMenu(PyBasicStateContainer):
+    docstring = None
+
+
+class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
 
@@ -336,9 +344,7 @@ class PyMenu(PyBasicStateContainer):
         value : Any
             state
         """
-        if hasattr(self, name) and isinstance(
-            getattr(self, name), PyBasicStateContainer
-        ):
+        if hasattr(self, name) and isinstance(getattr(self, name), PyStateContainer):
             getattr(self, name).set_state(value)
         else:
             super().__setattr__(name, value)
@@ -358,6 +364,21 @@ class PyMenu(PyBasicStateContainer):
                 f"{self.__class__.__name__} is not a named object class."
             )
 
+    def raise_method_not_yet_implemented_exception(self):
+        raise AttributeError("This method is yet to be implemented in pyfluent.")
+
+    def delete_child(self):
+        self.raise_method_not_yet_implemented_exception()
+
+    def delete_child_objects(self):
+        self.raise_method_not_yet_implemented_exception()
+
+    def delete_all_child_objects(self):
+        self.raise_method_not_yet_implemented_exception()
+
+    def fix_state(self):
+        self.raise_method_not_yet_implemented_exception()
+
     def create_command_arguments(self, command):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
@@ -367,7 +388,7 @@ class PyMenu(PyBasicStateContainer):
         return response.commandid
 
 
-class PyParameter(PyBasicStateContainer):
+class PyParameter(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend.
 
     Use this class instead of directly calling DatamodelService's
@@ -640,11 +661,23 @@ class PyCommand:
         response = self.service.create_command_arguments(request)
         return response.commandid
 
+    def _get_static_info(self):
+        request = DataModelProtoModule.GetStaticInfoRequest()
+        request.rules = self.rules
+        response = self.service.get_static_info(request)
+        return response.info
+
     def new(self):
         try:
+            static_info = self._get_static_info()
             id = self._create_command_arguments()
             return PyCommandArguments(
-                self.service, self.rules, self.command, self.path.copy(), id
+                self.service,
+                self.rules,
+                self.command,
+                self.path.copy(),
+                id,
+                static_info,
             )
         except RuntimeError:
             warnings.warn(
@@ -654,12 +687,22 @@ class PyCommand:
 
 
 class PyCommandArgumentsSubItem(PyCallableStateObject):
-    def __init__(self, parent, name: str):
+    def __init__(
+        self,
+        parent,
+        name: str,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        parent_arg,
+    ):
         self.parent = parent
         self.name = name
 
-    def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(self, attr)
+        self.service = service
+        self.rules = rules
+        self.path = path
+        self.parent_arg = parent_arg
 
     def get_state(self) -> Any:
         parent_state = self.parent.get_state()
@@ -669,11 +712,6 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
             pass
 
     getState = get_state
-
-    def set_state(self, state: Any) -> None:
-        self.parent.set_state({self.name: state})
-
-    setState = set_state
 
     def get_attrib_value(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"
@@ -685,12 +723,21 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         pass
 
 
-class PyCommandArguments(PyBasicStateContainer):
+class PyCommandArguments(PyStateContainer):
     def __init__(
-        self, service: DatamodelService, rules: str, command: str, path: Path, id: str
+        self,
+        service: DatamodelService,
+        rules: str,
+        command: str,
+        path: Path,
+        id: str,
+        static_info,
     ):
+        self.static_info = static_info
         super().__init__(service, rules, path)
         self.path.append((command, id))
+        self.command = command
+        self.id = id
 
     def __del__(self):
         request = DataModelProtoModule.DeleteCommandArgumentsRequest()
@@ -705,7 +752,124 @@ class PyCommandArguments(PyBasicStateContainer):
             pass
 
     def __getattr__(self, attr):
-        return PyCommandArgumentsSubItem(self, attr)
+
+        for arg in self.static_info.commands[self.command].commandinfo.args:
+            if arg.name == attr:
+                mode = AccessorModes.get_mode(arg.type)
+                py_class = mode.value[1]
+                return py_class(self, attr, self.service, self.rules, self.path, arg)
+
+
+class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+        PyTextual.__init__(self, service, rules, path)
+
+
+class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+        PyNumerical.__init__(self, service, rules, path)
+
+
+class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionary):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+        PyDictionary.__init__(self, service, rules, path)
+
+
+class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+        PyParameter.__init__(self, service, rules, path)
+
+
+class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
+    def __init__(
+        self,
+        parent,
+        attr,
+        service: DatamodelService,
+        rules: str,
+        path: Path,
+        arg,
+    ):
+        PyCommandArgumentsSubItem.__init__(
+            self, parent, attr, service, rules, path, arg
+        )
+
+    def __getattr__(self, attr):
+        arg = self.parent_arg.info.parameters[attr]
+
+        mode = AccessorModes.get_mode(arg.type)
+        py_class = mode.value[1]
+        return py_class(self, attr, self.service, self.rules, self.path, arg)
+
+
+class AccessorModes(Enum):
+    """Provides the standard Fluent launch modes."""
+
+    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
+    NUMBER = (
+        ["Real", "Int", "ListReal", "Real List", "Integer"],
+        PyNumericalCommandArgumentsSubItem,
+    )
+    DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)
+    PARAMETER = (
+        ["Bool", "Logical", "Logical List"],
+        PyParameterCommandArgumentsSubItem,
+    )
+    MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
+
+    @staticmethod
+    def get_mode(mode: str) -> "AccessorModes":
+        """Returns the LaunchMode based on the mode in string format."""
+        for m in AccessorModes:
+            if mode in m.value[0]:
+                return m
+        else:
+            raise TypeError(f"The specified mode: {mode} was not found.")
 
 
 class PyMenuGeneric(PyMenu):
@@ -749,6 +913,26 @@ class PyMenuGeneric(PyMenu):
 
     def __getattr__(self, name: str):
         if name in PyMenuGeneric.attrs:
+            return super().__getattr__(name)
+        else:
+            return self._get_child(name)
+
+
+class PySimpleMenuGeneric(PyMenu, PyDictionary):
+    """A simple implementation of PyMenuGeneric applicable only for SINGLETONS.
+
+    This is required for the stand-alone datamodel server to avoid the
+    usage of 'service.get_specs'
+    """
+
+    attrs = ("service", "rules", "path")
+
+    def _get_child(self, name: str):
+        child_path = self.path + [(name, "")]
+        return PySimpleMenuGeneric(self.service, self.rules, child_path)
+
+    def __getattr__(self, name: str):
+        if name in PySimpleMenuGeneric.attrs:
             return super().__getattr__(name)
         else:
             return self._get_child(name)

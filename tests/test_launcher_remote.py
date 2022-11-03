@@ -2,14 +2,12 @@
 from unittest.mock import create_autospec
 
 import grpc
-import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.launcher import launcher
 import ansys.platform.instancemanagement as pypim
 
 
-@pytest.mark.skip(reason="hanging")
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     fluent = new_solver_session
     # Create a mock pypim pretenting it is configured and returning a channel to an already running Fluent

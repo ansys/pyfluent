@@ -17,10 +17,29 @@ docker-pull:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-unittest:
-	@echo "Running unittest"
+unittest: unittest-dev-222
+
+unittest-dev-222:
+	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@pytest -v -m "unmarked or integration" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@python -m pytest -v -m "dev and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+
+unittest-dev-231:
+	@echo "Running unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "dev and not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+
+unittest-all-222:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+
+unittest-all-231:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
+	@echo "Running all unittests"
+	@pip install -r requirements/requirements_tests.txt
+	@python -m pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 api-codegen:
 	@echo "Running API codegen"
@@ -36,3 +55,6 @@ build-doc:
 	@xvfb-run make -C doc html
 	@touch doc/_build/html/.nojekyll
 	@echo "$(DOCS_CNAME)" >> doc/_build/html/CNAME
+
+compare-flobject:
+	@python .ci/compare_flobject.py

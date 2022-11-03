@@ -3,7 +3,6 @@
 This module supports both starting Fluent locally and connecting to a
 remote instance with gRPC.
 """
-
 from enum import Enum
 import json
 import os
@@ -13,14 +12,16 @@ import subprocess
 import tempfile
 import time
 from typing import Any, Dict, Union
+import warnings
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
-from ansys.fluent.core.session import Session, _BaseSession
+from ansys.fluent.core.scheduler import build_parallel_options, load_machines
+from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session_solver_lite import SolverLite
+from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.logging import LOG
 import ansys.platform.instancemanagement as pypim
 
@@ -52,7 +53,7 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
 
     This supersedes the Fluent path set in the environment variable.
     """
-    if Path(fluent_exe_path).exists() and Path(fluent_exe_path).name == "fluent.exe":
+    if Path(fluent_exe_path).exists():
         FLUENT_EXE_PATH.append(str(fluent_exe_path))
     else:
         raise RuntimeError(
@@ -77,10 +78,11 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
 class LaunchModes(Enum):
     """Provides the standard Fluent launch modes."""
 
-    MESHING_MODE = ("meshing", Meshing, True)
-    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True)
-    SOLVER = ("solver", Solver, False)
-    SOLVER_LITE = ("solver-lite", SolverLite, False)
+    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
+    MESHING_MODE = ("meshing", Meshing, True, [])
+    PURE_MESHING_MODE = ("pure-meshing", PureMeshing, True, [])
+    SOLVER = ("solver", Solver, False, [])
+    SOLVER_ICING = ("solver-icing", SolverIcing, False, [("fluent_icing", True)])
 
     @staticmethod
     def get_mode(mode: str) -> "LaunchModes":
@@ -112,11 +114,14 @@ def get_fluent_path() -> Path:
 
 
 def _get_fluent_exe_path():
-    exe_path = get_fluent_path()
-    if platform.system() == "Windows":
-        exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
+    if FLUENT_EXE_PATH:
+        exe_path = FLUENT_EXE_PATH[0]
     else:
-        exe_path = exe_path / "bin" / "fluent"
+        exe_path = get_fluent_path()
+        if _is_windows():
+            exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
+        else:
+            exe_path = exe_path / "bin" / "fluent"
     return str(exe_path)
 
 
@@ -131,7 +136,7 @@ def _get_server_info_filepath():
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if platform.system() == "Windows":
+    if _is_windows():
         kwargs.update(
             creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
             | subprocess.DETACHED_PROCESS
@@ -140,7 +145,6 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
-    fluent_env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
     kwargs.update(env=fluent_env)
     return kwargs
 
@@ -192,10 +196,17 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     json_key = json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
+    addArgs = kwargs["additional_arguments"]
+    if "-t" not in addArgs and "-cnf=" not in addArgs:
+        mlist = load_machines(ncores=kwargs["processor_count"])
+        launch_args_string += " " + build_parallel_options(mlist)
     return launch_args_string
 
 
 def launch_remote_fluent(
+    session_cls,
+    start_transcript: bool,
+    start_timeout: int = 100,
     product_version: str = None,
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
@@ -211,6 +222,15 @@ def launch_remote_fluent(
 
     Parameters
     ----------
+    session_cls: [_BaseSession, Session]
+        Instance of the Session class
+    start_transcript: bool
+        Whether to start streaming the Fluent transcript in the client. The
+        default is ``True``. You can stop and start the streaming of the
+        Fluent transcript subsequently via method calls on the session object.
+    start_timeout : int, optional
+        Maximum allowable time in seconds for connecting to the Fluent
+        server. The default is ``100``.
     product_version : str, optional
         Version of Fluent to use in the three-digit format (such as ``"212"``
         for 2021 R2). The default is ``None``, in which case the active version
@@ -242,11 +262,156 @@ def launch_remote_fluent(
     instance.wait_for_ready()
     # nb pymapdl sets max msg len here:
     channel = instance.build_grpc_channel()
-    return _BaseSession(
+    return session_cls(
         fluent_connection=_FluentConnection(
-            channel=channel, cleanup_on_exit=cleanup_on_exit, remote_instance=instance
+            channel=channel,
+            cleanup_on_exit=cleanup_on_exit,
+            remote_instance=instance,
+            start_timeout=start_timeout,
+            start_transcript=start_transcript,
         )
     )
+
+
+def _get_session_info(
+    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+):
+    """Updates the session information."""
+    if mode is None:
+        new_session = Session
+    elif mode and meshing_mode:
+        raise RuntimeError(
+            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
+        )
+    else:
+        if type(mode) == str:
+            mode = LaunchModes.get_mode(mode)
+        new_session = mode.value[1]
+        meshing_mode = mode.value[2]
+        for k, v in mode.value[3]:
+            argvals[k] = v
+
+    return new_session, meshing_mode, argvals, mode
+
+
+def _is_windows():
+    """Check if the current operating system is windows."""
+    return platform.system() == "Windows"
+
+
+def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
+    """If -g or -gu is passed in Windows OS, the exception should be raised."""
+    if _is_windows() and (
+        ("-g" in additional_arguments) or ("-gu" in additional_arguments)
+    ):
+        raise ValueError("'-g' and '-gu' is not supported on windows platform.")
+
+
+def _update_launch_string_wrt_gui_options(
+    launch_string: str, show_gui: bool = None, additional_arguments: str = ""
+) -> str:
+    """Checks for all gui options in additional arguments and updates the
+    launch string with hidden, if none of the options are met."""
+
+    if (show_gui is False) or (
+        show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
+    ):
+        if not {"-g", "-gu"} & set(additional_arguments.split()):
+            launch_string += " -hidden"
+
+    return launch_string
+
+
+def _await_fluent_launch(
+    server_info_filepath: str, start_timeout: int, sifile_last_mtime: float
+):
+    """Wait for successful fluent launch or raise an error."""
+    while True:
+        if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
+            time.sleep(1)
+            LOG.info("Fluent process is successfully launched.")
+            break
+        if start_timeout == 0:
+            raise RuntimeError("The launch process has been timed out.")
+        time.sleep(1)
+        start_timeout -= 1
+        LOG.info(
+            "Waiting for Fluent to launch...%02d seconds remaining",
+            start_timeout,
+        )
+
+
+def _connect_to_running_server(argvals, server_info_filepath: str):
+    """Connect to an already running session."""
+    ip = argvals.get("ip", None)
+    port = argvals.get("port", None)
+    password = argvals.get("password", None)
+    if ip and port:
+        warnings.warn(
+            "The server-info file was not parsed because ip and port were provided explicitly."
+        )
+    elif server_info_filepath:
+        ip, port, password = parse_server_info_file(server_info_filepath)
+    elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
+        ip = port = password = None
+    else:
+        raise RuntimeError(
+            "Please provide either ip and port data or server-info file."
+        )
+
+    return ip, port, password
+
+
+def _get_running_session_mode(
+    fluent_connection: _FluentConnection, mode: LaunchModes = None
+):
+    """Get the mode of the running session if the mode has not been mentioned
+    explicitly."""
+    if mode:
+        session_mode = mode
+    else:
+        try:
+            session_mode = LaunchModes.get_mode(
+                fluent_connection.get_current_fluent_mode()
+            )
+        except BaseException:
+            raise RuntimeError("Fluent session password mismatch")
+    return session_mode.value[1]
+
+
+def _start_instance(start_instance: bool = None):
+    """Sets up how to start an instance of fluent."""
+    if not start_instance:
+        start_instance = bool(
+            int(
+                os.getenv(
+                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
+                )
+            )
+        )
+    return start_instance
+
+
+def _generate_launch_string(
+    argvals,
+    meshing_mode: bool,
+    show_gui: bool,
+    additional_arguments: str,
+    server_info_filepath: str,
+):
+    """Generates the launch string to launch fluent."""
+    exe_path = _get_fluent_exe_path()
+    launch_string = exe_path
+    launch_string += _build_fluent_launch_args_string(**argvals)
+    if meshing_mode:
+        launch_string += " -meshing"
+    launch_string += f" {additional_arguments}"
+    launch_string += f' -sifile="{server_info_filepath}"'
+    launch_string += " -nm"
+    launch_string = _update_launch_string_wrt_gui_options(
+        launch_string, show_gui, additional_arguments
+    )
+    return launch_string
 
 
 #   pylint: disable=unused-argument
@@ -267,6 +432,10 @@ def launch_fluent(
     case_filepath: str = None,
     meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
+    server_info_filepath: str = None,
+    password: str = None,
+    py: bool = None,
+    cwd: str = None,
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -281,7 +450,8 @@ def launch_fluent(
         is used. Options are ``"double"`` and ``"single"``.
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
-        is used.
+        processor is used.  In job scheduler environments the total number of
+        allocated cores is clamped to this value.
     journal_filename : str, optional
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
@@ -335,73 +505,56 @@ def launch_fluent(
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
-        ``"pure-meshing"``, ``"solver"``, and ``"solver-lite"``.
+        ``"pure-meshing"`` and ``"solver"``.
+    server_info_filepath: str
+        Path to server-info file written out by Fluent server. The default is ``None``.
+    password : str, optional
+            Password to connect to existing Fluent instance.
+    py : bool, optional
+        Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
+        The default is ``None``.
+
+    cwd: str, Optional
+        Path to specify current working directory to launch fluent from the defined directory as
+        current working directory.
 
     Returns
     -------
     ansys.fluent.session.Session
         Fluent session.
+
+    Notes
+    -----
+    In job scheduler environments such as SLURM, LSF, PBS, etc... the allocated
+    machines and core counts are queried from the scheduler environment and
+    passed to Fluent.
     """
     argvals = locals()
 
-    if mode is None:
-        new_session = Session
-    elif mode and meshing_mode:
-        raise RuntimeError(
-            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
-        )
-    else:
-        if type(mode) == str:
-            mode = LaunchModes.get_mode(mode)
-        new_session = mode.value[1]
-        meshing_mode = mode.value[2]
-
-    if start_instance is None:
-        start_instance = bool(
-            int(
-                os.getenv(
-                    "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
-                )
-            )
-        )
-    if start_instance:
-        if FLUENT_EXE_PATH:
-            exe_path = FLUENT_EXE_PATH[0]
-        else:
-            exe_path = _get_fluent_exe_path()
-        launch_string = exe_path
-        launch_string += _build_fluent_launch_args_string(**argvals)
-        if meshing_mode:
-            launch_string += " -meshing"
+    new_session, meshing_mode, argvals, mode = _get_session_info(
+        argvals, mode, meshing_mode
+    )
+    _raise_exception_g_gu_in_windows_os(additional_arguments)
+    if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
+        launch_string = _generate_launch_string(
+            argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
+        )
+
         try:
-            launch_string += f" {additional_arguments}"
-            launch_string += f' -sifile="{server_info_filepath}"'
-            launch_string += " -nm"
-            if (show_gui is False) or (
-                show_gui is None and (os.getenv("PYFLUENT_SHOW_SERVER_GUI") != "1")
-            ):
-                launch_string += " -hidden"
             LOG.info("Launching Fluent with cmd: %s", launch_string)
             sifile_last_mtime = Path(server_info_filepath).stat().st_mtime
             if env is None:
                 env = {}
+            if mode != LaunchModes.SOLVER_ICING:
+                env["APP_LAUNCHED_FROM_CLIENT"] = "1"  # disables flserver datamodel
             kwargs = _get_subprocess_kwargs_for_fluent(env)
+            if cwd:
+                kwargs.update(cwd=cwd)
             subprocess.Popen(launch_string, **kwargs)
-            while True:
-                if Path(server_info_filepath).stat().st_mtime > sifile_last_mtime:
-                    time.sleep(1)
-                    LOG.info("Fluent process is successfully launched.")
-                    break
-                if start_timeout == 0:
-                    LOG.error("The launch process has been timed out.")
-                    break
-                time.sleep(1)
-                start_timeout -= 1
-                LOG.info(
-                    "Waiting for Fluent to launch...%02d seconds remaining",
-                    start_timeout,
-                )
+
+            _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
+
             return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
@@ -415,6 +568,9 @@ def launch_fluent(
                 "Starting Fluent remotely. The startup configuration will be ignored."
             )
             return launch_remote_fluent(
+                session_cls=new_session,
+                start_timeout=start_timeout,
+                start_transcript=start_transcript,
                 product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
@@ -433,20 +589,23 @@ def launch_fluent(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
-                _FluentConnection(
+                fluent_connection=_FluentConnection(
+                    start_timeout=start_timeout,
                     port=port,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
                 )
             )
         else:
-            ip = argvals.get("ip", None)
-            port = argvals.get("port", None)
-            return new_session(
-                fluent_connection=_FluentConnection(
-                    ip=ip,
-                    port=port,
-                    cleanup_on_exit=cleanup_on_exit,
-                    start_transcript=start_transcript,
-                )
+            ip, port, password = _connect_to_running_server(
+                argvals, server_info_filepath
             )
+            fluent_connection = _FluentConnection(
+                ip=ip,
+                port=port,
+                password=password,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+            )
+            new_session = _get_running_session_mode(fluent_connection, mode)
+            return new_session(fluent_connection=fluent_connection)

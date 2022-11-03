@@ -33,6 +33,8 @@ extraction is considered. The example also includes a known small leakage
 to demonstrate the automatic leakage detection aspects of the meshing workflow.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/exhaust_system.png'
+
 ###############################################################################
 # Example Setup
 # -------------
@@ -90,8 +92,10 @@ meshing.PartManagement.Node["Meshing Model"].Copy(
         "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
-meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.setState("part")
-meshing.workflow.TaskObject["Import CAD and Part Management"].Arguments.setState(
+meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(
+    "part"
+)
+meshing.workflow.TaskObject["Import CAD and Part Management"].Arguments.set_state(
     {
         "Context": 0,
         "CreateObjectPer": "Custom",
@@ -112,7 +116,7 @@ meshing.workflow.TaskObject["Import CAD and Part Management"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Describe the geometry and the flow characteristics.
 
-meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments.setState(
+meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments.set_state(
     {
         "AddEnclosure": "No",
         "CloseCaps": "Yes",
@@ -122,7 +126,7 @@ meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments.setState(
 meshing.workflow.TaskObject["Describe Geometry and Flow"].UpdateChildTasks(
     SetupTypeChanged=False
 )
-meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments.setState(
+meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments.set_state(
     {
         "AddEnclosure": "No",
         "CloseCaps": "Yes",
@@ -153,7 +157,7 @@ meshing.workflow.TaskObject["Describe Geometry and Flow"].Execute()
 #   :width: 400pt
 #   :align: center
 
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "CreatePatchPreferences": {
             "ShowCreatePatchPreferences": False,
@@ -163,7 +167,7 @@ meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setStat
         "ZoneSelectionList": ["inlet.1"],
     }
 )
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "CreatePatchPreferences": {
             "ShowCreatePatchPreferences": False,
@@ -186,16 +190,16 @@ meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setStat
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state({})
 meshing.workflow.TaskObject["inlet-1"].Execute()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "PatchName": "inlet-2",
         "SelectionType": "zone",
         "ZoneSelectionList": ["inlet.2"],
     }
 )
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "PatchName": "inlet-2",
         "SelectionType": "zone",
@@ -215,16 +219,16 @@ meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setStat
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state({})
 meshing.workflow.TaskObject["inlet-2"].Execute()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "PatchName": "inlet-3",
         "SelectionType": "zone",
         "ZoneSelectionList": ["inlet"],
     }
 )
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "PatchName": "inlet-3",
         "SelectionType": "zone",
@@ -244,9 +248,9 @@ meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setStat
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state({})
 meshing.workflow.TaskObject["inlet-3"].Execute()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "PatchName": "outlet-1",
         "SelectionType": "zone",
@@ -254,7 +258,7 @@ meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setStat
         "ZoneType": "pressure-outlet",
     }
 )
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState(
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state(
     {
         "PatchName": "outlet-1",
         "SelectionType": "zone",
@@ -275,7 +279,7 @@ meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setStat
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 
 meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
+meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.set_state({})
 meshing.workflow.TaskObject["outlet-1"].Execute()
 
 ###############################################################################
@@ -283,7 +287,7 @@ meshing.workflow.TaskObject["outlet-1"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~
 # Extract edge features.
 
-meshing.workflow.TaskObject["Extract Edge Features"].Arguments.setState(
+meshing.workflow.TaskObject["Extract Edge Features"].Arguments.set_state(
     {
         "ExtractMethodType": "Intersection Loops",
         "ObjectSelectionList": ["flow_pipe", "main"],
@@ -293,14 +297,14 @@ meshing.workflow.TaskObject["Extract Edge Features"].AddChildToTask()
 
 meshing.workflow.TaskObject["Extract Edge Features"].InsertCompoundChildTask()
 
-meshing.workflow.TaskObject["edge-group-1"].Arguments.setState(
+meshing.workflow.TaskObject["edge-group-1"].Arguments.set_state(
     {
         "ExtractEdgesName": "edge-group-1",
         "ExtractMethodType": "Intersection Loops",
         "ObjectSelectionList": ["flow_pipe", "main"],
     }
 )
-meshing.workflow.TaskObject["Extract Edge Features"].Arguments.setState({})
+meshing.workflow.TaskObject["Extract Edge Features"].Arguments.set_state({})
 
 meshing.workflow.TaskObject["edge-group-1"].Execute()
 
@@ -309,7 +313,7 @@ meshing.workflow.TaskObject["edge-group-1"].Execute()
 # ~~~~~~~~~~~~~~~~
 # Identify regions.
 
-meshing.workflow.TaskObject["Identify Regions"].Arguments.setState(
+meshing.workflow.TaskObject["Identify Regions"].Arguments.set_state(
     {
         "SelectionType": "zone",
         "X": 377.322045740589,
@@ -318,7 +322,7 @@ meshing.workflow.TaskObject["Identify Regions"].Arguments.setState(
         "ZoneSelectionList": ["main.1"],
     }
 )
-meshing.workflow.TaskObject["Identify Regions"].Arguments.setState(
+meshing.workflow.TaskObject["Identify Regions"].Arguments.set_state(
     {
         "SelectionType": "zone",
         "X": 377.322045740589,
@@ -341,7 +345,7 @@ meshing.workflow.TaskObject["Identify Regions"].AddChildToTask()
 
 meshing.workflow.TaskObject["Identify Regions"].InsertCompoundChildTask()
 
-meshing.workflow.TaskObject["fluid-region-1"].Arguments.setState(
+meshing.workflow.TaskObject["fluid-region-1"].Arguments.set_state(
     {
         "MaterialPointsName": "fluid-region-1",
         "SelectionType": "zone",
@@ -361,10 +365,10 @@ meshing.workflow.TaskObject["fluid-region-1"].Arguments.setState(
         "ZoneSelectionList": ["main.1"],
     }
 )
-meshing.workflow.TaskObject["Identify Regions"].Arguments.setState({})
+meshing.workflow.TaskObject["Identify Regions"].Arguments.set_state({})
 
 meshing.workflow.TaskObject["fluid-region-1"].Execute()
-meshing.workflow.TaskObject["Identify Regions"].Arguments.setState(
+meshing.workflow.TaskObject["Identify Regions"].Arguments.set_state(
     {
         "MaterialPointsName": "void-region-1",
         "NewRegionType": "void",
@@ -378,7 +382,7 @@ meshing.workflow.TaskObject["Identify Regions"].AddChildToTask()
 
 meshing.workflow.TaskObject["Identify Regions"].InsertCompoundChildTask()
 
-meshing.workflow.TaskObject["Identify Regions"].Arguments.setState({})
+meshing.workflow.TaskObject["Identify Regions"].Arguments.set_state({})
 
 meshing.workflow.TaskObject["void-region-1"].Execute()
 
@@ -387,7 +391,7 @@ meshing.workflow.TaskObject["void-region-1"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define thresholds for potential leakages.
 
-meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
+meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.set_state(
     {
         "AddChild": "yes",
         "FlipDirection": True,
@@ -398,7 +402,7 @@ meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
 meshing.workflow.TaskObject["Define Leakage Threshold"].AddChildToTask()
 
 meshing.workflow.TaskObject["Define Leakage Threshold"].InsertCompoundChildTask()
-meshing.workflow.TaskObject["leakage-1"].Arguments.setState(
+meshing.workflow.TaskObject["leakage-1"].Arguments.set_state(
     {
         "AddChild": "yes",
         "FlipDirection": True,
@@ -407,7 +411,7 @@ meshing.workflow.TaskObject["leakage-1"].Arguments.setState(
         "RegionSelectionSingle": "void-region-1",
     }
 )
-meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.setState(
+meshing.workflow.TaskObject["Define Leakage Threshold"].Arguments.set_state(
     {
         "AddChild": "yes",
     }
@@ -419,7 +423,7 @@ meshing.workflow.TaskObject["leakage-1"].Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Review the region settings.
 
-meshing.workflow.TaskObject["Update Region Settings"].Arguments.setState(
+meshing.workflow.TaskObject["Update Region Settings"].Arguments.set_state(
     {
         "AllRegionFilterCategories": ["2"] * 5 + ["1"] * 2,
         "AllRegionLeakageSizeList": ["none"] * 6 + ["6.4"],
@@ -491,12 +495,12 @@ meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
 
 meshing.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
 
-meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.setState(
+meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.set_state(
     {
         "BLControlName": "aspect-ratio_1",
     }
 )
-meshing.workflow.TaskObject["Add Boundary Layers"].Arguments.setState({})
+meshing.workflow.TaskObject["Add Boundary Layers"].Arguments.set_state({})
 
 meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
 
@@ -510,7 +514,7 @@ meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
 #   :width: 500pt
 #   :align: center
 
-meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.setState(
+meshing.workflow.TaskObject["Generate the Volume Mesh"].Arguments.set_state(
     {
         "AllRegionNameList": [
             "main",

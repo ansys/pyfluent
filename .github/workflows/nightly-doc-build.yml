@@ -19,7 +19,7 @@ jobs:
       # used for documentation deployment
       - name: Get Bot Application Token
         id: get_workflow_token
-        uses: peter-murray/workflow-application-token-action@v1
+        uses: peter-murray/workflow-application-token-action@v2
         with:
           application_id: ${{ secrets.BOT_APPLICATION_ID }}
           application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
@@ -66,7 +66,7 @@ jobs:
 
       - name: Deploy
         if: matrix.image-tag == 'v22.2.0'
-        uses: JamesIves/github-pages-deploy-action@v4.4.0
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           repository-name: pyansys/pyfluent-dev-docs
           token: ${{ secrets.DOC_DEPLOYMENT_PAT }}
