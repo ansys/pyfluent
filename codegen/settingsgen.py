@@ -31,9 +31,8 @@ import pickle
 import pprint
 import shutil
 
-from fix_doc import fix_settings_doc
-
 from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
 hash_dict = {}
