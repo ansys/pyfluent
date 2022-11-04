@@ -703,10 +703,6 @@ class Action(Base):
 class Command(Action):
     """Command object."""
 
-    def __init__(self, name: str = None, parent=None):
-        """__init__ of Command class."""
-        super().__init__(name, parent)
-
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
@@ -715,10 +711,6 @@ class Command(Action):
 
 class Query(Action):
     """Query object."""
-
-    def __init__(self, name: str = None, parent=None):
-        """__init__ of Query class."""
-        super().__init__(name, parent)
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
