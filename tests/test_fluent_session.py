@@ -32,10 +32,6 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
 
     _read_case(session=session)
 
-    session.exit()
-
-    time.sleep(5)
-
     assert print_transcript.called
     assert print_transcript.transcript
 

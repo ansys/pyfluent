@@ -1,7 +1,6 @@
 from concurrent import futures
 import os
 from pathlib import Path
-import time
 
 import grpc
 import pytest
@@ -251,8 +250,6 @@ def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLE
         returned = f.readlines()
 
     session.exit()
-
-    time.sleep(5)
 
     assert returned
     if os.path.exists(file_path):
