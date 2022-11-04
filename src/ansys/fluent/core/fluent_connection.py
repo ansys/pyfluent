@@ -264,7 +264,6 @@ class _FluentConnection:
         if not _FluentConnection._writing_transcript_to_interpreter:
             if write_to_interpreter:
                 self.callback_id1 = self._transcript.register_callback(print)
-                self._transcript.start()
                 _FluentConnection._writing_transcript_to_interpreter = True
         if file_path:
             if Path(file_path).exists():
@@ -273,6 +272,7 @@ class _FluentConnection:
             self.callback_id2 = self._transcript.register_callback(
                 append_to_file, keep_new_lines=True
             )
+        self._transcript.start()
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
