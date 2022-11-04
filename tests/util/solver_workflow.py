@@ -9,7 +9,7 @@ def create_solver_session(*args, **kwargs):
 
 @pytest.fixture
 def new_solver_session(with_launching_container):
-    solver = create_solver_session(mode="solver", start_transcript=True)
+    solver = create_solver_session(mode="solver")
     yield solver
     solver.exit()
 
