@@ -21,6 +21,7 @@ import importlib
 import keyword
 import pickle
 import string
+import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
@@ -262,6 +263,7 @@ class SettingsBase(Base, Generic[StateT]):
 
     def print_state(self, out=None, indent_factor=2):
         """Print the state of the object."""
+        out = sys.stdout if out is None else out
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
 
 
