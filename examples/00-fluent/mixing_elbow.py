@@ -354,6 +354,21 @@ solver.tui.solve.report_definitions.add(
 )
 
 ###############################################################################
+# Create expression report definition
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Create a report definition of single value expression type computing the difference
+# of area-averaged static pressure over cold-inlet and oulet. The name of the
+# report definition is ``"ave-pressure-diff"``.
+
+solver.tui.solve.report_definitions.add(
+    "ave-pressure-diff",
+    "single-val-expression",
+    "define",
+    "\"AreaAve(StaticPressure, ['cold-inlet'])-AreaAve(StaticPressure, ['outlet'])\"",
+    "quit",
+)
+
+###############################################################################
 # Create convergence condition
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create a convergence condition for ``outlet-temp-avg``.
