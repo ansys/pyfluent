@@ -30,7 +30,6 @@ class MonitorsManager(StreamingService):
         self._monitors_info = None
         self._data_frames = {}
         self._on_monitor_refresh_callback = None
-        self._streaming: bool = False
 
     def get_monitor_set_names(self) -> List[str]:
         """Get monitor set names.
