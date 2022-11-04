@@ -175,10 +175,9 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
                 val = _convert_scheme_pointer_to_py_list(p, version)
                 return val
         else:
-            return (
-                _convert_scheme_pointer_to_py_value(p.pair.car, version),
-                _convert_scheme_pointer_to_py_value(p.pair.cdr, version),
-            )
+            car = _convert_scheme_pointer_to_py_value(p.pair.car, version)
+            cdr = _convert_scheme_pointer_to_py_value(p.pair.cdr, version)
+            return (car,) if cdr is None else (car, cdr)
     elif p.HasField("list"):
         is_dict = all(item.HasField("pair") for item in p.list.item)
         if is_dict:

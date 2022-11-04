@@ -86,6 +86,7 @@ def test_convert_py_value_to_scheme_pointer(
         (5.0, {"flonum": 5.0}),
         ("abc", {"str": "abc"}),
         (["abc"], {"list": {"item": [{"str": "abc"}]}}),
+        (("abc",), {"pair": {"car": {"str": "abc"}}}),
         (
             [False, 5.0, "abc"],
             {
