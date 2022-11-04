@@ -1,12 +1,12 @@
 """Module for monitors management."""
 
 import threading
-from typing import Any, Callable, Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
 
-from ansys.fluent.core.streaming_services.streaming_services import StreamingService
+from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class MonitorsManager(StreamingService):
@@ -22,7 +22,7 @@ class MonitorsManager(StreamingService):
 
     def __init__(self, session_id: str, service):
         super().__init__(
-            target=MonitorsManager._begin_streaming,
+            target=MonitorsManager._process_streaming,
             streaming_service=service,
         )
         self._session_id: str = session_id
@@ -119,24 +119,6 @@ class MonitorsManager(StreamingService):
                 )
             )
 
-    def register_on_monitor_refresh_callback(
-        self, on_monitor_refresh_callback: Callable[[], Any]
-    ):
-        """Register monitor refresh callback.
-
-        The callback is triggered whenever monitor data is updated.
-
-        Parameters
-        ----------
-        on_monitor_refresh_callback :  Callable[[], Any]
-            Callback.
-
-        Returns
-        -------
-        None
-        """
-        self._on_monitor_refresh_callback = on_monitor_refresh_callback
-
     def refresh(self, session_id, event_info) -> None:
         """Refresh plots on-initialized and data-read events.
 
@@ -159,7 +141,7 @@ class MonitorsManager(StreamingService):
             self._update_dataframe()
             self.start()
 
-    def _begin_streaming(self, started_evt):
+    def _process_streaming(self, started_evt):
         """Begin monitors streaming."""
         responses = self._streaming_service.begin_streaming(started_evt)
 

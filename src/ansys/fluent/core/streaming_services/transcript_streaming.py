@@ -1,5 +1,5 @@
 from ansys.fluent.core.services.transcript import TranscriptService
-from ansys.fluent.core.streaming_services.streaming_services import StreamingService
+from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class Transcript(StreamingService):
@@ -7,11 +7,11 @@ class Transcript(StreamingService):
 
     def __init__(self, channel, metadata):
         super().__init__(
-            target=Transcript._process_transcript,
+            target=Transcript._process_streaming,
             streaming_service=TranscriptService(channel, metadata),
         )
 
-    def _process_transcript(self, started_evt):
+    def _process_streaming(self, started_evt):
         """Performs processes on transcript depending on the callback
         functions."""
         responses = self._streaming_service.begin_streaming(started_evt)

@@ -7,7 +7,7 @@ class StreamingService:
     """Encapsulates a Fluent streaming service."""
 
     def __init__(self, target, streaming_service):
-        self._lock: threading.Lock = threading.Lock()
+        self._lock: threading.RLock = threading.RLock()
         self._streaming: bool = False
         self._target = target
         self._streaming_service = streaming_service
@@ -54,7 +54,7 @@ class StreamingService:
     def start(self) -> None:
         """Start streaming of Fluent transcript."""
         with self._lock:
-            if self._stream_thread is None:
+            if not self.is_streaming:
                 started_evt = threading.Event()
                 self._stream_thread = threading.Thread(
                     target=self._target, args=(self, started_evt)

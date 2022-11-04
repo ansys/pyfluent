@@ -3,7 +3,7 @@ from functools import partial
 from typing import Callable, List
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
-from ansys.fluent.core.streaming_services.streaming_services import StreamingService
+from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
 class EventsManager(StreamingService):
@@ -26,7 +26,7 @@ class EventsManager(StreamingService):
 
     def __init__(self, session_id: str, service):
         super().__init__(
-            target=EventsManager._listen_events,
+            target=EventsManager._process_streaming,
             streaming_service=service,
         )
         self._session_id: str = session_id
@@ -34,7 +34,7 @@ class EventsManager(StreamingService):
             attr for attr in dir(EventsProtoModule) if attr.endswith("Event")
         ]
 
-    def _listen_events(self, started_evt):
+    def _process_streaming(self, started_evt):
         responses = self._streaming_service.begin_streaming(started_evt)
         while True:
             try:
