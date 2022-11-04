@@ -30,11 +30,13 @@ unittest-dev-231:
 	@python -m pytest -v -m "dev and not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 unittest-all-222:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 unittest-all-231:
+	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
 	@python -m pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0

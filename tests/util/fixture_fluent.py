@@ -58,6 +58,13 @@ def sample_solver_session(with_launching_container):
 
 
 @pytest.fixture
+def launch_fluent_pure_meshing(with_launching_container):
+    pure_meshing_session = pyfluent.launch_fluent(mode="pure-meshing")
+    yield pure_meshing_session
+    pure_meshing_session.exit()
+
+
+@pytest.fixture
 def launch_fluent_solver_3ddp_t2(with_launching_container):
     solver_session = pyfluent.launch_fluent(
         precision="double", processor_count=2, mode="solver"
