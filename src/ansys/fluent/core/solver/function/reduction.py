@@ -342,6 +342,20 @@ def centroid(locations, ctxt=None):
     return _extent_vectors("Centroid", locations, ctxt)
 
 
+def force(locations, ctxt=None):
+    """Compute the force acting on the specified location.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("Force", locations, ctxt)
+
+
 def minimum(expr, locations, ctxt=None):
     """Compute the minimum of the specified expression over the specified
     locations.
