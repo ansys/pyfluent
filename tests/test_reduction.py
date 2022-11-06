@@ -226,6 +226,16 @@ def _test_area_integrated_average(solver1, solver2):
     solver1.setup.named_expressions.pop(key="test_expr_1")
 
 
+def _test_error_handling(solver):
+    with pytest.raises(RuntimeError) as msg:
+        reduction.area_average(
+            expr="AbsoluteVelocity",  # This is a wrong expression intentionally passed
+            locations=solver.setup.boundary_conditions.velocity_inlet,
+        )
+
+    assert msg.value.args[0] == "Unable to evaluate expression"
+
+
 @pytest.mark.dev
 @pytest.mark.fluent_231
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
@@ -238,3 +248,4 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_count(solver1)
     _test_centroid(solver1)
     _test_area_integrated_average(solver1, solver2)
+    _test_error_handling(solver1)

@@ -170,8 +170,11 @@ def _extent_expression(f_string, extent_name, expr, locations, ctxt):
         solver = solver or _root(ctxt)
         val = _eval_reduction(solver, f_string, names, expr)
         extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
-        numerator += val * extent
-        denominator += extent
+        try:
+            numerator += val * extent
+            denominator += extent
+        except TypeError:
+            raise RuntimeError(val)
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
@@ -191,7 +194,10 @@ def _extent(extent_name, locations, ctxt):
     for solver, names in locns:
         solver = solver or _root(ctxt)
         extent = _eval_expr(solver, f"{extent_name}({names})")
-        total += extent
+        try:
+            total += extent
+        except TypeError:
+            raise RuntimeError(extent)
     return total
 
 
