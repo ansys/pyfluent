@@ -236,4 +236,5 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_area_average(solver1)
     _test_min(solver1, solver2)
     _test_count(solver1)
+    _test_centroid(solver1)
     _test_area_integrated_average(solver1, solver2)
