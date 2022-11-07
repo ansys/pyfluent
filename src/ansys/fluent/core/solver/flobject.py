@@ -680,11 +680,11 @@ def _get_new_keywords(obj, kwds):
     return newkwds
 
 
-class Command(Base):
-    """Command object."""
+class Action(Base):
+    """Intermediate Base class for Command and Query class."""
 
     def __init__(self, name: str = None, parent=None):
-        """__init__ of Command class."""
+        """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
             for argument in self.argument_names:
@@ -692,39 +692,26 @@ class Command(Base):
                 self._setattr(argument, cls(None, self))
 
     def arguments(self) -> Any:
-        """Get the arguments for the command."""
+        """Get the arguments for the Action."""
         attrs = self.get_attrs(["arguments"])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Command is not active")
+            raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
 
+
+class Command(Action):
+    """Command object."""
+
     def __call__(self, **kwds):
-        """Call a command with the specified keyword arguments."""
+        """Call a query with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
-class Query(Base):
+class Query(Action):
     """Query object."""
-
-    def __init__(self, name: str = None, parent=None):
-        """__init__ of Query class."""
-        super().__init__(name, parent)
-        if hasattr(self, "argument_names"):
-            for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
-                self._setattr(argument, cls(None, self))
-
-    def arguments(self) -> Any:
-        """Get the arguments for the query."""
-        attrs = self.get_attrs(["arguments"])
-        if attrs:
-            attrs = attrs.get("attrs", attrs)
-        if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Query is not active")
-        return attrs["arguments"] if attrs else None
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
