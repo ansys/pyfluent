@@ -255,6 +255,23 @@ def _test_force(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
+def _test_moment(solver):
+    solver.solution.initialization.hybrid_initialize()
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "Moment(Force(['wall']),['wall'])"
+    expr_val_1 = solver.setup.named_expressions["test_expr_1"].get_value()
+
+    red_moment = reduction.moment(
+        expr="Force(['wall'])", locations=[solver.setup.boundary_conditions.wall]
+    )
+
+    assert (red_moment == expr_val_1).all()
+
+    solver.setup.named_expressions.pop(key="test_expr_1")
+
+
 @pytest.mark.dev
 @pytest.mark.fluent_231
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
@@ -269,3 +286,4 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_area_integrated_average(solver1, solver2)
     _test_error_handling(solver1)
     _test_force(solver1)
+    _test_moment(solver1)

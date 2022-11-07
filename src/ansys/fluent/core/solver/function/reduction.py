@@ -182,6 +182,19 @@ def _extent_expression(f_string, extent_name, expr, locations, ctxt):
     return numerator / denominator
 
 
+def _extent_moment_vector(f_string, expr, locations, ctxt):
+    locns = _locns(locations, ctxt)
+    total = array([0.0, 0.0, 0.0])
+    for solver, names in locns:
+        solver = solver or _root(ctxt)
+        extent = _eval_reduction(solver, f_string, names, expr)
+        try:
+            total += array(extent)
+        except TypeError:
+            raise RuntimeError(extent)
+    return total
+
+
 def _extent_average(extent_name, expr, locations, ctxt):
     return _extent_expression(f"{extent_name}Ave", extent_name, expr, locations, ctxt)
 
@@ -391,6 +404,22 @@ def viscous_force(locations, ctxt=None):
     float
     """
     return _extent_vectors("ViscousForce", locations, ctxt)
+
+
+def moment(expr, locations, ctxt=None):
+    """Compute  the moment vector about the specified point (which can be
+    single-valued expression) for the specified location(s).
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_moment_vector("Moment", expr, locations, ctxt)
 
 
 def minimum(expr, locations, ctxt=None):
