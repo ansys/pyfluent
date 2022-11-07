@@ -263,11 +263,22 @@ def _test_moment(solver):
     ].definition = "Moment(Force(['wall']),['wall'])"
     expr_val_1 = solver.setup.named_expressions["test_expr_1"].get_value()
 
-    red_moment = reduction.moment(
+    solver.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "Moment(['inlet1'],['wall'])"
+    expr_val_2 = solver.setup.named_expressions["test_expr_1"].get_value()
+
+    red_moment_force = reduction.moment(
         expr="Force(['wall'])", locations=[solver.setup.boundary_conditions.wall]
     )
 
-    assert (red_moment == expr_val_1).all()
+    red_moment_location = reduction.moment(
+        expr="['inlet1']",
+        locations=[solver.setup.boundary_conditions.wall],
+    )
+
+    assert (red_moment_force == expr_val_1).all()
+    assert (red_moment_location == expr_val_2).all()
 
     solver.setup.named_expressions.pop(key="test_expr_1")
 
