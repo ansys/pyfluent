@@ -128,6 +128,30 @@ Compute the geometric centroid of the specified locations as a vector.
 
   >>> reduction.centroid(locations)
 
+Force
+~~~~~
+Compute the force acting on the locations specified (should be walls) as a vector.
+
+.. code-block:: python
+
+  >>> reduction.force(locations)
+
+Pressure Force
+~~~~~~~~~~~~~~
+Compute the pressure force acting on the locations specified (should be walls) as a vector.
+
+.. code-block:: python
+
+  >>> reduction.pressure_force(locations)
+
+Viscous Force
+~~~~~~~~~~~~~
+Compute the viscous force acting on the locations specified (should be walls) as a vector.
+
+.. code-block:: python
+
+  >>> reduction.viscous_force(locations)
+
 Count
 ~~~~~
 Compute the total number of cells included in the specified locations.
