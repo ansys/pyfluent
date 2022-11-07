@@ -1,3 +1,4 @@
+from numpy import array
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
@@ -242,9 +243,18 @@ def _test_force(solver):
     solver.setup.named_expressions["test_expr_1"].definition = "Force(['wall'])"
     expr_val_1 = solver.setup.named_expressions["test_expr_1"].get_value()
 
-    red_val_1 = reduction.force(locations=[solver.setup.boundary_conditions.wall])
+    red_total_force = reduction.force(locations=[solver.setup.boundary_conditions.wall])
+    red_pressure_force = reduction.pressure_force(locations=["wall"], ctxt=solver)
+    red_viscous_force = reduction.viscous_force(
+        locations=[solver.setup.boundary_conditions.wall], ctxt=solver
+    )
 
-    assert red_val_1 == expr_val_1
+    assert red_total_force == expr_val_1
+
+    assert (
+        array(red_pressure_force) + array(red_viscous_force) == array(red_total_force)
+    ).all()
+
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 

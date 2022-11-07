@@ -343,7 +343,8 @@ def centroid(locations, ctxt=None):
 
 
 def force(locations, ctxt=None):
-    """Compute the force acting on the specified location.
+    """Compute the force acting on the location(s) specified (should be walls)
+    as a vector.
 
     Parameters
     ----------
@@ -354,6 +355,36 @@ def force(locations, ctxt=None):
     float
     """
     return _extent_vectors("Force", locations, ctxt)
+
+
+def pressure_force(locations, ctxt=None):
+    """Compute the pressure force acting on the location(s) specified (should
+    be walls) as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("PressureForce", locations, ctxt)
+
+
+def viscous_force(locations, ctxt=None):
+    """Compute the viscous force acting on the location(s) specified (should be
+    walls) as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("ViscousForce", locations, ctxt)
 
 
 def minimum(expr, locations, ctxt=None):
