@@ -572,7 +572,11 @@ def extract_fields(chunk_iterator):
         else:
             payload_tag_id = reduce(
                 lambda x, y: x | y,
-                [_FieldDataConstants.payloadTags[tag] for tag in payload_info.payloadTag] or [0],
+                [
+                    _FieldDataConstants.payloadTags[tag]
+                    for tag in payload_info.payloadTag
+                ]
+                or [0],
             )
         payload_data = fields_data.get(payload_tag_id)
         if not payload_data:
