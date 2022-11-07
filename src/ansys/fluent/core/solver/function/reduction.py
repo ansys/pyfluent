@@ -58,6 +58,8 @@ Examples
 19.28151
 """
 
+from numpy import array
+
 
 class BadReductionRequest(Exception):
     def __init__(self, err):
@@ -203,11 +205,15 @@ def _extent(extent_name, locations, ctxt):
 
 def _extent_vectors(extent_name, locations, ctxt):
     locns = _locns(locations, ctxt)
-    extent = []
+    total = array([0.0, 0.0, 0.0])
     for solver, names in locns:
         solver = solver or _root(ctxt)
         extent = _eval_expr(solver, f"{extent_name}({names})")
-    return extent
+        try:
+            total += array(extent)
+        except TypeError:
+            raise RuntimeError(extent)
+    return total
 
 
 def _limit(limit, expr, locations, ctxt):

@@ -1,4 +1,3 @@
-from numpy import array
 import pytest
 from util.fixture_fluent import load_static_mixer_case  # noqa: F401
 
@@ -140,9 +139,9 @@ def _test_centroid(solver):
     red_val_3 = reduction.centroid(
         locations=[solver.setup.boundary_conditions.velocity_inlet]
     )
-    assert red_val_1 == expr_val_1
-    assert red_val_2 == expr_val_2
-    assert red_val_3 == expr_val_3
+    assert (red_val_1 == expr_val_1).all()
+    assert (red_val_2 == expr_val_2).all()
+    assert (red_val_3 == expr_val_3).all()
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
@@ -246,14 +245,12 @@ def _test_force(solver):
     red_total_force = reduction.force(locations=[solver.setup.boundary_conditions.wall])
     red_pressure_force = reduction.pressure_force(locations=["wall"], ctxt=solver)
     red_viscous_force = reduction.viscous_force(
-        locations=[solver.setup.boundary_conditions.wall], ctxt=solver
+        locations=[solver.setup.boundary_conditions.wall]
     )
 
-    assert red_total_force == expr_val_1
+    assert (red_total_force == expr_val_1).all()
 
-    assert (
-        array(red_pressure_force) + array(red_viscous_force) == array(red_total_force)
-    ).all()
+    assert (red_pressure_force + red_viscous_force == red_total_force).all()
 
     solver.setup.named_expressions.pop(key="test_expr_1")
 
