@@ -128,6 +128,39 @@ Compute the geometric centroid of the specified locations as a vector.
 
   >>> reduction.centroid(locations)
 
+Force
+~~~~~
+Compute the force acting on the locations specified (should be walls) as a vector.
+
+.. code-block:: python
+
+  >>> reduction.force(locations)
+
+Pressure Force
+~~~~~~~~~~~~~~
+Compute the pressure force acting on the locations specified (should be walls) as a vector.
+
+.. code-block:: python
+
+  >>> reduction.pressure_force(locations)
+
+Viscous Force
+~~~~~~~~~~~~~
+Compute the viscous force acting on the locations specified (should be walls) as a vector.
+
+.. code-block:: python
+
+  >>> reduction.viscous_force(locations)
+
+Moment
+~~~~~~
+Compute the moment vector about the specified point (which can be single-valued expression)
+for the specified locations.
+
+.. code-block:: python
+
+  >>> reduction.moment(expression, locations)
+
 Count
 ~~~~~
 Compute the total number of cells included in the specified locations.
@@ -240,3 +273,25 @@ You can calculate the geometric centroid of the velocity inlet 2 as shown:
   >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   [-0.001000006193379666, -0.002999999999999999, 0.001500047988232209]
+
+You can calculate the moment vector about a single-valued expression
+for the specified locations as shown:
+
+.. code-block:: python
+
+  >>> reduction.moment(
+  >>>   expr="Force(['wall'])",
+  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>> )
+  [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
+
+You can calculate the moment vector about the specified point for the
+specified locations as shown:
+
+.. code-block:: python
+
+  >>> reduction.moment(
+  >>>   expr="['inlet1']",
+  >>>   locations=[solver.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>> )
+  [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
