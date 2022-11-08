@@ -137,10 +137,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
     kwargs: Dict[str, Any] = {}
     kwargs.update(stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if _is_windows():
-        kwargs.update(
-            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
-            | subprocess.DETACHED_PROCESS
-        )
+        kwargs.update(creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
