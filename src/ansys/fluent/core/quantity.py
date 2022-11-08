@@ -718,7 +718,9 @@ class Quantity(float):
         return Quantity(-self.value, self.unit)
 
     def __gt__(self, other):
-        if isinstance(other, Quantity) and (self.get_dimensions_list() != other.get_dimensions_list()):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
             raise ValueError("Incompatible dimensions.")
         elif isinstance(other, Quantity):
             return float(self) > float(other)
@@ -732,7 +734,9 @@ class Quantity(float):
             raise TypeError("Incompatible quantities.")
 
     def __ge__(self, other):
-        if isinstance(other, Quantity) and (self.get_dimensions_list() != other.get_dimensions_list()):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
             raise ValueError("Incompatible dimensions.")
         elif isinstance(other, Quantity):
             return float(self) >= float(other)
@@ -746,56 +750,64 @@ class Quantity(float):
             raise TypeError("Incompatible quantities.")
 
     def __lt__(self, other):
-        if isinstance(other, Quantity) and (self.get_dimensions_list() != other.get_dimensions_list()):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
             raise ValueError("Incompatible dimensions.")
         elif isinstance(other, Quantity):
             return float(self) < float(other)
         elif (
-                self.is_dimension_less()
-                and (not isinstance(other, Quantity))
-                and isinstance(other, (float, int))
+            self.is_dimension_less()
+            and (not isinstance(other, Quantity))
+            and isinstance(other, (float, int))
         ):
             return float(self) < other
         else:
             raise TypeError("Incompatible quantities.")
 
     def __le__(self, other):
-        if isinstance(other, Quantity) and (self.get_dimensions_list() != other.get_dimensions_list()):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
             raise ValueError("Incompatible dimensions.")
         elif isinstance(other, Quantity):
             return float(self) <= float(other)
         elif (
-                self.is_dimension_less()
-                and (not isinstance(other, Quantity))
-                and isinstance(other, (float, int))
+            self.is_dimension_less()
+            and (not isinstance(other, Quantity))
+            and isinstance(other, (float, int))
         ):
             return float(self) <= other
         else:
             raise TypeError("Incompatible quantities.")
 
     def __eq__(self, other):
-        if isinstance(other, Quantity) and (self.get_dimensions_list() != other.get_dimensions_list()):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
             raise ValueError("Incompatible dimensions.")
         elif isinstance(other, Quantity):
             return float(self) == float(other)
         elif (
-                self.is_dimension_less()
-                and (not isinstance(other, Quantity))
-                and isinstance(other, (float, int))
+            self.is_dimension_less()
+            and (not isinstance(other, Quantity))
+            and isinstance(other, (float, int))
         ):
             return float(self) == other
         else:
             raise TypeError("Incompatible quantities.")
 
     def __neq__(self, other):
-        if isinstance(other, Quantity) and (self.get_dimensions_list() != other.get_dimensions_list()):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
             raise ValueError("Incompatible dimensions.")
         elif isinstance(other, Quantity):
             return float(self) != float(other)
         elif (
-                self.is_dimension_less()
-                and (not isinstance(other, Quantity))
-                and isinstance(other, (float, int))
+            self.is_dimension_less()
+            and (not isinstance(other, Quantity))
+            and isinstance(other, (float, int))
         ):
             return float(self) != other
         else:

@@ -767,19 +767,19 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-if __name__ == "__main__":
-    # test_value_unit_1()
-    # testing_dimensions()
-    # testing_multipliers()
-    # testing_to_systems()
-    # testing_arithmetic_operators()
-    # testing_properties()
-    #
-    # x = q.Quantity(1, "ft")
-    # print(
-    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    # )
-    x = q.Quantity(10.5, "cm")
-    y = q.Quantity(10.5, "m")
-    z = q.Quantity(10.5, "g")
-    r = q.Quantity(10.5, "")
+# if __name__ == "__main__":
+# test_value_unit_1()
+# testing_dimensions()
+# testing_multipliers()
+# testing_to_systems()
+# testing_arithmetic_operators()
+# testing_properties()
+#
+# x = q.Quantity(1, "ft")
+# print(
+#     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+# )
+# x = q.Quantity(10.5, "cm")
+# y = q.Quantity(10.5, "m")
+# z = q.Quantity(10.5, "g")
+# r = q.Quantity(10.5, "")
