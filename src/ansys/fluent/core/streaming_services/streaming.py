@@ -55,6 +55,7 @@ class StreamingService:
         """Start streaming of Fluent transcript."""
         with self._lock:
             if not self.is_streaming:
+                self._prepare()
                 started_evt = threading.Event()
                 self._stream_thread = threading.Thread(
                     target=self._target, args=(self, started_evt)
@@ -69,3 +70,6 @@ class StreamingService:
             self._stream_thread.join()
             self._streaming = False
             self._stream_thread = None
+
+    def _prepare(self):
+        pass  # Currently only used by monitor services.

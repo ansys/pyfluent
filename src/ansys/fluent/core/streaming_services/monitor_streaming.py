@@ -138,8 +138,10 @@ class MonitorsManager(StreamingService):
         """
         with self._lock_refresh:
             self.stop()
-            self._update_dataframe()
             self.start()
+
+    def _prepare(self):
+        self._update_dataframe()
 
     def _process_streaming(self, started_evt):
         """Begin monitors streaming."""
