@@ -556,7 +556,7 @@ class Quantity(float):
     def dimension(self):
         return self._dimension
 
-    def is_dimension_less(self):
+    def is_dimensionless(self):
         return all([value == 0 for value in self.get_dimensions_list()])
 
     def get_dimensions_list(self):
@@ -675,7 +675,7 @@ class Quantity(float):
             else:
                 raise ValueError("Incompatible dimensions.")
         elif isinstance(other, (float, int)):
-            if self.is_dimension_less():
+            if self.is_dimensionless():
                 temp_value = self._si_value + other
             else:
                 raise ValueError("Incompatible dimensions.")
@@ -693,7 +693,7 @@ class Quantity(float):
             temp_value = self._si_value - other._si_value
         elif (
             not isinstance(other, Quantity)
-            and self.is_dimension_less()
+            and self.is_dimensionless()
             and (isinstance(other, int) or isinstance(other, float))
         ):
             temp_value = self._si_value - other
@@ -708,7 +708,7 @@ class Quantity(float):
         if isinstance(other, Quantity):
             return self._si_value == other._si_value and self._si_unit == other._si_unit
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and not isinstance(other, Quantity)
             and isinstance(other, float)
         ):
@@ -725,7 +725,7 @@ class Quantity(float):
         elif isinstance(other, Quantity):
             return float(self) > float(other)
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
@@ -741,7 +741,7 @@ class Quantity(float):
         elif isinstance(other, Quantity):
             return float(self) >= float(other)
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
@@ -757,7 +757,7 @@ class Quantity(float):
         elif isinstance(other, Quantity):
             return float(self) < float(other)
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
@@ -773,7 +773,7 @@ class Quantity(float):
         elif isinstance(other, Quantity):
             return float(self) <= float(other)
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
@@ -789,7 +789,7 @@ class Quantity(float):
         elif isinstance(other, Quantity):
             return float(self) == float(other)
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
@@ -805,7 +805,7 @@ class Quantity(float):
         elif isinstance(other, Quantity):
             return float(self) != float(other)
         elif (
-            self.is_dimension_less()
+            self.is_dimensionless()
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
