@@ -221,7 +221,7 @@ class Unit(object):
         self._si_multiplier = 1
         self._si_offset = 0
         self._si_unit = ""
-        self._computemultipliers_and_offsets(unit_str, 1)
+        self._compute_multipliers(unit_str, 1)
         self._reduce_to_si_unit(self._si_unit)
 
     @property
@@ -273,7 +273,7 @@ class Unit(object):
             else:
                 self._si_unit += spacechar + key
 
-    def _computemultipliers_and_offsets(self, unit_str, power):
+    def _compute_multipliers(self, unit_str, power):
         if len(unit_str) == 0:
             return
 
@@ -327,9 +327,9 @@ class Unit(object):
                     unit_str,
                 ) = _UnitsTable.derived_units_with_conversion_factor[unit_str]
                 self._si_multiplier *= conversion_factor**term_power
-                self._computemultipliers_and_offsets(unit_str, term_power)
+                self._compute_multipliers(unit_str, term_power)
             elif unit_str in _UnitsTable.derived_units:
-                self._computemultipliers_and_offsets(
+                self._compute_multipliers(
                     _UnitsTable.derived_units[unit_str], term_power
                 )
 
