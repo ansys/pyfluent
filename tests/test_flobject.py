@@ -663,3 +663,56 @@ def test_accessor_methods_on_settings_object(sample_solver_session):
     existing = sample_solver_session.file.read.file_type.get_attr("read-only?")
     modified = sample_solver_session.file.read.file_type.is_read_only()
     assert existing == modified
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_find_child_from_settings_root():
+    from ansys.fluent.core.solver.settings_231.setup import setup
+
+    assert len(setup().find_child()) == 17020
+    assert len(setup().find_child("gen*")) == 9
+    assert setup().find_child("general*") == [
+        "general",
+        "models/discrete_phase/general_settings",
+        "models/virtual_blade_model/disk/general",
+    ]
+    assert setup().find_child("general") == [
+        "general",
+        "models/virtual_blade_model/disk/general",
+    ]
+    assert setup().find_child("*gen") == [
+        "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
+        "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
+        "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
+        "boundary_conditions/outlet_vent/p_backflow_spec_gen",
+        "boundary_conditions/pressure_outlet/phase/p_backflow_spec_gen",
+        "boundary_conditions/pressure_outlet/p_backflow_spec_gen",
+    ]
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_find_child_from_fluent_solver_session(sample_solver_session):
+    setup_children = sample_solver_session.setup.find_child()
+
+    assert len(setup_children) == 17020
+
+    viscous = sample_solver_session.setup.models.viscous
+    assert viscous.find_child("prod*") == [
+        "options/production_kato_launder",
+        "turbulence_expert/production_limiter",
+    ]
+
+    assert sample_solver_session.setup.boundary_conditions.pressure_outlet.find_child(
+        "*_dir_*"
+    ) == [
+        "phase/geom_dir_spec",
+        "phase/geom_dir_x",
+        "phase/geom_dir_y",
+        "phase/geom_dir_z",
+        "geom_dir_spec",
+        "geom_dir_x",
+        "geom_dir_y",
+        "geom_dir_z",
+    ]
