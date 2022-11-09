@@ -244,7 +244,7 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
-    def find_child(self, identifier=""):
+    def find_child(self, identifier="*"):
         _list_of_children = []
         SettingsBase._list_children(self.__class__, identifier, [], _list_of_children)
         return _list_of_children
@@ -263,7 +263,7 @@ class SettingsBase(Base, Generic[StateT]):
     def _get_child_path(cls, path, identifier, _list_of_children):
         for name in cls.child_names:
             path.append(name)
-            if identifier == "" or fnmatch.fnmatch(name, identifier):
+            if fnmatch.fnmatch(name, identifier):
                 _list_of_children.append("/".join(path))
             SettingsBase._list_children(
                 getattr(cls, name), identifier, path, _list_of_children
