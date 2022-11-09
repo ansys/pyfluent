@@ -696,10 +696,6 @@ class Quantity(float):
     def __rsub__(self, other):
         return Quantity(other, "") - self
 
-    def __eq__(self, other):
-        self.validate_matching_dimensions(other)
-        return float(self) == float(other)
-
     def __neg__(self):
         return Quantity(-self.value, self.unit)
 
