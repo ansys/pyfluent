@@ -222,6 +222,7 @@ class Unit(object):
         self._si_offset = 0
         self._si_unit = ""
         self._compute_multipliers(unit_str, 1)
+        self._compute_offset(unit_str)
         self._reduce_to_si_unit(self._si_unit)
 
     @property
@@ -235,6 +236,10 @@ class Unit(object):
     @property
     def si_unit(self):
         return self._si_unit
+
+    @property
+    def si_offset(self):
+        return self._si_offset
 
     def __call__(self):
         return self.user_unit
@@ -332,6 +337,12 @@ class Unit(object):
                 self._compute_multipliers(
                     _UnitsTable.derived_units[unit_str], term_power
                 )
+
+    def _compute_offset(self, unit_str):
+        if unit_str == "C":
+            self._si_offset = 273.15
+        elif unit_str == "F":
+            self._si_offset = 255.3722
 
 
 class Dimension(object):
@@ -511,14 +522,14 @@ class Quantity(float):
 
     Methods
     -------
-    to(to_unit)
-        Converts to given unit string.
-
-    getDimensions(unit)
+    get_dimensions_list()
         Extracts dimensions from unit.
 
-    isDimensionless()
+    is_dimensionless()
         Determines type of quantity.
+
+    to(to_unit)
+        Converts to given unit string.
 
     Returns
     -------
@@ -532,13 +543,12 @@ class Quantity(float):
         self._value = float(real_value)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
-        self._si_value = self._unit.si_factor * self._value
+        self._si_value = self._unit.si_factor * self._value + self._unit.si_offset
         self._si_unit = self._unit.si_unit
-        float.__init__(self._si_value)
 
     def __new__(cls, real_value, unit_str):
         _unit = Unit(unit_str)
-        return float.__new__(cls, _unit.si_factor * real_value)
+        return float.__new__(cls, _unit.si_factor * real_value + _unit.si_offset)
 
     @property
     def value(self):
@@ -644,7 +654,7 @@ class Quantity(float):
 
     def __mul__(self, other):
         if isinstance(other, Quantity):
-            temp_value = self._si_value * other._si_value
+            temp_value = self._si_value * other._si_value + self._unit._si_offset
             temp_unit = self._get_si_unit(other, lambda x, y: x + y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):

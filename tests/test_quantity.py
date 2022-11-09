@@ -803,6 +803,11 @@ if __name__ == "__main__":
     print(
         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     )
+    print("")
 
     c = q.Quantity(1.0, "C")
-    print(float(c))
+    print(f'c = q.Quantity(1.0, "C") = {c}')
+    print(f"float(c) = {float(c)}")
+    print(f"c * 1 = {c * 1}")
+    print(f"c._si_value = {c._si_value}")
+    print(f"c.value = {c.value}")
