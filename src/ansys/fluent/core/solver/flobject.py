@@ -16,6 +16,7 @@ r.setup.models.energy.enabled = True
 r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 import collections
+import fnmatch
 import hashlib
 import importlib
 import keyword
@@ -262,7 +263,7 @@ class SettingsBase(Base, Generic[StateT]):
     def _get_child_path(cls, path, identifier, _list_of_children):
         for name in cls.child_names:
             path.append(name)
-            if identifier in name:
+            if identifier == "" or fnmatch.fnmatch(name, identifier):
                 _list_of_children.append("/".join(path))
             SettingsBase._list_children(
                 getattr(cls, name), identifier, path, _list_of_children
