@@ -243,6 +243,46 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
+    # def find_child(self, identifier=""):
+    #     _list_of_children = []
+    #     if type(self.get_state()) != dict:
+    #         return _list_of_children
+    #     self._list_children(identifier, _list_of_children)
+    #     return _list_of_children
+    #
+    # def _list_children(self, identifier, _list_of_children):
+    #     for key in self.get_state().keys():
+    #         if type(self.get_state()[key]) == dict:
+    #             try:
+    #                 getattr(self, key)._list_children(identifier, _list_of_children)
+    #             except AttributeError:
+    #                 # Object contains no such attribute (type is dictionary)
+    #                 pass
+    #         if identifier in key:
+    #             _list_of_children.append(getattr(self, key).path)
+
+    def find_child(self, identifier=""):
+        _list_of_children = []
+        self._list_children(identifier, _list_of_children)
+        return _list_of_children
+
+    def _list_children(self, identifier, _list_of_children):
+        if isinstance(self, NamedObject):
+            for name in self.child_object_type.child_names:
+                # if identifier in name:
+                #     _list_of_children.append(getattr(self.child_object_type, name).path)
+                SettingsBase._list_children(
+                    getattr(self.child_object_type, name), identifier, _list_of_children
+                )
+
+        if isinstance(self, Group):
+            for name in self.child_names:
+                if identifier in name:
+                    _list_of_children.append(getattr(self, name).path)
+                SettingsBase._list_children(
+                    getattr(self, name), identifier, _list_of_children
+                )
+
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
         if isinstance(state, dict):
