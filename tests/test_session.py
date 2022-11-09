@@ -39,9 +39,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
             return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
 
 
-def test_create_session_by_passing_ip_and_port_and_password(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_create_session_by_passing_ip_and_port_and_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -81,9 +79,7 @@ def test_create_session_by_setting_ip_and_port_env_var(
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_by_passing_grpc_channel(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_create_session_by_passing_grpc_channel() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -148,9 +144,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
         assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
