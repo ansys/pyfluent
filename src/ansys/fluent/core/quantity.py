@@ -654,7 +654,7 @@ class Quantity(float):
 
     def __mul__(self, other):
         if isinstance(other, Quantity):
-            temp_value = self._si_value * other._si_value + self._unit._si_offset
+            temp_value = self._si_value * other._si_value
             temp_unit = self._get_si_unit(other, lambda x, y: x + y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):
