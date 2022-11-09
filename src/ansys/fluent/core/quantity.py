@@ -668,24 +668,6 @@ class Quantity(float):
         else:
             return other / self
 
-    def __add__(self, other):
-        if isinstance(other, Quantity):
-            if self.get_dimensions_list() == other.get_dimensions_list():
-                temp_value = float(self) + float(other)
-            else:
-                raise ValueError("Incompatible dimensions.")
-        elif isinstance(other, (float, int)):
-            if self.is_dimensionless():
-                temp_value = self._si_value + other
-            else:
-                raise ValueError("Incompatible dimensions.")
-        else:
-            return super().__add__(other)
-        return Quantity(temp_value, self._si_unit)
-
-    def __radd__(self, other):
-        return super().__add__(other)
-
     def validate_matching_dimensions(self, other):
         if isinstance(other, Quantity) and (
             self.get_dimensions_list() != other.get_dimensions_list()
@@ -698,6 +680,14 @@ class Quantity(float):
         ):
             raise TypeError("Incompatible quantities.")
 
+    def __add__(self, other):
+        self.validate_matching_dimensions(other)
+        temp_value = float(self) + float(other)
+        return Quantity(temp_value, self._si_unit)
+
+    def __radd__(self, other):
+        return super().__add__(other)
+
     def __sub__(self, other):
         self.validate_matching_dimensions(other)
         temp_value = float(self) - float(other)
@@ -707,14 +697,8 @@ class Quantity(float):
         return Quantity(other, "") - self
 
     def __eq__(self, other):
-        if isinstance(other, Quantity):
-            return self._si_value == other._si_value and self._si_unit == other._si_unit
-        elif (
-            self.is_dimensionless()
-            and not isinstance(other, Quantity)
-            and isinstance(other, float)
-        ):
-            return float(self) == other
+        self.validate_matching_dimensions(other)
+        return float(self) == float(other)
 
     def __neg__(self):
         return Quantity(-self.value, self.unit)
