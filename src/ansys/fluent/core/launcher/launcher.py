@@ -582,13 +582,14 @@ def launch_fluent(
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
-            port = start_fluent_container(
+            port, password = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
                 fluent_connection=_FluentConnection(
                     start_timeout=start_timeout,
                     port=port,
+                    password=password,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
                 )
