@@ -748,7 +748,7 @@ def testing_arithmetic_operators():
     try:
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
-    except ValueError as ve:
+    except TypeError as ve:
         print(ve)
 
     try:
@@ -766,7 +766,7 @@ def testing_arithmetic_operators():
     try:
         result7 = qt1 - 2
         print(f"{qt1} - {2} =  {result7}")
-    except ValueError as ve:
+    except TypeError as ve:
         print(ve)
 
     try:
@@ -803,3 +803,6 @@ if __name__ == "__main__":
     print(
         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     )
+
+    c = q.Quantity(1.0, "C")
+    print(float(c))

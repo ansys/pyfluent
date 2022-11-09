@@ -668,37 +668,29 @@ class Quantity(float):
         else:
             return other / self
 
+    def validate_matching_dimensions(self, other):
+        if isinstance(other, Quantity) and (
+            self.get_dimensions_list() != other.get_dimensions_list()
+        ):
+            raise ValueError("Incompatible dimensions.")
+        elif (
+            (not self.is_dimensionless())
+            and (not isinstance(other, Quantity))
+            and isinstance(other, (float, int))
+        ):
+            raise TypeError("Incompatible quantities.")
+
     def __add__(self, other):
-        if isinstance(other, Quantity):
-            if self.get_dimensions_list() == other.get_dimensions_list():
-                temp_value = float(self) + float(other)
-            else:
-                raise ValueError("Incompatible dimensions.")
-        elif isinstance(other, (float, int)):
-            if self.is_dimensionless():
-                temp_value = self._si_value + other
-            else:
-                raise ValueError("Incompatible dimensions.")
-        else:
-            return super().__add__(other)
+        self.validate_matching_dimensions(other)
+        temp_value = float(self) + float(other)
         return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
         return super().__add__(other)
 
     def __sub__(self, other):
-        if isinstance(other, Quantity) and (
-            self.get_dimensions_list() == other.get_dimensions_list()
-        ):
-            temp_value = self._si_value - other._si_value
-        elif (
-            not isinstance(other, Quantity)
-            and self.is_dimensionless()
-            and (isinstance(other, int) or isinstance(other, float))
-        ):
-            temp_value = self._si_value - other
-        else:
-            raise ValueError("Incompatible dimensions.")
+        self.validate_matching_dimensions(other)
+        temp_value = float(self) - float(other)
         return Quantity(temp_value, self._si_unit)
 
     def __rsub__(self, other):
@@ -716,18 +708,6 @@ class Quantity(float):
 
     def __neg__(self):
         return Quantity(-self.value, self.unit)
-
-    def validate_matching_dimensions(self, other):
-        if isinstance(other, Quantity) and (
-            self.get_dimensions_list() != other.get_dimensions_list()
-        ):
-            raise ValueError("Incompatible dimensions.")
-        elif (
-            (not self.is_dimensionless())
-            and (not isinstance(other, Quantity))
-            and isinstance(other, (float, int))
-        ):
-            raise TypeError("Incompatible quantities.")
 
     def __gt__(self, other):
         self.validate_matching_dimensions(other)
