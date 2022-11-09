@@ -748,7 +748,7 @@ def testing_arithmetic_operators():
     try:
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
-    except TypeError as ve:
+    except ValueError as ve:
         print(ve)
 
     try:
