@@ -132,14 +132,6 @@ class _BaseSession:
             f'(tui-menu-execute {json.dumps(command)} "")'
         )
 
-    def start_journal(self, file_path: str):
-        """Executes tui command to start journal."""
-        self.execute_tui(f'(api-start-python-journal "{file_path}")')
-
-    def stop_journal(self, port_data=None):
-        """Executes tui command to stop journal."""
-        self.execute_tui(f"(api-stop-python-journal)")
-
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
         return self

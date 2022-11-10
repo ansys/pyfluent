@@ -15,7 +15,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     assert solver_session._root.is_active()
     assert solver_session.check_health() == "SERVING"
     file_path = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
-    solver_session.start_journal(file_path.as_posix())
+    solver_session.journal.start(file_path.as_posix())
     ###
     assert not solver_session.setup.models.energy.enabled()
     assert solver_session.scheme_eval.scheme_eval("(case-valid?)")
@@ -69,7 +69,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session.file.auto_save.root_name = "file_auto_save"
     assert solver_session.file.auto_save.root_name() == "file_auto_save"
     solver_session.setup.reference_values.compute(from_zone_name="outlet")
-    solver_session.stop_journal()
+    solver_session.journal.stop()
     solver_session.tui.file.read_journal(file_path.as_posix())
     assert solver_session.file.auto_save.root_name() == "file_auto_save"
     assert solver_session.setup.general.solver.type() == "pressure-based"

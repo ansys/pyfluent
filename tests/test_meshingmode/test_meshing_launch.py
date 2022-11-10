@@ -12,7 +12,7 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
     assert pure_meshing_session.check_health() == "SERVING"
     file_path = os.path.join(pyfluent.EXAMPLES_PATH, "launch_pure_meshing_journal.py")
-    pure_meshing_session.start_journal(file_path)
+    pure_meshing_session.journal.start(file_path)
     session_dir = dir(pure_meshing_session)
     for attr in ("field_data", "field_info", "meshing", "workflow"):
         assert attr in session_dir
@@ -52,7 +52,7 @@ def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
         },
     }
     workflow.TaskObject["Generate the Volume Mesh"].Execute()
-    pure_meshing_session.stop_journal()
+    pure_meshing_session.journal.stop()
     with pytest.raises(AttributeError):
         pure_meshing_session.switch_to_solver()
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")

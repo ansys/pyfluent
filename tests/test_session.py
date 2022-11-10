@@ -205,11 +205,11 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
     session = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_py_journal.txt")
 
-    session.start_journal(file_path)
+    session.journal.start(file_path)
 
     session = session.switch_to_solver()
 
-    session.stop_journal()
+    session.journal.stop()
 
     with open(file_path) as f:
         returned = f.readlines()

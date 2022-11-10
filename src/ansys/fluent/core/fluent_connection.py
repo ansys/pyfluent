@@ -22,6 +22,7 @@ from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.journal_streaming import Journal
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
@@ -208,6 +209,9 @@ class _FluentConnection:
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
+
+        self.journal = Journal(self.scheme_eval)
+
         try:
             version = self.scheme_eval.string_eval("(cx-version)")
             self.scheme_eval.version = ".".join(version.strip("()").split()[0:2])
