@@ -15,7 +15,6 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     assert solver_session._root.is_active()
     assert solver_session.check_health() == "SERVING"
     file_path = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
-    solver_session.setup_python_console_in_tui()
     solver_session.start_journal(file_path.as_posix())
     ###
     assert not solver_session.setup.models.energy.enabled()

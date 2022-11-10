@@ -205,7 +205,6 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
     session = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_py_journal.txt")
 
-    session.setup_python_console_in_tui()
     session.start_journal(file_path)
 
     session = session.switch_to_solver()

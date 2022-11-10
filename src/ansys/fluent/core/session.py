@@ -163,10 +163,6 @@ class _BaseSession:
             f'(tui-menu-execute {json.dumps(command)} "")'
         )
 
-    def setup_python_console_in_tui(self):
-        """Executes tui command to set up python console."""
-        self.execute_tui("(api-setup-python-console)")
-
     def start_journal(self, file_path: str):
         """Executes tui command to start journal."""
         self.execute_tui(f'(api-start-python-journal "{file_path}")')
