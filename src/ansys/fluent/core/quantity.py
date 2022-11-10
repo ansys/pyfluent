@@ -364,9 +364,12 @@ class Unit(object):
         if "C" in unit_str:
             self._si_offset = 273.15
             self._offset_power = self._power_sum("C", unit_str)
-        elif unit_str == "F" or unit_str == "F^1":
+        elif "F" in unit_str:
             self._si_offset = 255.3722
             self._offset_power = self._power_sum("F", unit_str)
+        else:
+            self._si_offset = 0
+            self._offset_power = 1.0
 
 
 class Dimension(object):
@@ -572,13 +575,9 @@ class Quantity(float):
 
     def __new__(cls, real_value, unit_str):
         _unit = Unit(unit_str)
-        if _unit.offset_power != 0.0:
-            return float.__new__(
-                cls,
-                (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power,
-            )
-        else:
-            return float.__new__(cls, _unit.si_factor * real_value + _unit.si_offset)
+        return float.__new__(
+            cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power
+        )
 
     @property
     def value(self):
