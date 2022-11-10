@@ -254,6 +254,16 @@ class _FluentConnection:
         warnings.warn("Use -> transcript.stop()", DeprecationWarning)
         self.transcript.stop()
 
+    def start_journal(self, file_path: str):
+        """Executes tui command to start journal."""
+        warnings.warn("Use -> journal.start()", DeprecationWarning)
+        self.journal.start(file_path)
+
+    def stop_journal(self):
+        """Executes tui command to stop journal."""
+        warnings.warn("Use -> journal.stop()", DeprecationWarning)
+        self.journal.stop()
+
     def check_health(self) -> str:
         """Check health of Fluent connection."""
         if self._channel:

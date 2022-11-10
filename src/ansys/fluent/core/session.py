@@ -66,15 +66,6 @@ class _BaseSession:
         )
         Create a Session instance from server-info file
 
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
-
-    check_health()
-        Check health of Fluent connection
-
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -273,27 +264,6 @@ class Session:
             )
         )
         return session
-
-    @property
-    def id(self) -> str:
-        """Return the session id."""
-        return self.fluent_connection.id
-
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self.transcript.start()
-
-    def stop_transcript(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        self.transcript.stop()
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        return self.fluent_connection.check_health()
-
-    def exit(self) -> None:
-        """Close the Fluent connection and exit Fluent."""
-        self.fluent_connection.exit()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
