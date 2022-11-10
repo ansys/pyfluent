@@ -350,7 +350,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
     elif server_info_filepath:
         ip, port, password = parse_server_info_file(server_info_filepath)
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
-        ip = port = password = None
+        ip = port = None
     else:
         raise RuntimeError(
             "Please provide either ip and port data or server-info file."

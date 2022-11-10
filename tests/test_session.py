@@ -23,12 +23,11 @@ from ansys.fluent.core.session import _BaseSession
 
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
     def Check(self, request, context: grpc.ServicerContext):  # noqa N802
-        if "PYFLUENT_LAUNCHED_FROM_FLUENT" not in os.environ:
-            metadata = dict(context.invocation_metadata())
-            password = metadata.get("password", None)
-            if password != "12345":
-                context.set_code(grpc.StatusCode.UNAUTHENTICATED)
-                return health_pb2.HealthCheckResponse()
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            return health_pb2.HealthCheckResponse()
         return health_pb2.HealthCheckResponse(
             status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
         )
@@ -40,9 +39,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
             return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
 
 
-def test_create_session_by_passing_ip_and_port(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_create_session_by_passing_ip_and_port_and_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -51,9 +48,10 @@ def test_create_session_by_passing_ip_and_port(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
-    monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
-    session = _BaseSession(_FluentConnection(ip=ip, port=port, cleanup_on_exit=False))
+    session = _BaseSession(
+        _FluentConnection(ip=ip, port=port, password="12345", cleanup_on_exit=False)
+    )
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -71,20 +69,17 @@ def test_create_session_by_setting_ip_and_port_env_var(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
-    monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = _BaseSession(_FluentConnection(cleanup_on_exit=False))
+    session = _BaseSession(_FluentConnection(password="12345", cleanup_on_exit=False))
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
     assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_by_passing_grpc_channel(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_create_session_by_passing_grpc_channel() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -93,10 +88,11 @@ def test_create_session_by_passing_grpc_channel(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
-    monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     channel = grpc.insecure_channel(f"{ip}:{port}")
-    session = _BaseSession(_FluentConnection(channel=channel, cleanup_on_exit=False))
+    session = _BaseSession(
+        _FluentConnection(channel=channel, cleanup_on_exit=False, password="12345")
+    )
     assert session.check_health() == HealthCheckService.Status.SERVING.name
     server.stop(None)
     session.exit()
@@ -148,9 +144,7 @@ def test_create_session_from_server_info_file_with_wrong_password(
         assert session.check_health() == HealthCheckService.Status.NOT_SERVING.name
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> None:
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -159,10 +153,14 @@ def test_create_session_from_launch_fluent_by_passing_ip_and_port(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
-    monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     session = launch_fluent(
-        start_instance=False, ip=ip, port=port, cleanup_on_exit=False, mode="solver"
+        start_instance=False,
+        ip=ip,
+        port=port,
+        cleanup_on_exit=False,
+        mode="solver",
+        password="12345",
     )
     # check a few dir elements
     session_dir = dir(session)
@@ -185,11 +183,12 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
-    monkeypatch.setenv("PYFLUENT_LAUNCHED_FROM_FLUENT", "1")
     server.start()
     monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
     monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
-    session = launch_fluent(start_instance=False, cleanup_on_exit=False, mode="solver")
+    session = launch_fluent(
+        start_instance=False, cleanup_on_exit=False, mode="solver", password="12345"
+    )
     # check a few dir elements
     session_dir = dir(session)
     for attr in ("field_data", "field_info"):
