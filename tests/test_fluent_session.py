@@ -28,7 +28,7 @@ def test_session_starts_transcript_by_default(new_solver_session) -> None:
     print_transcript.called = False
     print_transcript.transcript = None
 
-    session.add_transcript_callback(print_transcript)
+    session._transcript.register_callback(print_transcript)
 
     _read_case(session=session)
 

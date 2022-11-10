@@ -281,19 +281,6 @@ class _FluentConnection:
                 self._transcript.unregister_callback(callback_id)
         self._transcript.stop()
 
-    def add_transcript_callback(self, callback_fn: Callable):
-        """Initiates a fluent transcript streaming depending on the
-        callback_fn.
-
-        For eg.: add_transcript_callback(print) prints the transcript on
-        the interpreter screen.
-        """
-        self._transcript.register_callback(callback_fn)
-
-    def remove_transcript_callback(self, callback_id: str):
-        """Stops each transcript streaming based on the callback_id."""
-        self._transcript.unregister_callback(callback_id)
-
     def check_health(self) -> str:
         """Check health of Fluent connection."""
         if self._channel:
