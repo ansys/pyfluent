@@ -126,37 +126,6 @@ class _BaseSession:
         )
         return session
 
-    @property
-    def id(self) -> str:
-        """Return the session id."""
-        return self.fluent_connection.id
-
-    def start_transcript(
-        self, file_path: str = None, write_to_interpreter: bool = True
-    ) -> None:
-        """Start streaming of Fluent transcript.
-
-        Parameters
-        ----------
-        file_path: str, optional
-            File path to write the transcript stream.
-        write_to_interpreter: bool, optional
-            Flag to print transcript on the screen or not
-        """
-        self.fluent_connection.start_transcript(file_path, write_to_interpreter)
-
-    def stop_transcript(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        self.fluent_connection.stop_transcript()
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        return self.fluent_connection.check_health()
-
-    def exit(self) -> None:
-        """Close the Fluent connection and exit Fluent."""
-        self.fluent_connection.exit()
-
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
         self.fluent_connection.scheme_eval.scheme_eval(
@@ -170,10 +139,6 @@ class _BaseSession:
     def stop_journal(self, port_data=None):
         """Executes tui command to stop journal."""
         self.execute_tui(f"(api-stop-python-journal)")
-
-    def get_fluent_version(self):
-        """Gets and returns the fluent version."""
-        return self.fluent_connection.get_fluent_version()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
