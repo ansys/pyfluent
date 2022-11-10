@@ -339,9 +339,9 @@ class Unit(object):
                 )
 
     def _compute_offset(self, unit_str):
-        if unit_str == "C":
+        if unit_str == "C" or unit_str == "C^1":
             self._si_offset = 273.15
-        elif unit_str == "F":
+        elif unit_str == "F" or unit_str == "F^1":
             self._si_offset = 255.3722
 
 
