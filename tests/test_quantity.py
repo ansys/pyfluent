@@ -146,11 +146,15 @@ def test_to_20():
     with pytest.raises(ValueError) as e_info:
         convert = v.to("radian s^-1")
 
+    assert e_info.value.args[0] == "Incompatible conversion from Hz : to radian s^-1"
+
 
 def test_to_21():
     v = q.Quantity(1.0, "radian s^-1")
     with pytest.raises(ValueError) as e_info:
         convert = v.to("Hz")
+
+    assert e_info.value.args[0] == "Incompatible conversion from radian s^-1 : to Hz"
 
 
 def test_to_22():
@@ -535,8 +539,12 @@ def test_ge_57():
         assert x >= y
         assert 5.0 >= r
 
+    assert e_info.value.args[0] == "Incompatible dimensions."
+
     with pytest.raises(TypeError) as e_info:
         assert x >= 5.0
+
+    assert e_info.value.args[0] == "Incompatible quantities."
 
 
 def test_gt_59():
@@ -554,8 +562,12 @@ def test_gt_59():
         assert x > y
         assert 5.0 > r
 
+    assert e_info.value.args[0] == "Incompatible dimensions."
+
     with pytest.raises(TypeError) as e_info:
         assert x > 5.0
+
+    assert e_info.value.args[0] == "Incompatible quantities."
 
 
 def test_lt_59():
@@ -573,8 +585,12 @@ def test_lt_59():
         assert y < x
         assert r < 0.5
 
+    assert e_info.value.args[0] == "Incompatible dimensions."
+
     with pytest.raises(TypeError) as e_info:
         assert 5.0 < x
+
+    assert e_info.value.args[0] == "Incompatible quantities."
 
 
 def test_le_60():
@@ -592,8 +608,12 @@ def test_le_60():
         assert y <= x
         assert r <= 0.5
 
+    assert e_info.value.args[0] == "Incompatible dimensions."
+
     with pytest.raises(TypeError) as e_info:
         assert 5.0 <= x
+
+    assert e_info.value.args[0] == "Incompatible quantities."
 
 
 def test_eq_61():
@@ -615,8 +635,12 @@ def test_eq_61():
         assert y == x
         assert r == 0.5
 
+    assert e_info.value.args[0] == "Incompatible dimensions."
+
     with pytest.raises(TypeError) as e_info:
         assert 5.0 == x
+
+    assert e_info.value.args[0] == "Incompatible quantities."
 
 
 def test_neq_62():
