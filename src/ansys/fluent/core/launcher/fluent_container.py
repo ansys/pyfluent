@@ -6,6 +6,8 @@ import tempfile
 import time
 from typing import List
 
+from ansys.fluent.core.session import parse_server_info_file
+
 
 def _get_free_port() -> int:
     sock = socket.socket()
@@ -37,6 +39,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     timeout = 100
     license_server = os.environ["ANSYSLMD_LICENSE_FILE"]
     port = _get_free_port()
+    password = ""
     container_sifile = mounted_to + "/" + Path(sifile).name
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v22.2.0")
     test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
@@ -56,8 +59,6 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"ANSYSLMD_LICENSE_FILE={license_server}",
                 "-e",
                 f"REMOTING_PORTS={port}/portspan=2",
-                "-e",
-                "FLUENT_LAUNCHED_FROM_PYFLUENT=1",
                 "-l",
                 f"test_name={test_name}",
                 f"ghcr.io/pyansys/pyfluent:{image_tag}",
@@ -71,12 +72,13 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
         while True:
             if os.stat(sifile).st_mtime > sifile_last_mtime:
                 time.sleep(1)
+                _, _, password = parse_server_info_file(sifile)
                 break
             if timeout == 0:
                 break
             time.sleep(1)
             timeout -= 1
-        return port
+        return port, password
     except OSError:
         pass
     finally:
