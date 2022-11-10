@@ -221,6 +221,7 @@ class Unit(object):
         self._si_multiplier = 1
         self._si_offset = 0
         self._si_unit = ""
+        self._offset_power = 1
         self._compute_multipliers(unit_str, 1)
         self._compute_offset(unit_str)
         self._reduce_to_si_unit(self._si_unit)
@@ -240,6 +241,10 @@ class Unit(object):
     @property
     def si_offset(self):
         return self._si_offset
+
+    @property
+    def offset_power(self):
+        return self._offset_power
 
     def __call__(self):
         return self.user_unit
@@ -338,11 +343,30 @@ class Unit(object):
                     _UnitsTable.derived_units[unit_str], term_power
                 )
 
+    @staticmethod
+    def _power_sum(base, unit_str):
+        if "^" in unit_str:
+            common_base = all(
+                [term.split("^")[0] == base for term in unit_str.split(" ")]
+            )
+            if common_base:
+                return sum(
+                    [
+                        float(term.split("^")[1])
+                        for term in unit_str.split(" ")
+                        if term.split("^")[0] == base
+                    ]
+                )
+        else:
+            return 1.0
+
     def _compute_offset(self, unit_str):
-        if unit_str == "C" or unit_str == "C^1":
+        if "C" in unit_str:
             self._si_offset = 273.15
+            self._offset_power = self._power_sum("C", unit_str)
         elif unit_str == "F" or unit_str == "F^1":
             self._si_offset = 255.3722
+            self._offset_power = self._power_sum("F", unit_str)
 
 
 class Dimension(object):
@@ -548,7 +572,13 @@ class Quantity(float):
 
     def __new__(cls, real_value, unit_str):
         _unit = Unit(unit_str)
-        return float.__new__(cls, _unit.si_factor * real_value + _unit.si_offset)
+        if _unit.offset_power != 0.0:
+            return float.__new__(
+                cls,
+                (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power,
+            )
+        else:
+            return float.__new__(cls, _unit.si_factor * real_value + _unit.si_offset)
 
     @property
     def value(self):
