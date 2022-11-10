@@ -46,7 +46,7 @@ def test_session_starts_no_transcript_if_disabled(
 
     print_transcript.called = False
 
-    session.start_transcript(write_to_interpreter=False)
+    session.transcript.start(write_to_interpreter=False)
 
     _read_case(session=session)
 
