@@ -245,29 +245,29 @@ class SettingsBase(Base, Generic[StateT]):
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
     def find_child(self, identifier="*"):
-        """Lists path of all the child objects matching an identifier."""
-        _list_of_children = []
-        SettingsBase._list_children(self.__class__, identifier, [], _list_of_children)
-        return _list_of_children
+        """Returns path of all the child objects matching an identifier."""
+        list_of_children = []
+        SettingsBase._list_children(self.__class__, identifier, [], list_of_children)
+        return list_of_children
 
     @staticmethod
-    def _list_children(cls, identifier, path, _list_of_children):
+    def _list_children(cls, identifier, path, list_of_children):
         if issubclass(cls, NamedObject):
             if hasattr(cls.child_object_type, "child_names"):
                 SettingsBase._get_child_path(
-                    cls.child_object_type, path, identifier, _list_of_children
+                    cls.child_object_type, path, identifier, list_of_children
                 )
         if issubclass(cls, Group):
-            SettingsBase._get_child_path(cls, path, identifier, _list_of_children)
+            SettingsBase._get_child_path(cls, path, identifier, list_of_children)
 
     @staticmethod
-    def _get_child_path(cls, path, identifier, _list_of_children):
+    def _get_child_path(cls, path, identifier, list_of_children):
         for name in cls.child_names:
             path.append(name)
             if fnmatch.fnmatch(name, identifier):
-                _list_of_children.append("/".join(path))
+                list_of_children.append("/".join(path))
             SettingsBase._list_children(
-                getattr(cls, name), identifier, path, _list_of_children
+                getattr(cls, name), identifier, path, list_of_children
             )
             path.pop()
 
