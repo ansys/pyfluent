@@ -305,7 +305,7 @@ def test_unit_system_41():
     assert cgsVel.value == 91.44
     assert cgsVel.unit == "cm s^-1"
 
-    unitSysBT = q.UnitSystem("BTU")
+    unitSysBT = q.UnitSystem("BT")
     btuVel = unitSysBT.convert(myVel)  # Returns velocity in ft/s
     assert btuVel.value == 3.0
     assert btuVel.unit == "ft s^-1"

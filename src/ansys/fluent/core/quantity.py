@@ -479,7 +479,7 @@ class UnitSystem:
             "SAngle": "sr",
             "": "",
         },
-        "BTU": {
+        "BT": {
             "M": "slug",
             "L": "ft",
             "T": "s",
@@ -493,7 +493,7 @@ class UnitSystem:
         },
     }
 
-    _supported_unit_sys = ("SI", "CGS", "BTU")
+    _supported_unit_sys = ("SI", "CGS", "BT")
 
     def __init__(self, unit_sys):
         self._unit_system = unit_sys.upper()
@@ -566,7 +566,9 @@ class Quantity(float):
         self._value = float(real_value)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
-        self._si_value = self._unit.si_factor * self._value + self._unit.si_offset
+        self._si_value = (
+            self._unit.si_factor * self._value + self._unit.si_offset
+        ) ** self._unit.offset_power
         self._si_unit = self._unit.si_unit
 
     def __new__(cls, real_value, unit_str):
