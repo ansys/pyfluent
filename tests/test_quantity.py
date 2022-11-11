@@ -656,6 +656,17 @@ def test_neq_62():
     assert 0.5 != r
 
 
+def test_temp_inverse_63():
+    c = q.Quantity(2.0, "C")
+    assert float(c) == 275.15
+
+    c_inverse = q.Quantity(2.0, "C^-1")
+    assert float(c_inverse) == pytest.approx(0.003634381246592768, DELTA)
+
+    c_inverse_twice = float(c_inverse) ** -1.0
+    assert c_inverse_twice == 275.15
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -815,16 +826,15 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-# if __name__ == "__main__":
-# test_value_unit_1()
-# testing_dimensions()
-# testing_multipliers()
-# testing_to_systems()
-# testing_arithmetic_operators()
-# testing_properties()
-#
-# x = q.Quantity(1, "ft")
-# print(
-#     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-# )
-#
+if __name__ == "__main__":
+    test_value_unit_1()
+    testing_dimensions()
+    testing_multipliers()
+    testing_to_systems()
+    testing_arithmetic_operators()
+    testing_properties()
+
+    x = q.Quantity(1, "ft")
+    print(
+        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    )
