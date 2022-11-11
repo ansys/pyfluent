@@ -346,17 +346,13 @@ class Unit(object):
     @staticmethod
     def _power_sum(base, unit_str):
         if "^" in unit_str:
-            common_base = all(
-                [term.split("^")[0] == base for term in unit_str.split(" ")]
+            return sum(
+                [
+                    float(term.split("^")[1])
+                    for term in unit_str.split(" ")
+                    if term.split("^")[0] == base
+                ]
             )
-            if common_base:
-                return sum(
-                    [
-                        float(term.split("^")[1])
-                        for term in unit_str.split(" ")
-                        if term.split("^")[0] == base
-                    ]
-                )
         else:
             return 1.0
 

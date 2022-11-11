@@ -262,11 +262,11 @@ def test_to_36():
     assert convert.unit == "J kg^-1 K^-1"
 
 
-# def test_to_37():
-#     v = q.Quantity(1.0, "BTU lb^-1 F^-1")
-#     convert = v.to("J kg^-1 K^-1")
-#     assert convert.value == pytest.approx(4186.8161854, DELTA)
-#     assert convert.unit == "J kg^-1 K^-1"
+def test_to_37():
+    v = q.Quantity(1.0, "BTU lb^-1 F^-1")
+    convert = v.to("J kg^-1 K^-1")
+    assert convert.value == pytest.approx(4186.8161854, DELTA)
+    assert convert.unit == "J kg^-1 K^-1"
 
 
 def test_to_38():
@@ -389,10 +389,10 @@ def test_tempK_48():
     assert kc.unit == "F"
 
 
-# def test_temp_49():
-#     mk = q.Quantity(-40_000, "mK")
-#     uc = mk.to("uC^1")
-#     assert uc.value == -3.13150000e08
+def test_temp_49():
+    mk = q.Quantity(-40_000, "mK")
+    uc = mk.to("uC^1")
+    assert uc.value == -3.13150000e08
 
 
 def test_temp_50():
@@ -700,34 +700,34 @@ def testing_to_systems():
     print("-" * 75)
 
 
-# def testing_multipliers():
-#     print(f"{'*' * 25} {testing_multipliers.__name__} {'*' * 25}")
-#
-#     def from_to(from_str, to_str):
-#         qt = q.Quantity(1, from_str)
-#         to = qt.to(to_str)
-#         print(f"from {qt} -> to {to}")
-#
-#     from_to("mm", "cm")
-#     from_to("m", "ft")
-#     from_to("dm^3", "m^3")
-#     from_to("m s^-1", "cm s^-1")
-#     from_to("N", "dyne")
-#     from_to("m^2", "in^2")
-#     from_to("degree s^-1", "radian s^-1")
-#     from_to("radian s^-1", "degree s^-1")
-#     from_to("Pa", "lb m s^-2 ft^-2")
-#     from_to("lb m s^-2 ft^-2", "Pa")
-#
-#     from_to("J kg^-1 K^-1", "J kg^-1 C^-1")
-#     from_to("J kg^-1 K^-1", "J kg^-1 R^-1")
-#     from_to("J kg^-1 K^-1", "J kg^-1 F^-1")
-#
-#     from_to("K", "C")
-#     from_to("K", "R")
-#     from_to("K", "F")
-#
-#     print("-" * 75)
+def testing_multipliers():
+    print(f"{'*' * 25} {testing_multipliers.__name__} {'*' * 25}")
+
+    def from_to(from_str, to_str):
+        qt = q.Quantity(1, from_str)
+        to = qt.to(to_str)
+        print(f"from {qt} -> to {to}")
+
+    from_to("mm", "cm")
+    from_to("m", "ft")
+    from_to("dm^3", "m^3")
+    from_to("m s^-1", "cm s^-1")
+    from_to("N", "dyne")
+    from_to("m^2", "in^2")
+    from_to("degree s^-1", "radian s^-1")
+    from_to("radian s^-1", "degree s^-1")
+    from_to("Pa", "lb m s^-2 ft^-2")
+    from_to("lb m s^-2 ft^-2", "Pa")
+
+    from_to("J kg^-1 K^-1", "J kg^-1 C^-1")
+    from_to("J kg^-1 K^-1", "J kg^-1 R^-1")
+    from_to("J kg^-1 K^-1", "J kg^-1 F^-1")
+
+    from_to("K", "C")
+    from_to("K", "R")
+    from_to("K", "F")
+
+    print("-" * 75)
 
 
 def testing_arithmetic_operators():
@@ -827,3 +827,4 @@ def testing_properties():
 # print(
 #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
 # )
+#
