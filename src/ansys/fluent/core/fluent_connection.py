@@ -1,14 +1,15 @@
 from ctypes import c_int, sizeof
 import itertools
 import os
-from pathlib import Path
 import threading
 import time
 from typing import Callable, List, Optional, Tuple
+import warnings
 import weakref
 
 import grpc
 
+from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -60,27 +61,11 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-class AppendToFile:
-    def __init__(self, file_path: str):
-        self.f = open(file_path, "a")
-
-    def __call__(self, transcript):
-        self.f.write(transcript)
-
-    def __del__(self):
-        self.f.close()
-
-
 class _FluentConnection:
     """Encapsulates a Fluent connection.
 
     Methods
     -------
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
 
     check_health()
         Check health of Fluent connection
@@ -183,7 +168,7 @@ class _FluentConnection:
             _FluentConnection._monitor_thread = MonitorThread()
             _FluentConnection._monitor_thread.start()
 
-        self._transcript = Transcript(self._channel, self._metadata)
+        self.transcript = Transcript(self._channel, self._metadata)
 
         self._events_service = EventsService(self._channel, self._metadata)
         self.events_manager = EventsManager(self._id, self._events_service)
@@ -208,6 +193,9 @@ class _FluentConnection:
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
+
+        self.journal = Journal(self.scheme_eval)
+
         try:
             version = self.scheme_eval.string_eval("(cx-version)")
             self.scheme_eval.version = ".".join(version.strip("()").split()[0:2])
@@ -220,7 +208,7 @@ class _FluentConnection:
         self.callback_id2 = None
 
         if start_transcript:
-            self.start_transcript()
+            self.transcript.start()
 
         self._remote_instance = remote_instance
 
@@ -230,7 +218,7 @@ class _FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
-            self._transcript,
+            self.transcript,
             self.events_manager,
             self._remote_instance,
         )
@@ -252,47 +240,24 @@ class _FluentConnection:
     def start_transcript(
         self, file_path: str = None, write_to_interpreter: bool = True
     ) -> None:
-        """Start streaming of Fluent transcript.
-
-         Parameters
-        ----------
-        file_path: str, optional
-            File path to write the transcript stream.
-        write_to_interpreter: bool, optional
-            Flag to print transcript on the screen or not
-        """
-        if not _FluentConnection._writing_transcript_to_interpreter:
-            if write_to_interpreter:
-                self.callback_id1 = self._transcript.register_callback(print)
-                _FluentConnection._writing_transcript_to_interpreter = True
-        if file_path:
-            if Path(file_path).exists():
-                os.remove(file_path)
-            append_to_file = AppendToFile(file_path)
-            self.callback_id2 = self._transcript.register_callback(
-                append_to_file, keep_new_lines=True
-            )
-        self._transcript.start()
+        """Start streaming of Fluent transcript."""
+        warnings.warn("Use -> transcript.start()", DeprecationWarning)
+        self.transcript.start(file_path, write_to_interpreter)
 
     def stop_transcript(self) -> None:
         """Stop streaming of Fluent transcript."""
-        for callback_id in (self.callback_id1, self.callback_id2):
-            if callback_id is not None:
-                self._transcript.unregister_callback(callback_id)
-        self._transcript.stop()
+        warnings.warn("Use -> transcript.stop()", DeprecationWarning)
+        self.transcript.stop()
 
-    def add_transcript_callback(self, callback_fn: Callable):
-        """Initiates a fluent transcript streaming depending on the
-        callback_fn.
+    def start_journal(self, file_path: str):
+        """Executes tui command to start journal."""
+        warnings.warn("Use -> journal.start()", DeprecationWarning)
+        self.journal.start(file_path)
 
-        For eg.: add_transcript_callback(print) prints the transcript on
-        the interpreter screen.
-        """
-        self._transcript.register_callback(callback_fn)
-
-    def remove_transcript_callback(self, callback_id: str):
-        """Stops each transcript streaming based on the callback_id."""
-        self._transcript.unregister_callback(callback_id)
+    def stop_journal(self):
+        """Executes tui command to stop journal."""
+        warnings.warn("Use -> journal.stop()", DeprecationWarning)
+        self.journal.stop()
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""

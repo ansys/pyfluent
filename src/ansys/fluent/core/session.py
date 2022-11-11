@@ -66,15 +66,6 @@ class _BaseSession:
         )
         Create a Session instance from server-info file
 
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
-
-    check_health()
-        Check health of Fluent connection
-
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -126,58 +117,11 @@ class _BaseSession:
         )
         return session
 
-    @property
-    def id(self) -> str:
-        """Return the session id."""
-        return self.fluent_connection.id
-
-    def start_transcript(
-        self, file_path: str = None, write_to_interpreter: bool = True
-    ) -> None:
-        """Start streaming of Fluent transcript.
-
-        Parameters
-        ----------
-        file_path: str, optional
-            File path to write the transcript stream.
-        write_to_interpreter: bool, optional
-            Flag to print transcript on the screen or not
-        """
-        self.fluent_connection.start_transcript(file_path, write_to_interpreter)
-
-    def stop_transcript(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        self.fluent_connection.stop_transcript()
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        return self.fluent_connection.check_health()
-
-    def exit(self) -> None:
-        """Close the Fluent connection and exit Fluent."""
-        self.fluent_connection.exit()
-
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
         self.fluent_connection.scheme_eval.scheme_eval(
             f'(tui-menu-execute {json.dumps(command)} "")'
         )
-
-    def setup_python_console_in_tui(self):
-        """Executes tui command to set up python console."""
-        self.execute_tui("(api-setup-python-console)")
-
-    def start_journal(self, file_path: str):
-        """Executes tui command to start journal."""
-        self.execute_tui(f'(api-start-python-journal "{file_path}")')
-
-    def stop_journal(self, port_data=None):
-        """Executes tui command to stop journal."""
-        self.execute_tui(f"(api-stop-python-journal)")
-
-    def get_fluent_version(self):
-        """Gets and returns the fluent version."""
-        return self.fluent_connection.get_fluent_version()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
@@ -229,17 +173,8 @@ class Session:
         )
         Create a Session instance from server-info file
 
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
-
     check_health()
         Check health of Fluent connection
-
-    exit()
-        Close the Fluent connection and exit Fluent.
     """
 
     def __init__(
@@ -320,27 +255,6 @@ class Session:
             )
         )
         return session
-
-    @property
-    def id(self) -> str:
-        """Return the session id."""
-        return self.fluent_connection.id
-
-    def start_transcript(self) -> None:
-        """Start streaming of Fluent transcript."""
-        self.transcript.start()
-
-    def stop_transcript(self) -> None:
-        """Stop streaming of Fluent transcript."""
-        self.transcript.stop()
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        return self.fluent_connection.check_health()
-
-    def exit(self) -> None:
-        """Close the Fluent connection and exit Fluent."""
-        self.fluent_connection.exit()
 
     def __enter__(self):
         """Close the Fluent connection and exit Fluent."""
