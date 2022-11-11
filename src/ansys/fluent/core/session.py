@@ -173,17 +173,8 @@ class Session:
         )
         Create a Session instance from server-info file
 
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
-
     check_health()
         Check health of Fluent connection
-
-    exit()
-        Close the Fluent connection and exit Fluent.
     """
 
     def __init__(

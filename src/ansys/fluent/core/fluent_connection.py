@@ -66,11 +66,6 @@ class _FluentConnection:
 
     Methods
     -------
-    start_transcript()
-        Start streaming of Fluent transcript
-
-    stop_transcript()
-        Stop streaming of Fluent transcript
 
     check_health()
         Check health of Fluent connection
