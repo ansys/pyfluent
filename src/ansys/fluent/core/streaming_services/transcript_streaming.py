@@ -26,8 +26,7 @@ class Transcript(StreamingService):
             target=Transcript._process_streaming,
             streaming_service=TranscriptService(channel, metadata),
         )
-        self.callback_id1 = None
-        self.callback_id2 = None
+        self.callback_ids = []
 
     def start(self, file_path: str = None, write_to_interpreter: bool = True) -> None:
         """Start streaming of Fluent transcript.
@@ -41,22 +40,21 @@ class Transcript(StreamingService):
         """
         if not Transcript._writing_transcript_to_interpreter:
             if write_to_interpreter:
-                self.callback_id1 = self.register_callback(print)
+                self.callback_ids.append(self.register_callback(print))
                 Transcript._writing_transcript_to_interpreter = True
         if file_path:
             if Path(file_path).exists():
                 os.remove(file_path)
             append_to_file = AppendToFile(file_path)
-            self.callback_id2 = self.register_callback(
-                append_to_file, keep_new_lines=True
+            self.callback_ids.append(
+                self.register_callback(append_to_file, keep_new_lines=True)
             )
         super().start()
 
     def stop(self) -> None:
         """Stop streaming of Fluent transcript."""
-        for callback_id in (self.callback_id1, self.callback_id2):
-            if callback_id is not None:
-                self.unregister_callback(callback_id)
+        for callback_id in self.callback_ids:
+            self.unregister_callback(callback_id)
         super().stop()
 
     def _process_streaming(self, started_evt):
