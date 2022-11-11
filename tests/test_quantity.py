@@ -663,9 +663,6 @@ def test_temp_inverse_63():
     c_inverse = q.Quantity(2.0, "C^-1")
     assert float(c_inverse) == pytest.approx(0.003634381246592768, DELTA)
 
-    c_inverse_twice = float(c_inverse) ** -1.0
-    assert c_inverse_twice == 275.15
-
 
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
