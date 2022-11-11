@@ -7,6 +7,17 @@ import ansys.fluent.core.quantity as q
 DELTA = 1.0e-5
 
 
+class QuantityErrors(Exception):
+    def __init__(self, unit_str=None, to_unit=None):
+        self.unit = unit_str
+        self.to_unit = to_unit
+        self.value_error1 = (
+            f"Incompatible conversion from {self.unit} : to {self.to_unit}"
+        )
+        self.value_error2 = f"Incompatible dimensions."
+        self.type_error = f"Incompatible quantities."
+
+
 def test_value_unit_1():
     v = q.Quantity(1, "m s^-1")
     assert v.value == 1
@@ -146,7 +157,7 @@ def test_to_20():
     with pytest.raises(ValueError) as e_info:
         convert = v.to("radian s^-1")
 
-    assert e_info.value.args[0] == "Incompatible conversion from Hz : to radian s^-1"
+    assert e_info.value.args[0] == QuantityErrors("Hz", "radian s^-1").value_error1
 
 
 def test_to_21():
@@ -154,7 +165,7 @@ def test_to_21():
     with pytest.raises(ValueError) as e_info:
         convert = v.to("Hz")
 
-    assert e_info.value.args[0] == "Incompatible conversion from radian s^-1 : to Hz"
+    assert e_info.value.args[0] == QuantityErrors("radian s^-1", "Hz").value_error1
 
 
 def test_to_22():
@@ -539,12 +550,12 @@ def test_ge_57():
         assert x >= y
         assert 5.0 >= r
 
-    assert e_info.value.args[0] == "Incompatible dimensions."
+    assert e_info.value.args[0] == QuantityErrors().value_error2
 
     with pytest.raises(TypeError) as e_info:
         assert x >= 5.0
 
-    assert e_info.value.args[0] == "Incompatible quantities."
+    assert e_info.value.args[0] == QuantityErrors().type_error
 
 
 def test_gt_59():
@@ -562,12 +573,12 @@ def test_gt_59():
         assert x > y
         assert 5.0 > r
 
-    assert e_info.value.args[0] == "Incompatible dimensions."
+    assert e_info.value.args[0] == QuantityErrors().value_error2
 
     with pytest.raises(TypeError) as e_info:
         assert x > 5.0
 
-    assert e_info.value.args[0] == "Incompatible quantities."
+    assert e_info.value.args[0] == QuantityErrors().type_error
 
 
 def test_lt_59():
@@ -585,12 +596,12 @@ def test_lt_59():
         assert y < x
         assert r < 0.5
 
-    assert e_info.value.args[0] == "Incompatible dimensions."
+    assert e_info.value.args[0] == QuantityErrors().value_error2
 
     with pytest.raises(TypeError) as e_info:
         assert 5.0 < x
 
-    assert e_info.value.args[0] == "Incompatible quantities."
+    assert e_info.value.args[0] == QuantityErrors().type_error
 
 
 def test_le_60():
@@ -608,12 +619,12 @@ def test_le_60():
         assert y <= x
         assert r <= 0.5
 
-    assert e_info.value.args[0] == "Incompatible dimensions."
+    assert e_info.value.args[0] == QuantityErrors().value_error2
 
     with pytest.raises(TypeError) as e_info:
         assert 5.0 <= x
 
-    assert e_info.value.args[0] == "Incompatible quantities."
+    assert e_info.value.args[0] == QuantityErrors().type_error
 
 
 def test_eq_61():
@@ -635,12 +646,12 @@ def test_eq_61():
         assert y == x
         assert r == 0.5
 
-    assert e_info.value.args[0] == "Incompatible dimensions."
+    assert e_info.value.args[0] == QuantityErrors().value_error2
 
     with pytest.raises(TypeError) as e_info:
         assert 5.0 == x
 
-    assert e_info.value.args[0] == "Incompatible quantities."
+    assert e_info.value.args[0] == QuantityErrors().type_error
 
 
 def test_neq_62():
@@ -662,6 +673,14 @@ def test_temp_inverse_63():
 
     c_inverse = q.Quantity(2.0, "C^-1")
     assert float(c_inverse) == pytest.approx(0.003634381246592768, DELTA)
+
+
+def test_temp_inverse_64():
+    f = q.Quantity(2.0, "F")
+    assert float(f) == pytest.approx(256.483311, DELTA)
+
+    f_inverse = q.Quantity(2.0, "F^-1")
+    assert float(f_inverse) == pytest.approx(0.0038614183298438984, DELTA)
 
 
 def testing_dimensions():
@@ -823,15 +842,15 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-if __name__ == "__main__":
-    test_value_unit_1()
-    testing_dimensions()
-    testing_multipliers()
-    testing_to_systems()
-    testing_arithmetic_operators()
-    testing_properties()
-
-    x = q.Quantity(1, "ft")
-    print(
-        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    )
+# if __name__ == "__main__":
+#     test_value_unit_1()
+#     testing_dimensions()
+#     testing_multipliers()
+#     testing_to_systems()
+#     testing_arithmetic_operators()
+#     testing_properties()
+#
+#     x = q.Quantity(1, "ft")
+#     print(
+#         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+#     )
