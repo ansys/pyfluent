@@ -7,7 +7,7 @@ import ansys.fluent.core.quantity as q
 DELTA = 1.0e-5
 
 
-class QuantityErrors(Exception):
+class QuantityErrors:
     def __init__(self, unit_str=None, to_unit=None):
         self.unit = unit_str
         self.to_unit = to_unit
@@ -842,15 +842,15 @@ def testing_properties():
     qt2 = q.Quantity(5, "m s^-1")
 
 
-# if __name__ == "__main__":
-#     test_value_unit_1()
-#     testing_dimensions()
-#     testing_multipliers()
-#     testing_to_systems()
-#     testing_arithmetic_operators()
-#     testing_properties()
-#
-#     x = q.Quantity(1, "ft")
-#     print(
-#         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-#     )
+if __name__ == "__main__":
+    test_value_unit_1()
+    testing_dimensions()
+    testing_multipliers()
+    testing_to_systems()
+    testing_arithmetic_operators()
+    testing_properties()
+
+    x = q.Quantity(1, "ft")
+    print(
+        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    )
