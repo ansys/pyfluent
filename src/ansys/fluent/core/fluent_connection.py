@@ -9,6 +9,7 @@ import weakref
 
 import grpc
 
+from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -22,7 +23,6 @@ from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
-from ansys.fluent.core.streaming_services.journal_streaming import Journal
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 
