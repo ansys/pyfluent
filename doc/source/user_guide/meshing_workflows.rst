@@ -23,7 +23,7 @@ Import geometry
     )
     meshing.workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
     meshing.workflow.TaskObject['Import Geometry'].Arguments = {
-        FileName: import_filename, LengthUnit: 'in'
+        'FileName': import_filename, 'LengthUnit': 'in'
     }
     meshing.workflow.TaskObject['Import Geometry'].Execute()
 
