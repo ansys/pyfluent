@@ -28,6 +28,7 @@ class HealthCheckService:
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         self.__stub = HealthCheckGrpcModule.HealthStub(channel)
         self.__metadata = metadata
+        self._channel = channel
 
     @catch_grpc_error
     def check_health(self) -> str:
@@ -41,3 +42,16 @@ class HealthCheckService:
         request = HealthCheckModule.HealthCheckRequest()
         response = self.__stub.Check(request, metadata=self.__metadata)
         return HealthCheckService.Status(response.status).name
+
+    def status(self) -> str:
+        """Check health of Fluent connection."""
+        if self._channel:
+            try:
+                return self.check_health()
+            except Exception:
+                return self.Status.NOT_SERVING.name
+        else:
+            return self.Status.NOT_SERVING.name
+
+    def is_serving(self) -> bool:
+        return True if self.status() == "SERVING" else False

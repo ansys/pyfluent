@@ -172,9 +172,6 @@ class Session:
         server_info_filepath, cleanup_on_exit, start_transcript
         )
         Create a Session instance from server-info file
-
-    check_health()
-        Check health of Fluent connection
     """
 
     def __init__(
