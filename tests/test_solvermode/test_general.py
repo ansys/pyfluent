@@ -13,7 +13,7 @@ import ansys.fluent.core as pyfluent
 def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert solver_session._root.is_active()
-    assert solver_session.check_health() == "SERVING"
+    assert solver_session.health_check_service.is_serving()
     file_path = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
     solver_session.journal.start(file_path.as_posix())
     ###
@@ -85,7 +85,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
 def test_disk_2d_setup(load_disk_mesh):
     session = load_disk_mesh
     assert session._root.get_attr("active?")
-    assert session.check_health() == "SERVING"
+    assert session.health_check_service.is_serving()
     ###
     assert not session.setup.models.energy.enabled()
     assert session.scheme_eval.scheme_eval("(case-valid?)")
