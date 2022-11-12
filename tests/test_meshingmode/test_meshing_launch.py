@@ -10,7 +10,7 @@ import ansys.fluent.core as pyfluent
 @pytest.mark.fluent_231
 def test_launch_pure_meshing(load_mixing_elbow_pure_meshing):
     pure_meshing_session = load_mixing_elbow_pure_meshing
-    assert pure_meshing_session.health_check_service.is_serving()
+    assert pure_meshing_session.health_check_service.is_serving
     file_path = os.path.join(pyfluent.EXAMPLES_PATH, "launch_pure_meshing_journal.py")
     pure_meshing_session.journal.start(file_path)
     session_dir = dir(pure_meshing_session)

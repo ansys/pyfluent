@@ -53,5 +53,6 @@ class HealthCheckService:
         else:
             return self.Status.NOT_SERVING.name
 
+    @property
     def is_serving(self) -> bool:
         return True if self.status() == "SERVING" else False
