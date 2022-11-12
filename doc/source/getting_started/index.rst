@@ -46,7 +46,7 @@ To launch Fluent from PyFluent, use the ``launch_fluent`` method:
 
   import ansys.fluent.core as pyfluent
   solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
-  solver.check_health()
+  solver.health_check_service.is_serving()
 
 On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
 when Fluent is installed, where ``<ver>`` is the Fluent release number such as

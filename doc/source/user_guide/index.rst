@@ -180,7 +180,7 @@ The connection status of any session can be verified with:
 
 .. code:: python
 
-    health = solver.check_health()
+    health = solver.health_check_service.status()
 
 ``"SERVING"`` is returned if and only if the connection is healthy.
 
