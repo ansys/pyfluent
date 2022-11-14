@@ -655,11 +655,66 @@ class root(Group):
     )  # noqa: W293
 
 
-def test_accessor_methods_on_settings_object(sample_solver_session):
-    existing = sample_solver_session.file.read.file_type.get_attr("allowed-values")
-    modified = sample_solver_session.file.read.file_type.allowed_values()
+def test_accessor_methods_on_settings_object(load_static_mixer_case):
+    solver = load_static_mixer_case
+
+    existing = solver.file.read.file_type.get_attr("allowed-values")
+    modified = solver.file.read.file_type.allowed_values()
     assert existing == modified
 
-    existing = sample_solver_session.file.read.file_type.get_attr("read-only?")
-    modified = sample_solver_session.file.read.file_type.is_read_only()
+    existing = solver.file.read.file_type.get_attr("read-only?")
+    modified = solver.file.read.file_type.is_read_only()
     assert existing == modified
+
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].turb_viscosity_ratio.default_value()
+        == 10
+    )
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].turb_viscosity_ratio.get_attr("min")
+        == 0
+    )
+
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].turb_viscosity_ratio.get_attr("max")
+        is False
+    )
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].turb_viscosity_ratio.max()
+        is None
+    )
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
+    solver = load_static_mixer_case
+
+    assert solver.setup.general.solver.type.allowed_values() == [
+        "pressure-based",
+        "density-based-implicit",
+        "density-based-explicit",
+    ]
+
+    assert (
+        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.min()
+        == 0
+    )
+    assert (
+        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.max()
+        == 1000000
+    )
+    assert (
+        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control.max_number_of_refinements.get_attr(
+            "max"
+        )
+        == 1000000
+    )

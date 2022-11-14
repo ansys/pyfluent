@@ -1,4 +1,4 @@
-from codegen.fix_doc import fix_settings_doc
+from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 
 
 def test_fix_settings_doc():

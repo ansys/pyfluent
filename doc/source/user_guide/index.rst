@@ -191,9 +191,9 @@ stop and start the streaming of a transcript manually with:
  
 .. code:: python
 
-    solver.stop_transcript()
+    solver.transcript.stop()
 
-    solver.start_transcript()
+    solver.transcript.start()
 
 You can enable and disable the streaming of events pertaining to various solver
 event types via the ``events_manager`` attribute of a solution mode session:

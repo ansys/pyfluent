@@ -139,9 +139,9 @@ def _test_centroid(solver):
     red_val_3 = reduction.centroid(
         locations=[solver.setup.boundary_conditions.velocity_inlet]
     )
-    assert red_val_1 == expr_val_1
-    assert red_val_2 == expr_val_2
-    assert red_val_3 == expr_val_3
+    assert (red_val_1 == expr_val_1).all()
+    assert (red_val_2 == expr_val_2).all()
+    assert (red_val_3 == expr_val_3).all()
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
@@ -226,6 +226,63 @@ def _test_area_integrated_average(solver1, solver2):
     solver1.setup.named_expressions.pop(key="test_expr_1")
 
 
+def _test_error_handling(solver):
+    with pytest.raises(RuntimeError) as msg:
+        reduction.area_average(
+            expr="AbsoluteVelocity",  # This is a wrong expression intentionally passed
+            locations=solver.setup.boundary_conditions.velocity_inlet,
+        )
+
+    assert msg.value.args[0] == "Unable to evaluate expression"
+
+
+def _test_force(solver):
+    solver.solution.initialization.hybrid_initialize()
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions["test_expr_1"].definition = "Force(['wall'])"
+    expr_val_1 = solver.setup.named_expressions["test_expr_1"].get_value()
+
+    red_total_force = reduction.force(locations=[solver.setup.boundary_conditions.wall])
+    red_pressure_force = reduction.pressure_force(locations=["wall"], ctxt=solver)
+    red_viscous_force = reduction.viscous_force(
+        locations=[solver.setup.boundary_conditions.wall]
+    )
+
+    assert (red_total_force == expr_val_1).all()
+
+    assert (red_pressure_force + red_viscous_force == red_total_force).all()
+
+    solver.setup.named_expressions.pop(key="test_expr_1")
+
+
+def _test_moment(solver):
+    solver.solution.initialization.hybrid_initialize()
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "Moment(Force(['wall']),['wall'])"
+    expr_val_1 = solver.setup.named_expressions["test_expr_1"].get_value()
+
+    solver.setup.named_expressions[
+        "test_expr_1"
+    ].definition = "Moment(['inlet1'],['wall'])"
+    expr_val_2 = solver.setup.named_expressions["test_expr_1"].get_value()
+
+    red_moment_force = reduction.moment(
+        expr="Force(['wall'])", locations=[solver.setup.boundary_conditions.wall]
+    )
+
+    red_moment_location = reduction.moment(
+        expr="['inlet1']",
+        locations=[solver.setup.boundary_conditions.wall],
+    )
+
+    assert (red_moment_force == expr_val_1).all()
+    assert (red_moment_location == expr_val_2).all()
+
+    solver.setup.named_expressions.pop(key="test_expr_1")
+
+
 @pytest.mark.dev
 @pytest.mark.fluent_231
 def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
@@ -236,4 +293,8 @@ def test_reductions(load_static_mixer_case, load_static_mixer_case_2) -> None:
     _test_area_average(solver1)
     _test_min(solver1, solver2)
     _test_count(solver1)
+    _test_centroid(solver1)
     _test_area_integrated_average(solver1, solver2)
+    _test_error_handling(solver1)
+    _test_force(solver1)
+    _test_moment(solver1)

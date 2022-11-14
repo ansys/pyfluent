@@ -21,6 +21,7 @@ import importlib
 import keyword
 import pickle
 import string
+import sys
 from typing import Any, Dict, Generic, List, NewType, Tuple, TypeVar, Union
 import weakref
 
@@ -140,22 +141,32 @@ class Base:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs)
 
-    def get_attr(self, attr) -> Any:
+    def get_attr(self, attr, attr_type_or_types=None) -> Any:
         """Get the requested attribute for the object."""
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
-        return attrs[attr] if attrs else None
+        val = None
+        if attrs:
+            val = attrs[attr]
+
+        if attr_type_or_types:
+            if not type(attr_type_or_types) == tuple:
+                attr_type_or_types = (attr_type_or_types,)
+            if type(val) in attr_type_or_types:
+                return val
+            return None
+        return val
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        return self.get_attr("active?")
+        return self.get_attr("active?", bool)
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
-        return self.get_attr("read-only?")
+        return self.get_attr("read-only?", bool)
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -182,11 +193,13 @@ class Numerical(Property):
 
     def min(self):
         """Get the minimum value of the object."""
-        return self.get_attr("min")
+        val = self.get_attr("min", (float, int))
+        return None if isinstance(val, bool) else val
 
     def max(self):
         """Get the maximum value of the object."""
-        return self.get_attr("max")
+        val = self.get_attr("max", (float, int))
+        return None if isinstance(val, bool) else val
 
 
 class Textual(Property):
@@ -194,7 +207,7 @@ class Textual(Property):
 
     def allowed_values(self):
         """Get the allowed values of the object."""
-        return self.get_attr("allowed-values")
+        return self.get_attr("allowed-values", (list, str))
 
 
 class SettingsBase(Base, Generic[StateT]):
@@ -262,6 +275,7 @@ class SettingsBase(Base, Generic[StateT]):
 
     def print_state(self, out=None, indent_factor=2):
         """Print the state of the object."""
+        out = sys.stdout if out is None else out
         self._print_state_helper(self.get_state(), out, indent_factor=indent_factor)
 
 
@@ -678,11 +692,11 @@ def _get_new_keywords(obj, kwds):
     return newkwds
 
 
-class Command(Base):
-    """Command object."""
+class Action(Base):
+    """Intermediate Base class for Command and Query class."""
 
     def __init__(self, name: str = None, parent=None):
-        """__init__ of Command class."""
+        """__init__ of Action class."""
         super().__init__(name, parent)
         if hasattr(self, "argument_names"):
             for argument in self.argument_names:
@@ -690,39 +704,26 @@ class Command(Base):
                 self._setattr(argument, cls(None, self))
 
     def arguments(self) -> Any:
-        """Get the arguments for the command."""
+        """Get the arguments for the Action."""
         attrs = self.get_attrs(["arguments"])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Command is not active")
+            raise RuntimeError(f"{self.__class__.__name__} is not active")
         return attrs["arguments"] if attrs else None
 
+
+class Command(Action):
+    """Command object."""
+
     def __call__(self, **kwds):
-        """Call a command with the specified keyword arguments."""
+        """Call a query with the specified keyword arguments."""
         newkwds = _get_new_keywords(self, kwds)
         return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
 
 
-class Query(Base):
+class Query(Action):
     """Query object."""
-
-    def __init__(self, name: str = None, parent=None):
-        """__init__ of Query class."""
-        super().__init__(name, parent)
-        if hasattr(self, "argument_names"):
-            for argument in self.argument_names:
-                cls = getattr(self.__class__, argument)
-                self._setattr(argument, cls(None, self))
-
-    def arguments(self) -> Any:
-        """Get the arguments for the query."""
-        attrs = self.get_attrs(["arguments"])
-        if attrs:
-            attrs = attrs.get("attrs", attrs)
-        if attrs and attrs.get("active?", True) is False:
-            raise RuntimeError("Query is not active")
-        return attrs["arguments"] if attrs else None
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""

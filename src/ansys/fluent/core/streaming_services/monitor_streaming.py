@@ -1,13 +1,15 @@
 """Module for monitors management."""
 
 import threading
-from typing import Any, Callable, Dict, List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
 
+from ansys.fluent.core.streaming_services.streaming import StreamingService
 
-class MonitorsManager:
+
+class MonitorsManager(StreamingService):
     """Manages monitors (Fluent residuals and report definitions monitors).
 
     Parameters
@@ -19,20 +21,15 @@ class MonitorsManager:
     """
 
     def __init__(self, session_id: str, service):
+        super().__init__(
+            target=MonitorsManager._process_streaming,
+            streaming_service=service,
+        )
         self._session_id: str = session_id
-        self._monitors_service = service
-        self._lock: threading.Lock = threading.Lock()
         self._lock_refresh: threading.Lock = threading.Lock()
         self._monitors_info = None
-        self._monitors_thread = None
         self._data_frames = {}
         self._on_monitor_refresh_callback = None
-        self._streaming: bool = False
-
-    @property
-    def is_streaming(self):
-        with self._lock:
-            return self._streaming
 
     def get_monitor_set_names(self) -> List[str]:
         """Get monitor set names.
@@ -122,24 +119,6 @@ class MonitorsManager:
                 )
             )
 
-    def register_on_monitor_refresh_callback(
-        self, on_monitor_refresh_callback: Callable[[], Any]
-    ):
-        """Register monitor refresh callback.
-
-        The callback is triggered whenever monitor data is updated.
-
-        Parameters
-        ----------
-        on_monitor_refresh_callback :  Callable[[], Any]
-            Callback.
-
-        Returns
-        -------
-        None
-        """
-        self._on_monitor_refresh_callback = on_monitor_refresh_callback
-
     def refresh(self, session_id, event_info) -> None:
         """Refresh plots on-initialized and data-read events.
 
@@ -158,12 +137,15 @@ class MonitorsManager:
         None
         """
         with self._lock_refresh:
-            self._stop()
-            self._start()
+            self.stop()
+            self.start()
 
-    def _begin_streaming(self, started_evt):
+    def _prepare(self):
+        self._update_dataframe()
+
+    def _process_streaming(self, started_evt):
         """Begin monitors streaming."""
-        responses = self._monitors_service.begin_streaming(started_evt)
+        responses = self._streaming_service.begin_streaming(started_evt)
 
         while True:
             try:
@@ -197,30 +179,14 @@ class MonitorsManager:
             except StopIteration:
                 break
 
-    def _start(self) -> str:
-        """Start MonitorsManager."""
+    def _update_dataframe(self):
         with self._lock:
-            if not self._monitors_thread:
-                self._monitors_info = self._monitors_service.get_monitors_info()
-                self._data_frames = {}
-                for monitor_set_name, monitor_set_info in self._monitors_info.items():
-                    self._data_frames[monitor_set_name] = {}
-                    monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
-                    df = pd.DataFrame([], columns=monitors_name)
-                    df.set_index("xvalues", inplace=True)
-                    self._data_frames[monitor_set_name]["df"] = df
-                    self._data_frames[monitor_set_name]["monitors"] = monitors_name
-                started_evt = threading.Event()
-                self._monitors_thread: threading.Thread = threading.Thread(
-                    target=MonitorsManager._begin_streaming, args=(self, started_evt)
-                )
-                self._monitors_thread.start()
-                started_evt.wait()
-
-    def _stop(self):
-        """Stops MonitorsManager."""
-        if self._monitors_thread:
-            self._monitors_service.end_streaming()
-            self._monitors_thread.join()
-            self._streaming = False
-            self._monitors_thread = None
+            self._monitors_info = self._streaming_service.get_monitors_info()
+            self._data_frames = {}
+            for monitor_set_name, monitor_set_info in self._monitors_info.items():
+                self._data_frames[monitor_set_name] = {}
+                monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
+                df = pd.DataFrame([], columns=monitors_name)
+                df.set_index("xvalues", inplace=True)
+                self._data_frames[monitor_set_name]["df"] = df
+                self._data_frames[monitor_set_name]["monitors"] = monitors_name

@@ -58,6 +58,8 @@ Examples
 19.28151
 """
 
+from numpy import array
+
 
 class BadReductionRequest(Exception):
     def __init__(self, err):
@@ -170,11 +172,27 @@ def _extent_expression(f_string, extent_name, expr, locations, ctxt):
         solver = solver or _root(ctxt)
         val = _eval_reduction(solver, f_string, names, expr)
         extent = _eval_reduction(solver, extent_name, names) if len(locns) > 1 else 1
-        numerator += val * extent
-        denominator += extent
+        try:
+            numerator += val * extent
+            denominator += extent
+        except TypeError:
+            raise RuntimeError(val)
     if denominator == 0.0:
         raise BadReductionRequest("Zero extent computed for average")
     return numerator / denominator
+
+
+def _extent_moment_vector(f_string, expr, locations, ctxt):
+    locns = _locns(locations, ctxt)
+    total = array([0.0, 0.0, 0.0])
+    for solver, names in locns:
+        solver = solver or _root(ctxt)
+        extent = _eval_reduction(solver, f_string, names, expr)
+        try:
+            total += array(extent)
+        except TypeError:
+            raise RuntimeError(extent)
+    return total
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
@@ -191,17 +209,24 @@ def _extent(extent_name, locations, ctxt):
     for solver, names in locns:
         solver = solver or _root(ctxt)
         extent = _eval_expr(solver, f"{extent_name}({names})")
-        total += extent
+        try:
+            total += extent
+        except TypeError:
+            raise RuntimeError(extent)
     return total
 
 
 def _extent_vectors(extent_name, locations, ctxt):
     locns = _locns(locations, ctxt)
-    extent = []
+    total = array([0.0, 0.0, 0.0])
     for solver, names in locns:
         solver = solver or _root(ctxt)
         extent = _eval_expr(solver, f"{extent_name}({names})")
-    return extent
+        try:
+            total += array(extent)
+        except TypeError:
+            raise RuntimeError(extent)
+    return total
 
 
 def _limit(limit, expr, locations, ctxt):
@@ -334,6 +359,67 @@ def centroid(locations, ctxt=None):
     float
     """
     return _extent_vectors("Centroid", locations, ctxt)
+
+
+def force(locations, ctxt=None):
+    """Compute the force acting on the location(s) specified (should be walls)
+    as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("Force", locations, ctxt)
+
+
+def pressure_force(locations, ctxt=None):
+    """Compute the pressure force acting on the location(s) specified (should
+    be walls) as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("PressureForce", locations, ctxt)
+
+
+def viscous_force(locations, ctxt=None):
+    """Compute the viscous force acting on the location(s) specified (should be
+    walls) as a vector.
+
+    Parameters
+    ----------
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_vectors("ViscousForce", locations, ctxt)
+
+
+def moment(expr, locations, ctxt=None):
+    """Compute  the moment vector about the specified point (which can be
+    single-valued expression) for the specified location(s).
+
+    Parameters
+    ----------
+    expr : Any
+    locations : Any
+    ctxt : Any, optional
+    Returns
+    -------
+    float
+    """
+    return _extent_moment_vector("Moment", expr, locations, ctxt)
 
 
 def minimum(expr, locations, ctxt=None):
