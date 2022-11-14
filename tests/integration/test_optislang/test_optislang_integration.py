@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+import shutil
 
 import pytest
 from util.meshing_workflow import mixing_elbow_geometry  # noqa: F401
@@ -93,9 +95,10 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
         )
         input_parameters2 = input_parameters2["inlet2_temp"]
         output_parameters2 = output_parameters2["outlet_temp-op"]
-
         assert input_parameters[0] == input_parameters2[0]
         assert output_parameters[0] == output_parameters2[0]
+        solver_session.exit()
+
 
 @pytest.mark.optislang
 @pytest.mark.integration
@@ -122,24 +125,43 @@ def test_generate_read_mesh(mixing_elbow_geometry):
         meshing_mode=True, precision="double", processor_count=2
     )
     assert session.check_health() == "SERVING"
-
-    # Step 3 Generate mesh from geometry with default workflow settings
-    session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    session.meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=mixing_elbow_geometry
+    temporary_resource_path = os.path.join(
+        pyfluent.EXAMPLES_PATH, "test_generate_read_mesh_resources"
     )
-    session.meshing.workflow.TaskObject["Import Geometry"].Execute()
-    session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
-    session.meshing.tui.mesh.check_mesh()
-    session.meshing.tui.file.write_mesh("default_mesh.msh.gz")
-    session.meshing.tui.file.write_mesh("default_mesh.msh.h5")
+    if os.path.exists(temporary_resource_path):
+        shutil.rmtree(temporary_resource_path, ignore_errors=True)
+    if not os.path.exists(temporary_resource_path):
+        os.mkdir(temporary_resource_path)
 
-    # Step 4: use created mesh file - .msh.gz/.msh.h5
-    session.meshing.tui.file.read_mesh("default_mesh.msh.gz", "ok")
-    session.meshing.tui.file.read_mesh("default_mesh.msh.h5", "ok")
+    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
+    if float(session.get_fluent_version()[:-2]) < 23.0:
+        # Step 3 Generate mesh from geometry with default workflow settings
+        session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+        session.meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
+            FileName=mixing_elbow_geometry
+        )
+        session.meshing.workflow.TaskObject["Import Geometry"].Execute()
+        session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+        session.meshing.tui.mesh.check_mesh()
+        gz_path = str(Path(temporary_resource_path) / "default_mesh.msh.gz")
+        h5_path = str(Path(temporary_resource_path) / "default_mesh.msh.h5")
+        session.meshing.tui.file.write_mesh(gz_path)
+        session.meshing.tui.file.write_mesh(h5_path)
+        assert (Path(temporary_resource_path) / "default_mesh.msh.gz").exists() == True
+        assert (Path(temporary_resource_path) / "default_mesh.msh.h5").exists() == True
 
-    # Step 5: Switch to solution and Write case file
-    session.meshing.tui.switch_to_solution_mode("yes")
-    session.solver.tui.solve.initialize.hyb_initialization()
-    session.solver.tui.file.write_case("default_case.cas.gz")
-    session.solver.tui.file.write_case("default_case.cas.h5")
+        # Step 4: use created mesh file - .msh.gz/.msh.h5
+        session.meshing.tui.file.read_mesh(gz_path, "ok")
+        session.meshing.tui.file.read_mesh(h5_path, "ok")
+
+        # Step 5: Switch to solution and Write case file
+        session.meshing.tui.switch_to_solution_mode("yes")
+        session.solver.tui.solve.initialize.hyb_initialization()
+        gz_path = str(Path(temporary_resource_path) / "default_case.cas.gz")
+        h5_path = str(Path(temporary_resource_path) / "default_case.cas.h5")
+        session.solver.tui.file.write_case(gz_path)
+        session.solver.tui.file.write_case(h5_path)
+        assert (Path(temporary_resource_path) / "default_case.cas.gz").exists() == True
+        assert (Path(temporary_resource_path) / "default_case.cas.h5").exists() == True
+        session.exit()
+        shutil.rmtree(temporary_resource_path, ignore_errors=True)
