@@ -262,6 +262,11 @@ class _FluentConnection:
         warnings.warn("Use -> journal.stop()", DeprecationWarning)
         self.journal.stop()
 
+    def check_health(self) -> str:
+        """Check health of Fluent connection."""
+        warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
+        return self.health_check_service.status()
+
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
         return ".".join(map(str, self.scheme_eval.scheme_eval("(cx-version)")))
