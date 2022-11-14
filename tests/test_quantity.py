@@ -7,17 +7,6 @@ import ansys.fluent.core.quantity as q
 DELTA = 1.0e-5
 
 
-class QuantityErrors:
-    def __init__(self, unit_str=None, to_unit=None):
-        self.unit = unit_str
-        self.to_unit = to_unit
-        self.value_error1 = (
-            f"Incompatible conversion from {self.unit} : to {self.to_unit}"
-        )
-        self.value_error2 = f"Incompatible dimensions."
-        self.type_error = f"Incompatible quantities."
-
-
 def test_value_unit_1():
     v = q.Quantity(1, "m s^-1")
     assert v.value == 1
@@ -154,18 +143,20 @@ def test_to_19():
 
 def test_to_20():
     v = q.Quantity(1.0, "Hz")
-    with pytest.raises(ValueError) as e_info:
-        convert = v.to("radian s^-1")
-
-    assert e_info.value.args[0] == QuantityErrors("Hz", "radian s^-1").value_error1
+    try:
+        v.to("radian s^-1")
+        raise q.QuantityError("Hz", "radian s^-1")
+    except q.QuantityError as e:
+        assert e.value_error == q.QuantityError("Hz", "radian s^-1").value_error
 
 
 def test_to_21():
     v = q.Quantity(1.0, "radian s^-1")
-    with pytest.raises(ValueError) as e_info:
-        convert = v.to("Hz")
-
-    assert e_info.value.args[0] == QuantityErrors("radian s^-1", "Hz").value_error1
+    try:
+        v.to("Hz")
+        raise q.QuantityError("radian s^-1", "Hz")
+    except q.QuantityError as e:
+        assert e.value_error == q.QuantityError("radian s^-1", "Hz").value_error
 
 
 def test_to_22():
@@ -545,17 +536,14 @@ def test_ge_57():
     assert 15.7 >= r
     assert r >= 7.8
 
-    with pytest.raises(ValueError) as e_info:
+    try:
         assert x >= z
         assert x >= y
         assert 5.0 >= r
-
-    assert e_info.value.args[0] == QuantityErrors().value_error2
-
-    with pytest.raises(TypeError) as e_info:
         assert x >= 5.0
-
-    assert e_info.value.args[0] == QuantityErrors().type_error
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        assert e.type_error == q.QuantityError().type_error
 
 
 def test_gt_59():
@@ -568,17 +556,14 @@ def test_gt_59():
     assert 15.7 > r
     assert r > 7.8
 
-    with pytest.raises(ValueError) as e_info:
+    try:
         assert x > z
         assert x > y
         assert 5.0 > r
-
-    assert e_info.value.args[0] == QuantityErrors().value_error2
-
-    with pytest.raises(TypeError) as e_info:
         assert x > 5.0
-
-    assert e_info.value.args[0] == QuantityErrors().type_error
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        assert e.type_error == q.QuantityError().type_error
 
 
 def test_lt_59():
@@ -591,17 +576,14 @@ def test_lt_59():
     assert r < 15.7
     assert 7.8 < r
 
-    with pytest.raises(ValueError) as e_info:
-        assert z < x
-        assert y < x
-        assert r < 0.5
-
-    assert e_info.value.args[0] == QuantityErrors().value_error2
-
-    with pytest.raises(TypeError) as e_info:
-        assert 5.0 < x
-
-    assert e_info.value.args[0] == QuantityErrors().type_error
+    try:
+        assert x < z
+        assert x < y
+        assert 5.0 < r
+        assert x < 5.0
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        assert e.type_error == q.QuantityError().type_error
 
 
 def test_le_60():
@@ -614,17 +596,14 @@ def test_le_60():
     assert r <= 15.7
     assert 7.8 <= r
 
-    with pytest.raises(ValueError) as e_info:
-        assert z <= x
-        assert y <= x
-        assert r <= 0.5
-
-    assert e_info.value.args[0] == QuantityErrors().value_error2
-
-    with pytest.raises(TypeError) as e_info:
-        assert 5.0 <= x
-
-    assert e_info.value.args[0] == QuantityErrors().type_error
+    try:
+        assert x <= z
+        assert x <= y
+        assert 5.0 <= r
+        assert x <= 5.0
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        assert e.type_error == q.QuantityError().type_error
 
 
 def test_eq_61():
@@ -641,17 +620,14 @@ def test_eq_61():
     assert y == m
     assert r == n
 
-    with pytest.raises(ValueError) as e_info:
+    try:
         assert z == x
         assert y == x
         assert r == 0.5
-
-    assert e_info.value.args[0] == QuantityErrors().value_error2
-
-    with pytest.raises(TypeError) as e_info:
         assert 5.0 == x
-
-    assert e_info.value.args[0] == QuantityErrors().type_error
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        assert e.type_error == q.QuantityError().type_error
 
 
 def test_neq_62():
@@ -721,8 +697,9 @@ def testing_to_systems():
     test.to("kg in s^-1 s^-1")
     try:
         test.to("ft s^-2")
-    except ValueError as ve:
-        print(ve)
+        raise q.QuantityError("lb cm s^-2", "ft s^-2")
+    except q.QuantityError as e:
+        print(e)
 
     print("-" * 75)
 
@@ -799,14 +776,16 @@ def testing_arithmetic_operators():
     try:
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
-    except TypeError as ve:
-        print(ve)
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        print(e)
 
     try:
         result6 = 2 + qt1
         print(f"{2} + {qt1} =  {result6}")
-    except ValueError as ve:
-        print(ve)
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        print(e)
 
     qs3 = qt1 - qt2
 
@@ -817,14 +796,16 @@ def testing_arithmetic_operators():
     try:
         result7 = qt1 - 2
         print(f"{qt1} - {2} =  {result7}")
-    except TypeError as ve:
-        print(ve)
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        print(e)
 
     try:
         result8 = 2 - qt1
         print(f"{2} - {qt1} =  {result8}")
-    except ValueError as ve:
-        print(ve)
+        raise q.QuantityError()
+    except q.QuantityError as e:
+        print(e)
 
 
 def testing_properties():

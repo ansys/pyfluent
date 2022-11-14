@@ -531,6 +531,22 @@ class UnitSystem:
         return UnitSystem._dim_to_unit_sys_map[self._unit_system]
 
 
+class QuantityError(BaseException):
+    def __init__(self, unit_str=None, to_unit=None):
+        self.unit = unit_str
+        self.to_unit = to_unit
+        self.value_error = (
+            f"{self.unit} and {self.to_unit} have incompatible dimensions."
+        )
+        self.type_error = "Quantity Type Error: Incompatible quantities."
+
+    def __str__(self):
+        if self.unit and self.to_unit:
+            return f"{self.unit} and {self.to_unit} have incompatible dimensions."
+        else:
+            return "Quantity Type Error: Incompatible quantities."
+
+
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units.
@@ -610,9 +626,7 @@ class Quantity(float):
         to_unit_dim_obj = temp_quantity.dimension
 
         if curr_unit_dim_obj.as_dict() != to_unit_dim_obj.as_dict():
-            raise ValueError(
-                f"Incompatible conversion from {self.unit} : to {to_unit_str}"
-            )
+            raise QuantityError(self.unit, to_unit_str)
         else:
             pass
 
@@ -709,13 +723,13 @@ class Quantity(float):
         if isinstance(other, Quantity) and (
             self.get_dimensions_list() != other.get_dimensions_list()
         ):
-            raise ValueError("Incompatible dimensions.")
+            raise QuantityError(self.unit, other.unit)
         elif (
             (not self.is_dimensionless())
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
-            raise TypeError("Incompatible quantities.")
+            raise QuantityError()
 
     def __add__(self, other):
         self.validate_matching_dimensions(other)
