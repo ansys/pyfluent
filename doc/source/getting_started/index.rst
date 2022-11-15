@@ -50,10 +50,10 @@ To launch Fluent from PyFluent, use the ``launch_fluent`` method:
 
 On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
 when Fluent is installed, where ``<ver>`` is the Fluent release number such as
-``231`` for release 2022 R2.  PyFluent automatically uses this environment
+``231`` for release 2023 R1.  PyFluent automatically uses this environment
 variable to locate the Fluent installation. On Linux systems configure
 ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
-``/apps/ansys_inc/v231``.  
+``/apps/ansys_inc/v231``.
 
 To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
 ``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install
