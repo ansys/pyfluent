@@ -33,7 +33,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
     # Step 2: Launch fluent session and read case file with and without data file
     solver_session = load_mixing_elbow_param_case_dat
-    assert solver_session.check_health() == "SERVING"
+    assert solver_session.health_check_service.is_serving
     case_path = str(Path(pyfluent.EXAMPLES_PATH) / "elbow_param.cas.h5")
     solver_session.tui.file.read_case_data(case_path)
 
@@ -102,7 +102,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 
 @pytest.mark.optislang
 @pytest.mark.integration
-def test_generate_read_mesh(mixing_elbow_geometry):
+def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
 
     """
     Use case 2: This optiSLang integration test performs these steps
@@ -122,9 +122,9 @@ def test_generate_read_mesh(mixing_elbow_geometry):
 
     # Step 2: Launch fluent session in meshing mode
     session = pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
+        mode="meshing", precision="double", processor_count=2
     )
-    assert session.check_health() == "SERVING"
+    assert session.health_check_service.is_serving
     temporary_resource_path = os.path.join(
         pyfluent.EXAMPLES_PATH, "test_generate_read_mesh_resources"
     )

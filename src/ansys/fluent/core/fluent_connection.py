@@ -66,9 +66,12 @@ class _FluentConnection:
 
     Methods
     -------
+    get_current_fluent_mode()
+        Gets the mode of the current instance of Fluent (meshing or
+        solver).
 
-    check_health()
-        Check health of Fluent connection
+    get_fluent_version()
+        Gets and returns the fluent version.
 
     exit()
         Close the Fluent connection and exit Fluent.
@@ -151,10 +154,10 @@ class _FluentConnection:
             [("password", password)] if password else []
         )
 
-        self._health_check_service = HealthCheckService(self._channel, self._metadata)
+        self.health_check_service = HealthCheckService(self._channel, self._metadata)
 
         counter = 0
-        while self.check_health() != "SERVING":
+        while not self.health_check_service.is_serving:
             time.sleep(1)
             counter += 1
             if counter > start_timeout:
@@ -261,13 +264,8 @@ class _FluentConnection:
 
     def check_health(self) -> str:
         """Check health of Fluent connection."""
-        if self._channel:
-            try:
-                return self._health_check_service.check_health()
-            except Exception:
-                return HealthCheckService.Status.NOT_SERVING.name
-        else:
-            return HealthCheckService.Status.NOT_SERVING.name
+        warnings.warn("Use -> health_check_service.status()", DeprecationWarning)
+        return self.health_check_service.status()
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
