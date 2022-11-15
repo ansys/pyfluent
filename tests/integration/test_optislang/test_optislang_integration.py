@@ -122,7 +122,7 @@ def test_generate_read_mesh(mixing_elbow_geometry):
 
     # Step 2: Launch fluent session in meshing mode
     session = pyfluent.launch_fluent(
-        meshing_mode=True, precision="double", processor_count=2
+        mode="meshing", precision="double", processor_count=2
     )
     assert session.health_check_service.is_serving
     temporary_resource_path = os.path.join(
