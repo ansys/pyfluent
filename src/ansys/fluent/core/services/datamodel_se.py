@@ -620,6 +620,7 @@ class PyCommand:
         self.service = service
         self.rules = rules
         self.command = command
+        self.stored_static_info = {}
         if path is None:
             self.path = []
         else:
@@ -661,15 +662,16 @@ class PyCommand:
         response = self.service.create_command_arguments(request)
         return response.commandid
 
-    def _get_static_info(self):
+    def _generate_static_info(self):
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.rules = self.rules
         response = self.service.get_static_info(request)
-        return response.info
+        self.stored_static_info = response.info
 
     def new(self):
         try:
-            static_info = self._get_static_info()
+            if not self.stored_static_info:
+                self._generate_static_info()
             id = self._create_command_arguments()
             return PyCommandArguments(
                 self.service,
@@ -677,7 +679,7 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                static_info,
+                self.stored_static_info,
             )
         except RuntimeError:
             warnings.warn(
