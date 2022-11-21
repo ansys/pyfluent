@@ -13,7 +13,6 @@ from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
 Path = List[Tuple[str, str]]
-STATIC_INFO = ["rules", {}]
 
 
 class Attribute(Enum):
@@ -614,6 +613,7 @@ class PyCommand:
     """
 
     docstring = None
+    stored_static_info = {}
 
     def __init__(
         self, service: DatamodelService, rules: str, command: str, path: Path = None
@@ -663,16 +663,15 @@ class PyCommand:
         return response.commandid
 
     def _generate_static_info(self):
-        if not STATIC_INFO[0] == self.rules:
-            request = DataModelProtoModule.GetStaticInfoRequest()
-            request.rules = self.rules
-            response = self.service.get_static_info(request)
-            STATIC_INFO[0] = self.rules
-            STATIC_INFO[1] = response.info
+        request = DataModelProtoModule.GetStaticInfoRequest()
+        request.rules = self.rules
+        response = self.service.get_static_info(request)
+        PyCommand.stored_static_info = response.info
 
     def new(self):
         try:
-            self._generate_static_info()
+            if not PyCommand.stored_static_info:
+                self._generate_static_info()
             id = self._create_command_arguments()
             return PyCommandArguments(
                 self.service,
@@ -680,7 +679,7 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                STATIC_INFO[1],
+                PyCommand.stored_static_info,
             )
         except RuntimeError:
             warnings.warn(
