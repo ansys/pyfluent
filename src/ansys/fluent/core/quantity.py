@@ -625,9 +625,9 @@ class Quantity(float):
     def type(self):
         return self._type
 
-    # @value.setter
-    # def type(self, type_str):
-    #     self._type = type_str
+    @type.setter
+    def type(self, type_str):
+        self._type = type_str
 
     def is_dimensionless(self):
         return all([value == 0 for value in self.get_dimensions_list()])
