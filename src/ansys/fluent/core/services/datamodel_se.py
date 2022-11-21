@@ -613,7 +613,7 @@ class PyCommand:
     """
 
     docstring = None
-    stored_static_info = {}
+    _stored_static_info = {}
 
     def __init__(
         self, service: DatamodelService, rules: str, command: str, path: Path = None
@@ -666,11 +666,11 @@ class PyCommand:
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.rules = self.rules
         response = self.service.get_static_info(request)
-        PyCommand.stored_static_info = response.info
+        PyCommand._stored_static_info = response.info
 
     def new(self):
         try:
-            if not PyCommand.stored_static_info:
+            if not PyCommand._stored_static_info:
                 self._generate_static_info()
             id = self._create_command_arguments()
             return PyCommandArguments(
@@ -679,7 +679,7 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                PyCommand.stored_static_info,
+                PyCommand._stored_static_info,
             )
         except RuntimeError:
             warnings.warn(
