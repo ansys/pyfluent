@@ -367,6 +367,17 @@ class Unit(object):
             self._si_offset = 0
             self._offset_power = 1.0
 
+    def _quantity_type(self):
+        temperature_units = ["K", "C", "F", "R"]
+        qty_type = ""
+        for temp_unit in temperature_units:
+            unit_power = Unit._power_sum(temp_unit, self._unit)
+            if temp_unit in self._unit and unit_power == 1.0:
+                qty_type = "Temperature"
+            elif temp_unit in self._unit and unit_power not in [0.0, 1.0]:
+                qty_type = "Temperature Difference"
+        return qty_type
+
 
 class Dimension(object):
     def __init__(self, unit_str):
@@ -586,6 +597,7 @@ class Quantity(float):
             self._unit.si_factor * self._value + self._unit.si_offset
         ) ** self._unit.offset_power
         self._si_unit = self._unit.si_unit
+        self._type = self._unit._quantity_type()
 
     def __new__(cls, real_value, unit_str):
         _unit = Unit(unit_str)
@@ -608,6 +620,14 @@ class Quantity(float):
     @property
     def dimension(self):
         return self._dimension
+
+    @property
+    def type(self):
+        return self._type
+
+    # @value.setter
+    # def type(self, type_str):
+    #     self._type = type_str
 
     def is_dimensionless(self):
         return all([value == 0 for value in self.get_dimensions_list()])

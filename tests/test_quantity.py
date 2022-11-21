@@ -659,6 +659,29 @@ def test_temp_inverse_64():
     assert float(f_inverse) == pytest.approx(0.0038614183298438984, DELTA)
 
 
+def test_temp_type_65():
+    c0 = q.Quantity(1.0, "C")
+    assert c0.type == "Temperature"
+
+    c1 = q.Quantity(1.0, "J kg^-1 C^-1")
+    assert c1.type == "Temperature Difference"
+
+    c2 = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
+    assert c2.type == "Temperature Difference"
+
+    c4 = q.Quantity(1.0, "F")
+    assert c4.type == "Temperature"
+
+    c6 = q.Quantity(1.0, "F^1")
+    assert c6.type == "Temperature"
+
+    c7 = q.Quantity(1.0, "F^-1")
+    assert c7.type == "Temperature Difference"
+
+    c8 = q.Quantity(1.0, "F^2")
+    assert c8.type == "Temperature Difference"
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
