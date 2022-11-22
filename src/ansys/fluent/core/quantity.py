@@ -47,6 +47,10 @@ class _UnitsTable(object):
         "ohm": "kg m^2 s^-3 A^-2",
         "Hz": "s^-1",
         "cal": "J",
+        "delta_K": "K^-1",
+        "delta_C": "C^-1",
+        "delta_F": "F^-1",
+        "delta_R": "R^-1",
     }
 
     derived_units_with_conversion_factor = {
@@ -374,6 +378,8 @@ class Unit(object):
             unit_power = Unit._power_sum(temp_unit, self._unit)
             if temp_unit in self._unit and unit_power == 1.0:
                 qty_type = "Temperature"
+            elif "delta" in self._unit:
+                qty_type = "Temperature Difference"
             elif temp_unit in self._unit and unit_power not in [0.0, 1.0]:
                 qty_type = "Temperature Difference"
         return qty_type
@@ -761,6 +767,8 @@ class Quantity(float):
 
     def __sub__(self, other):
         self.validate_matching_dimensions(other)
+        if self.type == "Temperature" and other.type == "Temperature":
+            return Quantity(float(self) - float(other), "K^-1")
         temp_value = float(self) - float(other)
         return Quantity(temp_value, self._si_unit)
 

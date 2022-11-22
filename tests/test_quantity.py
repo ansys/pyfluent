@@ -682,6 +682,40 @@ def test_temp_type_65():
     assert c8.type == "Temperature Difference"
 
 
+def test_time_difference_66():
+    td1 = q.Quantity(150.0, "delta_C")
+    assert td1.type == "Temperature Difference"
+
+    td2 = q.Quantity(100.0, "delta_C")
+    assert td2.type == "Temperature Difference"
+
+    td = td1 - td2
+    assert td.type == "Temperature Difference"
+
+    td_m = td * 2
+    assert td_m.type == "Temperature Difference"
+
+    t1 = q.Quantity(150.0, "C")
+    assert t1.type == "Temperature"
+
+    t2 = q.Quantity(100.0, "C")
+    assert t2.type == "Temperature"
+
+    td = t1 - t2
+    assert td.type == "Temperature Difference"
+
+    td2 = t2 - t1
+    assert td2.type == "Temperature Difference"
+
+    tc1 = q.Quantity(100.0, "C")
+    td1 = q.Quantity(50.0, "C^-1")
+
+    try:
+        t = tc1 + td1
+    except q.QuantityError as e:
+        assert e.type_error == q.QuantityError().type_error
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
