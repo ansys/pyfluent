@@ -43,6 +43,19 @@ class HealthCheckService:
         response = self.__stub.Check(request, metadata=self.__metadata)
         return HealthCheckService.Status(response.status).name
 
+    @catch_grpc_error
+    def watch_health(self) -> str:
+        """Keeps a note of the health of the Fluent connection.
+
+        Returns
+        -------
+        str - streams the output string
+            "SERVING" or "NOT_SERVING"
+        """
+        request = HealthCheckModule.HealthCheckRequest()
+        response = self.__stub.Watch(request, metadata=self.__metadata)
+        return HealthCheckService.Status(response.next().status).name
+
     def status(self) -> str:
         """Check health of Fluent connection."""
         if self._channel:
