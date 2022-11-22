@@ -137,7 +137,7 @@ class CaseReader:
             else:
                 raise RuntimeError("Please provide a valid fluent project file path")
         try:
-            if "".join(Path(case_filepath).suffixes) == ".cas.h5":
+            if "".join(Path(case_filepath).suffixes[-2:]) == ".cas.h5":
                 file = h5py.File(case_filepath)
                 settings = file["settings"]
                 rpvars = settings["Rampant Variables"][0]
@@ -146,7 +146,7 @@ class CaseReader:
                 with open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)
-            elif "".join(Path(case_filepath).suffixes) == ".cas.gz":
+            elif "".join(Path(case_filepath).suffixes[-2:]) == ".cas.gz":
                 with gzip.open(case_filepath, "rb") as file:
                     rp_vars_str = file.read()
                 rp_vars_str = _get_processed_string(rp_vars_str)

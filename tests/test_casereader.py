@@ -72,6 +72,22 @@ def test_casereader_static_mixer_binary_gz():
     )
 
 
+def test_casereader_with_dot_in_filepath_binary_gz():
+    call_casereader_static_mixer(
+        case_filepath=examples.download_file(
+            "Static_Mixer_Parameters.xxx.cas.gz", "pyfluent/static_mixer"
+        )
+    )
+
+
+def test_casereader_with_dot_in_filepath_h5():
+    call_casereader_static_mixer(
+        case_filepath=examples.download_file(
+            "Static_Mixer_Parameters.xxxx.cas.h5", "pyfluent/static_mixer"
+        )
+    )
+
+
 def test_casereader_static_mixer_text_cas():
     call_casereader_static_mixer(
         case_filepath=examples.download_file(
