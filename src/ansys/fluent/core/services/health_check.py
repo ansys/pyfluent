@@ -44,17 +44,23 @@ class HealthCheckService:
         return HealthCheckService.Status(response.status).name
 
     @catch_grpc_error
-    def watch_health(self) -> str:
-        """Keeps a note of the health of the Fluent connection.
+    def wait_for_server(self, timeout) -> None:
+        """Keeps a watch on the health of the Fluent connection.
 
-        Returns
-        -------
-        str - streams the output string
-            "SERVING" or "NOT_SERVING"
+        response changes only when the service's serving status changes.
         """
         request = HealthCheckModule.HealthCheckRequest()
-        response = self.__stub.Watch(request, metadata=self.__metadata)
-        return HealthCheckService.Status(response.next().status).name
+        responses = self.__stub.Watch(
+            request, metadata=self.__metadata, timeout=timeout
+        )
+
+        while True:
+            try:
+                response = next(responses)
+                if response.status == 1:
+                    responses.cancel()
+            except Exception:
+                break
 
     def status(self) -> str:
         """Check health of Fluent connection."""

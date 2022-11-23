@@ -2,7 +2,6 @@ from ctypes import c_int, sizeof
 import itertools
 import os
 import threading
-import time
 from typing import Callable, List, Optional, Tuple
 import warnings
 import weakref
@@ -156,13 +155,12 @@ class _FluentConnection:
 
         self.health_check_service = HealthCheckService(self._channel, self._metadata)
 
-        start_time = time.time()
-        while not self.health_check_service.watch_health() == "SERVING":
-            end_time = time.time()
-            if (end_time - start_time) > start_timeout:
-                raise RuntimeError(
-                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
-                )
+        try:
+            self.health_check_service.wait_for_server(timeout=start_timeout)
+        except RuntimeError:
+            raise RuntimeError(
+                f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
+            )
 
         self._id = f"session-{next(_FluentConnection._id_iter)}"
 
