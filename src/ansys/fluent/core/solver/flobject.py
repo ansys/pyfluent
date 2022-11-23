@@ -573,7 +573,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def get_object_names(self):
         """Object names."""
-        return self.flproxy.get_object_names(self.path)
+        obj_names = self.flproxy.get_object_names(self.path)
+        obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
+        return obj_names_list
 
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():

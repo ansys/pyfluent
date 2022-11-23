@@ -613,6 +613,7 @@ class PyCommand:
     """
 
     docstring = None
+    _stored_static_info = {}
 
     def __init__(
         self, service: DatamodelService, rules: str, command: str, path: Path = None
@@ -662,10 +663,17 @@ class PyCommand:
         return response.commandid
 
     def _get_static_info(self):
-        request = DataModelProtoModule.GetStaticInfoRequest()
-        request.rules = self.rules
-        response = self.service.get_static_info(request)
-        return response.info
+        if self.rules not in PyCommand._stored_static_info.keys():
+            # Populate the static info with respect to a rules only if the
+            # same info has not been obtained in another context already.
+            # If the information is available, we can use it without additional remote calls.
+            # TODO: We need to coordinate the code so that the global infos are commonly
+            #  available in all contexts (without additional remote calls)
+            request = DataModelProtoModule.GetStaticInfoRequest()
+            request.rules = self.rules
+            response = self.service.get_static_info(request)
+            PyCommand._stored_static_info[self.rules] = response.info
+        return PyCommand._stored_static_info[self.rules]
 
     def new(self):
         try:
