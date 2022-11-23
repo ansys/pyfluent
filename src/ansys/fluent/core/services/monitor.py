@@ -12,10 +12,6 @@ class MonitorsService(StreamingService):
     """Class wrapping the monitor gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
-        self.__stub = MonitorGrpcModule.MonitorStub(channel)
-        self.__metadata = metadata
-        self._streams = None
-
         super().__init__(
             stub=MonitorGrpcModule.MonitorStub(channel),
             request=MonitorModule.StreamingRequest(),

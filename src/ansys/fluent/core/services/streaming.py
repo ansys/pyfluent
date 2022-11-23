@@ -16,23 +16,23 @@ class StreamingService:
     """
 
     def __init__(self, stub, request, metadata: List[Tuple[str, str]]):
-        self.__stub = stub
-        self.__metadata = metadata
+        self._stub = stub
+        self._metadata = metadata
         self.request = request
-        self.__streams = None
+        self._streams = None
 
     def begin_streaming(self, started_evt) -> Generator:
         """Begin streaming from Fluent."""
         request = self.request
-        self.__streams = self.__stub.BeginStreaming(request, metadata=self.__metadata)
+        self._streams = self._stub.BeginStreaming(request, metadata=self._metadata)
         started_evt.set()
         while True:
             try:
-                yield next(self.__streams)
+                yield next(self._streams)
             except Exception:
                 break
 
     def end_streaming(self) -> None:
         """End streaming from Fluent."""
-        if self.__streams and not self.__streams.cancelled():
-            self.__streams.cancel()
+        if self._streams and not self._streams.cancelled():
+            self._streams.cancel()
