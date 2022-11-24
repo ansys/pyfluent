@@ -648,7 +648,7 @@ def test_temp_inverse_63():
     assert float(c) == 275.15
 
     c_inverse = q.Quantity(2.0, "C^-1")
-    assert float(c_inverse) == pytest.approx(0.003634381246592768, DELTA)
+    assert float(c_inverse) == 2.0
 
 
 def test_temp_inverse_64():
@@ -656,7 +656,7 @@ def test_temp_inverse_64():
     assert float(f) == pytest.approx(256.483311, DELTA)
 
     f_inverse = q.Quantity(2.0, "F^-1")
-    assert float(f_inverse) == pytest.approx(0.0038614183298438984, DELTA)
+    assert float(f_inverse) == pytest.approx(3.5999999999999996, DELTA)
 
 
 def test_temp_type_65():
@@ -682,7 +682,7 @@ def test_temp_type_65():
     assert c8.type == "Temperature Difference"
 
 
-def test_time_difference_66():
+def test_temp_difference_66():
     td1 = q.Quantity(150.0, "delta_C")
     assert td1.type == "Temperature Difference"
 
@@ -693,7 +693,7 @@ def test_time_difference_66():
     assert td.type == "Temperature Difference"
 
     td_m = td * 2
-    assert td_m.type == "Temperature Difference"
+    assert td_m.type == "Temperature"
 
     t1 = q.Quantity(150.0, "C")
     assert t1.type == "Temperature"
@@ -714,6 +714,65 @@ def test_time_difference_66():
         t = tc1 + td1
     except q.QuantityError as e:
         assert e.type_error == q.QuantityError().type_error
+
+
+def test_core_temp_67():
+    t1 = q.Quantity(1.0, "K")
+    assert float(t1) == 1.0
+    assert t1.type == "Temperature"
+
+    t2 = q.Quantity(2.0, "K")
+    assert float(t2) == 2.0
+    assert t2.type == "Temperature"
+
+    dt1 = t2 - t1
+    assert float(dt1) == 1.0
+    assert dt1.type == "Temperature Difference"
+
+    t3 = q.Quantity(1.0, "C")
+    assert float(t3) == 274.15
+    assert t3.type == "Temperature"
+
+    t4 = q.Quantity(2.0, "C")
+    assert float(t4) == 275.15
+    assert t4.type == "Temperature"
+
+    dt2 = t4 - t3
+    assert float(dt2) == 1.0
+    assert dt2.type == "Temperature Difference"
+
+    invt1 = q.Quantity(1.0, "K^-1")
+    assert float(invt1) == 1.0
+    assert invt1.type == "Temperature Difference"
+
+    dt3 = 1.0 / invt1
+    assert float(dt3) == 1.0
+    assert dt1.type == dt2.type == dt3.type
+
+    invt2 = q.Quantity(1.0, "C^-1")
+    assert float(invt2) == 1.0
+    assert invt2.type == "Temperature Difference"
+
+    dt4 = 1.0 / invt2
+    assert float(dt4) == 1.0
+    assert dt4.type == "Temperature Difference"
+
+
+def test_temp_addition_68():
+    t1 = q.Quantity(150.0, "C")
+    t2 = q.Quantity(50.0, "C")
+
+    td = t1 - t2
+    assert td.type == "Temperature Difference"
+    assert float(td) == 100.0
+    assert td.unit == "delta_K"
+
+    kd = q.Quantity(50.0, "delta_C")
+    k = q.Quantity(50.0, "K")
+
+    t = k + kd
+    assert float(t) == 100.0
+    assert t.type == "Temperature"
 
 
 def testing_dimensions():

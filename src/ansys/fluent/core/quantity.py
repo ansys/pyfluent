@@ -47,10 +47,10 @@ class _UnitsTable(object):
         "ohm": "kg m^2 s^-3 A^-2",
         "Hz": "s^-1",
         "cal": "J",
-        "delta_K": "K^-1",
-        "delta_C": "C^-1",
-        "delta_F": "F^-1",
-        "delta_R": "R^-1",
+        "delta_K": "K",
+        "delta_C": "C",
+        "delta_F": "F",
+        "delta_R": "R",
     }
 
     derived_units_with_conversion_factor = {
@@ -120,6 +120,10 @@ class _UnitsTable(object):
         "C": 1,
         "F": 0.5555555555555556,
         "R": 0.5555555555555556,
+        "delta_K": 1,
+        "delta_C": 1,
+        "delta_F": 0.5555555555555556,
+        "delta_R": 0.5555555555555556,
     }
 
     si_map = {
@@ -361,10 +365,10 @@ class Unit(object):
             return 1.0
 
     def _compute_offset(self, unit_str):
-        if "C" in unit_str:
+        if unit_str == "C":
             self._si_offset = 273.15
             self._offset_power = self._power_sum("C", unit_str)
-        elif "F" in unit_str:
+        elif unit_str == "F":
             self._si_offset = 255.3722
             self._offset_power = self._power_sum("F", unit_str)
         else:
@@ -767,8 +771,11 @@ class Quantity(float):
 
     def __sub__(self, other):
         self.validate_matching_dimensions(other)
-        if self.type == "Temperature" and other.type == "Temperature":
-            return Quantity(float(self) - float(other), "K^-1")
+        temp_types = ["Temperature", "Temperature Difference"]
+        if self.type in temp_types and other.type in temp_types:
+            result = Quantity(float(self) - float(other), "delta_K")
+            result.type = "Temperature Difference"
+            return result
         temp_value = float(self) - float(other)
         return Quantity(temp_value, self._si_unit)
 
