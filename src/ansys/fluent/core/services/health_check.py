@@ -47,7 +47,7 @@ class HealthCheckService:
     def wait_for_server(self, timeout) -> None:
         """Keeps a watch on the health of the Fluent connection.
 
-        response changes only when the service's serving status changes.
+        Response changes only when the service's serving status changes.
         """
         request = HealthCheckModule.HealthCheckRequest()
         responses = self._stub.Watch(request, metadata=self._metadata, timeout=timeout)
@@ -57,8 +57,10 @@ class HealthCheckService:
                 response = next(responses)
                 if response.status == 1:
                     responses.cancel()
-            except Exception:
-                break
+            except Exception as e:
+                if e.details() == "Locally cancelled by application!":
+                    break
+                raise
 
     def status(self) -> str:
         """Check health of Fluent connection."""

@@ -157,10 +157,12 @@ class _FluentConnection:
 
         try:
             self.health_check_service.wait_for_server(timeout=start_timeout)
-        except RuntimeError:
-            raise RuntimeError(
-                f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
-            )
+        except RuntimeError as e:
+            if e.args[0] == "Deadline Exceeded":
+                raise TimeoutError(
+                    f"The connection to the Fluent server could not be established within the configurable {start_timeout} second time limit."
+                )
+            raise
 
         self._id = f"session-{next(_FluentConnection._id_iter)}"
 
