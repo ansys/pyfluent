@@ -58,7 +58,7 @@ class HealthCheckService:
                 if response.status == 1:
                     responses.cancel()
             except Exception as e:
-                if e.details() == "Locally cancelled by application!":
+                if e.code() == grpc.StatusCode.CANCELLED:
                     break
                 raise
 
