@@ -520,6 +520,118 @@ def test_power_56():
     assert qtm.unit == ""
 
 
+def test_ge_57():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert y >= x
+    assert 15.7 >= r
+    assert r >= 7.8
+
+    with pytest.raises(ValueError) as e_info:
+        assert x >= z
+        assert x >= y
+        assert 5.0 >= r
+
+    with pytest.raises(TypeError) as e_info:
+        assert x >= 5.0
+
+
+def test_gt_59():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert y > x
+    assert 15.7 > r
+    assert r > 7.8
+
+    with pytest.raises(ValueError) as e_info:
+        assert x > z
+        assert x > y
+        assert 5.0 > r
+
+    with pytest.raises(TypeError) as e_info:
+        assert x > 5.0
+
+
+def test_lt_59():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert x < y
+    assert r < 15.7
+    assert 7.8 < r
+
+    with pytest.raises(ValueError) as e_info:
+        assert z < x
+        assert y < x
+        assert r < 0.5
+
+    with pytest.raises(TypeError) as e_info:
+        assert 5.0 < x
+
+
+def test_le_60():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert x <= y
+    assert r <= 15.7
+    assert 7.8 <= r
+
+    with pytest.raises(ValueError) as e_info:
+        assert z <= x
+        assert y <= x
+        assert r <= 0.5
+
+    with pytest.raises(TypeError) as e_info:
+        assert 5.0 <= x
+
+
+def test_eq_61():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    l = q.Quantity(10.5, "cm")
+    m = q.Quantity(10.5, "m")
+    n = q.Quantity(10.5, "")
+
+    assert x == l
+    assert y == m
+    assert r == n
+
+    with pytest.raises(ValueError) as e_info:
+        assert z == x
+        assert y == x
+        assert r == 0.5
+
+    with pytest.raises(TypeError) as e_info:
+        assert 5.0 == x
+
+
+def test_neq_62():
+    x = q.Quantity(10.5, "cm")
+    y = q.Quantity(10.5, "m")
+    z = q.Quantity(10.5, "g")
+    r = q.Quantity(10.5, "")
+
+    assert y != x
+    assert x != y
+
+    assert r != 0.5
+    assert 0.5 != r
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -636,7 +748,7 @@ def testing_arithmetic_operators():
     try:
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
-    except ValueError as ve:
+    except TypeError as ve:
         print(ve)
 
     try:
@@ -654,7 +766,7 @@ def testing_arithmetic_operators():
     try:
         result7 = qt1 - 2
         print(f"{qt1} - {2} =  {result7}")
-    except ValueError as ve:
+    except TypeError as ve:
         print(ve)
 
     try:
@@ -672,22 +784,25 @@ def testing_properties():
     print(f"unit = {v.unit}")
     print(f"si value = {v._si_value}")
     print(f"si unit = {v._si_unit}")
-    print(f"is dimensionless? = {v.is_dimension_less()}")
+    print(f"is dimensionless? = {v.is_dimensionless()}")
     print(f"dimensions = {v.get_dimensions_list()}")
 
     qt1 = q.Quantity(10, "m s^-1")
     qt2 = q.Quantity(5, "m s^-1")
 
 
-# if __name__ == "__main__":
-# test_value_unit_1()
-# testing_dimensions()
-# testing_multipliers()
-# testing_to_systems()
-# testing_arithmetic_operators()
-# testing_properties()
+if __name__ == "__main__":
+    test_value_unit_1()
+    testing_dimensions()
+    testing_multipliers()
+    testing_to_systems()
+    testing_arithmetic_operators()
+    testing_properties()
 
-# x = q.Quantity(1, "ft")
-# print(
-#     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-# )
+    x = q.Quantity(1, "ft")
+    print(
+        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    )
+
+    c = q.Quantity(1.0, "C")
+    print(float(c))

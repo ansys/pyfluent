@@ -13,10 +13,9 @@ import ansys.fluent.core as pyfluent
 def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session = load_mixing_elbow_mesh
     assert solver_session._root.is_active()
-    assert solver_session.check_health() == "SERVING"
+    assert solver_session.health_check_service.is_serving
     file_path = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
-    solver_session.setup_python_console_in_tui()
-    solver_session.start_journal(file_path.as_posix())
+    solver_session.journal.start(file_path.as_posix())
     ###
     assert not solver_session.setup.models.energy.enabled()
     assert solver_session.scheme_eval.scheme_eval("(case-valid?)")
@@ -70,7 +69,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
     solver_session.file.auto_save.root_name = "file_auto_save"
     assert solver_session.file.auto_save.root_name() == "file_auto_save"
     solver_session.setup.reference_values.compute(from_zone_name="outlet")
-    solver_session.stop_journal()
+    solver_session.journal.stop()
     solver_session.tui.file.read_journal(file_path.as_posix())
     assert solver_session.file.auto_save.root_name() == "file_auto_save"
     assert solver_session.setup.general.solver.type() == "pressure-based"
@@ -86,7 +85,7 @@ def test_solver_import_mixingelbow(load_mixing_elbow_mesh):
 def test_disk_2d_setup(load_disk_mesh):
     session = load_disk_mesh
     assert session._root.get_attr("active?")
-    assert session.check_health() == "SERVING"
+    assert session.health_check_service.is_serving
     ###
     assert not session.setup.models.energy.enabled()
     assert session.scheme_eval.scheme_eval("(case-valid?)")

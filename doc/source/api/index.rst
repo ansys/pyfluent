@@ -15,14 +15,14 @@ Launching Fluent
 This component provides access to starting Fluent locally in 
 server mode or connecting to a running Fluent server instance.
 
-Pythonic utilities
-------------------
+PyFluent utility functions
+--------------------------
 
 This component consists solely of a function to allow for 
 asynchronous execution.
 
-Meshing mode
-------------
+Meshing
+-------
 
 The meshing mode is dedicated to capturing the capabilities of 
 the Fluent Meshing guided workflows and associated tools. This component 
@@ -30,8 +30,8 @@ consists of an interface that is derived from the Fluent (meshing)
 TUI, as well as a meshing workflow interface that manages workflow 
 tasks, meshing functions, and part management.
 
-Solver mode
------------
+Solver
+------
 
 The solver mode is dedicated to capturing the power of the 
 Fluent solver. This component consists of a :ref:`ref_settings`-based 
