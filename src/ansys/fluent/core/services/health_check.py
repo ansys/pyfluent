@@ -57,6 +57,8 @@ class HealthCheckService:
                 response = next(responses)
                 if response.status == 1:
                     responses.cancel()
+            except StopIteration:
+                break
             except Exception as e:
                 if e.code() == grpc.StatusCode.CANCELLED:
                     break
