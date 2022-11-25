@@ -60,6 +60,10 @@ class HealthCheckService:
             except Exception as e:
                 if e.code() == grpc.StatusCode.CANCELLED:
                     break
+                if e.code() == grpc.StatusCode.DEADLINE_EXCEEDED:
+                    raise TimeoutError(
+                        f"The connection to the Fluent server could not be established within the configurable {timeout} second time limit."
+                    )
                 raise
 
     def status(self) -> str:
