@@ -252,7 +252,7 @@ class SettingsBase(Base, Generic[StateT]):
 
     @staticmethod
     def _list_children(cls, identifier, path, list_of_children):
-        if issubclass(cls, NamedObject):
+        if issubclass(cls, (NamedObject, ListObject)):
             if hasattr(cls.child_object_type, "child_names"):
                 SettingsBase._get_child_path(
                     cls.child_object_type, path, identifier, list_of_children
