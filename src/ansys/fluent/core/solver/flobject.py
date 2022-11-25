@@ -142,22 +142,32 @@ class Base:
         """Get the requested attributes for the object."""
         return self.flproxy.get_attrs(self.path, attrs)
 
-    def get_attr(self, attr) -> Any:
+    def get_attr(self, attr, attr_type_or_types=None) -> Any:
         """Get the requested attribute for the object."""
         attrs = self.get_attrs([attr])
         if attrs:
             attrs = attrs.get("attrs", attrs)
         if attr != "active?" and attrs and attrs.get("active?", True) is False:
             raise RuntimeError("Object is not active")
-        return attrs[attr] if attrs else None
+        val = None
+        if attrs:
+            val = attrs[attr]
+
+        if attr_type_or_types:
+            if not type(attr_type_or_types) == tuple:
+                attr_type_or_types = (attr_type_or_types,)
+            if type(val) in attr_type_or_types:
+                return val
+            return None
+        return val
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        return self.get_attr("active?")
+        return self.get_attr("active?", bool)
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
-        return self.get_attr("read-only?")
+        return self.get_attr("read-only?", bool)
 
     def __setattr__(self, name, value):
         raise AttributeError(name)
@@ -184,11 +194,13 @@ class Numerical(Property):
 
     def min(self):
         """Get the minimum value of the object."""
-        return self.get_attr("min")
+        val = self.get_attr("min", (float, int))
+        return None if isinstance(val, bool) else val
 
     def max(self):
         """Get the maximum value of the object."""
-        return self.get_attr("max")
+        val = self.get_attr("max", (float, int))
+        return None if isinstance(val, bool) else val
 
 
 class Textual(Property):
@@ -196,7 +208,7 @@ class Textual(Property):
 
     def allowed_values(self):
         """Get the allowed values of the object."""
-        return self.get_attr("allowed-values")
+        return self.get_attr("allowed-values", (list, str))
 
 
 class SettingsBase(Base, Generic[StateT]):
@@ -591,7 +603,9 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def get_object_names(self):
         """Object names."""
-        return self.flproxy.get_object_names(self.path)
+        obj_names = self.flproxy.get_object_names(self.path)
+        obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
+        return obj_names_list
 
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():

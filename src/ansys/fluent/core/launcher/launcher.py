@@ -142,6 +142,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any]) -> Dict[str, Any]:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
+    fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
     kwargs.update(env=fluent_env)
     return kwargs
 
@@ -350,7 +351,7 @@ def _connect_to_running_server(argvals, server_info_filepath: str):
     elif server_info_filepath:
         ip, port, password = parse_server_info_file(server_info_filepath)
     elif os.getenv("PYFLUENT_FLUENT_IP") and os.getenv("PYFLUENT_FLUENT_PORT"):
-        ip = port = password = None
+        ip = port = None
     else:
         raise RuntimeError(
             "Please provide either ip and port data or server-info file."
@@ -582,13 +583,14 @@ def launch_fluent(
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
-            port = start_fluent_container(
+            port, password = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
             )
             return new_session(
                 fluent_connection=_FluentConnection(
                     start_timeout=start_timeout,
                     port=port,
+                    password=password,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
                 )

@@ -54,7 +54,7 @@ submit questions, report bugs, and request new features.
 Adhere to code style
 --------------------
 PyFluent is compliant with the `PyAnsys code style
-<https://dev.docs.pyansys.com/coding_style/index.html>`_. It uses the tool
+<https://dev.docs.pyansys.com/coding-style/index.html>`_. It uses the tool
 `pre-commit <https://pre-commit.com/>`_ to check the code style. You can
 install and activate this tool with:
 
