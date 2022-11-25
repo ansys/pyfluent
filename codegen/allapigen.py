@@ -2,7 +2,8 @@ import argparse
 import os
 
 import datamodelgen
-import print_fluent_version
+
+# import print_fluent_version
 import settingsgen
 import tuigen
 
@@ -29,7 +30,7 @@ if __name__ == "__main__":
     if args.fluent_path:
         os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
 
-    print_fluent_version.generate()
+    # print_fluent_version.generate()
     tuigen.generate()
     datamodelgen.generate()
     settingsgen.generate()

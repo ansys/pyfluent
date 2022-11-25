@@ -155,7 +155,7 @@ class _FluentConnection:
 
         self.health_check_service = HealthCheckService(self._channel, self._metadata)
 
-        self.health_check_service.wait_for_server(timeout=500)
+        self.health_check_service.wait_for_server(timeout=start_timeout)
 
         self._id = f"session-{next(_FluentConnection._id_iter)}"
 
