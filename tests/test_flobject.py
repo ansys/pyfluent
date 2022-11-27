@@ -725,7 +725,7 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 def test_find_child_from_settings_root():
     from ansys.fluent.core.solver.settings_231.setup import setup
 
-    assert len(setup().find_child()) == 17020
+    assert len(setup().find_child()) == 18514
     assert len(setup().find_child("gen*")) == 9
     assert setup().find_child("general*") == [
         "general",
@@ -749,9 +749,9 @@ def test_find_child_from_settings_root():
 @pytest.mark.dev
 @pytest.mark.fluent_231
 def test_find_child_from_fluent_solver_session(load_static_mixer_case):
-    # setup_children = load_static_mixer_case.setup.find_child()
-    #
-    # assert len(setup_children) == 18514
+    setup_children = load_static_mixer_case.setup.find_child()
+
+    assert len(setup_children) == 18514
 
     viscous = load_static_mixer_case.setup.models.viscous
     assert viscous.find_child("prod*") == [
