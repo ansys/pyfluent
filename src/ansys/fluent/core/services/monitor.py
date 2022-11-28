@@ -12,10 +12,12 @@ class MonitorsService(StreamingService):
     """Class wrapping the monitor gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):
+        self._stub = MonitorGrpcModule.MonitorStub(channel)
+        self._metadata = metadata
         super().__init__(
-            stub=MonitorGrpcModule.MonitorStub(channel),
+            stub=self._stub,
             request=MonitorModule.StreamingRequest(),
-            metadata=metadata,
+            metadata=self._metadata,
         )
 
     def get_monitors_info(self) -> dict:
@@ -32,7 +34,7 @@ class MonitorsService(StreamingService):
         """
         monitors_info = {}
         request = MonitorModule.GetMonitorsRequest()
-        response = self.__stub.GetMonitors(request, metadata=self.__metadata)
+        response = self._stub.GetMonitors(request, metadata=self._metadata)
         for monitor_set in response.monitorset:
             monitor_info = MessageToDict(monitor_set)
             monitors_info[monitor_set.name] = monitor_info
