@@ -11,6 +11,38 @@ from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
+validate_inputs = True
+
+
+class FieldNameError(ValueError):
+    def __init__(self, field_name):
+        self.field_name = field_name
+
+
+class ScalarFieldNameError(FieldNameError):
+    pass
+
+
+class VectorFieldNameError(FieldNameError):
+    pass
+
+
+class SurfaceNameError(ValueError):
+    def __init__(self, surface_name):
+        self.surface_name = surface_name
+
+
+def valid_scalar_field_name(field_name, field_info):
+    if validate_inputs and field_name not in field_info.get_fields_info():
+        raise ScalarFieldNameError(field_name)
+    return field_name
+
+
+def valid_vector_field_name(field_name, field_info):
+    if validate_inputs and field_name not in field_info.get_vector_fields_info():
+        raise VectorFieldNameError(field_name)
+    return field_name
+
 
 class FieldDataService:
     def __init__(self, channel: grpc.Channel, metadata):
@@ -223,7 +255,9 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=field_name,
+                    scalarFieldName=valid_scalar_field_name(
+                        field_name, self._field_info
+                    ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
                     else FieldDataProtoModule.DataLocation.Elements,
@@ -263,7 +297,9 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=field_name,
+                    vectorFieldName=valid_vector_field_name(
+                        field_name, self._field_info
+                    ),
                 )
                 for surface_id in surface_ids
             ]
@@ -421,7 +457,12 @@ def _get_surface_ids(
                     field_info.get_surfaces_info()[surface_name]["surface_id"]
                 )
         elif surface_name:
-            surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
+            try:
+                surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
+            except KeyError as ke:
+                if surface_name not in field_info.get_surfaces_info():
+                    raise SurfaceNameError(surface_name=surface_name)
+                raise ke
         else:
             raise RuntimeError("Please provide either surface names or surface ids.")
     return surface_ids
@@ -697,7 +738,9 @@ class FieldData:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=field_name,
+                    scalarFieldName=valid_scalar_field_name(
+                        field_name, self._field_info
+                    ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
                     else FieldDataProtoModule.DataLocation.Elements,
@@ -746,7 +789,9 @@ class FieldData:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=field_name,
+                    vectorFieldName=valid_vector_field_name(
+                        field_name, self._field_info
+                    ),
                 )
                 for surface_id in surface_ids
             ]
