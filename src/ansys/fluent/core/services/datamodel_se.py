@@ -673,7 +673,7 @@ class PyCommand:
             PyCommand._stored_static_info[self.rules] = response.info
         return PyCommand._stored_static_info[self.rules]
 
-    def new(self):
+    def create_instance(self):
         try:
             static_info = self._get_static_info()
             id = self._create_command_arguments()
