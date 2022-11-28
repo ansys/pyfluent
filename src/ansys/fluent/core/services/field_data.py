@@ -1,6 +1,7 @@
 """Wrappers over FieldData gRPC service of Fluent."""
+import difflib
 from enum import IntEnum
-from functools import reduce
+from functools import partial, reduce
 from typing import Dict, List, Optional, Tuple, Union
 
 import grpc
@@ -16,40 +17,60 @@ from ansys.fluent.core.services.interceptors import TracingInterceptor
 validate_inputs = True
 
 
+def closest_allowed_names(trial_name, allowed_names):
+    f = partial(difflib.get_close_matches, trial_name, allowed_names)
+    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
+
+
+def allowed_name_error_message(context, trial_name, allowed_values):
+    message = f"{trial_name} is not an allowed {context} name.\n"
+    matches = closest_allowed_names(trial_name, allowed_values)
+    if matches:
+        message += f"The most similar names are: {', '.join(matches)}."
+    return message
+
+
 class FieldNameError(ValueError):
     pass
 
 
 class ScalarFieldNameError(FieldNameError):
-    def __init__(self, field_name):
+    def __init__(self, field_name, allowed_values):
         self.field_name = field_name
-        message = f"{field_name} is not an allowed scalar field name."
-        super().__init__(message)
+        super().__init__(
+            allowed_name_error_message("scalar field", field_name, allowed_values)
+        )
 
 
 class VectorFieldNameError(FieldNameError):
-    def __init__(self, field_name):
+    def __init__(self, field_name, allowed_values):
         self.field_name = field_name
-        message = f"{field_name} is not an allowed vector field name."
-        super().__init__(message)
+        super().__init__(
+            allowed_name_error_message("vector field", field_name, allowed_values)
+        )
 
 
 class SurfaceNameError(ValueError):
-    def __init__(self, surface_name):
+    def __init__(self, surface_name, allowed_values):
         self.surface_name = surface_name
-        message = f"{surface_name} is not an allowed surface name."
-        super().__init__(message)
+        super().__init__(
+            allowed_name_error_message("surface", surface_name, allowed_values)
+        )
 
 
 def valid_scalar_field_name(field_name, field_info):
     if validate_inputs and field_name not in field_info.get_fields_info():
-        raise ScalarFieldNameError(field_name)
+        raise ScalarFieldNameError(
+            field_name=field_name, allowed_values=field_info.get_fields_info()
+        )
     return field_name
 
 
 def valid_vector_field_name(field_name, field_info):
     if validate_inputs and field_name not in field_info.get_vector_fields_info():
-        raise VectorFieldNameError(field_name)
+        raise VectorFieldNameError(
+            field_name=field_name, allowed_values=field_info.get_vector_fields_info()
+        )
     return field_name
 
 
@@ -466,12 +487,12 @@ def _get_surface_ids(
                     field_info.get_surfaces_info()[surface_name]["surface_id"]
                 )
         elif surface_name:
-            try:
-                surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
-            except KeyError as ke:
-                if surface_name not in field_info.get_surfaces_info():
-                    raise SurfaceNameError(surface_name=surface_name)
-                raise ke
+            if validate_inputs and surface_name not in field_info.get_surfaces_info():
+                raise SurfaceNameError(
+                    surface_name=surface_name,
+                    allowed_values=field_info.get_surfaces_info(),
+                )
+            surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
         else:
             raise RuntimeError("Please provide either surface names or surface ids.")
     return surface_ids
