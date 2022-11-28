@@ -11,25 +11,34 @@ from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
+# this can be switched to False where the field_data request inputs are
+# fed by results of field_info queries
 validate_inputs = True
 
 
 class FieldNameError(ValueError):
-    def __init__(self, field_name):
-        self.field_name = field_name
+    pass
 
 
 class ScalarFieldNameError(FieldNameError):
-    pass
+    def __init__(self, field_name):
+        self.field_name = field_name
+        message = f"{field_name} is not an allowed scalar field name."
+        super().__init__(message)
 
 
 class VectorFieldNameError(FieldNameError):
-    pass
+    def __init__(self, field_name):
+        self.field_name = field_name
+        message = f"{field_name} is not an allowed vector field name."
+        super().__init__(message)
 
 
 class SurfaceNameError(ValueError):
     def __init__(self, surface_name):
         self.surface_name = surface_name
+        message = f"{surface_name} is not an allowed surface name."
+        super().__init__(message)
 
 
 def valid_scalar_field_name(field_name, field_info):

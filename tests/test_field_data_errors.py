@@ -2,7 +2,7 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.services.field_data import FieldNameError, SurfaceNameError
+from ansys.fluent.core.services.field_data import ScalarFieldNameError, SurfaceNameError
 
 
 def test_field_data_errors(new_solver_session) -> None:
@@ -24,6 +24,6 @@ def test_field_data_errors(new_solver_session) -> None:
         )
     assert sne.value.surface_name == "bob"
 
-    with pytest.raises(FieldNameError) as fne:
+    with pytest.raises(ScalarFieldNameError) as fne:
         solver.field_data.get_scalar_field_data(field_name="bentropy", surface_ids=[0])
     assert fne.value.field_name == "bentropy"
