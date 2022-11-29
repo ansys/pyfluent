@@ -190,12 +190,16 @@ class _FluentConnection:
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.settings_service = SettingsService(self._channel, self._metadata)
 
-        self._field_data_service = FieldDataService(self._channel, self._metadata)
-        self.field_info = FieldInfo(self._field_data_service)
-        self.field_data = FieldData(self._field_data_service, self.field_info)
-
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
+
+        self._field_data_service = FieldDataService(self._channel, self._metadata)
+        self.field_info = FieldInfo(self._field_data_service)
+        self.field_data = FieldData(
+            self._field_data_service,
+            self.field_info,
+            lambda: self.scheme_eval.scheme_eval("(data-valid?)"),
+        )
 
         self.journal = Journal(self.scheme_eval)
 
