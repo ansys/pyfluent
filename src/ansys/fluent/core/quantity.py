@@ -47,6 +47,10 @@ class _UnitsTable(object):
         "ohm": "kg m^2 s^-3 A^-2",
         "Hz": "s^-1",
         "cal": "J",
+        "delta_K": "K",
+        "delta_C": "C",
+        "delta_F": "F",
+        "delta_R": "R",
     }
 
     derived_units_with_conversion_factor = {
@@ -116,6 +120,10 @@ class _UnitsTable(object):
         "C": 1,
         "F": 0.5555555555555556,
         "R": 0.5555555555555556,
+        "delta_K": 1,
+        "delta_C": 1,
+        "delta_F": 0.5555555555555556,
+        "delta_R": 0.5555555555555556,
     }
 
     si_map = {
@@ -221,7 +229,9 @@ class Unit(object):
         self._si_multiplier = 1
         self._si_offset = 0
         self._si_unit = ""
+        self._offset_power = 1
         self._compute_multipliers(unit_str, 1)
+        self._compute_offset(unit_str)
         self._reduce_to_si_unit(self._si_unit)
 
     @property
@@ -235,6 +245,14 @@ class Unit(object):
     @property
     def si_unit(self):
         return self._si_unit
+
+    @property
+    def si_offset(self):
+        return self._si_offset
+
+    @property
+    def offset_power(self):
+        return self._offset_power
 
     def __call__(self):
         return self.user_unit
@@ -332,6 +350,43 @@ class Unit(object):
                 self._compute_multipliers(
                     _UnitsTable.derived_units[unit_str], term_power
                 )
+
+    @staticmethod
+    def _power_sum(base, unit_str):
+        if "^" in unit_str:
+            return sum(
+                [
+                    float(term.split("^")[1])
+                    for term in unit_str.split(" ")
+                    if term.split("^")[0] == base
+                ]
+            )
+        else:
+            return 1.0
+
+    def _compute_offset(self, unit_str):
+        if unit_str == "C":
+            self._si_offset = 273.15
+            self._offset_power = self._power_sum("C", unit_str)
+        elif unit_str == "F":
+            self._si_offset = 255.3722
+            self._offset_power = self._power_sum("F", unit_str)
+        else:
+            self._si_offset = 0
+            self._offset_power = 1.0
+
+    def _quantity_type(self):
+        temperature_units = ["K", "C", "F", "R"]
+        qty_type = ""
+        for temp_unit in temperature_units:
+            unit_power = Unit._power_sum(temp_unit, self._unit)
+            if temp_unit in self._unit and unit_power == 1.0:
+                qty_type = "Temperature"
+            elif "delta" in self._unit:
+                qty_type = "Temperature Difference"
+            elif temp_unit in self._unit and unit_power not in [0.0, 1.0]:
+                qty_type = "Temperature Difference"
+        return qty_type
 
 
 class Dimension(object):
@@ -445,7 +500,7 @@ class UnitSystem:
             "SAngle": "sr",
             "": "",
         },
-        "BTU": {
+        "BT": {
             "M": "slug",
             "L": "ft",
             "T": "s",
@@ -459,14 +514,14 @@ class UnitSystem:
         },
     }
 
-    _supported_unit_sys = ("SI", "CGS", "BTU")
+    _supported_unit_sys = ("SI", "CGS", "BT")
 
     def __init__(self, unit_sys):
         self._unit_system = unit_sys.upper()
 
         if self._unit_system not in UnitSystem._supported_unit_sys:
             raise ValueError(
-                "Unsupported unit system, only 'SI', 'CGS', 'BTU' is allowed."
+                "Unsupported unit system, only 'SI', 'CGS', 'BT' is allowed."
             )
 
     def _get_unit_from_dim(self, dim_list):
@@ -497,6 +552,15 @@ class UnitSystem:
         return UnitSystem._dim_to_unit_sys_map[self._unit_system]
 
 
+class QuantityError(ValueError):
+    def __init__(self, from_unit, to_unit):
+        self.from_unit = from_unit
+        self.to_unit = to_unit
+
+    def __str__(self):
+        return f"{self.unit} and {self.to_unit} have incompatible dimensions."
+
+
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units.
@@ -511,14 +575,14 @@ class Quantity(float):
 
     Methods
     -------
-    to(to_unit)
-        Converts to given unit string.
-
-    getDimensions(unit)
+    get_dimensions_list()
         Extracts dimensions from unit.
 
-    isDimensionless()
+    is_dimensionless()
         Determines type of quantity.
+
+    to(to_unit)
+        Converts to given unit string.
 
     Returns
     -------
@@ -532,13 +596,17 @@ class Quantity(float):
         self._value = float(real_value)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
-        self._si_value = self._unit.si_factor * self._value
+        self._si_value = (
+            self._unit.si_factor * self._value + self._unit.si_offset
+        ) ** self._unit.offset_power
         self._si_unit = self._unit.si_unit
-        float.__init__(self._si_value)
+        self._type = self._unit._quantity_type()
 
     def __new__(cls, real_value, unit_str):
         _unit = Unit(unit_str)
-        return float.__new__(cls, _unit.si_factor * real_value)
+        return float.__new__(
+            cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power
+        )
 
     @property
     def value(self):
@@ -555,6 +623,14 @@ class Quantity(float):
     @property
     def dimension(self):
         return self._dimension
+
+    @property
+    def type(self):
+        return self._type
+
+    @type.setter
+    def type(self, type_str):
+        self._type = type_str
 
     def is_dimensionless(self):
         return all([value == 0 for value in self.get_dimensions_list()])
@@ -573,9 +649,7 @@ class Quantity(float):
         to_unit_dim_obj = temp_quantity.dimension
 
         if curr_unit_dim_obj.as_dict() != to_unit_dim_obj.as_dict():
-            raise ValueError(
-                f"Incompatible conversion from {self.unit} : to {to_unit_str}"
-            )
+            raise QuantityError(self.unit, to_unit_str)
         else:
             pass
 
@@ -686,10 +760,15 @@ class Quantity(float):
         return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
-        return super().__add__(other)
+        return Quantity(other, "") + self
 
     def __sub__(self, other):
         self.validate_matching_dimensions(other)
+        temp_types = ["Temperature", "Temperature Difference"]
+        if self.type in temp_types and other.type in temp_types:
+            result = Quantity(float(self) - float(other), "delta_K")
+            result.type = "Temperature Difference"
+            return result
         temp_value = float(self) - float(other)
         return Quantity(temp_value, self._si_unit)
 
