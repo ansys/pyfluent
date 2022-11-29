@@ -16,6 +16,8 @@ r.setup.models.energy.enabled = True
 r.boundary_conditions.velocity_inlet['inlet'].vmag.constant = 20
 """
 import collections
+import difflib
+from functools import partial
 import hashlib
 import importlib
 import keyword
@@ -63,6 +65,31 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
+    f = partial(difflib.get_close_matches, trial_name, allowed_names)
+    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
+
+
+class SettingsChildNotFound(AttributeError):
+    def __init__(self, child: str, matches: List[str]) -> None:
+        self.child = child
+        self.matches = matches
+        message = f"{child} is not an allowed child of TODO."
+        if matches:
+            message += f"\nThe most similar names are: {', '.join(matches)}."
+        super().__init__(message)
+
+
+class SettingsStateNotAllowed(ValueError):
+    def __init__(self, state: str, matches: List[str]) -> None:
+        self.state = state
+        self.matches = matches
+        message = f"{state} is not an allowed value for TODO."
+        if matches:
+            message += f"\nThe most similar allowed values are: {', '.join(matches)}."
+        super().__init__(message)
 
 
 class Base:
@@ -210,6 +237,16 @@ class Textual(Property):
         return self.get_attr("allowed-values", (list, str))
 
 
+"""
+    def _on_set_state_error(self, state: StateT, exception: BaseException):
+        if state and str(exception).startswith("Value is not allowed"):
+            matches = closest_allowed_names(state, self.allowed_values())
+            raise SettingsStateNotAllowed(state, matches)
+        else:
+            super()._on_set_state_error(state, exception)
+"""
+
+
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -253,7 +290,22 @@ class SettingsBase(Base, Generic[StateT]):
         if kwargs:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(kwargs))
         else:
-            return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+            try:
+                return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+            except BaseException as e:
+                # self._on_set_state_error(state, e)
+                if (
+                    state
+                    and hasattr(self, "allowed_values")
+                    and str(e).startswith("Value is not allowed")
+                ):
+                    matches = closest_allowed_names(state, self.allowed_values())
+                    raise SettingsStateNotAllowed(state, matches)
+                else:
+                    raise e
+
+    # def _on_set_state_error(self, state: StateT, exception: BaseException):
+    #    raise exception
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -449,10 +501,15 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def __getattribute__(self, name):
-        if name in super().__getattribute__("child_names"):
+        children = super().__getattribute__("child_names")
+        if name in children:
             if not self.is_active():
                 raise RuntimeError(f"'{self.path}' is currently not active")
-        return super().__getattribute__(name)
+        try:
+            return super().__getattribute__(name)
+        except AttributeError:
+            matches = closest_allowed_names(name, children)
+            raise SettingsChildNotFound(name, matches)
 
     def __setattr__(self, name: str, value):
         return getattr(self, name).set_state(value)
