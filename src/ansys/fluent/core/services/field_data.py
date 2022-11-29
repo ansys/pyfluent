@@ -12,8 +12,8 @@ from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
-# this can be switched to False where the field_data request inputs are
-# fed by results of field_info queries
+# this can be switched to False in scenarios where the field_data request inputs are
+# fed by results of field_info queries, which might be true in GUI code.
 validate_inputs = True
 
 
