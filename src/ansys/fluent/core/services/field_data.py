@@ -58,6 +58,15 @@ class SurfaceNameError(ValueError):
         )
 
 
+def valid_surface_name(surface_name, field_info):
+    if validate_inputs and surface_name not in field_info.get_surfaces_info():
+        raise SurfaceNameError(
+            surface_name=surface_name,
+            allowed_values=field_info.get_surfaces_info(),
+        )
+    return surface_name
+
+
 def valid_scalar_field_name(field_name, field_info):
     if validate_inputs and field_name not in field_info.get_fields_info():
         raise ScalarFieldNameError(
@@ -487,12 +496,9 @@ def _get_surface_ids(
                     field_info.get_surfaces_info()[surface_name]["surface_id"]
                 )
         elif surface_name:
-            if validate_inputs and surface_name not in field_info.get_surfaces_info():
-                raise SurfaceNameError(
-                    surface_name=surface_name,
-                    allowed_values=field_info.get_surfaces_info(),
-                )
-            surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
+            surface_ids = field_info.get_surfaces_info()[
+                valid_surface_name(surface_name, field_info)
+            ]["surface_id"]
         else:
             raise RuntimeError("Please provide either surface names or surface ids.")
     return surface_ids
