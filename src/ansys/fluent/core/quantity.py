@@ -521,7 +521,7 @@ class UnitSystem:
 
         if self._unit_system not in UnitSystem._supported_unit_sys:
             raise ValueError(
-                "Unsupported unit system, only 'SI', 'CGS', 'BTU' is allowed."
+                "Unsupported unit system, only 'SI', 'CGS', 'BT' is allowed."
             )
 
     def _get_unit_from_dim(self, dim_list):
@@ -552,20 +552,13 @@ class UnitSystem:
         return UnitSystem._dim_to_unit_sys_map[self._unit_system]
 
 
-class QuantityError(BaseException):
-    def __init__(self, unit_str=None, to_unit=None):
-        self.unit = unit_str
+class QuantityError(ValueError):
+    def __init__(self, from_unit, to_unit):
+        self.from_unit = from_unit
         self.to_unit = to_unit
-        self.value_error = (
-            f"{self.unit} and {self.to_unit} have incompatible dimensions."
-        )
-        self.type_error = "Quantity Type Error: Incompatible quantities."
 
     def __str__(self):
-        if self.unit and self.to_unit:
-            return f"{self.unit} and {self.to_unit} have incompatible dimensions."
-        else:
-            return "Quantity Type Error: Incompatible quantities."
+        return f"{self.unit} and {self.to_unit} have incompatible dimensions."
 
 
 class Quantity(float):
@@ -753,13 +746,13 @@ class Quantity(float):
         if isinstance(other, Quantity) and (
             self.get_dimensions_list() != other.get_dimensions_list()
         ):
-            raise QuantityError(self.unit, other.unit)
+            raise ValueError("Incompatible dimensions.")
         elif (
             (not self.is_dimensionless())
             and (not isinstance(other, Quantity))
             and isinstance(other, (float, int))
         ):
-            raise QuantityError()
+            raise TypeError("Incompatible quantities.")
 
     def __add__(self, other):
         self.validate_matching_dimensions(other)
@@ -767,7 +760,7 @@ class Quantity(float):
         return Quantity(temp_value, self._si_unit)
 
     def __radd__(self, other):
-        return super().__add__(other)
+        return Quantity(other, "") + self
 
     def __sub__(self, other):
         self.validate_matching_dimensions(other)
