@@ -56,10 +56,10 @@ For example, ``AWP_ROOT222`` is the environment variable for the 2022 R2 release
 On a Windows system, this environment variable is configured when a release is installed.
 
 On a Linux system, you must configure this environment variable to point to the absolute
-path of the installed release. For example, for the 2022 R2 relese, you would likely set
+path of the installed release. For example, for the 2022 R2 release, you would likely set
 the ``AWP_ROOT222`` environment variable to point to ``C:\Program Files\ANSYS Inc\v222``.
 
-To use a non-default installation location, either set the ``AWP_ROOT<ver>`` environment varible
+To use a non-default installation location, either set the ``AWP_ROOT<ver>`` environment variable
 or set the ``PYFLUENT_FLUENT_ROOT`` environment variable by pointing to the ``<install
 location>/<ver>/fluent`` directory.
 
@@ -92,7 +92,7 @@ environment variable:
 Additional PyFluent packages
 ----------------------------
 In addition to the ``ansys-fluent-core`` package, you can install and use the ``pyfluent-parameteric``
-and ``pyfluent-visualization`` packges:
+and ``pyfluent-visualization`` packages:
 
 - The `pyfluent-parametric <https://fluentparametric.docs.pyansys.com/>`_ package provides
   access to Fluent's parametric workflows.

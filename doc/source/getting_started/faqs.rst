@@ -54,7 +54,7 @@ learning and training, vertical app creation, and custom workflow integrations.
   :alt: PyFluent users and objectives
 
 
-Here are some typical objectives that you can use PyFluent to acheive:
+Here are some typical objectives that you can use PyFluent to achieve:
 
 - Enhance productivity with customized scripts.
 - Automate workflows with customized scripts.
@@ -111,7 +111,7 @@ environment:
    For example, for Ansys 2022 R2, you would likely set the ``AWP_ROOT222``
    environment variable to point to ``C:\Program Files\ANSYS Inc\v222``.
 
-   While you must explicitly set this environment vairable on Linux, it should
+   While you must explicitly set this environment variable on Linux, it should
    be automatically set on Windows.
 
 #. In a command window, use this code to set up and activate a local Python
@@ -155,7 +155,7 @@ For example, to find all PyFluent libraries, type ``pyfluent`` in the search opt
 
 The ``README.md`` file for the PyAnsys Github account lists the primary public PyAnsys libraries.
 The links in this list are to the documentation for the respective libraries. In addition to 
-general usage information, the documenation for a library includes many practical examples.
+general usage information, the documentation for a library includes many practical examples.
 
 How do you launch Fluent using PyFluent?
 ----------------------------------------
@@ -205,14 +205,14 @@ for learning how to use PyFluent:
     import :(%py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})")
 
 
-  Here is a manually translated equivalent command in PyFluent synax:
+  Here is a manually translated equivalent command in PyFluent syntax:
   
   .. code:: python
 
     session.meshing.workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState(({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object’,})
 
 
-- Write sripts, using capabilities such as these:
+- Write scripts, using capabilities such as these:
 
   - IntelliSense to show available options for any given command. For example,
     in Jupyter Lab, press the tab key.
@@ -221,7 +221,7 @@ for learning how to use PyFluent:
 
 How do you get help for PyFluent?
 ---------------------------------
-Because PyFluent libaries are open source, support for issues, bugs, and feature
+Because PyFluent libraries are open source, support for issues, bugs, and feature
 requests are available in their respective GitHub repositories.
 
 - To log an issue for PyFluent, use the `PyFluent Issues page <https://github.com/pyansys/pyfluent/issues>`_.
