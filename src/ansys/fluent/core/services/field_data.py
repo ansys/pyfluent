@@ -1,15 +1,18 @@
 """Wrappers over FieldData gRPC service of Fluent."""
+import difflib
 from enum import IntEnum
-from functools import reduce
-from typing import Dict, List, Optional, Tuple, Union
+from functools import partial, reduce
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
 import numpy as np
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
+
+# this can be switched to False in scenarios where the field_data request inputs are
+# fed by results of field_info queries, which might be true in GUI code.
+validate_inputs = True
 
 
 class FieldDataService:
@@ -113,6 +116,107 @@ class FieldInfo:
             for surface_info in response.surfaceInfo
         }
         return info
+
+
+def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
+    f = partial(difflib.get_close_matches, trial_name, allowed_names)
+    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
+
+
+def allowed_name_error_message(
+    context: str, trial_name: str, allowed_values: List[str]
+) -> str:
+    message = f"{trial_name} is not an allowed {context} name.\n"
+    matches = closest_allowed_names(trial_name, allowed_values)
+    if matches:
+        message += f"The most similar names are: {', '.join(matches)}."
+    return message
+
+
+def unavailable_field_error_message(context: str, field_name: str) -> str:
+    return f"{field_name} is not a currently available {context}."
+
+
+class FieldNameError(ValueError):
+    pass
+
+
+class ScalarFieldNameError(FieldNameError):
+    def __init__(self, field_name: str, allowed_values: List[str]):
+        self.field_name = field_name
+        super().__init__(
+            allowed_name_error_message("scalar field", field_name, allowed_values)
+        )
+
+
+class VectorFieldNameError(FieldNameError):
+    def __init__(self, field_name: str, allowed_values: List[str]):
+        self.field_name = field_name
+        super().__init__(
+            allowed_name_error_message("vector field", field_name, allowed_values)
+        )
+
+
+class FieldUnavailable(RuntimeError):
+    pass
+
+
+class ScalarFieldUnavailable(FieldUnavailable):
+    def __init__(self, field_name: str):
+        self.field_name = field_name
+        super().__init__(unavailable_field_error_message("scalar field", field_name))
+
+
+class VectorFieldUnavailable(FieldUnavailable):
+    def __init__(self, field_name: str):
+        self.field_name = field_name
+        super().__init__(unavailable_field_error_message("vector field", field_name))
+
+
+class SurfaceNameError(ValueError):
+    def __init__(self, surface_name: str, allowed_values: List[str]):
+        self.surface_name = surface_name
+        super().__init__(
+            allowed_name_error_message("surface", surface_name, allowed_values)
+        )
+
+
+def valid_surface_name(surface_name: str, field_info: FieldInfo) -> str:
+    if validate_inputs and surface_name not in field_info.get_surfaces_info():
+        raise SurfaceNameError(
+            surface_name=surface_name,
+            allowed_values=field_info.get_surfaces_info(),
+        )
+    return surface_name
+
+
+def valid_scalar_field_name(
+    field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
+) -> str:
+    if validate_inputs:
+        if field_name not in field_info.get_fields_info():
+            raise ScalarFieldNameError(
+                field_name=field_name, allowed_values=field_info.get_fields_info()
+            )
+        if not is_data_valid():
+            field_section = field_info.get_fields_info()[field_name]["section"]
+            if field_section not in ("Mesh...", "Cell Info..."):
+                raise ScalarFieldUnavailable(field_name)
+    return field_name
+
+
+def valid_vector_field_name(
+    field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
+) -> str:
+    if validate_inputs:
+        if field_name not in field_info.get_vector_fields_info():
+            raise VectorFieldNameError(
+                field_name=field_name,
+                allowed_values=field_info.get_vector_fields_info(),
+            )
+        if not is_data_valid():
+            raise VectorFieldUnavailable(field_name)
+    return field_name
 
 
 class SurfaceDataType(IntEnum):
