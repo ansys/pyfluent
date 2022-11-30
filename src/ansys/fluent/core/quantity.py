@@ -728,6 +728,9 @@ class Quantity(float):
         ]
 
     def to(self, to_unit_str):
+        if not isinstance(to_unit_str, str):
+            raise TypeError("Unit should be of 'str' type.")
+
         temp_quantity = Quantity(1, to_unit_str)
 
         curr_unit_dim_obj = self.dimension
