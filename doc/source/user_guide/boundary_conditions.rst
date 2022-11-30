@@ -1,5 +1,5 @@
-Defining boundary conditions
-============================
+Define boundary conditions
+==========================
 PyFluent supports using :ref:`ref_solver_tui_commands`
 and :ref:`ref_settings` to define boundary conditions.
 
@@ -47,8 +47,8 @@ Python code for defining velocity boundary conditions at inlets.
         "cold-inlet", (), "temperature", "no", 293.15, "quit"
     )
 
-Copying boundary conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Copy boundary conditions
+~~~~~~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the Python code for
 copying boundary conditions to other zones.
 
@@ -64,8 +64,8 @@ copying boundary conditions to other zones.
 
     solver.tui.define.boundary_conditions.copy_bc('cold-inlet','hot-inlet','()')
 
-Listing zones
-~~~~~~~~~~~~~
+List zones
+~~~~~~~~~~
 This example shows a comparison between the TUI command and the Python code for
 printing to the Fluent console the types and IDs of all zones.
 
@@ -81,8 +81,8 @@ printing to the Fluent console the types and IDs of all zones.
 
     solver.tui.define.boundary_conditions.list_zones()
 
-Modifying cell zone conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Modify cell zone conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the Python code for
 modifying cell zone conditions.
 
@@ -123,7 +123,7 @@ modifying cell zone conditions.
         "no",
     )
 
-Using settings objects
+Use settings objects
 ----------------------
 The examples in this section show how you use :ref:`ref_settings` to define
 boundary conditions.

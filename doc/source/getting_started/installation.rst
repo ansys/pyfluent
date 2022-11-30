@@ -9,21 +9,22 @@ Python 3.10 on Windows and Linux.
 
 .. note::
    This page provides information for quickly installing and launching
-   only the ``ansys-fluent-core`` package. If you want to install all
-   available PyFluent packages in a virtual environment, see :ref:`_faq_install_venv`
-   in the :ref:`faqs`.
+   the ``ansys-fluent-core`` package. Additional PyFluent packages, which
+   are described later on this page, can also be installed. For
+   information on installing all PyFluent packages in a virtual environment,
+   see :ref:`faqs_install` in :ref:`faqs`.
 
 Install the package
 -------------------
-Use this code to install the latest release of the ``ansys-fluent-core``
-package from `PyPi <https://pypi.org/project/ansys-fluent-core/>`_:
+Install the latest ``ansys-fluent-core`` package from
+`PyPi <https://pypi.org/project/ansys-fluent-core/>`_ with this code:
 
 .. code::
 
    pip install ansys-fluent-core
 
-If you plan on doing local *development* of PyFluent with Git, use this
-code to install the latest release of the ``ansys-fluent-core`` package:
+If you plan on doing local *development* of PyFluent with Git, install the
+latest ``ansys-fluent-core`` package with this code:
 
 .. code:: console
 
@@ -39,7 +40,8 @@ the Python kernel.
 
 Launch Fluent
 -------------
-To launch Fluent from PyFluent, use the ``launch_fluent`` method:
+To launch Fluent from PyFluent, use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+method:
 
 .. code:: python
 
@@ -47,20 +49,23 @@ To launch Fluent from PyFluent, use the ``launch_fluent`` method:
   solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
   solver.health_check_service.is_serving
 
-On Windows systems the environment variable ``AWP_ROOT<ver>``, is configured
-when Fluent is installed, where ``<ver>`` is the Fluent release number such as
-``222`` for release 2022 R2.  PyFluent automatically uses this environment
-variable to locate the Fluent installation. On Linux systems configure
-``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
-``/apps/ansys_inc/v222``.  
+To locate the Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
+environment variable, where ``<ver>`` is the three-digit format for the release.
+For example, ``AWP_ROOT222`` is the environment variable for the 2022 R2 release. 
 
-To use a non-default installation location set ``AWP_ROOT<ver>`` or set the
-``PYFLUENT_FLUENT_ROOT`` environment variable to the ``<install
-location>/<version>/fluent`` directory, where ``<version>`` is the Fluent
-release that you would like to use. For example, ``v222`` uses release 2022 R2.
+On a Windows system, this environment variable is configured when a release is installed.
+
+On a Linux system, you must configure this environment variable to point to the absolute
+path of the installed release. For example, for the 2022 R2 relese, you would likely set
+the ``AWP_ROOT222`` environment variable to point to ``C:\Program Files\ANSYS Inc\v222``.
+
+To use a non-default installation location, either set the ``AWP_ROOT<ver>`` environment varible
+or set the ``PYFLUENT_FLUENT_ROOT`` environment variable by pointing to the ``<install
+location>/<ver>/fluent`` directory.
+
 Once Fluent is active, you can use the ``solver_session.tui`` interface to send
-Fluent TUI commands to Fluent. For example, you can read a case file, update a
-setting, and iterate the solver with:
+Fluent TUI commands to PyFluent. For example, this code reads a case file, updates a
+setting, and iterates the solver:
 
 .. code:: python
 
@@ -69,8 +74,8 @@ setting, and iterate the solver with:
   solver.tui.solve.initialize.initialize_flow()
   solver.tui.solve.dual_time_iterate(2, 3)
 
-If you want to interact with the Fluent graphical user interface, pass ``show_gui=True``
-to the ``launch_fluent`` function:
+If you want to interact with the Fluent GUI (graphical user interface), pass ``show_gui=True``
+to the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method:
 
 .. code:: python
 
@@ -84,12 +89,13 @@ environment variable:
   pyfluent.set_log_level('DEBUG') # for development, by default only errors are shown
 
 
-Additional PyFluent libraries
------------------------------
-You can also install and use these additional PyFluent libraries:
+Additional PyFluent packages
+----------------------------
+In addition to the ``ansys-fluent-core`` package, you can install and use the ``pyfluent-parameteric``
+and ``pyfluent-visualization`` packges:
 
-- `PyFluent Parametric <https://fluentparametric.docs.pyansys.com/>`_, which provides
+- The `pyfluent-parametric <https://fluentparametric.docs.pyansys.com/>`_ package provides
   access to Fluent's parametric workflows.
-- `PyFluent Visualization <https://fluentvisualization.docs.pyansys.com/>`_, which
-  provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
+- The `pyfluent-visualization <https://fluentvisualization.docs.pyansys.com/>`_ package
+  provides postprocessing and visualization capabilities that use `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.

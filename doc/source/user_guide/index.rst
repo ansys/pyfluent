@@ -32,7 +32,7 @@ Overview
 You use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
 to launch an instance of Fluent that runs as a server in the background.
 
-You can launch Fluent in solution mode with:
+You can launch Fluent in solution mode with this code:
 
 .. code:: python
 
@@ -40,7 +40,7 @@ You can launch Fluent in solution mode with:
 
     solver = launch_fluent(mode="solver")
 
-You can launch Fluent in meshing mode with: 
+You can launch Fluent in meshing mode with this code: 
 
 .. code:: python
 
@@ -99,8 +99,8 @@ that are not possible via the ``tui`` object:
 
     energy_is_enabled = solver.setup.models.energy.enabled()
 
-For the full hierarchy under the solver ``root`` object, see :ref:`ref_solver_tui`.
-For additional interface features, see :ref:`ref_settings`.
+For the full hierarchy under the solver ``root`` object, see :ref:`solver_tui`.
+For additional interface features, see :ref:`settings`.
 
 Meshing mode session
 --------------------
@@ -127,8 +127,8 @@ familiar to existing Fluent users:
     tui.file.write_case("pipe.cas.h5")
     
 For the full hierarchy under the meshing ``tui`` object, see
-:ref:`ref_meshing_tui`. For general guidance on using TUI commands, see
-:ref:`ref_user_guide_tui_commands`. 
+:ref:`meshing_tui`. For general guidance on using TUI commands, see
+:ref:`user_guide_tui_commands`. 
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +153,7 @@ the Python meshing workflow interface that Fluent meshing exposes directly:
     meshing.GlobalSettings.LengthUnit.set_state("mm")
 
 For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
-For information on the full interface, see :ref:`ref_meshing_datamodel`.
+For information on the full interface, see :ref:`meshing_datamodel`.
 
 Session object
 --------------
@@ -164,8 +164,8 @@ more direct interaction via its ``scheme_eval`` attribute:
 
     unsteady = solver.scheme_eval.scheme_eval("(rp-unsteady?)")
 
-The argument to ``scheme_eval`` is a string that contains any scheme code that
-can be executed in Fluent for the current mode.
+The argument to the ``scheme_eval`` attribute is a string that contains any
+scheme code that can be executed in Fluent for the current mode.
 
 Surface field and mesh data services are available in solution mode only via the
 ``field_data`` object attribute of the session object:

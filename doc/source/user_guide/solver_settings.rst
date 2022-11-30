@@ -1,11 +1,11 @@
 .. _ref_user_guide_solver_settings:
 
-Specifying solver settings
-==========================
+Specify solver settings
+=======================
 PyFluent supports using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`
 to specify solver settings.
 
-The examples in this topic show how you use :ref:`ref_solver_tui_commands` to
+The examples on this page show how to use :ref:`ref_solver_tui_commands` to
 specify solver settings.
 
 Set steady or transient solution model

@@ -3,17 +3,17 @@
 Data transfer
 =============
 
-Data transfer helps in transferring a case or a mesh file between instances of fluent.
-We need to specify a source instance and one or multiple destination instances.
+Data transfer helps in transferring a case or a mesh file between instances of Fluent.
+You must specify a source instance and one or multiple destination instances.
 
 Sample usage
 ------------
 
-You can use the 'transfer_case' to transfer either a mesh or a case file by importing it
+You can use the `'transfer_case`` method to transfer either a mesh or a case file by importing it
 and passing the source and destination instances along with the file type. You can either
 generate the files in the parent instance or just read it.
 
-The following example show the usage of 'transfer_case' by reading a mesh file in a
+This example shows how to use the `` use the ``transfer_case`` by reading a mesh file in a
 pure meshing session and transferring it to a solver session.
 
 .. code-block:: python
@@ -39,5 +39,5 @@ pure meshing session and transferring it to a solver session.
   >>> )
 
 
-Similarly, 'transfer_case' can also be used to transfer a case file from one instance of fluent
+Similarly, you can also use the ``transfer_case`` method to transfer a case file from one instance of Fluent
 to another.

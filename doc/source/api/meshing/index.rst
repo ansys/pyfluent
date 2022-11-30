@@ -118,6 +118,3 @@ TUI commands example
 .. toctree::
    :maxdepth: 2
    :hidden:
-
-   tui/index
-   datamodel/index
