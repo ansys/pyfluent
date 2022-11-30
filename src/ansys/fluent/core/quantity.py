@@ -803,7 +803,38 @@ def get_unit_from_map(quantity_map_from_settings_api):
                     )
     for term in terms:
         final_unit += (" " if len(final_unit) > 0 else "") + term
-    return final_unit
+
+    unit_term_list = final_unit.split(" ")
+    unit_power_list = [
+        terms.split("^") if "^" in terms else terms for terms in unit_term_list
+    ]
+
+    term_power_map = {}
+    for term in unit_power_list:
+        if isinstance(term, str):
+            if term in term_power_map.keys():
+                term_power_map[term] += 1.0
+            else:
+                term_power_map[term] = 1.0
+        if isinstance(term, list):
+            if term[0] in term_power_map.keys():
+                term_power_map[term[0]] += float(term[1])
+            else:
+                term_power_map[term[0]] = float(term[1])
+
+    unit_terms = []
+    for term, power in term_power_map.items():
+        if power == 1.0:
+            unit_terms.append(term)
+        elif power != 0.0:
+            unit_terms.append(
+                term + "^" + str(int(power) if power.is_integer() else power)
+            )
+
+    unit = ""
+    for term in unit_terms:
+        unit += (" " if len(unit) > 0 else "") + term
+    return unit
 
 
 class Quantity(float):
