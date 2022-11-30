@@ -377,7 +377,7 @@ class Unit(object):
 
     def _quantity_type(self):
         temperature_units = ["K", "C", "F", "R"]
-        qty_type = ""
+        qty_type = None
         for temp_unit in temperature_units:
             unit_power = Unit._power_sum(temp_unit, self._unit)
             if temp_unit in self._unit and unit_power == 1.0:
@@ -561,6 +561,83 @@ class QuantityError(ValueError):
         return f"{self.unit} and {self.to_unit} have incompatible dimensions."
 
 
+unit_quantity_map = {
+    "Mass": "kg",
+    "Length": "m",
+    "Time": "s",
+    "Temperature": "K",
+    "Current": "A",
+    "SubstanceAmount": "mol",
+    "Light": "cd",
+    "Angle": "radian",
+    "SolidAngle": "sr",
+    "Acceleration": "m s^-2",
+    "Density": "kg m^-3",
+    "Pressure": "Pa",
+    "Force": "N",
+    "Torque": "N m",
+    "Volume": "m^3",
+    "Velocity": "m s^-1",
+    "Epsilon Flux Coefficient": "kg m^-2 s^-2",
+}
+
+
+def get_unit_from_map(quantity_map_from_settings_api):
+    terms = []
+    term_power_list = []
+    final_unit = ""
+    for unit in quantity_map_from_settings_api.keys():
+        unit_str = unit_quantity_map[unit]
+        unit_term_list = unit_str.split(" ") if " " in unit_str else unit_str
+        term_power_list.append(unit_term_list)
+    power_list = list(
+        map(lambda x: float(x), list(quantity_map_from_settings_api.values()))
+    )
+    for item in range(len(power_list)):
+        if isinstance(term_power_list[item], str) and power_list[item] == 1.0:
+            terms.append(term_power_list[item])
+        elif isinstance(term_power_list[item], list) and power_list[item] == 1.0:
+            for term in term_power_list[item]:
+                terms.append(term)
+        elif isinstance(term_power_list[item], str) and power_list[item] != 0.0:
+            terms.append(
+                term_power_list[item]
+                + "^"
+                + str(
+                    int(power_list[item])
+                    if power_list[item].is_integer()
+                    else power_list[item]
+                )
+            )
+        elif isinstance(term_power_list[item], list) and power_list[item] != 0.0:
+            for term in term_power_list[item]:
+                if "^" in term:
+                    term_split = term.split("^")
+                    resulting_power = float(term_split[1]) * power_list[item]
+                    terms.append(
+                        term_split[0]
+                        + "^"
+                        + str(
+                            int(resulting_power)
+                            if resulting_power.is_integer()
+                            else resulting_power
+                        )
+                    )
+                else:
+                    terms.append(
+                        term
+                        + "^"
+                        + str(
+                            int(power_list[item])
+                            if power_list[item].is_integer()
+                            else power_list[item]
+                        )
+                    )
+    for term in terms:
+        final_unit += (" " if len(final_unit) > 0 else "") + term
+    return final_unit
+
+
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units.
@@ -592,8 +669,12 @@ class Quantity(float):
     consistency in all arithmetic operations.
     """
 
-    def __init__(self, real_value, unit_str):
+    def __init__(self, real_value, unit_str=None, quantity_map=None):
         self._value = float(real_value)
+        if unit_str and quantity_map:
+            raise ValueError("Either unit or quantity_map is allowed.")
+        if quantity_map:
+            unit_str = get_unit_from_map(quantity_map)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
         self._si_value = (
@@ -602,7 +683,11 @@ class Quantity(float):
         self._si_unit = self._unit.si_unit
         self._type = self._unit._quantity_type()
 
-    def __new__(cls, real_value, unit_str):
+    def __new__(cls, real_value, unit_str=None, quantity_map=None):
+        if unit_str and quantity_map:
+            raise ValueError("Either unit or quantity_map is allowed.")
+        if quantity_map:
+            unit_str = get_unit_from_map(quantity_map)
         _unit = Unit(unit_str)
         return float.__new__(
             cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power

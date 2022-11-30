@@ -766,6 +766,35 @@ def test_temp_addition_69():
     assert t.type == "Temperature"
 
 
+def test_quantity_map_70():
+    quantity_map_from_settings_API = {
+        "Mass": 1,
+        "Velocity": 2.5,
+        "Current": 3,
+        "Light": 2,
+        "Epsilon Flux Coefficient": 2,
+    }
+
+    api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
+    assert api_test.value == 10.5
+    assert api_test.unit == "kg m^2.5 s^-2.5 A^3 cd^2 kg^2 m^-4 s^-4"
+
+
+def test_quantity_map_71():
+    quantity_map_from_settings_API = {
+        "Mass": 1,
+        "Velocity": 2.5,
+        "Current": 3,
+        "Light": 2,
+        "Epsilon Flux Coefficient": 2,
+    }
+
+    with pytest.raises(ValueError):
+        api_test = q.Quantity(
+            10.5, unit_str="kg m s^-1", quantity_map=quantity_map_from_settings_API
+        )
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -912,103 +941,15 @@ def testing_properties():
     print(f"dimensions = {v.get_dimensions_list()}")
 
 
-if __name__ == "__main__":
-    # test_value_unit_1()
-    # testing_dimensions()
-    # testing_multipliers()
-    # testing_to_systems()
-    # testing_arithmetic_operators()
-    # testing_properties()
-    #
-    # x = q.Quantity(1, "ft")
-    # print(
-    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    # )
-
-    unit_quantity_map = {
-        "Mass": "kg",
-        "Length": "m",
-        "Time": "s",
-        "Temperature": "K",
-        "Current": "A",
-        "SubstanceAmount": "mol",
-        "Light": "cd",
-        "Angle": "radian",
-        "SolidAngle": "sr",
-        "Acceleration": "m s^-2",
-        "Density": "kg m^-3",
-        "Pressure": "Pa",
-        "Force": "N",
-        "Torque": "N m",
-        "Volume": "m^3",
-        "Velocity": "m s^-1",
-        "EFC": "kg m^-2 s^-2",
-    }
-
-    def get_unit_from_map(quantity_map_from_settings_api):
-        terms = []
-        term_power_list = []
-        final_unit = ""
-        for unit in quantity_map_from_settings_api.keys():
-            unit_str = unit_quantity_map[unit]
-            unit_term_list = unit_str.split(" ") if " " in unit_str else unit_str
-            term_power_list.append(unit_term_list)
-        print(term_power_list)
-        power_list = list(
-            map(lambda x: float(x), list(quantity_map_from_settings_api.values()))
-        )
-        print(power_list)
-        for item in range(len(power_list)):
-            if isinstance(term_power_list[item], str) and power_list[item] == 1.0:
-                terms.append(term_power_list[item])
-            elif isinstance(term_power_list[item], list) and power_list[item] == 1.0:
-                for term in term_power_list[item]:
-                    terms.append(term)
-            elif isinstance(term_power_list[item], str) and power_list[item] != 0.0:
-                terms.append(
-                    term_power_list[item]
-                    + "^"
-                    + str(
-                        int(power_list[item])
-                        if power_list[item].is_integer()
-                        else power_list[item]
-                    )
-                )
-            elif isinstance(term_power_list[item], list) and power_list[item] != 0.0:
-                for term in term_power_list[item]:
-                    if "^" in term:
-                        term_split = term.split("^")
-                        resulting_power = float(term_split[1]) * power_list[item]
-                        terms.append(
-                            term_split[0]
-                            + "^"
-                            + str(
-                                int(resulting_power)
-                                if resulting_power.is_integer()
-                                else resulting_power
-                            )
-                        )
-                    else:
-                        terms.append(
-                            term
-                            + "^"
-                            + str(
-                                int(power_list[item])
-                                if power_list[item].is_integer()
-                                else power_list[item]
-                            )
-                        )
-        for term in terms:
-            final_unit += (" " if len(final_unit) > 0 else "") + term
-        return final_unit
-
-    quantity_map_from_settings_API = {
-        "Mass": 1,
-        "Velocity": 2.5,
-        "Current": 3,
-        "Light": 2,
-        "EFC": 2,
-    }
-
-    result = get_unit_from_map(quantity_map_from_settings_API)
-    print(result)
+# if __name__ == "__main__":
+#     test_value_unit_1()
+#     testing_dimensions()
+#     testing_multipliers()
+#     testing_to_systems()
+#     testing_arithmetic_operators()
+#     testing_properties()
+#
+#     x = q.Quantity(1, "ft")
+#     print(
+#         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+#     )
