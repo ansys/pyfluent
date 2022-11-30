@@ -340,8 +340,8 @@ def test_read_only_behaviour_of_command_arguments(new_mesh_session):
         ).CommandArguments.CadImportOptions.OneZonePer.set_state(None)
     assert msg.value.args[0] == "Command Arguments are read-only."
 
-    assert "set_state" in dir(m.ImportGeometry.new())
-    assert "set_state" in dir(m.ImportGeometry.new().NumParts)
+    assert "set_state" in dir(m.ImportGeometry.create_instance())
+    assert "set_state" in dir(m.ImportGeometry.create_instance().NumParts)
 
 
 @pytest.mark.dev

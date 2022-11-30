@@ -26,8 +26,8 @@ class HealthCheckService:
         SERVICE_UNKNOWN = 3
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        self.__stub = HealthCheckGrpcModule.HealthStub(channel)
-        self.__metadata = metadata
+        self._stub = HealthCheckGrpcModule.HealthStub(channel)
+        self._metadata = metadata
         self._channel = channel
 
     @catch_grpc_error
@@ -40,8 +40,33 @@ class HealthCheckService:
             "SERVING" or "NOT_SERVING"
         """
         request = HealthCheckModule.HealthCheckRequest()
-        response = self.__stub.Check(request, metadata=self.__metadata)
+        response = self._stub.Check(request, metadata=self._metadata)
         return HealthCheckService.Status(response.status).name
+
+    @catch_grpc_error
+    def wait_for_server(self, timeout) -> None:
+        """Keeps a watch on the health of the Fluent connection.
+
+        Response changes only when the service's serving status changes.
+        """
+        request = HealthCheckModule.HealthCheckRequest()
+        responses = self._stub.Watch(request, metadata=self._metadata, timeout=timeout)
+
+        while True:
+            try:
+                response = next(responses)
+                if response.status == 1:
+                    responses.cancel()
+            except StopIteration:
+                break
+            except Exception as e:
+                if e.code() == grpc.StatusCode.CANCELLED:
+                    break
+                if e.code() == grpc.StatusCode.DEADLINE_EXCEEDED:
+                    raise TimeoutError(
+                        f"The connection to the Fluent server could not be established within the configurable {timeout} second time limit."
+                    )
+                raise
 
     def status(self) -> str:
         """Check health of Fluent connection."""

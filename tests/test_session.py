@@ -1,6 +1,7 @@
 from concurrent import futures
 import os
 from pathlib import Path
+import time
 
 import grpc
 import pytest
@@ -31,11 +32,42 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
             status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
         )
 
+    def Watch(self, request, context: grpc.ServicerContext):  # noqa N802
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            yield health_pb2.HealthCheckResponse()
+
+        c = 0
+        while c < 2:
+            time.sleep(1)
+            c += 1
+            yield health_pb2.HealthCheckResponse(
+                status=health_pb2.HealthCheckResponse.ServingStatus.NOT_SERVING
+            )
+
+        time.sleep(1)
+        yield health_pb2.HealthCheckResponse(
+            status=health_pb2.HealthCheckResponse.ServingStatus.SERVING
+        )
+
 
 class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
     def StringEval(self, request, context):
         if request.input == "(cx-version)":
             return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
+
+    def SchemeEval(
+        self,
+        request,
+        context: grpc.ServicerContext,
+    ) -> scheme_eval_pb2.SchemeEvalResponse:
+        metadata = dict(context.invocation_metadata())
+        password = metadata.get("password", None)
+        if password != "12345":
+            context.set_code(grpc.StatusCode.UNAUTHENTICATED)
+            return scheme_eval_pb2.SchemeEvalResponse()
 
 
 def test_create_session_by_passing_ip_and_port_and_password() -> None:
@@ -126,7 +158,6 @@ def test_create_session_from_server_info_file_with_wrong_password(
     ip = "127.0.0.1"
     port = 50051
     server.add_insecure_port(f"{ip}:{port}")
-    health_pb2_grpc.add_HealthServicer_to_server(MockHealthServicer(), server)
     scheme_eval_pb2_grpc.add_SchemeEvalServicer_to_server(
         MockSchemeEvalServicer(), server
     )
@@ -137,10 +168,9 @@ def test_create_session_from_server_info_file_with_wrong_password(
         session = _BaseSession.create_from_server_info_file(
             server_info_filepath=str(server_info_file), cleanup_on_exit=False
         )
-        assert session.health_check_service.is_serving
+        session.scheme_eval.scheme_eval("")
         server.stop(None)
         session.exit()
-        assert not session.health_check_service.is_serving
 
 
 def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> None:
