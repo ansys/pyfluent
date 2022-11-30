@@ -14,7 +14,7 @@ from ansys.fluent.core.services.interceptors import TracingInterceptor
 
 # this can be switched to False in scenarios where the field_data request inputs are
 # fed by results of field_info queries, which might be true in GUI code.
-validate_inputs = False
+validate_inputs = True
 
 
 class FieldDataService:
