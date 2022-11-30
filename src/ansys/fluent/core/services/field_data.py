@@ -592,7 +592,7 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo):
+    def __init__(self, service: FieldDataService, field_info: FieldInfo, is_data_valid):
         self._service = service
         self._field_info = field_info
 

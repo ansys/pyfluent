@@ -195,7 +195,11 @@ class _FluentConnection:
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
-        self.field_data = FieldData(self._field_data_service, self.field_info)
+        self.field_data = FieldData(
+            self._field_data_service,
+            self.field_info,
+            lambda: self.scheme_eval.scheme_eval("(data-valid?)"),
+        )
 
         self.journal = Journal(self.scheme_eval)
 
