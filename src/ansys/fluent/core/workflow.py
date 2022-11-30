@@ -9,7 +9,7 @@ def _new_command_for_task(task, session):
     task_cmd_name = task.CommandName()
     cmd_creator = getattr(session, task_cmd_name)
     if cmd_creator:
-        new_cmd = cmd_creator.new()
+        new_cmd = cmd_creator.create_instance()
         if new_cmd:
             return new_cmd
     raise NewCommandError(task._name_())
