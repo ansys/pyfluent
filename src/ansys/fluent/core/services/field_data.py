@@ -7,6 +7,8 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 import grpc
 import numpy as np
 
+from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
