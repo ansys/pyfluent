@@ -143,14 +143,18 @@ def test_to_19():
 
 def test_to_20():
     v = q.Quantity(1.0, "Hz")
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError) as e:
         convert = v.to("radian s^-1")
+    assert e.value.from_unit == "Hz"
+    assert e.value.to_unit == "radian s^-1"
 
 
 def test_to_21():
     v = q.Quantity(1.0, "radian s^-1")
-    with pytest.raises(ValueError) as e_info:
+    with pytest.raises(ValueError) as e:
         convert = v.to("Hz")
+    assert e.value.from_unit == "radian s^-1"
+    assert e.value.to_unit == "Hz"
 
 
 def test_to_22():
@@ -301,7 +305,7 @@ def test_unit_system_41():
     assert cgsVel.value == 91.44
     assert cgsVel.unit == "cm s^-1"
 
-    unitSysBT = q.UnitSystem("BTU")
+    unitSysBT = q.UnitSystem("BT")
     btuVel = unitSysBT.convert(myVel)  # Returns velocity in ft/s
     assert btuVel.value == 3.0
     assert btuVel.unit == "ft s^-1"
@@ -558,7 +562,7 @@ def test_gt_59():
         assert x > 5.0
 
 
-def test_lt_59():
+def test_lt_60():
     x = q.Quantity(10.5, "cm")
     y = q.Quantity(10.5, "m")
     z = q.Quantity(10.5, "g")
@@ -577,7 +581,7 @@ def test_lt_59():
         assert 5.0 < x
 
 
-def test_le_60():
+def test_le_61():
     x = q.Quantity(10.5, "cm")
     y = q.Quantity(10.5, "m")
     z = q.Quantity(10.5, "g")
@@ -596,7 +600,7 @@ def test_le_60():
         assert 5.0 <= x
 
 
-def test_eq_61():
+def test_eq_62():
     x = q.Quantity(10.5, "cm")
     y = q.Quantity(10.5, "m")
     z = q.Quantity(10.5, "g")
@@ -619,7 +623,7 @@ def test_eq_61():
         assert 5.0 == x
 
 
-def test_neq_62():
+def test_neq_63():
     x = q.Quantity(10.5, "cm")
     y = q.Quantity(10.5, "m")
     z = q.Quantity(10.5, "g")
@@ -630,6 +634,136 @@ def test_neq_62():
 
     assert r != 0.5
     assert 0.5 != r
+
+
+def test_temp_inverse_64():
+    c = q.Quantity(2.0, "C")
+    assert float(c) == 275.15
+
+    c_inverse = q.Quantity(2.0, "C^-1")
+    assert float(c_inverse) == 2.0
+
+
+def test_temp_inverse_65():
+    f = q.Quantity(2.0, "F")
+    assert float(f) == pytest.approx(256.483311, DELTA)
+
+    f_inverse = q.Quantity(2.0, "F^-1")
+    assert float(f_inverse) == pytest.approx(3.5999999999999996, DELTA)
+
+
+def test_temp_type_66():
+    c0 = q.Quantity(1.0, "C")
+    assert c0.type == "Temperature"
+
+    c1 = q.Quantity(1.0, "J kg^-1 C^-1")
+    assert c1.type == "Temperature Difference"
+
+    c2 = q.Quantity(1.0, "kg m^-3 s^-1 K^2")
+    assert c2.type == "Temperature Difference"
+
+    c4 = q.Quantity(1.0, "F")
+    assert c4.type == "Temperature"
+
+    c6 = q.Quantity(1.0, "F^1")
+    assert c6.type == "Temperature"
+
+    c7 = q.Quantity(1.0, "F^-1")
+    assert c7.type == "Temperature Difference"
+
+    c8 = q.Quantity(1.0, "F^2")
+    assert c8.type == "Temperature Difference"
+
+
+def test_temp_difference_67():
+    td1 = q.Quantity(150.0, "delta_C")
+    assert td1.type == "Temperature Difference"
+
+    td2 = q.Quantity(100.0, "delta_C")
+    assert td2.type == "Temperature Difference"
+
+    td = td1 - td2
+    assert td.type == "Temperature Difference"
+
+    td_m = td * 2
+    assert td_m.type == "Temperature"
+
+    t1 = q.Quantity(150.0, "C")
+    assert t1.type == "Temperature"
+
+    t2 = q.Quantity(100.0, "C")
+    assert t2.type == "Temperature"
+
+    td = t1 - t2
+    assert td.type == "Temperature Difference"
+
+    td2 = t2 - t1
+    assert td2.type == "Temperature Difference"
+
+    tc1 = q.Quantity(100.0, "C")
+    td1 = q.Quantity(50.0, "C^-1")
+
+    with pytest.raises(ValueError) as e:
+        t = tc1 + td1
+
+
+def test_core_temp_68():
+    t1 = q.Quantity(1.0, "K")
+    assert float(t1) == 1.0
+    assert t1.type == "Temperature"
+
+    t2 = q.Quantity(2.0, "K")
+    assert float(t2) == 2.0
+    assert t2.type == "Temperature"
+
+    dt1 = t2 - t1
+    assert float(dt1) == 1.0
+    assert dt1.type == "Temperature Difference"
+
+    t3 = q.Quantity(1.0, "C")
+    assert float(t3) == 274.15
+    assert t3.type == "Temperature"
+
+    t4 = q.Quantity(2.0, "C")
+    assert float(t4) == 275.15
+    assert t4.type == "Temperature"
+
+    dt2 = t4 - t3
+    assert float(dt2) == 1.0
+    assert dt2.type == "Temperature Difference"
+
+    invt1 = q.Quantity(1.0, "K^-1")
+    assert float(invt1) == 1.0
+    assert invt1.type == "Temperature Difference"
+
+    dt3 = 1.0 / invt1
+    assert float(dt3) == 1.0
+    assert dt1.type == dt2.type == dt3.type
+
+    invt2 = q.Quantity(1.0, "C^-1")
+    assert float(invt2) == 1.0
+    assert invt2.type == "Temperature Difference"
+
+    dt4 = 1.0 / invt2
+    assert float(dt4) == 1.0
+    assert dt4.type == "Temperature Difference"
+
+
+def test_temp_addition_69():
+    t1 = q.Quantity(150.0, "C")
+    t2 = q.Quantity(50.0, "C")
+
+    td = t1 - t2
+    assert td.type == "Temperature Difference"
+    assert float(td) == 100.0
+    assert td.unit == "delta_K"
+
+    kd = q.Quantity(50.0, "delta_C")
+    k = q.Quantity(50.0, "K")
+
+    t = k + kd
+    assert float(t) == 100.0
+    assert t.type == "Temperature"
 
 
 def testing_dimensions():
@@ -668,11 +802,9 @@ def testing_to_systems():
     test.to("g ft s^-2")
     test.to("kg ft s^-2")
     test.to("kg in s^-1 s^-1")
-    try:
-        test.to("ft s^-2")
-    except ValueError as ve:
-        print(ve)
 
+    with pytest.raises(ValueError) as e:
+        test.to("ft s^-2")
     print("-" * 75)
 
 
@@ -745,17 +877,13 @@ def testing_arithmetic_operators():
     assert qa3.value == 15
     assert qa3.unit == "m s^-1"
 
-    try:
+    with pytest.raises(TypeError) as e:
         result5 = qt1 + 2
         print(f"{qt1} + {2} =  {result5}")
-    except TypeError as ve:
-        print(ve)
 
-    try:
+    with pytest.raises(ValueError) as e:
         result6 = 2 + qt1
         print(f"{2} + {qt1} =  {result6}")
-    except ValueError as ve:
-        print(ve)
 
     qs3 = qt1 - qt2
 
@@ -763,17 +891,13 @@ def testing_arithmetic_operators():
     assert qs3.value == 5
     assert qs3.unit == "m s^-1"
 
-    try:
+    with pytest.raises(TypeError) as e:
         result7 = qt1 - 2
         print(f"{qt1} - {2} =  {result7}")
-    except TypeError as ve:
-        print(ve)
 
-    try:
+    with pytest.raises(ValueError) as e:
         result8 = 2 - qt1
         print(f"{2} - {qt1} =  {result8}")
-    except ValueError as ve:
-        print(ve)
 
 
 def testing_properties():
@@ -786,9 +910,6 @@ def testing_properties():
     print(f"si unit = {v._si_unit}")
     print(f"is dimensionless? = {v.is_dimensionless()}")
     print(f"dimensions = {v.get_dimensions_list()}")
-
-    qt1 = q.Quantity(10, "m s^-1")
-    qt2 = q.Quantity(5, "m s^-1")
 
 
 if __name__ == "__main__":
@@ -803,6 +924,3 @@ if __name__ == "__main__":
     print(
         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
     )
-
-    c = q.Quantity(1.0, "C")
-    print(float(c))

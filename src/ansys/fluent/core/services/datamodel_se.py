@@ -667,15 +667,13 @@ class PyCommand:
             # Populate the static info with respect to a rules only if the
             # same info has not been obtained in another context already.
             # If the information is available, we can use it without additional remote calls.
-            # TODO: We need to coordinate the code so that the global infos are commonly
-            #  available in all contexts (without additional remote calls)
             request = DataModelProtoModule.GetStaticInfoRequest()
             request.rules = self.rules
             response = self.service.get_static_info(request)
             PyCommand._stored_static_info[self.rules] = response.info
         return PyCommand._stored_static_info[self.rules]
 
-    def new(self):
+    def create_instance(self):
         try:
             static_info = self._get_static_info()
             id = self._create_command_arguments()
