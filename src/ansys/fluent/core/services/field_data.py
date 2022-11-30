@@ -7,12 +7,14 @@ from typing import Callable, Dict, List, Optional, Tuple, Union
 import grpc
 import numpy as np
 
+from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
 # this can be switched to False in scenarios where the field_data request inputs are
 # fed by results of field_info queries, which might be true in GUI code.
-validate_inputs = True
+validate_inputs = False
 
 
 class FieldDataService:
@@ -231,9 +233,15 @@ class SurfaceDataType(IntEnum):
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo):
+    def __init__(
+        self,
+        service: FieldDataService,
+        field_info: FieldInfo,
+        is_data_valid: Callable[[], bool],
+    ):
         self._service = service
         self._field_info = field_info
+        self._is_data_valid = is_data_valid
         self._fields_request = get_fields_request()
 
     def add_surfaces_request(
@@ -327,7 +335,9 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=field_name,
+                    scalarFieldName=valid_scalar_field_name(
+                        field_name, self._field_info, self._is_data_valid
+                    ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
                     else FieldDataProtoModule.DataLocation.Elements,
@@ -367,7 +377,9 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=field_name,
+                    vectorFieldName=valid_vector_field_name(
+                        field_name, self._field_info, self._is_data_valid
+                    ),
                 )
                 for surface_id in surface_ids
             ]
@@ -525,7 +537,9 @@ def _get_surface_ids(
                     field_info.get_surfaces_info()[surface_name]["surface_id"]
                 )
         elif surface_name:
-            surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
+            surface_ids = field_info.get_surfaces_info()[
+                valid_surface_name(surface_name, field_info)
+            ]["surface_id"]
         else:
             raise RuntimeError("Please provide either surface names or surface ids.")
     return surface_ids
@@ -696,12 +710,18 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo, is_data_valid):
+    def __init__(
+        self,
+        service: FieldDataService,
+        field_info: FieldInfo,
+        is_data_valid: Callable[[], bool],
+    ):
         self._service = service
         self._field_info = field_info
+        self._is_data_valid = is_data_valid
 
     def new_transaction(self):
-        return FieldTransaction(self._service, self._field_info)
+        return FieldTransaction(self._service, self._field_info, self._is_data_valid)
 
     def get_surface_data(
         self,
@@ -801,7 +821,9 @@ class FieldData:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=field_name,
+                    scalarFieldName=valid_scalar_field_name(
+                        field_name, self._field_info, self._is_data_valid
+                    ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
                     else FieldDataProtoModule.DataLocation.Elements,
@@ -850,7 +872,9 @@ class FieldData:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=field_name,
+                    vectorFieldName=valid_vector_field_name(
+                        field_name, self._field_info, self._is_data_valid
+                    ),
                 )
                 for surface_id in surface_ids
             ]
