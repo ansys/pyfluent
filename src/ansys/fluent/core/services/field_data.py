@@ -233,9 +233,15 @@ class SurfaceDataType(IntEnum):
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo):
+    def __init__(
+        self,
+        service: FieldDataService,
+        field_info: FieldInfo,
+        is_data_valid: Callable[[], bool],
+    ):
         self._service = service
         self._field_info = field_info
+        self._is_data_valid = is_data_valid
         self._fields_request = get_fields_request()
 
     def add_surfaces_request(
@@ -698,12 +704,18 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo, is_data_valid):
+    def __init__(
+        self,
+        service: FieldDataService,
+        field_info: FieldInfo,
+        is_data_valid: Callable[[], bool],
+    ):
         self._service = service
         self._field_info = field_info
+        self._is_data_valid = is_data_valid
 
     def new_transaction(self):
-        return FieldTransaction(self._service, self._field_info)
+        return FieldTransaction(self._service, self._field_info, self._is_data_valid)
 
     def get_surface_data(
         self,
