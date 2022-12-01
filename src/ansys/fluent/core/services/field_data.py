@@ -2,7 +2,7 @@
 import difflib
 from enum import IntEnum
 from functools import partial, reduce
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
 import numpy as np
@@ -193,7 +193,7 @@ def valid_surface_name(surface_name: str, field_info: FieldInfo) -> str:
 
 
 def valid_scalar_field_name(
-    field_name: str, field_info: FieldInfo, is_data_valid
+    field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
 ) -> str:
     if validate_inputs:
         if field_name not in field_info.get_fields_info():
@@ -208,7 +208,7 @@ def valid_scalar_field_name(
 
 
 def valid_vector_field_name(
-    field_name: str, field_info: FieldInfo, is_data_valid
+    field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
 ) -> str:
     if validate_inputs:
         if field_name not in field_info.get_vector_fields_info():
