@@ -256,35 +256,6 @@ class SettingsBase(Base, Generic[StateT]):
         else:
             return self.flproxy.set_var(self.path, self.to_scheme_keys(state))
 
-    def find_children(self, identifier="*"):
-        """Returns path of all the child objects matching an identifier."""
-        list_of_children = []
-        SettingsBase._list_children(self.__class__, identifier, [], list_of_children)
-        return list_of_children
-
-    @staticmethod
-    def _list_children(cls, identifier, path, list_of_children):
-        if issubclass(cls, (NamedObject, ListObject)):
-            if hasattr(cls.child_object_type, "child_names"):
-                SettingsBase._get_child_path(
-                    cls.child_object_type, path, identifier, list_of_children
-                )
-        if issubclass(cls, Group):
-            SettingsBase._get_child_path(cls, path, identifier, list_of_children)
-
-    @staticmethod
-    def _get_child_path(cls, path, identifier, list_of_children):
-        for name in cls.child_names:
-            path.append(name)
-            if fnmatch.fnmatch(name, identifier):
-                path_to_append = "/".join(path)
-                if path_to_append not in list_of_children:
-                    list_of_children.append(path_to_append)
-            SettingsBase._list_children(
-                getattr(cls, name), identifier, path, list_of_children
-            )
-            path.pop()
-
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
         if isinstance(state, dict):
@@ -1056,3 +1027,41 @@ def get_root(flproxy, version: str = "") -> Group:
     root.set_flproxy(flproxy)
     root._setattr("_static_info", obj_info)
     return root
+
+
+def find_children(obj, identifier="*"):
+    """Returns path of all the child objects matching an identifier.
+
+    Parameters
+    ----------
+    obj: Object
+        Object whose children need to be queried.
+    identifier: str
+        Identifier to find specific children.
+
+    Returns
+    -------
+    List
+    """
+    list_of_children = []
+    _list_children(obj.__class__, identifier, [], list_of_children)
+    return list_of_children
+
+
+def _list_children(cls, identifier, path, list_of_children):
+    if issubclass(cls, (NamedObject, ListObject)):
+        if hasattr(cls.child_object_type, "child_names"):
+            _get_child_path(cls.child_object_type, path, identifier, list_of_children)
+    if issubclass(cls, Group):
+        _get_child_path(cls, path, identifier, list_of_children)
+
+
+def _get_child_path(cls, path, identifier, list_of_children):
+    for name in cls.child_names:
+        path.append(name)
+        if fnmatch.fnmatch(name, identifier):
+            path_to_append = "/".join(path)
+            if path_to_append not in list_of_children:
+                list_of_children.append(path_to_append)
+        _list_children(getattr(cls, name), identifier, path, list_of_children)
+        path.pop()

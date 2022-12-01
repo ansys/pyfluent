@@ -4,11 +4,14 @@ Unit tests for flobject module
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
+import os
 import weakref
 
 import pytest
 
 from ansys.fluent.core.solver import flobject
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 class Setting:
@@ -725,18 +728,18 @@ def test_accessor_methods_on_settings_object_types(load_static_mixer_case):
 def test_find_children_from_settings_root():
     from ansys.fluent.core.solver.settings_231.setup import setup
 
-    assert len(setup().find_children()) == 18514
-    assert len(setup().find_children("gen*")) == 9
-    assert setup().find_children("general*") == [
+    assert len(flobject.find_children(setup())) == 18514
+    assert len(flobject.find_children(setup(), "gen*")) == 9
+    assert flobject.find_children(setup(), "general*") == [
         "general",
         "models/discrete_phase/general_settings",
         "models/virtual_blade_model/disk/general",
     ]
-    assert setup().find_children("general") == [
+    assert flobject.find_children(setup(), "general") == [
         "general",
         "models/virtual_blade_model/disk/general",
     ]
-    assert setup().find_children("*gen") == [
+    assert flobject.find_children(setup(), "*gen") == [
         "boundary_conditions/exhaust_fan/phase/p_backflow_spec_gen",
         "boundary_conditions/exhaust_fan/p_backflow_spec_gen",
         "boundary_conditions/outlet_vent/phase/p_backflow_spec_gen",
@@ -748,36 +751,36 @@ def test_find_children_from_settings_root():
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
-def test_find_children_from_fluent_solver_session(load_static_mixer_case):
-    setup_children = load_static_mixer_case.setup.find_children()
+def test_find_children_from_fluent_solver_session():
+    import ansys.fluent.core as pyfluent
+
+    load_static_mixer_case = pyfluent.launch_fluent(mode="solver")
+    setup_children = flobject.find_children(load_static_mixer_case.setup)
 
     assert len(setup_children) == 18514
 
     viscous = load_static_mixer_case.setup.models.viscous
-    assert viscous.find_children("prod*") == [
+    assert flobject.find_children(viscous, "prod*") == [
         "options/production_kato_launder",
         "turbulence_expert/production_limiter",
     ]
 
-    assert (
-        load_static_mixer_case.setup.boundary_conditions.pressure_outlet.find_children(
-            "*_dir_*"
-        )
-        == [
-            "phase/geom_dir_spec",
-            "phase/geom_dir_x",
-            "phase/geom_dir_y",
-            "phase/geom_dir_z",
-            "geom_dir_spec",
-            "geom_dir_x",
-            "geom_dir_y",
-            "geom_dir_z",
-        ]
-    )
+    assert flobject.find_children(
+        load_static_mixer_case.setup.boundary_conditions.pressure_outlet, "*_dir_*"
+    ) == [
+        "phase/geom_dir_spec",
+        "phase/geom_dir_x",
+        "phase/geom_dir_y",
+        "phase/geom_dir_z",
+        "geom_dir_spec",
+        "geom_dir_x",
+        "geom_dir_y",
+        "geom_dir_z",
+    ]
 
-    assert load_static_mixer_case.setup.materials.fluid[
-        "air"
-    ].density.piecewise_polynomial.find_children() == [
+    assert flobject.find_children(
+        load_static_mixer_case.setup.materials.fluid["air"].density.piecewise_polynomial
+    ) == [
         "minimum",
         "maximum",
         "number_of_coefficients",
