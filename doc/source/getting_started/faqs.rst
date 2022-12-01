@@ -215,7 +215,7 @@ to learn how to use PyFluent:
 - Write scripts, using capabilities such as these:
 
   - IntelliSense to show available options for any given command. For example,
-    in `JupyterLab <https://jupyter.org/>, press the tab key.
+    in `JupyterLab <https://jupyter.org/>`_, press the tab key.
   - Standard Python or PyAnsys tooling to print options related to a specified
     object. For example, use ``dir (<object>)`` or ``help (<object>)``.
 
