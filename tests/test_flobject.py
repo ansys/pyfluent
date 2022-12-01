@@ -751,10 +751,7 @@ def test_find_children_from_settings_root():
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
-def test_find_children_from_fluent_solver_session():
-    import ansys.fluent.core as pyfluent
-
-    load_static_mixer_case = pyfluent.launch_fluent(mode="solver")
+def test_find_children_from_fluent_solver_session(load_static_mixer_case):
     setup_children = flobject.find_children(load_static_mixer_case.setup)
 
     assert len(setup_children) == 18514
