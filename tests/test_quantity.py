@@ -666,7 +666,7 @@ def test_temp_type_66():
     assert c4.type == "Temperature"
 
     c6 = q.Quantity(1.0, "F^1")
-    assert c6.type == "Temperature"
+    assert c6.type == "Temperature Difference"
 
     c7 = q.Quantity(1.0, "F^-1")
     assert c7.type == "Temperature Difference"
@@ -686,7 +686,8 @@ def test_temp_difference_67():
     assert td.type == "Temperature Difference"
 
     td_m = td * 2
-    assert td_m.type == "Temperature"
+    assert td_m.unit == "delta_K"
+    assert td_m.type == "Temperature Difference"
 
     t1 = q.Quantity(150.0, "C")
     assert t1.type == "Temperature"
@@ -793,6 +794,19 @@ def test_quantity_map_71():
         api_test = q.Quantity(
             10.5, unit_str="kg m s^-1", quantity_map=quantity_map_from_settings_API
         )
+
+
+def test_quantity_map_72():
+    quantity_map_from_settings_API = {
+        "Temperature": 1,
+        "Pressure": 1,
+        "Volume": 1,
+    }
+
+    api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
+    assert api_test.value == 10.5
+    print(api_test.unit)
+    # assert api_test.unit == "kg^3 m^-1.5 s^-6.5 A^3 cd"
 
 
 def testing_dimensions():

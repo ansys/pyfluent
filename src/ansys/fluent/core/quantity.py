@@ -354,16 +354,17 @@ class Unit(object):
 
     @staticmethod
     def _power_sum(base, unit_str):
-        if "^" in unit_str:
-            return sum(
-                [
-                    float(term.split("^")[1])
-                    for term in unit_str.split(" ")
-                    if term.split("^")[0] == base
-                ]
-            )
-        else:
-            return 1.0
+        if unit_str in ["K", "C", "F", "R"]:
+            if "^" in unit_str:
+                return sum(
+                    [
+                        float(term.split("^")[1])
+                        for term in unit_str.split(" ")
+                        if term.split("^")[0] == base
+                    ]
+                )
+            else:
+                return 1.0
 
     def _compute_offset(self, unit_str):
         if unit_str == "C":
@@ -383,7 +384,7 @@ class Unit(object):
             unit_power = Unit._power_sum(temp_unit, self._unit)
             if temp_unit in self._unit and unit_power == 1.0:
                 qty_type = "Temperature"
-            elif "delta" in self._unit:
+            elif "delta_" in self._unit:
                 qty_type = "Temperature Difference"
             elif temp_unit in self._unit and unit_power not in [0.0, 1.0]:
                 qty_type = "Temperature Difference"
@@ -1009,6 +1010,10 @@ class Quantity(float):
             temp_unit = self._get_si_unit(other, lambda x, y: x + y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):
+            if self.type == "Temperature Difference":
+                result = Quantity(float(self) * float(other), "delta_K")
+                result.type = "Temperature Difference"
+                return result
             return Quantity(self._si_value * other, self._si_unit)
 
     def __rmul__(self, other):
@@ -1043,6 +1048,11 @@ class Quantity(float):
 
     def __add__(self, other):
         self.validate_matching_dimensions(other)
+        temp_types = ["Temperature", "Temperature Difference"]
+        if self.type in temp_types and other.type in temp_types:
+            result = Quantity(float(self) + float(other), "K")
+            result.type = "Temperature"
+            return result
         temp_value = float(self) + float(other)
         return Quantity(temp_value, self._si_unit)
 
