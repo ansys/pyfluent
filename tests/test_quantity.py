@@ -805,8 +805,7 @@ def test_quantity_map_72():
 
     api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
     assert api_test.value == 10.5
-    print(api_test.unit)
-    # assert api_test.unit == "kg^3 m^-1.5 s^-6.5 A^3 cd"
+    assert api_test.unit == "K Pa m^3"
 
 
 def testing_dimensions():
