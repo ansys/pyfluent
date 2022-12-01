@@ -99,8 +99,8 @@ that are not possible via the ``tui`` object:
 
     energy_is_enabled = solver.setup.models.energy.enabled()
 
-For the full hierarchy under the solver ``root`` object, see :ref:`solver_tui`.
-For additional interface features, see :ref:`settings`.
+For the full hierarchy under the solver ``root`` object, see :ref:`ref_solver_tui`.
+For additional interface features, see :ref:`ref_settings`.
 
 Meshing mode session
 --------------------
@@ -127,8 +127,8 @@ familiar to existing Fluent users:
     tui.file.write_case("pipe.cas.h5")
     
 For the full hierarchy under the meshing ``tui`` object, see
-:ref:`meshing_tui`. For general guidance on using TUI commands, see
-:ref:`user_guide_tui_commands`. 
+:ref:`ref_meshing_tui`. For general guidance on using TUI commands, see
+:ref:`ref_user_guide_tui_commands`. 
 
 ``Meshing`` and ``Workflow`` properties
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +153,7 @@ the Python meshing workflow interface that Fluent meshing exposes directly:
     meshing.GlobalSettings.LengthUnit.set_state("mm")
 
 For additional examples, see :ref:`ref_user_guide_meshing_workflows`.
-For information on the full interface, see :ref:`meshing_datamodel`.
+For information on the full interface, see :ref:`ref_meshing_datamodel`.
 
 Session object
 --------------
