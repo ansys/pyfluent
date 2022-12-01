@@ -45,9 +45,9 @@ similar to how you use TUI commands.
 Who should use PyFluent?
 ------------------------
 Many different types of people benefit from using PyFluent to achieve various objectives. Users
-include engineers, product designers, partners, consutants, researchers, professors, students,
+include engineers, product designers, partners, consultants, researchers, professors, students,
 and non-engineers. PyFluent is being used for multi-product automation, scientific research,
-learning and training, vertical app creation, and custom workflow integrations.
+learning and training, vertical app creation, and custom workflow integration.
 
 .. image:: ../_static/who_why_use_PyFluent.png
   :width: 800
@@ -84,7 +84,7 @@ You can use PyFluent to do tasks such as these:
 - Integrate Fluent as a solver seamlessly in your in-house design tools.
 - Customize postprocessing, perhaps by using Python's vast external
   library to extend postprocessing capabilities or by automatically generating
-  a PowerPoint presentation for simulation results.
+  a PowerPoint presentation to show simulation results.
 - Use a web app to access jobs running on a cluster, monitor convergence, and
   generate graphs.
 - Leverage ML and AI, especially for models that are solved quickly but can be
@@ -97,8 +97,8 @@ How do you install PyFluent?
 ----------------------------
 While :ref:`installation` provides basic information for quickly
 installing and launching the ``ansys-fluent-core`` package, these
-steps explain how to install all PyFluent packages in a Python virtual
-environment:
+steps explain how to install all PyFluent packages in a Python *virtual
+environment*:
 
 #. Install Python if it is not already installed.
 
@@ -115,7 +115,7 @@ environment:
    be automatically set on Windows.
 
 #. In a command window, use this code to set up and activate a local Python
-   *virtual environment*::
+   virtual environment::
       
     python -m venv pyenv   # Set up a local virtual environment
     pyenv\Scripts\activate   # Activate the virtual environment on Windows
@@ -153,7 +153,7 @@ All PyAnsys public libraries are available from the `PyAnsys GitHub account <htt
 The **Repositories** page displays the number of repositories, which are searchable by name.
 For example, to find all PyFluent libraries, type ``pyfluent`` in the search option. 
 
-The ``README.md`` file for the PyAnsys Github account lists the primary public PyAnsys libraries.
+The ``README.md`` file for the PyAnsys Github account lists the public PyAnsys libraries.
 The links in this list are to the documentation for the respective libraries. In addition to 
 general usage information, the documentation for a library includes many practical examples.
 
@@ -167,9 +167,6 @@ To launch Fluent with PyFluent commands, use this code:
    session=pyfluent.launch_fluent()
 
 
-For additional launch examples, see :ref:`ref_user_guide_launch`. For descriptions of all parameters,
-see the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method.
-
 This example shows you how to launch a double precision Fluent session with two
 processars and the Fluent GUI:
 
@@ -178,13 +175,16 @@ processars and the Fluent GUI:
    session=pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True)
 
 
+For additional launch examples, see :ref:`ref_user_guide_launch`. For descriptions of all parameters,
+see the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method.
+
 How do you learn how to use PyFluent?
 -------------------------------------
 Depending on how you prefer to learn, you can use any or all of these methods
-for learning how to use PyFluent:
+to learn how to use PyFluent:
 
 - Review the examples in the documentation, working first through those provided in
-  the **Examples** section in this guide and then through those provided in the
+  the :ref:_ref_example_gallery in this guide and then through those provided in the
   **Examples** sections in the `PyFluent-Parametric <https://fluentparametric.docs.pyansys.com/>`_ and
   `Pyfluent-Visusalization <https://fluentvisualization.docs.pyansys.com/>`_
   guides.
@@ -194,7 +194,7 @@ for learning how to use PyFluent:
      In Fluent 2022 R2, recording a journal of your Fluent meshing commands does not
      produce a Python script that is in PyFluent syntax. However, there is a
      one-to-one correspondence between the recorded Python command and the equivalent
-     PyFluent command, which means that you can manually translate the recorded Python
+     PyFluent command. This means that you can manually translate the recorded Python
      command to the PyFluent syntax.
 
   
@@ -205,7 +205,7 @@ for learning how to use PyFluent:
     import :(%py-exec "workflow.TaskObject['Describe Geometry and Flow'].Arguments.setState({r'AddEnclosure': r'No',r'CloseCaps': r'Yes',r'FlowType': r'Internal flow through the object',})")
 
 
-  Here is a manually translated equivalent command in PyFluent syntax:
+  Here is the manually translated equivalent command in PyFluent syntax:
   
   .. code:: python
 
@@ -215,7 +215,7 @@ for learning how to use PyFluent:
 - Write scripts, using capabilities such as these:
 
   - IntelliSense to show available options for any given command. For example,
-    in Jupyter Lab, press the tab key.
+    in `JupyterLab <https://jupyter.org/>, press the tab key.
   - Standard Python or PyAnsys tooling to print options related to a specified
     object. For example, use ``dir (<object>)`` or ``help (<object>)``.
 
