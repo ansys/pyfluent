@@ -706,7 +706,6 @@ class FieldData:
     ):
         self._service = service
         self._field_info = field_info
-        self._is_data_valid = is_data_valid
 
     def new_transaction(self):
         return FieldTransaction(self._service, self._field_info)
