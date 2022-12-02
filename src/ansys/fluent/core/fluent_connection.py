@@ -192,9 +192,23 @@ class _FluentConnection:
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
+
+        def check_data_valid(connection):
+            def impl():
+                try:
+                    return (
+                        connection.health_check_service.is_serving
+                        and connection.scheme_eval.scheme_eval("(data-valid?)")
+                    )
+                except BaseException:
+                    return False
+
+            return impl
+
         self.field_data = FieldData(
             self._field_data_service,
             self.field_info,
+            check_data_valid(self),
         )
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)

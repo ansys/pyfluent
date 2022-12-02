@@ -2,7 +2,11 @@ import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.services.field_data import ScalarFieldNameError, SurfaceNameError
+from ansys.fluent.core.services.field_data import (
+    ScalarFieldNameError,
+    ScalarFieldUnavailable,
+    SurfaceNameError,
+)
 
 
 def test_field_data_errors(new_solver_session) -> None:
@@ -24,6 +28,10 @@ def test_field_data_errors(new_solver_session) -> None:
     assert fne.value.field_name == "partition-neighbors"
 
     solver.file.read(file_type="case", file_name=import_filename)
+
+    with pytest.raises(ScalarFieldUnavailable) as fnu:
+        solver.field_data.get_scalar_field_data(field_name="density", surface_ids=[0])
+    assert fnu.value.field_name == "density"
 
     y_face_area = solver.field_data.get_scalar_field_data(
         field_name="y-face-area", surface_ids=[0]
