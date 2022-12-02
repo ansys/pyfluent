@@ -62,19 +62,20 @@ def get_container_ids_set():
 
 
 def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -> None:
-    def f():
+    def f(get_pid):
         session = pyfluent.launch_fluent(mode="solver")
-        f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
+        if get_pid:
+            f.server_pid = session.scheme_eval.scheme_eval("(%cx-process-id)")
 
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
         containers_before = get_container_ids_set()
-        f()
+        f(get_pid=False)
         time.sleep(10)
         containers_after = get_container_ids_set()
         new_containers = containers_after - containers_before
         assert not new_containers
     else:
-        f()
+        f(get_pid=True)
         time.sleep(10)
         assert not psutil.pid_exists(f.server_pid)
 

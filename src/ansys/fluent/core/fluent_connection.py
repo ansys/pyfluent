@@ -61,6 +61,29 @@ class MonitorThread(threading.Thread):
             cb()
 
 
+class _IsDataValid:
+    def __init__(self, events_manager):
+        self._valid = False
+        for event_name in "InitializedEvent", "DataReadEvent":
+            events_manager.register_callback(event_name, self._on_valid)
+        # AboutToReadCaseEvent is reported as invalid so
+        # using CaseReadEvent which should be OK anyway
+        for event_name in ("CaseReadEvent",):
+            events_manager.register_callback(event_name, self._on_invalid)
+
+    def _on_valid(self, *_, **__):
+        self._valid = True
+
+    def _on_invalid(self, *_, **__):
+        self._valid = False
+
+    def __bool__(self):
+        return self._valid
+
+    def __call__(self):
+        return self._valid
+
+
 class _FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -128,6 +151,7 @@ class _FluentConnection:
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
         """
+        self._data_valid = False
         self._channel_str = None
         if channel is not None:
             self._channel = channel
@@ -185,6 +209,7 @@ class _FluentConnection:
         self.events_manager.register_callback(
             "DataReadEvent", self.monitors_manager.refresh
         )
+
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
@@ -193,22 +218,8 @@ class _FluentConnection:
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
 
-        def check_data_valid(connection):
-            def impl():
-                try:
-                    return (
-                        connection.health_check_service.is_serving
-                        and connection.scheme_eval.scheme_eval("(data-valid?)")
-                    )
-                except BaseException:
-                    return False
-
-            return impl
-
         self.field_data = FieldData(
-            self._field_data_service,
-            self.field_info,
-            check_data_valid(self),
+            self._field_data_service, self.field_info, _IsDataValid(self.events_manager)
         )
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
@@ -314,3 +325,10 @@ class _FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+    def _on_data_valid(self, *args, **kwargs):
+        self.monitors_manager.refresh(*args, **kwargs)
+        self._data_valid = True
+
+    def _on_data_invalid(self, *args, **kwargs):
+        self._data_valid = False

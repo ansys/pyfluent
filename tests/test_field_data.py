@@ -1,7 +1,3 @@
-import os
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"  # ???
-
 import numpy as np
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
