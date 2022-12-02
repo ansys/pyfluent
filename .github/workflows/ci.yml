@@ -21,7 +21,7 @@ env:
   # You should go up in number, if you go down (or repeat a previous value)
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
-  RESET_EXAMPLES_CACHE: 5
+  RESET_EXAMPLES_CACHE: 6
   API_CODE_CACHE: 3
 
 jobs:
