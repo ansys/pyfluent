@@ -69,7 +69,7 @@ def test_server_exits_when_session_goes_out_of_scope(with_launching_container) -
     if os.getenv("PYFLUENT_START_INSTANCE") == "0":
         containers_before = get_container_ids_set()
         f()
-        time.sleep(20)
+        time.sleep(10)
         containers_after = get_container_ids_set()
         new_containers = containers_after - containers_before
         assert not new_containers
