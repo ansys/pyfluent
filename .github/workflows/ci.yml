@@ -388,24 +388,26 @@ jobs:
 
       - name: 22.2 Unit Testing
         run: make unittest-dev-222
+        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v22.2.0
 
-      - name: Upload 22.2 Coverage Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: HTML-Coverage-tag-222
-          path: cov_html
-          retention-days: 7
-
       - name: 23.1 Unit Testing
         run: make unittest-dev-231
+        continue-on-error: true
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v23.1.0
+
+      - name: Upload 23.1 Coverage Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: HTML-Coverage-tag-231
+          path: cov_html
+          retention-days: 7
 
       - name: 23.2 Unit Testing
         run: make unittest-dev-232
