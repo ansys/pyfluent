@@ -710,6 +710,81 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
+    class get_scalar_field_data:
+        class FieldNameArg:
+            def __init__(self, field_info):
+                self._field_info = field_info
+
+            def allowed_values(self):
+                return sorted(self._field_info.get_fields_info())
+
+        def __init__(self, field_data, field_info):
+            self._field_data = field_data
+            self.field_name = FieldData.get_scalar_field_data.FieldNameArg(field_info)
+
+        def __call__(
+            self,
+            field_name: str,
+            surface_ids: Optional[List[int]] = None,
+            surface_name: Optional[str] = None,
+            node_value: Optional[bool] = True,
+            boundary_value: Optional[bool] = False,
+        ) -> Dict[int, np.array]:
+            """Get scalar field data on a surface.
+
+            Parameters
+            ----------
+            field_name : str
+                Name of the scalar field.
+            surface_ids : List[int], optional
+                List of surface IDs for scalar field data.
+            surface_name: str, optional
+                Surface Name for scalar field data.
+            node_value : bool, optional
+                Whether to provide data for the nodal location. The default is ``True``.
+                When ``False``, data is provided for the element location.
+            boundary_value : bool, optional
+                Whether to provide slip velocity at the wall boundaries. The default is
+                ``False``. When ``True``, no slip velocity is provided.
+
+            Returns
+            -------
+            Dict[int, np.array]
+                Dictionary containing a map of surface IDs to the scalar field.
+            """
+            surface_ids = _get_surface_ids(
+                field_info=self._field_data._field_info,
+                surface_ids=surface_ids,
+                surface_name=surface_name,
+            )
+            fields_request = get_fields_request()
+            fields_request.scalarFieldRequest.extend(
+                [
+                    FieldDataProtoModule.ScalarFieldRequest(
+                        surfaceId=surface_id,
+                        scalarFieldName=valid_scalar_field_name(
+                            field_name,
+                            self._field_data._field_info,
+                            self._field_data._is_data_valid,
+                        ),
+                        dataLocation=FieldDataProtoModule.DataLocation.Nodes
+                        if node_value
+                        else FieldDataProtoModule.DataLocation.Elements,
+                        provideBoundaryValues=boundary_value,
+                    )
+                    for surface_id in surface_ids
+                ]
+            )
+
+            fields = extract_fields(
+                self._field_data._service.get_fields(fields_request)
+            )
+            scalar_field_data = next(iter(fields.values()))
+            return {
+                surface_id: scalar_field_data[surface_id][field_name]
+                for surface_id in surface_ids
+            }
+
     def __init__(
         self,
         service: FieldDataService,
@@ -719,6 +794,7 @@ class FieldData:
         self._service = service
         self._field_info = field_info
         self._is_data_valid = is_data_valid
+        self.get_scalar_field_data = FieldData.get_scalar_field_data(self, field_info)
 
     def new_transaction(self):
         return FieldTransaction(self._service, self._field_info, self._is_data_valid)
@@ -778,65 +854,6 @@ class FieldData:
         surface_data = next(iter(fields.values()))
         return {
             surface_id: surface_data[surface_id][enum_to_field_name[data_type]]
-            for surface_id in surface_ids
-        }
-
-    def get_scalar_field_data(
-        self,
-        field_name: str,
-        surface_ids: Optional[List[int]] = None,
-        surface_name: Optional[str] = None,
-        node_value: Optional[bool] = True,
-        boundary_value: Optional[bool] = False,
-    ) -> Dict[int, np.array]:
-        """Get scalar field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field.
-        surface_ids : List[int], optional
-            List of surface IDs for scalar field data.
-        surface_name: str, optional
-            Surface Name for scalar field data.
-        node_value : bool, optional
-            Whether to provide data for the nodal location. The default is ``True``.
-            When ``False``, data is provided for the element location.
-        boundary_value : bool, optional
-            Whether to provide slip velocity at the wall boundaries. The default is
-            ``False``. When ``True``, no slip velocity is provided.
-
-        Returns
-        -------
-        Dict[int, np.array]
-            Dictionary containing a map of surface IDs to the scalar field.
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surface_ids=surface_ids,
-            surface_name=surface_name,
-        )
-        fields_request = get_fields_request()
-        fields_request.scalarFieldRequest.extend(
-            [
-                FieldDataProtoModule.ScalarFieldRequest(
-                    surfaceId=surface_id,
-                    scalarFieldName=valid_scalar_field_name(
-                        field_name, self._field_info, self._is_data_valid
-                    ),
-                    dataLocation=FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements,
-                    provideBoundaryValues=boundary_value,
-                )
-                for surface_id in surface_ids
-            ]
-        )
-
-        fields = extract_fields(self._service.get_fields(fields_request))
-        scalar_field_data = next(iter(fields.values()))
-        return {
-            surface_id: scalar_field_data[surface_id][field_name]
             for surface_id in surface_ids
         }
 
