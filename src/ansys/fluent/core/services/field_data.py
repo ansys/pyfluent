@@ -2,7 +2,7 @@
 import difflib
 from enum import IntEnum
 from functools import partial, reduce
-from typing import Callable, Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import grpc
 import numpy as np
@@ -192,32 +192,22 @@ def valid_surface_name(surface_name: str, field_info: FieldInfo) -> str:
     return surface_name
 
 
-def valid_scalar_field_name(
-    field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
-) -> str:
+def valid_scalar_field_name(field_name: str, field_info: FieldInfo) -> str:
     if validate_inputs:
         if field_name not in field_info.get_fields_info():
             raise ScalarFieldNameError(
                 field_name=field_name, allowed_values=field_info.get_fields_info()
             )
-        if not is_data_valid():
-            field_section = field_info.get_fields_info()[field_name]["section"]
-            if field_section not in ("Mesh...", "Cell Info..."):
-                raise ScalarFieldUnavailable(field_name)
     return field_name
 
 
-def valid_vector_field_name(
-    field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
-) -> str:
+def valid_vector_field_name(field_name: str, field_info: FieldInfo) -> str:
     if validate_inputs:
         if field_name not in field_info.get_vector_fields_info():
             raise VectorFieldNameError(
                 field_name=field_name,
                 allowed_values=field_info.get_vector_fields_info(),
             )
-        if not is_data_valid():
-            raise VectorFieldUnavailable(field_name)
     return field_name
 
 
@@ -233,15 +223,9 @@ class SurfaceDataType(IntEnum):
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
-    def __init__(
-        self,
-        service: FieldDataService,
-        field_info: FieldInfo,
-        is_data_valid: Callable[[], bool],
-    ):
+    def __init__(self, service: FieldDataService, field_info: FieldInfo):
         self._service = service
         self._field_info = field_info
-        self._is_data_valid = is_data_valid
         self._fields_request = get_fields_request()
 
     def add_surfaces_request(
@@ -336,7 +320,7 @@ class FieldTransaction:
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
                     scalarFieldName=valid_scalar_field_name(
-                        field_name, self._field_info, self._is_data_valid
+                        field_name, self._field_info
                     ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
@@ -378,7 +362,7 @@ class FieldTransaction:
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
                     vectorFieldName=valid_vector_field_name(
-                        field_name, self._field_info, self._is_data_valid
+                        field_name, self._field_info
                     ),
                 )
                 for surface_id in surface_ids
@@ -714,14 +698,12 @@ class FieldData:
         self,
         service: FieldDataService,
         field_info: FieldInfo,
-        is_data_valid: Callable[[], bool],
     ):
         self._service = service
         self._field_info = field_info
-        self._is_data_valid = is_data_valid
 
     def new_transaction(self):
-        return FieldTransaction(self._service, self._field_info, self._is_data_valid)
+        return FieldTransaction(self._service, self._field_info)
 
     def get_surface_data(
         self,
@@ -822,7 +804,7 @@ class FieldData:
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
                     scalarFieldName=valid_scalar_field_name(
-                        field_name, self._field_info, self._is_data_valid
+                        field_name, self._field_info
                     ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
@@ -873,7 +855,7 @@ class FieldData:
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
                     vectorFieldName=valid_vector_field_name(
-                        field_name, self._field_info, self._is_data_valid
+                        field_name, self._field_info
                     ),
                 )
                 for surface_id in surface_ids

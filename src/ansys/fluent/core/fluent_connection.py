@@ -195,7 +195,6 @@ class _FluentConnection:
         self.field_data = FieldData(
             self._field_data_service,
             self.field_info,
-            lambda: self.scheme_eval.scheme_eval("(data-valid?)"),
         )
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
