@@ -214,7 +214,7 @@ jobs:
 
       - name: Zip HTML Documentation before upload
         run: |
-          sudo apt install zip
+          sudo apt install zip -y
           zip -r doc.zip doc/_build/html
 
       - name: Upload HTML Documentation
