@@ -212,12 +212,15 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      - name: Zip HTML Documentation before upload
+        run: zip -r doc.zip doc/_build/html
+
       - name: Upload HTML Documentation
         if: matrix.image-tag == 'v23.1.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Documentation-tag-${{ matrix.image-tag }}
-          path: doc/_build/html
+          path: doc.zip
           retention-days: 7
 
       - name: Deploy
@@ -427,8 +430,11 @@ jobs:
         with:
           name: PyFluent-packages
 
+      - name: Display package file list
+        run: ls -R
+
       - name: Install pyfluent
-        run: pip install -q --force-reinstall ./**/*.whl > /dev/null
+        run: pip install -q --force-reinstall *.whl > /dev/null
 
       - name: Retrieve PyFluent version
         run: |
