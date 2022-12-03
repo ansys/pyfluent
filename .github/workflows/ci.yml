@@ -422,10 +422,13 @@ jobs:
         with:
           python-version: 3.9
 
-      - uses: actions/download-artifact@v3
+      - name: Download package
+        uses: actions/download-artifact@v3
+        with:
+          name: PyFluent-packages
 
       - name: Install pyfluent
-        run: pip install -q --force-reinstall dist/*.whl > /dev/null
+        run: pip install -q --force-reinstall ./**/*.whl > /dev/null
 
       - name: Retrieve PyFluent version
         run: |
