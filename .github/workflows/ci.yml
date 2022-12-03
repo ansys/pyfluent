@@ -422,6 +422,8 @@ jobs:
 
     steps:
 
+      - uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -431,12 +433,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: PyFluent-packages
-
-      - name: Display package file list
-        run: ls -R
+          path: dist
 
       - name: Install pyfluent
-        run: pip install -q --force-reinstall *.whl > /dev/null
+        run: pip install -q --force-reinstall dist/*.whl > /dev/null
 
       - name: Retrieve PyFluent version
         run: |
