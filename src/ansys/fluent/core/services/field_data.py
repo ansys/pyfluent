@@ -254,6 +254,13 @@ def _dynamic_allowed_scalar_field_names(
     )
 
 
+def _dynamic_allowed_vector_field_names(
+    field_info: FieldInfo, is_data_valid: Callable[[], bool]
+) -> List[str]:
+    field_dict = field_info.get_vector_fields_info()
+    return field_dict if is_data_valid() else []
+
+
 class _FieldMethod:
     class _Arg:
         def __init__(self, accessor):
@@ -807,7 +814,11 @@ class FieldData:
         self.get_vector_field_data = _FieldMethod(
             field_data_accessor=self._get_vector_field_data,
             args_allowed_values_accessors={
-                **dict(field_name=field_info.get_vector_fields_info),
+                **dict(
+                    field_name=lambda: _dynamic_allowed_vector_field_names(
+                        field_info, is_data_valid
+                    )
+                ),
                 **surface_args,
             },
         )
