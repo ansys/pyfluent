@@ -710,20 +710,21 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
-    class GetFieldData:
-        class FieldNameArg:
-            def __init__(self, field_info):
-                self._field_info = field_info
+    class _GetFieldData:
+        class Arg:
+            def __init__(self, accessor):
+                self._accessor = accessor
 
             def allowed_values(self):
-                return sorted(self._field_info.get_fields_info())
+                return sorted(self._accessor())
 
-        def __init__(self, getter, field_info):
-            self._getter = getter
-            self.field_name = FieldData.GetFieldData.FieldNameArg(field_info)
+        def __init__(self, field_data_accessor, args_allowed_values_accessors):
+            self._field_data_accessor = field_data_accessor
+            for arg_name, accessor in args_allowed_values_accessors.items():
+                setattr(self, arg_name, FieldData._GetFieldData.Arg(accessor))
 
         def __call__(self, *args, **kwargs):
-            return self._getter(*args, **kwargs)
+            return self._field_data_accessor(*args, **kwargs)
 
     def __init__(
         self,
@@ -734,8 +735,9 @@ class FieldData:
         self._service = service
         self._field_info = field_info
         self._is_data_valid = is_data_valid
-        self.get_scalar_field_data = FieldData.GetFieldData(
-            self._get_scalar_field_data, field_info
+        self.get_scalar_field_data = FieldData._GetFieldData(
+            field_data_accessor=self._get_scalar_field_data,
+            args_allowed_values_accessors=dict(field_name=field_info.get_fields_info),
         )
 
     def new_transaction(self):
