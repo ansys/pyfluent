@@ -1,5 +1,5 @@
 Apply general settings
-=========================
+======================
 PyFluent supports using both :ref:`ref_solver_tui_commands` and 
 :ref:`ref_settings` to apply general settings.
 

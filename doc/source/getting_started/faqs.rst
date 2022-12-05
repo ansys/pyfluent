@@ -21,10 +21,11 @@ Fluent within the Python ecosystem and broad access to native Fluent features fo
 actions such as these:
 
 - Launch Fluent using a local Ansys installation.
+- Connect to a Fluent instance running on a remote machine.
 - Use Fluent's TUI (text user interface) commands for both meshing and solver features.
 - Use Fluent's built-in postprocessing capabilities.
 
-PyFluent is not bundled with the Fluent installation. You must download and install PyFluent
+PyFluent is bundled with the Fluent installation. You can also download and install PyFluent
 separately. For more information, see :ref:`faqs_install`, which appears later on this page.
 
 PyFluent has no GUI (graphical user interface). You interact with PyFluent through the Python
@@ -44,21 +45,16 @@ similar to how you use TUI commands.
 
 Who should use PyFluent?
 ------------------------
-Many different types of people benefit from using PyFluent to achieve various objectives. Users
-include engineers, product designers, partners, consultants, researchers, professors, students,
-and non-engineers. PyFluent is being used for multi-product automation, scientific research,
-learning and training, vertical app creation, and custom workflow integration.
+PyFluent users include engineers, product designers, consultants, and academia.
 
 .. image:: ../_static/who_why_use_PyFluent.png
   :width: 800
   :alt: PyFluent users and objectives
 
 
-Here are some typical objectives that you can use PyFluent to achieve:
-
 - Enhance productivity with customized scripts.
-- Automate workflows with customized scripts.
-- Extend CFD simulations to a wider audience.
+- Automate multi-product workflows.
+- Extend CFD simulations to a wider audience by creating vertical apps.
 - Create comprehensive workflows inspired by Python's increasingly broad offerings
   in these areas of scientific computing:
 

@@ -56,12 +56,9 @@ For example, ``AWP_ROOT222`` is the environment variable for the 2022 R2 release
 On a Windows system, this environment variable is configured when a release is installed.
 
 On a Linux system, you must configure this environment variable to point to the absolute
-path of the installed release. For example, for the 2022 R2 release, you would likely set
-the ``AWP_ROOT222`` environment variable to point to ``C:\Program Files\ANSYS Inc\v222``.
-
-To use a non-default installation location, either set the ``AWP_ROOT<ver>`` environment variable
-or set the ``PYFLUENT_FLUENT_ROOT`` environment variable by pointing to the ``<install
-location>/<ver>/fluent`` directory.
+path of the installed release. For example, for the 2022 R2 release, you would set
+the ``AWP_ROOT222`` environment variable to point to an absolute location such as
+``C:\Program Files\ANSYS Inc\v222``.
 
 Once Fluent is active, you can use the ``solver_session.tui`` interface to send
 Fluent TUI commands to PyFluent. For example, this code reads a case file, updates a
