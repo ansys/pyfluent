@@ -230,6 +230,32 @@ class SurfaceDataType(IntEnum):
     FacesCentroid = 4
 
 
+def _allowed_surface_ids(field_info):
+    try:
+        return sorted(
+            info["surface_id"][0] for _, info in field_info.get_surfaces_info().items()
+        )
+    except (KeyError, IndexError):
+        pass
+
+
+class _FieldMethod:
+    class _Arg:
+        def __init__(self, accessor):
+            self._accessor = accessor
+
+        def allowed_values(self):
+            return sorted(self._accessor())
+
+    def __init__(self, field_data_accessor, args_allowed_values_accessors):
+        self._field_data_accessor = field_data_accessor
+        for arg_name, accessor in args_allowed_values_accessors.items():
+            setattr(self, arg_name, _FieldMethod._Arg(accessor))
+
+    def __call__(self, *args, **kwargs):
+        return self._field_data_accessor(*args, **kwargs)
+
+
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
@@ -244,7 +270,35 @@ class FieldTransaction:
         self._is_data_valid = is_data_valid
         self._fields_request = get_fields_request()
 
-    def add_surfaces_request(
+        surface_args = dict(
+            surface_ids=lambda: _allowed_surface_ids(field_info),
+            surface_names=field_info.get_surfaces_info,
+        )
+        scalar_field_args = {
+            **dict(field_name=field_info.get_fields_info),
+            **surface_args,
+        }
+        self.add_scalar_fields_request = _FieldMethod(
+            field_data_accessor=self._add_scalar_fields_request,
+            args_allowed_values_accessors=scalar_field_args,
+        )
+        self.add_vector_fields_request = _FieldMethod(
+            field_data_accessor=self._add_vector_fields_request,
+            args_allowed_values_accessors={
+                **dict(field_name=field_info.get_vector_fields_info),
+                **surface_args,
+            },
+        )
+        self.add_surfaces_request = _FieldMethod(
+            field_data_accessor=self._add_surfaces_request,
+            args_allowed_values_accessors=surface_args,
+        )
+        self.add_pathlines_fields_request = _FieldMethod(
+            field_data_accessor=self._add_pathlines_fields_request,
+            args_allowed_values_accessors=scalar_field_args,
+        )
+
+    def _add_surfaces_request(
         self,
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
@@ -297,7 +351,7 @@ class FieldTransaction:
             ]
         )
 
-    def add_scalar_fields_request(
+    def _add_scalar_fields_request(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -347,7 +401,7 @@ class FieldTransaction:
             ]
         )
 
-    def add_vector_fields_request(
+    def _add_vector_fields_request(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -385,7 +439,7 @@ class FieldTransaction:
             ]
         )
 
-    def add_pathlines_fields_request(
+    def _add_pathlines_fields_request(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -707,33 +761,8 @@ def extract_fields(chunk_iterator):
     return fields_data
 
 
-def _allowed_surface_ids(field_info):
-    try:
-        return sorted(
-            info["surface_id"][0] for _, info in field_info.get_surfaces_info().items()
-        )
-    except (KeyError, IndexError):
-        pass
-
-
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
-
-    class _GetFieldData:
-        class Arg:
-            def __init__(self, accessor):
-                self._accessor = accessor
-
-            def allowed_values(self):
-                return sorted(self._accessor())
-
-        def __init__(self, field_data_accessor, args_allowed_values_accessors):
-            self._field_data_accessor = field_data_accessor
-            for arg_name, accessor in args_allowed_values_accessors.items():
-                setattr(self, arg_name, FieldData._GetFieldData.Arg(accessor))
-
-        def __call__(self, *args, **kwargs):
-            return self._field_data_accessor(*args, **kwargs)
 
     def __init__(
         self,
@@ -748,23 +777,28 @@ class FieldData:
             surface_ids=lambda: _allowed_surface_ids(field_info),
             surface_name=field_info.get_surfaces_info,
         )
-        self.get_scalar_field_data = FieldData._GetFieldData(
+        scalar_field_args = {
+            **dict(field_name=field_info.get_fields_info),
+            **surface_args,
+        }
+        self.get_scalar_field_data = _FieldMethod(
             field_data_accessor=self._get_scalar_field_data,
-            args_allowed_values_accessors={
-                **dict(field_name=field_info.get_fields_info),
-                **surface_args,
-            },
+            args_allowed_values_accessors=scalar_field_args,
         )
-        self.get_vector_field_data = FieldData._GetFieldData(
+        self.get_vector_field_data = _FieldMethod(
             field_data_accessor=self._get_vector_field_data,
             args_allowed_values_accessors={
                 **dict(field_name=field_info.get_vector_fields_info),
                 **surface_args,
             },
         )
-        self.get_surface_data = FieldData._GetFieldData(
+        self.get_surface_data = _FieldMethod(
             field_data_accessor=self._get_surface_data,
             args_allowed_values_accessors=surface_args,
+        )
+        self.get_pathlines_field_data = _FieldMethod(
+            field_data_accessor=self._get_pathlines_field_data,
+            args_allowed_values_accessors=scalar_field_args,
         )
 
     def new_transaction(self):
@@ -938,7 +972,7 @@ class FieldData:
             for surface_id in surface_ids
         }
 
-    def get_pathlines_field_data(
+    def _get_pathlines_field_data(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,

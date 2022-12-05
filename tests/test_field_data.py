@@ -116,24 +116,38 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     solver.file.read(file_type="case", file_name=import_filename)
     solver.solution.initialization.hybrid_initialize()
 
-    expected_allowed_args = sorted(solver.field_info.get_fields_info())
-    allowed_args = solver.field_data.get_scalar_field_data.field_name.allowed_values()
-    assert expected_allowed_args and (expected_allowed_args == allowed_args)
+    field_data = solver.field_data
+    field_info = solver.field_info
+    transaction = field_data.new_transaction()
 
-    expected_allowed_args = sorted(solver.field_info.get_surfaces_info())
-    allowed_args = solver.field_data.get_scalar_field_data.surface_name.allowed_values()
+    expected_allowed_args = sorted(field_info.get_fields_info())
+    allowed_args = field_data.get_scalar_field_data.field_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
+    allowed_args = transaction.add_scalar_fields_request.field_name.allowed_values()
+    assert expected_allowed_args == allowed_args
 
-    expected_allowed_args = sorted(solver.field_info.get_surfaces_info())
-    allowed_args = solver.field_data.get_surface_data.surface_name.allowed_values()
+    expected_allowed_args = sorted(field_info.get_surfaces_info())
+    allowed_args = field_data.get_scalar_field_data.surface_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
+    allowed_args = transaction.add_scalar_fields_request.surface_names.allowed_values()
+    assert expected_allowed_args == allowed_args
 
-    allowed_args = solver.field_data.get_surface_data.surface_ids.allowed_values()
+    expected_allowed_args = sorted(field_info.get_surfaces_info())
+    allowed_args = field_data.get_surface_data.surface_name.allowed_values()
+    assert expected_allowed_args and (expected_allowed_args == allowed_args)
+    allowed_args = transaction.add_scalar_fields_request.surface_names.allowed_values()
+    assert expected_allowed_args == allowed_args
+
+    allowed_args = field_data.get_surface_data.surface_ids.allowed_values()
+    assert len(expected_allowed_args) == len(allowed_args)
+    allowed_args = transaction.add_scalar_fields_request.surface_ids.allowed_values()
     assert len(expected_allowed_args) == len(allowed_args)
 
-    expected_allowed_args = sorted(solver.field_info.get_vector_fields_info())
-    allowed_args = solver.field_data.get_vector_field_data.field_name.allowed_values()
+    expected_allowed_args = sorted(field_info.get_vector_fields_info())
+    allowed_args = field_data.get_vector_field_data.field_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
+    allowed_args = transaction.add_vector_fields_request.field_name.allowed_values()
+    assert expected_allowed_args == allowed_args
 
 
 def test_field_data_errors(new_solver_session) -> None:
