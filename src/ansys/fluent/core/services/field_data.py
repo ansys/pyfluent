@@ -235,22 +235,29 @@ def _allowed_surface_ids(field_info: FieldInfo) -> List[str]:
         pass
 
 
-class _AllowedSurfaceNames:
+class _AllowedNames:
     def __init__(self, field_info: FieldInfo):
         self._field_info = field_info
-
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._field_info.get_surfaces_info()
 
     def is_valid(self, name, respect_data_valid=True):
         return name in self(respect_data_valid)
 
 
-class _AllowedScalarFieldNames:
+class _AllowedFieldNames(_AllowedNames):
     def __init__(self, field_info: FieldInfo, is_data_valid: Callable[[], bool]):
-        self._field_info = field_info
+        super().__init__(field_info=field_info)
         self._is_data_valid = is_data_valid
 
+    def valid_name(self):
+        pass
+
+
+class _AllowedSurfaceNames(_AllowedNames):
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+        return self._field_info.get_surfaces_info()
+
+
+class _AllowedScalarFieldNames(_AllowedFieldNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         field_dict = self._field_info.get_fields_info()
         return (
@@ -263,15 +270,8 @@ class _AllowedScalarFieldNames:
             ]
         )
 
-    def is_valid(self, name, respect_data_valid=True):
-        return name in self(respect_data_valid)
 
-
-class _AllowedVectorFieldNames:
-    def __init__(self, field_info: FieldInfo, is_data_valid: Callable[[], bool]):
-        self._field_info = field_info
-        self._is_data_valid = is_data_valid
-
+class _AllowedVectorFieldNames(_AllowedFieldNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return (
             self._field_info.get_vector_fields_info()
