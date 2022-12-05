@@ -710,7 +710,7 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
-    class get_scalar_field_data:
+    class GetFieldData:
         class FieldNameArg:
             def __init__(self, field_info):
                 self._field_info = field_info
@@ -718,12 +718,12 @@ class FieldData:
             def allowed_values(self):
                 return sorted(self._field_info.get_fields_info())
 
-        def __init__(self, field_data, field_info):
-            self._field_data = field_data
-            self.field_name = FieldData.get_scalar_field_data.FieldNameArg(field_info)
+        def __init__(self, getter, field_info):
+            self._getter = getter
+            self.field_name = FieldData.GetFieldData.FieldNameArg(field_info)
 
         def __call__(self, *args, **kwargs):
-            return self._field_data._get_scalar_field_data(*args, **kwargs)
+            return self._getter(*args, **kwargs)
 
     def __init__(
         self,
@@ -734,7 +734,9 @@ class FieldData:
         self._service = service
         self._field_info = field_info
         self._is_data_valid = is_data_valid
-        self.get_scalar_field_data = FieldData.get_scalar_field_data(self, field_info)
+        self.get_scalar_field_data = FieldData.GetFieldData(
+            self._get_scalar_field_data, field_info
+        )
 
     def new_transaction(self):
         return FieldTransaction(self._service, self._field_info, self._is_data_valid)

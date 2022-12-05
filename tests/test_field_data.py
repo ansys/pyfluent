@@ -101,3 +101,15 @@ def test_field_data(new_solver_session) -> None:
         )
         == HOT_INLET_TEMPERATURE
     )
+
+
+def test_field_data_allowed_values(new_solver_session) -> None:
+    solver = new_solver_session
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_filename)
+    solver.solution.initialization.hybrid_initialize()
+    expected_allowed_args = sorted(solver.field_info.get_fields_info())
+    allowed_args = solver.field_data.get_scalar_field_data.field_name.allowed_values()
+    assert expected_allowed_args and (expected_allowed_args == allowed_args)
