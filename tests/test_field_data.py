@@ -110,6 +110,11 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     )
     solver.file.read(file_type="case", file_name=import_filename)
     solver.solution.initialization.hybrid_initialize()
+
     expected_allowed_args = sorted(solver.field_info.get_fields_info())
     allowed_args = solver.field_data.get_scalar_field_data.field_name.allowed_values()
+    assert expected_allowed_args and (expected_allowed_args == allowed_args)
+
+    expected_allowed_args = sorted(solver.field_info.get_surfaces_info())
+    allowed_args = solver.field_data.get_scalar_field_data.surface_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)

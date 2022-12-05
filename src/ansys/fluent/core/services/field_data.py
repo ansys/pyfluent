@@ -737,7 +737,10 @@ class FieldData:
         self._is_data_valid = is_data_valid
         self.get_scalar_field_data = FieldData._GetFieldData(
             field_data_accessor=self._get_scalar_field_data,
-            args_allowed_values_accessors=dict(field_name=field_info.get_fields_info),
+            args_allowed_values_accessors=dict(
+                field_name=field_info.get_fields_info,
+                surface_name=field_info.get_surfaces_info,
+            ),
         )
 
     def new_transaction(self):
