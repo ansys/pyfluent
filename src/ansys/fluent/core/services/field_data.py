@@ -297,15 +297,13 @@ class FieldTransaction:
         self,
         service: FieldDataService,
         field_info: FieldInfo,
-        is_data_valid: Callable[[], bool],
         allowed_surface_names,
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
         self._service = service
-        self._field_info = field_info
-        self._is_data_valid = is_data_valid
         self._fields_request = get_fields_request()
+        self._field_info = field_info
 
         self._allowed_surface_names = allowed_surface_names
         self._allowed_scalar_field_names = allowed_scalar_field_names
@@ -818,7 +816,6 @@ class FieldData:
     ):
         self._service = service
         self._field_info = field_info
-        self._is_data_valid = is_data_valid
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 
@@ -862,7 +859,6 @@ class FieldData:
         return FieldTransaction(
             self._service,
             self._field_info,
-            self._is_data_valid,
             self._allowed_surface_names,
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
