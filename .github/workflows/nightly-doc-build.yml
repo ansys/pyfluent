@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image-tag: [v22.2.0, v23.1.0]
+        image-tag: [v22.2.0, v23.1.0, v23.2.0]
 
     steps:
       - uses: actions/checkout@v3
@@ -65,7 +65,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Deploy
-        if: matrix.image-tag == 'v22.2.0'
+        if: matrix.image-tag == 'v23.1.0'
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           repository-name: pyansys/pyfluent-dev-docs
