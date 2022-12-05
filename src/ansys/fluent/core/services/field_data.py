@@ -183,40 +183,6 @@ class SurfaceNameError(ValueError):
         )
 
 
-def valid_surface_name(surface_name: str, allowed_surface_names) -> str:
-    if validate_inputs:
-        if not allowed_surface_names.is_valid(surface_name):
-            raise SurfaceNameError(
-                surface_name=surface_name,
-                allowed_values=allowed_surface_names(),
-            )
-    return surface_name
-
-
-def valid_scalar_field_name(field_name: str, allowed_scalar_field_names) -> str:
-    if validate_inputs:
-        names = allowed_scalar_field_names
-        if not names.is_valid(field_name, respect_data_valid=False):
-            raise ScalarFieldNameError(
-                field_name=field_name, allowed_values=names(respect_data_valid=False)
-            )
-        if not names.is_valid(field_name, respect_data_valid=True):
-            raise ScalarFieldUnavailable(field_name)
-    return field_name
-
-
-def valid_vector_field_name(field_name: str, allowed_vector_field_names) -> str:
-    if validate_inputs:
-        names = allowed_vector_field_names
-        if not names.is_valid(field_name, respect_data_valid=False):
-            raise VectorFieldNameError(
-                field_name=field_name, allowed_values=names(respect_data_valid=False)
-            )
-        if not names.is_valid(field_name, respect_data_valid=True):
-            raise VectorFieldUnavailable(field_name)
-    return field_name
-
-
 class SurfaceDataType(IntEnum):
     """Provides surface data types."""
 
@@ -248,16 +214,37 @@ class _AllowedFieldNames(_AllowedNames):
         super().__init__(field_info=field_info)
         self._is_data_valid = is_data_valid
 
-    def valid_name(self):
-        pass
+    def valid_name(self, field_name):
+        if validate_inputs:
+            names = self
+            if not names.is_valid(field_name, respect_data_valid=False):
+                raise self._field_name_error(
+                    field_name=field_name,
+                    allowed_values=names(respect_data_valid=False),
+                )
+            if not names.is_valid(field_name, respect_data_valid=True):
+                raise self._field_unavailable_error(field_name)
+        return field_name
 
 
 class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return self._field_info.get_surfaces_info()
 
+    def valid_name(self, surface_name: str) -> str:
+        if validate_inputs:
+            if not self.is_valid(surface_name):
+                raise SurfaceNameError(
+                    surface_name=surface_name,
+                    allowed_values=self(),
+                )
+        return surface_name
+
 
 class _AllowedScalarFieldNames(_AllowedFieldNames):
+    _field_name_error = ScalarFieldNameError
+    _field_unavailable_error = ScalarFieldUnavailable
+
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         field_dict = self._field_info.get_fields_info()
         return (
@@ -272,6 +259,9 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
 
 
 class _AllowedVectorFieldNames(_AllowedFieldNames):
+    _field_name_error = VectorFieldNameError
+    _field_unavailable_error = VectorFieldUnavailable
+
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         return (
             self._field_info.get_vector_fields_info()
@@ -442,8 +432,8 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=valid_scalar_field_name(
-                        field_name, self._allowed_scalar_field_names
+                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
+                        field_name
                     ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
@@ -485,8 +475,8 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=valid_vector_field_name(
-                        field_name, self._allowed_vector_field_names
+                    vectorFieldName=self._allowed_vector_field_names.valid_name(
+                        field_name,
                     ),
                 )
                 for surface_id in surface_ids
@@ -648,7 +638,7 @@ def _get_surface_ids(
                 )
         elif surface_name:
             surface_ids = field_info.get_surfaces_info()[
-                valid_surface_name(surface_name, allowed_surface_names)
+                allowed_surface_names.valid_name(surface_name)
             ]["surface_id"]
         else:
             raise RuntimeError("Please provide either surface names or surface ids.")
@@ -919,8 +909,8 @@ class FieldData:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=valid_scalar_field_name(
-                        field_name, self._allowed_scalar_field_names
+                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
+                        field_name
                     ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
@@ -1030,8 +1020,8 @@ class FieldData:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=valid_vector_field_name(
-                        field_name, self._allowed_vector_field_names
+                    vectorFieldName=self._allowed_vector_field_names.valid_name(
+                        field_name
                     ),
                 )
                 for surface_id in surface_ids
