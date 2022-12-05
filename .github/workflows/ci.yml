@@ -21,8 +21,8 @@ env:
   # You should go up in number, if you go down (or repeat a previous value)
   # you might end up reusing a previous cache if it haven't been deleted already.
   # It applies 7 days retention policy by default.
-  RESET_EXAMPLES_CACHE: 5
-  API_CODE_CACHE: 2
+  RESET_EXAMPLES_CACHE: 6
+  API_CODE_CACHE: 3
 
 jobs:
   stylecheck:
@@ -111,14 +111,14 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     strategy:
       matrix:
-        image-tag: [v22.2.0]
+        image-tag: [v23.1.0]
 
     steps:
       - uses: actions/checkout@v3
 
       # used for documentation deployment
       - name: Get Bot Application Token
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v22.2.0'
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v23.1.0'
         id: get_workflow_token
         uses: peter-murray/workflow-application-token-action@v2
         with:
@@ -157,11 +157,11 @@ jobs:
         id: cache-api-code
         with:
           path: |
-            src/ansys/fluent/core/datamodel_222
-            src/ansys/fluent/core/fluent_version_222.py
-            src/ansys/fluent/core/meshing/tui_222.py
-            src/ansys/fluent/core/solver/settings_222
-            src/ansys/fluent/core/solver/tui_222.py
+            src/ansys/fluent/core/datamodel_231
+            src/ansys/fluent/core/fluent_version_231.py
+            src/ansys/fluent/core/meshing/tui_231.py
+            src/ansys/fluent/core/solver/settings_231
+            src/ansys/fluent/core/solver/tui_231.py
             doc/source/api/meshing/tui
             doc/source/api/meshing/datamodel
             doc/source/api/solver/tui
@@ -212,16 +212,21 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      - name: Zip HTML Documentation before upload
+        run: |
+          sudo apt install zip -y
+          zip -r doc.zip doc/_build/html
+
       - name: Upload HTML Documentation
-        if: matrix.image-tag == 'v22.2.0'
+        if: matrix.image-tag == 'v23.1.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Documentation-tag-${{ matrix.image-tag }}
-          path: doc/_build/html
+          path: doc.zip
           retention-days: 7
 
       - name: Deploy
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev') && matrix.image-tag == 'v22.2.0'
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev') && matrix.image-tag == 'v23.1.0'
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           repository-name: pyansys/pyfluent-docs
@@ -230,10 +235,10 @@ jobs:
           FOLDER: doc/_build/html
           CLEAN: true
 
-  build-test:
-    name: Build and Unit Testing
+  build:
+    name: Build
     needs: test-import
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
 
     steps:
       - uses: actions/checkout@v3
@@ -344,31 +349,47 @@ jobs:
           cat src/ansys/fluent/core/fluent_version_231.py
           python -c "from ansys.fluent.core.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Cache 23.2 API Code
+        uses: actions/cache@v3
+        id: cache-232-api-code
+        with:
+          path:
+            src/ansys/fluent/core/datamodel_232
+            src/ansys/fluent/core/fluent_version_232.py
+            src/ansys/fluent/core/meshing/tui_232.py
+            src/ansys/fluent/core/solver/settings_232
+            src/ansys/fluent/core/solver/tui_232
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
+
+      - name: Pull 23.2 Fluent docker image
+        if: steps.cache-232-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v23.2.0
+
+      - name: Run 23.2 API codegen
+        if: steps.cache-232-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          PYFLUENT_LAUNCH_CONTAINER: 1
+          FLUENT_IMAGE_TAG: v23.2.0
+
+      - name: Print 23.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/fluent_version_232.py
+          python -c "from ansys.fluent.core.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
       - name: Install again after codegen
         run: |
           rm -rf dist
           make install > /dev/null
-
-      - name: 22.2 Unit Testing
-        run: make unittest-dev-222
-        env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v22.2.0
-
-      - name: Upload 22.2 Coverage Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: HTML-Coverage-tag-222
-          path: cov_html
-          retention-days: 7
-
-      - name: 23.1 Unit Testing
-        run: make unittest-dev-231
-        env:
-          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-          PYFLUENT_START_INSTANCE: 0
-          FLUENT_IMAGE_TAG: v23.1.0
 
       - name: Check package
         run: |
@@ -384,10 +405,76 @@ jobs:
             dist/*.tar.gz
           retention-days: 7
 
+  test:
+    name: Unit Testing
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image-tag: v22.2.0
+            version: 222
+          - image-tag: v23.1.0
+            version: 231
+          - image-tag: v23.2.0
+            version: 232
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Download package
+        uses: actions/download-artifact@v3
+        with:
+          name: PyFluent-packages
+          path: dist
+
+      - name: Install pyfluent
+        run: pip install -q --force-reinstall dist/*.whl > /dev/null
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(__version__)")" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(__version__)")"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.REPO_DOWNLOAD_PAT }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Unit Testing
+        run: make unittest-dev-${{ matrix.version }}
+        env:
+          ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+          PYFLUENT_START_INSTANCE: 0
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Upload 23.1 Coverage Results
+        if: matrix.image-tag == 'v23.1.0'
+        uses: actions/upload-artifact@v3
+        with:
+          name: HTML-Coverage-tag-231
+          path: cov_html
+          retention-days: 7
+
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: build-test
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
