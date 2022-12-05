@@ -707,6 +707,15 @@ def extract_fields(chunk_iterator):
     return fields_data
 
 
+def _allowed_surface_ids(field_info):
+    try:
+        return sorted(
+            info["surface_id"][0] for _, info in field_info.get_surfaces_info().items()
+        )
+    except (KeyError, IndexError):
+        pass
+
+
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
@@ -735,12 +744,27 @@ class FieldData:
         self._service = service
         self._field_info = field_info
         self._is_data_valid = is_data_valid
+        surface_args = dict(
+            surface_ids=lambda: _allowed_surface_ids(field_info),
+            surface_name=field_info.get_surfaces_info,
+        )
         self.get_scalar_field_data = FieldData._GetFieldData(
             field_data_accessor=self._get_scalar_field_data,
-            args_allowed_values_accessors=dict(
-                field_name=field_info.get_fields_info,
-                surface_name=field_info.get_surfaces_info,
-            ),
+            args_allowed_values_accessors={
+                **dict(field_name=field_info.get_fields_info),
+                **surface_args,
+            },
+        )
+        self.get_vector_field_data = FieldData._GetFieldData(
+            field_data_accessor=self._get_vector_field_data,
+            args_allowed_values_accessors={
+                **dict(field_name=field_info.get_vector_fields_info),
+                **surface_args,
+            },
+        )
+        self.get_surface_data = FieldData._GetFieldData(
+            field_data_accessor=self._get_surface_data,
+            args_allowed_values_accessors=surface_args,
         )
 
     def new_transaction(self):
@@ -807,7 +831,7 @@ class FieldData:
             for surface_id in surface_ids
         }
 
-    def get_surface_data(
+    def _get_surface_data(
         self,
         data_type: SurfaceDataType,
         surface_ids: Optional[List[int]] = None,
@@ -865,7 +889,7 @@ class FieldData:
             for surface_id in surface_ids
         }
 
-    def get_vector_field_data(
+    def _get_vector_field_data(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
