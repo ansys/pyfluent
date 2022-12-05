@@ -113,15 +113,23 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     import_filename = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_filename)
-    solver.solution.initialization.hybrid_initialize()
 
     field_data = solver.field_data
     field_info = solver.field_info
     transaction = field_data.new_transaction()
 
+    assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
+
+    solver.file.read(file_type="case", file_name=import_filename)
+
+    allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
+    assert len(allowed_args_no_init) != 0
+
+    solver.solution.initialization.hybrid_initialize()
+
     expected_allowed_args = sorted(field_info.get_fields_info())
     allowed_args = field_data.get_scalar_field_data.field_name.allowed_values()
+    assert len(allowed_args) > len(allowed_args_no_init)
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
     allowed_args = transaction.add_scalar_fields_request.field_name.allowed_values()
     assert expected_allowed_args == allowed_args

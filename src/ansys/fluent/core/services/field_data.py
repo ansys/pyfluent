@@ -230,13 +230,28 @@ class SurfaceDataType(IntEnum):
     FacesCentroid = 4
 
 
-def _allowed_surface_ids(field_info):
+def _allowed_surface_ids(field_info: FieldInfo) -> List[str]:
     try:
         return sorted(
             info["surface_id"][0] for _, info in field_info.get_surfaces_info().items()
         )
     except (KeyError, IndexError):
         pass
+
+
+def _dynamic_allowed_scalar_field_names(
+    field_info: FieldInfo, is_data_valid: Callable[[], bool]
+) -> List[str]:
+    field_dict = field_info.get_fields_info()
+    return (
+        field_dict
+        if is_data_valid()
+        else [
+            name
+            for name, info in field_dict.items()
+            if info["section"] in ("Mesh...", "Cell Info...")
+        ]
+    )
 
 
 class _FieldMethod:
@@ -778,7 +793,11 @@ class FieldData:
             surface_name=field_info.get_surfaces_info,
         )
         scalar_field_args = {
-            **dict(field_name=field_info.get_fields_info),
+            **dict(
+                field_name=lambda: _dynamic_allowed_scalar_field_names(
+                    field_info, is_data_valid
+                )
+            ),
             **surface_args,
         }
         self.get_scalar_field_data = _FieldMethod(
