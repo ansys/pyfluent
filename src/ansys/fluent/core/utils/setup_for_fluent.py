@@ -13,6 +13,8 @@ def setup_for_fluent(*args, **kwargs):
         set_ansys_version(FluentVersion.version_22R2)
     elif kwargs["product_version"] == "23.1.0":
         set_ansys_version(FluentVersion.version_23R1)
+    elif kwargs["product_version"] == "23.2.0":
+        set_ansys_version(FluentVersion.version_23R2)
 
     del kwargs["product_version"]
 

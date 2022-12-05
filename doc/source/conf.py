@@ -64,7 +64,10 @@ numpydoc_validation_checks = {
     "RT02",  # The first line of the Returns section should contain only the
     # type, unless multiple values are being returned"
 }
-numpydoc_validation_exclude = {"ansys.fluent.core.solver.settings_231."}
+numpydoc_validation_exclude = {
+    "ansys.fluent.core.solver.settings_231.",
+    "ansys.fluent.core.solver.settings_232.",
+}
 
 # Favicon
 html_favicon = ansys_favicon

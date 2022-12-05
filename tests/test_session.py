@@ -266,6 +266,7 @@ def test_get_fluent_mode(new_mesh_session):
 
 
 @pytest.mark.dev
+@pytest.mark.fluent_231
 def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session = new_mesh_session
     file_path = os.path.join(tmp_path, "sample_transcript.txt")

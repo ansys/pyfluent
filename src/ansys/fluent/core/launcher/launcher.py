@@ -37,6 +37,7 @@ class FluentVersion(Enum):
 
     version_22R2 = "22.2"
     version_23R1 = "23.1"
+    version_23R2 = "23.2"
 
     @staticmethod
     def get_version(version: str) -> "FluentVersion":

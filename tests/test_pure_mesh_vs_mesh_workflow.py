@@ -53,25 +53,25 @@ def test_meshing_mode_post_switching_to_solver(load_mixing_elbow_meshing):
         meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
 
-def test_transfer_mesh_to_solvers(
-    launch_fluent_pure_meshing, launch_fluent_solver_3ddp_t2
-):
-    mesh_filename = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-    pure_meshing_session = launch_fluent_pure_meshing
-    pure_meshing_session.tui.file.read_mesh(mesh_filename)
-    pure_meshing_session.tui.mesh.check_mesh()
-    mesh_info = pure_meshing_session.scheme_eval.string_eval(
-        "(%tg-length-of-entity-list)"
-    )
-    pure_meshing_session_cell_count = mesh_info.strip("( )").split()[3]
-
-    solver_session = launch_fluent_solver_3ddp_t2
-    pure_meshing_session.transfer_mesh_to_solvers([solver_session], file_type="mesh")
-    solver_session.tui.mesh.check()
-    mesh_info = solver_session.scheme_eval.string_eval("(inquire-grids)")
-    solver_session_cell_count = mesh_info.strip("( )").split()[1]
-
-    assert pure_meshing_session_cell_count == solver_session_cell_count
+# def test_transfer_mesh_to_solvers(
+#     launch_fluent_pure_meshing, launch_fluent_solver_3ddp_t2
+# ):
+#     mesh_filename = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+#     pure_meshing_session = launch_fluent_pure_meshing
+#     pure_meshing_session.tui.file.read_mesh(mesh_filename)
+#     pure_meshing_session.tui.mesh.check_mesh()
+#     mesh_info = pure_meshing_session.scheme_eval.string_eval(
+#         "(%tg-length-of-entity-list)"
+#     )
+#     pure_meshing_session_cell_count = mesh_info.strip("( )").split()[3]
+#
+#     solver_session = launch_fluent_solver_3ddp_t2
+#     pure_meshing_session.transfer_mesh_to_solvers([solver_session], file_type="mesh")
+#     solver_session.tui.mesh.check()
+#     mesh_info = solver_session.scheme_eval.string_eval("(inquire-grids)")
+#     solver_session_cell_count = mesh_info.strip("( )").split()[1]
+#
+#     assert pure_meshing_session_cell_count == solver_session_cell_count
 
 
 def test_transfer_case_to_solvers(
