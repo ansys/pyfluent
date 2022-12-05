@@ -196,14 +196,13 @@ def valid_scalar_field_name(
     field_name: str, field_info: FieldInfo, is_data_valid: Callable[[], bool]
 ) -> str:
     if validate_inputs:
-        if field_name not in field_info.get_fields_info():
+        names = _DynamicAllowedScalarFieldNames(field_info, is_data_valid)
+        if not names.is_valid(field_name, respect_data_valid=False):
             raise ScalarFieldNameError(
-                field_name=field_name, allowed_values=field_info.get_fields_info()
+                field_name=field_name, allowed_values=names(respect_data_valid=False)
             )
-        if not is_data_valid():
-            field_section = field_info.get_fields_info()[field_name]["section"]
-            if field_section not in ("Mesh...", "Cell Info..."):
-                raise ScalarFieldUnavailable(field_name)
+        if not names.is_valid(field_name, respect_data_valid=True):
+            raise ScalarFieldUnavailable(field_name)
     return field_name
 
 
@@ -239,19 +238,25 @@ def _allowed_surface_ids(field_info: FieldInfo) -> List[str]:
         pass
 
 
-def _dynamic_allowed_scalar_field_names(
-    field_info: FieldInfo, is_data_valid: Callable[[], bool]
-) -> List[str]:
-    field_dict = field_info.get_fields_info()
-    return (
-        field_dict
-        if is_data_valid()
-        else [
-            name
-            for name, info in field_dict.items()
-            if info["section"] in ("Mesh...", "Cell Info...")
-        ]
-    )
+class _DynamicAllowedScalarFieldNames:
+    def __init__(self, field_info: FieldInfo, is_data_valid: Callable[[], bool]):
+        self._field_info = field_info
+        self._is_data_valid = is_data_valid
+
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+        field_dict = self._field_info.get_fields_info()
+        return (
+            field_dict
+            if (not respect_data_valid or self._is_data_valid())
+            else [
+                name
+                for name, info in field_dict.items()
+                if info["section"] in ("Mesh...", "Cell Info...")
+            ]
+        )
+
+    def is_valid(self, name, respect_data_valid=True):
+        return name in self(respect_data_valid)
 
 
 def _dynamic_allowed_vector_field_names(
@@ -297,7 +302,9 @@ class FieldTransaction:
             surface_names=field_info.get_surfaces_info,
         )
         scalar_field_args = {
-            **dict(field_name=field_info.get_fields_info),
+            **dict(
+                field_name=_DynamicAllowedScalarFieldNames(field_info, is_data_valid)
+            ),
             **surface_args,
         }
         self.add_scalar_fields_request = _FieldMethod(
@@ -307,7 +314,11 @@ class FieldTransaction:
         self.add_vector_fields_request = _FieldMethod(
             field_data_accessor=self._add_vector_fields_request,
             args_allowed_values_accessors={
-                **dict(field_name=field_info.get_vector_fields_info),
+                **dict(
+                    field_name=lambda: _dynamic_allowed_vector_field_names(
+                        field_info, is_data_valid
+                    )
+                ),
                 **surface_args,
             },
         )
@@ -801,9 +812,7 @@ class FieldData:
         )
         scalar_field_args = {
             **dict(
-                field_name=lambda: _dynamic_allowed_scalar_field_names(
-                    field_info, is_data_valid
-                )
+                field_name=_DynamicAllowedScalarFieldNames(field_info, is_data_valid)
             ),
             **surface_args,
         }
