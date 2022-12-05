@@ -325,3 +325,10 @@ class _FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
+
+    def _on_data_valid(self, *args, **kwargs):
+        self.monitors_manager.refresh(*args, **kwargs)
+        self._data_valid = True
+
+    def _on_data_invalid(self, *args, **kwargs):
+        self._data_valid = False
