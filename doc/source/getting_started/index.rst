@@ -12,7 +12,6 @@ installed locally.
 For more information on Fluent, see the `Ansys Fluent page <https://www.ansys.com/products/fluids/ansys-fluent>`_ 
 on the Ansys website.
 
-
 .. toctree::
    :hidden:
    :maxdepth: 2
