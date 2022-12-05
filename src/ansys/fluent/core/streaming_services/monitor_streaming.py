@@ -29,7 +29,6 @@ class MonitorsManager(StreamingService):
         self._lock_refresh: threading.Lock = threading.Lock()
         self._monitors_info = None
         self._data_frames = {}
-        self._on_monitor_refresh_callback = None
 
     def get_monitor_set_names(self) -> List[str]:
         """Get monitor set names.
@@ -171,10 +170,10 @@ class MonitorsManager(StreamingService):
                         if monitor_data:
                             new_df = pd.DataFrame([monitor_data], columns=monitors)
                             new_df.set_index("xvalues", inplace=True)
-                            # df_data["df"] = df.append(new_df)
                             df_data["df"] = pd.concat([df, new_df])
-                            if self._on_monitor_refresh_callback:
-                                self._on_monitor_refresh_callback()
+                            for callback_map in self._service_callbacks.values():
+                                callback, args, kwargs = callback_map
+                                callback(*args, **kwargs)
 
             except StopIteration:
                 break
