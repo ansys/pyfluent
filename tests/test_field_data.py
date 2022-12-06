@@ -1,5 +1,3 @@
-from time import sleep
-
 import numpy as np
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
@@ -130,8 +128,6 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert not field_data.is_data_valid()
 
     solver.solution.initialization.hybrid_initialize()
-
-    sleep(5)
 
     assert field_data.is_data_valid()
 

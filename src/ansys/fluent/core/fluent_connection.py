@@ -62,26 +62,14 @@ class MonitorThread(threading.Thread):
 
 
 class _IsDataValid:
-    def __init__(self, events_manager):
-        self._valid = False
-        for event_name in "InitializedEvent", "DataReadEvent":
-            events_manager.register_callback(event_name, self._on_valid)
-        # AboutToReadCaseEvent is reported as invalid so
-        # using CaseReadEvent which should be OK anyway
-        for event_name in ("CaseReadEvent",):
-            events_manager.register_callback(event_name, self._on_invalid)
-
-    def _on_valid(self, *_, **__):
-        self._valid = True
-
-    def _on_invalid(self, *_, **__):
-        self._valid = False
+    def __init__(self, scheme_eval):
+        self._scheme_eval = scheme_eval
 
     def __bool__(self):
-        return self._valid
+        return self()
 
     def __call__(self):
-        return self._valid
+        return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
 class _FluentConnection:
@@ -215,15 +203,15 @@ class _FluentConnection:
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.settings_service = SettingsService(self._channel, self._metadata)
 
+        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)
+
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
 
         self.field_data = FieldData(
-            self._field_data_service, self.field_info, _IsDataValid(self.events_manager)
+            self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
-
-        self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
-        self.scheme_eval = SchemeEval(self._scheme_eval_service)
 
         self.journal = Journal(self.scheme_eval)
 
