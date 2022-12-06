@@ -819,6 +819,7 @@ class FieldData:
     ):
         self._service = service
         self._field_info = field_info
+        self.is_data_valid = is_data_valid
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 

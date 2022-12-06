@@ -1,3 +1,5 @@
+from time import sleep
+
 import numpy as np
 import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
@@ -125,7 +127,13 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
     assert len(allowed_args_no_init) != 0
 
+    assert not field_data.is_data_valid()
+
     solver.solution.initialization.hybrid_initialize()
+
+    sleep(5)
+
+    assert field_data.is_data_valid()
 
     expected_allowed_args = sorted(field_info.get_fields_info())
     allowed_args = field_data.get_scalar_field_data.field_name.allowed_values()
