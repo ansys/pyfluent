@@ -39,12 +39,38 @@ class InputParameter:
     """
 
     def __init__(self, raw_data):
-        self.name, self.name = None, None
+        self.name, self.value = None, None
         for k, v in raw_data:
             if k == "name":
                 self.name = v
             elif k == "definition":
                 self.value = v
+
+    @property
+    def units(self) -> str:
+        """Get the unit label of a Fluent input parameter.
+        Returns
+        -------
+        str
+            Unit label of the Fluent input parameter.
+        """
+        return self._component(1).lstrip("[").rstrip("]")
+
+    @property
+    def number(self):
+        """Get the value of a Fluent input parameter.
+        Returns
+        -------
+        int|float
+            Value of the Fluent input parameter.
+        """
+        return float(self._component(0))
+
+    def _component(self, idx: int):
+        try:
+            return self.value.split(maxsplit=1)[idx]
+        except IndexError:
+            return ""
 
 
 class OutputParameter:
@@ -104,6 +130,8 @@ class CaseReader:
         Get the dimensionality of the case (2 or 3)
     precision
         Get the precision (1 or 2 for 1D of 2D)
+    iter_count
+        Get the number of iterations
     rp_vars
         Get dictionary of all RP vars
     rp_var
@@ -196,6 +224,9 @@ class CaseReader:
         for attr in self._case_config():
             if attr[0] == "rp-double?":
                 return 2 if attr[1] is True else 1
+
+    def iter_count(self) -> int:
+        return self._find_rp_var("number-of-iterations")
 
     def rp_vars(self) -> dict:
         return self._rp_vars

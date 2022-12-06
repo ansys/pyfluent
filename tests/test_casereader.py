@@ -5,7 +5,11 @@ import shutil
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.filereader.casereader import CaseReader, _get_processed_string
+from ansys.fluent.core.filereader.casereader import (
+    CaseReader,
+    InputParameter,
+    _get_processed_string,
+)
 
 
 def call_casereader(
@@ -15,9 +19,9 @@ def call_casereader(
     if expected is not None:
         assert reader.precision() == expected["precision"]
         assert reader.num_dimensions() == expected["num_dimensions"]
-        assert {p.name: p.value for p in reader.input_parameters()} == expected[
-            "input_parameters"
-        ]
+        assert {
+            p.name: (p.number, p.units) for p in reader.input_parameters()
+        } == expected["input_parameters"]
         assert {p.name: p.units for p in reader.output_parameters()} == expected[
             "output_parameters"
         ]
@@ -32,11 +36,12 @@ def call_casereader_static_mixer(
         expected=dict(
             precision=2,
             num_dimensions=3,
+            iter_count=101,
             input_parameters=dict(
-                inlet1_temp="300 [K]",
-                inlet1_vel="1 [m/s]",
-                inlet2_temp="350 [K]",
-                inlet2_vel="1 [m/s]",
+                inlet1_temp=(300, "K"),
+                inlet1_vel=(1, "m/s"),
+                inlet2_temp=(350, "K"),
+                inlet2_vel=(1, "m/s"),
             ),
             output_parameters={
                 "outlet-temp-avg-op": "K",
@@ -170,10 +175,10 @@ def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_di
             precision=1,
             num_dimensions=3,
             input_parameters=dict(
-                swirl_max_hot="0.1 [m s^-1]",
-                vel_hot="0.1 [m s^-1]",
-                vel_cold="0.1 [m s^-1]",
-                swirl_max_cold="0.1 [m s^-1]",
+                swirl_max_hot=(0.1, "m s^-1"),
+                vel_hot=(0.1, "m s^-1"),
+                vel_cold=(0.1, "m s^-1"),
+                swirl_max_cold=(0.1, "m s^-1"),
             ),
             output_parameters={
                 "p2-op": "kg m^-1 s^-2",
@@ -196,9 +201,35 @@ def test_case_reader_get_rp_and_config_vars():
     assert config_vars["rp-3d?"] is True
     assert reader.config_var("rp-3d?") is True
     assert reader.config_var.rp_3d__q() is True
-    assert reader.rp_var.smooth_mesh.niter() is 4
+    assert reader.rp_var.smooth_mesh.niter() == 4
     assert reader.rp_var.pressure.output_dpdt__q() is True
     assert len(reader.rp_var.context.map_r17__plus()) == 53
     assert reader.rp_var.defaults.pre_r19__dot0_early__q() is False
     with pytest.raises(BaseException):
         reader.rp_var.defaults.pre_r19__dot0_early()
+
+
+def test_case_reader_input_parameter():
+
+    number = InputParameter(raw_data=(("name", "n"), ("definition", "12.4")))
+
+    assert number.name == "n"
+    assert number.units == ""
+    assert number.number == 12.4
+    assert number.value == "12.4"
+
+    length = InputParameter(raw_data=(("name", "x"), ("definition", "12.4 [m]")))
+
+    assert length.name == "x"
+    assert length.units == "m"
+    assert length.number == 12.4
+    assert length.value == "12.4 [m]"
+
+    momentum = InputParameter(
+        raw_data=(("name", "p"), ("definition", "12.4 [kg m s^-1]"))
+    )
+
+    assert momentum.name == "p"
+    assert momentum.units == "kg m s^-1"
+    assert momentum.number == 12.4
+    assert momentum.value == "12.4 [kg m s^-1]"
