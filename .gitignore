@@ -77,8 +77,13 @@ doc/build_errors.txt
 # Auto-generated documentation
 doc/source/api/meshing/tui
 doc/source/api/meshing/datamodel
+doc/source/api/core/meshing/tui
+doc/source/api/meshing/datamodel
+doc/source/api/core/meshing/datamodel
 doc/source/api/solver/tui
+doc/source/api/core/solver/tui
 doc/source/api/solver/datamodel
+doc/source/api/core/solver/datamodel
 
 # PyBuilder
 target/
