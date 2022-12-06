@@ -19,6 +19,7 @@ def call_casereader(
     if expected is not None:
         assert reader.precision() == expected["precision"]
         assert reader.num_dimensions() == expected["num_dimensions"]
+        assert reader.iter_count() == expected["iter_count"]
         assert {
             p.name: (p.number, p.units) for p in reader.input_parameters()
         } == expected["input_parameters"]
@@ -36,7 +37,7 @@ def call_casereader_static_mixer(
         expected=dict(
             precision=2,
             num_dimensions=3,
-            iter_count=101,
+            iter_count=100,
             input_parameters=dict(
                 inlet1_temp=(300, "K"),
                 inlet1_vel=(1, "m/s"),
@@ -174,6 +175,7 @@ def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_di
         expected=dict(
             precision=1,
             num_dimensions=3,
+            iter_count=25,
             input_parameters=dict(
                 swirl_max_hot=(0.1, "m s^-1"),
                 vel_hot=(0.1, "m s^-1"),
