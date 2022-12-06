@@ -192,15 +192,6 @@ class SurfaceDataType(IntEnum):
     FacesCentroid = 4
 
 
-def _allowed_surface_ids(field_info: FieldInfo) -> List[str]:
-    try:
-        return sorted(
-            info["surface_id"][0] for _, info in field_info.get_surfaces_info().items()
-        )
-    except (KeyError, IndexError):
-        pass
-
-
 class _AllowedNames:
     def __init__(self, field_info: FieldInfo):
         self._field_info = field_info
@@ -239,6 +230,17 @@ class _AllowedSurfaceNames(_AllowedNames):
                     allowed_values=self(),
                 )
         return surface_name
+
+
+class _AllowedSurfaceIDs(_AllowedNames):
+    def __call__(self, respect_data_valid: bool = True) -> List[int]:
+        try:
+            return [
+                info["surface_id"][0]
+                for _, info in self._field_info.get_surfaces_info().items()
+            ]
+        except (KeyError, IndexError):
+            pass
 
 
 class _AllowedScalarFieldNames(_AllowedFieldNames):
@@ -297,20 +299,21 @@ class FieldTransaction:
         self,
         service: FieldDataService,
         field_info: FieldInfo,
+        allowed_surface_ids,
         allowed_surface_names,
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
         self._service = service
-        self._fields_request = get_fields_request()
         self._field_info = field_info
+        self._fields_request = get_fields_request()
 
         self._allowed_surface_names = allowed_surface_names
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._allowed_vector_field_names = allowed_vector_field_names
 
         surface_args = dict(
-            surface_ids=lambda: _allowed_surface_ids(field_info),
+            surface_ids=allowed_surface_ids,
             surface_names=self._allowed_surface_names,
         )
         scalar_field_args = {
@@ -819,6 +822,8 @@ class FieldData:
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 
+        self._allowed_surface_ids = _AllowedSurfaceIDs(field_info)
+
         self._allowed_scalar_field_names = _AllowedScalarFieldNames(
             field_info, is_data_valid
         )
@@ -828,7 +833,7 @@ class FieldData:
         )
 
         surface_args = dict(
-            surface_ids=lambda: _allowed_surface_ids(field_info),
+            surface_ids=self._allowed_surface_ids,
             surface_name=self._allowed_surface_names,
         )
         scalar_field_args = {
@@ -859,6 +864,7 @@ class FieldData:
         return FieldTransaction(
             self._service,
             self._field_info,
+            self._allowed_surface_ids,
             self._allowed_surface_names,
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
