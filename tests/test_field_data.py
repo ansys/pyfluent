@@ -129,8 +129,8 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 
     expected_allowed_args = sorted(field_info.get_fields_info())
     allowed_args = field_data.get_scalar_field_data.field_name.allowed_values()
-    assert len(allowed_args) > len(allowed_args_no_init)
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
+    assert len(allowed_args) > len(allowed_args_no_init)
     allowed_args = transaction.add_scalar_fields_request.field_name.allowed_values()
     assert expected_allowed_args == allowed_args
 
