@@ -61,7 +61,7 @@ class InputParameter:
         """Get the value of a Fluent input parameter.
         Returns
         -------
-        int|float
+        float
             Value of the Fluent input parameter.
         """
         return float(self._component(0))
