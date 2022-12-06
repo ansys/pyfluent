@@ -13,5 +13,5 @@ of Python commands.
 .. toctree::
    :maxdepth: 2
    :hidden:
-
+   
    tui/index

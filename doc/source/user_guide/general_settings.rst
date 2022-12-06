@@ -1,9 +1,9 @@
-Applying general settings
-=========================
+Apply general settings
+======================
 PyFluent supports using both :ref:`ref_solver_tui_commands` and 
 :ref:`ref_settings` to apply general settings.
 
-The examples in this topic show how you use :ref:`ref_solver_tui_commands`
+The examples on this page show how you use :ref:`ref_solver_tui_commands`
 to run solver meshing commands and set up units.
 
 Check the mesh
