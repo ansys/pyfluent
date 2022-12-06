@@ -318,26 +318,26 @@ class FieldTransaction:
             **surface_args,
         }
         self.add_scalar_fields_request = _FieldMethod(
-            field_data_accessor=self._add_scalar_fields_request,
+            field_data_accessor=self.add_scalar_fields_request,
             args_allowed_values_accessors=scalar_field_args,
         )
         self.add_vector_fields_request = _FieldMethod(
-            field_data_accessor=self._add_vector_fields_request,
+            field_data_accessor=self.add_vector_fields_request,
             args_allowed_values_accessors={
                 **dict(field_name=self._allowed_vector_field_names),
                 **surface_args,
             },
         )
         self.add_surfaces_request = _FieldMethod(
-            field_data_accessor=self._add_surfaces_request,
+            field_data_accessor=self.add_surfaces_request,
             args_allowed_values_accessors=surface_args,
         )
         self.add_pathlines_fields_request = _FieldMethod(
-            field_data_accessor=self._add_pathlines_fields_request,
+            field_data_accessor=self.add_pathlines_fields_request,
             args_allowed_values_accessors=scalar_field_args,
         )
 
-    def _add_surfaces_request(
+    def add_surfaces_request(
         self,
         surface_ids: Optional[List[int]] = None,
         surface_names: Optional[List[str]] = None,
@@ -391,7 +391,7 @@ class FieldTransaction:
             ]
         )
 
-    def _add_scalar_fields_request(
+    def add_scalar_fields_request(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -442,7 +442,7 @@ class FieldTransaction:
             ]
         )
 
-    def _add_vector_fields_request(
+    def add_vector_fields_request(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -481,7 +481,7 @@ class FieldTransaction:
             ]
         )
 
-    def _add_pathlines_fields_request(
+    def add_pathlines_fields_request(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -836,22 +836,22 @@ class FieldData:
             **surface_args,
         }
         self.get_scalar_field_data = _FieldMethod(
-            field_data_accessor=self._get_scalar_field_data,
+            field_data_accessor=self.get_scalar_field_data,
             args_allowed_values_accessors=scalar_field_args,
         )
         self.get_vector_field_data = _FieldMethod(
-            field_data_accessor=self._get_vector_field_data,
+            field_data_accessor=self.get_vector_field_data,
             args_allowed_values_accessors={
                 **dict(field_name=self._allowed_vector_field_names),
                 **surface_args,
             },
         )
         self.get_surface_data = _FieldMethod(
-            field_data_accessor=self._get_surface_data,
+            field_data_accessor=self.get_surface_data,
             args_allowed_values_accessors=surface_args,
         )
         self.get_pathlines_field_data = _FieldMethod(
-            field_data_accessor=self._get_pathlines_field_data,
+            field_data_accessor=self.get_pathlines_field_data,
             args_allowed_values_accessors=scalar_field_args,
         )
 
@@ -864,7 +864,7 @@ class FieldData:
             self._allowed_vector_field_names,
         )
 
-    def _get_scalar_field_data(
+    def get_scalar_field_data(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -924,7 +924,7 @@ class FieldData:
             for surface_id in surface_ids
         }
 
-    def _get_surface_data(
+    def get_surface_data(
         self,
         data_type: SurfaceDataType,
         surface_ids: Optional[List[int]] = None,
@@ -983,7 +983,7 @@ class FieldData:
             for surface_id in surface_ids
         }
 
-    def _get_vector_field_data(
+    def get_vector_field_data(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
@@ -1033,7 +1033,7 @@ class FieldData:
             for surface_id in surface_ids
         }
 
-    def _get_pathlines_field_data(
+    def get_pathlines_field_data(
         self,
         field_name: str,
         surface_ids: Optional[List[int]] = None,
