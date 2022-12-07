@@ -1,6 +1,5 @@
 """Module providing visualization objects for Matplotlib."""
 import inspect
-import sys
 
 from ansys.fluent.core.meta import PyLocalContainer
 
@@ -29,7 +28,7 @@ class Plots:
 
     _sessions_state = {}
 
-    def __init__(self, session, local_surfaces_provider=None):
+    def __init__(self, session, module, local_surfaces_provider=None):
         """Instantiate Plots, container of plot objects.
 
         Parameters
@@ -44,7 +43,7 @@ class Plots:
             session_state = self.__dict__
             Plots._sessions_state[session.id if session else 1] = session_state
             self.session = session
-            self._init_module(self, sys.modules[__name__])
+            self._init_module(self, module)
         else:
             self.__dict__ = session_state
         self._local_surfaces_provider = lambda: local_surfaces_provider or getattr(
@@ -52,7 +51,7 @@ class Plots:
         )
 
     def _init_module(self, obj, mod):
-        from ansys.fluent.core.graphics.post_helper import PostAPIHelper
+        from ansys.fluent.core.post_objects.post_helper import PostAPIHelper
 
         for name, cls in mod.__dict__.items():
 
@@ -94,7 +93,7 @@ class Graphics:
 
     _sessions_state = {}
 
-    def __init__(self, session, local_surfaces_provider=None):
+    def __init__(self, session, module, local_surfaces_provider=None):
         """Instantiate the ``Graphics`` object container.
 
         Parameters
@@ -110,7 +109,7 @@ class Graphics:
             session_state = self.__dict__
             Graphics._sessions_state[session.id if session else 1] = session_state
             self.session = session
-            self._init_module(self, sys.modules[__name__])
+            self._init_module(self, module)
         else:
             self.__dict__ = session_state
         self._local_surfaces_provider = lambda: local_surfaces_provider or getattr(
@@ -118,7 +117,7 @@ class Graphics:
         )
 
     def _init_module(self, obj, mod):
-        from ansys.fluent.core.graphics.post_helper import PostAPIHelper
+        from ansys.fluent.core.post_objects.post_helper import PostAPIHelper
 
         for name, cls in mod.__dict__.items():
 

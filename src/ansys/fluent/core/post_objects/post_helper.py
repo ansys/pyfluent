@@ -9,10 +9,10 @@ class PostAPIHelper:
 
         def __init__(self, obj):
             self.obj = obj
-            self._surface_name_on_server = self.surface_name_in_server(obj._name)
+            self._surface_name_on_server = self.surface_name_on_server(obj._name)
 
         @staticmethod
-        def surface_name_in_server(local_surface_name):
+        def surface_name_on_server(local_surface_name):
             return "_dummy_surface_for_pyfluent:" + local_surface_name.lower()
 
         def _get_api_handle(self):
@@ -102,7 +102,7 @@ class PostAPIHelper:
             self.obj._get_top_most_parent()._local_surfaces_provider()
         )
         if local_surface_name in list(local_surfaces_provider):
-            return PostAPIHelper._SurfaceAPI.surface_name_in_server(local_surface_name)
+            return PostAPIHelper._SurfaceAPI.surface_name_on_server(local_surface_name)
         else:
             return local_surface_name
 
