@@ -377,10 +377,10 @@ def _get_running_session_mode(
     return session_mode.value[1]
 
 
-def _start_instance(start_instance: bool = None):
+def _start_instance(start_instance: Union[bool, None]):
     """Sets up how to start an instance of fluent."""
-    if not start_instance:
-        start_instance = bool(
+    if start_instance is None:
+        return bool(
             int(
                 os.getenv(
                     "PYFLUENT_START_INSTANCE", "0" if pypim.is_configured() else "1"
