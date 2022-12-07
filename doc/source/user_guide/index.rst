@@ -32,7 +32,7 @@ Overview
 You use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method
 to launch an instance of Fluent that runs as a server in the background.
 
-You can launch Fluent in solution mode with:
+You can launch Fluent in solution mode with this code:
 
 .. code:: python
 
@@ -40,7 +40,7 @@ You can launch Fluent in solution mode with:
 
     solver = launch_fluent(mode="solver")
 
-You can launch Fluent in meshing mode with: 
+You can launch Fluent in meshing mode with this code: 
 
 .. code:: python
 
@@ -164,8 +164,8 @@ more direct interaction via its ``scheme_eval`` attribute:
 
     unsteady = solver.scheme_eval.scheme_eval("(rp-unsteady?)")
 
-The argument to ``scheme_eval`` is a string that contains any scheme code that
-can be executed in Fluent for the current mode.
+The argument to the ``scheme_eval`` attribute is a string that contains any
+scheme code that can be executed in Fluent for the current mode.
 
 Surface field and mesh data services are available in solution mode only via the
 ``field_data`` object attribute of the session object:
