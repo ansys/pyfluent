@@ -189,7 +189,7 @@ to learn how to use PyFluent:
   .. note::
      In Fluent 2022 R2, you can only record a journal of your actions in Fluent
      meshing to produce a Python script. This script is not in PyFluent syntax.
-     However, there is a one-to-one correspondence between the a recorded Python
+     However, there is a one-to-one correspondence between a recorded Python
      command and the equivalent PyFluent command. This means that you can manually
      translate the recorded Python command to the PyFluent syntax.
 
