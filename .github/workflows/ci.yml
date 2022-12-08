@@ -464,9 +464,9 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Zip 23.1 Coverage Results before upload
-          run: |
-            sudo apt install zip -y
-            zip -r cov.zip cov_html
+        run: |
+          sudo apt install zip -y
+          zip -r cov.zip cov_html
 
       - name: Upload 23.1 Coverage Results
         if: matrix.image-tag == 'v23.1.0'
