@@ -451,7 +451,7 @@ def launch_fluent(
     ----------
     product_version : str, optional
         Version of Fluent to use in the numeric format (such as ``"23.1"``
-        for 2022 R2). The default is ``None``, in which case the active version
+        for 2023 R1). The default is ``None``, in which case the active version
         or latest installed version is used.
     version : str, optional
         Dimensions for modeling. The default is ``None``, in which case ``"3d"``
