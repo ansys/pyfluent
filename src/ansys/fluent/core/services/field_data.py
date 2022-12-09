@@ -634,7 +634,7 @@ def _get_surface_ids(
         surface_ids = []
         if surface_names:
             for surface_name in surface_names:
-                surface_ids.append(
+                surface_ids.extend(
                     field_info.get_surfaces_info()[surface_name]["surface_id"]
                 )
         elif surface_name:

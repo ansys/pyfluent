@@ -107,6 +107,17 @@ def test_field_data(new_solver_session) -> None:
         == HOT_INLET_TEMPERATURE
     )
 
+    # multiple surface *names* transaction
+    transaction2 = field_data.new_transaction()
+    surface_names = (
+        transaction2.add_scalar_fields_request.surface_names.allowed_values()
+    )
+    transaction2.add_scalar_fields_request(
+        surface_names=surface_names, field_name="temperature"
+    )
+    data2 = transaction2.get_fields()
+    assert data2
+
 
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
