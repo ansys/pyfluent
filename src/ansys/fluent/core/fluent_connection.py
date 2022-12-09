@@ -61,6 +61,17 @@ class MonitorThread(threading.Thread):
             cb()
 
 
+class _IsDataValid:
+    def __init__(self, scheme_eval):
+        self._scheme_eval = scheme_eval
+
+    def __bool__(self):
+        return self()
+
+    def __call__(self):
+        return self._scheme_eval.scheme_eval("(data-valid?)")
+
+
 class _FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -128,6 +139,7 @@ class _FluentConnection:
             PyPIM. This instance will be deleted when calling
             ``Session.exit()``.
         """
+        self._data_valid = False
         self._channel_str = None
         if channel is not None:
             self._channel = channel
@@ -185,17 +197,21 @@ class _FluentConnection:
         self.events_manager.register_callback(
             "DataReadEvent", self.monitors_manager.refresh
         )
+
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
         self.settings_service = SettingsService(self._channel, self._metadata)
 
-        self._field_data_service = FieldDataService(self._channel, self._metadata)
-        self.field_info = FieldInfo(self._field_data_service)
-        self.field_data = FieldData(self._field_data_service, self.field_info)
-
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
+
+        self._field_data_service = FieldDataService(self._channel, self._metadata)
+        self.field_info = FieldInfo(self._field_data_service)
+
+        self.field_data = FieldData(
+            self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
+        )
 
         self.journal = Journal(self.scheme_eval)
 

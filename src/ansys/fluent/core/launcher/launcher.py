@@ -37,6 +37,7 @@ class FluentVersion(Enum):
 
     version_22R2 = "22.2"
     version_23R1 = "23.1"
+    version_23R2 = "23.2"
 
     @staticmethod
     def get_version(version: str) -> "FluentVersion":
@@ -113,16 +114,24 @@ def get_fluent_path() -> Path:
         return Path(path) / "fluent"
 
 
-def _get_fluent_exe_path():
-    if FLUENT_EXE_PATH:
-        exe_path = FLUENT_EXE_PATH[0]
-    else:
+def _get_fluent_exe_path(**argvals):
+    def get_exe_path():
         exe_path = get_fluent_path()
         if _is_windows():
             exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
         else:
             exe_path = exe_path / "bin" / "fluent"
-    return str(exe_path)
+        return str(exe_path)
+
+    product_version = argvals.get("product_version")
+    if product_version:
+        set_ansys_version(product_version)
+        return get_exe_path()
+
+    if FLUENT_EXE_PATH:
+        return str(FLUENT_EXE_PATH[0])
+
+    return get_exe_path()
 
 
 def _get_server_info_filepath():
@@ -398,7 +407,7 @@ def _generate_launch_string(
     server_info_filepath: str,
 ):
     """Generates the launch string to launch fluent."""
-    exe_path = _get_fluent_exe_path()
+    exe_path = _get_fluent_exe_path(**argvals)
     launch_string = exe_path
     launch_string += _build_fluent_launch_args_string(**argvals)
     if meshing_mode:
@@ -414,6 +423,7 @@ def _generate_launch_string(
 
 #   pylint: disable=unused-argument
 def launch_fluent(
+    product_version: str = None,
     version: str = None,
     precision: str = None,
     processor_count: int = None,
@@ -440,6 +450,10 @@ def launch_fluent(
 
     Parameters
     ----------
+    product_version : str, optional
+        Version of Fluent to use in the numeric format (such as ``"23.1"``
+        for 2023 R1). The default is ``None``, in which case the active version
+        or latest installed version is used.
     version : str, optional
         Dimensions for modeling. The default is ``None``, in which case ``"3d"``
         is used. Options are ``"3d"`` and ``"2d"``.

@@ -1,4 +1,4 @@
-Defining models
+Define models
 ===============
 PyFluent supports using :ref:`ref_solver_tui_commands` and :ref:`ref_settings`
 to define models.

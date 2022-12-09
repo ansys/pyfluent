@@ -572,6 +572,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         self._update_objects()
         return self._objects.items()
 
+    def user_creatable(self) -> bool:
+        """Whether the object is user-creatable."""
+        return self.get_attr("user-creatable?", bool)
+
     def get_object_names(self):
         """Object names."""
         obj_names = self.flproxy.get_object_names(self.path)

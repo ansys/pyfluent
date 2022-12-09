@@ -1,12 +1,12 @@
-Applying solution settings
-==========================
+Apply solution settings
+=======================
 
 PyFluent allows you to use :ref:`ref_solver_tui_commands` and
 :ref:`ref_settings` to apply solution settings, initialize, and solve.
 
 Use solver TUI commands
 -----------------------
-The examples in this section show how you use :ref:`ref_solver_tui_commands` to
+The examples on this page show how to use :ref:`ref_solver_tui_commands` to
 apply solution settings.
 
 Select solution method 
@@ -100,7 +100,7 @@ initializing and performing a specified number of iterations.
 
 Use settings objects
 --------------------
-This example shows how you use :ref:`ref_settings` to apply solution settings.
+This example shows how to use :ref:`ref_settings` to apply solution settings.
 
 **Python code**
 

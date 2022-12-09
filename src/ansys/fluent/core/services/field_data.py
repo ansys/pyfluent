@@ -1,7 +1,8 @@
 """Wrappers over FieldData gRPC service of Fluent."""
+import difflib
 from enum import IntEnum
-from functools import reduce
-from typing import Dict, List, Optional, Tuple, Union
+from functools import partial, reduce
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
 import numpy as np
@@ -10,6 +11,10 @@ from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
+
+# this can be switched to False in scenarios where the field_data request inputs are
+# fed by results of field_info queries, which might be true in GUI code.
+validate_inputs = True
 
 
 class FieldDataService:
@@ -115,6 +120,69 @@ class FieldInfo:
         return info
 
 
+def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
+    f = partial(difflib.get_close_matches, trial_name, allowed_names)
+    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
+
+
+def allowed_name_error_message(
+    context: str, trial_name: str, allowed_values: List[str]
+) -> str:
+    message = f"{trial_name} is not an allowed {context} name.\n"
+    matches = closest_allowed_names(trial_name, allowed_values)
+    if matches:
+        message += f"The most similar names are: {', '.join(matches)}."
+    return message
+
+
+def unavailable_field_error_message(context: str, field_name: str) -> str:
+    return f"{field_name} is not a currently available {context}."
+
+
+class FieldNameError(ValueError):
+    pass
+
+
+class ScalarFieldNameError(FieldNameError):
+    def __init__(self, field_name: str, allowed_values: List[str]):
+        self.field_name = field_name
+        super().__init__(
+            allowed_name_error_message("scalar field", field_name, allowed_values)
+        )
+
+
+class VectorFieldNameError(FieldNameError):
+    def __init__(self, field_name: str, allowed_values: List[str]):
+        self.field_name = field_name
+        super().__init__(
+            allowed_name_error_message("vector field", field_name, allowed_values)
+        )
+
+
+class FieldUnavailable(RuntimeError):
+    pass
+
+
+class ScalarFieldUnavailable(FieldUnavailable):
+    def __init__(self, field_name: str):
+        self.field_name = field_name
+        super().__init__(unavailable_field_error_message("scalar field", field_name))
+
+
+class VectorFieldUnavailable(FieldUnavailable):
+    def __init__(self, field_name: str):
+        self.field_name = field_name
+        super().__init__(unavailable_field_error_message("vector field", field_name))
+
+
+class SurfaceNameError(ValueError):
+    def __init__(self, surface_name: str, allowed_values: List[str]):
+        self.surface_name = surface_name
+        super().__init__(
+            allowed_name_error_message("surface", surface_name, allowed_values)
+        )
+
+
 class SurfaceDataType(IntEnum):
     """Provides surface data types."""
 
@@ -124,13 +192,153 @@ class SurfaceDataType(IntEnum):
     FacesCentroid = 4
 
 
+class _AllowedNames:
+    def __init__(self, field_info: FieldInfo):
+        self._field_info = field_info
+
+    def is_valid(self, name, respect_data_valid=True):
+        return name in self(respect_data_valid)
+
+
+class _AllowedFieldNames(_AllowedNames):
+    def __init__(self, field_info: FieldInfo, is_data_valid: Callable[[], bool]):
+        super().__init__(field_info=field_info)
+        self._is_data_valid = is_data_valid
+
+    def valid_name(self, field_name):
+        if validate_inputs:
+            names = self
+            if not names.is_valid(field_name, respect_data_valid=False):
+                raise self._field_name_error(
+                    field_name=field_name,
+                    allowed_values=names(respect_data_valid=False),
+                )
+            if not names.is_valid(field_name, respect_data_valid=True):
+                raise self._field_unavailable_error(field_name)
+        return field_name
+
+
+class _AllowedSurfaceNames(_AllowedNames):
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+        return self._field_info.get_surfaces_info()
+
+    def valid_name(self, surface_name: str) -> str:
+        if validate_inputs:
+            if not self.is_valid(surface_name):
+                raise SurfaceNameError(
+                    surface_name=surface_name,
+                    allowed_values=self(),
+                )
+        return surface_name
+
+
+class _AllowedSurfaceIDs(_AllowedNames):
+    def __call__(self, respect_data_valid: bool = True) -> List[int]:
+        try:
+            return [
+                info["surface_id"][0]
+                for _, info in self._field_info.get_surfaces_info().items()
+            ]
+        except (KeyError, IndexError):
+            pass
+
+
+class _AllowedScalarFieldNames(_AllowedFieldNames):
+    _field_name_error = ScalarFieldNameError
+    _field_unavailable_error = ScalarFieldUnavailable
+
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+        field_dict = self._field_info.get_fields_info()
+        return (
+            field_dict
+            if (not respect_data_valid or self._is_data_valid())
+            else [
+                name
+                for name, info in field_dict.items()
+                if info["section"] in ("Mesh...", "Cell Info...")
+            ]
+        )
+
+
+class _AllowedVectorFieldNames(_AllowedFieldNames):
+    _field_name_error = VectorFieldNameError
+    _field_unavailable_error = VectorFieldUnavailable
+
+    def __call__(self, respect_data_valid: bool = True) -> List[str]:
+        return (
+            self._field_info.get_vector_fields_info()
+            if (not respect_data_valid or self._is_data_valid())
+            else []
+        )
+
+    def is_valid(self, name, respect_data_valid=True):
+        return name in self(respect_data_valid)
+
+
+class _FieldMethod:
+    class _Arg:
+        def __init__(self, accessor):
+            self._accessor = accessor
+
+        def allowed_values(self):
+            return sorted(self._accessor())
+
+    def __init__(self, field_data_accessor, args_allowed_values_accessors):
+        self._field_data_accessor = field_data_accessor
+        for arg_name, accessor in args_allowed_values_accessors.items():
+            setattr(self, arg_name, _FieldMethod._Arg(accessor))
+
+    def __call__(self, *args, **kwargs):
+        return self._field_data_accessor(*args, **kwargs)
+
+
 class FieldTransaction:
     """Populates Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo):
+    def __init__(
+        self,
+        service: FieldDataService,
+        field_info: FieldInfo,
+        allowed_surface_ids,
+        allowed_surface_names,
+        allowed_scalar_field_names,
+        allowed_vector_field_names,
+    ):
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
+
+        self._allowed_surface_names = allowed_surface_names
+        self._allowed_scalar_field_names = allowed_scalar_field_names
+        self._allowed_vector_field_names = allowed_vector_field_names
+
+        surface_args = dict(
+            surface_ids=allowed_surface_ids,
+            surface_names=self._allowed_surface_names,
+        )
+        scalar_field_args = {
+            **dict(field_name=self._allowed_scalar_field_names),
+            **surface_args,
+        }
+        self.add_scalar_fields_request = _FieldMethod(
+            field_data_accessor=self.add_scalar_fields_request,
+            args_allowed_values_accessors=scalar_field_args,
+        )
+        self.add_vector_fields_request = _FieldMethod(
+            field_data_accessor=self.add_vector_fields_request,
+            args_allowed_values_accessors={
+                **dict(field_name=self._allowed_vector_field_names),
+                **surface_args,
+            },
+        )
+        self.add_surfaces_request = _FieldMethod(
+            field_data_accessor=self.add_surfaces_request,
+            args_allowed_values_accessors=surface_args,
+        )
+        self.add_pathlines_fields_request = _FieldMethod(
+            field_data_accessor=self.add_pathlines_fields_request,
+            args_allowed_values_accessors=scalar_field_args,
+        )
 
     def add_surfaces_request(
         self,
@@ -168,6 +376,7 @@ class FieldTransaction:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_names=surface_names,
         )
@@ -216,6 +425,7 @@ class FieldTransaction:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_names=surface_names,
         )
@@ -223,7 +433,9 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=field_name,
+                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
+                        field_name
+                    ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
                     else FieldDataProtoModule.DataLocation.Elements,
@@ -256,6 +468,7 @@ class FieldTransaction:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_names=surface_names,
         )
@@ -263,7 +476,9 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=field_name,
+                    vectorFieldName=self._allowed_vector_field_names.valid_name(
+                        field_name,
+                    ),
                 )
                 for surface_id in surface_ids
             ]
@@ -326,6 +541,7 @@ class FieldTransaction:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_names=surface_names,
         )
@@ -392,6 +608,7 @@ class _FieldDataConstants:
 
 def _get_surface_ids(
     field_info: FieldInfo,
+    allowed_surface_names,
     surface_ids: Optional[List[int]] = None,
     surface_names: Optional[List[str]] = None,
     surface_name: Optional[str] = None,
@@ -417,11 +634,13 @@ def _get_surface_ids(
         surface_ids = []
         if surface_names:
             for surface_name in surface_names:
-                surface_ids.append(
+                surface_ids.extend(
                     field_info.get_surfaces_info()[surface_name]["surface_id"]
                 )
         elif surface_name:
-            surface_ids = field_info.get_surfaces_info()[surface_name]["surface_id"]
+            surface_ids = field_info.get_surfaces_info()[
+                allowed_surface_names.valid_name(surface_name)
+            ]["surface_id"]
         else:
             raise RuntimeError("Please provide either surface names or surface ids.")
     return surface_ids
@@ -592,70 +811,65 @@ def extract_fields(chunk_iterator):
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
-    def __init__(self, service: FieldDataService, field_info: FieldInfo):
+    def __init__(
+        self,
+        service: FieldDataService,
+        field_info: FieldInfo,
+        is_data_valid: Callable[[], bool],
+    ):
         self._service = service
         self._field_info = field_info
+        self.is_data_valid = is_data_valid
+
+        self._allowed_surface_names = _AllowedSurfaceNames(field_info)
+
+        self._allowed_surface_ids = _AllowedSurfaceIDs(field_info)
+
+        self._allowed_scalar_field_names = _AllowedScalarFieldNames(
+            field_info, is_data_valid
+        )
+
+        self._allowed_vector_field_names = _AllowedVectorFieldNames(
+            field_info, is_data_valid
+        )
+
+        surface_args = dict(
+            surface_ids=self._allowed_surface_ids,
+            surface_name=self._allowed_surface_names,
+        )
+        scalar_field_args = {
+            **dict(field_name=self._allowed_scalar_field_names),
+            **surface_args,
+        }
+        self.get_scalar_field_data = _FieldMethod(
+            field_data_accessor=self.get_scalar_field_data,
+            args_allowed_values_accessors=scalar_field_args,
+        )
+        self.get_vector_field_data = _FieldMethod(
+            field_data_accessor=self.get_vector_field_data,
+            args_allowed_values_accessors={
+                **dict(field_name=self._allowed_vector_field_names),
+                **surface_args,
+            },
+        )
+        self.get_surface_data = _FieldMethod(
+            field_data_accessor=self.get_surface_data,
+            args_allowed_values_accessors=surface_args,
+        )
+        self.get_pathlines_field_data = _FieldMethod(
+            field_data_accessor=self.get_pathlines_field_data,
+            args_allowed_values_accessors=scalar_field_args,
+        )
 
     def new_transaction(self):
-        return FieldTransaction(self._service, self._field_info)
-
-    def get_surface_data(
-        self,
-        data_type: SurfaceDataType,
-        surface_ids: Optional[List[int]] = None,
-        surface_name: Optional[str] = None,
-        overset_mesh: Optional[bool] = False,
-    ) -> Dict[int, np.array]:
-        """Get surface data (vertices, faces connectivity, centroids, and
-        normals).
-
-        Parameters
-        ----------
-        data_type : SurfaceDataType
-            SurfaceDataType Enum member.
-        surface_ids : List[int], optional
-            List of surface IDs for the surface data.
-        surface_name : str, optional
-            Surface name for the surface data.
-        overset_mesh : bool, optional
-            Whether to provide the overset method. The default is ``False``.
-
-        Returns
-        -------
-        Dict[int, np.array]
-            Dictionary containing a map of surface IDs to surface data.
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surface_ids=surface_ids,
-            surface_name=surface_name,
+        return FieldTransaction(
+            self._service,
+            self._field_info,
+            self._allowed_surface_ids,
+            self._allowed_surface_names,
+            self._allowed_scalar_field_names,
+            self._allowed_vector_field_names,
         )
-        fields_request = get_fields_request()
-        fields_request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=overset_mesh,
-                    provideFaces=data_type == SurfaceDataType.FacesConnectivity,
-                    provideVertices=data_type == SurfaceDataType.Vertices,
-                    provideFacesCentroid=data_type == SurfaceDataType.FacesCentroid,
-                    provideFacesNormal=data_type == SurfaceDataType.FacesNormal,
-                )
-                for surface_id in surface_ids
-            ]
-        )
-        enum_to_field_name = {
-            SurfaceDataType.FacesConnectivity: "faces",
-            SurfaceDataType.Vertices: "vertices",
-            SurfaceDataType.FacesCentroid: "centroid",
-            SurfaceDataType.FacesNormal: "face-normal",
-        }
-        fields = extract_fields(self._service.get_fields(fields_request))
-        surface_data = next(iter(fields.values()))
-        return {
-            surface_id: surface_data[surface_id][enum_to_field_name[data_type]]
-            for surface_id in surface_ids
-        }
 
     def get_scalar_field_data(
         self,
@@ -689,6 +903,7 @@ class FieldData:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_name=surface_name,
         )
@@ -697,7 +912,9 @@ class FieldData:
             [
                 FieldDataProtoModule.ScalarFieldRequest(
                     surfaceId=surface_id,
-                    scalarFieldName=field_name,
+                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
+                        field_name
+                    ),
                     dataLocation=FieldDataProtoModule.DataLocation.Nodes
                     if node_value
                     else FieldDataProtoModule.DataLocation.Elements,
@@ -711,6 +928,65 @@ class FieldData:
         scalar_field_data = next(iter(fields.values()))
         return {
             surface_id: scalar_field_data[surface_id][field_name]
+            for surface_id in surface_ids
+        }
+
+    def get_surface_data(
+        self,
+        data_type: SurfaceDataType,
+        surface_ids: Optional[List[int]] = None,
+        surface_name: Optional[str] = None,
+        overset_mesh: Optional[bool] = False,
+    ) -> Dict[int, np.array]:
+        """Get surface data (vertices, faces connectivity, centroids, and
+        normals).
+
+        Parameters
+        ----------
+        data_type : SurfaceDataType
+            SurfaceDataType Enum member.
+        surface_ids : List[int], optional
+            List of surface IDs for the surface data.
+        surface_name : str, optional
+            Surface name for the surface data.
+        overset_mesh : bool, optional
+            Whether to provide the overset method. The default is ``False``.
+
+        Returns
+        -------
+        Dict[int, np.array]
+            Dictionary containing a map of surface IDs to surface data.
+        """
+        surface_ids = _get_surface_ids(
+            field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
+            surface_ids=surface_ids,
+            surface_name=surface_name,
+        )
+        fields_request = get_fields_request()
+        fields_request.surfaceRequest.extend(
+            [
+                FieldDataProtoModule.SurfaceRequest(
+                    surfaceId=surface_id,
+                    oversetMesh=overset_mesh,
+                    provideFaces=data_type == SurfaceDataType.FacesConnectivity,
+                    provideVertices=data_type == SurfaceDataType.Vertices,
+                    provideFacesCentroid=data_type == SurfaceDataType.FacesCentroid,
+                    provideFacesNormal=data_type == SurfaceDataType.FacesNormal,
+                )
+                for surface_id in surface_ids
+            ]
+        )
+        enum_to_field_name = {
+            SurfaceDataType.FacesConnectivity: "faces",
+            SurfaceDataType.Vertices: "vertices",
+            SurfaceDataType.FacesCentroid: "centroid",
+            SurfaceDataType.FacesNormal: "face-normal",
+        }
+        fields = extract_fields(self._service.get_fields(fields_request))
+        surface_data = next(iter(fields.values()))
+        return {
+            surface_id: surface_data[surface_id][enum_to_field_name[data_type]]
             for surface_id in surface_ids
         }
 
@@ -738,6 +1014,7 @@ class FieldData:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_name=surface_name,
         )
@@ -746,7 +1023,9 @@ class FieldData:
             [
                 FieldDataProtoModule.VectorFieldRequest(
                     surfaceId=surface_id,
-                    vectorFieldName=field_name,
+                    vectorFieldName=self._allowed_vector_field_names.valid_name(
+                        field_name
+                    ),
                 )
                 for surface_id in surface_ids
             ]
@@ -821,6 +1100,7 @@ class FieldData:
         """
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
             surface_ids=surface_ids,
             surface_name=surface_name,
         )
