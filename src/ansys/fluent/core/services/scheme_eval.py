@@ -213,9 +213,13 @@ class SchemeEval:
         value
     """
 
-    def __init__(self, service: SchemeEvalService, version=None):
+    def __init__(self, service: SchemeEvalService):
         self.service = service
-        self.version = version
+        try:
+            version = self.string_eval("(cx-version)")
+            self.version = ".".join(version.strip("()").split()[0:2])
+        except Exception:  # for pypim launch
+            self.version = "23.1"
 
     def eval(self, val: Any) -> Any:
         """Evaluates a scheme expression.
