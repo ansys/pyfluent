@@ -1,6 +1,7 @@
 from concurrent import futures
 import os
 from pathlib import Path
+import tempfile
 import time
 
 import grpc
@@ -268,8 +269,14 @@ def test_get_fluent_mode(new_mesh_session):
 @pytest.mark.dev
 @pytest.mark.fluent_231
 def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+    fd, file_path = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.txt",
+        prefix="pyfluent-",
+        dir=str(tmp_path),
+    )
+    os.close(fd)
+
     session = new_mesh_session
-    file_path = os.path.join(tmp_path, "sample_transcript.txt")
     session.transcript.start(file_path)
     session = session.switch_to_solver()
     session.transcript.stop()
