@@ -285,7 +285,7 @@ class _FluentConnection:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return ".".join(map(str, self.scheme_eval.scheme_eval("(cx-version)")))
+        return self.scheme_eval.string_eval("(cx-version)")
 
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
