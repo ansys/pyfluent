@@ -573,12 +573,14 @@ def launch_fluent(
                 if isinstance(topy, list):
                     all_scm_journal_names = ""
                     all_py_journal_names = ""
+                    name_list = []
                     for journals in topy:
-                        journal_name = journals.split(".")[0]
-                        journal_ext = journals.split(".")[1]
+                        journal_name = journals.rsplit(".")[0]
+                        journal_ext = journals.rsplit(".")[1]
+                        name_list.append(journal_name)
                         all_scm_journal_names += f' -i {journal_name}.{journal_ext}'
-                        all_py_journal_names += f'{journal_name}_'
-                    launch_string += f'{all_scm_journal_names} -command="(api-start-python-journal \\\"\\\"{all_py_journal_names}journal.py\\\"\\\")"'  # noqa: E501
+                    all_py_journal_names += '_'.join(name_list)
+                    launch_string += f'{all_scm_journal_names} -command="(api-start-python-journal \\\"\\\"{all_py_journal_names}.py\\\"\\\")"'  # noqa: E501
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
