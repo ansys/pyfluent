@@ -23,6 +23,7 @@ env:
   # It applies 7 days retention policy by default.
   RESET_EXAMPLES_CACHE: 6
   API_CODE_CACHE: 3
+  DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
 
 jobs:
   stylecheck:
@@ -116,15 +117,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # used for documentation deployment
-      - name: Get Bot Application Token
-        if: github.event_name == 'push' && contains(github.ref, 'refs/tags') && matrix.image-tag == 'v23.1.0'
-        id: get_workflow_token
-        uses: peter-murray/workflow-application-token-action@v2
-        with:
-          application_id: ${{ secrets.BOT_APPLICATION_ID }}
-          application_private_key: ${{ secrets.BOT_APPLICATION_PRIVATE_KEY }}
-
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -206,16 +198,11 @@ jobs:
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ matrix.image-tag }}
 
       - name: Build Documentation
-        run: make build-doc DOCS_CNAME=fluent.docs.pyansys.com
+        run: make build-doc
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Zip HTML Documentation before upload
-        run: |
-          sudo apt install zip -y
-          zip -r doc.zip doc/_build/html
 
       - name: Upload HTML Documentation
         if: matrix.image-tag == 'v23.1.0'
@@ -225,15 +212,14 @@ jobs:
           path: doc.zip
           retention-days: 7
 
-      - name: Deploy
+      - name: Deploy stable documentation
+        uses: pyansys/actions/doc-deploy-stable@v2
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev') && matrix.image-tag == 'v23.1.0'
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
-          repository-name: pyansys/pyfluent-docs
-          token: ${{ secrets.DOC_DEPLOYMENT_PAT }}
-          BRANCH: gh-pages
-          FOLDER: doc/_build/html
-          CLEAN: true
+            doc-artifact-name: 'HTML-Documentation-tag-${{ matrix.image-tag }}'
+            cname: ${{ env.DOCUMENTATION_CNAME }}
+            token: ${{ secrets.GITHUB_TOKEN }}
+
 
   build:
     name: Build
