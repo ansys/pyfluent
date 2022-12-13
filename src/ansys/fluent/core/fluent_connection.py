@@ -215,12 +215,6 @@ class _FluentConnection:
 
         self.journal = Journal(self.scheme_eval)
 
-        try:
-            version = self.scheme_eval.string_eval("(cx-version)")
-            self.scheme_eval.version = ".".join(version.strip("()").split()[0:2])
-        except Exception:  # for pypim launch
-            self.scheme_eval.version = "23.1"
-
         self._cleanup_on_exit = cleanup_on_exit
 
         self.callback_id1 = None
@@ -285,7 +279,7 @@ class _FluentConnection:
 
     def get_fluent_version(self):
         """Gets and returns the fluent version."""
-        return ".".join(map(str, self.scheme_eval.scheme_eval("(cx-version)")))
+        return self.scheme_eval.version
 
     def exit(self) -> None:
         """Close the Fluent connection and exit Fluent."""
