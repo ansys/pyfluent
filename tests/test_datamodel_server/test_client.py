@@ -23,6 +23,11 @@ def test_preferences_client():
         "White",
         "Black",
     ]
+
+    assert preferences.Appearance.AnsysLogo.Color.allowed_values() == [
+        "White",
+        "Black",
+    ]
     close_server()
 
 
