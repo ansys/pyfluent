@@ -223,11 +223,11 @@ class PyStateContainer(PyCallableStateObject):
 
     Methods
     -------
-    get_attrib_value(attrib)
+    get_attr(attrib)
         Get the attribute value of the current object.
     getAttribValue(attrib)
         Get the attribute value of the current object.
-        (This method is the same as the get_attrib_value(attrib)
+        (This method is the same as the get_attr(attrib)
         method.)
     get_state()
         Get the state of the current object.
@@ -272,7 +272,7 @@ class PyStateContainer(PyCallableStateObject):
 
     setState = set_state
 
-    def get_attrib_value(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
 
         Parameters
@@ -292,11 +292,11 @@ class PyStateContainer(PyCallableStateObject):
         response = self.service.get_attribute_value(request)
         return _convert_variant_to_value(response.result)
 
-    getAttribValue = get_attrib_value
+    getAttribValue = get_attr
 
     def is_active(self):
         """Returns true if the parameter is active."""
-        return true_if_none(self.get_attrib_value(Attribute.IS_ACTIVE.value))
+        return true_if_none(self.get_attr(Attribute.IS_ACTIVE.value))
 
     def help(self) -> None:
         """Print help string."""
@@ -397,10 +397,10 @@ class PyParameter(PyStateContainer):
 
     def default_value(self):
         """Get default value of the parameter."""
-        return self.get_attrib_value(Attribute.DEFAULT.value)
+        return self.get_attr(Attribute.DEFAULT.value)
 
     def is_read_only(self):
-        return true_if_none(self.get_attrib_value(Attribute.IS_READ_ONLY.value))
+        return true_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
 
 def true_if_none(val):
@@ -415,17 +415,17 @@ class PyTextual(PyParameter):
     """Provides interface for textual parameters."""
 
     def allowed_values(self):
-        return self.get_attrib_value(Attribute.ALLOWED_VALUES.value)
+        return self.get_attr(Attribute.ALLOWED_VALUES.value)
 
 
 class PyNumerical(PyParameter):
     """Provides interface for numerical parameters."""
 
     def min(self):
-        return self.get_attrib_value(Attribute.MIN.value)
+        return self.get_attr(Attribute.MIN.value)
 
     def max(self):
-        return self.get_attrib_value(Attribute.MAX.value)
+        return self.get_attr(Attribute.MAX.value)
 
 
 class PyDictionary(PyParameter):
@@ -719,11 +719,11 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     getState = get_state
 
-    def get_attrib_value(self, attrib: str) -> Any:
+    def get_attr(self, attrib: str) -> Any:
         attrib_path = f"{self.name}/{attrib}"
-        return self.parent.get_attrib_value(attrib_path)
+        return self.parent.get_attr(attrib_path)
 
-    getAttribValue = get_attrib_value
+    getAttribValue = get_attr
 
     def help(self) -> None:
         pass

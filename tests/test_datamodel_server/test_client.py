@@ -19,7 +19,7 @@ def test_preferences_client():
     assert preferences.Appearance.ColorTheme.get_state() == "Dark"
     assert preferences.Appearance.GraphicsColorTheme.get_state() == "Dark"
 
-    assert preferences.Appearance.AnsysLogo.Color.get_attrib_value("allowedValues") == [
+    assert preferences.Appearance.AnsysLogo.Color.get_attr("allowedValues") == [
         "White",
         "Black",
     ]
