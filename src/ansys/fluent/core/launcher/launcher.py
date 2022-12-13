@@ -281,22 +281,18 @@ def launch_remote_fluent(
 
 
 def _get_session_info(
-    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+    argvals, mode: Union[LaunchModes, str, None] = None
 ):
     """Updates the session information."""
     if mode is None:
-        new_session = Session
-    elif mode and meshing_mode:
-        raise RuntimeError(
-            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
-        )
-    else:
-        if type(mode) == str:
-            mode = LaunchModes.get_mode(mode)
-        new_session = mode.value[1]
-        meshing_mode = mode.value[2]
-        for k, v in mode.value[3]:
-            argvals[k] = v
+        mode = LaunchModes.SOLVER
+
+    if type(mode) == str:
+        mode = LaunchModes.get_mode(mode)
+    new_session = mode.value[1]
+    meshing_mode = mode.value[2]
+    for k, v in mode.value[3]:
+        argvals[k] = v
 
     return new_session, meshing_mode, argvals, mode
 
@@ -438,7 +434,6 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
@@ -511,9 +506,6 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
-    meshing_mode : bool, optional
-        Whether to launch Fluent in meshing mode. The default is ``None``,
-        in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -525,7 +517,6 @@ def launch_fluent(
     py : bool, optional
         Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
         The default is ``None``.
-
     cwd: str, Optional
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
@@ -544,7 +535,7 @@ def launch_fluent(
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
-        argvals, mode, meshing_mode
+        argvals, mode
     )
     _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
