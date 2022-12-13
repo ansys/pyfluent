@@ -3,6 +3,7 @@
 This module supports both starting Fluent locally and connecting to a
 remote instance with gRPC.
 """
+from copy import deepcopy
 from enum import Enum
 import json
 import os
@@ -445,6 +446,7 @@ def launch_fluent(
     py: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
+    container_args: Dict[str, Any] = None
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -543,13 +545,17 @@ def launch_fluent(
     machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    argvals = locals()
+    argvals = deepcopy(locals())
+    try:
+        argvals.pop("container_args")
+    except KeyError:
+        pass
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
         argvals, mode, meshing_mode
     )
     _raise_exception_g_gu_in_windows_os(additional_arguments)
-    if _start_instance(start_instance):
+    if not container_args and _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
             argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
@@ -617,6 +623,32 @@ def launch_fluent(
             # container, the following currently works only in linux.
             port, password = start_fluent_container(
                 pyfluent.EXAMPLES_PATH, pyfluent.EXAMPLES_PATH, args
+            )
+            return new_session(
+                fluent_connection=_FluentConnection(
+                    start_timeout=start_timeout,
+                    port=port,
+                    password=password,
+                    cleanup_on_exit=cleanup_on_exit,
+                    start_transcript=start_transcript,
+                )
+            )
+        elif container_args:
+            try:
+                mounted_from = container_args["mounted_from"]
+                mounted_to = container_args["mounted_to"]
+            except KeyError:
+                raise RuntimeError("Missing 'mounted_from' and/or 'mounted_to' from 'container_args'") from None
+
+            mounted_from = Path(mounted_from).absolute()
+            network = container_args.get("network", None)
+
+            args = _build_fluent_launch_args_string(**argvals).split()
+            if meshing_mode:
+                args.append(" -meshing")
+
+            port, password = start_fluent_container(
+                mounted_from, mounted_to, args, network=network
             )
             return new_session(
                 fluent_connection=_FluentConnection(

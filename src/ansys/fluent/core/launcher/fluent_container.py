@@ -15,7 +15,7 @@ def _get_free_port() -> int:
     return sock.getsockname()[1]
 
 
-def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) -> int:
+def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str], network: str=None) -> int:
     """Start a Fluent container.
 
     Parameters
@@ -44,9 +44,7 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
     image_tag = os.getenv("FLUENT_IMAGE_TAG", "v23.1.0")
     test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
 
-    try:
-        subprocess.run(
-            [
+    run_args = [
                 "docker",
                 "run",
                 "-d",
@@ -55,6 +53,8 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"{port}:{port}",
                 "-v",
                 f"{mounted_from}:{mounted_to}",
+                "-w",
+                f"{mounted_to}",
                 "-e",
                 f"ANSYSLMD_LICENSE_FILE={license_server}",
                 "-e",
@@ -64,9 +64,16 @@ def start_fluent_container(mounted_from: str, mounted_to: str, args: List[str]) 
                 f"ghcr.io/pyansys/pyfluent:{image_tag}",
                 "-gu",
                 f"-sifile={container_sifile}",
-            ]
-            + args
-        )
+            ] + args
+
+    if network:
+        # insert before -p
+        idx = run_args.index("-p")
+        run_args.insert(idx, network)
+        run_args.insert(idx, "--network")
+
+    try:
+        subprocess.run(run_args)
 
         sifile_last_mtime = os.stat(sifile).st_mtime
         while True:
