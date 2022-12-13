@@ -32,7 +32,7 @@ class _UnitsTable(object):
         "W": "N m s^-1",
         "J": "N m",
         "V": "A ohm",
-        "F": "N m V^-2",
+        "farad": "N m V^-2",
         "H": "N m A^-2",
         "S": "ohm^-1",
         "Wb": "N m A^-1",
@@ -51,6 +51,7 @@ class _UnitsTable(object):
         "delta_C": "C",
         "delta_F": "F",
         "delta_R": "R",
+        "coulomb": "A s",
     }
 
     derived_units_with_conversion_factor = {
@@ -353,16 +354,17 @@ class Unit(object):
 
     @staticmethod
     def _power_sum(base, unit_str):
-        if "^" in unit_str:
-            return sum(
-                [
-                    float(term.split("^")[1])
-                    for term in unit_str.split(" ")
-                    if term.split("^")[0] == base
-                ]
-            )
-        else:
-            return 1.0
+        if unit_str in ["K", "C", "F", "R"]:
+            if "^" in unit_str:
+                return sum(
+                    [
+                        float(term.split("^")[1])
+                        for term in unit_str.split(" ")
+                        if term.split("^")[0] == base
+                    ]
+                )
+            else:
+                return 1.0
 
     def _compute_offset(self, unit_str):
         if unit_str == "C":
@@ -377,12 +379,12 @@ class Unit(object):
 
     def _quantity_type(self):
         temperature_units = ["K", "C", "F", "R"]
-        qty_type = ""
+        qty_type = None
         for temp_unit in temperature_units:
             unit_power = Unit._power_sum(temp_unit, self._unit)
             if temp_unit in self._unit and unit_power == 1.0:
                 qty_type = "Temperature"
-            elif "delta" in self._unit:
+            elif "delta_" in self._unit:
                 qty_type = "Temperature Difference"
             elif temp_unit in self._unit and unit_power not in [0.0, 1.0]:
                 qty_type = "Temperature Difference"
@@ -561,6 +563,281 @@ class QuantityError(ValueError):
         return f"{self.unit} and {self.to_unit} have incompatible dimensions."
 
 
+unit_quantity_map = {
+    "Mass": "kg",
+    "Length": "m",
+    "Time": "s",
+    "Temperature": "K",
+    "Current": "A",
+    "SubstanceAmount": "mol",
+    "Light": "cd",
+    "Angle": "radian",
+    "SolidAngle": "sr",
+    "Acceleration": "m s^-2",
+    "Angular Acceleration": "radian s^-2",
+    "Angular Velocity": "radian s^-1",
+    "Area": "m^2",
+    "Capacitance": "farad",
+    "Compressibility": "Pa^-1",
+    "Concentration": "m^-3",
+    "Contact Resistance": "m^2 s kg^-1",
+    "Current Transfer Coefficient": "A m^-2 V^-1",
+    "Decay Constant": "s^-1",
+    "Density": "kg m^-3",
+    "Density Derivative": "m^-2 s^2",
+    "Density Derivative wrt Pressure": "m^-2 s^2",
+    "Density Derivative wrt Temperature": "kg m^-3 K^-1",
+    "Dielectric Contact Resistance": "farad^-1 m^2",
+    "Dynamic Viscosity": "Pa s",
+    "Electric Charge": "A s",
+    "Electric Charge Density": "A s m^-3",
+    "Electric Charge Transfer Coefficient": "farad m^-2",
+    "Electric Conductance Per Unit Area": "S m^-2",
+    "Electric Current Density": "A m^-2",
+    "Electric Current Source": "A m^-3",
+    "Electric Field": "V m^-1",
+    "Electric Flux Density": "coulomb m^-2",
+    "Electrical Conductance": "S",
+    "Electrical Conductivity": "S m^-1",
+    "Electrical Contact Resistance": "S^-1 m^2",
+    "Electrical Permittivity": "A s V^-1 m^-1",
+    "Electrical Resistance": "ohm",
+    "Electrical Resistivity": "ohm m",
+    "Energy Density by Mass": "J kg^-1",
+    "Energy Source": "W m^-3",
+    "Energy Source Coefficient": "W m^-3 K^-1",
+    "Enthalpy Variance": "m^4 s^-4",
+    "Epsilon": "m^2 s^-3",
+    "Epsilon Flux": "W m^-2 s^-1",
+    "Epsilon Flux Coefficient": "kg m^-2 s^-2",
+    "Epsilon Source": "W m^-3 s^-1",
+    "Epsilon Source Coefficient": "kg m^-3 s^-2",
+    "Flame Surface Density Source": "m^-1 s^-1",
+    "Force": "N",
+    "Force Density": "N m^-3",
+    "Force Intensity": "N m^-1",
+    "Force Per Angular Unit": "N radian^-1",
+    "Fracture Energy": "J m^-2",
+    "Fracture Energy Rate": "J m^-2 s^-1",
+    "Frequency": "Hz",
+    "Gasket Stiffness": "Pa m^-1",
+    "Heat Flux": "W m^-2",
+    "Heat Flux in": "W m^-2",
+    "Heat Generation": "W m^-3",
+    "Heat Rate": "W",
+    "Heat Transfer Coefficient": "W m^-2 K^-1",
+    "Impulse": "N s",
+    "Impulse Per Angular Unit": "N s radian^-1",
+    "Inductance": "H",
+    "Interphase Transfer Coefficient": "kg m^-2 s^-1",
+    "InvTemp1": "K^-1",
+    "InvTemp2": "K^-2",
+    "InvTemp3": "K^-3",
+    "InvTemp4": "K^-4",
+    "Inverse Angle": "radian^-1",
+    "Inverse Area": "m^-2",
+    "Inverse Length": "m^-1",
+    "Inverse Stress": "Pa^-1",
+    "Kinematic Diffusivity": "m^2 s^-1",
+    "MAPDL Enthalpy": "J m^-3",
+    "Magnetic Field": "A m^-1",
+    "Magnetic Field Intensity": "A m^-1",
+    "Magnetic Flux": "Wb",
+    "Magnetic Flux Density": "T",
+    "Magnetic Induction": "T",
+    "Magnetic Permeability": "H m^-1",
+    "Magnetic Potential": "T m",
+    "Mass Concentration": "kg m^-3",
+    "Mass Concentration Rate": "kg m^-3 s^-1",
+    "Mass Flow": "kg s^-1",
+    "Mass Flow Rate Per Area": "kg s^-1 m^-2",
+    "Mass Flow Rate Per Length": "kg s^-1 m^-1",
+    "Mass Flow Rate Per Volume": "kg s^-1 m^-3",
+    "Mass Flow in": "kg s^-1",
+    "Mass Flux": "kg s^-1 m^-2",
+    "Mass Flux Coefficient": "kg s^-1 m^-2",
+    "Mass Flux Pressure Coefficient": "kg s^-1 m^-2 Pa^-1",
+    "Mass Fraction": "kg kg^-1",
+    "Mass Per Area": "kg m^-2",
+    "Mass Source": "kg s^-1 m^-3",
+    "Mass Source Coefficient": "kg s^-1 m^-3 Pa^-1",
+    "Material Impedance": "kg m^-2 s^-1",
+    "Molar Concentration": "mol m^-3",
+    "Molar Concentration Henry Coefficient": "Pa m^3 mol^-1",
+    "Molar Concentration Rate": "mol m^-3 s^-1",
+    "Molar Energy": "J mol^-1",
+    "Molar Entropy": "J mol^-1 K^-1",
+    "Molar Fraction": "mol mol^-1",
+    "Molar Mass": "kg kmol^-1",
+    "Molar Volume": "m^3 mol^-1",
+    "Moment": "N m",
+    "Moment of Inertia of Area": "m^2 m^2",
+    "Moment of Inertia of Mass": "kg m^2",
+    "Momentum Source": "kg m^-2 s^-2",
+    "Momentum Source Lin Coeff": "kg m^-3 s^-1",
+    "Momentum Source Quad Coeff": "kg m^-4",
+    "Normalized Value": "m m^-1",
+    "Number Source": "m^-3 s^-1",
+    "Omega Source": "kg m^-3 s^-2",
+    "PSD Acceleration": "m^2 s^-4 Hz^-1",
+    "PSD Displacement": "m^2 Hz^-1",
+    "PSD Force": "N^2 Hz^-1",
+    "PSD Moment": "N^2 m^2 Hz^-1",
+    "PSD Pressure": "Pa^2 Hz^-1",
+    "PSD Strain": "m^2 m^-2 Hz^-1",
+    "PSD Stress": "Pa^2 Hz^-1",
+    "PSD Velocity": "m^2 s^-2 Hz^-1",
+    "Per Mass": "kg^-1",
+    "Per Mass Flow": "s kg^-1",
+    "Per Time": "s^-1",
+    "Per Time Cubed": "s^-3",
+    "Per Time Squared": "s^-2",
+    "Power Spectral Density": "W Hz^-1",
+    "Pressure": "Pa",
+    "Pressure Derivative wrt Temperature": "Pa K^-1",
+    "Pressure Derivative wrt Volume": "Pa kg m^-3",
+    "Pressure Gradient": "Pa m^-1",
+    "Relative Permeability": "H H^-1",
+    "Relative Permittivity": "farad farad^-1",
+    "Rotational Damping": "N m s radian^-1",
+    "Rotational Stiffness": "N m radian^-1",
+    "Section Modulus": "m^3",
+    "Seebeck Coefficient": "V K^-1",
+    "Shear Strain": "radian",
+    "Shear Strain Rate": "s^-1",
+    "Shock Velocity": "s m^-1",
+    "Soot Cross Coefficient": "m^3 mol^-1 s^-1",
+    "Soot PX Facto": "mol kg^-1 s^-1",
+    "Specific": "kg kg^-1",
+    "Specific Concentration": "mol kg^-1",
+    "Specific Energy": "J kg^-1",
+    "Specific Enthalpy": "J kg^-1",
+    "Specific Entropy": "J kg^-1 K^-1",
+    "Specific Flame Surface Density": "m^2 kg^-1",
+    "Specific Heat Capacity": "J kg^-1 K^-1",
+    "Specific Volume": "kg^-1 m^3",
+    "Specific Weight": "N m^-3",
+    "Stiffness": "N m^-1",
+    "Strain": "m m^-1",
+    "Strength": "Pa",
+    "Stress": "Pa",
+    "Stress Intensity Factor": "Pa m^0.5",
+    "Stress Per Temperature": "Pa K^-1",
+    "Surface Charge Density": "A s m^-2",
+    "Surface Force Density": "N m^-2",
+    "Surface Power Density": "W m^-2",
+    "Surface Tension": "N m^-1",
+    "Temperature Difference": "delta_K",
+    "Temperature Gradient": "K m^-1",
+    "Temperature Variance": "K^2",
+    "Temperature Variance Source": "kg m^-3 s^-1 K^2",
+    "Thermal Capacitance": "J K^-1",
+    "Thermal Conductance": "W K^-1",
+    "Thermal Conductivity": "W m^-1 K^-1",
+    "Thermal Contact Resistance": "W^-1 m^2 K",
+    "Thermal Expansivity": "K^-1",
+    "Torque": "N m",
+    "Torsional Spring Constant": "N m radian^-1",
+    "Total Mass Source Pressure Coefficient": "kg s^-1 Pa^-1",
+    "Total Radiative Intensity": "W m^-2 sr^-1",
+    "Translational Damping": "N s m^-1",
+    "Turbulent Heat Flux": "m^3 s^-3",
+    "Velocity": "m s^-1",
+    "Volume": "m^3",
+    "Volumetric": "kg m^-3",
+    "Volumetric Flow": "m^3 s^-1",
+    "Volumetric Flow in": "m^3 s^-1",
+    "Warping Factor": "m^6",
+}
+
+
+def get_unit_from_map(quantity_map_from_settings_api):
+    terms = []
+    term_power_list = []
+    final_unit = ""
+    for unit in quantity_map_from_settings_api.keys():
+        unit_str = unit_quantity_map[unit]
+        unit_term_list = unit_str.split(" ") if " " in unit_str else unit_str
+        term_power_list.append(unit_term_list)
+    power_list = list(
+        map(lambda x: float(x), list(quantity_map_from_settings_api.values()))
+    )
+    for item in range(len(power_list)):
+        if isinstance(term_power_list[item], str) and power_list[item] == 1.0:
+            terms.append(term_power_list[item])
+        elif isinstance(term_power_list[item], list) and power_list[item] == 1.0:
+            for term in term_power_list[item]:
+                terms.append(term)
+        elif isinstance(term_power_list[item], str) and power_list[item] != 0.0:
+            terms.append(
+                term_power_list[item]
+                + "^"
+                + str(
+                    int(power_list[item])
+                    if power_list[item].is_integer()
+                    else power_list[item]
+                )
+            )
+        elif isinstance(term_power_list[item], list) and power_list[item] != 0.0:
+            for term in term_power_list[item]:
+                if "^" in term:
+                    term_split = term.split("^")
+                    resulting_power = float(term_split[1]) * power_list[item]
+                    terms.append(
+                        term_split[0]
+                        + "^"
+                        + str(
+                            int(resulting_power)
+                            if resulting_power.is_integer()
+                            else resulting_power
+                        )
+                    )
+                else:
+                    terms.append(
+                        term
+                        + "^"
+                        + str(
+                            int(power_list[item])
+                            if power_list[item].is_integer()
+                            else power_list[item]
+                        )
+                    )
+    for term in terms:
+        final_unit += (" " if len(final_unit) > 0 else "") + term
+
+    unit_term_list = final_unit.split(" ")
+    unit_power_list = [
+        terms.split("^") if "^" in terms else terms for terms in unit_term_list
+    ]
+
+    term_power_map = {}
+    for term in unit_power_list:
+        if isinstance(term, str):
+            if term in term_power_map.keys():
+                term_power_map[term] += 1.0
+            else:
+                term_power_map[term] = 1.0
+        if isinstance(term, list):
+            if term[0] in term_power_map.keys():
+                term_power_map[term[0]] += float(term[1])
+            else:
+                term_power_map[term[0]] = float(term[1])
+
+    unit_terms = []
+    for term, power in term_power_map.items():
+        if power == 1.0:
+            unit_terms.append(term)
+        elif power != 0.0:
+            unit_terms.append(
+                term + "^" + str(int(power) if power.is_integer() else power)
+            )
+
+    unit = ""
+    for term in unit_terms:
+        unit += (" " if len(unit) > 0 else "") + term
+    return unit
+
+
 class Quantity(float):
     """This class instantiates physical quantities using their real values and
     units.
@@ -592,8 +869,12 @@ class Quantity(float):
     consistency in all arithmetic operations.
     """
 
-    def __init__(self, real_value, unit_str):
+    def __init__(self, real_value, unit_str=None, quantity_map=None):
         self._value = float(real_value)
+        if unit_str and quantity_map:
+            raise ValueError("Either unit or quantity_map is allowed.")
+        if quantity_map:
+            unit_str = get_unit_from_map(quantity_map)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
         self._si_value = (
@@ -602,7 +883,11 @@ class Quantity(float):
         self._si_unit = self._unit.si_unit
         self._type = self._unit._quantity_type()
 
-    def __new__(cls, real_value, unit_str):
+    def __new__(cls, real_value, unit_str=None, quantity_map=None):
+        if unit_str and quantity_map:
+            raise ValueError("Either unit or quantity_map is allowed.")
+        if quantity_map:
+            unit_str = get_unit_from_map(quantity_map)
         _unit = Unit(unit_str)
         return float.__new__(
             cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power
@@ -643,6 +928,9 @@ class Quantity(float):
         ]
 
     def to(self, to_unit_str):
+        if not isinstance(to_unit_str, str):
+            raise TypeError("Unit should be of 'str' type.")
+
         temp_quantity = Quantity(1, to_unit_str)
 
         curr_unit_dim_obj = self.dimension
@@ -722,6 +1010,10 @@ class Quantity(float):
             temp_unit = self._get_si_unit(other, lambda x, y: x + y)
             return Quantity(temp_value, temp_unit)
         elif isinstance(other, int) or isinstance(other, float):
+            if self.type == "Temperature Difference":
+                result = Quantity(float(self) * float(other), "delta_K")
+                result.type = "Temperature Difference"
+                return result
             return Quantity(self._si_value * other, self._si_unit)
 
     def __rmul__(self, other):
@@ -756,6 +1048,11 @@ class Quantity(float):
 
     def __add__(self, other):
         self.validate_matching_dimensions(other)
+        temp_types = ["Temperature", "Temperature Difference"]
+        if self.type in temp_types and other.type in temp_types:
+            result = Quantity(float(self) + float(other), "K")
+            result.type = "Temperature"
+            return result
         temp_value = float(self) + float(other)
         return Quantity(temp_value, self._si_unit)
 
