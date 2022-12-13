@@ -216,7 +216,6 @@ def launch_remote_fluent(
     start_timeout: int = 100,
     product_version: str = None,
     cleanup_on_exit: bool = True,
-    meshing_mode: bool = False,
     dimensionality: str = None,
 ):
 
@@ -245,9 +244,6 @@ def launch_remote_fluent(
     cleanup_on_exit : bool, optional
         Whether to clean up and exit Fluent when Python exits or when garbage
         is collected for the Fluent Python instance. The default is ``True``.
-    meshing_mode : bool, optional
-        Whether to launch Fluent remotely in meshing mode. The default is
-        ``False``.
     dimensionality : str, optional
         Number of dimensions for modeling. The default is ``None``, in which
         case ``"3s"`` is used. Options are ``"3d"`` and ``"2d"``.
@@ -259,9 +255,7 @@ def launch_remote_fluent(
     """
     pim = pypim.connect()
     instance = pim.create_instance(
-        product_name="fluent-meshing"
-        if meshing_mode
-        else "fluent-2ddp"
+        product_name="fluent-2ddp"
         if dimensionality == "2d"
         else "fluent-3ddp",
         product_version=product_version,
@@ -281,24 +275,19 @@ def launch_remote_fluent(
 
 
 def _get_session_info(
-    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+    argvals, mode: Union[LaunchModes, str, None] = None
 ):
     """Updates the session information."""
     if mode is None:
         new_session = Session
-    elif mode and meshing_mode:
-        raise RuntimeError(
-            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
-        )
     else:
         if type(mode) == str:
             mode = LaunchModes.get_mode(mode)
         new_session = mode.value[1]
-        meshing_mode = mode.value[2]
         for k, v in mode.value[3]:
             argvals[k] = v
 
-    return new_session, meshing_mode, argvals, mode
+    return new_session, argvals, mode
 
 
 def _is_windows():
@@ -401,7 +390,6 @@ def _start_instance(start_instance: Union[bool, None]):
 
 def _generate_launch_string(
     argvals,
-    meshing_mode: bool,
     show_gui: bool,
     additional_arguments: str,
     server_info_filepath: str,
@@ -410,8 +398,6 @@ def _generate_launch_string(
     exe_path = _get_fluent_exe_path(**argvals)
     launch_string = exe_path
     launch_string += _build_fluent_launch_args_string(**argvals)
-    if meshing_mode:
-        launch_string += " -meshing"
     launch_string += f" {additional_arguments}"
     launch_string += f' -sifile="{server_info_filepath}"'
     launch_string += " -nm"
@@ -438,7 +424,6 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
@@ -511,9 +496,6 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
-    meshing_mode : bool, optional
-        Whether to launch Fluent in meshing mode. The default is ``None``,
-        in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -543,14 +525,14 @@ def launch_fluent(
     """
     argvals = locals()
 
-    new_session, meshing_mode, argvals, mode = _get_session_info(
-        argvals, mode, meshing_mode
+    new_session, argvals, mode = _get_session_info(
+        argvals, mode
     )
     _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
         server_info_filepath = _get_server_info_filepath()
         launch_string = _generate_launch_string(
-            argvals, meshing_mode, show_gui, additional_arguments, server_info_filepath
+            argvals, show_gui, additional_arguments, server_info_filepath
         )
 
         try:
@@ -585,15 +567,12 @@ def launch_fluent(
                 start_transcript=start_transcript,
                 product_version=PIM_FLUENT_PRODUCT_VERSION[0],
                 cleanup_on_exit=cleanup_on_exit,
-                meshing_mode=meshing_mode,
                 dimensionality=version,
             )
         import ansys.fluent.core as pyfluent
 
         if pyfluent.BUILDING_GALLERY or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             args = _build_fluent_launch_args_string(**argvals).split()
-            if meshing_mode:
-                args.append(" -meshing")
             # Assumes the container OS will be able to create the
             # EXAMPLES_PATH of host OS. With the Fluent docker
             # container, the following currently works only in linux.
