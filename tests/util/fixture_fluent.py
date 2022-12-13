@@ -76,7 +76,7 @@ def launch_fluent_solver_3ddp_t2(with_launching_container):
 @pytest.fixture
 def launch_fluent_solver_2ddp_t2(with_launching_container):
     solver_session = pyfluent.launch_fluent(
-        "2d", precision="double", processor_count=2, mode="solver"
+        version="2d", precision="double", processor_count=2, mode="solver"
     )
     yield solver_session
     solver_session.exit()
