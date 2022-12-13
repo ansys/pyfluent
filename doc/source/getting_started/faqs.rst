@@ -184,14 +184,14 @@ to learn how to use PyFluent:
   **Examples** sections in the `PyFluent-Parametric <https://fluentparametric.docs.pyansys.com/>`_ and
   `Pyfluent-Visusalization <https://fluentvisualization.docs.pyansys.com/>`_
   guides.
-- Record a journal of your actions in Fluent and review the corresponding script.
+- Record a journal of your actions in Fluent and review the corresponding Python script.
   
   .. note::
-     In Fluent 2022 R2, recording a journal of your Fluent meshing commands does not
-     produce a Python script that is in PyFluent syntax. However, there is a
-     one-to-one correspondence between the recorded Python command and the equivalent
-     PyFluent command. This means that you can manually translate the recorded Python
-     command to the PyFluent syntax.
+     In Fluent 2022 R2, you can record a journal of your actions in Fluent
+     meshing to produce a Scheme script. Within that script are embedded
+     Python statements corresponding to each recorded meshing workflow
+     action. When extracted from the Scheme script, those Python statements
+     are valid in the PyFluent context.
 
   
   Here is a Python command recorded in Fluent:
