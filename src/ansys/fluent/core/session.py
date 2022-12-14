@@ -9,7 +9,7 @@ import warnings
 import grpc
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.services.datamodel_tui import TUIMenuGeneric
+from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_base_meshing import _BaseMeshing
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 from ansys.fluent.core.solver.flobject import get_root as settings_get_root
@@ -329,7 +329,7 @@ class Session:
                     self._tui = tui_module.main_menu([], self._tui_service)
                 except (ImportError, ModuleNotFoundError):
                     LOG.warning(_CODEGEN_MSG_TUI)
-                    self._tui = TUIMenuGeneric([], self._tui_service)
+                    self._tui = TUIMenu([], self._tui_service)
             return self._tui
 
         @property
