@@ -30,6 +30,20 @@ class Attribute:
         return self.function(obj)
 
 
+class Command:
+
+    def __init__(self, command):
+        self.command = command
+
+    def __set_name__(self, obj, name):
+        if not hasattr(obj, "command"):
+            obj.commands = set()
+        obj.commands.add(name)
+
+    def __get__(self, obj, objtype=None):
+        return self.command(obj)
+
+
 class PyLocalBaseMeta(type):
     @classmethod
     def __create_get_parent_by_type(cls):
@@ -172,6 +186,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         def wrapper(self, parent, api_helper):
             self._parent = parent
             self._api_helper = api_helper(self)
+            self._type = "object"
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -297,6 +312,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
+            self._type = "object"
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -339,6 +355,7 @@ class PyLocalContainer(MutableMapping):
         self.__object_class = object_class
         self.__collection: dict = {}
         self.__api_helper = api_helper
+        self._type = "named-object"
 
     def __iter__(self):
         return iter(self.__collection)

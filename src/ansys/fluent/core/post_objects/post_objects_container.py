@@ -27,6 +27,10 @@ class Container:
             self, "Surfaces", []
         )
 
+    @property
+    def _type(self):
+        return "object"
+
     def _init_module(self, obj, mod):
         from ansys.fluent.core.post_objects.post_helper import PostAPIHelper
 
