@@ -444,6 +444,7 @@ def launch_fluent(
     password: str = None,
     py: bool = None,
     cwd: str = None,
+    topy: Union[str, list] = None,
 ) -> Union[_BaseSession, Session]:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
@@ -525,10 +526,11 @@ def launch_fluent(
     py : bool, optional
         Passes ``"-py"`` as an additional_argument to launch fluent in python mode.
         The default is ``None``.
-
     cwd: str, Optional
         Path to specify current working directory to launch fluent from the defined directory as
         current working directory.
+    topy: str or list, optional
+        Automates scheme to python journal creation.
 
     Returns
     -------
@@ -563,6 +565,22 @@ def launch_fluent(
             kwargs = _get_subprocess_kwargs_for_fluent(env)
             if cwd:
                 kwargs.update(cwd=cwd)
+            if topy:
+                if isinstance(topy, str):
+                    journal_name = topy.split(".")[0]
+                    journal_ext = topy.split(".")[1]
+                    launch_string += f' -i {journal_name}.{journal_ext} -command="(api-start-python-journal \\\"\\\"{journal_name}.py\\\"\\\")"'  # noqa: E501
+                if isinstance(topy, list):
+                    all_scm_journal_names = ""
+                    all_py_journal_names = ""
+                    name_list = []
+                    for journals in topy:
+                        journal_name = journals.rsplit(".")[0]
+                        journal_ext = journals.rsplit(".")[1]
+                        name_list.append(journal_name)
+                        all_scm_journal_names += f' -i {journal_name}.{journal_ext}'
+                    all_py_journal_names += '_'.join(name_list)
+                    launch_string += f'{all_scm_journal_names} -command="(api-start-python-journal \\\"\\\"{all_py_journal_names}.py\\\"\\\")"'  # noqa: E501
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
