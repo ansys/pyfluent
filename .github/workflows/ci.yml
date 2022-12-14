@@ -463,12 +463,17 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      - name: Zip 23.1 Coverage Results before upload
+        run: |
+          sudo apt install zip -y
+          zip -r cov.zip cov_html
+
       - name: Upload 23.1 Coverage Results
         if: matrix.image-tag == 'v23.1.0'
         uses: actions/upload-artifact@v3
         with:
           name: HTML-Coverage-tag-231
-          path: cov_html
+          path: cov.zip
           retention-days: 7
 
   release:
