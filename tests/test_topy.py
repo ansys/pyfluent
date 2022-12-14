@@ -1,5 +1,6 @@
 import os
 import tempfile
+import time
 
 import ansys.fluent.core as pyfluent
 
@@ -27,6 +28,19 @@ def test_single_jou(with_launching_container):
 
     assert returned
 
+    gen_file_path = f'{file_path.split(".")[0]}.py'
+
+    with open(gen_file_path) as file:
+        gen_returned = file.readlines()
+
+    assert gen_returned
+
+    while os.path.exists(gen_file_path):
+        try:
+            os.remove(gen_file_path)
+        except PermissionError:
+            time.sleep(1)
+
 
 def test_single_scm(with_launching_container):
 
@@ -50,6 +64,19 @@ def test_single_scm(with_launching_container):
         os.remove(file_path)
 
     assert returned
+
+    gen_file_path = f'{file_path.split(".")[0]}.py'
+
+    with open(gen_file_path) as file:
+        gen_returned = file.readlines()
+
+    assert gen_returned
+
+    while os.path.exists(gen_file_path):
+        try:
+            os.remove(gen_file_path)
+        except PermissionError:
+            time.sleep(1)
 
 
 def test_2_jou(with_launching_container):
@@ -93,6 +120,14 @@ def test_2_jou(with_launching_container):
 
     assert returned2
 
+    gen_file_path = f'{file_path_1.split(".")[0]}_{file_path_1.split(".")[0]}.py'
+
+    while os.path.exists(gen_file_path):
+        try:
+            os.remove(gen_file_path)
+        except PermissionError:
+            time.sleep(1)
+
 
 def test_2_scm(with_launching_container):
 
@@ -134,3 +169,11 @@ def test_2_scm(with_launching_container):
         os.remove(file_path_2)
 
     assert returned2
+
+    gen_file_path = f'{file_path_1.split(".")[0]}_{file_path_1.split(".")[0]}.py'
+
+    while os.path.exists(gen_file_path):
+        try:
+            os.remove(gen_file_path)
+        except PermissionError:
+            time.sleep(1)
