@@ -76,7 +76,7 @@ jobs:
           retention-days: 7
 
       - name: "Deploy development documentation"
-        uses: pyansys/actions/doc-deploy-dev@v2
+        uses: pyansys/actions/doc-deploy-dev@v3
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
