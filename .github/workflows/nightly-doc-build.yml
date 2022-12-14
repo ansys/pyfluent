@@ -80,6 +80,7 @@ jobs:
       - name: "Deploy development documentation"
         if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
         uses: pyansys/actions/doc-deploy-dev@v2
+        if: matrix.image-tag == 'v23.1.0'
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
