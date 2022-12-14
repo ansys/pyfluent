@@ -233,7 +233,13 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 @pytest.mark.fluent_231
 def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session = new_mesh_session
-    file_path = os.path.join(tmp_path, "sample_py_journal.txt")
+
+    fd, file_path = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.txt",
+        prefix="sample_py_journal-",
+        dir=str(tmp_path),
+    )
+    os.close(fd)
 
     session.journal.start(file_path)
 

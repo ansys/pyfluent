@@ -1,10 +1,17 @@
 import os
+import tempfile
 
 import ansys.fluent.core as pyfluent
 
 
-def test_single_jou():
-    file_path = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
+def test_single_jou(with_launching_container):
+
+    fd, file_path = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.jou",
+        prefix="jou1-",
+        dir=str(pyfluent.EXAMPLES_PATH),
+    )
+    os.close(fd)
 
     with open(file_path, "w") as journal:
         journal.write('(display "from jou1.jou")')
@@ -21,8 +28,14 @@ def test_single_jou():
     assert returned
 
 
-def test_single_scm():
-    file_path = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
+def test_single_scm(with_launching_container):
+
+    fd, file_path = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.scm",
+        prefix="jou1-",
+        dir=str(pyfluent.EXAMPLES_PATH),
+    )
+    os.close(fd)
 
     with open(file_path, "w") as journal:
         journal.write('(display "from jou1.scm")')
@@ -39,9 +52,21 @@ def test_single_scm():
     assert returned
 
 
-def test_2_jou():
-    file_path_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
-    file_path_2 = os.path.join(pyfluent.EXAMPLES_PATH, "jou2.jou")
+def test_2_jou(with_launching_container):
+
+    fd, file_path_1 = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.jou",
+        prefix="jou1-",
+        dir=str(pyfluent.EXAMPLES_PATH),
+    )
+    os.close(fd)
+
+    fd, file_path_2 = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.jou",
+        prefix="jou2-",
+        dir=str(pyfluent.EXAMPLES_PATH),
+    )
+    os.close(fd)
 
     with open(file_path_1, "w") as journal:
         journal.write('(display "from jou1.jou")')
@@ -69,9 +94,21 @@ def test_2_jou():
     assert returned2
 
 
-def test_2_scm():
-    file_path_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
-    file_path_2 = os.path.join(pyfluent.EXAMPLES_PATH, "jou2.scm")
+def test_2_scm(with_launching_container):
+
+    fd, file_path_1 = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.scm",
+        prefix="jou1-",
+        dir=str(pyfluent.EXAMPLES_PATH),
+    )
+    os.close(fd)
+
+    fd, file_path_2 = tempfile.mkstemp(
+        suffix=f"-{os.getpid()}.scm",
+        prefix="jou2-",
+        dir=str(pyfluent.EXAMPLES_PATH),
+    )
+    os.close(fd)
 
     with open(file_path_1, "w") as journal:
         journal.write('(display "from jou1.scm")')
