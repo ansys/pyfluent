@@ -567,8 +567,7 @@ def launch_fluent(
                 kwargs.update(cwd=cwd)
             if topy:
                 if isinstance(topy, str):
-                    name = topy.split(".")[0]
-                    ext = topy.split(".")[1]
+                    name, ext = topy.split(".")[:2]
                     launch_string += f' -i {name}.{ext} -command="(api-start-python-journal \\\"\\\"{name}.py\\\"\\\")"'  # noqa: E501
                 if isinstance(topy, list):
                     all_scm_journal_names = ""
