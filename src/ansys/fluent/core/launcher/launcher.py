@@ -567,22 +567,18 @@ def launch_fluent(
                 kwargs.update(cwd=cwd)
             if topy:
                 if isinstance(topy, str):
-                    journal_name = topy.split(".")[0]
-                    journal_ext = topy.split(".")[1]
-                    launch_string += f' -i {journal_name}.{journal_ext} -command="(api-start-python-journal \\\"\\\"{journal_name}.py\\\"\\\")"'  # noqa: E501
+                    name = topy.split(".")[0]
+                    ext = topy.split(".")[1]
+                    launch_string += f' -i {name}.{ext} -command="(api-start-python-journal \\\"\\\"{name}.py\\\"\\\")"'  # noqa: E501
                 if isinstance(topy, list):
                     all_scm_journal_names = ""
                     all_py_journal_names = ""
                     name_list = []
                     for journals in topy:
-                        if os.path.exists(journals):
-                            journal_name = journals.rsplit("\\")[-1].split(".")[0]
-                            journal_ext = journals.rsplit("\\")[-1].split(".")[1]
-                        else:
-                            journal_name = journals.rsplit(".")[0]
-                            journal_ext = journals.rsplit(".")[1]
-                        name_list.append(journal_name)
-                        all_scm_journal_names += f' -i {journal_name}.{journal_ext}'
+                        name = Path(journals).stem.split('.')[0]
+                        ext = journals.rsplit(".")[1]
+                        name_list.append(name)
+                        all_scm_journal_names += f' -i {name}.{ext}'
                     all_py_journal_names += '_'.join(name_list)
                     launch_string += f'{all_scm_journal_names} -command="(api-start-python-journal \\\"\\\"{all_py_journal_names}.py\\\"\\\")"'  # noqa: E501
             subprocess.Popen(launch_string, **kwargs)
