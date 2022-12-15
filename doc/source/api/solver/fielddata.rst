@@ -219,14 +219,12 @@ Pathlines field request
 ~~~~~~~~~~~~~~~~~~~~~~~
 The response to a pathlines field request contains the following fields:
 
-- ``pathlines-count``, which contains pathlines count
-- ``lines``, which contain pathlines connectivity
-- ``vertices``, which contain node coordinates
-- ``<field name>``, which contains pathlines field 
-    field name is the same name as the scalar field name passed in the request
-- ``particle-time``, which contains  particle time, if requested
-- ``<additional field name>``, which contains  additional field, if requested
-    additional field name is the same name as the additional field name passed in the request
+- ``pathlines-count``, which contains pathlines count.
+- ``lines``, which contain pathlines connectivity.
+- ``vertices``, which contain node coordinates.
+- ``field name``, which contains pathlines field. field name is the same name as the scalar field name passed in the request.
+- ``particle-time``, which contains  particle time, if requested. 
+- ``additional field name``, which contains  additional field, if requested. additional field name is the same name as the additional field name passed in the request.
 
 .. currentmodule:: ansys.fluent.core.services
 
