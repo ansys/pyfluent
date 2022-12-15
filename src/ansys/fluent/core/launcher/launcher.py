@@ -569,13 +569,13 @@ def launch_fluent(
                 if isinstance(topy, str):
                     name, ext = topy.split(".")[:2]
                     launch_string += f' -i {name}.{ext} -command="(api-start-python-journal \\\"\\\"{name}.py\\\"\\\")"'  # noqa: E501
-                if isinstance(topy, list):
+                elif isinstance(topy, list):
                     all_scm_journal_names = ""
                     all_py_journal_names = ""
                     name_list = []
-                    for journals in topy:
-                        name = Path(journals).stem.split('.')[0]
-                        ext = journals.rsplit(".")[1]
+                    for journal in topy:
+                        name = Path(journal).stem
+                        ext = journal.rsplit(".")[1]
                         name_list.append(name)
                         all_scm_journal_names += f' -i {name}.{ext}'
                     all_py_journal_names += '_'.join(name_list)
