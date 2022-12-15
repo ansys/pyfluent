@@ -6,7 +6,10 @@ import os
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
-from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL
+from ansys.fluent.core.session_shared import (  # noqa: F401
+    _CODEGEN_MSG_DATAMODEL,
+    _CODEGEN_MSG_TUI,
+)
 from ansys.fluent.core.utils.logging import LOG
 
 try:
