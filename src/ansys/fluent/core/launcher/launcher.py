@@ -17,7 +17,7 @@ import warnings
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
+from ansys.fluent.core.session import _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -229,7 +229,7 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: [_BaseSession, Session]
+    session_cls: [_BaseSession]
         Instance of the Session class
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client. The
@@ -439,7 +439,7 @@ def launch_fluent(
     password: str = None,
     py: bool = None,
     cwd: str = None,
-) -> Union[_BaseSession, Session]:
+) -> _BaseSession:
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
