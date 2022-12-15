@@ -98,9 +98,9 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
 .. code-block:: python
 
   >>> field_data.get_pathlines_field_data(surface_name="inlet", field_name="temperature")
-  {4: {'faces': array([    2,     0,     1, ...,     2, 28828, 28829]), 'vertices': array([-0.34724122,  0.        , -0.0442204 , ..., -0.19877256,
-         -0.1250188 , -0.0621446 ], dtype=float32), 'temperature': array([879.25073, 828.8636 , 861.65686, ..., 892.1276 , 894.6389 ,
-         897.95325], dtype=float32)}}
+  {4: {'vertices': array([-0.34724122,  0.        , -0.0442204 , ..., -0.20095952, -0.1250188 , -0.0317937 ], dtype=float32), 
+      'lines': array([    2,     0,     1, ...,     2, 29581, 29582]), 'temperature': array([879.1005 , 831.87085, 861.82495, ..., 899.1867 , 892.27   ,
+       896.4489 ], dtype=float32), 'pathlines-count': array([90])}}
 
 Pathlines data is returned as line surface. So response is a dictionary of surface IDs to a information about line surface. 
 
@@ -219,22 +219,19 @@ Pathlines field request
 ~~~~~~~~~~~~~~~~~~~~~~~
 The response to a pathlines field request contains the following fields:
 
-- ``pathlines-count``, pathlines count. 
-
-For each pathline, the following fields are returned:
-
-- ``pathlines-<pathlines-counter>-line-data``, pathlines connectivity.
-- ``pathlines-<pathlines-counter>-position-data``, pathlines positions.
-- ``pathlines-<pathlines-counter>-field-data``, pathlines field.
-- ``pathlines-<pathlines-counter>-additional-field-data``, pathlines additional field if requested.
-- ``pathlines-<pathlines-counter>-particle-time-field-data``, pathlines particle time if requested.
-
+- ``pathlines-count``, which contains pathlines count
+- ``lines``, which contain pathlines connectivity
+- ``vertices``, which contain node coordinates
+- ``<field name>``, which contains pathlines field 
+    field name is the same name as the scalar field name passed in the request
+- ``particle-time``, which contains  particle time, if requested
+- ``<additional field name>``, which contains  additional field, if requested
+    additional field name is the same name as the additional field name passed in the request
 
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
    :toctree: _autosummary
-
 
 .. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_surfaces_request
 .. automethod:: ansys.fluent.core.services.field_data.FieldTransaction.add_scalar_fields_request
