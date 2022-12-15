@@ -575,8 +575,12 @@ def launch_fluent(
                     all_py_journal_names = ""
                     name_list = []
                     for journals in topy:
-                        journal_name = journals.rsplit(".")[0]
-                        journal_ext = journals.rsplit(".")[1]
+                        if os.path.exists(journals):
+                            journal_name = journals.rsplit("\\")[-1].split(".")[0]
+                            journal_ext = journals.rsplit("\\")[-1].split(".")[1]
+                        else:
+                            journal_name = journals.rsplit(".")[0]
+                            journal_ext = journals.rsplit(".")[1]
                         name_list.append(journal_name)
                         all_scm_journal_names += f' -i {journal_name}.{journal_ext}'
                     all_py_journal_names += '_'.join(name_list)
