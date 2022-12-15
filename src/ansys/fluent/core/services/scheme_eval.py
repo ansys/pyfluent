@@ -99,7 +99,7 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
         _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
     elif isinstance(val, list) or isinstance(val, tuple):
-        if version < "23.1":
+        if version < "23.1.0":
             if val:
                 val = list(val)
                 _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
@@ -108,7 +108,7 @@ def _convert_py_value_to_scheme_pointer(val: Any, p: SchemePointer, version):
             for item in val:
                 _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
     elif isinstance(val, dict):
-        if version < "23.1":
+        if version < "23.1.0":
             as_list = list(val.items())
             if as_list:
                 _convert_pair_to_scheme_pointer(as_list[0], p.pair.car, version)
@@ -162,7 +162,7 @@ def _convert_scheme_pointer_to_py_value(p: SchemePointer, version):
     elif p.HasField("sym"):
         return Symbol(p.sym)
     elif p.HasField("pair"):
-        if version < "23.1":
+        if version < "23.1.0":
             if any(
                 p.pair.cdr.HasField(x)
                 for x in ["b", "fixednum", "flonum", "c", "str", "sym"]
@@ -217,9 +217,9 @@ class SchemeEval:
         self.service = service
         try:
             version = self.string_eval("(cx-version)")
-            self.version = ".".join(version.strip("()").split()[0:2])
+            self.version = ".".join(version.strip("()").split())
         except Exception:  # for pypim launch
-            self.version = "23.1"
+            self.version = "23.1.0"
 
     def eval(self, val: Any) -> Any:
         """Evaluates a scheme expression.
@@ -234,7 +234,7 @@ class SchemeEval:
         Any
             Output scheme value represented as Python datatype
         """
-        if self.version < "23.1":
+        if self.version < "23.1.0":
             request = SchemePointer()
             _convert_py_value_to_scheme_pointer(val, request, self.version)
             response = self.service.eval(request)

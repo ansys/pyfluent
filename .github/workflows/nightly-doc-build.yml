@@ -15,6 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         image-tag: [v22.2.0, v23.1.0, v23.2.0]
+      env:
+        DOC_DEPLOYMENT_IMAGE_TAG: v22.2.0
 
     steps:
       - uses: actions/checkout@v3
@@ -68,7 +70,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Upload HTML documentation
-        if: matrix.image-tag == 'v23.1.0'
+        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
         uses: actions/upload-artifact@v3
         with:
           name: documentation-html
@@ -76,6 +78,7 @@ jobs:
           retention-days: 7
 
       - name: "Deploy development documentation"
+        if: matrix.image-tag == env.DOC_DEPLOYMENT_IMAGE_TAG
         uses: pyansys/actions/doc-deploy-dev@v2
         with:
             cname: ${{ env.DOCUMENTATION_CNAME }}
