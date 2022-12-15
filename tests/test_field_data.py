@@ -115,8 +115,8 @@ def test_field_data(new_solver_session) -> None:
         "vertices",
         "lines",
         "temperature",
+        "pathlines-count",
         "particle-time",
-        "pathlines-count"
     ]
 
     # multiple surface *names* transaction
