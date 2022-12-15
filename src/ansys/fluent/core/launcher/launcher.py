@@ -229,7 +229,7 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: [_BaseSession]
+    session_cls: _BaseSession
         Instance of the Session class
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client. The
