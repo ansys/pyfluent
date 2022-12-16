@@ -127,6 +127,16 @@ class _BaseSession:
         self.fluent_connection.exit()
 
     def __getattr__(self, attr):
+        if attr == "root":
+            raise RuntimeError(
+                "Please use the new structure where the settings objects can be accessed directly."
+                " For example: 'solver.setup' or 'solver.solution'"
+            )
+        if attr == "solver":
+            raise RuntimeError(
+                "'Solver' is the parent object."
+                " Please use the new structure, where: session.solver => solver."
+            )
         return getattr(self.fluent_connection, attr)
 
     def __dir__(self):
