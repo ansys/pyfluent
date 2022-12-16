@@ -2,9 +2,12 @@ import os
 from pathlib import Path
 import time
 
+import pytest
+
 import ansys.fluent.core as pyfluent
 
 
+@pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_single_jou(with_launching_container):
 
     file_path = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
@@ -39,6 +42,7 @@ def test_single_jou(with_launching_container):
             break
 
 
+@pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_single_scm(with_launching_container):
 
     file_path = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
@@ -73,6 +77,7 @@ def test_single_scm(with_launching_container):
             break
 
 
+@pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_2_jou(with_launching_container):
 
     file_path_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
@@ -120,6 +125,7 @@ def test_2_jou(with_launching_container):
             break
 
 
+@pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_2_scm(with_launching_container):
 
     file_path_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
