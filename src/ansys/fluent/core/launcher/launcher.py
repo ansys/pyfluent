@@ -17,7 +17,7 @@ import warnings
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
+from ansys.fluent.core.session import _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -27,8 +27,7 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-_CURRENT_FLUENT_VERSION = "22.2.0"
-_SUPPORTED_FLUENT_VERSIONS = ["22.2.0", "23.1.0", "23.2.0"]
+FLUENT_VERSION = "22.2.0"
 _FLUENT_EXE_PATH = ""
 
 
@@ -38,6 +37,17 @@ class FluentVersion(Enum):
     version_22R2 = "22.2.0"
     version_23R1 = "23.1.0"
     version_23R2 = "23.2.0"
+
+    @staticmethod
+    def get_version(version: str) -> "FluentVersion":
+        """Get the available versions based on the version in string format."""
+        for v in FluentVersion:
+            if version in [v.value, v.value[:-2]]:
+                return v
+        else:
+            raise RuntimeError(f"The passed version '{version}' does not exist."
+                               f"Available version strings are: "
+                               f"{[ver.value for ver in FluentVersion]} ")
 
 
 def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
@@ -62,17 +72,9 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     the Fluent path set in the environment variable.
     """
     if isinstance(version, (float, str)):
-        version = str(version)
-    elif isinstance(version, FluentVersion):
-        version = version.value
-
-    if len(version.split(".")) == 2:
-        version += ".0"
-    if version not in _SUPPORTED_FLUENT_VERSIONS:
-        raise RuntimeError(f"Please provide a supported fluent version: {_SUPPORTED_FLUENT_VERSIONS}")
-
-    global _CURRENT_FLUENT_VERSION
-    _CURRENT_FLUENT_VERSION = version
+        version = FluentVersion.get_version(str(version))
+    global FLUENT_VERSION
+    FLUENT_VERSION = version.value
 
 
 class LaunchModes(Enum):
@@ -109,7 +111,7 @@ def get_fluent_path() -> Path:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
         return Path(path)
     else:
-        path = os.environ["AWP_ROOT" + "".join(_CURRENT_FLUENT_VERSION.split("."))[:-1]]
+        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
         return Path(path) / "fluent"
 
 
@@ -228,7 +230,7 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: [_BaseSession, Session]
+    session_cls: _BaseSession
         Instance of the Session class
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client. The
@@ -238,7 +240,7 @@ def launch_remote_fluent(
         Maximum allowable time in seconds for connecting to the Fluent
         server. The default is ``100``.
     product_version : str, optional
-        Version of Fluent to use in the four-digit format (such as ``"22.2.0"``
+        Version of Fluent to use in the three-digit format (such as ``"212"``
         for 2021 R2). The default is ``None``, in which case the active version
         or latest installed version is used.
     cleanup_on_exit : bool, optional
@@ -257,7 +259,6 @@ def launch_remote_fluent(
         Instance of the session.
     """
     pim = pypim.connect()
-    product_version = "".join(product_version.split("."))[:-1]
     instance = pim.create_instance(
         product_name="fluent-meshing"
         if meshing_mode
@@ -281,22 +282,18 @@ def launch_remote_fluent(
 
 
 def _get_session_info(
-    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+    argvals, mode: Union[LaunchModes, str, None] = None
 ):
     """Updates the session information."""
     if mode is None:
-        new_session = Session
-    elif mode and meshing_mode:
-        raise RuntimeError(
-            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
-        )
-    else:
-        if type(mode) == str:
-            mode = LaunchModes.get_mode(mode)
-        new_session = mode.value[1]
-        meshing_mode = mode.value[2]
-        for k, v in mode.value[3]:
-            argvals[k] = v
+        mode = LaunchModes.SOLVER
+
+    if isinstance(mode, str):
+        mode = LaunchModes.get_mode(mode)
+    new_session = mode.value[1]
+    meshing_mode = mode.value[2]
+    for k, v in mode.value[3]:
+        argvals[k] = v
 
     return new_session, meshing_mode, argvals, mode
 
@@ -438,14 +435,14 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
-) -> Union[_BaseSession, Session]:
+) -> _BaseSession:
+
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -512,9 +509,6 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
-    meshing_mode : bool, optional
-        Whether to launch Fluent in meshing mode. The default is ``None``,
-        in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -546,7 +540,7 @@ def launch_fluent(
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
-        argvals, mode, meshing_mode
+        argvals, mode
     )
     _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
@@ -601,7 +595,7 @@ def launch_fluent(
                 session_cls=new_session,
                 start_timeout=start_timeout,
                 start_transcript=start_transcript,
-                product_version=_CURRENT_FLUENT_VERSION,
+                product_version="".join(FLUENT_VERSION.split("."))[:-1],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
