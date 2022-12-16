@@ -17,7 +17,7 @@ import warnings
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.launcher.fluent_container import start_fluent_container
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
-from ansys.fluent.core.session import Session, _BaseSession, parse_server_info_file
+from ansys.fluent.core.session import _BaseSession, parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -229,7 +229,7 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: [_BaseSession, Session]
+    session_cls: _BaseSession
         Instance of the Session class
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client. The
@@ -281,22 +281,18 @@ def launch_remote_fluent(
 
 
 def _get_session_info(
-    argvals, mode: Union[LaunchModes, str, None] = None, meshing_mode: bool = None
+    argvals, mode: Union[LaunchModes, str, None] = None
 ):
     """Updates the session information."""
     if mode is None:
-        new_session = Session
-    elif mode and meshing_mode:
-        raise RuntimeError(
-            "Please select either of the 2 ways of running ('mode' or 'meshing_mode')"
-        )
-    else:
-        if type(mode) == str:
-            mode = LaunchModes.get_mode(mode)
-        new_session = mode.value[1]
-        meshing_mode = mode.value[2]
-        for k, v in mode.value[3]:
-            argvals[k] = v
+        mode = LaunchModes.SOLVER
+
+    if type(mode) == str:
+        mode = LaunchModes.get_mode(mode)
+    new_session = mode.value[1]
+    meshing_mode = mode.value[2]
+    for k, v in mode.value[3]:
+        argvals[k] = v
 
     return new_session, meshing_mode, argvals, mode
 
@@ -438,14 +434,14 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
-    meshing_mode: bool = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
     py: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
-) -> Union[_BaseSession, Session]:
+) -> _BaseSession:
+
     """Launch Fluent locally in server mode or connect to a running Fluent
     server instance.
 
@@ -512,9 +508,6 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
-    meshing_mode : bool, optional
-        Whether to launch Fluent in meshing mode. The default is ``None``,
-        in which case Fluent is launched in meshing mode.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -546,7 +539,7 @@ def launch_fluent(
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
-        argvals, mode, meshing_mode
+        argvals, mode
     )
     _raise_exception_g_gu_in_windows_os(additional_arguments)
     if _start_instance(start_instance):
