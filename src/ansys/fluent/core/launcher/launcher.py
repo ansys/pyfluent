@@ -567,19 +567,11 @@ def launch_fluent(
                 kwargs.update(cwd=cwd)
             if topy:
                 if isinstance(topy, str):
-                    name, ext = topy.split(".")
-                    launch_string += f' -i {name}.{ext} -command="(api-start-python-journal \\\"\\\"{name}.py\\\"\\\")"'  # noqa: E501
-                elif isinstance(topy, list):
-                    all_scm_journal_names = ""
-                    all_py_journal_names = ""
-                    name_list = []
-                    for journal in topy:
-                        name = Path(journal).stem
-                        ext = journal.rsplit(".")[1]
-                        name_list.append(name)
-                        all_scm_journal_names += f' -i {name}.{ext}'
-                    all_py_journal_names += '_'.join(name_list)
-                    launch_string += f'{all_scm_journal_names} -command="(api-start-python-journal \\\"\\\"{all_py_journal_names}.py\\\"\\\")"'  # noqa: E501
+                    topy = [topy]
+                if isinstance(topy, list):
+                    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in topy])
+                    py_jou = "_".join([Path(journal).stem for journal in topy])
+                    launch_string += f' {fluent_jou_arg} -command="(api-start-python-journal \\\"\\\"{py_jou}.py\\\"\\\")"'  # noqa: E501
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)

@@ -23,7 +23,7 @@ def test_single_jou(with_launching_container):
 
     assert returned
 
-    gen_file_path = f'{file_path.split(".")[0]}.py'
+    gen_file_path = os.path.join(os.getcwd(),  f'{Path(file_path).stem}.py')
 
     with open(gen_file_path) as file:
         gen_returned = file.readlines()
@@ -57,7 +57,7 @@ def test_single_scm(with_launching_container):
 
     assert returned
 
-    gen_file_path = f'{file_path.split(".")[0]}.py'
+    gen_file_path = os.path.join(os.getcwd(), f'{Path(file_path).stem}.py')
 
     with open(gen_file_path) as file:
         gen_returned = file.readlines()
@@ -103,7 +103,8 @@ def test_2_jou(with_launching_container):
 
     assert returned2
 
-    gen_file_path = Path(file_path_1).stem.split('.')[0] + '_' + Path(file_path_2).stem.split('.')[0] + '.py'  # noqa: E501
+    gen_file_name = Path(file_path_1).stem.split('.')[0] + '_' + Path(file_path_2).stem.split('.')[0] + '.py'  # noqa: E501
+    gen_file_path = os.path.join(os.getcwd(),  gen_file_name)
 
     with open(gen_file_path) as file:
         gen_returned = file.readlines()
@@ -149,7 +150,8 @@ def test_2_scm(with_launching_container):
 
     assert returned2
 
-    gen_file_path = Path(file_path_1).stem.split('.')[0] + '_' + Path(file_path_2).stem.split('.')[0] + '.py'  # noqa: E501
+    gen_file_name = Path(file_path_1).stem.split('.')[0] + '_' + Path(file_path_2).stem.split('.')[0] + '.py'  # noqa: E501
+    gen_file_path = os.path.join(os.getcwd(), gen_file_name)
 
     with open(gen_file_path) as file:
         gen_returned = file.readlines()
