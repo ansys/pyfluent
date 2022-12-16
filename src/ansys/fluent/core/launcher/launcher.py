@@ -46,7 +46,7 @@ class FluentVersion(Enum):
                 return v
         else:
             raise RuntimeError(f"The passed version '{version}' does not exist."
-                               f"Available version strings are: "
+                               f" Available version strings are: "
                                f"{[ver.value for ver in FluentVersion]} ")
 
 
@@ -111,7 +111,7 @@ def get_fluent_path() -> Path:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
         return Path(path)
     else:
-        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))]
+        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))[:-1]]
         return Path(path) / "fluent"
 
 
