@@ -73,8 +73,9 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     """
     if isinstance(version, (float, str)):
         version = FluentVersion.get_version(str(version))
-    global FLUENT_VERSION
-    FLUENT_VERSION = version.value
+
+    # global FLUENT_VERSION
+    globals()["FLUENT_VERSION"] = version.value
 
 
 class LaunchModes(Enum):
@@ -441,6 +442,7 @@ def launch_fluent(
     py: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
+    **kwargs,
 ) -> _BaseSession:
 
     """Launch Fluent locally in server mode or connect to a running Fluent
@@ -537,6 +539,11 @@ def launch_fluent(
     machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
+    if "meshing_mode" in kwargs.keys():
+        warnings.warn("'meshing_mode' argument is no longer used."
+                      " Please use launch_fluent(mode='meshing') to launch in meshing mode.")
+        mode = LaunchModes.MESHING_MODE
+
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
