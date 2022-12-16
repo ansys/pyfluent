@@ -568,7 +568,7 @@ def launch_fluent(
             if topy:
                 if isinstance(topy, str):
                     topy = [topy]
-                elif isinstance(topy, list):
+                if isinstance(topy, list):
                     fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in topy])
                     py_jou = "_".join([Path(journal).stem for journal in topy])
                     launch_string += f' {fluent_jou_arg} -command="(api-start-python-journal \\\"\\\"{py_jou}.py\\\"\\\")"'  # noqa: E501
