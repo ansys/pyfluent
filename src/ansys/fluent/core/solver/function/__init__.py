@@ -1,1 +1,0 @@
-"""Module providing reductions functions."""

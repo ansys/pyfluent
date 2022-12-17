@@ -1,2 +1,0 @@
-include src/ansys/fluent/core/launcher/fluent_launcher_options.json
-include src/ansys/fluent/core/docs/README.rst

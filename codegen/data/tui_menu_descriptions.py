@@ -1,1 +1,0 @@
-MENU_DESCRIPTIONS = {}

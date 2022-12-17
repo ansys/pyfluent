@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_preferences_General:
+
+solver.datamodel.preferences.General
+====================================
+
+.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.General
+   :members: AdvancedPartition, AutomaticTranscript, DefaultIOFormat, DockEditor, EnableParametricStudy, FlowModel, IdleTimeout, KeyBehavioralChangesMessage, QAServiceMessage, UTLCreatePhysicsOnModeChange, UTLMode
+   :noindex:
+

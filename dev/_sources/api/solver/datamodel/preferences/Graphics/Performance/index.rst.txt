@@ -1,0 +1,19 @@
+.. _ref_solver_datamodel_preferences_Graphics_Performance:
+
+solver.datamodel.preferences.Graphics.Performance
+=================================================
+
+.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.Performance
+   :members: OptimizeFor, RatioOfTargetFrameRateToClassifyHeavyGeometry, RatioOfTargetFrameRateToDeclassifyHeavyGeometry
+   :noindex:
+
+.. toctree::
+   :hidden:
+
+   FastDisplayMode/index
+   MinimumFrameRate/index
