@@ -38,16 +38,20 @@ class FluentVersion(Enum):
     version_23R1 = "23.1.0"
     version_23R2 = "23.2.0"
 
-    @staticmethod
-    def get_version(version: str) -> "FluentVersion":
-        """Get the available versions based on the version in string format."""
-        for v in FluentVersion:
-            if version in [v.value, v.value[:-2]]:
-                return v
-        else:
-            raise RuntimeError(f"The passed version '{version}' does not exist."
-                               f" Available version strings are: "
-                               f"{[ver.value for ver in FluentVersion]} ")
+    @classmethod
+    def _missing_(cls, version):
+        if isinstance(version, (float, str)):
+            version = str(version) + ".0"
+            for v in FluentVersion:
+                if version == v.value:
+                    return FluentVersion(version)
+            else:
+                raise RuntimeError(f"The passed version '{version[:-2]}' does not exist."
+                                   f" Available version strings are: "
+                                   f"{[ver.value for ver in FluentVersion]} ")
+
+    def __str__(self):
+        return str(self.value)
 
 
 def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
@@ -71,11 +75,13 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     and the environment variables are updated properly. This supersedes
     the Fluent path set in the environment variable.
     """
-    if isinstance(version, (float, str)):
-        version = FluentVersion.get_version(str(version))
+    global FLUENT_VERSION
+    FLUENT_VERSION = str(FluentVersion(version))
 
-    # global FLUENT_VERSION
-    globals()["FLUENT_VERSION"] = version.value
+
+def get_ansys_version() -> str:
+    """Return the Fluent version."""
+    return FLUENT_VERSION
 
 
 class LaunchModes(Enum):

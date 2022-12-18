@@ -2,22 +2,22 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher
-from ansys.fluent.core.launcher.launcher import FLUENT_VERSION
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 
 
 def test_manual_fluent_version_setting():
     """Test case for setting up the Ansys / Fluent version via program"""
 
-    initial_version_info = FLUENT_VERSION
+    initial_version_info = get_ansys_version()
 
     pyfluent.set_ansys_version("23.1.0")
-    assert FLUENT_VERSION == "23.1.0"
+    assert get_ansys_version() == "23.1.0"
 
     pyfluent.set_ansys_version(22.2)
-    assert FLUENT_VERSION == "22.2.0"
+    assert get_ansys_version() == "22.2.0"
 
     pyfluent.set_ansys_version(version=pyfluent.FluentVersion.version_23R1)
-    assert FLUENT_VERSION == "23.1.0"
+    assert get_ansys_version() == "23.1.0"
 
     # version does not exist
     with pytest.raises(RuntimeError):

@@ -9,6 +9,7 @@ from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentVersion,
     LaunchModes,
+    get_ansys_version,
     launch_fluent,
     set_ansys_version,
     set_fluent_path,
