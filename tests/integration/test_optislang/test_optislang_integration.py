@@ -121,10 +121,10 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
     pyfluent.enable_logging_to_stdout()
 
     # Step 2: Launch fluent session in meshing mode
-    session = pyfluent.launch_fluent(
+    meshing = pyfluent.launch_fluent(
         mode="meshing", precision="double", processor_count=2
     )
-    assert session.health_check_service.is_serving
+    assert meshing.health_check_service.is_serving
     temporary_resource_path = os.path.join(
         pyfluent.EXAMPLES_PATH, "test_generate_read_mesh_resources"
     )
@@ -134,34 +134,34 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
         os.mkdir(temporary_resource_path)
 
     # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if float(session.get_fluent_version()[:-2]) < 23.0:
+    if float(meshing.get_fluent_version()[:-2]) < 23.0:
         # Step 3 Generate mesh from geometry with default workflow settings
-        session.meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-        session.meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
+        meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+        meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
             FileName=mixing_elbow_geometry
         )
-        session.meshing.workflow.TaskObject["Import Geometry"].Execute()
-        session.meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
-        session.meshing.tui.mesh.check_mesh()
+        meshing.workflow.TaskObject["Import Geometry"].Execute()
+        meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+        meshing.tui.mesh.check_mesh()
         gz_path = str(Path(temporary_resource_path) / "default_mesh.msh.gz")
         h5_path = str(Path(temporary_resource_path) / "default_mesh.msh.h5")
-        session.meshing.tui.file.write_mesh(gz_path)
-        session.meshing.tui.file.write_mesh(h5_path)
+        meshing.tui.file.write_mesh(gz_path)
+        meshing.tui.file.write_mesh(h5_path)
         assert (Path(temporary_resource_path) / "default_mesh.msh.gz").exists() == True
         assert (Path(temporary_resource_path) / "default_mesh.msh.h5").exists() == True
 
         # Step 4: use created mesh file - .msh.gz/.msh.h5
-        session.meshing.tui.file.read_mesh(gz_path, "ok")
-        session.meshing.tui.file.read_mesh(h5_path, "ok")
+        meshing.tui.file.read_mesh(gz_path, "ok")
+        meshing.tui.file.read_mesh(h5_path, "ok")
 
         # Step 5: Switch to solution and Write case file
-        session.meshing.tui.switch_to_solution_mode("yes")
-        session.solver.tui.solve.initialize.hyb_initialization()
+        solver = meshing.switch_to_solver()
+        solver.tui.solve.initialize.hyb_initialization()
         gz_path = str(Path(temporary_resource_path) / "default_case.cas.gz")
         h5_path = str(Path(temporary_resource_path) / "default_case.cas.h5")
-        session.solver.tui.file.write_case(gz_path)
-        session.solver.tui.file.write_case(h5_path)
+        solver.tui.file.write_case(gz_path)
+        solver.tui.file.write_case(h5_path)
         assert (Path(temporary_resource_path) / "default_case.cas.gz").exists() == True
         assert (Path(temporary_resource_path) / "default_case.cas.h5").exists() == True
-        session.exit()
+        solver.exit()
         shutil.rmtree(temporary_resource_path, ignore_errors=True)

@@ -666,7 +666,7 @@ def test_temp_type_66():
     assert c4.type == "Temperature"
 
     c6 = q.Quantity(1.0, "F^1")
-    assert c6.type == "Temperature"
+    assert c6.type == "Temperature Difference"
 
     c7 = q.Quantity(1.0, "F^-1")
     assert c7.type == "Temperature Difference"
@@ -686,7 +686,8 @@ def test_temp_difference_67():
     assert td.type == "Temperature Difference"
 
     td_m = td * 2
-    assert td_m.type == "Temperature"
+    assert td_m.unit == "delta_K"
+    assert td_m.type == "Temperature Difference"
 
     t1 = q.Quantity(150.0, "C")
     assert t1.type == "Temperature"
@@ -764,6 +765,47 @@ def test_temp_addition_69():
     t = k + kd
     assert float(t) == 100.0
     assert t.type == "Temperature"
+
+
+def test_quantity_map_70():
+    quantity_map_from_settings_API = {
+        "Mass": 1,
+        "Velocity": 2.5,
+        "Current": 3,
+        "Light": 1,
+        "Epsilon Flux Coefficient": 2,
+    }
+
+    api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
+    assert api_test.value == 10.5
+    assert api_test.unit == "kg^3 m^-1.5 s^-6.5 A^3 cd"
+
+
+def test_quantity_map_71():
+    quantity_map_from_settings_API = {
+        "Mass": 1,
+        "Velocity": 2.5,
+        "Current": 3,
+        "Light": 2,
+        "Epsilon Flux Coefficient": 2,
+    }
+
+    with pytest.raises(ValueError):
+        api_test = q.Quantity(
+            10.5, unit_str="kg m s^-1", quantity_map=quantity_map_from_settings_API
+        )
+
+
+def test_quantity_map_72():
+    quantity_map_from_settings_API = {
+        "Temperature": 1,
+        "Pressure": 1,
+        "Volume": 1,
+    }
+
+    api_test = q.Quantity(10.5, quantity_map=quantity_map_from_settings_API)
+    assert api_test.value == 10.5
+    assert api_test.unit == "K Pa m^3"
 
 
 def testing_dimensions():
@@ -912,15 +954,15 @@ def testing_properties():
     print(f"dimensions = {v.get_dimensions_list()}")
 
 
-if __name__ == "__main__":
-    test_value_unit_1()
-    testing_dimensions()
-    testing_multipliers()
-    testing_to_systems()
-    testing_arithmetic_operators()
-    testing_properties()
-
-    x = q.Quantity(1, "ft")
-    print(
-        f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-    )
+# if __name__ == "__main__":
+#     test_value_unit_1()
+#     testing_dimensions()
+#     testing_multipliers()
+#     testing_to_systems()
+#     testing_arithmetic_operators()
+#     testing_properties()
+#
+#     x = q.Quantity(1, "ft")
+#     print(
+#         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+#     )
