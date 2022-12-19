@@ -653,53 +653,6 @@ def get_fields_request():
         chunkSize=_FieldDataConstants.chunk_size,
     )
 
-
-def merge_pathlines_data(pathlines_data, field):
-    """Merge multiple pathlines for a surface to create a single mesh
-    object."""
-
-    data = {}
-    for surface_id, data_for_surface in pathlines_data.items():
-        if "pathlines-count" in data_for_surface:
-            pathlines_count = data_for_surface["pathlines-count"][0]
-            pathline_count = 0
-            pathline_connectivity = None
-            pathline_positions = None
-            pathline_field = None
-            while pathline_count < pathlines_count:
-                line_id = f"pathline-{pathline_count}-line-data"
-                position_id = f"pathline-{pathline_count}-position-data"
-                field_id = f"pathline-{pathline_count}-field-data"
-
-                pathline_positions = (
-                    data_for_surface[position_id]
-                    if pathline_positions is None
-                    else np.concatenate(
-                        (pathline_positions, data_for_surface[position_id])
-                    )
-                )
-                pathline_connectivity = (
-                    data_for_surface[line_id]
-                    if pathline_connectivity is None
-                    else np.concatenate(
-                        (pathline_connectivity, data_for_surface[line_id])
-                    )
-                )
-                pathline_field = (
-                    data_for_surface[field_id]
-                    if pathline_field is None
-                    else np.concatenate((pathline_field, data_for_surface[field_id]))
-                )
-                pathline_count = pathline_count + 1
-
-            data[surface_id] = {
-                "faces": pathline_connectivity,
-                "vertices": pathline_positions,
-                field: pathline_field,
-            }
-    return data
-
-
 def extract_fields(chunk_iterator):
     """Extracts field data via a server call."""
 
@@ -802,7 +755,10 @@ def extract_fields(chunk_iterator):
             payload_data = fields_data[payload_tag_id] = {}
         surface_data = payload_data.get(surface_id)
         if surface_data:
-            surface_data.update({payload_info.fieldName: field})
+            if payload_info.fieldName in surface_data:
+                surface_data.update({payload_info.fieldName: np.concatenate((surface_data[payload_info.fieldName], field))})
+            else:
+                surface_data.update({payload_info.fieldName: field})
         else:
             payload_data[surface_id] = {payload_info.fieldName: field}
     return fields_data
@@ -1131,4 +1087,4 @@ class FieldData:
         fields = extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
         pathlines_data = next(iter(fields.values()))
-        return merge_pathlines_data(pathlines_data, field_name)
+        return pathlines_data

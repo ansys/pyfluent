@@ -38,7 +38,7 @@ unittest-all-222:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+	@python -m pytest -v -m "not fluent_231 and not fluent_232" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 unittest-all-231:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
@@ -64,8 +64,6 @@ build-doc:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@pip install -r requirements/requirements_doc.txt
 	@xvfb-run make -C doc html
-	@touch doc/_build/html/.nojekyll
-	@echo "$(DOCS_CNAME)" >> doc/_build/html/CNAME
 
 compare-flobject:
 	@python .ci/compare_flobject.py

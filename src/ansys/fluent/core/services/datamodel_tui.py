@@ -256,31 +256,26 @@ class TUIMenu:
         ]
 
     def __getattribute__(self, name):
-        attr = super().__getattribute__(name)
-        if type(attr) == types.MethodType:
-            path = self.path + [name]
-            # if menus are inserted at runtime in Fluent
-            if PyMenu(self.service, path).get_child_names():
-                return TUIMenuGeneric(path, self.service)
-        return attr
+        try:
+            attr = super().__getattribute__(name)
+            if type(attr) == types.MethodType:
+                # some runtime submenus are generated as methods during codegen
+                path = self.path + [name]
+                if PyMenu(self.service, path).get_child_names():
+                    return TUIMenu(path, self.service)
+            return attr
+        except AttributeError as ex:
+            if name in dir(self):
+                # for runtime submenus and commands which are not available during codegen
+                path = self.path + [name]
+                if PyMenu(self.service, path).get_child_names():
+                    return TUIMenu(path, self.service)
+                else:
+                    return TUICommand(path, self.service)
+            else:
+                raise ex
 
-
-class TUIMenuGeneric(TUIMenu):
-    """Generic menu class for when the explicit menu classes aren't
-    available."""
-
-    def __getattribute__(self, name):
-        if name in ["path", "service"]:
-            return super().__getattribute__(name)
-        name = convert_func_name_to_tui_menu(name)
-        path = self.path + [name]
-        if PyMenu(self.service, path).get_child_names():
-            return TUIMenuGeneric(path, self.service)
-        else:
-            return TUICommandGeneric(path, self.service)
-
-
-class TUICommandGeneric(TUIMenu):
+class TUICommand(TUIMenu):
     """Generic command class for when the explicit menu classes aren't
     available."""
 

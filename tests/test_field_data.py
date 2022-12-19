@@ -79,6 +79,11 @@ def test_field_data(new_solver_session) -> None:
         node_value=True,
         boundary_value=True,
     )
+    transaction.add_pathlines_fields_request(
+        surface_ids=[1, hot_inlet_surf_id],
+        field_name="temperature",
+        provide_particle_time_field=True,
+    )
 
     data = transaction.get_fields()
 
@@ -88,7 +93,7 @@ def test_field_data(new_solver_session) -> None:
         ("dataLocation", 0),
         ("boundaryValues", True),
     )  # tuple containing scalar field info
-
+    pathline_tag =  (('type', 'pathlines-field'), ('field', 'temperature'))
     assert len(data) == 2
     assert list(data[surface_data_tag][hot_inlet_surf_id].keys()) == [
         "vertices",
@@ -106,6 +111,13 @@ def test_field_data(new_solver_session) -> None:
         )
         == HOT_INLET_TEMPERATURE
     )
+    assert list(data[pathline_tag][hot_inlet_surf_id].keys()) == [
+        "vertices",
+        "lines",
+        "temperature",
+        "pathlines-count",
+        "particle-time",
+    ]
 
     # multiple surface *names* transaction
     transaction2 = field_data.new_transaction()
