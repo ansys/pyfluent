@@ -203,6 +203,11 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
+      - name: Zip HTML Documentation before upload
+        run: |
+          sudo apt install zip -y
+          zip -r doc.zip doc/_build/html
+
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@v3
         with:

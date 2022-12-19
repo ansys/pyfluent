@@ -27,26 +27,31 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-FLUENT_VERSION = ["22.2"]
-PIM_FLUENT_PRODUCT_VERSION = [FLUENT_VERSION[0].replace(".", "")]
-FLUENT_EXE_PATH = []
+FLUENT_VERSION = "22.2.0"
+_FLUENT_EXE_PATH = ""
 
 
 class FluentVersion(Enum):
     """Contains the standard Ansys Fluent release."""
 
-    version_22R2 = "22.2"
-    version_23R1 = "23.1"
-    version_23R2 = "23.2"
+    version_22R2 = "22.2.0"
+    version_23R1 = "23.1.0"
+    version_23R2 = "23.2.0"
 
-    @staticmethod
-    def get_version(version: str) -> "FluentVersion":
-        """Get the available versions based on the version in string format."""
-        for v in FluentVersion:
-            if version == v.value:
-                return v
-        else:
-            raise RuntimeError(f"The passed version '{version}' does not exist.")
+    @classmethod
+    def _missing_(cls, version):
+        if isinstance(version, (float, str)):
+            version = str(version) + ".0"
+            for v in FluentVersion:
+                if version == v.value:
+                    return FluentVersion(version)
+            else:
+                raise RuntimeError(f"The passed version '{version[:-2]}' does not exist."
+                                   f" Available version strings are: "
+                                   f"{[ver.value for ver in FluentVersion]} ")
+
+    def __str__(self):
+        return str(self.value)
 
 
 def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
@@ -55,7 +60,8 @@ def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
     This supersedes the Fluent path set in the environment variable.
     """
     if Path(fluent_exe_path).exists():
-        FLUENT_EXE_PATH.append(str(fluent_exe_path))
+        global _FLUENT_EXE_PATH
+        _FLUENT_EXE_PATH = (str(fluent_exe_path))
     else:
         raise RuntimeError(
             f"The passed path '{fluent_exe_path}' does not contain a valid Fluent executable file."
@@ -69,11 +75,13 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     and the environment variables are updated properly. This supersedes
     the Fluent path set in the environment variable.
     """
-    if type(version) in [float, str]:
-        version = FluentVersion.get_version(str(version))
-    if version in FluentVersion or str(version) in FluentVersion.value:
-        FLUENT_VERSION[0] = version.value
-        PIM_FLUENT_PRODUCT_VERSION[0] = FLUENT_VERSION[0].replace(".", "")
+    global FLUENT_VERSION
+    FLUENT_VERSION = str(FluentVersion(version))
+
+
+def get_ansys_version() -> str:
+    """Return the Fluent version."""
+    return FLUENT_VERSION
 
 
 class LaunchModes(Enum):
@@ -110,7 +118,7 @@ def get_fluent_path() -> Path:
         path = os.environ["PYFLUENT_FLUENT_ROOT"]
         return Path(path)
     else:
-        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION[0].split("."))]
+        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))[:-1]]
         return Path(path) / "fluent"
 
 
@@ -128,8 +136,8 @@ def _get_fluent_exe_path(**argvals):
         set_ansys_version(product_version)
         return get_exe_path()
 
-    if FLUENT_EXE_PATH:
-        return str(FLUENT_EXE_PATH[0])
+    if _FLUENT_EXE_PATH:
+        return str(_FLUENT_EXE_PATH)
 
     return get_exe_path()
 
@@ -287,7 +295,7 @@ def _get_session_info(
     if mode is None:
         mode = LaunchModes.SOLVER
 
-    if type(mode) == str:
+    if isinstance(mode, str):
         mode = LaunchModes.get_mode(mode)
     new_session = mode.value[1]
     meshing_mode = mode.value[2]
@@ -440,6 +448,7 @@ def launch_fluent(
     py: bool = None,
     cwd: str = None,
     topy: Union[str, list] = None,
+    **kwargs,
 ) -> _BaseSession:
 
     """Launch Fluent locally in server mode or connect to a running Fluent
@@ -448,7 +457,7 @@ def launch_fluent(
     Parameters
     ----------
     product_version : str, optional
-        Version of Fluent to use in the numeric format (such as ``"23.1"``
+        Version of Fluent to use in the numeric format (such as ``"23.1.0"``
         for 2023 R1). The default is ``None``, in which case the active version
         or latest installed version is used.
     version : str, optional
@@ -536,6 +545,10 @@ def launch_fluent(
     machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
+    if "meshing_mode" in kwargs.keys():
+        raise RuntimeError("'meshing_mode' argument is no longer used."
+                           " Please use launch_fluent(mode='meshing') to launch in meshing mode.")
+
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
@@ -594,7 +607,7 @@ def launch_fluent(
                 session_cls=new_session,
                 start_timeout=start_timeout,
                 start_transcript=start_transcript,
-                product_version=PIM_FLUENT_PRODUCT_VERSION[0],
+                product_version="".join(FLUENT_VERSION.split("."))[:-1],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
