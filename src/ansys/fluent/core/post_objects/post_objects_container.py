@@ -28,7 +28,7 @@ class Container:
         )
 
     @property
-    def _type(self):
+    def type(self):
         return "object"
 
     def _init_module(self, obj, mod):
