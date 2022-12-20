@@ -1,6 +1,7 @@
 """Metaclasses used in various explicit classes in PyFluent."""
 from abc import ABCMeta
 from collections.abc import MutableMapping
+from functools import partial
 from pprint import pformat
 
 # pylint: disable=unused-private-member
@@ -37,11 +38,15 @@ class Command:
 
     def __set_name__(self, obj, name):
         if not hasattr(obj, "command"):
-            obj.commands = set()
-        obj.commands.add(name)
+            obj.commands = {}
+        # TODO: Apply the proper implementation of command arguments
+        #  so as to match the implementation of settings
+        # args = {"x": {'type': "int", "is_active": True}}
+        # args = inspect.getargspec(self.command)
+        obj.commands[name] = {}
 
-    def __get__(self, obj, objtype=None):
-        return self.command(obj)
+    def __get__(self, obj, obj_type=None):
+        return partial(self.command, obj)
 
 
 class PyLocalBaseMeta(type):
