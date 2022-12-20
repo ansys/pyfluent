@@ -1,6 +1,7 @@
 """Metaclasses used in various explicit classes in PyFluent."""
 from abc import ABCMeta
 from collections.abc import MutableMapping
+from functools import partial
 from pprint import pformat
 
 # pylint: disable=unused-private-member
@@ -28,6 +29,24 @@ class Attribute:
 
     def __get__(self, obj, objtype=None):
         return self.function(obj)
+
+
+class Command:
+
+    def __init__(self, command):
+        self.command = command
+
+    def __set_name__(self, obj, name):
+        if not hasattr(obj, "command"):
+            obj.commands = {}
+        # TODO: Apply the proper implementation of command arguments
+        #  so as to match the implementation of settings
+        # args = {"x": {'type': "int", "is_active": True}}
+        # args = inspect.getargspec(self.command)
+        obj.commands[name] = {}
+
+    def __get__(self, obj, obj_type=None):
+        return partial(self.command, obj)
 
 
 class PyLocalBaseMeta(type):
@@ -109,7 +128,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 value_annotation = annotations.get("_value")
             else:
                 value_annotation = annotations.get("value")
-            self._type = value_annotation
+            self.type = value_annotation
             reset_on_change = (
                 hasattr(self, "_reset_on_change")
                 and getattr(self, "_reset_on_change")()
@@ -172,6 +191,7 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
         def wrapper(self, parent, api_helper):
             self._parent = parent
             self._api_helper = api_helper(self)
+            self.type = "object"
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -297,6 +317,7 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._name = name
             self._api_helper = api_helper(self)
             self._parent = parent
+            self.type = "object"
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -339,6 +360,7 @@ class PyLocalContainer(MutableMapping):
         self.__object_class = object_class
         self.__collection: dict = {}
         self.__api_helper = api_helper
+        self.type = "named-object"
 
     def __iter__(self):
         return iter(self.__collection)
