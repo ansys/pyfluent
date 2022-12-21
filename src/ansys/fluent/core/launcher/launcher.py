@@ -425,6 +425,18 @@ def _generate_launch_string(
     return launch_string
 
 
+def scm_to_py(topy):
+    if not isinstance(topy, (str, list)):
+        raise TypeError("Journal name should be of str or list type.")
+    launch_string = ""
+    if isinstance(topy, str):
+        topy = [topy]
+    fluent_jou_arg = "".join([f'-i "{journal}" ' for journal in topy])
+    py_jou = "_".join([Path(journal).stem for journal in topy])
+    launch_string += f' {fluent_jou_arg} -command="(api-start-python-journal \\\"\\\"{py_jou}.py\\\"\\\")"'  # noqa: E501
+    return launch_string
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     product_version: str = None,
@@ -572,21 +584,8 @@ def launch_fluent(
             if cwd:
                 kwargs.update(cwd=cwd)
             if topy:
-                if isinstance(topy, str):
-                    journal_name = topy.split(".")[0]
-                    journal_ext = topy.split(".")[1]
-                    launch_string += f' -i {journal_name}.{journal_ext} -command="(api-start-python-journal \\\"\\\"{journal_name}.py\\\"\\\")"'  # noqa: E501
-                if isinstance(topy, list):
-                    all_scm_journal_names = ""
-                    all_py_journal_names = ""
-                    name_list = []
-                    for journals in topy:
-                        journal_name = journals.rsplit(".")[0]
-                        journal_ext = journals.rsplit(".")[1]
-                        name_list.append(journal_name)
-                        all_scm_journal_names += f' -i {journal_name}.{journal_ext}'
-                    all_py_journal_names += '_'.join(name_list)
-                    launch_string += f'{all_scm_journal_names} -command="(api-start-python-journal \\\"\\\"{all_py_journal_names}.py\\\"\\\")"'  # noqa: E501
+                launch_string += scm_to_py(topy)
+
             subprocess.Popen(launch_string, **kwargs)
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
