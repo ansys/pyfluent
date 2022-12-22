@@ -808,6 +808,78 @@ def test_quantity_map_72():
     assert api_test.unit == "K Pa m^3"
 
 
+def test_units_quantity_attribute_73():
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+
+    import_filename = examples.download_file(
+        "elbow.cas.h5", "pyfluent/examples/002-DOE-ML-Mixing-Elbow-Shitanshu-Gohel"
+    )  # noqa: E501
+
+    solver = pyfluent.launch_fluent(mode="solver")
+    solver.tui.file.read_case(import_filename)
+
+    # hot-inlet velocity
+
+    assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.get_attr(
+        "units-quantity") == 'velocity'  # noqa: E501
+
+    real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.value()
+
+    assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.get_attr("value") == real_value
+
+    quantity_map = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.quantity_map()
+    assert quantity_map == {'Velocity': 1.0}
+
+    test = q.Quantity(real_value, quantity_map=quantity_map)
+    assert test.value == real_value
+    assert test.unit == "m s^-1"
+
+    # cold-inlet velocity
+
+    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.get_attr(
+        "units-quantity") == 'velocity'  # noqa: E501
+
+    real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.value()
+
+    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.get_attr("value") == real_value
+
+    quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.quantity_map()
+    assert quantity_map == {'Velocity': 1.0}
+
+    test = q.Quantity(real_value, quantity_map=quantity_map)
+    assert test.value == real_value
+    assert test.unit == "m s^-1"
+
+    # hot-inlet temperature
+
+    assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.get_attr("units-quantity") == 'temperature'  # noqa: E501
+
+    real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.value()
+    assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.get_attr("value") == real_value
+
+    quantity_map = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.quantity_map()
+    assert quantity_map == {'Temperature': 1.0}
+
+    test = q.Quantity(real_value, quantity_map=quantity_map)
+    assert test.value == real_value
+    assert test.unit == "K"
+
+    # cold-inlet temperature
+
+    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.get_attr("units-quantity") == 'temperature'  # noqa: E501
+
+    real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.value()
+    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.get_attr("value") == real_value
+
+    quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.quantity_map()
+    assert quantity_map == {'Temperature': 1.0}
+
+    test = q.Quantity(real_value, quantity_map=quantity_map)
+    assert test.value == real_value
+    assert test.unit == "K"
+
+
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
 
@@ -952,17 +1024,3 @@ def testing_properties():
     print(f"si unit = {v._si_unit}")
     print(f"is dimensionless? = {v.is_dimensionless()}")
     print(f"dimensions = {v.get_dimensions_list()}")
-
-
-# if __name__ == "__main__":
-#     test_value_unit_1()
-#     testing_dimensions()
-#     testing_multipliers()
-#     testing_to_systems()
-#     testing_arithmetic_operators()
-#     testing_properties()
-#
-#     x = q.Quantity(1, "ft")
-#     print(
-#         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-#     )
