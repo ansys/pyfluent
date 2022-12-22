@@ -296,8 +296,7 @@ class Real(SettingsBase[RealType], Numerical):
         """Get the units-quantity of the object."""
         val = self.get_attr("units-quantity", str)
         if isinstance(val, str):
-            val = val.replace("'", '')
-            val = ' '.join(word.capitalize() for word in val.split())
+            val = ' '.join(word.capitalize() for word in val.lstrip("'").split("-"))
         return {val: 1.0} if isinstance(val, str) else val
 
     _state_type = RealType
