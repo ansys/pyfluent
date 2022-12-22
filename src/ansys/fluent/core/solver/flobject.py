@@ -292,11 +292,6 @@ class Real(SettingsBase[RealType], Numerical):
     expression values.
     """
 
-    def value(self):
-        """Get the value of the object."""
-        val = self.get_attr("value", (float, int))
-        return val
-
     def quantity_map(self) -> Dict[str, float]:
         """Get the units-quantity of the object."""
         val = self.get_attr("units-quantity", str)
