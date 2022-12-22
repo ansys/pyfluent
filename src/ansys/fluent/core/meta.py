@@ -2,6 +2,7 @@
 from abc import ABCMeta
 from collections.abc import MutableMapping
 from functools import partial
+import inspect
 from pprint import pformat
 
 # pylint: disable=unused-private-member
@@ -37,16 +38,29 @@ class Command:
         self.command = command
 
     def __set_name__(self, obj, name):
-        if not hasattr(obj, "command"):
+        if not hasattr(obj, "commands"):
             obj.commands = {}
-        # TODO: Apply the proper implementation of command arguments
-        #  so as to match the implementation of settings
-        # args = {"x": {'type': "int", "is_active": True}}
-        # args = inspect.getargspec(self.command)
-        obj.commands[name] = {}
+        args = inspect.signature(self.command)
+        obj.commands[name] = args
 
     def __get__(self, obj, obj_type=None):
         return partial(self.command, obj)
+
+
+class CommandArgs:
+    # TODO: Apply the proper implementation of command arguments
+    #  so as to match the implementation of settings
+
+    def __init__(self, command_arg):
+        self.command_arg = command_arg
+
+    def __set_name__(self, args, name):
+        if not hasattr(args, "command_args"):
+            args.command_args = {}
+        args.command_args[name] = args
+
+    def __get__(self, arg, arg_type=None):
+        return self.command_arg(arg)
 
 
 class PyLocalBaseMeta(type):
