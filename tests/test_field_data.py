@@ -112,13 +112,13 @@ def test_field_data(new_solver_session) -> None:
         )
         == HOT_INLET_TEMPERATURE
     )
-    assert list(data[pathline_tag][hot_inlet_surf_id].keys()) == [
+    assert sorted(list(data[pathline_tag][hot_inlet_surf_id].keys())) == sorted([
         "vertices",
         "lines",
         "temperature",
         "pathlines-count",
         "particle-time",
-    ]
+    ])
 
     # multiple surface *names* transaction
     transaction2 = field_data.new_transaction()
