@@ -34,16 +34,15 @@ class Attribute:
 class Command:
 
     def __init__(self, method):
-        command_object = self
         self.arguments_attrs = {}
         args = inspect.signature(method).parameters
         for arg_name in args:
             self.arguments_attrs[arg_name] = {}
         self.command = type(
             'command', (), {
-                '__call__': lambda _self, **kwargs: method(command_object.obj, **kwargs),
-                "argument": lambda _self, argument_name, attr_name: command_object.arguments_attrs[argument_name][attr_name](command_object.obj),
-                "arguments": lambda _self: list(command_object.arguments_attrs.keys())
+                '__call__': lambda _self, **kwargs: method(self.obj, **kwargs),
+                "argument": lambda _self, argument_name, attr_name: self.arguments_attrs[argument_name][attr_name](self.obj),
+                "arguments": lambda _self: list(self.arguments_attrs.keys())
             }
         )
 
