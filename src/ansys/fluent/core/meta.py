@@ -1,7 +1,6 @@
 """Metaclasses used in various explicit classes in PyFluent."""
 from abc import ABCMeta
 from collections.abc import MutableMapping
-from functools import partial
 import inspect
 from pprint import pformat
 
@@ -34,33 +33,39 @@ class Attribute:
 
 class Command:
 
-    def __init__(self, command):
-        self.command = command
+    def __init__(self, method):
+        command_object = self
+        self.arguments_attrs = {}
+        args = inspect.signature(method).parameters
+        for arg_name in args:
+            self.arguments_attrs[arg_name] = {}
+        self.command = type(
+            'command', (), {
+                '__call__': lambda _self, **kwargs: method(command_object.obj, **kwargs),
+                "argument": lambda _self, argument_name, attr_name: command_object.arguments_attrs[argument_name][attr_name](command_object.obj),
+                "arguments": lambda _self: list(command_object.arguments_attrs.keys())
+            }
+        )
 
     def __set_name__(self, obj, name):
+        self.obj = obj
         if not hasattr(obj, "commands"):
             obj.commands = {}
-        args = inspect.signature(self.command)
-        obj.commands[name] = args
+        obj.commands[name] = {}
 
     def __get__(self, obj, obj_type=None):
-        return partial(self.command, obj)
+        return self.command()
 
 
-class CommandArgs:
-    # TODO: Apply the proper implementation of command arguments
-    #  so as to match the implementation of settings
+def CommandArgs(command_object, argument_name):
+    def wrapper(attribute):
+        if argument_name in command_object.arguments_attrs:
+            command_object.arguments_attrs[argument_name].update({attribute.__name__: attribute})
+        else:
+            command_object.arguments_attrs[argument_name] = {attribute.__name__: attribute}
+        return attribute
 
-    def __init__(self, command_arg):
-        self.command_arg = command_arg
-
-    def __set_name__(self, args, name):
-        if not hasattr(args, "command_args"):
-            args.command_args = {}
-        args.command_args[name] = args
-
-    def __get__(self, arg, arg_type=None):
-        return self.command_arg(arg)
+    return wrapper
 
 
 class PyLocalBaseMeta(type):
