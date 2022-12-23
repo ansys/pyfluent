@@ -93,8 +93,8 @@ def test_field_data(new_solver_session) -> None:
         ("dataLocation", 0),
         ("boundaryValues", True),
     )  # tuple containing scalar field info
-    pathline_tag =  (('type', 'pathlines-field'), ('field', 'temperature'))
-    assert len(data) == 2
+    pathline_tag = (('type', 'pathlines-field'), ('field', 'temperature'))
+    assert len(data) == 3
     assert list(data[surface_data_tag][hot_inlet_surf_id].keys()) == [
         "vertices",
         "centroid",
