@@ -911,9 +911,24 @@ def test_units_quantity_attribute_74():
         "cold-inlet"
     ].ke_spec = "Intensity and Hydraulic Diameter"
     solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity = 0.05
+
+    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity.get_attr("units-quantity") == 'percentage'  # noqa: E501
+
+    real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity()
+    assert real_value == solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity.get_state()
+
+    quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_intensity.quantity_map()
+    assert quantity_map == {'Percentage': 1.0}
+
     solver.setup.boundary_conditions.velocity_inlet[
         "cold-inlet"
     ].turb_hydraulic_diam = "4 [in]"
+
+    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_hydraulic_diam.get_attr("units-quantity") == "length"  # noqa: E501
+
+    # quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].turb_hydraulic_diam.quantity_map()
+    # assert quantity_map == {'Length': 1.0}
+
     if solver.get_fluent_version() == "22.2.0":
         solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t = {
             "option": "constant or expression",
@@ -944,6 +959,14 @@ def test_units_quantity_attribute_74():
         solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t = 313.15
 
     solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio = 4
+
+    assert solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio.get_attr("units-quantity") == ''  # noqa: E501
+
+    real_value = solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio()
+    assert real_value == solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio.get_state()
+
+    # quantity_map = solver.setup.boundary_conditions.pressure_outlet["outlet"].turb_viscosity_ratio.quantity_map()
+    # assert quantity_map == {'': 1.0}
 
     solver.tui.solve.monitors.residual.plot("no")
 
