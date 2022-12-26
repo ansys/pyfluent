@@ -1,0 +1,21 @@
+comment:
+  layout: "diff"
+  behavior: default
+  require_changes: true  # Avoid coverage comment if no files are changed.
+
+coverage:
+  range: 70..100
+  round: down
+  precision: 2
+  status:
+    project:
+      default:
+        target: 80%
+    patch:
+      default:
+        # basic
+        target: 90%
+        if_not_found: success
+        if_ci_failed: error
+        if_no_uploads: error
+        threshold: 4%  # Because some tests are flaky.
