@@ -27,12 +27,12 @@ unittest-dev-222:
 unittest-dev-231:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "dev and not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@python -m pytest -v -m "dev and not fluent_222 and not fluent_232" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 unittest-dev-232:
 	@echo "Running unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "dev and fluent_232 and not fluent_222 and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
+	@python -m pytest -v -m "dev and not fluent_222 and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc
 
 unittest-all-222:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
@@ -44,13 +44,13 @@ unittest-all-231:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "not fluent_222" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+	@python -m pytest -v -m "not fluent_222 and not fluent_232" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 unittest-all-232:
 	@sudo rm -rf /home/ansys/.local/share/ansys_fluent_core/examples/*
 	@echo "Running all unittests"
 	@pip install -r requirements/requirements_tests.txt
-	@python -m pytest -v -m "fluent_232 and not fluent_222 and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
+	@python -m pytest -v -m "not fluent_222 and not fluent_231" --cov=ansys.fluent --cov-report html:cov_html --cov-config=.coveragerc --durations=0
 
 api-codegen:
 	@echo "Running API codegen"
