@@ -252,9 +252,6 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
 
     time.sleep(1)
 
-    if os.path.exists(file_path):
-        os.remove(file_path)
-
     assert returned
 
 
@@ -297,8 +294,6 @@ def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLE
     time.sleep(1)
 
     assert returned
-    if os.path.exists(file_path):
-        os.remove(file_path)
 
 
 @pytest.mark.fluent_231
