@@ -452,13 +452,8 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - uses: codecov/codecov-action@v3
-        name: Upload coverage to Codecov"
-        with:
-          root_dir: ${{ github.workspace }}
-          name: ubuntu-v22.2.0-local.xml
-          flags: ubuntu,local,v22.2.0
-
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   release:
     name: Release
