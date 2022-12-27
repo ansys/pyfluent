@@ -250,6 +250,8 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
     with open(file_path) as f:
         returned = f.readlines()
 
+    time.sleep(1)
+
     if os.path.exists(file_path):
         os.remove(file_path)
 
@@ -291,6 +293,8 @@ def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLE
         returned = f.readlines()
 
     session.exit()
+
+    time.sleep(1)
 
     assert returned
     if os.path.exists(file_path):
