@@ -446,9 +446,7 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Unit Testing
-        run: |
-          make unittest-dev-${{ matrix.version }} \
-            --cov=ansys.fluent.core --cov-report=xml:ubuntu-v22.2.0-local.xml --cov-report=cov_html
+        run: make unittest-dev-${{ matrix.version }}
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
