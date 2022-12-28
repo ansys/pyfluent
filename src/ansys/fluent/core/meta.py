@@ -1,7 +1,7 @@
 """Metaclasses used in various explicit classes in PyFluent."""
 from abc import ABCMeta
 from collections.abc import MutableMapping
-from functools import partial
+import inspect
 from pprint import pformat
 
 # pylint: disable=unused-private-member
@@ -33,20 +33,38 @@ class Attribute:
 
 class Command:
 
-    def __init__(self, command):
-        self.command = command
+    def __init__(self, method):
+        self.arguments_attrs = {}
+        args = inspect.signature(method).parameters
+        for arg_name in args:
+            self.arguments_attrs[arg_name] = {}
+        self.command = type(
+            'command', (), {
+                '__call__': lambda _self, **kwargs: method(self.obj, **kwargs),
+                "argument": lambda _self, argument_name, attr_name: self.arguments_attrs[argument_name][attr_name](self.obj),
+                "arguments": lambda _self: list(self.arguments_attrs.keys())
+            }
+        )
 
     def __set_name__(self, obj, name):
-        if not hasattr(obj, "command"):
+        self.obj = obj
+        if not hasattr(obj, "commands"):
             obj.commands = {}
-        # TODO: Apply the proper implementation of command arguments
-        #  so as to match the implementation of settings
-        # args = {"x": {'type': "int", "is_active": True}}
-        # args = inspect.getargspec(self.command)
         obj.commands[name] = {}
 
     def __get__(self, obj, obj_type=None):
-        return partial(self.command, obj)
+        return self.command()
+
+
+def CommandArgs(command_object, argument_name):
+    def wrapper(attribute):
+        if argument_name in command_object.arguments_attrs:
+            command_object.arguments_attrs[argument_name].update({attribute.__name__: attribute})
+        else:
+            command_object.arguments_attrs[argument_name] = {attribute.__name__: attribute}
+        return attribute
+
+    return wrapper
 
 
 class PyLocalBaseMeta(type):
