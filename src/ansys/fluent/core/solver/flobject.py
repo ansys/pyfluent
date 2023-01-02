@@ -736,14 +736,12 @@ class Command(Action):
 
     def _get_value_quantity_map(self, **kwds):
         """Value and quantity_map of units-quantity."""
-        newkwds = _get_new_keywords(self, kwds)
-        results_list = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+        results_list = self(**kwds)
         unit_quantity_map = {}
         for quantity in range(len(results_list)):
             for unit_quantity, real in results_list[quantity].items():
                 quantity = unit_quantity
-                quantity = quantity.replace("_", ' ')
-                quantity = ' '.join(word.capitalize() for word in quantity.split())
+                quantity = ' '.join(word.capitalize() for word in quantity.split("_"))
                 value = real[0]
                 unit_quantity_map[quantity] = 1.0
         return [value, unit_quantity_map]
