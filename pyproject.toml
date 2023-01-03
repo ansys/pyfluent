@@ -7,7 +7,7 @@ requires = [
 
 
 [tool.pytest.ini_options]
-tespaths = ["tests"]
+testpaths = ["tests"]
 addopts = "--ignore-glob=tests/test_pro/* --ignore-glob=tests/test_datamodel_server/*"
 markers = [
     "integration: Short-running tests which read a simple input file and check the exposure and values of various setting objects",
@@ -18,9 +18,9 @@ markers = [
     "optislang: Test Optislang integration scenarios",
     "dev: Tests that must be successful before PR merge, includes unmarked tests",
     "nightly: Tests that run under nightly CI",
-    "fluent_222: Tests that run only with Fluent 22.2",
-    "fluent_231: Tests that run only with Fluent 23.1",
-    "fluent_232: Tests that run only with Fluent 23.2",
+    "fluent_222: Tests that run with Fluent 22.2",
+    "fluent_231: Tests that run with Fluent 23.1",
+    "fluent_232: Tests that run with Fluent 23.2",
 ]
 
 
