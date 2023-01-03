@@ -45,14 +45,15 @@ class Command:
         self.command_cls = type(
             'command', (), {
                 '__init__': init,
-                '__call__': lambda _self, **kwargs: method(self.obj, **kwargs),
-                "argument": lambda _self, argument_name, attr_name: self.arguments_attrs[argument_name][attr_name](self.obj),
+                '__call__': lambda _self, **kwargs: method(_self.obj, **kwargs),
+                "argument_attributes": lambda _self, argument_name, attr_name: self.arguments_attrs[
+                    argument_name][attr_name](_self.obj),
                 "arguments": lambda _self: list(self.arguments_attrs.keys()),
-                "_parent": lambda _self: _self.obj
             }
         )
 
     def __set_name__(self, obj, name):
+        self.obj = obj
         if not hasattr(obj, "commands"):
             obj.commands = {}
         obj.commands[name] = {}
@@ -114,7 +115,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 for attr in attrs:
                     if attr == "range":
                         if self.range and (
-                            value < self.range[0] or value > self.range[1]
+                                value < self.range[0] or value > self.range[1]
                         ):
                             raise ValueError(
                                 f"Value {value}, is not within valid range"
@@ -123,7 +124,7 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                     elif attr == "allowed_values":
                         if isinstance(value, list):
                             if not all(
-                                v is None or v in self.allowed_values for v in value
+                                    v is None or v in self.allowed_values for v in value
                             ):
                                 raise ValueError(
                                     f"Not all values in {value}, are in the "
@@ -153,8 +154,8 @@ class PyLocalPropertyMeta(PyLocalBaseMeta):
                 value_annotation = annotations.get("value")
             self.type = value_annotation
             reset_on_change = (
-                hasattr(self, "_reset_on_change")
-                and getattr(self, "_reset_on_change")()
+                    hasattr(self, "_reset_on_change")
+                    and getattr(self, "_reset_on_change")()
             )
             if reset_on_change:
                 for obj in reset_on_change:
@@ -215,16 +216,17 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             self._parent = parent
             self._api_helper = api_helper(self)
             self.type = "object"
-            commands = getattr(self.__class__, "commands")
-            for cmd in commands:
-                cmd_class = self.__class__.__dict__[cmd]
-                cmd_class.command = getattr(cmd_class, "command_cls")(self)
+            commands = getattr(self.__class__, "commands", None)
+            if commands:
+                for cmd in commands:
+                    cmd_class = self.__class__.__dict__[cmd]
+                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
-                        "PyLocalPropertyMeta",
-                        "PyLocalObjectMeta",
+                            "PyLocalPropertyMeta",
+                            "PyLocalObjectMeta",
                     ):
                         setattr(
                             self,
@@ -346,11 +348,17 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._parent = parent
             self.type = "object"
 
+            commands = getattr(self.__class__, "commands", None)
+            if commands:
+                for cmd in commands:
+                    cmd_class = self.__class__.__dict__[cmd]
+                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
+
             def update(clss):
                 for name, cls in clss.__dict__.items():
                     if cls.__class__.__name__ in (
-                        "PyLocalPropertyMeta",
-                        "PyLocalObjectMeta",
+                            "PyLocalPropertyMeta",
+                            "PyLocalObjectMeta",
                     ):
                         setattr(
                             self,
