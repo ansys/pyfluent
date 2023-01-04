@@ -230,8 +230,8 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 
 
 @pytest.mark.dev
-@pytest.mark.fluent_231
-def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+@pytest.mark.fluent_232
+def test_journal_creation(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     session = new_mesh_session
 
     fd, file_path = tempfile.mkstemp(
@@ -250,8 +250,7 @@ def test_execute_tui_commands(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH)
     with open(file_path) as f:
         returned = f.readlines()
 
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    time.sleep(1)
 
     assert returned
 
@@ -273,7 +272,7 @@ def test_get_fluent_mode(new_mesh_session):
 
 
 @pytest.mark.dev
-@pytest.mark.fluent_231
+@pytest.mark.fluent_232
 def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.txt",
@@ -292,9 +291,9 @@ def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLE
 
     session.exit()
 
+    time.sleep(1)
+
     assert returned
-    if os.path.exists(file_path):
-        os.remove(file_path)
 
 
 @pytest.mark.fluent_231

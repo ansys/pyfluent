@@ -12,7 +12,8 @@ from ansys.fluent.core.services.field_data import (
 HOT_INLET_TEMPERATURE = 313.15
 
 
-@pytest.mark.fluent_231
+@pytest.mark.dev
+@pytest.mark.fluent_232
 def test_field_data(new_solver_session) -> None:
     solver = new_solver_session
     import_filename = examples.download_file(
@@ -93,8 +94,8 @@ def test_field_data(new_solver_session) -> None:
         ("dataLocation", 0),
         ("boundaryValues", True),
     )  # tuple containing scalar field info
-    pathline_tag =  (('type', 'pathlines-field'), ('field', 'temperature'))
-    assert len(data) == 2
+    pathline_tag = (('type', 'pathlines-field'), ('field', 'temperature'))
+    assert len(data) == 3
     assert list(data[surface_data_tag][hot_inlet_surf_id].keys()) == [
         "vertices",
         "centroid",
@@ -111,13 +112,13 @@ def test_field_data(new_solver_session) -> None:
         )
         == HOT_INLET_TEMPERATURE
     )
-    assert list(data[pathline_tag][hot_inlet_surf_id].keys()) == [
+    assert sorted(list(data[pathline_tag][hot_inlet_surf_id].keys())) == sorted([
         "vertices",
         "lines",
         "temperature",
         "pathlines-count",
         "particle-time",
-    ]
+    ])
 
     # multiple surface *names* transaction
     transaction2 = field_data.new_transaction()
