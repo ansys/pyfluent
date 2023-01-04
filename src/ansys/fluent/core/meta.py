@@ -38,11 +38,17 @@ class Command:
         args = inspect.signature(method).parameters
         for arg_name in args:
             self.arguments_attrs[arg_name] = {}
-        self.command = type(
+
+        def _init(_self, obj):
+            _self.obj = obj
+
+        self.command_cls = type(
             'command', (), {
-                '__call__': lambda _self, **kwargs: method(self.obj, **kwargs),
-                "argument": lambda _self, argument_name, attr_name: self.arguments_attrs[argument_name][attr_name](self.obj),
-                "arguments": lambda _self: list(self.arguments_attrs.keys())
+                '__init__': _init,
+                '__call__': lambda _self, **kwargs: method(_self.obj, **kwargs),
+                "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
+                    argument_name][attr_name](_self.obj),
+                "arguments": lambda _self: list(self.arguments_attrs.keys()),
             }
         )
 
@@ -53,7 +59,7 @@ class Command:
         obj.commands[name] = {}
 
     def __get__(self, obj, obj_type=None):
-        return self.command()
+        return self.command
 
 
 def CommandArgs(command_object, argument_name):
@@ -210,6 +216,11 @@ class PyLocalObjectMeta(PyLocalBaseMeta):
             self._parent = parent
             self._api_helper = api_helper(self)
             self.type = "object"
+            commands = getattr(self.__class__, "commands", None)
+            if commands:
+                for cmd in commands:
+                    cmd_class = self.__class__.__dict__[cmd]
+                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
@@ -336,6 +347,12 @@ class PyLocalNamedObjectMeta(PyLocalObjectMeta):
             self._api_helper = api_helper(self)
             self._parent = parent
             self.type = "object"
+
+            commands = getattr(self.__class__, "commands", None)
+            if commands:
+                for cmd in commands:
+                    cmd_class = self.__class__.__dict__[cmd]
+                    cmd_class.command = getattr(cmd_class, "command_cls")(self)
 
             def update(clss):
                 for name, cls in clss.__dict__.items():
