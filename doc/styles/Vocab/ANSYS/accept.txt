@@ -27,3 +27,5 @@ sbatch
 CommandArguments
 pathlines
 Pathlines
+rp
+config
