@@ -11,7 +11,7 @@ def compare_flobject():
         f"docker container create --name {container_name} {image_name}",
         shell=is_linux,
     )
-    xml_source = f"/ansys_inc/v231/fluent/fluent23.2.0/cortex/pylib/flapi/flobject.py"
+    xml_source = f"/ansys_inc/v232/fluent/fluent23.2.0/cortex/pylib/flapi/flobject.py"
     subprocess.run(
         f"docker cp {container_name}:{xml_source} fluent_flobject.py", shell=is_linux
     )
