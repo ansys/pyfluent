@@ -113,14 +113,12 @@ jobs:
           FLUENT_IMAGE_TAG: v22.2.0
 
       - name: Upload 22.2 Coverage Results to Codecov
-        if: matrix.image-tag == 'v22.2.0'
         uses: codecov/codecov-action@v3
         with:
           root_dir: ${{ github.workspace }}
           name: cov_xml.xml
 
       - name: Upload 22.2 Coverage Artifacts
-        if: matrix.image-tag == 'v22.2.0'
         uses: actions/upload-artifact@v3
         with:
           name: cov_xml.xml
