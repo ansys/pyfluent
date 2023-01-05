@@ -5,7 +5,6 @@ import warnings
 
 from ansys.fluent.core.meta import (
     Attribute,
-    Command,
     PyLocalNamedObjectMetaAbstract,
     PyLocalObjectMeta,
     PyLocalPropertyMeta,
@@ -35,9 +34,8 @@ class BasePostObjectDefn:
 class GraphicsDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
     """Abstract base class for graphics objects."""
 
-    @Command
     @abstractmethod
-    def display(self, plotter_id: Optional[str] = None):
+    def display(self, window_id: Optional[str] = None):
         """Display graphics.
 
         Parameters
@@ -52,7 +50,7 @@ class PlotDefn(BasePostObjectDefn, metaclass=PyLocalNamedObjectMetaAbstract):
     """Abstract base class for plot objects."""
 
     @abstractmethod
-    def plot(self, plotter_id: Optional[str] = None):
+    def plot(self, window_id: Optional[str] = None):
         """Draw plot.
 
         Parameters

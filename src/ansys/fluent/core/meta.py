@@ -35,8 +35,8 @@ class Command:
 
     def __init__(self, method):
         self.arguments_attrs = {}
-        args = inspect.signature(method).parameters
-        for arg_name in args:
+        cmd_args = inspect.signature(method).parameters
+        for arg_name in cmd_args:
             self.arguments_attrs[arg_name] = {}
 
         def _init(_self, obj):
@@ -45,7 +45,7 @@ class Command:
         self.command_cls = type(
             'command', (), {
                 '__init__': _init,
-                '__call__': lambda _self, **kwargs: method(_self.obj, **kwargs),
+                '__call__': lambda _self, *args, **kwargs: method(_self.obj, *args, **kwargs),
                 "argument_attribute": lambda _self, argument_name, attr_name: self.arguments_attrs[
                     argument_name][attr_name](_self.obj),
                 "arguments": lambda _self: list(self.arguments_attrs.keys()),
