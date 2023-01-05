@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Define models &#8212; PyFluent</title>
     
@@ -449,7 +449,7 @@ to define models.</p>
 <p>This example shows a comparison between the TUI command and the
 Python code for enabling and disabling the energy model.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/energy</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/energy</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -466,9 +466,9 @@ Python code for enabling and disabling the energy model.</p>
 <p>This example shows a comparison between the TUI command and the
 Python code for enabling and disabling various viscous models.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/viscous/laminar</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/define/models/viscous/kw-sst</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/define/models/viscous/ke-standard</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/viscous/laminar</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/define/models/viscous/kw-sst</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/define/models/viscous/ke-standard</span><span class="w"> </span><span class="nv">yes</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -483,8 +483,8 @@ Python code for enabling and disabling various viscous models.</p>
 <p>This example shows a comparison between the TUI command and the
 Python code for enabling and disabling various radiation models.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/radiation/s2s</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/define/models/radiation/p1</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/radiation/s2s</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/define/models/radiation/p1</span><span class="w"> </span><span class="nv">yes</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -498,10 +498,10 @@ Python code for enabling and disabling various radiation models.</p>
 <p>This example shows a comparison between the TUI command and the
 Python code for defining different multiphase models.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">vof</span><span class="w"></span>
-<span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">eulerian</span><span class="w"></span>
-<span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">mixture</span><span class="w"></span>
-<span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">wetsteam</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">vof</span>
+<span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">eulerian</span>
+<span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">mixture</span>
+<span class="nv">/define/models/multiphase/model</span><span class="w"> </span><span class="nv">wetsteam</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>

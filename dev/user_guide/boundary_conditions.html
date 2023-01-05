@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Define boundary conditions &#8212; PyFluent</title>
     
@@ -450,11 +450,11 @@ to define boundary conditions.</p>
 <p>This example shows a comparison between the TUI command and the
 Python code for defining velocity boundary conditions at inlets.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">vmag</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mf">0.4</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
-<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">ke-spec</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
-<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="p">()</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">turb-intensity</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
-<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">turb-hydraulic-diam</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
-<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">temperature</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mf">293.15</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">vmag</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mf">0.4</span><span class="w"> </span><span class="nb">quit</span>
+<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">ke-spec</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nb">quit</span>
+<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="p">()</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">turb-intensity</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="nb">quit</span>
+<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">turb-hydraulic-diam</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="nb">quit</span>
+<span class="nv">/define/boundary-counditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">temperature</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mf">293.15</span><span class="w"> </span><span class="nb">quit</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -485,7 +485,7 @@ Python code for defining velocity boundary conditions at inlets.</p>
 <p>This example shows a comparison between the TUI command and the Python code for
 copying boundary conditions to other zones.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/copy-bc</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="nv">hot-inlet</span><span class="w"> </span><span class="p">()</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/copy-bc</span><span class="w"> </span><span class="nv">cold-inlet</span><span class="w"> </span><span class="nv">hot-inlet</span><span class="w"> </span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -498,7 +498,7 @@ copying boundary conditions to other zones.</p>
 <p>This example shows a comparison between the TUI command and the Python code for
 printing to the Fluent console the types and IDs of all zones.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/list-zones</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/list-zones</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -511,7 +511,7 @@ printing to the Fluent console the types and IDs of all zones.</p>
 <p>This example shows a comparison between the TUI command and the Python code for
 modifying cell zone conditions.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/fluid</span><span class="w"> </span><span class="nv">elbow-fluid</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/fluid</span><span class="w"> </span><span class="nv">elbow-fluid</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">no</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>

@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Using TUI commands &#8212; PyFluent</title>
     
@@ -429,26 +429,26 @@ TUI usage.</p>
 <h2>TUI command construction<a class="headerlink" href="#tui-command-construction" title="Permalink to this heading">#</a></h2>
 <p>Assume that you are in the solution mode and type the following in the Fluent
 console to set velocity inlet properties:</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary_conditions/set/velocity-inlet</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary_conditions/set/velocity-inlet</span>
 </pre></div>
 </div>
 <p>This command instigates a sequence of prompts in the console. Assume that you respond
 to each prompt in turn as follows:</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">velocity-inlet-5</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">velocity-inlet-5</span>
 
-<span class="p">()</span><span class="w"></span>
+<span class="p">()</span>
 
-<span class="nv">temperature</span><span class="w"></span>
+<span class="nv">temperature</span>
 
-<span class="nv">no</span><span class="w"></span>
+<span class="nv">no</span>
 
-<span class="mf">293.15</span><span class="w"></span>
+<span class="mf">293.15</span>
 
-<span class="nb">quit</span><span class="w"></span>
+<span class="nb">quit</span>
 </pre></div>
 </div>
 <p>The following code yields the same result but specifies all arguments in one call:</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">velocity-inlet-5</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">temperature</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mf">293.15</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/boundary-conditions/set/velocity-inlet</span><span class="w"> </span><span class="nv">velocity-inlet-5</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nv">temperature</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="mf">293.15</span><span class="w"> </span><span class="nb">quit</span>
 </pre></div>
 </div>
 <p>You can see how using the interactive TUI provides a reliable approach for
@@ -467,11 +467,11 @@ code launches Fluent and makes the call to set velocity inlet properties:</p>
 </pre></div>
 </div>
 <p>Here is another Fluent console interaction:</p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/units</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/units</span>
 
-<span class="nv">pressure</span><span class="w"></span>
+<span class="nv">pressure</span>
 
-<span class="s">&quot;Pa&quot;</span><span class="w"></span>
+<span class="s">&quot;Pa&quot;</span>
 </pre></div>
 </div>
 <p>The corresponding Python call is:</p>

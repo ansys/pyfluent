@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Launch Fluent locally &#8212; PyFluent</title>
     
@@ -536,16 +536,16 @@ scheduler using the <code class="docutils literal notranslate"><span class="pre"
 <span class="c1">#</span>
 <span class="c1"># Change to the directory where the Slurm job was submitted</span>
 <span class="c1">#</span>
-<span class="nb">cd</span> <span class="nv">$SLURM_SUBMIT_DIR</span>
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$SLURM_SUBMIT_DIR</span>
 <span class="c1">#</span>
 <span class="c1"># Activate your favorite Python environment</span>
 <span class="c1">#</span>
-<span class="nb">export</span> <span class="nv">AWP_ROOT231</span><span class="o">=</span>/apps/ansys_inc/v231
-. ./venv/bin/activate
+<span class="nb">export</span><span class="w"> </span><span class="nv">AWP_ROOT231</span><span class="o">=</span>/apps/ansys_inc/v231
+.<span class="w"> </span>./venv/bin/activate
 <span class="c1">#</span>
 <span class="c1"># Run a PyFluent script</span>
 <span class="c1">#</span>
-python run.py
+python<span class="w"> </span>run.py
 </pre></div>
 </div>
 <p>Here are a few notes about this example:</p>

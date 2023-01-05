@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Meshing &#8212; PyFluent</title>
     
@@ -8975,27 +8975,27 @@ Meshing workflows and meshing TUI commands are available.</p>
 session-based PyFluent scripts. Examples follow of a Fluent journal and the
 equivalent PyFluent script.</p>
 <p><strong>Fluent journal</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.InitializeWorkflow(WorkflowType=r&#39;Watertight Geometry&#39;)&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Import Geometry&#39;].Arguments.set_state({r&#39;FileName&#39;: r&#39;file.pmdb&#39;,r&#39;LengthUnit&#39;: r&#39;in&#39;,})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Import Geometry&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Local Sizing&#39;].AddChildToTask()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Local Sizing&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Surface Mesh&#39;].Arguments.set_state({r&#39;CFDSurfaceMeshControls&#39;: {r&#39;MaxSize&#39;: 0.3,},})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Surface Mesh&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].UpdateChildTasks(SetupTypeChanged=False)&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].Arguments.set_state({r&#39;SetupType&#39;: r&#39;The geometry consists of only fluid regions with no voids&#39;,})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].UpdateChildTasks(SetupTypeChanged=True)&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Update Boundaries&#39;].Arguments.set_state({r&#39;BoundaryLabelList&#39;: [r&#39;wall-inlet&#39;],r&#39;BoundaryLabelTypeList&#39;: [r&#39;wall&#39;],r&#39;OldBoundaryLabelList&#39;: [r&#39;wall-inlet&#39;],r&#39;OldBoundaryLabelTypeList&#39;: [r&#39;velocity-inlet&#39;],})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Update Boundaries&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Update Regions&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Boundary Layers&#39;].AddChildToTask()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Boundary Layers&#39;].InsertCompoundChildTask()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;smooth-transition_1&#39;].Arguments.set_state({r&#39;BLControlName&#39;: r&#39;smooth-transition_1&#39;,})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Boundary Layers&#39;].Arguments.set_state({})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;smooth-transition_1&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Volume Mesh&#39;].Arguments.set_state({r&#39;VolumeFill&#39;: r&#39;poly-hexcore&#39;,r&#39;VolumeFillControls&#39;: {r&#39;HexMaxCellLength&#39;: 0.3,},})&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Volume Mesh&#39;].Execute()&quot;</span><span class="p">)</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.InitializeWorkflow(WorkflowType=r&#39;Watertight Geometry&#39;)&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Import Geometry&#39;].Arguments.set_state({r&#39;FileName&#39;: r&#39;file.pmdb&#39;,r&#39;LengthUnit&#39;: r&#39;in&#39;,})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Import Geometry&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Local Sizing&#39;].AddChildToTask()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Local Sizing&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Surface Mesh&#39;].Arguments.set_state({r&#39;CFDSurfaceMeshControls&#39;: {r&#39;MaxSize&#39;: 0.3,},})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Surface Mesh&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].UpdateChildTasks(SetupTypeChanged=False)&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].Arguments.set_state({r&#39;SetupType&#39;: r&#39;The geometry consists of only fluid regions with no voids&#39;,})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].UpdateChildTasks(SetupTypeChanged=True)&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Describe Geometry&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Update Boundaries&#39;].Arguments.set_state({r&#39;BoundaryLabelList&#39;: [r&#39;wall-inlet&#39;],r&#39;BoundaryLabelTypeList&#39;: [r&#39;wall&#39;],r&#39;OldBoundaryLabelList&#39;: [r&#39;wall-inlet&#39;],r&#39;OldBoundaryLabelTypeList&#39;: [r&#39;velocity-inlet&#39;],})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Update Boundaries&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Update Regions&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Boundary Layers&#39;].AddChildToTask()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Boundary Layers&#39;].InsertCompoundChildTask()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;smooth-transition_1&#39;].Arguments.set_state({r&#39;BLControlName&#39;: r&#39;smooth-transition_1&#39;,})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Add Boundary Layers&#39;].Arguments.set_state({})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;smooth-transition_1&#39;].Execute()&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Volume Mesh&#39;].Arguments.set_state({r&#39;VolumeFill&#39;: r&#39;poly-hexcore&#39;,r&#39;VolumeFillControls&#39;: {r&#39;HexMaxCellLength&#39;: 0.3,},})&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">%py-exec</span><span class="w"> </span><span class="s">&quot;workflow.TaskObject[&#39;Generate the Volume Mesh&#39;].Execute()&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>PyFluent script</strong></p>

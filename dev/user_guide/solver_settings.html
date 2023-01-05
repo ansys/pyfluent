@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Specify solver settings &#8212; PyFluent</title>
     
@@ -419,8 +419,8 @@ specify solver settings.</p>
 <p>This example shows a comparison between the TUI commands and the Python code for
 enabling and disabling the steady and unsteady (transient) solution model.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/steady</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/define/models/unsteady_1st_order</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/steady</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/define/models/unsteady_1st_order</span><span class="w"> </span><span class="nv">yes</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -438,9 +438,9 @@ enabling and disabling the steady and unsteady (transient) solution model.</p>
 <p>This example shows a comparison between the TUI commands and the Python code for
 enabling and disabling the pressure-based and density-based solver models.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/solver/density-based-explicit</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/define/models/solver/density-based-implicit</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/define/models/solver/pressure-based</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/models/solver/density-based-explicit</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/define/models/solver/density-based-implicit</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/define/models/solver/pressure-based</span><span class="w"> </span><span class="nv">yes</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -455,7 +455,7 @@ enabling and disabling the pressure-based and density-based solver models.</p>
 <p>This example shows a comparison between the TUI command and the Python code for
 setting the gravitational acceleration.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/operating-conditions/gravity</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">-9.81</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/define/operating-conditions/gravity</span><span class="w"> </span><span class="nv">yes</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mf">-9.81</span><span class="w"> </span><span class="mi">0</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>

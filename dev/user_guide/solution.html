@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Apply solution settings &#8212; PyFluent</title>
     
@@ -440,9 +440,9 @@ selecting the pressure velocity coupling scheme and setting the gradient
 options. Five solution methods (Index-Model) are available: 20-SIMPLE,
 21-SIMPLEC, 22-PISO, 24-Coupled, and 25-Fractional Step.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/set/p-v-coupling</span><span class="w"> </span><span class="mi">24</span><span class="w"></span>
-<span class="nv">/solve/set/gradient-scheme</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
-<span class="nv">/solve/set/gradient-scheme</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/set/p-v-coupling</span><span class="w"> </span><span class="mi">24</span>
+<span class="nv">/solve/set/gradient-scheme</span><span class="w"> </span><span class="nv">yes</span>
+<span class="nv">/solve/set/gradient-scheme</span><span class="w"> </span><span class="nv">no</span><span class="w"> </span><span class="nv">yes</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -461,7 +461,7 @@ options. Five solution methods (Index-Model) are available: 20-SIMPLE,
 <p>This example shows a comparison between the TUI command and the Python code for
 selecting the pressure velocity controls.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/set/p-v-controls</span><span class="w"> </span><span class="mf">0.3</span><span class="w"> </span><span class="mf">0.4</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/set/p-v-controls</span><span class="w"> </span><span class="mf">0.3</span><span class="w"> </span><span class="mf">0.4</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -474,7 +474,7 @@ selecting the pressure velocity controls.</p>
 <p>This example shows a comparison between the TUI command and the Python code for
 creating a report definition.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/report-definitions</span><span class="w"> </span><span class="nv">outlet-temp-avg</span><span class="w"> </span><span class="nv">surface-massavg</span><span class="w"> </span><span class="nv">field</span><span class="w"> </span><span class="nv">temperature</span><span class="w"> </span><span class="nv">surface-names</span><span class="w"> </span><span class="nv">outlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nb">quit</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/report-definitions</span><span class="w"> </span><span class="nv">outlet-temp-avg</span><span class="w"> </span><span class="nv">surface-massavg</span><span class="w"> </span><span class="nv">field</span><span class="w"> </span><span class="nv">temperature</span><span class="w"> </span><span class="nv">surface-names</span><span class="w"> </span><span class="nv">outlet</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="nb">quit</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
@@ -496,8 +496,8 @@ creating a report definition.</p>
 <p>This example shows a comparison between the TUI command and the Python code for
 initializing and performing a specified number of iterations.</p>
 <p><strong>TUI command</strong></p>
-<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/initialize/hyb-initialization</span><span class="w"></span>
-<span class="nv">/solve/iterate</span><span class="w"> </span><span class="mi">100</span><span class="w"></span>
+<div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/initialize/hyb-initialization</span>
+<span class="nv">/solve/iterate</span><span class="w"> </span><span class="mi">100</span>
 </pre></div>
 </div>
 <p><strong>Python code</strong></p>
