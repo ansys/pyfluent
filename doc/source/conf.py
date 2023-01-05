@@ -163,6 +163,13 @@ html_theme_options = {
     "additional_breadcrumbs": [
         ("PyAnsys", "https://docs.pyansys.com/"),
     ],
+    "icon_links": [
+        {
+            "name": "Support",
+            "url": "https://github.com/pyansys/pyfluent/discussions",
+            "icon": "fa fa-comment fa-fw",
+        },
+    ],
     "switcher": {
         "json_url": f"{cname}/release/versions.json",
         "version_match": get_version_match(__version__),
