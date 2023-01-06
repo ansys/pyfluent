@@ -168,7 +168,8 @@ def to_string(x):
     elif isa(x, str):
         return repr(x)
     elif isa(x, list):
-        return "(" + " ".join(map(to_string, x)) + ")"
+        sep = " . " if len(x) == 2 else " "
+        return "(" + sep.join(map(to_string, x)) + ")"
     elif isa(x, complex):
         return str(x).replace("j", "i")
     else:

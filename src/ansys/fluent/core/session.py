@@ -12,6 +12,8 @@ from ansys.fluent.core.session_shared import (  # noqa: F401
 )
 from ansys.fluent.core.utils.logging import LOG
 
+from .rpvars import RPVars
+
 try:
     from ansys.fluent.core.solver.settings import root
 except Exception:
@@ -69,6 +71,7 @@ class _BaseSession:
     def __init__(self, fluent_connection: _FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
+        self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._uploader = None
         self._preferences = None
         self._solverworkflow = None
