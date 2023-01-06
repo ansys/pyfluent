@@ -2,6 +2,7 @@
 import difflib
 from enum import IntEnum
 from functools import partial, reduce
+import pydoc
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import grpc
@@ -11,6 +12,13 @@ from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
+
+
+def override_help_text(func, func_to_be_wrapped):
+    func.__doc__ = "\n" + pydoc.text.document(func_to_be_wrapped)
+    func.__name__ = func_to_be_wrapped.__qualname__
+    return func
+
 
 # this can be switched to False in scenarios where the field_data request inputs are
 # fed by results of field_info queries, which might be true in GUI code.
@@ -320,25 +328,25 @@ class FieldTransaction:
             **dict(field_name=self._allowed_scalar_field_names),
             **surface_args,
         }
-        self.add_scalar_fields_request = _FieldMethod(
+        self.add_scalar_fields_request = override_help_text(_FieldMethod(
             field_data_accessor=self.add_scalar_fields_request,
             args_allowed_values_accessors=scalar_field_args,
-        )
-        self.add_vector_fields_request = _FieldMethod(
+        ), self.add_scalar_fields_request)
+        self.add_vector_fields_request = override_help_text(_FieldMethod(
             field_data_accessor=self.add_vector_fields_request,
             args_allowed_values_accessors={
                 **dict(field_name=self._allowed_vector_field_names),
                 **surface_args,
             },
-        )
-        self.add_surfaces_request = _FieldMethod(
+        ), self.add_vector_fields_request)
+        self.add_surfaces_request = override_help_text(_FieldMethod(
             field_data_accessor=self.add_surfaces_request,
             args_allowed_values_accessors=surface_args,
-        )
-        self.add_pathlines_fields_request = _FieldMethod(
+        ), self.add_surfaces_request)
+        self.add_pathlines_fields_request = override_help_text(_FieldMethod(
             field_data_accessor=self.add_pathlines_fields_request,
             args_allowed_values_accessors=scalar_field_args,
-        )
+        ), self.add_pathlines_fields_request)
 
     def add_surfaces_request(
         self,
@@ -797,25 +805,25 @@ class FieldData:
             **dict(field_name=self._allowed_scalar_field_names),
             **surface_args,
         }
-        self.get_scalar_field_data = _FieldMethod(
+        self.get_scalar_field_data = override_help_text(_FieldMethod(
             field_data_accessor=self.get_scalar_field_data,
             args_allowed_values_accessors=scalar_field_args,
-        )
-        self.get_vector_field_data = _FieldMethod(
+        ), self.get_scalar_field_data)
+        self.get_vector_field_data = override_help_text(_FieldMethod(
             field_data_accessor=self.get_vector_field_data,
             args_allowed_values_accessors={
                 **dict(field_name=self._allowed_vector_field_names),
                 **surface_args,
             },
-        )
-        self.get_surface_data = _FieldMethod(
+        ), self.get_vector_field_data)
+        self.get_surface_data = override_help_text(_FieldMethod(
             field_data_accessor=self.get_surface_data,
             args_allowed_values_accessors=surface_args,
-        )
-        self.get_pathlines_field_data = _FieldMethod(
+        ), self.get_surface_data)
+        self.get_pathlines_field_data = override_help_text(_FieldMethod(
             field_data_accessor=self.get_pathlines_field_data,
             args_allowed_values_accessors=scalar_field_args,
-        )
+        ), self.get_pathlines_field_data)
 
     def new_transaction(self):
         return FieldTransaction(
