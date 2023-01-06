@@ -137,7 +137,6 @@ class XYPlotDefn(PlotDefn):
                 self._api_helper.field_info().get_surfaces_info().keys()
             ) + list(self._get_top_most_parent()._local_surfaces_provider())
 
-
 class MeshDefn(GraphicsDefn):
     """Mesh graphics definition."""
 
@@ -159,6 +158,16 @@ class MeshDefn(GraphicsDefn):
         """Show edges for mesh."""
 
         value: bool = False
+
+    class show_nodes(metaclass=PyLocalPropertyMeta):
+        """Show edges for mesh."""
+
+        value: bool = False
+
+    class show_faces(metaclass=PyLocalPropertyMeta):
+        """Show edges for mesh."""
+
+        value: bool = True
 
 
 class PathlinesDefn(GraphicsDefn):

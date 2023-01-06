@@ -37,7 +37,8 @@ class Command:
         self.arguments_attrs = {}
         cmd_args = inspect.signature(method).parameters
         for arg_name in cmd_args:
-            self.arguments_attrs[arg_name] = {}
+            if arg_name != "self":
+                self.arguments_attrs[arg_name] = {}
 
         def _init(_self, obj):
             _self.obj = obj
@@ -59,7 +60,10 @@ class Command:
         obj.commands[name] = {}
 
     def __get__(self, obj, obj_type=None):
-        return self.command
+        if hasattr(self, "command"):
+            return self.command
+        else:
+            return self.command_cls(obj)
 
 
 def CommandArgs(command_object, argument_name):
@@ -417,3 +421,37 @@ class PyLocalContainer(MutableMapping):
 
     def __delitem__(self, name):
         del self.__collection[name]
+
+    def _get_unique_chid_name(self):
+        children = list(self)
+        index = 0
+        while True:
+            unique_name = f"{self._PyLocalContainer__object_class.__name__}-{index}"
+            if unique_name not in children:
+                break
+            index += 1
+        return unique_name
+
+    @Command
+    def Delete(self, names):
+        for item in names:
+            self.__delitem__(item)
+
+    @CommandArgs(Delete, "names")
+    def type(self):
+        return "string-list"
+
+    @CommandArgs(Delete, "names")
+    def allowed_values(self):
+        return list(self)
+
+    @Command
+    def Create(self, name = None):
+        if not name:
+            name = self._get_unique_chid_name()
+        new_object =  self.__getitem__(name)
+        return new_object._name
+
+    @CommandArgs(Create, "name")
+    def type(self):
+        return "string"
