@@ -58,3 +58,10 @@ def test_additional_argument_g_gu(with_launching_container):
     assert msg.value.args[0] == "'-g' and '-gu' is not supported on windows platform."
 
     launcher._is_windows = lambda: default_windows_flag
+
+
+def test_kwargs():
+    with pytest.raises(RuntimeError):
+        pyfluent.launch_fluent(abc=1, meshing_mode=True)
+    with pytest.raises(TypeError):
+        pyfluent.launch_fluent(abc=1, xyz=2)

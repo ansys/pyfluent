@@ -69,6 +69,9 @@ class Symbol:
     def __init__(self, str: str):
         self.str = str
 
+    def __repr__(self) -> str:
+        return self.str
+
 
 def _convert_pair_to_scheme_pointer(val: Tuple[Any, Any], p: SchemePointer, version):
     _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
