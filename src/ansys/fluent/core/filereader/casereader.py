@@ -42,9 +42,9 @@ class InputParameter:
         self.name, self.value = None, None
         for k, v in raw_data:
             if k == "name":
-                self.name = v
+                self.name = v.strip('"')
             elif k == "definition":
-                self.value = v
+                self.value = v.strip('"')
 
     @property
     def units(self) -> str:
@@ -85,9 +85,9 @@ class OutputParameter:
         parameter = raw_data[1]
         for elem in parameter:
             if len(elem) and elem[0] == "name":
-                self.name = elem[1][1]
+                self.name = elem[1][1].strip('"')
             if len(elem) and elem[0] == "fluent-units":
-                self.units = elem[1].strip()
+                self.units = elem[1].strip('"').strip()
 
 
 class _CaseVariable:

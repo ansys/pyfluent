@@ -56,6 +56,7 @@ class Procedure:
 def parse(in_port):
     """Parse a program: read and expand/error-check it."""
     # Backwards compatibility: given a str, convert it to an InputPort
+    #print("in_port", in_port)
     if isinstance(in_port, str):
         in_port = InputPort(io.StringIO(in_port))
     return expand(read(in_port), toplevel=True)
@@ -102,25 +103,41 @@ def read(in_port):
     """Read a Scheme expression from an input port."""
 
     def read_ahead(token):
+        #print ("read_ahead", token)
         if "(" == token:
-            L = []
+            L = None
             cons = None
-            has_dot = False
             while True:
                 token = in_port.next_token()
                 if token == ")":
-                    return tuple(L) if has_dot else L
+                    return L if L else tuple(cons) if cons else []
                 if token == ".":
-                    has_dot = True
-                    if len(L) > 1:
+                    if L:
                         cons = [L.pop()]
+                        #print ("popped", cons)
+                        if not len(L):
+                            #print ("nullify L after creating cons")
+                            L = None
+                    else:
+                        raise SyntaxError("unexpected .")
                 else:
                     ahead = read_ahead(token)
+                    #print(ahead, "ahead")
                     if cons:
                         cons.append(ahead)
-                        ahead = cons
-                        cons = None
-                    L.append(ahead)
+                        #print("appended cons with", ahead, "->", cons)
+                        ahead = tuple(cons)
+                        if L:
+                            cons = None
+                            #print ("nullify cons because L is populated")
+                    else:
+                        #print("L before conditional creation", L)
+                        L = L or []
+                        #print("L after conditional creation", L)
+                    if L is not None:
+                        #print ("append L because it is non-None")
+                        L.append(ahead)
+                        #print ("L after append", L)
         elif ")" == token:
             raise SyntaxError("unexpected )")
         elif token in quotes:
