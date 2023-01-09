@@ -19,7 +19,8 @@ class RPVars:
         return { val[0]: val[1] for val in list_val }
 
     def set_var(self, var, val):
-        cmd = f"(rpsetvar {self._var(var)} {lispy.to_string(val)})"
+        prefix = "'" if isinstance(val, (list, tuple)) else ""
+        cmd = f"(rpsetvar {self._var(var)} {prefix}{lispy.to_string(val)})"
         return self._execute(cmd)
 
     def _execute(self, cmd):

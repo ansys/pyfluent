@@ -170,7 +170,6 @@ def to_string(x):
         return x
     elif isa(x, str):
         return x.replace("\'", '\"')
-        return repr(x.replace("\'", '\"'))
     elif isinstance(x, list):
         sep = " "
         return "(" + sep.join(map(to_string, x)) + ")"
