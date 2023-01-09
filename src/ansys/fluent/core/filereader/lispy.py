@@ -105,11 +105,13 @@ def read(in_port):
         if "(" == token:
             L = []
             cons = None
+            has_dot = False
             while True:
                 token = in_port.next_token()
                 if token == ")":
-                    return L
+                    return tuple(L) if has_dot else L
                 if token == ".":
+                    has_dot = True
                     if len(L) > 1:
                         cons = [L.pop()]
                 else:
@@ -144,6 +146,7 @@ def atom(token):
     elif token == "#f":
         return False
     elif token[0] == '"':
+        return token
         return token[1:-1]
     try:
         return int(token)
@@ -166,9 +169,13 @@ def to_string(x):
     elif isa(x, Symbol):
         return x
     elif isa(x, str):
-        return repr(x)
-    elif isa(x, list):
-        sep = " . " if len(x) == 2 else " "
+        return x.replace("\'", '\"')
+        return repr(x.replace("\'", '\"'))
+    elif isinstance(x, list):
+        sep = " "
+        return "(" + sep.join(map(to_string, x)) + ")"
+    elif isinstance(x, tuple):
+        sep = " . "
         return "(" + sep.join(map(to_string, x)) + ")"
     elif isa(x, complex):
         return str(x).replace("j", "i")
