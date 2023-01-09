@@ -147,7 +147,6 @@ def atom(token):
         return False
     elif token[0] == '"':
         return token
-        return token[1:-1]
     try:
         return int(token)
     except ValueError:
@@ -162,6 +161,8 @@ def atom(token):
 
 def to_string(x):
     """Convert a Python object back into a Lisp-readable string."""
+    def sequence(sep):
+        return "(" + sep.join(map(to_string, x)) + ")"
     if x is True:
         return "#t"
     elif x is False:
@@ -171,11 +172,9 @@ def to_string(x):
     elif isa(x, str):
         return x.replace("\'", '\"')
     elif isinstance(x, list):
-        sep = " "
-        return "(" + sep.join(map(to_string, x)) + ")"
+        return sequence(" ")
     elif isinstance(x, tuple):
-        sep = " . "
-        return "(" + sep.join(map(to_string, x)) + ")"
+        return sequence(" . ")
     elif isa(x, complex):
         return str(x).replace("j", "i")
     else:
