@@ -17,20 +17,21 @@ scm_pys = (
     ("(x 1)", ["x", 1]),
     ('(x . "1.0 [m/s]")', ("x", '"1.0 [m/s]"')),
     ("(define x 1)", ["define", "x", 1]),
+)
+
+extra_scm_pys = (
     ("(define x)", ["define", "x", None]),
     ('(define "x")', []),
 )
 
 
 def test_scm_to_py():
-    for scm_py in scm_pys:
+    for scm_py in scm_pys + extra_scm_pys:
         assert lispy.parse(scm_py[0]) == scm_py[1]
 
 def test_py_to_scm():
     expect_fail = (
-        ("(1 2 . 3)", [1, (2, 3)]), # close
-        ("(define x)", ["define", "x", None]), # do we require these two?
-        ('(define "x")', []),
+        ("(1 2 . 3)", [1, (2, 3)]),
     )
     for scm_py in scm_pys:
         if scm_py not in expect_fail:
