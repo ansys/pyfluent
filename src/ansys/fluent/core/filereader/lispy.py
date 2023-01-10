@@ -102,26 +102,35 @@ def readchar(in_port):
 def read(in_port):
     """Read a Scheme expression from an input port."""
 
-    def read_ahead(token):
-        #print ("read_ahead", token)
+    def read_ahead(token, contained = False):
+        print ("read_ahead", token)
         if "(" == token:
             L = None
+            xL = False
             cons = None
             while True:
                 token = in_port.next_token()
                 if token == ")":
-                    return L if L else tuple(cons) if cons else []
+                    print("returning", L, cons)
+                    return (
+                        L if L else (
+                            #([tuple(cons)] if contained else tuple(cons)) if cons else (
+                            tuple(cons) if cons else (
+                                []
+                            )))
                 if token == ".":
                     if L:
                         cons = [L.pop()]
-                        #print ("popped", cons)
+                        print ("popped", cons)
                         if not len(L):
-                            #print ("nullify L after creating cons")
+                            print ("nullify L after creating cons")
+                            xL = True
                             L = None
                     else:
                         raise SyntaxError("unexpected .")
                 else:
-                    ahead = read_ahead(token)
+                    #ahead = read_ahead(token, (L or cons) is not None)
+                    ahead = read_ahead(token, L is not None)
                     #print(ahead, "ahead")
                     if cons:
                         cons.append(ahead)
