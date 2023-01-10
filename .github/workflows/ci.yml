@@ -91,7 +91,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v22.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
 
     steps:
       - uses: actions/checkout@v3
@@ -432,15 +432,15 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Upload 22.2 Coverage Results to Codecov
-        if: matrix.image-tag == 'v22.2.0'
+      - name: Upload 23.1 Coverage Results to Codecov
+        if: matrix.image-tag == 'v23.1.0' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
         uses: codecov/codecov-action@v3
         with:
           root_dir: ${{ github.workspace }}
           name: cov_xml.xml
 
-      - name: Upload 22.2 Coverage Artifacts
-        if: matrix.image-tag == 'v22.2.0'
+      - name: Upload 23.1 Coverage Artifacts
+        if: matrix.image-tag == 'v23.1.0'
         uses: actions/upload-artifact@v3
         with:
           name: cov_xml.xml
