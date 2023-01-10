@@ -102,54 +102,40 @@ def readchar(in_port):
 def read(in_port):
     """Read a Scheme expression from an input port."""
 
-    def read_ahead(token, contained = False):
+    def read_ahead(token):
         print ("read_ahead", token)
         if "(" == token:
-            L = None
-            xL = False
-            list_to_tuple = False
+            list_ = None
+            to_tuple = False
             cons = None
             while True:
                 token = in_port.next_token()
                 if token == ")":
-                    print("returning", L, cons)
                     return (
-                        (tuple(L) if list_to_tuple else L) if L else (
-                            # ([tuple(cons)] if contained else tuple(cons)) if cons else (
+                        (tuple(list_) if to_tuple else list_) if list_ else (
                             tuple(cons) if cons else (
                                 []
                             )))
                 if token == ".":
-                    if L:
-                        cons = [L.pop()]
-                        print ("popped", cons)
-                        if not len(L):
-                            print ("nullify L after creating cons")
-                            xL = True
-                            L = None
+                    if list_:
+                        cons = [list_.pop()]
+                        if len(list_):
+                            to_tuple = True
                         else:
-                            list_to_tuple = True
+                            list_ = None
                     else:
                         raise SyntaxError("unexpected .")
                 else:
-                    #ahead = read_ahead(token, (L or cons) is not None)
-                    ahead = read_ahead(token, L is not None)
-                    #print(ahead, "ahead")
+                    ahead = read_ahead(token)
                     if cons:
                         cons.append(ahead)
-                        #print("appended cons with", ahead, "->", cons)
                         ahead = tuple(cons)
-                        if L:
+                        if list_:
                             cons = None
-                            #print ("nullify cons because L is populated")
                     else:
-                        #print("L before conditional creation", L)
-                        L = L or []
-                        #print("L after conditional creation", L)
-                    if L is not None:
-                        #print ("append L because it is non-None")
-                        L.append(ahead)
-                        #print ("L after append", L)
+                        list_ = list_ or []
+                    if list_ is not None:
+                        list_.append(ahead)
         elif ")" == token:
             raise SyntaxError("unexpected )")
         elif token in quotes:
