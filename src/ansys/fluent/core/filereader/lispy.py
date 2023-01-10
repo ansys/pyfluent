@@ -107,14 +107,15 @@ def read(in_port):
         if "(" == token:
             L = None
             xL = False
+            list_to_tuple = False
             cons = None
             while True:
                 token = in_port.next_token()
                 if token == ")":
                     print("returning", L, cons)
                     return (
-                        L if L else (
-                            #([tuple(cons)] if contained else tuple(cons)) if cons else (
+                        (tuple(L) if list_to_tuple else L) if L else (
+                            # ([tuple(cons)] if contained else tuple(cons)) if cons else (
                             tuple(cons) if cons else (
                                 []
                             )))
@@ -126,6 +127,8 @@ def read(in_port):
                             print ("nullify L after creating cons")
                             xL = True
                             L = None
+                        else:
+                            list_to_tuple = True
                     else:
                         raise SyntaxError("unexpected .")
                 else:

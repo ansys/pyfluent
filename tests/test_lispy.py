@@ -9,7 +9,10 @@ scm_pys = (
     ("(1 (2))", [1, [2]]),
     ("(1 . 2)", (1, 2)),
     ("(1 2 3)", [1, 2, 3]),
-    ("(1 2 . 3)", [1, (2, 3)]),
+    # Problem is we're asserting these two to be the same
+    # In fact, (1 2 . 3) = (1 . (2 . 3))
+    ("(1 2 . 3)", (1, (2, 3))),
+    ("(1 (2 . 3))", [1, (2, 3)]),
     ("((1 . 2) . 3)", ((1, 2), 3)),
     ("(1 . (2 . 3))", (1, (2, 3))),
     ("((1 . 2) (3 . 4))", [(1, 2), (3, 4)]),
@@ -29,21 +32,15 @@ extra_scm_pys = (
 
 def test_scm_to_py():
     expect_fail = (
-        #("((1 . 2) (3 . 4))", [(1, 2), (3, 4)]),
-                             #[(1, 2), [(3, 4)]] == [(1, 2), (3, 4)]
-        #("((1 . 2) (3 . 4) (5 . 6))", [(1, 2), (3, 4), (5, 6)]),
-                                    # [(1, 2), [(3, 4)], [(5, 6)]]
     )
     for scm_py in scm_pys + extra_scm_pys:
         if scm_py not in expect_fail:
             assert lispy.parse(scm_py[0]) == scm_py[1]
 
 def test_py_to_scm():
-    return
     expect_fail = (
         ("(1 2 . 3)", [1, (2, 3)]),
-        ("(1 . (2 . 3))", (1, [(2, 3)])),
-        ("((1 . 2) (3 . 4))", [(1, 2), [(3, 4)]]),
+        # AssertionError: assert '(1 (2 . 3))' == '(1 2 . 3)'
     )
     for scm_py in scm_pys:
         if scm_py not in expect_fail:
