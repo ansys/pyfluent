@@ -56,7 +56,6 @@ class Procedure:
 def parse(in_port):
     """Parse a program: read and expand/error-check it."""
     # Backwards compatibility: given a str, convert it to an InputPort
-    #print("in_port", in_port)
     if isinstance(in_port, str):
         in_port = InputPort(io.StringIO(in_port))
     return expand(read(in_port), toplevel=True)
@@ -103,7 +102,6 @@ def read(in_port):
     """Read a Scheme expression from an input port."""
 
     def read_ahead(token):
-        print ("read_ahead", token)
         if "(" == token:
             list_ = None
             to_tuple = False
