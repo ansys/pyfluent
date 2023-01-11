@@ -27,7 +27,7 @@ install_requires = [
     "grpcio>=1.30.0",
     "numpy>=1.21.5",
     "appdirs>=1.4.0",
-    "pandas>=1.1.5",
+    "pandas>=1.5",
     "h5py>=3.7.0",
 ]
 
