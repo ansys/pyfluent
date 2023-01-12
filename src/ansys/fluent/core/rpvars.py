@@ -1,4 +1,7 @@
-"""Client-side service allowing access and modification of rpvars
+"""Client-side service allowing access and modification of rpvars.
+The primary interaction with Fluent should not be through low-level
+variables like rpvars but instead through the high-level object-based
+interfaces: solver settings objects and task-based meshing workflow.
 """
 
 from typing import Any
