@@ -557,9 +557,12 @@ def launch_fluent(
     machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    if "meshing_mode" in kwargs.keys():
-        raise RuntimeError("'meshing_mode' argument is no longer used."
-                           " Please use launch_fluent(mode='meshing') to launch in meshing mode.")
+    if kwargs:
+        if "meshing_mode" in kwargs:
+            raise RuntimeError("'meshing_mode' argument is no longer used."
+                               " Please use launch_fluent(mode='meshing') to launch in meshing mode.")
+        else:
+            raise TypeError(f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}")
 
     argvals = locals()
 
