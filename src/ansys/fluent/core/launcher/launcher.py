@@ -27,7 +27,7 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-FLUENT_VERSION = "22.2.0"
+FLUENT_VERSION = "23.1.0"
 _FLUENT_EXE_PATH = ""
 
 
