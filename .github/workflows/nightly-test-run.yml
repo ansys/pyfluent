@@ -112,24 +112,18 @@ jobs:
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v22.2.0
 
-      - name: Upload 22.2 Coverage Results to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          root_dir: ${{ github.workspace }}
-          name: cov_xml.xml
-
-      - name: Upload 22.2 Coverage Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: cov_xml.xml
-          path: ./cov_xml.xml
-
       - name: 23.1 Unit Testing
         run: make unittest-all-231
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: v23.1.0
+
+      - name: Upload 23.1 Coverage Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: cov_xml.xml
+          path: ./cov_xml.xml
 
       - name: 23.2 Unit Testing
         run: make unittest-all-232
