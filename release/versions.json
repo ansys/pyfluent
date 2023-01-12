@@ -1,6 +1,10 @@
 [
-  {
-    "version": "dev",
-    "url": "https://fluent.docs.pyansys.com/dev"
-  }
+    {
+        "version": "dev",
+        "url": "https://fluent.docs.pyansys.com/dev"
+    },
+    {
+        "version": "0.12 (stable)",
+        "url": "https://fluent.docs.pyansys.com/release/0.12"
+    }
 ]
