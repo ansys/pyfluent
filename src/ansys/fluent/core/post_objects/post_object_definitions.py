@@ -160,12 +160,12 @@ class MeshDefn(GraphicsDefn):
         value: bool = False
 
     class show_nodes(metaclass=PyLocalPropertyMeta):
-        """Show edges for mesh."""
+        """Show nodes for mesh."""
 
         value: bool = False
 
     class show_faces(metaclass=PyLocalPropertyMeta):
-        """Show edges for mesh."""
+        """Show faces for mesh."""
 
         value: bool = True
 
