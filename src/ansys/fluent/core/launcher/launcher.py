@@ -558,7 +558,7 @@ def launch_fluent(
     passed to Fluent.
     """
     if kwargs:
-        if "meshing_mode" in kwargs.keys():
+        if "meshing_mode" in kwargs:
             raise RuntimeError("'meshing_mode' argument is no longer used."
                                " Please use launch_fluent(mode='meshing') to launch in meshing mode.")
         else:
