@@ -32,6 +32,14 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
     before_init_mod_2 = rp_vars("strategy/solution-strategy/before-init-modification")
     assert before_init_mod_2[1][1][1] == ("value", True)
 
+
+@pytest.mark.fluent_231
+def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
+
+    case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver = new_solver_session_no_transcript
+    solver.file.read(file_type="case", file_name=case_path)
+    rp_vars = solver.rp_vars
     # all vars
     all_vars = rp_vars()
     assert len(all_vars) == pytest.approx(9000, 10)
