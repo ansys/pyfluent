@@ -142,7 +142,7 @@
       <div class="navbar-end-item">
         <div class="dropdown" id="version_switcher">
     <button type="button" class="btn btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
-        0.12  <!-- this text may get changed later by javascript -->
+        dev  <!-- this text may get changed later by javascript -->
         <span class="caret"></span>
     </button>
     <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
@@ -152,7 +152,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables examples/00-fluent/exhaust_system and {'json_url': 'fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.12'}.
+     variables examples/00-fluent/exhaust_system and {'json_url': 'fluent.docs.pyansys.com/release/versions.json', 'version_match': 'dev'}.
 -->
 
 <script type="text/javascript">
@@ -207,10 +207,10 @@ function checkPageExistsAndRedirect(event) {
 
             $("#version_switcher_menu").append(node);
             // replace dropdown button text with the preferred display name of
-            // this version, rather than using sphinx's 0.12.dev13 variable.
+            // this version, rather than using sphinx's 0.13.dev0 variable.
             // also highlight the dropdown entry for the currently-viewed
             // version's entry
-            if (entry.version == "0.12") {
+            if (entry.version == "dev") {
                 node.classList.add("active");
                 btn.innerText = btn.dataset["activeVersionName"] = entry.name;
                 btn.dataset["activeVersion"] = entry.version;
@@ -1172,16 +1172,16 @@ True
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Surface Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Writing &quot;//FM_f3268cb7e167_283/TaskObject16.msh.h5&quot; ...
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Writing &quot;//FM_9123a04ffbe9_283/TaskObject16.msh.h5&quot; ...
 writing 19 node zones
 writing 11 edge zones
 writing 13 face zones
-done.Writing &quot;//FM_f3268cb7e167_283//ftm-wf-out-exhaust_system.msh.h5&quot; ...
+done.Writing &quot;//FM_9123a04ffbe9_283//ftm-wf-out-exhaust_system.msh.h5&quot; ...
 writing 19 node zones
 writing 11 edge zones
 writing 13 face zones
-done.Scoped sizing written to the file &quot;//FM_f3268cb7e167_283//ftm-wf-out-exhaust_system-target.szcontrol&quot; successfully
-Scoped sizing written to the file &quot;//FM_f3268cb7e167_283//ftm-wf-out-exhaust_system-initial.szcontrol&quot; successfully
+done.Scoped sizing written to the file &quot;//FM_9123a04ffbe9_283//ftm-wf-out-exhaust_system-target.szcontrol&quot; successfully
+Scoped sizing written to the file &quot;//FM_9123a04ffbe9_283//ftm-wf-out-exhaust_system-initial.szcontrol&quot; successfully
 
 
 
@@ -1193,7 +1193,7 @@ Scoped sizing written to the file &quot;//FM_f3268cb7e167_283//ftm-wf-out-exhaus
 
 
 
-Reading &quot;//FM_f3268cb7e167_283/ftm-wf-out-exhaust_system-initial.sf&quot;...
+Reading &quot;//FM_9123a04ffbe9_283/ftm-wf-out-exhaust_system-initial.sf&quot;...
 
  Read 41911 vertices
     initializing octree...
@@ -1212,7 +1212,7 @@ Reading &quot;//FM_f3268cb7e167_283/ftm-wf-out-exhaust_system-initial.sf&quot;..
 
 
 
-Reading &quot;//FM_f3268cb7e167_283/ftm-wf-out-exhaust_system-target.sf&quot;...
+Reading &quot;//FM_9123a04ffbe9_283/ftm-wf-out-exhaust_system-target.sf&quot;...
 
  Read 41961 vertices
 Found 0 nodes with invalid normals
@@ -1223,29 +1223,29 @@ Found 0 faces with invalid dihedral angle
 
 
 
-Gentle Improve for wrapper-surf-fluid-region-1 in 0.0033043146 minutes (5.5072175e-05 hours)
+Gentle Improve for wrapper-surf-fluid-region-1 in 0.0030424476 minutes (5.0707791e-05 hours)
 
 
 
 
-Gentle Improve for wrapper-surf-fluid-region-1 in 0.0014941335 minutes (2.4902489e-05 hours)
+Gentle Improve for wrapper-surf-fluid-region-1 in 0.0012257854 minutes (2.0429757e-05 hours)
 
 
 
 
-Gentle Improve for wrapper-surf-fluid-region-1 in 0.0012843172 minutes (2.1405551e-05 hours)
-
-
-
-
-
+Gentle Improve for wrapper-surf-fluid-region-1 in 0.0012448311 minutes (2.0747516e-05 hours)
 
 
 
 
 
 
-Reading &quot;//FM_f3268cb7e167_283/ftm-wf-out-exhaust_system.msh.h5&quot; ...
+
+
+
+
+
+Reading &quot;//FM_9123a04ffbe9_283/ftm-wf-out-exhaust_system.msh.h5&quot; ...
 3D mesh
 nodes: 23322
 edges: 4754
@@ -1265,18 +1265,18 @@ done.
 
 Surface Mesh:
 ==============================================================================
-Computed SF in -----------------------------------0.047264036 minutes (0.00078773393 hours).
+Computed SF in -----------------------------------0.042828933 minutes (0.00071381556 hours).
 Merge zones in -----------------------------------0 minutes (0 hours).
-Automatic closing of holes (inner wrap) in -----0.045241185 minutes (0.00075401975 hours).
-Wrapped all material point regions in ------------0.1464128 minutes (0.0024402134 hours).
+Automatic closing of holes (inner wrap) in -----0.042120469 minutes (0.00070200781 hours).
+Wrapped all material point regions in ------------0.13424848 minutes (0.0022374747 hours).
 Surface mesh all fluid objects in ----------------0 minutes (0 hours).
-Surface Improved in ------------------------------0.045359814 minutes (0.0007559969 hours).
-Surface Improved (resolve_int) in ----------------0.0076642831 minutes (0.00012773805 hours).
-Connected all fluid mesh objects in --------------5.9008598e-06 minutes (9.8347664e-08 hours).
-Compute Volume-Fill Regions in -------------------3.8544337e-07 minutes (6.4240562e-09 hours).
+Surface Improved in ------------------------------0.040169768 minutes (0.00066949613 hours).
+Surface Improved (resolve_int) in ----------------0.0064047654 minutes (0.00010674609 hours).
+Connected all fluid mesh objects in --------------4.4981639e-06 minutes (7.4969398e-08 hours).
+Compute Volume-Fill Regions in -------------------3.8146973e-07 minutes (6.3578288e-09 hours).
 Solid surface mesh generated and Improved in -----0 minutes (0 hours).
 ==============================================================================
-Total (surface mesh)                              0.29194847 minutes (0.0048658079 hours)
+Total (surface mesh)                              0.26577737 minutes (0.0044296228 hours)
 
 
 ------------------------- --------------------- -------------------- ---------------- ----------
@@ -1349,7 +1349,7 @@ True
 <span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Volume Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Writing &quot;//FM_f3268cb7e167_283/TaskObject23.msh.h5&quot; ...
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Writing &quot;//FM_9123a04ffbe9_283/TaskObject23.msh.h5&quot; ...
 writing 21 node zones
 writing 11 edge zones
 writing 22 face zones
@@ -1394,29 +1394,29 @@ Total cell count: 260533
 Wall-Clock Usage (Estimate) for exhaust_system:
 Surface Mesh:
 ==============================================================================
-Computed SF in -----------------------------------0.047264036 minutes (0.00078773393 hours).
+Computed SF in -----------------------------------0.042828933 minutes (0.00071381556 hours).
 Merge zones in -----------------------------------0 minutes (0 hours).
-Automatic closing of holes (inner wrap) in -----0.045241185 minutes (0.00075401975 hours).
-Wrapped all material point regions in ------------0.1464128 minutes (0.0024402134 hours).
+Automatic closing of holes (inner wrap) in -----0.042120469 minutes (0.00070200781 hours).
+Wrapped all material point regions in ------------0.13424848 minutes (0.0022374747 hours).
 Surface mesh all fluid objects in ----------------0 minutes (0 hours).
-Surface Improved in ------------------------------0.045359814 minutes (0.0007559969 hours).
-Surface Improved (resolve_int) in ----------------0.0076642831 minutes (0.00012773805 hours).
-Connected all fluid mesh objects in --------------5.9008598e-06 minutes (9.8347664e-08 hours).
-Compute Volume-Fill Regions in -------------------3.8544337e-07 minutes (6.4240562e-09 hours).
+Surface Improved in ------------------------------0.040169768 minutes (0.00066949613 hours).
+Surface Improved (resolve_int) in ----------------0.0064047654 minutes (0.00010674609 hours).
+Connected all fluid mesh objects in --------------4.4981639e-06 minutes (7.4969398e-08 hours).
+Compute Volume-Fill Regions in -------------------3.8146973e-07 minutes (6.3578288e-09 hours).
 Solid surface mesh generated and Improved in -----0 minutes (0 hours).
 ==============================================================================
-Total (surface mesh)                              0.29194847 minutes (0.0048658079 hours)
+Total (surface mesh)                              0.26577737 minutes (0.0044296228 hours)
 
 Volume Mesh:
 ==============================================================================
-Continuous Prisms generated and Improved in ------0.0647699 minutes (0.0010794983 hours).
-Volume-fill in -----------------------------------0.056375901 minutes (0.00093959835 hours).
-Solid volume mesh generated and Improved in ------0.00060181618 minutes (1.003027e-05 hours).
-Rezoned and final volume mesh improve in ---------0.016712836 minutes (0.00027854727 hours).
+Continuous Prisms generated and Improved in ------0.061103102 minutes (0.001018385 hours).
+Volume-fill in -----------------------------------0.053877016 minutes (0.00089795027 hours).
+Solid volume mesh generated and Improved in ------0.00060588121 minutes (1.009802e-05 hours).
+Rezoned and final volume mesh improve in ---------0.014247334 minutes (0.00023745557 hours).
 ==============================================================================
-Total (volume mesh)                               0.13846045 minutes (0.0023076742 hours)
+Total (volume mesh)                               0.12983333 minutes (0.0021638889 hours)
 ==============================================================================
-Total                                             0.43040893 minutes (0.0071734821 hours)
+Total                                             0.3956107 minutes (0.0065935116 hours)
 ==============================================================================
 
 
@@ -1427,20 +1427,20 @@ Memory Usage for exhaust_system:
        | Virtual Mem Usage (GB)   | Resident Mem Usage(GB)   |
 ID     | Current      Peak        | Current      Peak        | Page Faults
 ------------------------------------------------------------------------------
-host   | 0.900234     0.901978    | 0.51244      0.513817    | 3
-n0     | 3.89938      4.22916     | 0.395187     1.06707     | 464
-n1     | 3.36954      3.42725     | 0.202381     0.202381    | 71
+host   | 0.900234     0.901978    | 0.512844     0.514225    | 1
+n0     | 3.89654      4.22622     | 0.383602     1.05927     | 505
+n1     | 3.3725       3.3725      | 0.192852     0.192852    | 137
 ------------------------------------------------------------------------------
-Total  | 8.16915      8.55839     | 1.11001      1.78327     | 538
+Total  | 8.16927      8.50069     | 1.0893       1.76635     | 643
 ------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
                     | Virtual Mem Usage (GB)    | Resident Mem Usage(GB)    | System Mem (GB)
 Hostname            | Current      Peak         | Current      Peak         |
 ------------------------------------------------------------------------------------------------
-f3268cb7e167        | 8.16915      8.55839      | 1.11001      1.78327      | 31.3534
+9123a04ffbe9        | 8.16927      8.50069      | 1.0893       1.76635      | 31.3534
 ------------------------------------------------------------------------------------------------
-Total               | 8.16915      8.55839      | 1.11001      1.78327      |
+Total               | 8.16927      8.50069      | 1.0893       1.76635      |
 ------------------------------------------------------------------------------------------------
 
 
@@ -1688,40 +1688,40 @@ Hybrid initialization is done.
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
-   1  1.0000e+00  6.5068e-03  6.7597e-03  7.3767e-03  6.2224e-01  2.7159e+00  0:03:22   99
+   1  1.0000e+00  6.5068e-03  6.7597e-03  7.3767e-03  6.2224e-01  2.7159e+00  0:03:20   99
    2  4.5486e-01  3.8804e-03  4.2427e-03  5.3040e-03  1.6563e-01  1.5921e-01  0:03:26   98
-   3  3.5498e-01  2.0890e-03  2.4344e-03  3.7941e-03  1.1283e-01  1.0585e-01  0:03:28   97
-   4  3.3845e-01  1.3504e-03  1.6800e-03  2.7878e-03  7.8440e-02  6.0840e-02  0:03:26   96
-   5  3.1730e-01  9.4739e-04  1.2703e-03  2.4407e-03  5.8277e-02  3.3488e-02  0:03:23   95
-   6  3.0081e-01  7.3345e-04  1.0398e-03  2.1476e-03  4.6960e-02  2.3629e-02  0:03:21   94
-   7  2.8905e-01  6.1089e-04  8.9264e-04  2.0195e-03  3.9850e-02  1.8157e-02  0:03:19   93
-   8  2.8022e-01  5.3452e-04  7.9714e-04  1.8873e-03  3.4381e-02  1.4434e-02  0:03:12   92
-   9  2.7178e-01  4.8498e-04  7.2353e-04  1.7881e-03  2.9426e-02  1.1726e-02  0:03:06   91
-  10  2.6184e-01  4.4510e-04  6.6952e-04  1.6765e-03  2.5615e-02  9.8688e-03  0:03:00   90
-  11  2.5018e-01  4.1956e-04  6.2827e-04  1.6096e-03  2.2006e-02  8.2531e-03  0:02:56   89
+   3  3.5498e-01  2.0890e-03  2.4344e-03  3.7941e-03  1.1283e-01  1.0585e-01  0:03:30   97
+   4  3.3845e-01  1.3504e-03  1.6800e-03  2.7878e-03  7.8440e-02  6.0840e-02  0:03:28   96
+   5  3.1730e-01  9.4739e-04  1.2703e-03  2.4407e-03  5.8277e-02  3.3488e-02  0:03:25   95
+   6  3.0081e-01  7.3345e-04  1.0398e-03  2.1476e-03  4.6960e-02  2.3629e-02  0:03:23   94
+   7  2.8905e-01  6.1089e-04  8.9264e-04  2.0195e-03  3.9850e-02  1.8157e-02  0:03:21   93
+   8  2.8022e-01  5.3452e-04  7.9714e-04  1.8873e-03  3.4381e-02  1.4434e-02  0:03:14   92
+   9  2.7178e-01  4.8498e-04  7.2353e-04  1.7881e-03  2.9426e-02  1.1726e-02  0:03:08   91
+  10  2.6184e-01  4.4510e-04  6.6952e-04  1.6765e-03  2.5615e-02  9.8688e-03  0:03:03   90
+  11  2.5018e-01  4.1956e-04  6.2827e-04  1.6096e-03  2.2006e-02  8.2531e-03  0:02:58   89
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
-  12  2.3856e-01  4.0700e-04  5.9855e-04  1.5454e-03  2.0056e-02  7.1561e-03  0:02:52   88
-  13  2.2712e-01  3.7681e-04  5.5504e-04  1.4524e-03  1.7659e-02  6.4050e-03  0:02:49   87
+  12  2.3856e-01  4.0700e-04  5.9855e-04  1.5454e-03  2.0056e-02  7.1561e-03  0:02:54   88
+  13  2.2712e-01  3.7681e-04  5.5504e-04  1.4524e-03  1.7659e-02  6.4050e-03  0:02:51   87
   14  2.1787e-01  3.6691e-04  5.3098e-04  1.3819e-03  1.5899e-02  6.0361e-03  0:02:53   86
-  15  2.0955e-01  3.5114e-04  5.0119e-04  1.2823e-03  1.4095e-02  5.5489e-03  0:02:48   85
-  16  2.0347e-01  3.5706e-04  4.9008e-04  1.2223e-03  1.2826e-02  5.2584e-03  0:02:47   84
-  17  1.9762e-01  3.5601e-04  4.7374e-04  1.1312e-03  1.1652e-02  4.8375e-03  0:02:43   83
-  18  1.9228e-01  3.7102e-04  4.7387e-04  1.0861e-03  1.0808e-02  4.5563e-03  0:02:40   82
-  19  1.8632e-01  3.7725e-04  4.6833e-04  1.0068e-03  1.0123e-02  4.2402e-03  0:02:37   81
-  20  1.8170e-01  3.9750e-04  4.7850e-04  9.7780e-04  9.4611e-03  4.0838e-03  0:02:35   80
-  21  1.7588e-01  3.9927e-04  4.7473e-04  8.9826e-04  8.7497e-03  3.9598e-03  0:02:32   79
-  22  1.7040e-01  4.1160e-04  4.8064e-04  8.6386e-04  8.3512e-03  3.8720e-03  0:02:29   78
+  15  2.0955e-01  3.5114e-04  5.0119e-04  1.2823e-03  1.4095e-02  5.5489e-03  0:02:49   85
+  16  2.0347e-01  3.5706e-04  4.9008e-04  1.2223e-03  1.2826e-02  5.2584e-03  0:02:45   84
+  17  1.9762e-01  3.5601e-04  4.7374e-04  1.1312e-03  1.1652e-02  4.8375e-03  0:02:42   83
+  18  1.9228e-01  3.7102e-04  4.7387e-04  1.0861e-03  1.0808e-02  4.5563e-03  0:02:39   82
+  19  1.8632e-01  3.7725e-04  4.6833e-04  1.0068e-03  1.0123e-02  4.2402e-03  0:02:36   81
+  20  1.8170e-01  3.9750e-04  4.7850e-04  9.7780e-04  9.4611e-03  4.0838e-03  0:02:33   80
+  21  1.7588e-01  3.9927e-04  4.7473e-04  8.9826e-04  8.7497e-03  3.9598e-03  0:02:31   79
+  22  1.7040e-01  4.1160e-04  4.8064e-04  8.6386e-04  8.3512e-03  3.8720e-03  0:02:28   78
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
-  23  1.6467e-01  4.1818e-04  4.8248e-04  8.1043e-04  7.9148e-03  3.7827e-03  0:02:25   77
-  24  1.5932e-01  4.2516e-04  4.8440e-04  7.7419e-04  7.6300e-03  3.7043e-03  0:02:22   76
-  25  1.5349e-01  4.2783e-04  4.8342e-04  7.3654e-04  7.3090e-03  3.5669e-03  0:02:21   75
-  26  1.4757e-01  4.2826e-04  4.7825e-04  7.0547e-04  7.1055e-03  3.4844e-03  0:02:18   74
-  27  1.4222e-01  4.2711e-04  4.7040e-04  6.7993e-04  6.7947e-03  3.2309e-03  0:02:16   73
-  28  1.3665e-01  4.1719e-04  4.5460e-04  6.4244e-04  6.4595e-03  3.0867e-03  0:02:14   72
+  23  1.6467e-01  4.1818e-04  4.8248e-04  8.1043e-04  7.9148e-03  3.7827e-03  0:02:26   77
+  24  1.5932e-01  4.2516e-04  4.8440e-04  7.7419e-04  7.6300e-03  3.7043e-03  0:02:24   76
+  25  1.5349e-01  4.2783e-04  4.8342e-04  7.3654e-04  7.3090e-03  3.5669e-03  0:02:22   75
+  26  1.4757e-01  4.2826e-04  4.7825e-04  7.0547e-04  7.1055e-03  3.4844e-03  0:02:20   74
+  27  1.4222e-01  4.2711e-04  4.7040e-04  6.7993e-04  6.7947e-03  3.2309e-03  0:02:17   73
+  28  1.3665e-01  4.1719e-04  4.5460e-04  6.4244e-04  6.4595e-03  3.0867e-03  0:02:16   72
   29  1.3157e-01  4.0665e-04  4.3836e-04  6.1239e-04  6.1668e-03  2.9013e-03  0:02:13   71
-  30  1.2620e-01  3.9250e-04  4.1861e-04  5.8230e-04  5.7816e-03  2.7418e-03  0:02:11   70
+  30  1.2620e-01  3.9250e-04  4.1861e-04  5.8230e-04  5.7816e-03  2.7418e-03  0:02:12   70
   31  1.2123e-01  3.7680e-04  3.9735e-04  5.5438e-04  5.4399e-03  2.5502e-03  0:02:10   69
   32  1.1679e-01  3.5821e-04  3.7505e-04  5.2705e-04  5.0673e-03  2.3851e-03  0:02:08   68
   33  1.1266e-01  3.3944e-04  3.5383e-04  5.0103e-04  4.7318e-03  2.2219e-03  0:02:06   67
@@ -1741,29 +1741,29 @@ iter  continuity  x-velocity  y-velocity  z-velocity           k       omega    
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
   45  8.8216e-02  1.9737e-04  2.2276e-04  3.1576e-04  2.2738e-03  1.3977e-03  0:01:43   55
-  46  8.7287e-02  1.9314e-04  2.1808e-04  3.0739e-04  2.2063e-03  1.3632e-03  0:01:41   54
-  47  8.6363e-02  1.9079e-04  2.1408e-04  2.9985e-04  2.1527e-03  1.3458e-03  0:01:39   53
-  48  8.5284e-02  1.8881e-04  2.1061e-04  2.9404e-04  2.1016e-03  1.3191e-03  0:01:37   52
-  49  8.4296e-02  1.8828e-04  2.0804e-04  2.8814e-04  2.0792e-03  1.3079e-03  0:01:35   51
-  50  8.3144e-02  1.8728e-04  2.0594e-04  2.8372e-04  2.0389e-03  1.2870e-03  0:01:33   50
-  51  8.2215e-02  1.8723e-04  2.0451e-04  2.7992e-04  2.0295e-03  1.2827e-03  0:01:31   49
-  52  8.1154e-02  1.8609e-04  2.0275e-04  2.7706e-04  2.0014e-03  1.2663e-03  0:01:29   48
-  53  8.0302e-02  1.8603e-04  2.0135e-04  2.7519e-04  1.9881e-03  1.2678e-03  0:01:27   47
-  54  7.9364e-02  1.8510e-04  1.9963e-04  2.7363e-04  1.9575e-03  1.2573e-03  0:01:26   46
-  55  7.8512e-02  1.8473e-04  1.9850e-04  2.7339e-04  1.9494e-03  1.2605e-03  0:01:24   45
+  46  8.7287e-02  1.9314e-04  2.1808e-04  3.0739e-04  2.2063e-03  1.3632e-03  0:01:42   54
+  47  8.6363e-02  1.9079e-04  2.1408e-04  2.9985e-04  2.1527e-03  1.3458e-03  0:01:40   53
+  48  8.5284e-02  1.8881e-04  2.1061e-04  2.9404e-04  2.1016e-03  1.3191e-03  0:01:38   52
+  49  8.4296e-02  1.8828e-04  2.0804e-04  2.8814e-04  2.0792e-03  1.3079e-03  0:01:36   51
+  50  8.3144e-02  1.8728e-04  2.0594e-04  2.8372e-04  2.0389e-03  1.2870e-03  0:01:34   50
+  51  8.2215e-02  1.8723e-04  2.0451e-04  2.7992e-04  2.0295e-03  1.2827e-03  0:01:32   49
+  52  8.1154e-02  1.8609e-04  2.0275e-04  2.7706e-04  2.0014e-03  1.2663e-03  0:01:30   48
+  53  8.0302e-02  1.8603e-04  2.0135e-04  2.7519e-04  1.9881e-03  1.2678e-03  0:01:29   47
+  54  7.9364e-02  1.8510e-04  1.9963e-04  2.7363e-04  1.9575e-03  1.2573e-03  0:01:27   46
+  55  7.8512e-02  1.8473e-04  1.9850e-04  2.7339e-04  1.9494e-03  1.2605e-03  0:01:25   45
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
-  56  7.7392e-02  1.8342e-04  1.9713e-04  2.7317e-04  1.9402e-03  1.2581e-03  0:01:22   44
-  57  7.6376e-02  1.8262e-04  1.9612e-04  2.7461e-04  1.9612e-03  1.2659e-03  0:01:20   43
-  58  7.5361e-02  1.8091e-04  1.9477e-04  2.7510e-04  1.9740e-03  1.2678e-03  0:01:18   42
-  59  7.4302e-02  1.8028e-04  1.9377e-04  2.7605e-04  2.0097e-03  1.2719e-03  0:01:16   41
-  60  7.3124e-02  1.7902e-04  1.9251e-04  2.7553e-04  2.0404e-03  1.2736e-03  0:01:14   40
-  61  7.1965e-02  1.7828e-04  1.9193e-04  2.7589e-04  2.0742e-03  1.2740e-03  0:01:12   39
-  62  7.0783e-02  1.7687e-04  1.9052e-04  2.7510e-04  2.0872e-03  1.2737e-03  0:01:11   38
-  63  6.9850e-02  1.7548e-04  1.8951e-04  2.7413e-04  2.1062e-03  1.2662e-03  0:01:09   37
-  64  6.8877e-02  1.7369e-04  1.8763e-04  2.7181e-04  2.0928e-03  1.2548e-03  0:01:07   36
-  65  6.8098e-02  1.7146e-04  1.8600e-04  2.6904e-04  2.0777e-03  1.2351e-03  0:01:05   35
-  66  6.7084e-02  1.6890e-04  1.8336e-04  2.6462e-04  2.0267e-03  1.2081e-03  0:01:03   34
+  56  7.7392e-02  1.8342e-04  1.9713e-04  2.7317e-04  1.9402e-03  1.2581e-03  0:01:23   44
+  57  7.6376e-02  1.8262e-04  1.9612e-04  2.7461e-04  1.9612e-03  1.2659e-03  0:01:21   43
+  58  7.5361e-02  1.8091e-04  1.9477e-04  2.7510e-04  1.9740e-03  1.2678e-03  0:01:20   42
+  59  7.4302e-02  1.8028e-04  1.9377e-04  2.7605e-04  2.0097e-03  1.2719e-03  0:01:18   41
+  60  7.3124e-02  1.7902e-04  1.9251e-04  2.7553e-04  2.0404e-03  1.2736e-03  0:01:16   40
+  61  7.1965e-02  1.7828e-04  1.9193e-04  2.7589e-04  2.0742e-03  1.2740e-03  0:01:14   39
+  62  7.0783e-02  1.7687e-04  1.9052e-04  2.7510e-04  2.0872e-03  1.2737e-03  0:01:12   38
+  63  6.9850e-02  1.7548e-04  1.8951e-04  2.7413e-04  2.1062e-03  1.2662e-03  0:01:10   37
+  64  6.8877e-02  1.7369e-04  1.8763e-04  2.7181e-04  2.0928e-03  1.2548e-03  0:01:08   36
+  65  6.8098e-02  1.7146e-04  1.8600e-04  2.6904e-04  2.0777e-03  1.2351e-03  0:01:06   35
+  66  6.7084e-02  1.6890e-04  1.8336e-04  2.6462e-04  2.0267e-03  1.2081e-03  0:01:04   34
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
   67  6.6014e-02  1.6630e-04  1.8124e-04  2.5956e-04  1.9787e-03  1.1704e-03  0:01:02   33
@@ -1773,10 +1773,10 @@ iter  continuity  x-velocity  y-velocity  z-velocity           k       omega    
   71  6.1264e-02  1.5255e-04  1.6792e-04  2.3081e-04  1.6555e-03  1.0137e-03  0:00:55   29
   72  6.0181e-02  1.4899e-04  1.6406e-04  2.2367e-04  1.5765e-03  9.8905e-04  0:00:53   28
   73  5.9232e-02  1.4538e-04  1.6081e-04  2.1701e-04  1.5267e-03  9.6269e-04  0:00:51   27
-  74  5.8330e-02  1.4259e-04  1.5816e-04  2.1151e-04  1.4780e-03  9.5301e-04  0:00:50   26
-  75  5.7778e-02  1.4024e-04  1.5602e-04  2.0712e-04  1.4664e-03  9.4213e-04  0:00:48   25
-  76  5.7264e-02  1.3877e-04  1.5420e-04  2.0418e-04  1.4584e-03  9.4327e-04  0:00:46   24
-  77  5.6948e-02  1.3784e-04  1.5277e-04  2.0211e-04  1.4786e-03  9.4504e-04  0:00:44   23
+  74  5.8330e-02  1.4259e-04  1.5816e-04  2.1151e-04  1.4780e-03  9.5301e-04  0:00:49   26
+  75  5.7778e-02  1.4024e-04  1.5602e-04  2.0712e-04  1.4664e-03  9.4213e-04  0:00:47   25
+  76  5.7264e-02  1.3877e-04  1.5420e-04  2.0418e-04  1.4584e-03  9.4327e-04  0:00:45   24
+  77  5.6948e-02  1.3784e-04  1.5277e-04  2.0211e-04  1.4786e-03  9.4504e-04  0:00:43   23
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
   78  5.6573e-02  1.3747e-04  1.5221e-04  2.0129e-04  1.4977e-03  9.5242e-04  0:00:42   22
@@ -1788,7 +1788,7 @@ iter  continuity  x-velocity  y-velocity  z-velocity           k       omega    
   84  5.7086e-02  1.3450e-04  1.6100e-04  2.1170e-04  1.5795e-03  9.9349e-04  0:00:30   16
   85  5.7475e-02  1.3297e-04  1.6213e-04  2.1328e-04  1.5629e-03  9.8756e-04  0:00:28   15
   86  5.7682e-02  1.3115e-04  1.6166e-04  2.1298e-04  1.5318e-03  9.8194e-04  0:00:26   14
-  87  5.7629e-02  1.2858e-04  1.5924e-04  2.1114e-04  1.4825e-03  9.6017e-04  0:00:25   13
+  87  5.7629e-02  1.2858e-04  1.5924e-04  2.1114e-04  1.4825e-03  9.6017e-04  0:00:24   13
   88  5.7271e-02  1.2611e-04  1.5588e-04  2.0804e-04  1.4297e-03  9.4309e-04  0:00:23   12
 
 iter  continuity  x-velocity  y-velocity  z-velocity           k       omega     time/iter
@@ -1799,7 +1799,7 @@ iter  continuity  x-velocity  y-velocity  z-velocity           k       omega    
   93  5.2869e-02  1.1118e-04  1.3396e-04  1.8064e-04  1.1479e-03  7.9232e-04  0:00:13    7
   94  5.1538e-02  1.0902e-04  1.3005e-04  1.7478e-04  1.1200e-03  7.7642e-04  0:00:11    6
   95  5.0516e-02  1.0667e-04  1.2708e-04  1.6957e-04  1.0909e-03  7.5149e-04  0:00:09    5
-  96  4.9568e-02  1.0529e-04  1.2461e-04  1.6597e-04  1.0793e-03  7.5528e-04  0:00:07    4
+  96  4.9568e-02  1.0529e-04  1.2461e-04  1.6597e-04  1.0793e-03  7.5528e-04  0:00:08    4
   97  4.9066e-02  1.0382e-04  1.2283e-04  1.6304e-04  1.0764e-03  7.4755e-04  0:00:06    3
   98  4.8516e-02  1.0300e-04  1.2086e-04  1.6103e-04  1.0882e-03  7.6288e-04  0:00:04    2
   99  4.8315e-02  1.0187e-04  1.2051e-04  1.5983e-04  1.0985e-03  7.6487e-04  0:00:02    1
@@ -1909,7 +1909,7 @@ along with the mesh.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 4 minutes  34.192 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 4 minutes  23.934 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-exhaust-system-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c1cc34af98766a17c3ec444694803a65/exhaust_system.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">exhaust_system.py</span></code></a></p>
