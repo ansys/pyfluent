@@ -2,12 +2,22 @@ name: Tag Iteration Ends
 
 on:
   schedule:  # 0400 UTC next day (end of US day)
-    - cron:  '0 4 6 8 *'
-    - cron:  '0 4 27 8 *'
-    - cron:  '0 4 17 9 *'
-    - cron:  '0 4 8 10 *'
-    - cron:  '0 4 5 11 *'
-    - cron:  '0 4 3 12 *'
+    - cron:  '0 4 21 1 *'
+    - cron:  '0 4 11 2 *'
+    - cron:  '0 4 4 3 *'
+    - cron:  '0 4 25 3 *'
+    - cron:  '0 4 15 4 *'
+    - cron:  '0 4 13 5 *'
+    - cron:  '0 4 3 6 *'
+    - cron:  '0 4 24 6 *'
+    - cron:  '0 4 15 7 *'
+    - cron:  '0 4 5 8 *'
+    - cron:  '0 4 26 8 *'
+    - cron:  '0 4 16 9 *'
+    - cron:  '0 4 7 10 *'
+    - cron:  '0 4 4 11 *'
+    - cron:  '0 4 2 12 *'
+    - cron:  '0 4 30 12 *'
   workflow_dispatch:
 
 jobs:
