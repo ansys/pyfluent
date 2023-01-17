@@ -9,5 +9,5 @@ solver.tui.solution.methods.multiphase\_numerics.heat\_mass\_transfer.area\_dens
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density
-   :members: ia_grad_sym, vof_min_seeding
+   :members: vof_min_seeding, ia_grad_sym
 

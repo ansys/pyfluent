@@ -9,5 +9,5 @@ solver.tui.define.custom\_field\_functions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.custom_field_functions
-   :members: list_valid_cell_function_names, delete, define, load, save, example_cff_definitions
+   :members: example_cff_definitions, save, list_valid_cell_function_names, delete, define, load
 

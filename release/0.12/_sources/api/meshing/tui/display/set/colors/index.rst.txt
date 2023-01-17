@@ -9,10 +9,10 @@ meshing.tui.display.set.colors
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.colors
-   :members: surface, periodic_faces, background, interface_faces, reset_user_colors, user_color, skip_label, wall_faces, internal_faces, free_surface_faces, traction_faces, reset_colors, symmetry_faces, overset_faces, automatic_skip, foreground, interior_faces, outlet_faces, color_by_type, list, far_field_faces, inlet_faces, axis_faces, show_user_colors, rans_les_interface_faces, graphics_color_theme
+   :members: interface_faces, surface, inlet_faces, periodic_faces, far_field_faces, list, background, symmetry_faces, reset_colors, user_color, automatic_skip, free_surface_faces, axis_faces, overset_faces, traction_faces, show_user_colors, rans_les_interface_faces, reset_user_colors, internal_faces, color_by_type, wall_faces, outlet_faces, graphics_color_theme, skip_label, foreground, interior_faces
 
 .. toctree::
    :hidden:
 
-   by_type/index
    by_surface/index
+   by_type/index

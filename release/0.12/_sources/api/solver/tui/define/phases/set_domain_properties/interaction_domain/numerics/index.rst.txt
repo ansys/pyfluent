@@ -9,14 +9,14 @@ solver.tui.define.phases.set\_domain\_properties.interaction\_domain.numerics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.phases.set_domain_properties.interaction_domain.numerics
-   :members: wall_lubrication, model_transition, interfacial_area, mass_transfer, reactions, restitution, turbulence_interaction, turbulent_dispersion, slip_velocity, drag, heat_coeff
+   :members: turbulence_interaction, slip_velocity, turbulent_dispersion, drag, wall_lubrication, restitution, mass_transfer, reactions, heat_coeff, interfacial_area, model_transition
 
 .. toctree::
    :hidden:
 
+   virtual_mass/index
    interphase_discretization/index
    interphase_viscous_dissipation/index
-   surface_tension/index
-   lift/index
-   virtual_mass/index
    cavitation/index
+   lift/index
+   surface_tension/index

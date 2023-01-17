@@ -9,5 +9,5 @@ meshing.tui.mesh.domains
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.domains
-   :members: create_by_point, draw, activate, create_by_cell_zone, create, print, delete
+   :members: delete, create_by_cell_zone, print, draw, create, activate, create_by_point
 

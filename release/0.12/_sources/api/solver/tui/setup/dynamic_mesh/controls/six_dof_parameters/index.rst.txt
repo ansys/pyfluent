@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.controls.six\_dof\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.six_dof_parameters
-   :members: z_component_of_gravity, motion_history_file_name, create_properties, delete_properties, y_component_of_gravity, motion_history, x_component_of_gravity, second_order, list_properties
+   :members: z_component_of_gravity, create_properties, second_order, y_component_of_gravity, delete_properties, list_properties, motion_history, motion_history_file_name, x_component_of_gravity
 

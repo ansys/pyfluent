@@ -9,10 +9,10 @@ solver.tui.solve.animate.pulse
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse
-   :members: write, pulse_mode
+   :members: pulse_mode, write
 
 .. toctree::
    :hidden:
 
-   video/index
    hardcopy/index
+   video/index

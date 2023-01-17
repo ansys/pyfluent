@@ -9,10 +9,10 @@ solver.tui.define.models.structure
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.structure
-   :members: thermal_effects, linear_elasticity, structure_off, nonlinear_elasticity
+   :members: nonlinear_elasticity, linear_elasticity, structure_off, thermal_effects
 
 .. toctree::
    :hidden:
 
-   expert/index
    controls/index
+   expert/index

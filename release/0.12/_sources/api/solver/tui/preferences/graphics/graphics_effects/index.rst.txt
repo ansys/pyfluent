@@ -9,5 +9,5 @@ solver.tui.preferences.graphics.graphics\_effects
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.graphics_effects
-   :members: bloom_strength, reflections_enabled, show_marker_reflections, ambient_occlusion_quality, show_edge_reflections, grid_color, anti_aliasing, grid_plane_offset, ambient_occlusion_strength, grid_plane_size_factor, grid_plane_count, bloom_enabled, ambient_occlusion_enabled, bloom_blur, plane_direction, grid_plane_enabled, update_after_mouse_release, simple_shadows_enabled, shadow_map_enabled
+   :members: grid_plane_enabled, ambient_occlusion_strength, grid_color, grid_plane_offset, reflections_enabled, bloom_strength, bloom_enabled, show_marker_reflections, bloom_blur, shadow_map_enabled, update_after_mouse_release, ambient_occlusion_enabled, grid_plane_size_factor, anti_aliasing, simple_shadows_enabled, ambient_occlusion_quality, show_edge_reflections, plane_direction, grid_plane_count
 

@@ -9,5 +9,5 @@ meshing.tui.file.project
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.project
-   :members: open, save_as, new, save, archive, save_as_copy
+   :members: archive, save_as_copy, save_as, open, save, new
 

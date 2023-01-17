@@ -9,5 +9,5 @@ solver.tui.solution.cell\_registers
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.cell_registers
-   :members: apply_poor_mesh_numerics, list, add, edit, refine, adapt, list_properties, coarsen, delete, display
+   :members: delete, adapt, edit, coarsen, list, add, apply_poor_mesh_numerics, refine, display, list_properties
 

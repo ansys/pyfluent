@@ -9,7 +9,7 @@ solver.tui.setup.models.multiphase.population\_balance
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.population_balance
-   :members: size_calculator, model, include_expansion
+   :members: size_calculator, include_expansion, model
 
 .. toctree::
    :hidden:

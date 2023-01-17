@@ -9,5 +9,5 @@ solver.tui.results.graphics.expert.flamelet\_data
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.flamelet_data
-   :members: plot_1d_slice, carpet_plot, draw_number_box, write_to_file
+   :members: write_to_file, draw_number_box, plot_1d_slice, carpet_plot
 

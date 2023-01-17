@@ -9,5 +9,5 @@ meshing.tui.cad\_assemblies.manage\_state
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.cad_assemblies.manage_state
-   :members: suppress, unsuppress, unlock
+   :members: suppress, unlock, unsuppress
 

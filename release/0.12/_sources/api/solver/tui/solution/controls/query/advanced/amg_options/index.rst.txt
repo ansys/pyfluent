@@ -9,5 +9,5 @@ solver.tui.solution.controls.query.advanced.amg\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.query.advanced.amg_options
-   :members: conservative_amg_coarsening, aggressive_amg_coarsening, amg_gpgpu_options, laplace_coarsening
+   :members: laplace_coarsening, conservative_amg_coarsening, amg_gpgpu_options, aggressive_amg_coarsening
 

@@ -9,5 +9,5 @@ solver.tui.setup.models.radiation.s2s\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.radiation.s2s_parameters
-   :members: non_participating_boundary_zones_temperature, compute_vf_accelerated, compute_clusters_and_vf_accelerated, use_new_cluster_algorithm, set_global_faces_per_surface_cluster, compute_fpsc_values, compute_vf_only, use_old_cluster_algorithm, print_thread_clusters, compute_write_vf, print_zonewise_radiation, read_vf_file, enable_mesh_interface_clustering, split_angle, set_vf_parameters
+   :members: compute_vf_accelerated, compute_vf_only, print_zonewise_radiation, enable_mesh_interface_clustering, set_global_faces_per_surface_cluster, compute_clusters_and_vf_accelerated, print_thread_clusters, use_new_cluster_algorithm, split_angle, set_vf_parameters, compute_fpsc_values, read_vf_file, non_participating_boundary_zones_temperature, use_old_cluster_algorithm, compute_write_vf
 

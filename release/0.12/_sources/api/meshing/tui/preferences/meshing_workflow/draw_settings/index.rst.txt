@@ -9,5 +9,5 @@ meshing.tui.preferences.meshing\_workflow.draw\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.meshing_workflow.draw_settings
-   :members: facet_limit, face_zone_limit, auto_draw
+   :members: auto_draw, facet_limit, face_zone_limit
 

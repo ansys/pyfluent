@@ -9,5 +9,5 @@ solver.tui.define.models.soot\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.soot_parameters
-   :members: inlet_diffusion, soot_process_parameters, soot_model_udfs, modify_schmidt_number, soot_turbulence_interaction, soot_model_parameters, soot_radiation_interaction
+   :members: soot_process_parameters, soot_model_parameters, soot_turbulence_interaction, soot_radiation_interaction, modify_schmidt_number, inlet_diffusion, soot_model_udfs
 

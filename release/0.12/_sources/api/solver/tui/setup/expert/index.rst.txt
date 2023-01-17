@@ -9,7 +9,7 @@ solver.tui.setup.expert
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.expert
-   :members: stiff_chemistry, enable_mesh_morpher_optimizer, heterogeneous_stiff_chemistry, beta_feature_access
+   :members: beta_feature_access, enable_mesh_morpher_optimizer, stiff_chemistry, heterogeneous_stiff_chemistry
 
 .. toctree::
    :hidden:

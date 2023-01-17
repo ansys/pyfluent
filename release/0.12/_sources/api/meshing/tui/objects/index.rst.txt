@@ -9,18 +9,18 @@ meshing.tui.objects
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects
-   :members: improve_feature_capture, rename_object, delete_unreferenced_faces_and_edges, update, delete_all, create, merge_nodes, separate_faces_by_angle, restore_faces, merge_walls, merge_voids, separate_faces_by_seed, change_suffix, rename_cell_zone_boundaries_using_labels, change_object_type, create_multiple, summary, list, improve_object_quality, scale, translate, delete, create_intersection_loops, create_and_activate_domain, merge, sew, create_groups, clear_backup, merge_edges, extract_edges, delete_all_geom, change_prefix, check_mesh, rotate, rename_object_zones
+   :members: check_mesh, list, delete_all_geom, rename_object, change_prefix, improve_object_quality, summary, create, extract_edges, rotate, merge_edges, restore_faces, merge_nodes, delete, update, separate_faces_by_angle, create_and_activate_domain, scale, delete_unreferenced_faces_and_edges, delete_all, sew, rename_object_zones, rename_cell_zone_boundaries_using_labels, separate_faces_by_seed, merge_walls, translate, improve_feature_capture, merge_voids, merge, create_groups, change_suffix, create_multiple, clear_backup, create_intersection_loops, change_object_type
 
 .. toctree::
    :hidden:
 
-   join_intersect/index
+   create_new_mesh_object/index
    set/index
    labels/index
-   wrap/index
-   create_new_mesh_object/index
-   volumetric_regions/index
-   cad_association/index
-   fix_holes/index
    remove_gaps/index
+   join_intersect/index
    deprecated/index
+   cad_association/index
+   wrap/index
+   volumetric_regions/index
+   fix_holes/index

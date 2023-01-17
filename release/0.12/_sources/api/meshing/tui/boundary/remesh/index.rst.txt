@@ -9,10 +9,10 @@ meshing.tui.boundary.remesh
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.remesh
-   :members: join_all_face_zones, mark_stitch_faces, stitch_with_preserve_boundary, remesh_overlapping_zones, mark_join_faces, insert_edge_zone, create_all_intrst_loops, join_face_zones, intersect_all_face_zones, intersect_face_zones, remesh_marked_faces, remesh_constant_size, coarsen_and_refine, create_edge_loops, mark_intersecting_faces, create_intersect_loop, create_join_loop, stitch_all_face_zones, faceted_stitch_zones, stitch_face_zones, create_stitch_loop, triangulate, remesh_face_zones_conformally, remesh_face_zone, delete_overlapped_edges, clear_marked_faces
+   :members: create_edge_loops, stitch_all_face_zones, remesh_overlapping_zones, coarsen_and_refine, remesh_constant_size, create_stitch_loop, stitch_with_preserve_boundary, insert_edge_zone, join_all_face_zones, intersect_all_face_zones, mark_stitch_faces, stitch_face_zones, clear_marked_faces, remesh_marked_faces, intersect_face_zones, remesh_face_zone, faceted_stitch_zones, join_face_zones, triangulate, create_join_loop, delete_overlapped_edges, remesh_face_zones_conformally, mark_join_faces, create_all_intrst_loops, mark_intersecting_faces, create_intersect_loop
 
 .. toctree::
    :hidden:
 
-   size_functions/index
    controls/index
+   size_functions/index

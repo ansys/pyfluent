@@ -9,5 +9,5 @@ solver.tui.solve.set.data\_sampling\_options.dft\_datasets
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.data_sampling_options.dft_datasets
-   :members: band_or_tone, quantities, freq_tone_and_sampling, zones, freq_min_max, add_datasets, freq_step_and_sampling
+   :members: freq_min_max, zones, add_datasets, band_or_tone, quantities, freq_tone_and_sampling, freq_step_and_sampling
 

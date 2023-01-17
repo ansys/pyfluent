@@ -9,15 +9,15 @@ solver.tui.results.graphics\_window
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window
-   :members: close_window_by_name, update_layout, open_window, set_window_by_name, set_window, close_window, save_picture
+   :members: close_window_by_name, set_window, update_layout, set_window_by_name, close_window, open_window, save_picture
 
 .. toctree::
    :hidden:
 
-   view_sync/index
-   views/index
-   display_states/index
-   picture/index
-   embedded_windows/index
    windows/index
    titles/index
+   view_sync/index
+   views/index
+   picture/index
+   embedded_windows/index
+   display_states/index

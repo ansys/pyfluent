@@ -9,5 +9,5 @@ meshing.tui.mesh.rapid\_octree.mesh\_sizing
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.rapid_octree.mesh_sizing
-   :members: delete_surface_sizing, mesh_coarsening_exponent, boundary_layers, max_cell_size, surface_coarsening_layers, buffer_layers, list_surface_sizings, feature_angle_refinement, change_surface_sizing, clear_all_surface_sizings, boundary_cell_size, add_surface_sizing
+   :members: list_surface_sizings, boundary_layers, boundary_cell_size, buffer_layers, surface_coarsening_layers, max_cell_size, clear_all_surface_sizings, feature_angle_refinement, delete_surface_sizing, add_surface_sizing, change_surface_sizing, mesh_coarsening_exponent
 

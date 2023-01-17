@@ -9,21 +9,21 @@ solver.tui.preferences.graphics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics
-   :members: event_poll_timeout, scroll_wheel_event_end_timer, hidden_surface_removal_method, double_buffering, rotation_centerpoint_visible, set_camera_normal_to_surface_increments, show_hidden_lines, marker_drawing_mode, force_key_frame_animation_markers_to_off, show_hidden_surfaces, min_graphics_text_size, switch_to_open_glfor_remote_visualization, remove_partition_lines_tolerance, lower_resolution_graphics_window_line_width, text_window_line_width, test_use_external_function, graphics_window_line_width, point_tool_size, animation_option, max_graphics_text_size, enable_non_object_based_workflow, remove_partition_lines, plot_legend_margin, event_poll_interval, graphics_window_point_symbol, higher_resolution_graphics_window_line_width
+   :members: min_graphics_text_size, force_key_frame_animation_markers_to_off, enable_non_object_based_workflow, marker_drawing_mode, plot_legend_margin, show_hidden_lines, remove_partition_lines_tolerance, show_hidden_surfaces, lower_resolution_graphics_window_line_width, event_poll_timeout, rotation_centerpoint_visible, test_use_external_function, animation_option, higher_resolution_graphics_window_line_width, remove_partition_lines, scroll_wheel_event_end_timer, graphics_window_point_symbol, hidden_surface_removal_method, switch_to_open_glfor_remote_visualization, set_camera_normal_to_surface_increments, event_poll_interval, graphics_window_line_width, text_window_line_width, point_tool_size, double_buffering, max_graphics_text_size
 
 .. toctree::
    :hidden:
 
-   hardcopy_settings/index
    export_video_settings/index
+   transparency/index
    vector_settings/index
-   colormap_settings/index
-   embedded_windows/index
-   meshing_mode/index
    lighting/index
-   boundary_markers/index
-   graphics_effects/index
-   performance/index
    manage_hoops_memory/index
    material_effects/index
-   transparency/index
+   graphics_effects/index
+   colormap_settings/index
+   meshing_mode/index
+   boundary_markers/index
+   hardcopy_settings/index
+   performance/index
+   embedded_windows/index

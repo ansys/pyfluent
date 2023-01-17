@@ -9,5 +9,5 @@ solver.tui.results.graphics.expert.set.picture.color\_mode
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.picture.color_mode
-   :members: list, gray_scale, color, mono_chrome
+   :members: mono_chrome, color, gray_scale, list
 

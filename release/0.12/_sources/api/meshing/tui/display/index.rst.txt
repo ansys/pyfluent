@@ -9,16 +9,16 @@ meshing.tui.display
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display
-   :members: views, all_grid, draw_zones, boundary_grid, boundary_cells, set_list_tree_separator, save_picture, clear, show_hide_clipping_plane_triad, draw_cells_using_faces, center_view_on, redisplay, draw_face_zones_using_entities, update_layout, clear_annotation, draw_cells_using_nodes, annotate
+   :members: annotate, set_list_tree_separator, views, save_picture, clear, show_hide_clipping_plane_triad, draw_zones, boundary_cells, redisplay, all_grid, boundary_grid, update_layout, center_view_on, draw_cells_using_faces, draw_face_zones_using_entities, clear_annotation, draw_cells_using_nodes
 
 .. toctree::
    :hidden:
 
-   set_grid/index
-   set/index
-   objects/index
-   update_scene/index
    zones/index
-   advanced_rendering/index
+   objects/index
    display_states/index
+   update_scene/index
+   advanced_rendering/index
+   set_grid/index
    xy_plot/index
+   set/index

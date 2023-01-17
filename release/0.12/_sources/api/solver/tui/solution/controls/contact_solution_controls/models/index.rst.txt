@@ -9,5 +9,5 @@ solver.tui.solution.controls.contact\_solution\_controls.models
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.models
-   :members: model_ramping, ramp_flow, ramp_scalars, ramp_turbulence
+   :members: ramp_turbulence, ramp_scalars, model_ramping, ramp_flow
 

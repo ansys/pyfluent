@@ -9,5 +9,5 @@ solver.tui.results.surface.post\_processing\_volume
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.surface.post_processing_volume
-   :members: create_from_file, create_octree
+   :members: create_octree, create_from_file
 

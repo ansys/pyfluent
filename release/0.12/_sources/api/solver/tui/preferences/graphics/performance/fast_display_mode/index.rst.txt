@@ -9,5 +9,5 @@ solver.tui.preferences.graphics.performance.fast\_display\_mode
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.performance.fast_display_mode
-   :members: perimeter_edges_shown, silhouette_shown, nodes_shown, transparency, status, faces_shown, markers_decimation, culling
+   :members: silhouette_shown, status, perimeter_edges_shown, markers_decimation, culling, transparency, nodes_shown, faces_shown
 

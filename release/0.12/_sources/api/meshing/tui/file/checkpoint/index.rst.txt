@@ -9,5 +9,5 @@ meshing.tui.file.checkpoint
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.file.checkpoint
-   :members: list_checkpoint_names, write_checkpoint, restore_checkpoint, delete_checkpoint
+   :members: restore_checkpoint, list_checkpoint_names, write_checkpoint, delete_checkpoint
 

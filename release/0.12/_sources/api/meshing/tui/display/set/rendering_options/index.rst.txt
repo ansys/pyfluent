@@ -9,5 +9,5 @@ meshing.tui.display.set.rendering\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.rendering_options
-   :members: hidden_surfaces, auto_spin, help_text_color, device_info, animation_option, color_map_alignment, face_displacement, double_buffering, show_colormap, set_rendering_options, hidden_surface_method, surface_edge_visibility, driver, outer_face_cull
+   :members: surface_edge_visibility, face_displacement, animation_option, help_text_color, driver, hidden_surface_method, outer_face_cull, auto_spin, set_rendering_options, device_info, double_buffering, hidden_surfaces, color_map_alignment, show_colormap
 

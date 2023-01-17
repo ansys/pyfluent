@@ -9,23 +9,23 @@ meshing.tui
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu
-   :members: switch_to_solution_mode, exit, beta_feature_access, print_license_usage, close_fluent
+   :members: switch_to_solution_mode, exit, print_license_usage, close_fluent, beta_feature_access
 
 .. toctree::
    :hidden:
 
-   reference_frames/index
-   mesh/index
    material_point/index
-   diagnostics/index
-   boundary/index
-   scoped_sizing/index
-   display/index
-   preferences/index
-   file/index
-   report/index
    openmp_controls/index
-   objects/index
-   size_functions/index
    parallel/index
+   preferences/index
+   report/index
+   diagnostics/index
+   objects/index
+   boundary/index
+   size_functions/index
    cad_assemblies/index
+   display/index
+   file/index
+   reference_frames/index
+   scoped_sizing/index
+   mesh/index

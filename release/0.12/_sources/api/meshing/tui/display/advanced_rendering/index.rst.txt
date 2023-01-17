@@ -9,5 +9,5 @@ meshing.tui.display.advanced\_rendering
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.advanced_rendering
-   :members: fast_silhouette_edges, edge_color, static_model, max_extent_culling, simple_shadow
+   :members: edge_color, static_model, fast_silhouette_edges, max_extent_culling, simple_shadow
 

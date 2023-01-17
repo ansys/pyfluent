@@ -12,5 +12,5 @@ solver.tui.solution.calculation\_activities.animate
 .. toctree::
    :hidden:
 
-   objects/index
    define/index
+   objects/index

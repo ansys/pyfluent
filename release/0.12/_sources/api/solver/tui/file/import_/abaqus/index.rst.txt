@@ -9,5 +9,5 @@ solver.tui.file.import\_.abaqus
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.import_.abaqus
-   :members: odb, fil, input
+   :members: fil, input, odb
 

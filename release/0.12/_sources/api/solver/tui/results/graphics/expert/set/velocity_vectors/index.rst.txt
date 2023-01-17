@@ -9,5 +9,5 @@ solver.tui.results.graphics.expert.set.velocity\_vectors
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.velocity_vectors
-   :members: component_x, scale_head, render_mesh, color_levels, scale, style, auto_scale, color, constant_length, component_y, node_values, component_z, in_plane, log_scale, surfaces, relative, global_range
+   :members: node_values, render_mesh, color_levels, relative, log_scale, component_z, in_plane, scale_head, style, component_x, color, component_y, auto_scale, scale, constant_length, global_range, surfaces
 
