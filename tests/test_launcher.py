@@ -11,7 +11,7 @@ from ansys.fluent.core.launcher.launcher import get_ansys_version, get_fluent_ex
 def test_manual_fluent_version_setting():
     """Test case for setting up the Ansys / Fluent version via program"""
 
-    initial_version_info = get_ansys_version()
+    old_ansys_version = launcher._ANSYS_VERSION_SET
 
     pyfluent.set_ansys_version("23.1.0")
     assert get_ansys_version() == "23.1.0"
@@ -27,7 +27,7 @@ def test_manual_fluent_version_setting():
         pyfluent.set_ansys_version(22.1)
 
     # Resets the global variable to its original state
-    pyfluent.set_ansys_version(initial_version_info)
+    launcher._ANSYS_VERSION_SET = old_ansys_version
 
 
 def test_manual_fluent_path_setting():
@@ -122,7 +122,7 @@ def test_get_fluent_exe_path_from_set_ansys_version(monkeypatch):
         expected_path = Path("ansys_inc/v222/fluent") / "bin" / "fluent"
     assert get_ansys_version() == "22.2.0"
     assert get_fluent_exe_path() == expected_path
-    pyfluent.set_ansys_version(old_ansys_version)
+    launcher._ANSYS_VERSION_SET = old_ansys_version
 
 
 def test_get_fluent_exe_path_from_set_fluent_exe_path(monkeypatch):
@@ -138,7 +138,7 @@ def test_get_fluent_exe_path_from_set_fluent_exe_path(monkeypatch):
     expected_path = Path("ansys_inc/vNNN/fluent/bin/fluent")
     assert get_fluent_exe_path() == expected_path
     launcher._FLUENT_EXE_PATH_SET = old_fluent_exe_path
-    pyfluent.set_ansys_version(old_ansys_version)
+    launcher._ANSYS_VERSION_SET = old_ansys_version
 
 
 def test_get_fluent_exe_path_from_product_version_launcher_arg(monkeypatch):
@@ -157,7 +157,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(monkeypatch):
         expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
     assert get_fluent_exe_path(product_version="23.1.0") == expected_path
     launcher._FLUENT_EXE_PATH_SET = old_fluent_exe_path
-    pyfluent.set_ansys_version(old_ansys_version)
+    launcher._ANSYS_VERSION_SET = old_ansys_version
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
@@ -176,4 +176,4 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(monkeypatch):
         expected_path = Path("dev/vNNN/fluent") / "bin" / "fluent"
     assert get_fluent_exe_path(product_version="23.1.0") == expected_path
     launcher._FLUENT_EXE_PATH_SET = old_fluent_exe_path
-    pyfluent.set_ansys_version(old_ansys_version)
+    launcher._ANSYS_VERSION_SET = old_ansys_version
