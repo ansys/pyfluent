@@ -1,0 +1,13 @@
+.. _ref_solver_tui_define_profiles:
+
+solver.tui.define.profiles
+==========================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.profiles
+   :members: display_profile_surface, orient_profile, morphing, list_profiles, set_preference_profile_point_cloud_data, list_profile_fields, overlay_profile_point_cloud_data, link_profile_to_reference_frame, update_interval, replicate_profile, display_profile_point_cloud_data, list_profile_parameters, delete_all, overlay_profile_surface, delete, interpolation_method
+

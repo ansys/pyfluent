@@ -1,0 +1,18 @@
+.. _ref_solver_tui_define_models_dpm_numerics_high_resolution_tracking:
+
+solver.tui.define.models.dpm.numerics.high\_resolution\_tracking
+================================================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.numerics.high_resolution_tracking
+   :members: enable_high_resolution_tracking, remove_stuck_particles, enable_automatic_intersection_tolerance, use_quad_face_centroid, set_subtet_intersection_tolerance, use_barycentric_sampling, sliding_interface_crossover_fraction, set_film_spreading_parameter, use_velocity_based_error_control, use_particle_timestep_for_intersection_tolerance, boundary_layer_tracking, check_subtet_validity, project_wall_film_particles_to_film, always_use_face_centroid_with_periodics, enable_barycentric_intersections
+
+.. toctree::
+   :hidden:
+
+   particle_relocation/index
+   barycentric_interpolation/index

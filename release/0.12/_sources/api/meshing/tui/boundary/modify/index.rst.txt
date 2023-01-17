@@ -1,0 +1,13 @@
+.. _ref_meshing_tui_boundary_modify:
+
+meshing.tui.boundary.modify
+===========================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.modify
+   :members: show_probe, select_probe, split_face, collapse, local_remesh, skew_report_zone, merge, auto_patch_holes, move, clear_selections, select_zone, create_mid_node, hole_feature_angle, select_filter, select_position, next_skew, undo, select_visible_entities, delta_move, show_filter, mark_skew_face, rezone, delete, patch_options, create, smooth, clear_skew_faces, deselect_last, swap, select_entity, list_selections, analyze_bnd_connectvty, skew
+

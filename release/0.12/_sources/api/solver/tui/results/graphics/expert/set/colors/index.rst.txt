@@ -1,0 +1,18 @@
+.. _ref_solver_tui_results_graphics_expert_set_colors:
+
+solver.tui.results.graphics.expert.set.colors
+=============================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.colors
+   :members: graphics_color_theme, wall_faces, automatic_skip, color_by_type, inlet_faces, internal_faces, overset_faces, traction_faces, symmetry_faces, rans_les_interface_faces, list, periodic_faces, foreground, free_surface_faces, skip_label, interior_faces, reset_user_colors, reset_colors, background, interface_faces, far_field_faces, show_user_colors, user_color, outlet_faces, axis_faces, surface
+
+.. toctree::
+   :hidden:
+
+   by_surface/index
+   by_type/index

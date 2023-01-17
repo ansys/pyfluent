@@ -1,0 +1,13 @@
+.. _ref_solver_tui_solve_initialize_compute_defaults:
+
+solver.tui.solve.initialize.compute\_defaults
+=============================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.initialize.compute_defaults
+   :members: axis, radiator, wall, intake_fan, rans_les_interface, periodic, degassing, geometry, dummy_entry, outflow, pressure_far_field, pressure_inlet, all_zones, fluid, interface, interior, recirculation_outlet, mass_flow_inlet, network, outlet_vent, fan, shadow, recirculation_inlet, porous_jump, mass_flow_outlet, inlet_vent, velocity_inlet, overset, network_end, symmetry, pressure_outlet, exhaust_fan, solid
+

@@ -1,0 +1,13 @@
+.. _ref_solver_tui_preferences_graphics_graphics_effects:
+
+solver.tui.preferences.graphics.graphics\_effects
+=================================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.graphics_effects
+   :members: bloom_strength, reflections_enabled, show_marker_reflections, ambient_occlusion_quality, show_edge_reflections, grid_color, anti_aliasing, grid_plane_offset, ambient_occlusion_strength, grid_plane_size_factor, grid_plane_count, bloom_enabled, ambient_occlusion_enabled, bloom_blur, plane_direction, grid_plane_enabled, update_after_mouse_release, simple_shadows_enabled, shadow_map_enabled
+

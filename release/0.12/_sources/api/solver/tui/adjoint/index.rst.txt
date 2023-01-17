@@ -1,0 +1,13 @@
+.. _ref_solver_tui_adjoint:
+
+solver.tui.adjoint
+==================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.adjoint
+   :members: morphing, reporting, controls, methods, optimizer, design_tool, postprocess_options, expert, utilities, geometry, monitors, multi_objective, run, observable
+

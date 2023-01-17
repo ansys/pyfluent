@@ -1,0 +1,18 @@
+.. _ref_solver_tui_solution_controls_query:
+
+solver.tui.solution.controls.query
+==================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.query
+   :members: relaxation_factor, equations, courant_number, p_v_controls, limits, under_relaxation
+
+.. toctree::
+   :hidden:
+
+   acoustics_wave_equation_controls/index
+   advanced/index

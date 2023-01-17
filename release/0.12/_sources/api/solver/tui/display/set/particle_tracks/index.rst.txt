@@ -1,0 +1,19 @@
+.. _ref_solver_tui_display_set_particle_tracks:
+
+solver.tui.display.set.particle\_tracks
+=======================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.particle_tracks
+   :members: arrow_scale, coarsen_factor, report_type, track_single_particle_stream, sphere_attrib, marker_size, history_filename, particle_skip, style, report_to, display, line_width, twist_factor, report_variables, radius, report_default_variables, arrow_space
+
+.. toctree::
+   :hidden:
+
+   vector_settings/index
+   sphere_settings/index
+   filter_settings/index

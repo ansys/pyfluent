@@ -1,0 +1,13 @@
+.. _ref_solver_tui_report_fluxes:
+
+solver.tui.report.fluxes
+========================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.fluxes
+   :members: heat_transfer, film_mass_flow, rad_heat_trans, film_heat_transfer, pressure_work, mass_flow, heat_transfer_sensible, viscous_work
+

@@ -1,0 +1,13 @@
+.. _ref_solver_tui_report_dpm_histogram_set:
+
+solver.tui.report.dpm\_histogram.set
+====================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.dpm_histogram.set
+   :members: number_of_bins, correlation, variable_power_3, diameter_statistics, logarithmic, maximum, cumulation_curve, percentage, weighting, auto_range, histogram_mode, minimum
+

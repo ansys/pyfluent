@@ -1,0 +1,17 @@
+.. _ref_solver_tui_parallel:
+
+solver.tui.parallel
+===================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parallel
+   :members: latency, timer, check, load_balance, partition, set, bandwidth, thread_number_control, check_verbosity, multidomain, show_connectivity, network
+
+.. toctree::
+   :hidden:
+
+   gpgpu/index

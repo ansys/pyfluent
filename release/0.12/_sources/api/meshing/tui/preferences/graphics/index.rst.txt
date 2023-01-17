@@ -1,0 +1,29 @@
+.. _ref_meshing_tui_preferences_graphics:
+
+meshing.tui.preferences.graphics
+================================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics
+   :members: set_camera_normal_to_surface_increments, text_window_line_width, plot_legend_margin, rotation_centerpoint_visible, enable_non_object_based_workflow, show_hidden_surfaces, marker_drawing_mode, point_tool_size, double_buffering, event_poll_timeout, min_graphics_text_size, event_poll_interval, animation_option, lower_resolution_graphics_window_line_width, higher_resolution_graphics_window_line_width, force_key_frame_animation_markers_to_off, remove_partition_lines, show_hidden_lines, hidden_surface_removal_method, test_use_external_function, max_graphics_text_size, graphics_window_line_width, graphics_window_point_symbol, switch_to_open_glfor_remote_visualization, scroll_wheel_event_end_timer, remove_partition_lines_tolerance
+
+.. toctree::
+   :hidden:
+
+   graphics_effects/index
+   transparency/index
+   hardcopy_settings/index
+   vector_settings/index
+   export_video_settings/index
+   manage_hoops_memory/index
+   performance/index
+   material_effects/index
+   colormap_settings/index
+   meshing_mode/index
+   boundary_markers/index
+   lighting/index
+   embedded_windows/index

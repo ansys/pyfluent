@@ -1,0 +1,13 @@
+.. _ref_solver_tui_setup_boundary_conditions_profiles:
+
+solver.tui.setup.boundary\_conditions.profiles
+==============================================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.profiles
+   :members: set_preference_profile_point_cloud_data, orient_profile, display_profile_point_cloud_data, update_interval, link_profile_to_reference_frame, delete, overlay_profile_surface, morphing, delete_all, list_profile_parameters, replicate_profile, display_profile_surface, interpolation_method, list_profile_fields, overlay_profile_point_cloud_data, list_profiles
+

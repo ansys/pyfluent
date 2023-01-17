@@ -1,0 +1,30 @@
+.. _ref_solver_tui_display:
+
+solver.tui.display
+==================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display
+   :members: set_window, mesh_outline, zone_mesh, surface_cells, close_window_by_name, graphics_window_layout, save_picture, close_window, annotate, profile, surface_mesh, multigrid_coarsening, add_custom_vector, update_layout, hsf_file, set_list_tree_separator, set_window_by_name, display_custom_vector, re_scale, clear_annotations, reacting_channel_curves, open_window, switch_to_post_processing_volume, vector, mesh_partition_boundary, re_render, mesh, contour, velocity_vector, switch_to_primary_volume
+
+.. toctree::
+   :hidden:
+
+   inverse_dft/index
+   embedded_windows/index
+   display_states/index
+   pdf_data/index
+   particle_tracks/index
+   objects/index
+   define/index
+   flamelet_data/index
+   views/index
+   surface/index
+   path_lines/index
+   view_sync/index
+   update_scene/index
+   set/index

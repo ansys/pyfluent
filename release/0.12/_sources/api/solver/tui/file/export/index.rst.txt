@@ -1,0 +1,17 @@
+.. _ref_solver_tui_file_export:
+
+solver.tui.file.export
+======================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.export
+   :members: fast_solution, icemcfd_for_icepak, fieldview_unstruct_mesh, ensight, common_fluids_format_post, tecplot, ensight_dvs_volume, custom_heat_flux, mechanical_apdl_input, particle_history_data, patran_neutral, mechanical_apdl, dx, fieldview_unstruct_data, cdat_for_cfd_post__and__ensight, fieldview, fast_scalar, ensight_dvs_surfaces, avs, fieldview_unstruct, ensight_gold_parallel_volume, system_coupling_definition_file_settings, abaqus, ascii, ideas, fieldview_unstruct_surfaces, fast_mesh, cgns, ensight_gold_parallel_surfaces, fieldview_xdb, nastran, fast_velocity, taitherm, gambit, patran_nodal, ensight_gold, fieldview_data
+
+.. toctree::
+   :hidden:
+
+   settings/index

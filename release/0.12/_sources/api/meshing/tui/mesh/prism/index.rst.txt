@@ -1,0 +1,20 @@
+.. _ref_meshing_tui_mesh_prism:
+
+meshing.tui.mesh.prism
+======================
+
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism
+   :members: mark_nonmanifold_nodes, create, mark_ignore_faces, mark_proximity_faces, reset_parameters, quality_method, list_parameters
+
+.. toctree::
+   :hidden:
+
+   improve/index
+   post_ignore/index
+   controls/index
+   split/index

@@ -1,0 +1,20 @@
+.. _ref_solver_tui_solution_initialize:
+
+solver.tui.solution.initialize
+==============================
+
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.initialize
+   :members: lwf_initialization, hyb_initialization, set_defaults, levelset_auto_init, set_hyb_initialization, init_turb_vel_fluctuations, patch, list_defaults, fmg_initialization, repair_wall_distance, open_channel_auto_init, reference_frame, init_flow_statistics, show_time_sampled, initialize_flow, set_fmg_initialization, init_acoustics_options, dpm_reset, show_iterations_sampled
+
+.. toctree::
+   :hidden:
+
+   compute_defaults/index
+   vof_patch_smooth_options/index
+   set_fmg_options/index
+   mp_localized_turb_init/index
