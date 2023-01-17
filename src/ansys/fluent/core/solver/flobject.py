@@ -137,9 +137,9 @@ class Base:
             return self.obj_name
         return ppath + "/" + self.obj_name
 
-    def get_attrs(self, attrs) -> Any:
+    def get_attrs(self, attrs, recursive=False) -> Any:
         """Get the requested attributes for the object."""
-        return self.flproxy.get_attrs(self.path, attrs)
+        return self.flproxy.get_attrs(self.path, attrs, recursive)
 
     def get_attr(self, attr, attr_type_or_types=None) -> Any:
         """Get the requested attribute for the object."""
