@@ -70,6 +70,17 @@ def test_kwargs():
         pyfluent.launch_fluent(abc=1, xyz=2)
 
 
+def test_get_fluent_exe_path_when_nothing_is_set(monkeypatch):
+    monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+    monkeypatch.delenv("AWP_ROOT232", raising=False)
+    monkeypatch.delenv("AWP_ROOT231", raising=False)
+    monkeypatch.delenv("AWP_ROOT222", raising=False)
+    with pytest.raises(RuntimeError):
+        get_ansys_version()
+    with pytest.raises(RuntimeError):
+        get_fluent_exe_path()
+
+
 def test_get_fluent_exe_path_from_awp_root_222(monkeypatch):
     monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
     monkeypatch.delenv("AWP_ROOT232", raising=False)
