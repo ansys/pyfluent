@@ -112,18 +112,18 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
 
     # Look for Fluent exe path in the following order:
     # 1. "PYFLUENT_FLUENT_ROOT" environment variable
-    if "PYFLUENT_FLUENT_ROOT" in os.environ:
-        fluent_root = os.environ["PYFLUENT_FLUENT_ROOT"]
-        return get_exe_path(fluent_root)
+    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    if fluent_root:
+        return get_exe_path(Path(fluent_root))
 
     # 2. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
 
-    # 3. value set by set_fluent_path
+    # 3. value set by set_fluent_exe_path
     if _FLUENT_EXE_PATH_SET:
-        return _FLUENT_EXE_PATH_SET
+        return Path(_FLUENT_EXE_PATH_SET)
 
     # 4. value from get_ansys_version
     ansys_version = get_ansys_version()
