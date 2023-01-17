@@ -30,10 +30,10 @@ def test_manual_fluent_version_setting():
 def test_manual_fluent_path_setting():
     """Test case for setting up the path to fluent.exe via program"""
     with pytest.raises(RuntimeError):
-        pyfluent.set_fluent_path("X:/dir_1/dir2/xxx.exe")
+        pyfluent.set_fluent_exe_path("X:/dir_1/dir2/xxx.exe")
 
     with pytest.raises(RuntimeError):
-        pyfluent.set_fluent_path("X:/dir_1/dir2/fluent.bat")
+        pyfluent.set_fluent_exe_path("X:/dir_1/dir2/fluent.bat")
 
 
 @pytest.mark.skip(reason="Can be used only locally.")
