@@ -66,7 +66,7 @@ class FieldInfo:
         Get fields information (field name, domain, and section).
 
     get_vector_fields_info(self) -> dict
-        Get vector fields information (vector of and components).
+        Get vector fields information.
 
     get_surfaces_info(self) -> dict
         Get surfaces information (surface name, ID, and type).

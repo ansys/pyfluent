@@ -28,10 +28,10 @@ The field info object is an attribute of the solver object:
 Sample requests
 ---------------
 
-Here are the methods for requesting each type of field:
+Here are the methods for requesting field information:
 
-- ``get_range`` for getting the range of the field.
 - ``get_fields_info`` for getting fields information.
+- ``get_range`` for getting the range of the field.
 - ``get_vector_fields_info`` for getting vector fields information.
 - ``get_surfaces_info`` for getting the surfaces information.
 
@@ -52,8 +52,8 @@ calling the ``get_fields_info`` method.
 Get range
 ~~~~~~~~~
 You can request the range (minimum and maximum values) for a given ``field`` by
-calling the ``get_range`` method. It takes an argument field (along with other
-optional arguments) which can be referred from ``get_fields_info``.
+calling the ``get_range`` method. It takes a ``field`` argument which can be obtained
+from the keys of the dictionary returned by ``get_fields_info`` method.
 
 .. code-block:: python
 
@@ -62,8 +62,8 @@ optional arguments) which can be referred from ``get_fields_info``.
 
 Get vector fields info
 ~~~~~~~~~~~~~~~~~~~~~~
-You can request the vector fields information (vector of and components) by
-calling the ``get_vector_fields_info`` method.
+You can request the vector fields information by calling the
+``get_vector_fields_info`` method.
 
 .. code-block:: python
 
