@@ -28,7 +28,7 @@ from data.tui_menu_descriptions import MENU_DESCRIPTIONS
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import LOG
-from ansys.fluent.core.launcher.launcher import get_fluent_path
+from ansys.fluent.core.launcher.launcher import get_ansys_version
 from ansys.fluent.core.services.datamodel_tui import (
     PyMenu,
     convert_path_to_grpc_path,
@@ -94,9 +94,10 @@ def _copy_tui_help_xml_file(version: str):
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
+        ansys_version = get_ansys_version()
+        awp_root = os.environ["AWP_ROOT" + "".join(str(ansys_version).split("."))[:-1]]
         xml_source = (
-            get_fluent_path()
-            / ".."
+            Path(awp_root)
             / "commonfiles"
             / "help"
             / "en-us"
