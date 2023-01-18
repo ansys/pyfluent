@@ -78,6 +78,20 @@ class FieldInfo:
     def get_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
+        """Get the range (minimum and maximum values) of the field.
+
+        Parameters
+        ----------
+        field: str
+            Name of the field
+        node_value: bool
+        surface_ids : List[int], optional
+            List of surface IDS for the surface data.
+
+        Returns
+        -------
+        List[float]
+        """
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
@@ -90,6 +104,13 @@ class FieldInfo:
         return [response.minimum, response.maximum]
 
     def get_fields_info(self) -> dict:
+        """
+        Get fields information (field name, domain, and section).
+
+        Returns
+        -------
+        Dict
+        """
         request = FieldDataProtoModule.GetFieldsInfoRequest()
         response = self._service.get_fields_info(request)
         return {
@@ -102,6 +123,13 @@ class FieldInfo:
         }
 
     def get_vector_fields_info(self) -> dict:
+        """
+        Get vector fields information (vector components).
+
+        Returns
+        -------
+        Dict
+        """
         request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
         response = self._service.get_vector_fields_info(request)
         return {
@@ -114,6 +142,13 @@ class FieldInfo:
         }
 
     def get_surfaces_info(self) -> dict:
+        """
+        Get surfaces information (surface name, ID, and type).
+
+        Returns
+        -------
+        Dict
+        """
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self._service.get_surfaces_info(request)
         info = {
