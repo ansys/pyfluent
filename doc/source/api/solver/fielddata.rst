@@ -226,6 +226,22 @@ The response to a pathlines field request contains the following fields:
 - ``particle-time``, which contains  particle time, if requested. 
 - ``additional field name``, which contains  additional field, if requested. additional field name is the same name as the additional field name passed in the request.
 
+Allowed values
+--------------
+Additionally there is an allowed_values provided on field name,
+surface name and ids to guide the users.
+
+Some sample use cases are demonstrated below:
+
+.. code-block:: python
+
+  >>> field_data.get_scalar_field_data.field_name.allowed_values()
+  >>> transaction.add_scalar_fields_request.field_name.allowed_values()
+  >>> field_data.get_scalar_field_data.surface_name.allowed_values()
+  >>> transaction.add_scalar_fields_request.surface_names.allowed_values()
+  >>> field_data.get_surface_data.surface_ids.allowed_values()
+  >>> transaction.add_scalar_fields_request.surface_ids.allowed_values()
+
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
