@@ -103,22 +103,37 @@ def read(in_port):
 
     def read_ahead(token):
         if "(" == token:
-            L = []
+            list_ = None
+            to_tuple = False
             cons = None
             while True:
                 token = in_port.next_token()
                 if token == ")":
-                    return L
+                    return (
+                        (tuple(list_) if to_tuple else list_) if list_ else (
+                            tuple(cons) if cons else (
+                                []
+                            )))
                 if token == ".":
-                    if len(L) > 1:
-                        cons = [L.pop()]
+                    if list_:
+                        cons = [list_.pop()]
+                        if len(list_):
+                            to_tuple = True
+                        else:
+                            list_ = None
+                    else:
+                        raise SyntaxError("unexpected .")
                 else:
                     ahead = read_ahead(token)
                     if cons:
                         cons.append(ahead)
-                        ahead = cons
-                        cons = None
-                    L.append(ahead)
+                        ahead = tuple(cons)
+                        if list_:
+                            cons = None
+                    else:
+                        list_ = list_ or []
+                    if list_ is not None:
+                        list_.append(ahead)
         elif ")" == token:
             raise SyntaxError("unexpected )")
         elif token in quotes:
@@ -144,7 +159,7 @@ def atom(token):
     elif token == "#f":
         return False
     elif token[0] == '"':
-        return token[1:-1]
+        return token
     try:
         return int(token)
     except ValueError:
@@ -159,6 +174,8 @@ def atom(token):
 
 def to_string(x):
     """Convert a Python object back into a Lisp-readable string."""
+    def sequence(sep):
+        return "(" + sep.join(map(to_string, x)) + ")"
     if x is True:
         return "#t"
     elif x is False:
@@ -166,9 +183,11 @@ def to_string(x):
     elif isa(x, Symbol):
         return x
     elif isa(x, str):
-        return repr(x)
-    elif isa(x, list):
-        return "(" + " ".join(map(to_string, x)) + ")"
+        return x.replace("\'", '\"')
+    elif isinstance(x, list):
+        return sequence(" ")
+    elif isinstance(x, tuple):
+        return sequence(" . ")
     elif isa(x, complex):
         return str(x).replace("j", "i")
     else:

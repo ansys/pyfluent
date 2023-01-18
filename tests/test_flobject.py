@@ -390,7 +390,7 @@ class Proxy:
     def execute_cmd(self, path, command, **kwds):
         return self.get_obj(path).get_command(command)(**kwds)
 
-    def get_attrs(self, path, attrs):
+    def get_attrs(self, path, attrs, recursive=False):
         return self.get_obj(path).get_attrs(attrs)
 
     @classmethod
