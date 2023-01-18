@@ -233,6 +233,7 @@ class _FluentConnection:
             self.scheme_eval,
             self.transcript,
             self.events_manager,
+            self.monitors_manager,
             self._remote_instance,
         )
         _FluentConnection._monitor_thread.cbs.append(self._finalizer)
@@ -292,6 +293,7 @@ class _FluentConnection:
         scheme_eval,
         transcript,
         events_manager,
+        monitors_manager,
         remote_instance,
     ) -> None:
         if channel:
@@ -302,6 +304,7 @@ class _FluentConnection:
                     pass
             transcript.stop()
             events_manager.stop()
+            monitors_manager.stop()
             channel.close()
             channel = None
 
