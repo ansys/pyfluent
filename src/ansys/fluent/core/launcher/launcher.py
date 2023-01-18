@@ -27,16 +27,22 @@ import ansys.platform.instancemanagement as pypim
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-FLUENT_VERSION = "23.1.0"
-_FLUENT_EXE_PATH = ""
+
+_FLUENT_EXE_PATH_SET = None  # set by set_fluent_path
+_ANSYS_VERSION_SET = None  # set by set_ansys_version
+
+
+def _is_windows():
+    """Check if the current operating system is windows."""
+    return platform.system() == "Windows"
 
 
 class FluentVersion(Enum):
     """Contains the standard Ansys Fluent release."""
 
-    version_22R2 = "22.2.0"
-    version_23R1 = "23.1.0"
     version_23R2 = "23.2.0"
+    version_23R1 = "23.1.0"
+    version_22R2 = "22.2.0"
 
     @classmethod
     def _missing_(cls, version):
@@ -54,14 +60,14 @@ class FluentVersion(Enum):
         return str(self.value)
 
 
-def set_fluent_path(fluent_exe_path: Union[str, Path]) -> None:
-    """Set the Fluent installation path manually.
+def set_fluent_exe_path(fluent_exe_path: Union[str, Path]) -> None:
+    """Set the Fluent executable path manually.
 
     This supersedes the Fluent path set in the environment variable.
     """
     if Path(fluent_exe_path).exists():
-        global _FLUENT_EXE_PATH
-        _FLUENT_EXE_PATH = (str(fluent_exe_path))
+        global _FLUENT_EXE_PATH_SET
+        _FLUENT_EXE_PATH_SET = str(fluent_exe_path)
     else:
         raise RuntimeError(
             f"The passed path '{fluent_exe_path}' does not contain a valid Fluent executable file."
@@ -75,13 +81,53 @@ def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
     and the environment variables are updated properly. This supersedes
     the Fluent path set in the environment variable.
     """
-    global FLUENT_VERSION
-    FLUENT_VERSION = str(FluentVersion(version))
+    global _ANSYS_VERSION_SET
+    _ANSYS_VERSION_SET = str(FluentVersion(version))
 
 
 def get_ansys_version() -> str:
-    """Return the Fluent version."""
-    return FLUENT_VERSION
+    # Look for ANSYS version in the following order:
+    # 1. value set by set_ansys_version
+    if _ANSYS_VERSION_SET:
+        return _ANSYS_VERSION_SET
+
+    # 2. Search for the latest AWP_ROOT environment variable
+    for v in FluentVersion:
+        if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
+            return str(v)
+
+    raise RuntimeError("No ANSYS version can be found.")
+
+
+def get_fluent_exe_path(**launch_argvals) -> Path:
+    def get_fluent_root(version: FluentVersion) -> Path:
+        awp_root = os.environ["AWP_ROOT" + "".join(str(version).split("."))[:-1]]
+        return Path(awp_root) / "fluent"
+
+    def get_exe_path(fluent_root: Path) -> Path:
+        if _is_windows():
+            return fluent_root / "ntbin" / "win64" / "fluent.exe"
+        else:
+            return fluent_root / "bin" / "fluent"
+
+    # Look for Fluent exe path in the following order:
+    # 1. "PYFLUENT_FLUENT_ROOT" environment variable
+    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    if fluent_root:
+        return get_exe_path(Path(fluent_root))
+
+    # 2. product_version parameter passed with launch_fluent
+    product_version = launch_argvals.get("product_version")
+    if product_version:
+        return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+
+    # 3. value set by set_fluent_exe_path
+    if _FLUENT_EXE_PATH_SET:
+        return Path(_FLUENT_EXE_PATH_SET)
+
+    # 4. value from get_ansys_version
+    ansys_version = get_ansys_version()
+    return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
 
 
 class LaunchModes(Enum):
@@ -103,43 +149,6 @@ class LaunchModes(Enum):
             raise RuntimeError(
                 f"The passed mode '{mode}' matches none of the allowed modes."
             )
-
-
-def get_fluent_path() -> Path:
-    """Get the local Fluent installation path specified by PYFLUENT_FLUENT_ROOT
-    or AWP_ROOTXXX environment variable.
-
-    Returns
-    -------
-    str
-        Local Fluent installation path.
-    """
-    if "PYFLUENT_FLUENT_ROOT" in os.environ:
-        path = os.environ["PYFLUENT_FLUENT_ROOT"]
-        return Path(path)
-    else:
-        path = os.environ["AWP_ROOT" + "".join(FLUENT_VERSION.split("."))[:-1]]
-        return Path(path) / "fluent"
-
-
-def _get_fluent_exe_path(**argvals):
-    def get_exe_path():
-        exe_path = get_fluent_path()
-        if _is_windows():
-            exe_path = exe_path / "ntbin" / "win64" / "fluent.exe"
-        else:
-            exe_path = exe_path / "bin" / "fluent"
-        return str(exe_path)
-
-    product_version = argvals.get("product_version")
-    if product_version:
-        set_ansys_version(product_version)
-        return get_exe_path()
-
-    if _FLUENT_EXE_PATH:
-        return str(_FLUENT_EXE_PATH)
-
-    return get_exe_path()
 
 
 def _get_server_info_filepath():
@@ -305,11 +314,6 @@ def _get_session_info(
     return new_session, meshing_mode, argvals, mode
 
 
-def _is_windows():
-    """Check if the current operating system is windows."""
-    return platform.system() == "Windows"
-
-
 def _raise_exception_g_gu_in_windows_os(additional_arguments: str) -> None:
     """If -g or -gu is passed in Windows OS, the exception should be raised."""
     if _is_windows() and (
@@ -411,8 +415,8 @@ def _generate_launch_string(
     server_info_filepath: str,
 ):
     """Generates the launch string to launch fluent."""
-    exe_path = _get_fluent_exe_path(**argvals)
-    launch_string = exe_path
+    exe_path = get_fluent_exe_path(**argvals)
+    launch_string = str(exe_path)
     launch_string += _build_fluent_launch_args_string(**argvals)
     if meshing_mode:
         launch_string += " -meshing"
@@ -609,7 +613,7 @@ def launch_fluent(
                 session_cls=new_session,
                 start_timeout=start_timeout,
                 start_transcript=start_transcript,
-                product_version="".join(FLUENT_VERSION.split("."))[:-1],
+                product_version="".join(get_ansys_version().split("."))[:-1],
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
