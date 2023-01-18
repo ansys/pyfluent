@@ -1,10 +1,12 @@
 ﻿"""Test the PyPIM integration."""
+import os
 from unittest.mock import create_autospec
 
 import grpc
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.fluent.core.launcher import launcher
+from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 import ansys.platform.instancemanagement as pypim
 
 
@@ -45,8 +47,12 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     # Assert: PyFluent went through the pypim workflow
     assert mock_is_configured.called
     assert mock_connect.called
+    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        product_version = get_version_for_filepath()
+    else:
+        product_version = launcher.get_ansys_version().split(".")
     mock_client.create_instance.assert_called_with(
-        "fluent-3ddp", product_version="".join(launcher.get_ansys_version().split("."))[:-1]
+        "fluent-3ddp", product_version="".join(product_version)[:-1]
     )
     assert mock_instance.wait_for_ready.called
     mock_instance.build_grpc_channel.assert_called_with()
