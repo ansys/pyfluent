@@ -188,10 +188,6 @@ PyFluent infers the Fluent location based on the following information, in incre
    ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
    ``/apps/ansys_inc/v231``.
 
-#. Value set by :func:`set_ansys_version() <ansys.fluent.core.set_ansys_version>`.
-
-#. Value set by :func:`set_fluent_exe_path() <ansys.fluent.core.set_fluent_exe_path>`.
-
 #. Value of ``product_version`` parameter passed to :func:`launch_fluent() <ansys.fluent.core.launch_fluent>`.
 
 #. ``PYFLUENT_FLUENT_ROOT`` environment variable, set this to ``<install location>/<ver>/fluent`` directory.

@@ -8,6 +8,4 @@ Launching Fluent
 .. autosummary::
    :toctree: _autosummary
 
-   set_ansys_version
-   set_fluent_exe_path
    launch_fluent

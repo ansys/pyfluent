@@ -102,8 +102,7 @@ where ``<version>`` is the Fluent release that you would like to use.
 For example, ``v231`` uses release 2023 R1.
 
 For information on other ways of specifying the Fluent location for PyFluent,
-see `How does PyFluent infer the location to launch Fluent? <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html#how-does-pyfluent-infer-the-location-to-launch-fluent>`_
-in `Frequently asked questions <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html>`_.
+see `Frequently asked questions <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html>`_.
 
 Basic Usage
 ~~~~~~~~~~~
