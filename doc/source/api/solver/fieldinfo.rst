@@ -59,6 +59,8 @@ from the keys of the dictionary returned by ``get_fields_info`` method.
 
   >>> field_info.get_range("velocity")
   [0.0, 0.0]
+  >>> field_info.get_range("cell-weight")
+  [8.0, 24.0]
 
 Get vector fields info
 ~~~~~~~~~~~~~~~~~~~~~~
