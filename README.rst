@@ -14,8 +14,8 @@ PyFluent
    :target: https://github.com/pyansys/pyfluent/actions/workflows/ci.yml
    :alt: GH-CI
 
-.. |codecov| image:: https://codecov.io/gh/pyansys/pymapdl/branch/main/graph/badge.svg
-   :target: https://codecov.io/gh/pyansys/pymapdl
+.. |codecov| image:: https://codecov.io/gh/pyansys/pyfluent/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/pyansys/pyfluent
 
 .. |MIT| image:: https://img.shields.io/badge/License-MIT-yellow.svg
    :target: https://opensource.org/licenses/MIT
