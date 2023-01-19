@@ -8,9 +8,6 @@ You can use field info objects to access Fluent field information.
 Accessing field info objects
 ----------------------------
 
-In order to access field info, launch the fluent solver, and make field
-data available (for example, by reading case and data files and initializing the solver):
-
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
