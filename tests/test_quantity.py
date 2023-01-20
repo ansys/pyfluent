@@ -808,7 +808,7 @@ def test_quantity_map_72():
     assert api_test.unit == "K Pa m^3"
 
 
-def test_units_quantity_attribute_73():
+def test_units_quantity_attribute_73(with_launching_container):
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
 
@@ -876,7 +876,7 @@ def test_units_quantity_attribute_73():
     solver.exit()
 
 
-def test_units_quantity_attribute_74():
+def test_units_quantity_attribute_74(with_launching_container):
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
 
