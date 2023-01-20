@@ -1,12 +1,13 @@
 import argparse
 import os
+from pathlib import Path
 
 import datamodelgen
 import print_fluent_version
 import settingsgen
 import tuigen
 
-from ansys.fluent.core.launcher.launcher import get_ansys_version, set_ansys_version
+from ansys.fluent.core.launcher.launcher import FluentVersion, get_ansys_version
 
 if __name__ == "__main__":
     if not os.getenv("PYFLUENT_LAUNCH_CONTAINER"):
@@ -26,7 +27,8 @@ if __name__ == "__main__":
         args = parser.parse_args()
 
         if args.ansys_version:
-            set_ansys_version(args.ansys_version)
+            awp_root = os.environ["AWP_ROOT" + "".join(str(FluentVersion(args.ansys_version)).split("."))[:-1]]
+            os.environ["PYFLUENT_FLUENT_ROOT"] = Path(awp_root) / "fluent"
         if args.fluent_path:
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
 

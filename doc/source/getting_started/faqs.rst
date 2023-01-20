@@ -174,6 +174,25 @@ processars and the Fluent GUI:
 For additional launch examples, see :ref:`ref_user_guide_launch`. For descriptions of all parameters,
 see the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method.
 
+.. _faqs_fluentloc:
+
+How does PyFluent infer the location to launch Fluent?
+------------------------------------------------------
+PyFluent infers the Fluent location based on the following information, in increasing order of precedence:
+
+
+#. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
+   when Fluent is installed, where ``<ver>`` is the Fluent release number such as
+   ``231`` for release 2023 R1.  PyFluent automatically uses this environment
+   variable to locate the latest Fluent installation. On Linux systems configure
+   ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
+   ``/apps/ansys_inc/v231``.
+
+#. Value of ``product_version`` parameter passed to :func:`launch_fluent() <ansys.fluent.core.launch_fluent>`.
+
+#. ``PYFLUENT_FLUENT_ROOT`` environment variable, set this to ``<install location>/<ver>/fluent`` directory.
+
+
 How do you learn how to use PyFluent?
 -------------------------------------
 Depending on how you prefer to learn, you can use any or all of these methods

@@ -10,8 +10,6 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentVersion,
     LaunchModes,
     launch_fluent,
-    set_ansys_version,
-    set_fluent_exe_path,
 )
 from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils.logging import LOG
