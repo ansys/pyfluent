@@ -3,9 +3,9 @@
 Launching Fluent
 ================
 
-.. currentmodule:: ansys.fluent.core.launcher
+.. currentmodule:: ansys.fluent.core
 
 .. autosummary::
    :toctree: _autosummary
-   
-   launcher.launch_fluent
+
+   launch_fluent
