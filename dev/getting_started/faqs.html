@@ -152,7 +152,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables getting_started/faqs and {'json_url': 'fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.13'}.
+     variables getting_started/faqs and {'json_url': 'https://fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.13'}.
 -->
 
 <script type="text/javascript">
@@ -179,7 +179,7 @@ function checkPageExistsAndRedirect(event) {
 
 // Populate the version switcher from the JSON config file
 (function () {
-    $.getJSON("fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
+    $.getJSON("https://fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
         const currentFilePath = "getting_started/faqs.html";
         let btn = document.getElementById("version_switcher_button");
         // Set empty strings by default so that these attributes exist and can be used in CSS selectors
@@ -379,6 +379,11 @@ function checkPageExistsAndRedirect(event) {
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-does-pyfluent-infer-the-location-to-launch-fluent">
+   How does PyFluent infer the location to launch Fluent?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#how-do-you-learn-how-to-use-pyfluent">
    How do you learn how to use PyFluent?
   </a>
@@ -554,7 +559,21 @@ processars and the Fluent GUI:</p>
 </pre></div>
 </div>
 <p>For additional launch examples, see <a class="reference internal" href="../user_guide/launching_ansys_fluent.html#ref-user-guide-launch"><span class="std std-ref">Launch Fluent locally</span></a>. For descriptions of all parameters,
-see the <a class="reference internal" href="../api/_autosummary/ansys.fluent.core.launcher.launcher.launch_fluent.html#ansys.fluent.core.launcher.launcher.launch_fluent" title="ansys.fluent.core.launcher.launcher.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a> method.</p>
+see the <code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code> method.</p>
+</section>
+<section id="how-does-pyfluent-infer-the-location-to-launch-fluent">
+<span id="faqs-fluentloc"></span><h2>How does PyFluent infer the location to launch Fluent?<a class="headerlink" href="#how-does-pyfluent-infer-the-location-to-launch-fluent" title="Permalink to this heading">#</a></h2>
+<p>PyFluent infers the Fluent location based on the following information, in increasing order of precedence:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AWP_ROOT&lt;ver&gt;</span></code> environment variable, which is configured on Windows system
+when Fluent is installed, where <code class="docutils literal notranslate"><span class="pre">&lt;ver&gt;</span></code> is the Fluent release number such as
+<code class="docutils literal notranslate"><span class="pre">231</span></code> for release 2023 R1.  PyFluent automatically uses this environment
+variable to locate the latest Fluent installation. On Linux systems configure
+<code class="docutils literal notranslate"><span class="pre">AWP_ROOT&lt;ver&gt;</span></code> to point to the absolute path of an Ansys installation such as
+<code class="docutils literal notranslate"><span class="pre">/apps/ansys_inc/v231</span></code>.</p></li>
+<li><p>Value of <code class="docutils literal notranslate"><span class="pre">product_version</span></code> parameter passed to <a class="reference internal" href="../api/_autosummary/ansys.fluent.core.launch_fluent.html#ansys.fluent.core.launch_fluent" title="ansys.fluent.core.launch_fluent"><code class="xref py py-func docutils literal notranslate"><span class="pre">launch_fluent()</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_ROOT</span></code> environment variable, set this to <code class="docutils literal notranslate"><span class="pre">&lt;install</span> <span class="pre">location&gt;/&lt;ver&gt;/fluent</span></code> directory.</p></li>
+</ol>
 </section>
 <section id="how-do-you-learn-how-to-use-pyfluent">
 <h2>How do you learn how to use PyFluent?<a class="headerlink" href="#how-do-you-learn-how-to-use-pyfluent" title="Permalink to this heading">#</a></h2>

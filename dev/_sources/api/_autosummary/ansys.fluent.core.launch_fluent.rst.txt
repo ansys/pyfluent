@@ -1,6 +1,6 @@
 ﻿launch\_fluent
 ==============
 
-.. currentmodule:: ansys.fluent.core.launcher.launcher
+.. currentmodule:: ansys.fluent.core
 
 .. autofunction:: launch_fluent

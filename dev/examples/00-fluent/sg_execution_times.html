@@ -150,7 +150,7 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables examples/00-fluent/sg_execution_times and {'json_url': 'fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.13'}.
+     variables examples/00-fluent/sg_execution_times and {'json_url': 'https://fluent.docs.pyansys.com/release/versions.json', 'version_match': '0.13'}.
 -->
 
 <script type="text/javascript">
@@ -177,7 +177,7 @@ function checkPageExistsAndRedirect(event) {
 
 // Populate the version switcher from the JSON config file
 (function () {
-    $.getJSON("fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
+    $.getJSON("https://fluent.docs.pyansys.com/release/versions.json", function(data, textStatus, jqXHR) {
         const currentFilePath = "examples/00-fluent/sg_execution_times.html";
         let btn = document.getElementById("version_switcher_button");
         // Set empty strings by default so that these attributes exist and can be used in CSS selectors
@@ -334,19 +334,19 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="computation-times">
 <span id="sphx-glr-examples-00-fluent-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Permalink to this heading">#</a></h1>
-<p><strong>06:21.773</strong> total execution time for <strong>examples_00-fluent</strong> files:</p>
+<p><strong>06:22.199</strong> total execution time for <strong>examples_00-fluent</strong> files:</p>
 <table class="table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="exhaust_system.html#sphx-glr-examples-00-fluent-exhaust-system-py"><span class="std std-ref">Fault-tolerant meshing workflow</span></a> (<code class="docutils literal notranslate"><span class="pre">exhaust_system.py</span></code>)</p></td>
-<td><p>04:24.289</p></td>
+<td><p>04:23.906</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="mixing_elbow.html#sphx-glr-examples-00-fluent-mixing-elbow-py"><span class="std std-ref">Watertight geometry meshing workflow</span></a> (<code class="docutils literal notranslate"><span class="pre">mixing_elbow.py</span></code>)</p></td>
-<td><p>01:10.224</p></td>
+<td><p>01:11.257</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="mixing_elbow_settings_api.html#sphx-glr-examples-00-fluent-mixing-elbow-settings-api-py"><span class="std std-ref">Fluent setup and solution using settings objects</span></a> (<code class="docutils literal notranslate"><span class="pre">mixing_elbow_settings_api.py</span></code>)</p></td>
-<td><p>00:47.261</p></td>
+<td><p>00:47.035</p></td>
 <td><p>0.0 MB</p></td>
 </tr>
 </tbody>
