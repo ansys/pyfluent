@@ -328,6 +328,8 @@ class PyMenu(PyStateContainer):
     -------
     __setattr__(name, value)
         Set state of the child object
+    rename(new_name)
+    name()
     create_command_arguments(command)
     """
 
@@ -364,20 +366,29 @@ class PyMenu(PyStateContainer):
                 f"{self.__class__.__name__} is not a named object class."
             )
 
-    def raise_method_not_yet_implemented_exception(self):
+    def name(self):
+        """Get the name of the named object"""
+        try:
+            return self._name_()
+        except AttributeError:
+            raise RuntimeError(
+                f"{self.__class__.__name__} is not a named object class."
+            )
+
+    def _raise_method_not_yet_implemented_exception(self):
         raise AttributeError("This method is yet to be implemented in pyfluent.")
 
     def delete_child(self):
-        self.raise_method_not_yet_implemented_exception()
+        self._raise_method_not_yet_implemented_exception()
 
     def delete_child_objects(self):
-        self.raise_method_not_yet_implemented_exception()
+        self._raise_method_not_yet_implemented_exception()
 
     def delete_all_child_objects(self):
-        self.raise_method_not_yet_implemented_exception()
+        self._raise_method_not_yet_implemented_exception()
 
     def fix_state(self):
-        self.raise_method_not_yet_implemented_exception()
+        self._raise_method_not_yet_implemented_exception()
 
     def create_command_arguments(self, command):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()

@@ -48,11 +48,7 @@ class WorkflowWrapper:
                 )
             )
 
-        def get_direct_upstream_tasks(self):
-            this_command = self._command()
-            inputs = set(this_command.get_attr("requiredInputs"))
-            if not inputs:
-                return []
+        def _all_task_objects(self):
             workflow_state = self._workflow()
             workflow_state_workflow = workflow_state["Workflow"]
             workflow_state_tasklist = workflow_state_workflow["TaskList"]
@@ -61,13 +57,37 @@ class WorkflowWrapper:
                 task_key = "TaskObject:" + task_id
                 task_state = workflow_state[task_key]
                 tasks.append(self._command_source.task(task_state["_name_"]))
+            return tasks
+
+        def get_direct_upstream_tasks(self):
+            this_command = self._command()
+            inputs = this_command.get_attr("requiredInputs")
+            if not inputs:
+                return []
+            inputs = set(inputs)
+            tasks = self._all_task_objects()
             upstreams = []
             for task in tasks:
                 command = task._command()
-                outputs = set(command.get_attr("outputs"))
-                if inputs & outputs:
+                outputs = command.get_attr("outputs")
+                if outputs and (inputs & set(outputs)):
                     upstreams.append(task)
             return upstreams
+
+        def get_direct_downstream_tasks(self):
+            this_command = self._command()
+            outputs = this_command.get_attr("outputs")
+            if not outputs:
+                return []
+            outputs = set(outputs)
+            tasks = self._all_task_objects()
+            downstreams = []
+            for task in tasks:
+                command = task._command()
+                inputs = command.get_attr("requiredInputs")
+                if inputs and (set(inputs) & outputs):
+                    downstreams.append(task)
+            return downstreams
 
         @property
         def CommandArguments(self):
