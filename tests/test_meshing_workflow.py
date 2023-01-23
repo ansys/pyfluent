@@ -384,3 +384,18 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").fix_state()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
+
+
+def test_meshing_workflow_task_related_tasks(new_mesh_session):
+    w = new_mesh_session.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    gen_surf_mesh = w.task("Generate the Surface Mesh")
+
+    upstreams = gen_surf_mesh.get_direct_upstream_tasks()
+    upstream_names = set([upstream.name() for upstream in upstreams])
+    assert not (upstream_names ^ set(["Import Geometry", "Add Local Sizing"]))
+
+    downstreams = gen_surf_mesh.get_direct_downstream_tasks()
+    downstream_names = set([downstream.name() for downstream in downstreams])
+    assert not (downstream_names ^ set(["Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"]))
