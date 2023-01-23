@@ -40,12 +40,34 @@ class WorkflowWrapper:
         def __init__(self, command_source, name):
             self.__dict__.update(
                 dict(
+                    _command_source=command_source,
                     _workflow=command_source._workflow,
                     _source=command_source._command_source,
                     _task=command_source._workflow.TaskObject[name],
                     _cmd=None,
                 )
             )
+
+        def get_direct_upstream_tasks(self):
+            this_command = self._command()
+            inputs = set(this_command.get_attr("requiredInputs"))
+            if not inputs:
+                return []
+            workflow_state = self._workflow()
+            workflow_state_workflow = workflow_state["Workflow"]
+            workflow_state_tasklist = workflow_state_workflow["TaskList"]
+            tasks = []
+            for task_id in workflow_state_tasklist:
+                task_key = "TaskObject:" + task_id
+                task_state = workflow_state[task_key]
+                tasks.append(self._command_source.task(task_state["_name_"]))
+            upstreams = []
+            for task in tasks:
+                command = task._command()
+                outputs = set(command.get_attr("outputs"))
+                if inputs & outputs:
+                    upstreams.append(task)
+            return upstreams
 
         @property
         def CommandArguments(self):
@@ -95,6 +117,7 @@ class WorkflowWrapper:
 
     @property
     def TaskObject(self):
+        # missing from dir
         return WorkflowWrapper.TaskContainer(self)
 
     def __getattr__(self, attr):
