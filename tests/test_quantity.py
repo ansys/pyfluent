@@ -821,57 +821,65 @@ def test_units_quantity_attribute_73(with_launching_container):
 
     # hot-inlet velocity
 
-    # assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.get_attr(
-    #     "units-quantity") == 'velocity'  # noqa: E501
+    if solver.get_fluent_version() == "22.2.0":
+        real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.constant()
+    else:
+        assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.get_attr(
+            "units-quantity") == 'velocity'  # noqa: E501
 
-    real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value()
+        real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value()
 
-    quantity_map = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.quantity_map()
-    assert quantity_map == {'Velocity': 1.0}
+        quantity_map = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].vmag.value.quantity_map()
 
-    test = q.Quantity(real_value, quantity_map=quantity_map)
-    assert test.value == real_value
-    assert test.unit == "m s^-1"
+        assert quantity_map == {'Velocity': 1.0}
+
+        test = q.Quantity(real_value, quantity_map=quantity_map)
+        assert test.value == real_value
+        assert test.unit == "m s^-1"
 
     # cold-inlet velocity
 
-    # assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.get_attr(
-    #     "units-quantity") == 'velocity'  # noqa: E501
+    if solver.get_fluent_version() == "22.2.0":
+        real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.constant()
+    else:
+        assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.get_attr(
+            "units-quantity") == 'velocity'  # noqa: E501
 
-    real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value()
+        real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value()
 
-    quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.quantity_map()
-    assert quantity_map == {'Velocity': 1.0}
+        quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].vmag.value.quantity_map()
 
-    test = q.Quantity(real_value, quantity_map=quantity_map)
-    assert test.value == real_value
-    assert test.unit == "m s^-1"
+        assert quantity_map == {'Velocity': 1.0}
+
+        test = q.Quantity(real_value, quantity_map=quantity_map)
+        assert test.value == real_value
+        assert test.unit == "m s^-1"
 
     # hot-inlet temperature
+    if solver.get_fluent_version() != "22.2.0":
+        assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.get_attr("units-quantity") == 'temperature'  # noqa: E501
 
-    assert solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.get_attr("units-quantity") == 'temperature'  # noqa: E501
+        real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value()
 
-    real_value = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value()
+        quantity_map = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.quantity_map()
+        assert quantity_map == {'Temperature': 1.0}
 
-    quantity_map = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].t.value.quantity_map()
-    assert quantity_map == {'Temperature': 1.0}
+        test = q.Quantity(real_value, quantity_map=quantity_map)
+        assert test.value == real_value
+        assert test.unit == "K"
 
-    test = q.Quantity(real_value, quantity_map=quantity_map)
-    assert test.value == real_value
-    assert test.unit == "K"
+        # cold-inlet temperature
 
-    # cold-inlet temperature
+        assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.get_attr("units-quantity") == 'temperature'  # noqa: E501
 
-    assert solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.get_attr("units-quantity") == 'temperature'  # noqa: E501
+        real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value()
 
-    real_value = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value()
+        quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.quantity_map()
+        assert quantity_map == {'Temperature': 1.0}
 
-    quantity_map = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].t.value.quantity_map()
-    assert quantity_map == {'Temperature': 1.0}
-
-    test = q.Quantity(real_value, quantity_map=quantity_map)
-    assert test.value == real_value
-    assert test.unit == "K"
+        test = q.Quantity(real_value, quantity_map=quantity_map)
+        assert test.value == real_value
+        assert test.unit == "K"
 
     solver.exit()
 
