@@ -386,7 +386,7 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
 
 
-def test_meshing_workflow_task_related_tasks(new_mesh_session):
+def test_meshing_workflow_related_tasks(new_mesh_session):
     w = new_mesh_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
