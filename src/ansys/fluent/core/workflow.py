@@ -59,35 +59,32 @@ class WorkflowWrapper:
                 tasks.append(self._command_source.task(task_state["_name_"]))
             return tasks
 
-        def get_direct_upstream_tasks(self):
+        def _tasks_with_matching_attributes(self, attr, other_attr):
             this_command = self._command()
-            inputs = this_command.get_attr("requiredInputs")
-            if not inputs:
+            attrs = this_command.get_attr(attr)
+            if not attrs:
                 return []
-            inputs = set(inputs)
+            attrs = set(attrs)
             tasks = self._all_task_objects()
-            upstreams = []
+            matches = []
             for task in tasks:
                 command = task._command()
-                outputs = command.get_attr("outputs")
-                if outputs and (inputs & set(outputs)):
-                    upstreams.append(task)
-            return upstreams
+                other_attrs = command.get_attr(other_attr)
+                if other_attrs and (attrs & set(other_attrs)):
+                    matches.append(task)
+            return matches
+
+        def get_direct_upstream_tasks(self):
+            return self._tasks_with_matching_attributes(
+                attr="requiredInputs",
+                other_attr="outputs"
+                )
 
         def get_direct_downstream_tasks(self):
-            this_command = self._command()
-            outputs = this_command.get_attr("outputs")
-            if not outputs:
-                return []
-            outputs = set(outputs)
-            tasks = self._all_task_objects()
-            downstreams = []
-            for task in tasks:
-                command = task._command()
-                inputs = command.get_attr("requiredInputs")
-                if inputs and (set(inputs) & outputs):
-                    downstreams.append(task)
-            return downstreams
+            return self._tasks_with_matching_attributes(
+                attr="outputs",
+                other_attr="requiredInputs"
+                )
 
         @property
         def CommandArguments(self):
