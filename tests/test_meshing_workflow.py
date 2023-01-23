@@ -399,3 +399,13 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
     downstreams = gen_surf_mesh.get_direct_downstream_tasks()
     downstream_names = set([downstream.name() for downstream in downstreams])
     assert not (downstream_names ^ set(["Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"]))
+
+    describe_geometry = w.task("Describe Geometry")
+
+    upstreams = describe_geometry.get_direct_upstream_tasks()
+    upstream_names = set([upstream.name() for upstream in upstreams])
+    assert not (upstream_names ^ set(["Generate the Surface Mesh", "Add Boundary Layers"]))
+
+    downstreams = describe_geometry.get_direct_downstream_tasks()
+    downstream_names = set([downstream.name() for downstream in downstreams])
+    assert not (downstream_names ^ set(["Update Regions", "Add Boundary Layers", "Generate the Volume Mesh"]))

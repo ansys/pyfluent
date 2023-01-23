@@ -65,7 +65,10 @@ class WorkflowWrapper:
             if not attrs:
                 return []
             attrs = set(attrs)
-            tasks = self._all_task_objects()
+            tasks = (
+                task for task in self._all_task_objects() if
+                task.name() != self.name()
+                )
             matches = []
             for task in tasks:
                 command = task._command()
