@@ -885,8 +885,6 @@ def test_units_quantity_attribute_73(with_launching_container):
 
 
 def test_units_quantity_attribute_74(with_launching_container):
-    import os
-    os.environ["PYFLUENT_FLUENT_ROOT"] = r"D:\Installations\Ansys\v231_04012023\ANSYS Inc\v231\fluent"
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
 
