@@ -94,7 +94,7 @@ def _copy_tui_help_xml_file(version: str):
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
 
     else:
-        ansys_version = get_ansys_version()
+        ansys_version = get_ansys_version()  # picking up the file from the latest install location
         awp_root = os.environ["AWP_ROOT" + "".join(str(ansys_version).split("."))[:-1]]
         xml_source = (
             Path(awp_root)

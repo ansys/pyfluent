@@ -1,6 +1,7 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
+import pydoc
 from typing import Any, Optional
 
 import appdirs
@@ -10,10 +11,9 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     FluentVersion,
     LaunchModes,
     launch_fluent,
-    set_ansys_version,
-    set_fluent_exe_path,
 )
 from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.logging import LOG
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
@@ -96,3 +96,5 @@ except Exception:
     pass
 
 BUILDING_GALLERY = False
+
+pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
