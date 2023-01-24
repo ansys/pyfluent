@@ -82,6 +82,19 @@ class WorkflowWrapper:
             sub_task_ids = self._task.TaskList()
             return [self._command_source._task_by_id(task_id) for task_id in self._task.TaskList()]
 
+        def get_inactive_sub_tasks(self):
+            sub_task_ids = self._task.InactiveTaskList()
+            return [self._command_source._task_by_id(task_id) for task_id in self._task.InactiveTaskList()]
+
+        def get_id(self):
+            workflow_state = self._command_source._workflow_state()
+            for k, v in workflow_state.items():
+                if isinstance(v, dict) and '_name_' in v:
+                    if v['_name_'] == self.name():
+                        type_ , id_ = k.split(':')
+                        if type_ == "TaskObject":
+                            return id_
+
         @property
         def CommandArguments(self):
             return self._refreshed_command()

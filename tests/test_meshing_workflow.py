@@ -467,6 +467,18 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
             "Create Regions",
         } if task is describe_geometry else set())
 
+    for task in all_tasks:
+        assert {sub_task.name() for sub_task in task.get_inactive_sub_tasks()} == ({
+            "Apply Share Topology",
+            "Update Boundaries",
+        } if task is describe_geometry else set())
+
+    task_ids = [task.get_id() for task in all_tasks]
+    # uniqueness test
+    assert len(set(task_ids)) == len(task_ids)
+    # ordering test
+    idxs = [int(id[len("TaskObject"):]) for id in task_ids]
+    assert sorted(idxs) == idxs
     '''
     o Workflow
     |
@@ -480,7 +492,6 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
                                                         |-- Update Boundaries
                                                         |-- ...
     '''
-    insert_next_task = set(gen_surf_mesh.GetNextPossibleTasks())
-    assert insert_next_task == {
+    assert set(gen_surf_mesh.GetNextPossibleTasks()) == {
         'AddBoundaryType', 'UpdateBoundaries', 'SetUpPeriodicBoundaries', 'LinearMeshPattern',
         'ModifyMeshRefinement', 'ImproveSurfaceMesh', 'RunCustomJournal'}
