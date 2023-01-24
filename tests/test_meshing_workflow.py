@@ -426,7 +426,7 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
 
     import_geom, add_sizing, gen_surf_mesh, describe_geometry,\
         cap, create_regions, update_regions, add_boundary_layers,\
-            gen_vol_mesh = [w.task(name) for name in task_names]
+            gen_vol_mesh = all_tasks = [w.task(name) for name in task_names]
 
     def upstream_names(task):
         return {upstream.name() for upstream in task.get_direct_upstream_tasks()}
@@ -460,6 +460,12 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
 
     assert upstream_names(gen_vol_mesh) == {"Update Regions", "Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
     assert downstream_names(gen_vol_mesh) == set()
+
+    for task in all_tasks:
+        assert {sub_task.name() for sub_task in task.get_sub_tasks()} == ({
+            "Enclose Fluid Regions (Capping)",
+            "Create Regions",
+        } if task is describe_geometry else set())
 
     '''
     o Workflow

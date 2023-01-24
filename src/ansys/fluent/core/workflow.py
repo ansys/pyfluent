@@ -48,6 +48,14 @@ class WorkflowWrapper:
                 )
             )
 
+        def _task_by_id(self, task_id):
+            workflow_state = self._workflow()
+            workflow_state_workflow = workflow_state["Workflow"]
+            workflow_state_tasklist = workflow_state_workflow["TaskList"]
+            task_key = "TaskObject:" + task_id
+            task_state = workflow_state[task_key]
+            return self._command_source.task(task_state["_name_"])
+
         def _all_task_objects(self):
             workflow_state = self._workflow()
             workflow_state_workflow = workflow_state["Workflow"]
@@ -88,6 +96,10 @@ class WorkflowWrapper:
                 attr="outputs",
                 other_attr="requiredInputs"
                 )
+
+        def get_sub_tasks(self):
+            sub_task_ids = self._task.TaskList()
+            return [self._task_by_id(task_id) for task_id in self._task.TaskList()]
 
         @property
         def CommandArguments(self):
