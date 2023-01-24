@@ -21,6 +21,7 @@ events, monitoring, and field data (surface, scalar, and vector).
    datamodel/index
    schemeeval
    fielddata
+   fieldinfo
    events
    monitors
    reduction

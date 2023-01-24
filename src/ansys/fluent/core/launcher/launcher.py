@@ -28,9 +28,6 @@ import ansys.platform.instancemanagement as pypim
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 
-_FLUENT_EXE_PATH_SET = None  # set by set_fluent_path
-_ANSYS_VERSION_SET = None  # set by set_ansys_version
-
 
 def _is_windows():
     """Check if the current operating system is windows."""
@@ -60,38 +57,9 @@ class FluentVersion(Enum):
         return str(self.value)
 
 
-def set_fluent_exe_path(fluent_exe_path: Union[str, Path]) -> None:
-    """Set the Fluent executable path manually.
-
-    This supersedes the Fluent path set in the environment variable.
-    """
-    if Path(fluent_exe_path).exists():
-        global _FLUENT_EXE_PATH_SET
-        _FLUENT_EXE_PATH_SET = str(fluent_exe_path)
-    else:
-        raise RuntimeError(
-            f"The passed path '{fluent_exe_path}' does not contain a valid Fluent executable file."
-        )
-
-
-def set_ansys_version(version: Union[str, float, FluentVersion]) -> None:
-    """Set the Fluent version manually.
-
-    This method only works if the provided Fluent version is installed
-    and the environment variables are updated properly. This supersedes
-    the Fluent path set in the environment variable.
-    """
-    global _ANSYS_VERSION_SET
-    _ANSYS_VERSION_SET = str(FluentVersion(version))
-
-
 def get_ansys_version() -> str:
-    # Look for ANSYS version in the following order:
-    # 1. value set by set_ansys_version
-    if _ANSYS_VERSION_SET:
-        return _ANSYS_VERSION_SET
+    """Get the latest ANSYS version from AWP_ROOT environment variables."""
 
-    # 2. Search for the latest AWP_ROOT environment variable
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
@@ -121,11 +89,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     if product_version:
         return get_exe_path(get_fluent_root(FluentVersion(product_version)))
 
-    # 3. value set by set_fluent_exe_path
-    if _FLUENT_EXE_PATH_SET:
-        return Path(_FLUENT_EXE_PATH_SET)
-
-    # 4. value from get_ansys_version
+    # 3. the latest ANSYS version from AWP_ROOT environment variables
     ansys_version = get_ansys_version()
     return get_exe_path(get_fluent_root(FluentVersion(ansys_version)))
 
