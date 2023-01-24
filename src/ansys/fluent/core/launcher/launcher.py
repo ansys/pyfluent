@@ -405,6 +405,10 @@ def scm_to_py(topy):
     return launch_string
 
 
+class LaunchFluentError(Exception):
+    pass
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     product_version: str = None,
@@ -566,9 +570,9 @@ def launch_fluent(
             )
         except Exception as ex:
             identifier = "fluent.exe"
-            print("Fluent Launch Path: ", launch_string.split(identifier)[0] + identifier)
-            print("Launcher Arguments: ", launch_string.split(identifier)[1].split())
-            raise Exception(ex)
+            details = "\n" + "Fluent Launch Path: " + launch_string.split(identifier)[0] + identifier
+            details += "\n" + "Launcher Arguments: " + str(launch_string.split(identifier)[1].split())
+            raise LaunchFluentError(details) from ex
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
