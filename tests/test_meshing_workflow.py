@@ -204,7 +204,7 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
-    assert igt.Arguments() == {}
+    assert igt.Arguments() == set()
     assert igt.CommandArguments.CadImportOptions()
     assert igt.CommandArguments.CadImportOptions.OneZonePer()
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
@@ -428,18 +428,53 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
         cap, create_regions, update_regions, add_boundary_layers,\
             gen_vol_mesh = [w.task(name) for name in task_names]
 
-    upstreams = gen_surf_mesh.get_direct_upstream_tasks()
-    upstream_names = set([upstream.name() for upstream in upstreams])
-    assert not (upstream_names ^ set(["Import Geometry", "Add Local Sizing"]))
+    def upstream_names(task):
+        return {upstream.name() for upstream in task.get_direct_upstream_tasks()}
 
-    downstreams = gen_surf_mesh.get_direct_downstream_tasks()
-    downstream_names = set([downstream.name() for downstream in downstreams])
-    assert not (downstream_names ^ set(["Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"]))
+    def downstream_names(task):
+        return {downstream.name() for downstream in task.get_direct_downstream_tasks()}
 
-    upstreams = describe_geometry.get_direct_upstream_tasks()
-    upstream_names = set([upstream.name() for upstream in upstreams])
-    assert not (upstream_names ^ set(["Generate the Surface Mesh", "Add Boundary Layers"]))
+    assert upstream_names(import_geom) == set()
+    assert downstream_names(import_geom) == {"Generate the Surface Mesh", "Add Local Sizing"}
 
-    downstreams = describe_geometry.get_direct_downstream_tasks()
-    downstream_names = set([downstream.name() for downstream in downstreams])
-    assert not (downstream_names ^ set(["Update Regions", "Add Boundary Layers", "Generate the Volume Mesh"]))
+    assert upstream_names(add_sizing) == {"Import Geometry"}
+    assert downstream_names(add_sizing) == {"Generate the Surface Mesh"}
+
+    assert upstream_names(gen_surf_mesh) == {"Import Geometry", "Add Local Sizing"}
+    assert downstream_names(gen_surf_mesh) == {"Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"}
+
+    assert upstream_names(describe_geometry) == {"Generate the Surface Mesh", "Add Boundary Layers"}
+    assert downstream_names(describe_geometry) == {"Update Regions", "Add Boundary Layers", "Generate the Volume Mesh"}
+
+    assert upstream_names(cap) == {"Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
+    assert downstream_names(cap) == {"Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"}
+
+    assert upstream_names(create_regions) == {"Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
+    assert downstream_names(create_regions) == {"Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh", "Update Regions"}
+
+    assert upstream_names(update_regions) == {"Describe Geometry"}
+    assert downstream_names(update_regions) == {"Generate the Volume Mesh"}
+
+    assert upstream_names(add_boundary_layers) == {"Describe Geometry", "Generate the Surface Mesh"}
+    assert downstream_names(add_boundary_layers) == {"Describe Geometry", "Generate the Volume Mesh"}
+
+    assert upstream_names(gen_vol_mesh) == {"Update Regions", "Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
+    assert downstream_names(gen_vol_mesh) == set()
+
+    '''
+    o Workflow
+    |
+    |--o Import Geometry
+    |
+    |--o Add Local Sizing
+    |
+    |--o Generate the Surface Mesh --
+                                     \Insert Next Task>
+                                                        |-- Add Boundary Type
+                                                        |-- Update Boundaries
+                                                        |-- ...
+    '''
+    insert_next_task = set(gen_surf_mesh.GetNextPossibleTasks())
+    assert insert_next_task == {
+        'AddBoundaryType', 'UpdateBoundaries', 'SetUpPeriodicBoundaries', 'LinearMeshPattern',
+        'ModifyMeshRefinement', 'ImproveSurfaceMesh', 'RunCustomJournal'}
