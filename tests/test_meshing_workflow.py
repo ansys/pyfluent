@@ -387,10 +387,46 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
 
 
 def test_meshing_workflow_related_tasks(new_mesh_session):
+    '''
+    o Workflow
+    |
+    |--o Import Geometry
+    |
+    |--o Add Local Sizing
+    |
+    |--o Generate the Surface Mesh
+    |
+    |--o Describe Geometry
+    |  |
+    |  |--o Enclose Fluid Regions (Capping)
+    |  |
+    |  |--o Create Regions
+    |
+    |--o Update Regions
+    |
+    |--o Add Boundary Layers
+    |
+    |--o Generate the Volume Mesh
+    '''
+
     w = new_mesh_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
-    gen_surf_mesh = w.task("Generate the Surface Mesh")
+    task_names = (
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Enclose Fluid Regions (Capping)",
+        "Create Regions",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+        )
+
+    import_geom, add_sizing, gen_surf_mesh, describe_geometry,\
+        cap, create_regions, update_regions, add_boundary_layers,\
+            gen_vol_mesh = [w.task(name) for name in task_names]
 
     upstreams = gen_surf_mesh.get_direct_upstream_tasks()
     upstream_names = set([upstream.name() for upstream in upstreams])
@@ -399,8 +435,6 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
     downstreams = gen_surf_mesh.get_direct_downstream_tasks()
     downstream_names = set([downstream.name() for downstream in downstreams])
     assert not (downstream_names ^ set(["Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"]))
-
-    describe_geometry = w.task("Describe Geometry")
 
     upstreams = describe_geometry.get_direct_upstream_tasks()
     upstream_names = set([upstream.name() for upstream in upstreams])
