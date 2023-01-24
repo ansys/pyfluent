@@ -564,6 +564,11 @@ def launch_fluent(
             return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
+        except Exception as ex:
+            identifier = "fluent.exe"
+            print("Fluent Launch Path: ", launch_string.split(identifier)[0] + identifier)
+            print("Launcher Arguments: ", launch_string.split(identifier)[1].split())
+            raise Exception(ex)
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
