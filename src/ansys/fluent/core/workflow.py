@@ -48,23 +48,25 @@ class WorkflowWrapper:
                 )
             )
 
-        def _task_by_id(self, task_id):
+        def _workflow_and_task_list_state(self):
             workflow_state = self._workflow()
             workflow_state_workflow = workflow_state["Workflow"]
-            workflow_state_tasklist = workflow_state_workflow["TaskList"]
+            return (workflow_state, workflow_state_workflow["TaskList"])
+
+        def _task_by_id_impl(self, task_id, workflow_state):
             task_key = "TaskObject:" + task_id
             task_state = workflow_state[task_key]
             return self._command_source.task(task_state["_name_"])
 
+        def _task_by_id(self, task_id):
+            workflow_state, _ = self._workflow_and_task_list_state()
+            return self._task_by_id_impl(task_id, workflow_state)
+
         def _all_task_objects(self):
-            workflow_state = self._workflow()
-            workflow_state_workflow = workflow_state["Workflow"]
-            workflow_state_tasklist = workflow_state_workflow["TaskList"]
+            workflow_state, task_list_state = self._workflow_and_task_list_state()
             tasks = []
-            for task_id in workflow_state_tasklist:
-                task_key = "TaskObject:" + task_id
-                task_state = workflow_state[task_key]
-                tasks.append(self._command_source.task(task_state["_name_"]))
+            for task_id in task_list_state:
+                tasks.append(self._task_by_id_impl(task_id, workflow_state))
             return tasks
 
         def _tasks_with_matching_attributes(self, attr, other_attr):
