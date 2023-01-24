@@ -59,34 +59,57 @@ class WorkflowWrapper:
                 tasks.append(self._command_source.task(task_state["_name_"]))
             return tasks
 
-        def _tasks_with_matching_attributes(self, attr, other_attr):
+        def _tasks_with_matching_attributes(
+            self,
+            attr,
+            other_attr,
+            recursive,
+            names
+        ):
+            print("entering with names", names)
             this_command = self._command()
             attrs = this_command.get_attr(attr)
             if not attrs:
                 return []
             attrs = set(attrs)
-            tasks = (
+            tasks = [
                 task for task in self._all_task_objects() if
-                task.name() != self.name()
-                )
+                task.name() not in names
+            ]
             matches = []
+            print("tasks", [task.name() for task in tasks])
             for task in tasks:
                 command = task._command()
                 other_attrs = command.get_attr(other_attr)
                 if other_attrs and (attrs & set(other_attrs)):
+                    print("names and task name", names, task.name())
+                    if recursive:
+                        task = (
+                            task,
+                            task._tasks_with_matching_attributes(
+                                attr,
+                                other_attr,
+                                recursive,
+                                names.union({task.name()})
+                            )
+                        )
                     matches.append(task)
             return matches
 
-        def get_direct_upstream_tasks(self):
+        def get_direct_upstream_tasks(self, recursive=False):
             return self._tasks_with_matching_attributes(
                 attr="requiredInputs",
-                other_attr="outputs"
+                other_attr="outputs",
+                recursive=recursive,
+                names={self.name()}
                 )
 
-        def get_direct_downstream_tasks(self):
+        def get_direct_downstream_tasks(self, recursive=False):
             return self._tasks_with_matching_attributes(
                 attr="outputs",
-                other_attr="requiredInputs"
+                other_attr="requiredInputs",
+                recursive=recursive,
+                names={self.name()}
                 )
 
         @property
