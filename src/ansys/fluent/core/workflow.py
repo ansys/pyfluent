@@ -48,8 +48,11 @@ class WorkflowWrapper:
                 )
             )
 
+        def _workflow_state(self):
+            return self._workflow()
+
         def _workflow_and_task_list_state(self):
-            workflow_state = self._workflow()
+            workflow_state = self._workflow_state()
             workflow_state_workflow = workflow_state["Workflow"]
             return (workflow_state, workflow_state_workflow["TaskList"])
 
@@ -59,7 +62,7 @@ class WorkflowWrapper:
             return self._command_source.task(task_state["_name_"])
 
         def _task_by_id(self, task_id):
-            workflow_state, _ = self._workflow_and_task_list_state()
+            workflow_state = self._workflow_state()
             return self._task_by_id_impl(task_id, workflow_state)
 
         def _all_task_objects(self):
