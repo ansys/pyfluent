@@ -7,5 +7,7 @@ Launching Fluent
 
 .. autosummary::
    :toctree: _autosummary
-   
-   launcher.launch_fluent
+   :template: flobject-module-template.rst
+   :recursive:
+
+   launcher
