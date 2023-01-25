@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="EventsManager" href="events.html" />
+    <link rel="next" title="Field info" href="fieldinfo.html" />
     <link rel="prev" title="Scheme code evaluation" href="schemeeval.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -8890,6 +8890,11 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="fieldinfo.html">
+     Field info
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="events.html">
      EventsManager
     </a>
@@ -9013,89 +9018,94 @@ function checkPageExistsAndRedirect(event) {
     <a class="reference internal nav-link" href="#pathlines-field-request">
      Pathlines field request
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_surfaces_request">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldTransaction.add_surfaces_request()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_scalar_fields_request">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldTransaction.add_scalar_fields_request()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_vector_fields_request">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldTransaction.add_vector_fields_request()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_pathlines_fields_request">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldTransaction.add_pathlines_fields_request()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.get_fields">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldTransaction.get_fields()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_surface_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldData.get_surface_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_scalar_field_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldData.get_scalar_field_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_vector_field_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldData.get_vector_field_data()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_pathlines_field_data">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         FieldData.get_pathlines_field_data()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#allowed-values">
+   Allowed values
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_surfaces_request">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldTransaction.add_surfaces_request()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_scalar_fields_request">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldTransaction.add_scalar_fields_request()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_vector_fields_request">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldTransaction.add_vector_fields_request()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.add_pathlines_fields_request">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldTransaction.add_pathlines_fields_request()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldTransaction.get_fields">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldTransaction.get_fields()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_surface_data">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldData.get_surface_data()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_scalar_field_data">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldData.get_scalar_field_data()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_vector_field_data">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldData.get_vector_field_data()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.services.field_data.FieldData.get_pathlines_field_data">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       FieldData.get_pathlines_field_data()
+      </span>
+     </code>
+    </a>
    </li>
   </ul>
  </li>
@@ -9319,6 +9329,31 @@ scalar field name passed in the request.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">particle-time</span></code>, which contains  particle time, if requested.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">additional</span> <span class="pre">field</span> <span class="pre">name</span></code>, which contains  additional field, if requested. additional field name is the same name as the additional field name passed in the request.</p></li>
 </ul>
+</section>
+</section>
+<section id="allowed-values">
+<h2>Allowed values<a class="headerlink" href="#allowed-values" title="Permalink to this heading">#</a></h2>
+<p>Additionally there is an allowed_values provided on field name,
+surface name and ids to guide the users.</p>
+<p>Some sample use cases are demonstrated below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field_data</span><span class="o">.</span><span class="n">get_scalar_field_data</span><span class="o">.</span><span class="n">field_name</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="go">[&#39;abs-angular-coordinate&#39;, &#39;absolute-pressure&#39;, &#39;angular-coordinate&#39;,</span>
+<span class="go">&#39;anisotropic-adaption-cells&#39;, &#39;axial-coordinate&#39;, &#39;axial-velocity&#39;,</span>
+<span class="go">&#39;boundary-cell-dist&#39;, &#39;boundary-layer-cells&#39;, &#39;boundary-normal-dist&#39;, ...]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">field_data</span><span class="o">.</span><span class="n">new_transaction</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">add_scalar_fields_request</span><span class="o">.</span><span class="n">field_name</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="go">[&#39;abs-angular-coordinate&#39;, &#39;absolute-pressure&#39;, &#39;angular-coordinate&#39;,</span>
+<span class="go">&#39;anisotropic-adaption-cells&#39;, &#39;axial-coordinate&#39;, &#39;axial-velocity&#39;,</span>
+<span class="go">&#39;boundary-cell-dist&#39;, &#39;boundary-layer-cells&#39;, &#39;boundary-normal-dist&#39;, ...]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field_data</span><span class="o">.</span><span class="n">get_scalar_field_data</span><span class="o">.</span><span class="n">surface_name</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="go">[&#39;cold-inlet&#39;, &#39;hot-inlet&#39;, &#39;outlet&#39;, &#39;symmetry-xyplane&#39;, &#39;wall-elbow&#39;, &#39;wall-inlet&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field_data</span><span class="o">.</span><span class="n">get_surface_data</span><span class="o">.</span><span class="n">surface_ids</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="go">[0, 1, 2, 3, 4, 5]</span>
+</pre></div>
+</div>
 <table class="autosummary longtable table autosummary">
 <tbody>
 </tbody>
@@ -9641,7 +9676,6 @@ For example, pathlines connectivity, vertices, and field.</p>
 </dl>
 </dd></dl>
 
-</section>
 </section>
 </section>
 
