@@ -1,3 +1,5 @@
+from typing import List
+
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
 
@@ -55,7 +57,7 @@ class WorkflowWrapper:
                 return []
             attrs = set(attrs)
             tasks = [
-                task for task in self._command_source._all_task_objects() if
+                task for task in self._command_source.top_level_task_objects() if
                 task.name() != self.name()
             ]
             matches = []
@@ -94,6 +96,9 @@ class WorkflowWrapper:
                         type_ , id_ = k.split(':')
                         if type_ == "TaskObject":
                             return id_
+
+        def get_idx(self):
+            return int(self.get_id()[len("TaskObject"):])
 
         @property
         def CommandArguments(self):
@@ -163,7 +168,7 @@ class WorkflowWrapper:
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
 
-    def _all_task_objects(self):
+    def top_level_task_objects(self):
         workflow_state, task_list_state = self._workflow_and_task_list_state()
         tasks = []
         for task_id in task_list_state:
@@ -180,6 +185,50 @@ class WorkflowWrapper:
 
     def __call__(self):
         return self._workflow()
+
+
+class WorkflowTree:
+
+    class WorkflowNode:
+
+        def __init__(self, task, workflow) -> None:
+            self._task = task
+            self._workflow = workflow
+
+        def ordered_children(self):
+            return self._task.get_sub_tasks().sort(key=lambda task: task.get_idx())
+
+    def __init__(self, workflow) -> None:
+        self._workflow = workflow
+
+    def ordered_children(self) -> List[WorkflowNode]:
+        return self._build_children(
+            task_backlog=self._workflow.top_level_task_objects()
+        )
+
+    def _is_downstream(self, task, upstreams):
+        if not upstreams:
+            return not task.get_direct_upstream_tasks()
+        return task.name() in [task.name for task in upstreams]
+
+    def _build_children(self, task_backlog, upstreams=None):
+        children = []
+        next_tasks = []
+        new_backlog = []
+        for task in task_backlog:
+            (next_tasks if
+                self._is_downstream(task, upstreams) else
+                new_backlog).append(task)
+        task_backlog = new_backlog
+        next_tasks.sort(key=lambda task: task.get_idx())
+
+        for task in next_tasks:
+            children.append(WorkflowTree.WorkflowNode(task), self._workflow)
+
+        if task_backlog:
+            children.extend(self._build_children(task_backlog, next_tasks))
+
+        return children
 
 
 class _MakeReadOnly:
