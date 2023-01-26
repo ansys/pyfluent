@@ -386,7 +386,7 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
 
 
-def test_meshing_workflow_related_tasks(new_mesh_session):
+def test_meshing_workflow_structure(new_mesh_session):
     '''
     o Workflow
     |
@@ -495,3 +495,23 @@ def test_meshing_workflow_related_tasks(new_mesh_session):
     assert set(gen_surf_mesh.GetNextPossibleTasks()) == {
         'AddBoundaryType', 'UpdateBoundaries', 'SetUpPeriodicBoundaries', 'LinearMeshPattern',
         'ModifyMeshRefinement', 'ImproveSurfaceMesh', 'RunCustomJournal'}
+
+    children = w.ordered_children()
+    expected_task_order = (
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+        )
+
+    actual_task_order = tuple(child.name() for child in children)
+
+    assert actual_task_order == expected_task_order
+
+    assert [child.name() for child in children[3].ordered_children()] == [
+        "Enclose Fluid Regions (Capping)",
+        "Create Regions",
+    ]

@@ -100,6 +100,9 @@ class WorkflowWrapper:
         def get_idx(self):
             return int(self.get_id()[len("TaskObject"):])
 
+        def ordered_children(self):
+            return sorted(self.get_sub_tasks(), key=lambda task: task.get_idx())
+
         @property
         def CommandArguments(self):
             return self._refreshed_command()
@@ -175,36 +178,11 @@ class WorkflowWrapper:
             tasks.append(self._task_by_id_impl(task_id, workflow_state))
         return tasks
 
-    def __getattr__(self, attr):
-        return getattr(self._workflow, attr)
-
-    def __dir__(self):
+    def ordered_children(self) -> List[Task]:
         return sorted(
-            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
-        )
-
-    def __call__(self):
-        return self._workflow()
-
-
-class WorkflowTree:
-
-    class WorkflowNode:
-
-        def __init__(self, task, workflow) -> None:
-            self._task = task
-            self._workflow = workflow
-
-        def ordered_children(self):
-            return sorted(self._task.get_sub_tasks(), key=lambda task: task.get_idx())
-
-    def __init__(self, workflow) -> None:
-        self._workflow = workflow
-
-    def ordered_children(self) -> List[WorkflowNode]:
-        return self._build_children(
-            task_backlog=self._workflow.top_level_task_objects()
-        )
+            self.top_level_task_objects(),
+            key=lambda task: task.get_idx()
+            )
 
     def _is_downstream(self, task, upstreams):
         if not upstreams:
@@ -215,24 +193,16 @@ class WorkflowTree:
         matching_names = [task.name() for task in downstreams_of_upstreams]
         return task.name() in matching_names
 
-    def _build_children(self, task_backlog, upstreams=None):
-        children = []
-        tasks_to_add = []
-        new_backlog = []
-        for task in task_backlog:
-            (tasks_to_add if
-                self._is_downstream(task, upstreams) else
-                new_backlog).append(task)
-        task_backlog = new_backlog
-        tasks_to_add.sort(key=lambda task: task.get_idx())
+    def __getattr__(self, attr):
+        return getattr(self._workflow, attr)
 
-        for task in tasks_to_add:
-            children.append(WorkflowTree.WorkflowNode(task, self._workflow))
+    def __dir__(self):
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
+        )
 
-        if task_backlog:
-            children.extend(self._build_children(task_backlog, tasks_to_add))
-
-        return children
+    def __call__(self):
+        return self._workflow()
 
 
 class _MakeReadOnly:
