@@ -462,7 +462,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     assert downstream_names(gen_vol_mesh) == set()
 
     for task in all_tasks:
-        assert {sub_task.name() for sub_task in task.get_sub_tasks()} == ({
+        assert {sub_task.name() for sub_task in task.ordered_children()} == ({
             "Enclose Fluid Regions (Capping)",
             "Create Regions",
         } if task is describe_geometry else set())
@@ -512,6 +512,29 @@ def test_meshing_workflow_structure(new_mesh_session):
     assert actual_task_order == expected_task_order
 
     assert [child.name() for child in children[3].ordered_children()] == [
+        "Enclose Fluid Regions (Capping)",
+        "Create Regions",
+    ]
+
+    gen_surf_mesh.InsertNextTask(CommandName="AddBoundaryType")
+
+    children = w.ordered_children()
+    expected_task_order = (
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Add Boundary Type",
+        "Describe Geometry",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+        )
+
+    actual_task_order = tuple(child.name() for child in children)
+
+    assert actual_task_order == expected_task_order
+
+    assert [child.name() for child in children[4].ordered_children()] == [
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
