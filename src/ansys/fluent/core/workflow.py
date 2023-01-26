@@ -57,7 +57,7 @@ class WorkflowWrapper:
                 return []
             attrs = set(attrs)
             tasks = [
-                task for task in self._command_source.top_level_task_objects() if
+                task for task in self._command_source.ordered_children() if
                 task.name() != self.name()
             ]
             matches = []
@@ -80,7 +80,7 @@ class WorkflowWrapper:
                 other_attr="requiredInputs"
                 )
 
-        def get_sub_tasks(self):
+        def ordered_children(self):
             sub_task_ids = self._task.TaskList()
             return [self._command_source._task_by_id(task_id) for task_id in self._task.TaskList()]
 
@@ -99,9 +99,6 @@ class WorkflowWrapper:
 
         def get_idx(self):
             return int(self.get_id()[len("TaskObject"):])
-
-        def ordered_children(self):
-            return sorted(self.get_sub_tasks(), key=lambda task: task.get_idx())
 
         @property
         def CommandArguments(self):
@@ -171,18 +168,12 @@ class WorkflowWrapper:
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
 
-    def top_level_task_objects(self):
+    def ordered_children(self) -> List[Task]:
         workflow_state, task_list_state = self._workflow_and_task_list_state()
         tasks = []
         for task_id in task_list_state:
             tasks.append(self._task_by_id_impl(task_id, workflow_state))
         return tasks
-
-    def ordered_children(self) -> List[Task]:
-        return sorted(
-            self.top_level_task_objects(),
-            key=lambda task: task.get_idx()
-            )
 
     def _is_downstream(self, task, upstreams):
         if not upstreams:
