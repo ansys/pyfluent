@@ -196,7 +196,7 @@ class WorkflowTree:
             self._workflow = workflow
 
         def ordered_children(self):
-            return self._task.get_sub_tasks().sort(key=lambda task: task.get_idx())
+            return sorted(self._task.get_sub_tasks(), key=lambda task: task.get_idx())
 
     def __init__(self, workflow) -> None:
         self._workflow = workflow
@@ -209,24 +209,28 @@ class WorkflowTree:
     def _is_downstream(self, task, upstreams):
         if not upstreams:
             return not task.get_direct_upstream_tasks()
-        return task.name() in [task.name for task in upstreams]
+        downstreams_of_upstreams = []
+        for upstream in upstreams:
+            downstreams_of_upstreams.extend(upstream.get_direct_downstream_tasks())
+        matching_names = [task.name() for task in downstreams_of_upstreams]
+        return task.name() in matching_names
 
     def _build_children(self, task_backlog, upstreams=None):
         children = []
-        next_tasks = []
+        tasks_to_add = []
         new_backlog = []
         for task in task_backlog:
-            (next_tasks if
+            (tasks_to_add if
                 self._is_downstream(task, upstreams) else
                 new_backlog).append(task)
         task_backlog = new_backlog
-        next_tasks.sort(key=lambda task: task.get_idx())
+        tasks_to_add.sort(key=lambda task: task.get_idx())
 
-        for task in next_tasks:
-            children.append(WorkflowTree.WorkflowNode(task), self._workflow)
+        for task in tasks_to_add:
+            children.append(WorkflowTree.WorkflowNode(task, self._workflow))
 
         if task_backlog:
-            children.extend(self._build_children(task_backlog, next_tasks))
+            children.extend(self._build_children(task_backlog, tasks_to_add))
 
         return children
 
