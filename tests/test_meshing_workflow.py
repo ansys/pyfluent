@@ -204,7 +204,7 @@ def test_command_args_including_task_object_datamodel_se(new_mesh_session):
     w = session_new.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     igt = w.TaskObject["Import Geometry"]
-    assert igt.Arguments() == set()
+    assert igt.Arguments() == {}
     assert igt.CommandArguments.CadImportOptions()
     assert igt.CommandArguments.CadImportOptions.OneZonePer()
     assert igt.CommandArguments.CadImportOptions.OneZonePer.getAttribValue("default")
@@ -262,16 +262,16 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
         w.task(
             "Import Geometry"
         ).CommandArguments.CadImportOptions.OneZonePer.default_value()
-        == "Body"
+        == "body"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
     assert w.task(
         "Import Geometry"
     ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
-        "Body",
-        "Face",
-        "Object",
+        "body",
+        "face",
+        "object",
     ]
     assert (
         w.task(
