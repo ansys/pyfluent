@@ -468,7 +468,7 @@ def test_meshing_workflow_structure(new_mesh_session):
         } if task is describe_geometry else set())
 
     for task in all_tasks:
-        assert {sub_task.name() for sub_task in task.get_inactive_sub_tasks()} == ({
+        assert {sub_task.name() for sub_task in task.inactive_ordered_children()} == ({
             "Apply Share Topology",
             "Update Boundaries",
         } if task is describe_geometry else set())
