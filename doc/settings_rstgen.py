@@ -128,59 +128,10 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(
             f".. currentmodule:: ansys.fluent.core.solver.settings_{version}.{file_name}\n\n"
         )
-        r.write(f".. autoclass:: {cls_name}\n")
-        r.write(f"{istr1}:show-inheritance:\n")
-        r.write(f"{istr1}:undoc-members:\n")
-
-        if has_children:
-            r.write(f".. rubric:: Children\n\n")
-            data_dict = {}
-            data_dict["Child"] = "Summary"
-            for child in cls.child_names:
-                child_cls = getattr(cls, child)
-                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
-                data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
-            _generate_table_for_rst(r, data_dict)
-
-        if has_commands:
-            r.write(f".. rubric:: Commands\n\n")
-            data_dict = {}
-            data_dict["Command"] = "Summary"
-            for child in cls.command_names:
-                child_cls = getattr(cls, child)
-                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
-                data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
-            _generate_table_for_rst(r, data_dict)
-
-        if has_arguments:
-            r.write(f".. rubric:: Arguments\n\n")
-            data_dict = {}
-            data_dict["Argument"] = "Summary"
-            for child in cls.argument_names:
-                child_cls = getattr(cls, child)
-                ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
-                data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
-            _generate_table_for_rst(r, data_dict)
-
-        if has_named_object:
-            child_cls = getattr(cls, "child_object_type")
-            ref_string = (
-                f":ref:`{child_cls.__name__} <{child_cls.__module__.split('.')[-1]}>`"
-            )
-            data_dict = {}
-            data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
-            r.write(f".. rubric:: Named object type\n\n")
-            r.write(f"{ref_string}\n\n\n")
-
-        if parents_dict.get(file_name):
-            r.write(f".. rubric:: Included in:\n\n")
-            data_dict = {}
-            data_dict["Parent"] = "Summary"
-            for parent in parents_dict.get(file_name):
-                parent_file = parent.__module__.split(".")[-1]
-                ref_string = f":ref:`{parent.__name__} <{parent_file}>`"
-                data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
-            _generate_table_for_rst(r, data_dict)
+        r.write(".. autosummary::\n")
+        r.write("   :toctree: _autosummary\n")
+        r.write("   :recursive:\n\n")
+        r.write(f"   {cls_name}\n\n")
 
     if not rstpath in rst_list:
         rst_list.append(rstpath)
