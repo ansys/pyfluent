@@ -125,9 +125,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f".. _{file_name}:\n\n")
         r.write(f"{cls_name}\n")
         r.write(f'{"="*(len(cls_name))}\n\n')
-        r.write(
-            f".. currentmodule:: ansys.fluent.core.solver.settings_{version}.{file_name}\n\n"
-        )
+        r.write(f".. currentmodule:: ansys.fluent.core.solver.settings_{version}.{file_name}\n\n")
         r.write(".. autosummary::\n")
         r.write("   :toctree: _autosummary\n")
         r.write("   :recursive:\n\n")
