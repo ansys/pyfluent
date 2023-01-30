@@ -408,9 +408,7 @@ def scm_to_py(topy):
 class LaunchFluentError(Exception):
 
     def __init__(self, launch_string):
-        identifier = "fluent.exe"
-        details = "\n" + "Fluent Launch Path: " + launch_string.split(identifier)[0] + identifier
-        details += "\n" + "Launcher Arguments: " + str(launch_string.split(identifier)[1].split())
+        details = "\n" + "Fluent Launch string: " + launch_string
         super().__init__(details)
 
 
