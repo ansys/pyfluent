@@ -16,10 +16,13 @@ def run_transcript(i, ip, port, password):
         transcript
     )
 
+    transcript_counter = [0, 0]
+
     if i % 5 == 0:
         solver_session.scheme_eval.scheme_eval("(pp 'test)")
         check_transcript = True
         time.sleep(1)
+        transcript_counter[0] += 1
     else:
         check_transcript = False
 
@@ -30,7 +33,10 @@ def run_transcript(i, ip, port, password):
                 print(i, 'transcript failed.', transcript.data)
             else:
                 print(i, 'transcript passed:', transcript.data)
+                transcript_counter[1] += 1
         transcript("")
+
+    return transcript_counter
 
 
 def test_transcript(new_solver_session):
@@ -38,5 +44,16 @@ def test_transcript(new_solver_session):
     ip = solver._channel_str.split(":")[0]
     port = int(solver._channel_str.split(":")[1])
     password = solver._metadata[0][-1]
+
+    total_checked_transcript = 0
+    passed_transcript = 0
+
     for i in range(100):
-        run_transcript(i, ip, port, password)
+        transcript_counter = run_transcript(i, ip, port, password)
+        total_checked_transcript += transcript_counter[0]
+        passed_transcript += transcript_counter[1]
+
+    # TODO: Ideally this should be equal.
+    #  This check can be updated later after the server side fix is in place
+    #  (this test will start failing then).
+    assert total_checked_transcript > passed_transcript
