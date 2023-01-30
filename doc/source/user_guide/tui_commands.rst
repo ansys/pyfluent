@@ -18,7 +18,7 @@ command abbreviation. To make using PyFluent commands in an interactive
 session easier, you can install a tool such as
 `pyreadline3 <https://github.com/pyreadline3/pyreadline3>`_, which provides
 both command line completion and history. To inspect any PyFluent TUI object further,
-you can use the Python built-in`help <https://docs.python.org/3/library/functions.html#help>`_
+you can use the Python built-in `help <https://docs.python.org/3/library/functions.html#help>`_
 and `dir <https://docs.python.org/3/library/functions.html#dir>`_ functions.
 
 The arguments to a TUI command are those that would be passed in direct
