@@ -74,24 +74,77 @@ class Task(PyCallableStateObject):
         )
 
     def get_direct_upstream_tasks(self) -> list:
+        """ Get the list of tasks upstream of this one and directly connected by a data dependency.
+
+        Returns
+        -------
+        upstreams : list
+            Upstream task list.
+        """
         return self._tasks_with_matching_attributes(
             attr="requiredInputs",
             other_attr="outputs"
             )
 
     def get_direct_downstream_tasks(self) -> list:
+        """ Get the list of tasks downstream of this one and directly connected by a data dependency.
+
+        Returns
+        -------
+        downstreams : list
+            Downstream task list.
+        """
         return self._tasks_with_matching_attributes(
             attr="outputs",
             other_attr="requiredInputs"
             )
 
     def ordered_children(self) -> list:
+        """ Get the ordered task list held by this task. Sorting is in terms
+        of the workflow order and only includes this task's top-level tasks, while other tasks
+        can be obtained by calling ordered_children() on a parent task. Given the
+        workflow:
+
+        o Workflow
+        |
+        |--o A
+        |
+        |--o B
+        |  |
+        |  |--o C
+        |  |
+        |  |--o D
+        |
+        |--o E
+
+        C and D are the ordered children of task B.
+
+        Returns
+        -------
+        children : list
+            Ordered children.
+        """
         return [self._command_source._task_by_id(task_id) for task_id in self._task.TaskList()]
 
     def inactive_ordered_children(self) -> list:
+        """ Get the inactive ordered task list held by this task.
+
+        Returns
+        -------
+        children : list
+            Inactive ordered children.
+        """
         return [self._command_source._task_by_id(task_id) for task_id in self._task.InactiveTaskList()]
 
     def get_id(self) -> str:
+        """ Get the unique string identifier of this task, as it is in
+        the meshing application.
+
+        Returns
+        -------
+        identifier : str
+            The string identifier.
+        """
         workflow_state = self._command_source._workflow_state()
         for k, v in workflow_state.items():
             if isinstance(v, dict) and '_name_' in v:
@@ -101,6 +154,14 @@ class Task(PyCallableStateObject):
                         return id_
 
     def get_idx(self) -> int:
+        """ Get the unique integer index of this task, as it is in
+        the meshing application.
+
+        Returns
+        -------
+        index : int
+            The integer index.
+        """
         return int(self.get_id()[len("TaskObject"):])
 
     @property
@@ -190,6 +251,11 @@ class WorkflowWrapper:
         ----------
         name : str
             Task name - the display name, not the internal ID.
+
+        Returns
+        -------
+        task : Task
+            wrapped task object.
         """
         return Task(self, name)
 
@@ -266,15 +332,6 @@ class WorkflowWrapper:
     def _task_by_id(self, task_id):
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
-
-    def _is_downstream(self, task, upstreams):
-        if not upstreams:
-            return not task.get_direct_upstream_tasks()
-        downstreams_of_upstreams = []
-        for upstream in upstreams:
-            downstreams_of_upstreams.extend(upstream.get_direct_downstream_tasks())
-        matching_names = [task.name() for task in downstreams_of_upstreams]
-        return task.name() in matching_names
 
 
 class _MakeReadOnly:
