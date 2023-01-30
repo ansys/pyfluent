@@ -49,16 +49,18 @@ method:
   solver = pyfluent.launch_fluent(precision="double", processor_count=2, mode="solver")
   solver.health_check_service.is_serving
 
-To locate the Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
+To locate the latest Fluent installation, PyFluent automatically uses the ``AWP_ROOT<ver>``
 environment variable, where ``<ver>`` is the three-digit format for the release.
-For example, ``AWP_ROOT222`` is the environment variable for the 2022 R2 release. 
+For example, ``AWP_ROOT231`` is the environment variable for the 2023 R1 release. 
 
 On a Windows system, this environment variable is configured when a release is installed.
 
 On a Linux system, you must configure this environment variable to point to the absolute
-path of the installed release. For example, for the 2022 R2 release, you would set
-the ``AWP_ROOT222`` environment variable to point to an absolute location such as
-``C:\Program Files\ANSYS Inc\v222``.
+path of the installed release. For example, for the 2023 R1 release, you would set
+the ``AWP_ROOT231`` environment variable to point to an absolute location such as
+``/apps/ansys_inc/v231``.
+
+For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
 
 Once Fluent is active, you can use the ``solver_session.tui`` interface to send
 Fluent TUI commands to PyFluent. For example, this code reads a case file, updates a
