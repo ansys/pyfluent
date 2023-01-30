@@ -260,18 +260,17 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
     assert (
         w.task(
-            "Import Geometry"
-        ).CommandArguments.CadImportOptions.OneZonePer.default_value()
-        == "Body"
+            "Generate the Volume Mesh"
+        ).CommandArguments.VolumeFillControls.Type.default_value()
+        == "Cartesian"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
     assert w.task(
-        "Import Geometry"
-    ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
-        "Body",
-        "Face",
-        "Object",
+        "Generate the Volume Mesh"
+        ).CommandArguments.VolumeFillControls.Type.allowed_values() == [
+        "Octree",
+        "Cartesian"
     ]
     assert (
         w.task(
@@ -384,3 +383,159 @@ def test_dummy_journal_data_model_methods(new_mesh_session):
     with pytest.raises(AttributeError) as msg:
         w.task("Import Geometry").fix_state()
     assert msg.value.args[0] == "This method is yet to be implemented in pyfluent."
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_meshing_workflow_structure(new_mesh_session):
+    '''
+    o Workflow
+    |
+    |--o Import Geometry
+    |
+    |--o Add Local Sizing
+    |
+    |--o Generate the Surface Mesh
+    |
+    |--o Describe Geometry
+    |  |
+    |  |--o Enclose Fluid Regions (Capping)
+    |  |
+    |  |--o Create Regions
+    |
+    |--o Update Regions
+    |
+    |--o Add Boundary Layers
+    |
+    |--o Generate the Volume Mesh
+    '''
+
+    w = new_mesh_session.workflow
+    w.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+    task_names = (
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Enclose Fluid Regions (Capping)",
+        "Create Regions",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+        )
+
+    import_geom, add_sizing, gen_surf_mesh, describe_geometry,\
+        cap, create_regions, update_regions, add_boundary_layers,\
+            gen_vol_mesh = all_tasks = [w.task(name) for name in task_names]
+
+    def upstream_names(task):
+        return {upstream.name() for upstream in task.get_direct_upstream_tasks()}
+
+    def downstream_names(task):
+        return {downstream.name() for downstream in task.get_direct_downstream_tasks()}
+
+    assert upstream_names(import_geom) == set()
+    assert downstream_names(import_geom) == {"Generate the Surface Mesh", "Add Local Sizing"}
+
+    assert upstream_names(add_sizing) == {"Import Geometry"}
+    assert downstream_names(add_sizing) == {"Generate the Surface Mesh"}
+
+    assert upstream_names(gen_surf_mesh) == {"Import Geometry", "Add Local Sizing"}
+    assert downstream_names(gen_surf_mesh) == {"Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"}
+
+    assert upstream_names(describe_geometry) == {"Generate the Surface Mesh", "Add Boundary Layers"}
+    assert downstream_names(describe_geometry) == {"Update Regions", "Add Boundary Layers", "Generate the Volume Mesh"}
+
+    assert upstream_names(cap) == {"Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
+    assert downstream_names(cap) == {"Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh"}
+
+    assert upstream_names(create_regions) == {"Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
+    assert downstream_names(create_regions) == {"Describe Geometry", "Add Boundary Layers", "Generate the Volume Mesh", "Update Regions"}
+
+    assert upstream_names(update_regions) == {"Describe Geometry"}
+    assert downstream_names(update_regions) == {"Generate the Volume Mesh"}
+
+    assert upstream_names(add_boundary_layers) == {"Describe Geometry", "Generate the Surface Mesh"}
+    assert downstream_names(add_boundary_layers) == {"Describe Geometry", "Generate the Volume Mesh"}
+
+    assert upstream_names(gen_vol_mesh) == {"Update Regions", "Describe Geometry", "Add Boundary Layers", "Generate the Surface Mesh"}
+    assert downstream_names(gen_vol_mesh) == set()
+
+    for task in all_tasks:
+        assert {sub_task.name() for sub_task in task.ordered_children()} == ({
+            "Enclose Fluid Regions (Capping)",
+            "Create Regions",
+        } if task is describe_geometry else set())
+
+    for task in all_tasks:
+        assert {sub_task.name() for sub_task in task.inactive_ordered_children()} == ({
+            "Apply Share Topology",
+            "Update Boundaries",
+        } if task is describe_geometry else set())
+
+    task_ids = [task.get_id() for task in all_tasks]
+    # uniqueness test
+    assert len(set(task_ids)) == len(task_ids)
+    # ordering test
+    idxs = [int(id[len("TaskObject"):]) for id in task_ids]
+    assert sorted(idxs) == idxs
+    '''
+    o Workflow
+    |
+    |--o Import Geometry
+    |
+    |--o Add Local Sizing
+    |
+    |--o Generate the Surface Mesh --
+                                     \Insert Next Task>
+                                                        |-- Add Boundary Type
+                                                        |-- Update Boundaries
+                                                        |-- ...
+    '''
+    assert set(gen_surf_mesh.GetNextPossibleTasks()) == {
+        'AddBoundaryType', 'UpdateBoundaries', 'SetUpPeriodicBoundaries', 'LinearMeshPattern',
+        'ModifyMeshRefinement', 'ImproveSurfaceMesh', 'RunCustomJournal'}
+
+    children = w.ordered_children()
+    expected_task_order = (
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Describe Geometry",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+        )
+
+    actual_task_order = tuple(child.name() for child in children)
+
+    assert actual_task_order == expected_task_order
+
+    assert [child.name() for child in children[3].ordered_children()] == [
+        "Enclose Fluid Regions (Capping)",
+        "Create Regions",
+    ]
+
+    gen_surf_mesh.InsertNextTask(CommandName="AddBoundaryType")
+
+    children = w.ordered_children()
+    expected_task_order = (
+        "Import Geometry",
+        "Add Local Sizing",
+        "Generate the Surface Mesh",
+        "Add Boundary Type",
+        "Describe Geometry",
+        "Update Regions",
+        "Add Boundary Layers",
+        "Generate the Volume Mesh",
+        )
+
+    actual_task_order = tuple(child.name() for child in children)
+
+    assert actual_task_order == expected_task_order
+
+    assert [child.name() for child in children[4].ordered_children()] == [
+        "Enclose Fluid Regions (Capping)",
+        "Create Regions",
+    ]
