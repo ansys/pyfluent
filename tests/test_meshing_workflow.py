@@ -260,18 +260,17 @@ def test_accessors_for_argument_sub_items(new_mesh_session):
     ).CommandArguments.CadImportOptions.OneZonePer.is_read_only()
     assert (
         w.task(
-            "Import Geometry"
-        ).CommandArguments.CadImportOptions.OneZonePer.default_value()
-        == "body"
+            "Generate the Volume Mesh"
+        ).CommandArguments.VolumeFillControls.Type.default_value()
+        == "Cartesian"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
     assert w.task(
-        "Import Geometry"
-    ).CommandArguments.CadImportOptions.OneZonePer.allowed_values() == [
-        "body",
-        "face",
-        "object",
+        "Generate the Volume Mesh"
+        ).CommandArguments.VolumeFillControls.Type.allowed_values() == [
+        "Octree",
+        "Cartesian"
     ]
     assert (
         w.task(
