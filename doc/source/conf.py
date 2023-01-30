@@ -27,6 +27,7 @@ extensions = [
     "jupyter_sphinx",
     "notfound.extension",
     "numpydoc",
+    'sphinx.ext.napoleon',
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
@@ -37,6 +38,10 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.inheritance_diagram",
+    "sphinx.ext.graphviz",
+    "sphinx.ext.duration",
 ]
 
 # Intersphinx mapping
@@ -70,6 +75,27 @@ numpydoc_validation_exclude = {
     "ansys.fluent.core.solver.settings_231.",
     "ansys.fluent.core.solver.settings_232.",
 }
+
+autodoc_default_options = {
+    'members': True,
+    'member-order': 'alphabetical',
+    'inherited-members': True,
+    'show-inheritance': True,
+    'imported-members': True,
+    'private-members': False,
+    'exclude-members': '__weakref__, __dict__',
+    'special-members': '__init__',
+    'undoc-members': True,
+}
+
+autoclass_content = 'both'
+autodoc_class_signature = 'separated'
+
+autosummary_generate = True
+autosummary_imported_members = True
+
+autodoc_typehints = 'both'
+autodoc_typehints_format = 'fully-qualified'
 
 # Favicon
 html_favicon = ansys_favicon
