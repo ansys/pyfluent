@@ -20,9 +20,7 @@ def test_mixing_elbow_meshing_workflow(
     shared_watertight_workflow_session,
     mixing_elbow_geometry,
 ):
-    """
-    This test covers generic meshing workflow behaviour
-    """
+    """This test covers generic meshing workflow behaviour."""
     meshing_session = shared_watertight_workflow_session
     workflow = meshing_session.workflow
 

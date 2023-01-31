@@ -30,7 +30,6 @@ from util.solver import check_report_definition_result
 
 @pytest.mark.nightly
 def test_mixing_elbow(new_watertight_workflow_session, mixing_elbow_geometry):
-
     meshing_session = new_watertight_workflow_session
     workflow = meshing_session.workflow
 
