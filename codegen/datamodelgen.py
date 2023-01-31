@@ -296,6 +296,7 @@ class DataModelGenerator:
             f.write(f".. currentmodule:: {module_name}\n\n")
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n")
+            f.write("   :template: flobject-module-template.rst\n")
             f.write("   :recursive:\n\n")
 
             named_objects = sorted(info.namedobjects)

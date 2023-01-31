@@ -13,6 +13,7 @@ Usage
 """
 
 import os
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"D:\Installations\Ansys\v231_04012023\ANSYS Inc\v231\fluent"
 from pathlib import Path
 import pickle
 import platform
@@ -265,6 +266,7 @@ class TUIGenerator:
             f.write(f".. currentmodule:: {self._tui_module}\n\n")
             f.write(".. autosummary::\n")
             f.write("   :toctree: _autosummary\n")
+            f.write("   :template: flobject-class-template.rst\n")
             f.write("   :recursive:\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]

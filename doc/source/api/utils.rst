@@ -11,7 +11,3 @@ PyFluent utility functions
     :recursive:
    
     async_execution
-    data_transfer
-    fluent_version
-
-
