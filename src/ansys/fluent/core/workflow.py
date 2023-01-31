@@ -84,6 +84,19 @@ class Task(PyCallableStateObject):
         return self._tasks_with_matching_attributes(
             attr="requiredInputs",
             other_attr="outputs"
+        )
+
+    def get_direct_upstream_tasks(self) -> list:
+        """ Get the list of tasks upstream of this one and directly connected by a data dependency.
+
+        Returns
+        -------
+        upstreams : list
+            Upstream task list.
+        """
+        return self._tasks_with_matching_attributes(
+            attr="requiredInputs",
+            other_attr="outputs"
             )
 
     def get_direct_downstream_tasks(self) -> list:
