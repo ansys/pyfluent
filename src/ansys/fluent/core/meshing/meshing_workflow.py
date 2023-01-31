@@ -21,6 +21,15 @@ class MeshingWorkflow(WorkflowWrapper):
         return self.__workflow
 
 
+class SimpleTask:
+
+    def __init__(self, task) -> None:
+        self._task = task
+
+    def __call__(self):
+        return self._task
+
+
 class AutoWatertight(WorkflowWrapper):
 
     def __init__(self, workflow, command_source):
@@ -39,8 +48,10 @@ class AutoWatertight(WorkflowWrapper):
             # temp reuse helpString
             py_name = cmd.get_attr("helpString")
             if py_name == attr:
-                return lambda: task
+                return self._callable_method(task)
 
+    def _callable_method(self, task):
+        return SimpleTask(task)
 
 class Watertight(WorkflowWrapper):
 
