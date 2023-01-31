@@ -92,7 +92,8 @@ html[data-theme="light"] {
   --pst-color-inline-code: #000;
   --pst-color-target: rgb(255, 255, 255);
   /* color for sphinx-gallery-code output*/
-  --pst-color-codeout: #fafae2;
+  --pst-color-codecell: #fafae2;
+  --pst-color-codeout:var(--pst-color-inline-code);
   --pst-color-sig:#0965C8;
 }
 
@@ -129,7 +130,8 @@ html[data-theme="dark"] {
   --pst-color-inline-code: #fff;
   --pst-color-target: rgb(71, 39, 0);
   /* color for sphinx-gallery-code output*/
-  --pst-color-codeout: #929FAA;
+  --pst-color-codecell: #495057;
+  --pst-color-codeout: #f2f4f6;
   --pst-color-sig:#d6ab1e;
 }
 
@@ -552,7 +554,8 @@ a > code.download
 ########################
 */
 .sphx-glr-script-out .highlight pre{
-  background-color:  var(--pst-color-codeout) !important;
+  background-color:  var(--pst-color-codecell) !important;
+  color: var(--pst-color-codeout);
   }
 
 .prev-next-area a p.prev-next-title {
@@ -852,4 +855,14 @@ max-width: 220px;
 margin-left: auto;
 margin-right: auto;
 font-family: var(--pst-font-family-base);
+}
+
+div.deprecated {
+  border-color: var(--pst-color-danger);
+  background-color: #dc354514;
+}
+
+div.versionadded {
+  border-color: var(--pst-color-success);
+  background: #88ca881f;
 }
