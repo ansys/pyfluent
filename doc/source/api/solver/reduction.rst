@@ -136,7 +136,7 @@ Compute the force acting on the locations specified (should be walls) as a vecto
 
   >>> reduction.force(locations)
 
-Pressure Force
+Pressure force
 ~~~~~~~~~~~~~~
 Compute the pressure force acting on the locations specified (should be walls) as a vector.
 
@@ -144,7 +144,7 @@ Compute the pressure force acting on the locations specified (should be walls) a
 
   >>> reduction.pressure_force(locations)
 
-Viscous Force
+Viscous force
 ~~~~~~~~~~~~~
 Compute the viscous force acting on the locations specified (should be walls) as a vector.
 

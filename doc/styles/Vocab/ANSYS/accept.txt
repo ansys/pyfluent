@@ -4,6 +4,7 @@ ansys
 Fluent
 fluent
 Fluent's
+PyAnsys
 PyFluent
 EventsManager
 endblock
@@ -29,3 +30,5 @@ pathlines
 Pathlines
 rp
 config
+UDFs
+
