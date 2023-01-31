@@ -281,19 +281,18 @@ def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLE
     )
     os.close(fd)
 
+    prev_stat = Path(file_path).stat()
+    prev_mtime = prev_stat.st_mtime
+    prev_size = prev_stat.st_size
+
     session = new_mesh_session
     session.transcript.start(file_path)
     session = session.switch_to_solver()
     session.transcript.stop()
 
-    with open(file_path) as f:
-        returned = f.readlines()
-
-    session.exit()
-
-    time.sleep(1)
-
-    assert returned
+    new_stat = Path(file_path).stat()
+    assert new_stat.st_mtime > prev_mtime
+    assert new_stat.st_size > prev_size
 
 
 @pytest.mark.fluent_231
