@@ -539,3 +539,12 @@ def test_meshing_workflow_structure(new_mesh_session):
         "Enclose Fluid Regions (Capping)",
         "Create Regions",
     ]
+
+
+@pytest.mark.dev
+@pytest.mark.fluent_231
+def test_watertight_wrapper(new_mesh_session):
+    workflow = new_mesh_session.workflow
+    watertight = workflow.watertight()
+    import_geometry = watertight.import_geometry()
+    assert import_geometry.Arguments() == {}

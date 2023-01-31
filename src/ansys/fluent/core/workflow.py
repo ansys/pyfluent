@@ -333,6 +333,20 @@ class WorkflowWrapper:
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
 
+    def _compound_task(self, task_name, child_name):
+        parent = self.task(task_name)
+        if child_name:
+            child = self.task(child_name)
+            if child.name() not in (
+                child.name() for child in parent.ordered_children()
+            ):
+                raise ValueError(
+                    f"{child_name} is not a valid name"
+                     " argument for {task_name}"
+                )
+            return child
+        return parent
+
 
 class _MakeReadOnly:
     """Removes 'set_state()' attribute to implement read-only behaviour."""

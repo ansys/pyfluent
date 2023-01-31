@@ -2,12 +2,14 @@ import importlib
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.meshing.meshing import Meshing
+
+#from ansys.fluent.core.workflow import WorkflowWrapper
+from ansys.fluent.core.meshing.meshing_workflow import MeshingWorkflow
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 from ansys.fluent.core.session_shared import _CODEGEN_MSG_DATAMODEL, _CODEGEN_MSG_TUI
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 from ansys.fluent.core.utils.logging import LOG
-from ansys.fluent.core.workflow import WorkflowWrapper
 
 
 class _BaseMeshing:
@@ -89,7 +91,7 @@ class _BaseMeshing:
     @property
     def workflow(self):
         if not self._workflow:
-            self._workflow = WorkflowWrapper(self._workflow_se, self.meshing)
+            self._workflow = MeshingWorkflow(self._workflow_se, self.meshing)
         return self._workflow
 
     @property
