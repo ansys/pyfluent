@@ -7,13 +7,12 @@ import grpc
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 
 
 class _SettingsServiceImpl:
     def __init__(self, channel: grpc.Channel, metadata):
-        tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
+        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 

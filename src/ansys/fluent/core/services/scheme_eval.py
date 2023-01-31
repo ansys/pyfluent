@@ -26,6 +26,7 @@ import grpc
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 
 
 class SchemeEvalService:
@@ -35,7 +36,8 @@ class SchemeEvalService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        self.__stub = SchemeEvalGrpcModule.SchemeEvalStub(channel)
+        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        self.__stub = SchemeEvalGrpcModule.SchemeEvalStub(intercept_channel)
         self.__metadata = metadata
 
     def eval(self, request: SchemePointer) -> SchemePointer:
