@@ -367,7 +367,7 @@ class PyMenu(PyStateContainer):
             )
 
     def name(self):
-        """Get the name of the named object"""
+        """Get the name of the named object."""
         try:
             return self._name_()
         except AttributeError:
@@ -769,7 +769,6 @@ class PyCommandArguments(PyStateContainer):
             pass
 
     def __getattr__(self, attr):
-
         for arg in self.static_info.commands[self.command].commandinfo.args:
             if arg.name == attr:
                 mode = AccessorModes.get_mode(arg.type)

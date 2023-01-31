@@ -1,5 +1,5 @@
-"""
-This test file is provided for manual testing (a sample client).
+"""This test file is provided for manual testing (a sample client).
+
 1. Run the server - preferences
 2. Run the test
 """

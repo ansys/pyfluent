@@ -777,7 +777,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
     The following can be used:
     for name, boundary in setup.boundary_conditions.items():
-        print (name, boundary())
+    print (name, boundary())
 
     even though actual boundary conditions are stored one level lower to
     boundary_conditions.
