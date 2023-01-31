@@ -116,11 +116,14 @@ all PyFluent packages in a Python *virtual environment*:
 
    .. code:: bash
 
+   .. vale off
+   
     python -m venv venv   # Set up a local virtual environment
     venv\Scripts\activate   # Activate the virtual environment on Windows
     source venv/bin/activate.csh   # Activate the virtual environment on Linux (csh)
     . venv/bin/activate   # Activate the virtual environment on Linux (bash)
 
+   .. vale on
 
 #. In the same command window, use ``pip``, the package installer for Python, to
    install the PyFluent packages::
