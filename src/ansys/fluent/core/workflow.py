@@ -361,6 +361,60 @@ class WorkflowWrapper:
         return parent
 
 
+class SimpleTask:
+
+    def __init__(self, task) -> None:
+        self._task = task
+
+    def __call__(self):
+        return self._task
+
+
+class CompoundTask:
+
+    def __init__(self, task, workflow) -> None:
+        self._task = task
+        self._workflow = workflow
+
+    def __call__(self, name=None):
+        return self._workflow._compound_task(
+            task_name=self._task.name(),
+            child_name=name)
+
+
+class ExtendedWorkflow(WorkflowWrapper):
+
+    def __init__(self, workflow, command_source):
+        super().__init__(workflow, command_source)
+
+    def __getattr__(self, attr):
+        try:
+            result = super().__getattr__(attr)
+            if result:
+                return result
+        except AttributeError:
+            pass
+        child_tasks = self.ordered_children()
+        for task in child_tasks:
+            cmd = task._command()
+            # temp reuse helpString
+            py_name = cmd.get_attr("helpString")
+            if py_name == attr:
+                return self._callable_method(task)
+
+    def _callable_method(self, task):
+        task_type = task.TaskType()
+        if task_type == "Simple":
+            return SimpleTask(task)
+        elif task_type == "Compound":
+            return CompoundTask(task)
+
+
+
+
+
+
+
 class _MakeReadOnly:
     """Removes 'set_state()' attribute to implement read-only behaviour."""
 

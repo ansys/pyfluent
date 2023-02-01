@@ -543,8 +543,14 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
-def test_watertight_wrapper(new_mesh_session):
+def test_watertight_wrapper(
+    new_mesh_session,
+    mixing_elbow_geometry
+):
     workflow = new_mesh_session.workflow
-    watertight = workflow.watertight()
-    import_geometry = watertight.import_geometry()
+    workflow.watertight()
+    import_geometry = workflow.import_geometry()
     assert import_geometry.Arguments() == {}
+    import_geometry.Arguments = dict(
+        FileName=mixing_elbow_geometry
+    )
