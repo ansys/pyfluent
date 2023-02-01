@@ -543,7 +543,7 @@ def test_meshing_workflow_structure(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_231
-def test_watertight_wrapper(
+def test_extended_wrapper(
     new_mesh_session,
     mixing_elbow_geometry
 ):
@@ -553,4 +553,7 @@ def test_watertight_wrapper(
     assert import_geometry.Arguments() == {}
     import_geometry.Arguments = dict(
         FileName=mixing_elbow_geometry
+    )
+    workflow.add_local_sizing.add_child(
+        state={"BOIFaceLabelList": ["cold-inlet"]}
     )

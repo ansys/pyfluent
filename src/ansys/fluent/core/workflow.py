@@ -346,20 +346,6 @@ class WorkflowWrapper:
         workflow_state = self._workflow_state()
         return self._task_by_id_impl(task_id, workflow_state)
 
-    def _compound_task(self, task_name, child_name):
-        parent = self.task(task_name)
-        if child_name:
-            child = self.task(child_name)
-            if child.name() not in (
-                child.name() for child in parent.ordered_children()
-            ):
-                raise ValueError(
-                    f"{child_name} is not a valid name"
-                     " argument for {task_name}"
-                )
-            return child
-        return parent
-
 
 class SimpleTask:
 
@@ -372,14 +358,17 @@ class SimpleTask:
 
 class CompoundTask:
 
-    def __init__(self, task, workflow) -> None:
+    def __init__(self, task) -> None:
         self._task = task
-        self._workflow = workflow
 
-    def __call__(self, name=None):
-        return self._workflow._compound_task(
-            task_name=self._task.name(),
-            child_name=name)
+    def __call__(self):
+        return self._task
+
+    def add_child(self, state=None):
+        state = state or {}
+        state.update({"AddChild": "yes"})
+        self._task.Arguments.set_state(state)
+        self._task.AddChildAndUpdate()
 
 
 class ExtendedWorkflow(WorkflowWrapper):
