@@ -554,6 +554,10 @@ def test_extended_wrapper(
     import_geometry.Arguments = dict(
         FileName=mixing_elbow_geometry
     )
-    workflow.add_local_sizing.add_child(
+    add_local_sizing = workflow.add_local_sizing
+    assert not add_local_sizing.ordered_children()
+    add_local_sizing.add_child(
         state={"BOIFaceLabelList": ["cold-inlet"]}
     )
+    assert len(add_local_sizing.ordered_children()) == 1
+
