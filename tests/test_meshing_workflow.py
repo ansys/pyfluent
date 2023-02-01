@@ -549,7 +549,7 @@ def test_extended_wrapper(
 ):
     workflow = new_mesh_session.workflow
     workflow.watertight()
-    import_geometry = workflow.import_geometry()
+    import_geometry = workflow.import_geometry
     assert import_geometry.Arguments() == {}
     import_geometry.Arguments = dict(
         FileName=mixing_elbow_geometry

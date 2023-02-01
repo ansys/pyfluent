@@ -31,7 +31,7 @@ class TaskContainer(PyCallableStateObject):
         self._task_container = command_source._workflow.TaskObject
 
     def __getitem__(self, name):
-        return Task(self._container, name)
+        return makeTask(self._container, name)
 
     def __getattr__(self, attr):
         return getattr(self._task_container, attr)
@@ -62,13 +62,13 @@ class Task(PyCallableStateObject):
         __setattr__(attr, value)
         __dir__()
      """
-    def __init__(self, command_source, name: str) -> None:
+    def __init__(self, command_source, task) -> None:
         self.__dict__.update(
             dict(
                 _command_source=command_source,
                 _workflow=command_source._workflow,
                 _source=command_source._command_source,
-                _task=command_source._workflow.TaskObject[name],
+                _task=task,
                 _cmd=None,
             )
         )
@@ -239,6 +239,24 @@ class Task(PyCallableStateObject):
         return self._cmd
 
 
+class CompoundTask(Task):
+
+    def add_child(self, state=None):
+        state = state or {}
+        state.update({"AddChild": "yes"})
+        self._task.Arguments.set_state(state)
+        self._task.AddChildAndUpdate()
+
+
+def makeTask(command_source, name: str) -> Task:
+    task = command_source._workflow.TaskObject[name]
+    task_type = task.TaskType()
+    if task_type == "Simple":
+        return Task(command_source, task)
+    elif task_type == "Compound":
+        return CompoundTask(command_source, task)
+
+
 class WorkflowWrapper:
     """ Wrap a Workflow object, adding methods to discover
         more about the relationships between TaskObjects.
@@ -270,7 +288,7 @@ class WorkflowWrapper:
         task : Task
             wrapped task object.
         """
-        return Task(self, name)
+        return makeTask(self, name)
 
     @property
     def TaskObject(self) -> TaskContainer:
@@ -347,30 +365,6 @@ class WorkflowWrapper:
         return self._task_by_id_impl(task_id, workflow_state)
 
 
-class SimpleTask:
-
-    def __init__(self, task) -> None:
-        self._task = task
-
-    def __call__(self):
-        return self._task
-
-
-class CompoundTask:
-
-    def __init__(self, task) -> None:
-        self._task = task
-
-    def __call__(self):
-        return self._task
-
-    def add_child(self, state=None):
-        state = state or {}
-        state.update({"AddChild": "yes"})
-        self._task.Arguments.set_state(state)
-        self._task.AddChildAndUpdate()
-
-
 class ExtendedWorkflow(WorkflowWrapper):
 
     def __init__(self, workflow, command_source):
@@ -389,19 +383,7 @@ class ExtendedWorkflow(WorkflowWrapper):
             # temp reuse helpString
             py_name = cmd.get_attr("helpString")
             if py_name == attr:
-                return self._callable_method(task)
-
-    def _callable_method(self, task):
-        task_type = task.TaskType()
-        if task_type == "Simple":
-            return SimpleTask(task)
-        elif task_type == "Compound":
-            return CompoundTask(task)
-
-
-
-
-
+                return task
 
 
 class _MakeReadOnly:
