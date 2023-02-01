@@ -7,12 +7,12 @@ def setup_for_fluent(*args, **kwargs):
 
     session = launch_fluent(*args, **kwargs)
     globals = {}
-    if "mode" in kwargs.keys() and kwargs["mode"] == "meshing":
-        globals["meshing"] = session.meshing
+    if kwargs.get("mode", "solver") == "meshing":
+        globals["meshing"] = session
         globals["PartManagement"] = session.PartManagement
         globals["PMFileManagement"] = session.PMFileManagement
         globals["solver"] = Solver(fluent_connection=session.fluent_connection)
-    elif "mode" in kwargs.keys() and kwargs["mode"] == "solver":
+    else:
         globals["solver"] = session
         globals["solverworkflow"] = session.solverworkflow
 
