@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Any, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
 
@@ -61,6 +61,7 @@ class Task(PyCallableStateObject):
         __getattr__(attr)
         __setattr__(attr, value)
         __dir__()
+        __call__()
      """
     def __init__(self, command_source, task) -> None:
         self.__dict__.update(
@@ -195,6 +196,11 @@ class Task(PyCallableStateObject):
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._task))
         )
 
+    def __call__(self, **kwds) -> Any:
+        self._task.Arguments.set_state(**kwds)
+        return self._task.Execute()
+
+
     def _tasks_with_matching_attributes(
         self,
         attr: str,
@@ -218,7 +224,7 @@ class Task(PyCallableStateObject):
         return matches
 
     def _refreshed_command(self):
-        task_arg_state = self.Arguments.get_state()
+        task_arg_state = self._task.Arguments.get_state()
         cmd = self._command()
         if task_arg_state:
             cmd.set_state(task_arg_state)
@@ -241,11 +247,24 @@ class Task(PyCallableStateObject):
 
 class CompoundTask(Task):
 
+    def __init__(self, command_source, task) -> None:
+        super().__init__(command_source, task)
+
     def add_child(self, state=None):
         state = state or {}
         state.update({"AddChild": "yes"})
         self._task.Arguments.set_state(state)
+
+    def add_child_and_update(self, state=None):
+        self.add_child(state)
         self._task.AddChildAndUpdate()
+        return self.last_child()
+
+    def last_child(self):
+        children = self.ordered_children()
+        if children:
+            return children[-1]
+
 
 
 def makeTask(command_source, name: str) -> Task:
@@ -255,6 +274,8 @@ def makeTask(command_source, name: str) -> Task:
         return Task(command_source, task)
     elif task_type == "Compound":
         return CompoundTask(command_source, task)
+    # temp
+    return Task(command_source, task)
 
 
 class WorkflowWrapper:

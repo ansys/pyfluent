@@ -554,10 +554,28 @@ def test_extended_wrapper(
     import_geometry.Arguments = dict(
         FileName=mixing_elbow_geometry
     )
+    import_geometry.Execute()
     add_local_sizing = workflow.add_local_sizing
     assert not add_local_sizing.ordered_children()
     add_local_sizing.add_child(
         state={"BOIFaceLabelList": ["cold-inlet"]}
     )
+    assert not add_local_sizing.ordered_children()
+
+    added_sizing = add_local_sizing.add_child_and_update(
+        state={"BOIFaceLabelList": ["elbow-fluid"]}
+    )
     assert len(add_local_sizing.ordered_children()) == 1
+    assert added_sizing
+    assert added_sizing.CommandArguments.BOIFaceLabelList() == [
+        "elbow-fluid"
+    ]
+    #restart
+    workflow.watertight()
+    assert workflow.import_geometry.State() == "Out-of-date"
+    workflow.import_geometry(
+        FileName=mixing_elbow_geometry,
+        AppendMesh=False
+    )
+    assert workflow.import_geometry.State() == "Up-to-date"
 
