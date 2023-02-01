@@ -2,8 +2,8 @@
 
 ## Pledge
 
-In the interest of fostering an open and welcoming environment the contributors
-and maintainers of the PyFluent project pledge to making participation in the
+In the interest of fostering an open and welcoming environment, the contributors
+and maintainers of PyFluent pledge to making participation in the
 community a harassment-free experience for everyone, regardless of age, body
 size, disability, ethnicity, sex characteristics, gender identity and
 expression, level of experience, education, socio-economic status, nationality,
