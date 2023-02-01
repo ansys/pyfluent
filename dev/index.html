@@ -42,6 +42,9 @@
         <link href="_static/css/breadcrumbs.css" rel="stylesheet">
     
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/thebelab-helper.js"></script>
@@ -49,7 +52,7 @@
     <script src="_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <link rel="icon" href="_static/ansys-favicon.png"/>
+    <link rel="shortcut icon" href="_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Getting started" href="getting_started/index.html" />
@@ -79,8 +82,9 @@
   
   
   
+    <img src="_static/pyansys-logo-black-cropped.png" class="logo__image only-light" alt="Logo image">
+    <img src="_static/pyansys-logo-black-cropped.png" class="logo__image only-dark" alt="Logo image">
   
-    <p class="title logo__title">PyFluent</p>
   
 </a>
     
@@ -371,18 +375,19 @@ function checkPageExistsAndRedirect(event) {
 <p>Ansys Fluent is a state-of-the-art computational fluid dynamics (CFD) software
 package for modeling fluid flow, heat transfer, and chemical reactions in
 complex geometries.</p>
-<p>Fluent provides complete mesh flexibility, including the ability to solve
-your flow problems using unstructured meshes that can be generated about complex
+<p>Fluent provides complete mesh flexibility, including the ability to solve your
+flow problems using unstructured meshes that can be generated about complex
 geometries with relative ease. Supported mesh types include:</p>
 <ul class="simple">
 <li><p>2D triangular and quadrilateral</p></li>
 <li><p>3D tetrahedral, hexahedral, pyramid, wedge, and polyhedral</p></li>
 <li><p>Mixed (hybrid)</p></li>
 </ul>
-<p>Fluent also enables you to refine or coarsen your mesh based on the flow solution.</p>
-<p>You can read your mesh into Fluent or, for 3D geometries, create your
-mesh using Fluent’s meshing mode. All other operations are performed within
-Fluent’s solution mode, including:</p>
+<p>Fluent also enables you to refine or coarsen your mesh based on the flow
+solution.</p>
+<p>You can read your mesh into Fluent or, for 3D geometries, create your mesh using
+Fluent’s meshing mode. All other operations are performed within Fluent’s
+solution mode, including:</p>
 <ul class="simple">
 <li><p>Setting boundary conditions</p></li>
 <li><p>Defining fluid properties</p></li>
@@ -395,58 +400,58 @@ Fluent’s solution mode, including:</p>
 <section id="what-is-pyfluent">
 <h2>What is PyFluent?<a class="headerlink" href="#what-is-pyfluent" title="Permalink to this heading">#</a></h2>
 <p>PyFluent is part of the <a class="reference external" href="https://docs.pyansys.com">PyAnsys</a> ecosystem that
-lets you use Fluent within a Python environment of your choice in
-conjunction with other PyAnsys libraries and external Python
-libraries.</p>
-<p>PyFluent implements a client-server architecture. It uses Google remote procedure
-calls, or gRPC interfaces, to launch or connect with a running Fluent process as
-a server. However, you only need to interact with the Python interface.</p>
+lets you use Fluent within a Python environment of your choice in conjunction
+with other PyAnsys libraries and external Python libraries.</p>
+<p>PyFluent implements a client-server architecture. It uses Google remote
+procedure calls, or gRPC interfaces, to launch or connect with a running Fluent
+process as a server. However, you only need to interact with the Python
+interface.</p>
 <p>You can use PyFluent to programmatically create, interact with, and control a
-Fluent session to create your own customized workspace. In addition, you
-can use PyFluent to enhance your productivity with highly configurable,
-customized scripts.</p>
+Fluent session to create your own customized workspace. In addition, you can use
+PyFluent to enhance your productivity with highly configurable, customized
+scripts.</p>
 </section>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h2>
-<p>Some of the many features in this primary PyFluent package, <code class="docutils literal notranslate"><span class="pre">ansys-fluent-core</span></code>,
-allow you to:</p>
+<p>Some of the many features in this primary PyFluent package,
+<code class="docutils literal notranslate"><span class="pre">ansys-fluent-core</span></code>, allow you to:</p>
 <ul class="simple">
-<li><p>Launch the Fluent solver in serial or parallel and connect to
-already-running Fluent sessions. For more information, see <a class="reference internal" href="user_guide/launching_ansys_fluent.html#ref-user-guide-launch"><span class="std std-ref">Launch Fluent locally</span></a>.</p></li>
+<li><p>Launch the Fluent solver in serial or parallel and connect to already-running
+Fluent sessions. For more information, see <a class="reference internal" href="user_guide/launching_ansys_fluent.html#ref-user-guide-launch"><span class="std std-ref">Launch Fluent locally</span></a>.</p></li>
 <li><p>Script using Fluent’s meshing capabilities. For more information, see
 <a class="reference internal" href="api/meshing/index.html#ref-meshing"><span class="std std-ref">Meshing</span></a>.</p></li>
 <li><p>Script using all of Fluent’s TUI  (text user interface) commands. For more
 information, see <a class="reference internal" href="user_guide/tui_commands.html#ref-user-guide-tui-commands"><span class="std std-ref">Using TUI commands</span></a>.</p></li>
-<li><p>Run more than one Fluent session asynchronously. For more information,
-see <a class="reference internal" href="api/utils.html#ref-utils"><span class="std std-ref">PyFluent utility functions</span></a>.</p></li>
-<li><p>Retrieve Fluent field data as numpy arrays for custom postprocessing
-using standard Python packages such as <a class="reference external" href="https://matplotlib.org/">matplotlib</a>.
-For more information, see <a class="reference internal" href="api/solver/fielddata.html#ref-field-data"><span class="std std-ref">Field data</span></a>.</p></li>
-<li><p>Register function callbacks on Fluent solver events such as when a
-case file or data file is read or when the Fluent solver completes an iteration.
-For more information, see <a class="reference internal" href="api/solver/events.html#ref-events"><span class="std std-ref">EventsManager</span></a>.</p></li>
-<li><p>Retrieve solver monitors such as residuals. For more information, see <a class="reference internal" href="api/solver/monitors.html#ref-monitors"><span class="std std-ref">MonitorsManager</span></a>.</p></li>
+<li><p>Run more than one Fluent session asynchronously. For more information, see
+<a class="reference internal" href="api/utils.html#ref-utils"><span class="std std-ref">PyFluent utility functions</span></a>.</p></li>
+<li><p>Retrieve Fluent field data as numpy arrays for custom postprocessing using
+standard Python packages such as <a class="reference external" href="https://matplotlib.org/">matplotlib</a>. For
+more information, see <a class="reference internal" href="api/solver/fielddata.html#ref-field-data"><span class="std std-ref">Field data</span></a>.</p></li>
+<li><p>Register function callbacks on Fluent solver events such as when a case file
+or data file is read or when the Fluent solver completes an iteration. For
+more information, see <a class="reference internal" href="api/solver/events.html#ref-events"><span class="std std-ref">EventsManager</span></a>.</p></li>
+<li><p>Retrieve solver monitors such as residuals. For more information, see
+<a class="reference internal" href="api/solver/monitors.html#ref-monitors"><span class="std std-ref">MonitorsManager</span></a>.</p></li>
 </ul>
 </section>
 <section id="documentation-and-issues">
 <h2>Documentation and issues<a class="headerlink" href="#documentation-and-issues" title="Permalink to this heading">#</a></h2>
-<p>In addition to installation and usage information, the PyFluent
-documentation provides <a class="reference internal" href="api/index.html#ref-index-api"><span class="std std-ref">API reference</span></a>, <a class="reference internal" href="examples/index.html#ref-example-gallery"><span class="std std-ref">Examples</span></a>,
-and <a class="reference internal" href="contributing.html#ref-contributing"><span class="std std-ref">Contributing</span></a> sections.</p>
-<p>On the <a class="reference external" href="https://github.com/pyansys/pyfluent/issues">PyFluent Issues</a> page, you can create
-issues to submit questions, report bugs, and request new features. To reach
-the PyAnsys support team, email <a class="reference external" href="mailto:pyansys&#46;support&#37;&#52;&#48;ansys&#46;com">pyansys<span>&#46;</span>support<span>&#64;</span>ansys<span>&#46;</span>com</a>.</p>
+<p>In addition to installation and usage information, the PyFluent documentation
+provides <a class="reference internal" href="api/index.html#ref-index-api"><span class="std std-ref">API reference</span></a>, <a class="reference internal" href="examples/index.html#ref-example-gallery"><span class="std std-ref">Examples</span></a>, and
+<a class="reference internal" href="contributing.html#ref-contributing"><span class="std std-ref">Contributing</span></a> sections.</p>
+<p>On the <a class="reference external" href="https://github.com/pyansys/pyfluent/issues">PyFluent Issues</a> page, you
+can create issues to submit questions, report bugs, and request new features. To
+reach the PyAnsys support team, email <a class="reference external" href="mailto:pyansys&#46;support&#37;&#52;&#48;ansys&#46;com">pyansys<span>&#46;</span>support<span>&#64;</span>ansys<span>&#46;</span>com</a>.</p>
 </section>
 <section id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this heading">#</a></h2>
 <p>PyFluent is licensed under the MIT license.</p>
-<p>PyFluent makes no commercial claim over Ansys whatsoever. This library
-extends the functionality of Ansys Fluent by adding a Python interface
-to Fluent without changing the core behavior or license of the original
-software. The use of the interactive control of Fluent control of PyFluent
-requires a legally licensed copy of Fluent.</p>
-<p>For more information on Fluent, see the <a class="reference external" href="https://www.ansys.com/products/fluids/ansys-fluent">Ansys Fluent page</a>
-on the Ansys website.</p>
+<p>PyFluent makes no commercial claim over Ansys whatsoever. This library extends
+the functionality of Ansys Fluent by adding a Python interface to Fluent without
+changing the core behavior or license of the original software. The use of the
+interactive control of Fluent control of PyFluent requires a legally licensed
+copy of Fluent.</p>
+<p>For more information on Fluent, see the <a class="reference external" href="https://www.ansys.com/products/fluids/ansys-fluent">Ansys Fluent page</a> on the Ansys website.</p>
 </section>
 <section id="project-index">
 <h2>Project index<a class="headerlink" href="#project-index" title="Permalink to this heading">#</a></h2>
@@ -481,7 +486,7 @@ on the Ansys website.</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   

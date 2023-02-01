@@ -42,6 +42,9 @@
         <link href="../../_static/css/breadcrumbs.css" rel="stylesheet">
     
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/thebelab-helper.js"></script>
@@ -49,7 +52,7 @@
     <script src="../../_static/copybutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
-    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="shortcut icon" href="../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Field info" href="fieldinfo.html" />
@@ -80,8 +83,9 @@
   
   
   
+    <img src="../../_static/pyansys-logo-black-cropped.png" class="logo__image only-light" alt="Logo image">
+    <img src="../../_static/pyansys-logo-black-cropped.png" class="logo__image only-dark" alt="Logo image">
   
-    <p class="title logo__title">PyFluent</p>
   
 </a>
     
@@ -9126,11 +9130,12 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="field-data">
 <span id="ref-field-data"></span><h1>Field data<a class="headerlink" href="#field-data" title="Permalink to this heading">#</a></h1>
-<p>You can use field data objects to access Fluent surface, scalar, vector, and pathlines data.</p>
+<p>You can use field data objects to access Fluent surface, scalar, vector, and
+pathlines data.</p>
 <section id="accessing-field-data-objects">
 <h2>Accessing field data objects<a class="headerlink" href="#accessing-field-data-objects" title="Permalink to this heading">#</a></h2>
-<p>In order to access field data, launch the fluent solver, and make field
-data available (for example, by reading case and data files):</p>
+<p>In order to access field data, launch the fluent solver, and make field data
+available (for example, by reading case and data files):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ansys.fluent.core</span> <span class="k">as</span> <span class="nn">pyfluent</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solver</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;solver&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solver</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;case-dats&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">mixing_elbow_case_path</span><span class="p">)</span>
@@ -9289,11 +9294,12 @@ Similarly, if you request the boundary values for node location, <code class="do
 </section>
 <section id="field-name">
 <h2>Field name<a class="headerlink" href="#field-name" title="Permalink to this heading">#</a></h2>
-<p>A request returns multiple fields. The number of fields depends on the request type.</p>
+<p>A request returns multiple fields. The number of fields depends on the request
+type.</p>
 <section id="surface-request">
 <h3>Surface request<a class="headerlink" href="#surface-request" title="Permalink to this heading">#</a></h3>
-<p>The response to a surface request contains any of the following fields, depending on the
-request arguments:</p>
+<p>The response to a surface request contains any of the following fields,
+depending on the request arguments:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">faces</span></code>, which contain face connectivity</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vertices</span></code>, which contain node coordinates</p></li>
@@ -9303,14 +9309,15 @@ request arguments:</p>
 </section>
 <section id="scalar-field-request">
 <h3>Scalar field request<a class="headerlink" href="#scalar-field-request" title="Permalink to this heading">#</a></h3>
-<p>The response to a scalar field request contains a single field with the same name as the
-scalar field name passed in the request.</p>
+<p>The response to a scalar field request contains a single field with the same
+name as the scalar field name passed in the request.</p>
 </section>
 <section id="vector-field-request">
 <h3>Vector field request<a class="headerlink" href="#vector-field-request" title="Permalink to this heading">#</a></h3>
 <p>The response to a vector field request contains two fields:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">vector</span> <span class="pre">field</span></code>, with the same name as the vector field name that is passed in the request</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vector</span> <span class="pre">field</span></code>, with the same name as the vector field name that is passed
+in the request</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vector-scale</span></code>, a float value indicating the vector scale.</p></li>
 </ul>
 </section>
@@ -9321,16 +9328,20 @@ scalar field name passed in the request.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">pathlines-count</span></code>, which contains pathlines count.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lines</span></code>, which contain pathlines connectivity.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">vertices</span></code>, which contain node coordinates.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">field</span> <span class="pre">name</span></code>, which contains pathlines field. field name is the same name as the scalar field name passed in the request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">field</span> <span class="pre">name</span></code>, which contains pathlines field. field name is the same name as
+the scalar field name passed in the request.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">particle-time</span></code>, which contains  particle time, if requested.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">additional</span> <span class="pre">field</span> <span class="pre">name</span></code>, which contains  additional field, if requested. additional field name is the same name as the additional field name passed in the request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">additional</span> <span class="pre">field</span> <span class="pre">name</span></code>, which contains  additional field, if requested.
+additional field name is the same name as the additional field name passed in
+the request.</p></li>
 </ul>
 </section>
 </section>
 <section id="allowed-values">
 <h2>Allowed values<a class="headerlink" href="#allowed-values" title="Permalink to this heading">#</a></h2>
-<p>Additionally there is an allowed_values provided on field name,
-surface name and ids to guide the users.</p>
+<p>Additionally there is an <code class="docutils literal notranslate"><span class="pre">allowed_values</span></code> method provided on all of
+<code class="docutils literal notranslate"><span class="pre">field_name</span></code>, <code class="docutils literal notranslate"><span class="pre">surface_name</span></code> and <code class="docutils literal notranslate"><span class="pre">surface_ids</span></code> which tells you what object
+names are accessible.</p>
 <p>Some sample use cases are demonstrated below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field_data</span><span class="o">.</span><span class="n">get_scalar_field_data</span><span class="o">.</span><span class="n">field_name</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
 <span class="go">[&#39;abs-angular-coordinate&#39;, &#39;absolute-pressure&#39;, &#39;angular-coordinate&#39;,</span>
@@ -9682,7 +9693,7 @@ For example, pathlines connectivity, vertices, and field.</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 6.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
 </p>
   </div>
   
