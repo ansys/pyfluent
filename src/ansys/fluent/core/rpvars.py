@@ -1,4 +1,5 @@
 """Client-side service allowing access and modification of rpvars.
+
 The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
@@ -10,7 +11,7 @@ import ansys.fluent.core.filereader.lispy as lispy
 
 
 class RPVars:
-    """ Access to rpvars in a specific session
+    """Access to rpvars in a specific session.
 
     Methods
     -------
@@ -24,7 +25,7 @@ class RPVars:
         self._eval_fn = eval_fn
 
     def __call__(self, var: str = None, val: Any=None) -> Any:
-        """ Set or get a specific rpvar, or get the full rpvar state.
+        """Set or get a specific rpvar, or get the full rpvar state.
 
         Parameters
         ----------

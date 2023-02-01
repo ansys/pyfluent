@@ -11,9 +11,7 @@ import ansys.fluent.core as pyfluent
 @pytest.mark.optislang
 @pytest.mark.integration
 def test_simple_solve(load_mixing_elbow_param_case_dat):
-
-    """
-    Use case 1: This optiSLang integration test performs these steps
+    """Use case 1: This optiSLang integration test performs these steps.
 
     - Reads a case file with and without data file
     - Gets input and output parameters and creates dictionary
@@ -103,9 +101,7 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
 @pytest.mark.optislang
 @pytest.mark.integration
 def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
-
-    """
-    Use case 2: This optiSLang integration test performs these steps
+    """Use case 2: This optiSLang integration test performs these steps.
 
     - Launch Fluent in Meshing Mode
     - Generate mesh with default workflow settings

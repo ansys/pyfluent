@@ -90,11 +90,11 @@ environment variable:
 
 Additional PyFluent packages
 ----------------------------
-In addition to the ``ansys-fluent-core`` package, you can install and use the ``pyfluent-parameteric``
-and ``pyfluent-visualization`` packages:
+In addition to the ``ansys-fluent-core`` package, you can install and use the
+``pyfluent-parameteric`` and ``pyfluent-visualization`` packages:
 
-- The `pyfluent-parametric <https://fluentparametric.docs.pyansys.com/>`_ package provides
+- The `PyFluent-Parametric <https://parametric.fluent.docs.pyansys.com/>`_ package provides
   access to Fluent's parametric workflows.
-- The `pyfluent-visualization <https://fluentvisualization.docs.pyansys.com/>`_ package
+- The `PyFluent-Visualization <https://visualization.fluent.docs.pyansys.com/>`_ package
   provides postprocessing and visualization capabilities that use `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.

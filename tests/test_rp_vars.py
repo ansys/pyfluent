@@ -7,7 +7,6 @@ from ansys.fluent.core.filereader.casereader import CaseReader
 
 
 def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
-
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
     solver.file.read(file_type="case", file_name=case_path)
@@ -35,7 +34,6 @@ def test_get_and_set_rp_vars(new_solver_session_no_transcript) -> None:
 
 @pytest.mark.fluent_231
 def test_get_all_rp_vars(new_solver_session_no_transcript) -> None:
-
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver = new_solver_session_no_transcript
     solver.file.read(file_type="case", file_name=case_path)
