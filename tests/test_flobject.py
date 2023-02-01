@@ -660,12 +660,12 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     modified = solver.file.read.file_type.allowed_values()
     assert existing == modified
 
-    existing = solver.file.read.file_type.get_attr("read-only?")
+    existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
     assert existing == modified
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
-        "user-creatable?"
+        "user-creatable?", bool
     )
     modified = solver.setup.boundary_conditions.velocity_inlet.user_creatable()
     assert existing == modified
