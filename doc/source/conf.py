@@ -36,7 +36,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
+    # "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.inheritance_diagram",
@@ -86,6 +86,7 @@ autodoc_default_options = {
     'exclude-members': '__weakref__, __dict__',
     'special-members': '__init__',
     'undoc-members': True,
+    'noindex': True,
 }
 
 autoclass_content = 'both'

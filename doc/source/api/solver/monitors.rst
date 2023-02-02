@@ -10,10 +10,9 @@ property in each solution-mode session object. It provides access to server moni
 .. currentmodule:: ansys.fluent.core.streaming_services.monitor_streaming
 
 .. autosummary::
-   :toctree: _autosummary
+    :toctree: _autosummary
+    :template: flobject-class-template.rst
+    :recursive:
 
-.. automethod:: ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_names
-.. automethod:: ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_data
-.. automethod:: ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_plot
+    MonitorsManager
 
-   
