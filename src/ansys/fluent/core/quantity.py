@@ -476,7 +476,6 @@ def get_si_unit_from_dim(dim_list):
 
 
 class UnitSystem:
-
     _dim_to_unit_sys_map = {
         "SI": {
             "M": "kg",

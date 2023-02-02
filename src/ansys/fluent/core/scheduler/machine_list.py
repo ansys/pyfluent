@@ -1,17 +1,18 @@
 """A module used to provide abstract machine objects for queue system
 interfaces.
 
-This module provides two objects that help with interfacing python scripts with
+This module provides two objects that help with interfacing python
+scripts with
 the job scheduler environments:
 
-  Machine
-    This is used to represent a single machine allocated by the queue system
-    and query details about it.
+Machine
+This is used to represent a single machine allocated by the queue system
+and query details about it.
 
-  MachineList
-    This is used to load and query a queue system machine file.  Instances
-    of this object hold a collection of Machine objects that are initialized
-    when the machine file is loaded.
+MachineList
+This is used to load and query a queue system machine file.  Instances
+of this object hold a collection of Machine objects that are initialized
+when the machine file is loaded.
 """
 
 from builtins import object

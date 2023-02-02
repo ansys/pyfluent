@@ -87,7 +87,7 @@ You can use this code to enable logging:
 
 You must pass the log level while enabling logging. PyFluent supports any of the
 logging levels (``"CRITICAL"``, ``"ERROR"``, ``"WARNING"``, ``"INFO"``, and ``"DEBUG"``)
-in string or enum format.
+in string or ``enum`` format.
 
 Scheduler support
 -----------------

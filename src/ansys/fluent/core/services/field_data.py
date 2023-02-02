@@ -104,8 +104,7 @@ class FieldInfo:
         return [response.minimum, response.maximum]
 
     def get_fields_info(self) -> dict:
-        """
-        Get fields information (field name, domain, and section).
+        """Get fields information (field name, domain, and section).
 
         Returns
         -------
@@ -123,8 +122,7 @@ class FieldInfo:
         }
 
     def get_vector_fields_info(self) -> dict:
-        """
-        Get vector fields information (vector components).
+        """Get vector fields information (vector components).
 
         Returns
         -------
@@ -142,8 +140,7 @@ class FieldInfo:
         }
 
     def get_surfaces_info(self) -> dict:
-        """
-        Get surfaces information (surface name, ID, and type).
+        """Get surfaces information (surface name, ID, and type).
 
         Returns
         -------
