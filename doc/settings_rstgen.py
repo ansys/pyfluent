@@ -25,6 +25,7 @@ python <path to settings_rstgen.py>
 
 import importlib
 import os
+
 os.environ["PYFLUENT_FLUENT_ROOT"] = r"D:\Installations\Ansys\v231_04012023\ANSYS Inc\v231\fluent"
 from ansys.fluent.core.utils.fluent_version import get_version_for_filepath
 
