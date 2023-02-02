@@ -405,6 +405,13 @@ def scm_to_py(topy):
     return launch_string
 
 
+class LaunchFluentError(Exception):
+
+    def __init__(self, launch_string):
+        details = "\n" + "Fluent Launch string: " + launch_string
+        super().__init__(details)
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     product_version: str = None,
@@ -564,6 +571,8 @@ def launch_fluent(
             return new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
+        except Exception as ex:
+            raise LaunchFluentError(launch_string) from ex
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
