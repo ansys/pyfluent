@@ -9,10 +9,10 @@ solver.tui.results.graphics.expert.set.picture
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.picture
-   :members: set_standard_resolution, x_resolution, landscape, jpeg_hardcopy_quality, invert_background, preview, use_window_resolution, dpi, y_resolution
+   :members: landscape, y_resolution, preview, jpeg_hardcopy_quality, dpi, use_window_resolution, x_resolution, invert_background, set_standard_resolution
 
 .. toctree::
    :hidden:
 
-   color_mode/index
    driver/index
+   color_mode/index

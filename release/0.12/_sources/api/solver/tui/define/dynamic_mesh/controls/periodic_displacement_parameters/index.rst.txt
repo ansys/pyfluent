@@ -9,5 +9,5 @@ solver.tui.define.dynamic\_mesh.controls.periodic\_displacement\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.dynamic_mesh.controls.periodic_displacement_parameters
-   :members: delete_group, delete_all_displacements, create_displacement, edit_displacement, list_displacements, edit_group, set_active_displacement, delete_displacement, list_groups, copy_displacement, create_group, delete_all_groups
+   :members: copy_displacement, create_displacement, delete_all_groups, delete_all_displacements, delete_group, edit_displacement, list_displacements, list_groups, set_active_displacement, edit_group, delete_displacement, create_group
 

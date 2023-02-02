@@ -9,11 +9,11 @@ solver.tui.setup.overset\_interfaces
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.overset_interfaces
-   :members: clear, find_bounding_cell, find_all_bounding_cells, mark_cells, intersect_all, clear_all, update_from_dci, create, fill_dci, write_cell_types, grid_priorities, write_dci, display_cells, free_dci, set_mark_bounds, debug_hole_cut, delete, read_dci_from_case, check, delete_all, write_dci_to_case, list, mark_cell_change, intersect
+   :members: write_dci_to_case, grid_priorities, list, clear_all, intersect_all, fill_dci, write_dci, display_cells, create, check, read_dci_from_case, intersect, mark_cells, free_dci, debug_hole_cut, write_cell_types, delete, clear, find_all_bounding_cells, find_bounding_cell, update_from_dci, set_mark_bounds, mark_cell_change, delete_all
 
 .. toctree::
    :hidden:
 
-   adapt/index
    cut_control/index
+   adapt/index
    options/index

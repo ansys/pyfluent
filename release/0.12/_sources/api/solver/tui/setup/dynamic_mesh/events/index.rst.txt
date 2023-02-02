@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.events
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.events
-   :members: import_event_file, export_event_file
+   :members: export_event_file, import_event_file
 

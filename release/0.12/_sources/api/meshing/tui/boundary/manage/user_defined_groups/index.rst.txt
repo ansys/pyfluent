@@ -9,5 +9,5 @@ meshing.tui.boundary.manage.user\_defined\_groups
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.manage.user_defined_groups
-   :members: delete, create, activate, update, list
+   :members: activate, create, list, update, delete
 

@@ -9,7 +9,7 @@ solver.tui.preferences.meshing\_workflow
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.meshing_workflow
-   :members: verbosity, checkpointing_option, templates_folder, save_checkpoint_files, temp_folder
+   :members: temp_folder, checkpointing_option, verbosity, save_checkpoint_files, templates_folder
 
 .. toctree::
    :hidden:

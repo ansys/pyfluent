@@ -9,7 +9,7 @@ meshing.tui.preferences.graphics.export\_video\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.export_video_settings
-   :members: video_fps, video_scale, video_format, video_resoution_x, video_smooth_scaling, video_use_frame_resolution, video_quality, video_resoution_y
+   :members: video_resoution_y, video_resoution_x, video_use_frame_resolution, video_smooth_scaling, video_format, video_scale, video_fps, video_quality
 
 .. toctree::
    :hidden:

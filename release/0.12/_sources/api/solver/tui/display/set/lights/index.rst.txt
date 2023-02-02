@@ -9,5 +9,5 @@ solver.tui.display.set.lights
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.lights
-   :members: headlight_on, set_light, set_ambient_color, lights_on, lighting_interpolation
+   :members: set_light, lighting_interpolation, lights_on, set_ambient_color, headlight_on
 

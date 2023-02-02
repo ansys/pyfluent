@@ -9,5 +9,5 @@ solver.tui.setup.models.viscous.turbulence\_expert
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.viscous.turbulence_expert
-   :members: low_re_ke_index, kw_add_des, turb_add_sbes_sdes, turbulence_damping, sbes_les_subgrid_dynamic_fvar, turb_pk_compressible, turb_non_newtonian, sbes_sdes_hybrid_model, sbes_update_interval_k_omega, low_re_ke, restore_sst_v61, production_limiter, kw_vorticity_based_production, kw_add_sas, thermal_p_function, rke_cmu_rotation_term, kato_launder_model, non_newtonian_modification, sbes_sgs_option
+   :members: turb_pk_compressible, kw_add_sas, low_re_ke_index, turb_add_sbes_sdes, sbes_update_interval_k_omega, kw_vorticity_based_production, restore_sst_v61, low_re_ke, rke_cmu_rotation_term, kw_add_des, non_newtonian_modification, thermal_p_function, production_limiter, sbes_sgs_option, turb_non_newtonian, sbes_sdes_hybrid_model, kato_launder_model, turbulence_damping, sbes_les_subgrid_dynamic_fvar
 

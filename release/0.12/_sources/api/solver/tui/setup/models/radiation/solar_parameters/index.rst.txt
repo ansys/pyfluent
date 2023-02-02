@@ -9,5 +9,5 @@ solver.tui.setup.models.radiation.solar\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.radiation.solar_parameters
-   :members: sun_direction_vector, solar_thread_control, sol_camera_pos, ground_reflectivity, autoread_solar_data, illumination_parameters, autosave_solar_data, scattering_fraction, sol_on_demand, sol_adjacent_fluidcells, use_direction_from_sol_calc, quad_tree_parameters, iteration_parameters
+   :members: solar_thread_control, autosave_solar_data, use_direction_from_sol_calc, illumination_parameters, sol_on_demand, scattering_fraction, autoread_solar_data, quad_tree_parameters, sol_adjacent_fluidcells, sun_direction_vector, iteration_parameters, sol_camera_pos, ground_reflectivity
 

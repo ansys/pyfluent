@@ -14,7 +14,7 @@ solver.tui.solve.set.multiphase\_numerics.heat\_mass\_transfer
 .. toctree::
    :hidden:
 
-   boiling/index
    evaporation_condensation/index
    cavitation/index
    area_density/index
+   boiling/index

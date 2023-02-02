@@ -9,5 +9,5 @@ solver.tui.results.graphics\_window.windows.xy
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.windows.xy
-   :members: bottom, right, border, top, left, visible
+   :members: top, right, border, bottom, left, visible
 

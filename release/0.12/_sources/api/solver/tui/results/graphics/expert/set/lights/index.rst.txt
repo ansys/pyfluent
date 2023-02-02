@@ -9,5 +9,5 @@ solver.tui.results.graphics.expert.set.lights
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.lights
-   :members: headlight_on, set_ambient_color, lighting_interpolation, set_light, lights_on
+   :members: lighting_interpolation, headlight_on, set_light, set_ambient_color, lights_on
 

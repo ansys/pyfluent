@@ -9,5 +9,5 @@ solver.tui.setup.models.dpm.erosion\_dynamic\_mesh.general\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.dpm.erosion_dynamic_mesh.general_parameters
-   :members: participating_walls, erosion_settings, dynamic_mesh_settings
+   :members: participating_walls, dynamic_mesh_settings, erosion_settings
 

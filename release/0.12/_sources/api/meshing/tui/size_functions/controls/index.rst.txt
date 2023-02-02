@@ -9,5 +9,5 @@ meshing.tui.size\_functions.controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.size_functions.controls
-   :members: curvature_method, meshed_sf_behavior
+   :members: meshed_sf_behavior, curvature_method
 

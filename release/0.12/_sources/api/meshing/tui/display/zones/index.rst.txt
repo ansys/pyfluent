@@ -9,5 +9,5 @@ meshing.tui.display.zones
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.zones
-   :members: display_similar_area, toggle_color_palette, display_neighborhood, show_all, isolate_zones, make_transparent, hide_zones, select_all_visible, toggle_color_mode
+   :members: isolate_zones, select_all_visible, toggle_color_mode, display_similar_area, display_neighborhood, hide_zones, toggle_color_palette, make_transparent, show_all
 

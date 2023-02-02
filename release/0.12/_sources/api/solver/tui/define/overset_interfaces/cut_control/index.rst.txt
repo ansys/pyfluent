@@ -9,7 +9,7 @@ solver.tui.define.overset\_interfaces.cut\_control
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.overset_interfaces.cut_control
-   :members: list, delete, add, delete_all
+   :members: delete_all, list, delete, add
 
 .. toctree::
    :hidden:

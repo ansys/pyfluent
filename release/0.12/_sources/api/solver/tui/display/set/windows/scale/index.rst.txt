@@ -9,5 +9,5 @@ solver.tui.display.set.windows.scale
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.windows.scale
-   :members: top, font_size, visible, border, left, right, bottom, clear, format, margin
+   :members: border, format, left, visible, bottom, margin, font_size, top, right, clear
 

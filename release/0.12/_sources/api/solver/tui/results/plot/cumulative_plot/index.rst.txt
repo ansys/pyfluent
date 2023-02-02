@@ -9,5 +9,5 @@ solver.tui.results.plot.cumulative\_plot
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.plot.cumulative_plot
-   :members: add, delete, curves, edit, plot, print, axes, list, list_properties, write
+   :members: curves, list, axes, plot, list_properties, edit, add, print, write, delete
 
