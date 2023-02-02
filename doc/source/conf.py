@@ -27,7 +27,6 @@ extensions = [
     "jupyter_sphinx",
     "notfound.extension",
     "numpydoc",
-    'sphinx.ext.napoleon',
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
@@ -39,9 +38,6 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
     "sphinx.ext.autosectionlabel",
-    "sphinx.ext.inheritance_diagram",
-    "sphinx.ext.graphviz",
-    "sphinx.ext.duration",
 ]
 
 # Intersphinx mapping

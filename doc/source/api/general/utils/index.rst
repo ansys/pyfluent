@@ -1,7 +1,7 @@
 .. _ref_utils:
 
-PyFluent utility functions
-==========================
+Asynchronous execution
+======================
 
 .. currentmodule:: ansys.fluent.core.utils
 
@@ -9,5 +9,5 @@ PyFluent utility functions
     :toctree: _autosummary
     :template: flobject-module-template.rst
     :recursive:
-   
+
     async_execution
