@@ -77,7 +77,7 @@ autodoc_default_options = {
     'member-order': 'alphabetical',
     'inherited-members': True,
     'show-inheritance': True,
-    'imported-members': True,
+    'imported-members': False,
     'private-members': False,
     'exclude-members': '__weakref__, __dict__',
     'special-members': '__init__',
@@ -89,7 +89,7 @@ autoclass_content = 'both'
 autodoc_class_signature = 'separated'
 
 autosummary_generate = True
-autosummary_imported_members = True
+autosummary_imported_members = False
 
 autodoc_typehints = 'both'
 autodoc_typehints_format = 'fully-qualified'
