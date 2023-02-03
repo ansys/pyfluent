@@ -187,12 +187,12 @@ def _convert_path_to_se_path(path: Path) -> str:
     """Convert a path structure to a StateEngine path.
 
     Parameters
-
+    ----------
     path : Path
         Path structure.
 
     Returns
-
+    -------
     str
         stateengine path
     """
@@ -208,7 +208,7 @@ class PyCallableStateObject:
     """Any object which can be called to get its state.
 
     Methods
-
+    -------
     __call__()
         Get the state of the current object.
     """
@@ -222,7 +222,7 @@ class PyStateContainer(PyCallableStateObject):
     this class instead of directly calling DatamodelService's method.
 
     Methods
-
+    -------
     get_attr(attrib)
         Get the attribute value of the current object.
     getAttribValue(attrib)
@@ -276,12 +276,12 @@ class PyStateContainer(PyCallableStateObject):
         """Get attribute value of the current object.
 
         Parameters
-
+        ----------
         attrib : str
             Name of the attribute.
 
         Returns
-
+        -------
         Any
             Value of the attribute.
         """
@@ -325,7 +325,7 @@ class PyMenu(PyStateContainer):
     this class instead of directly calling DatamodelService's method.
 
     Methods
-
+    -------
     __setattr__(name, value)
         Set state of the child object
     rename(new_name)
@@ -340,7 +340,7 @@ class PyMenu(PyStateContainer):
         """Set state of the child object.
 
         Parameters
-
+        ----------
         name : str
             child object name
         value : Any
@@ -355,7 +355,7 @@ class PyMenu(PyStateContainer):
         """Rename the named object.
 
         Parameters
-
+        ----------
         new_name : str
             New name for the object.
         """
@@ -442,7 +442,7 @@ class PyNumerical(PyParameter):
 class PyDictionary(PyParameter):
     """Provides interface for dictionaries.
     Methods
-
+        -------
         update_dict(dict_state)
             Update the state of the current object if the current object
             is a Dict in the data model, else throws RuntimeError
@@ -471,7 +471,7 @@ class PyNamedObjectContainer:
     method.
 
     Methods
-
+    -------
     __len__()
         Return a count of the child objects.
     __iter__()
@@ -523,7 +523,7 @@ class PyNamedObjectContainer:
         """Return a count of child objects.
 
         Returns
-
+        -------
         int
             Count of child objects.
         """
@@ -533,7 +533,7 @@ class PyNamedObjectContainer:
         """Return the next child object.
 
         Yields
-
+        -------
         Iterator[PyMenu]
             Iterator of child objects.
         """
@@ -573,12 +573,12 @@ class PyNamedObjectContainer:
         """Return the child object by key.
 
         Parameters
-
+        ----------
         key : str
             Name of the child object.
 
         Returns
-
+        -------
         PyMenu
             Child object.
         """
@@ -588,7 +588,7 @@ class PyNamedObjectContainer:
         """Set state of the child object by name.
 
         Parameters
-
+        ----------
         key : str
             Name of the child object.
         value : Any
@@ -603,7 +603,7 @@ class PyNamedObjectContainer:
         """Delete the child object by name.
 
         Parameters
-
+        ----------
         key : str
             Name of the child object.
         """
@@ -616,7 +616,7 @@ class PyCommand:
     method.
 
     Methods
-
+    -------
     __call__()
         Execute the command.
     help()
@@ -641,7 +641,7 @@ class PyCommand:
         """Execute the command.
 
         Returns
-
+        -------
         Any
             Return value.
         """

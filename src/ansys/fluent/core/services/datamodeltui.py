@@ -110,7 +110,7 @@ class PyMenu:
     instead of directly calling the DatamodelService's method.
 
     Methods
-
+    -------
     get_child_names(include_unavailable):
         Get child menu names.
     execute(*args, **kwargs)
@@ -128,12 +128,12 @@ class PyMenu:
         """Get the names of child menus.
 
         Parameters
-
+        ----------
         include_unavailable : bool, optional
             Whether to query over static TUI metadata. The default is ``False``.
 
         Returns
-
+        -------
         List[str]
             Names of child menus.
         """
@@ -162,9 +162,10 @@ class PyMenu:
         arguments.
 
         Parameters
+        ----------
 
         Returns
-
+        -------
         Any
             Query result (any Python datatype) or Future object
             wrapping TUI output of a command.
@@ -185,12 +186,12 @@ class PyMenu:
         """Get docstring for a menu.
 
         Parameters
-
+        ----------
         include_unavailable : bool, optional
             Whether to query over static TUI metadata. The default is ``False``.
 
         Returns
-
+        -------
         str
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
@@ -205,7 +206,7 @@ class PyMenu:
         """Get static info at menu level.
 
         Returns
-
+        -------
         DataModelProtoModule.StaticInfo
             static info
         """
@@ -286,12 +287,12 @@ def convert_func_name_to_tui_menu(func_name: str) -> str:
     """Convert a Python function name to a TUI menu string.
 
     Parameters
-
+    ----------
     func_name : str
        Name of the Python function.
 
     Returns
-
+    -------
     str
     """
     if func_name.endswith("_") and keyword.iskeyword(func_name[:-1]):
@@ -303,12 +304,12 @@ def convert_tui_menu_to_func_name(menu: str) -> str:
     """Convert a TUI menu string to a Python function name.
 
     Parameters
-
+    ----------
     menu : str
        TUI menu string.
 
     Returns
-
+    -------
     str
     """
     if keyword.iskeyword(menu):
@@ -324,12 +325,12 @@ def convert_path_to_grpc_path(path: Path) -> str:
     model gRPC service.
 
     Parameters
-
+    ----------
     path : Path
         Path structure.
 
     Returns
-
+    -------
     str
         gRPC path.
     """

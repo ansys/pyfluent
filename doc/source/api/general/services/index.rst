@@ -10,6 +10,8 @@ Services
     :template: flobject-module-template.rst
     :recursive:
 
+    datamodel_se
+    datamodel_tui
     error_handler
     events
     field_data
