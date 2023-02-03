@@ -41,6 +41,10 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
 
 
 class BatchedFuture(grpc.Future):
+    """
+    Class implementing gRPC.Future interface. An instance of BatchedFuture is returned
+    if the gRPC method is queued to be executed in batch later.
+    """
     def __init__(self, result_cls):
         self._result_cls = result_cls
 
@@ -85,7 +89,7 @@ class BatchInterceptor(grpc.UnaryUnaryClientInterceptor):
             package, service = package_and_service.rsplit(".", 1)
             op = currentBatchOps.add_op(package, service, method, request)
             if op.queued:
-                return BatchedFuture(op._response_cls)
+                return BatchedFuture(op.response_cls)
 
         return continuation(client_call_details, request)
 
