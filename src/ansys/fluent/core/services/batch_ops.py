@@ -6,7 +6,7 @@ from typing import List, Tuple
 import grpc
 
 import ansys.api.fluent.v0 as api
-from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc, batchable_pb2
+from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.utils.logging import LOG
 
@@ -34,16 +34,14 @@ class BatchOps:
     >>>     solver.solution.initialization.hybrid_initialize()
 
     Above will be executed in server through a single grpc call during exiting the with
-    block. Only the execute-command like rpc methods are supported. Those methods are
-    marked with `batchable` option in .proto files.
+    block. Only the non-getter rpc methods are supported.
 
-    The non-batchable rpc methods within the with block are executed right away. Make
-    sure that they do not depend on execution of batchable methods.
+    The getter rpc methods within the with block are executed right away. Make
+    sure that they do not depend on execution of non-getter methods.
 
     """
 
     _proto_files = None
-    _batchable_desc = None
     _current = None
 
     @classmethod
@@ -68,8 +66,6 @@ class BatchOps:
             )
             if not BatchOps._proto_files:
                 BatchOps._proto_files = [x[1] for x in inspect.getmembers(api, inspect.ismodule) if hasattr(x[1], "DESCRIPTOR")]
-            if not BatchOps._batchable_desc:
-                BatchOps._batchable_desc = batchable_pb2.DESCRIPTOR.extensions_by_name["batchable"]
             self._supported = False
             self.response_cls = None
             for file in BatchOps._proto_files:
@@ -77,10 +73,10 @@ class BatchOps:
                 if file_desc.package == package:
                     service_desc = file_desc.services_by_name.get(service)
                     if service_desc:
-                        method_desc = service_desc.methods_by_name.get(method)
-                        if method_desc:
-                            options = method_desc.GetOptions()
-                            if options.HasExtension(BatchOps._batchable_desc) and options.Extensions[BatchOps._batchable_desc]:
+                        # TODO Add custom option in .proto files to identify getters
+                        if not method.startswith("Get") and not method.startswith("get"):
+                            method_desc = service_desc.methods_by_name.get(method)
+                            if method_desc and not method_desc.client_streaming and not method_desc.server_streaming:
                                 self._supported = True
                                 response_cls_name = method_desc.output_type.name
                                 # TODO Get the respnse_cls from message_factory
@@ -130,7 +126,7 @@ class BatchOps:
 
     def add_op(self, package: str, service: str, method: str, request):
         """
-        Queue a single batch operation. Only the `batchable` operations will be
+        Queue a single batch operation. Only the non-getter operations will be
         queued.
 
         Parameters
