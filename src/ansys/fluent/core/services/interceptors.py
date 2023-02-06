@@ -82,12 +82,12 @@ class BatchInterceptor(grpc.UnaryUnaryClientInterceptor):
         client_call_details: grpc.ClientCallDetails,
         request: Any,
     ):
-        currentBatchOps = BatchOps.get_current()
-        if currentBatchOps:
+        batchOps = BatchOps.instance()
+        if batchOps and batchOps.batching:
             qual_method = client_call_details.method
             package_and_service, method = qual_method.lstrip("/").split("/")
             package, service = package_and_service.rsplit(".", 1)
-            op = currentBatchOps.add_op(package, service, method, request)
+            op = batchOps.add_op(package, service, method, request)
             if op.queued:
                 return BatchedFuture(op.response_cls)
 

@@ -42,19 +42,19 @@ class BatchOps:
     """
 
     _proto_files = None
-    _current = None
+    _instance = None
 
     @classmethod
-    def get_current(cls) -> "BatchOps":
+    def instance(cls) -> "BatchOps":
         """
-        Get the current instance of BatchOps.
+        Get the BatchOps instance.
 
         Returns
         -------
         BatchOps
-            Current BatchOps instance
+            BatchOps instance
         """
-        return cls._current
+        return cls._instance
 
     class Op:
         """
@@ -102,27 +102,31 @@ class BatchOps:
             self._status = status
             self._result = obj
 
-    def __init__(self, session):
-        """Initialize BatchOps."""
-        self._service = session._batch_ops_service
-        self._ops = []
+    def __new__(cls, session):
+        if cls._instance is None:
+            cls._instance = super(BatchOps, cls).__new__(cls)
+            cls._instance._service = session._batch_ops_service
+            cls._instance._ops = []
+            cls._instance.batching = False
+        return cls._instance
 
     def __enter__(self):
         """
         Entering the with block
         """
-        BatchOps._current = self
+        self.batching = True
+        return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         """
         Exiting from the with block
         """
         LOG.debug("Executing batch operations")
+        self.batching = False
         requests = (x._request for x in self._ops)
         responses = self._service.execute(requests)
         for i, response in enumerate(responses):
             self._ops[i].update_result(response.status, response.response_body)
-        BatchOps._current = None
 
     def add_op(self, package: str, service: str, method: str, request):
         """
