@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>MonitorsManager &#8212; PyFluent</title>
     
@@ -8986,6 +8986,10 @@ function checkPageExistsAndRedirect(event) {
 <p>An instance of <code class="docutils literal notranslate"><span class="pre">MonitorsManager</span></code> exists as an active <code class="docutils literal notranslate"><span class="pre">monitors_streaming</span></code>
 property in each solution-mode session object. It provides access to server monitors.</p>
 <table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 </tbody>
 </table>
@@ -8994,18 +8998,18 @@ property in each solution-mode session object. It provides access to server moni
 <span class="sig-prename descclassname"><span class="pre">MonitorsManager.</span></span><span class="sig-name descname"><span class="pre">get_monitor_set_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Get monitor set names.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>None</strong></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>]</dt><dd><p>List of all monitor set names.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</p>
 </dd>
 </dl>
@@ -9016,7 +9020,7 @@ property in each solution-mode session object. It provides access to server moni
 <span class="sig-prename descclassname"><span class="pre">MonitorsManager.</span></span><span class="sig-name descname"><span class="pre">get_monitor_set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monitor_set_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Get monitor set data.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>monitor_set_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the monitor set.</p>
 </dd>
@@ -9026,14 +9030,14 @@ property in each solution-mode session object. It provides access to server moni
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">np.array</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">Dict</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">np.array</span></code>]]</dt><dd><p>Tuple containing two elements: a numpy array of x-axis values and a dictionary
 associating monitor names of type <code class="docutils literal notranslate"><span class="pre">str</span></code> to numpy arrays of y-axis values.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Tuple" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>, <a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">array</span></code>]]</p>
 </dd>
 </dl>
@@ -9044,20 +9048,20 @@ associating monitor names of type <code class="docutils literal notranslate"><sp
 <span class="sig-prename descclassname"><span class="pre">MonitorsManager.</span></span><span class="sig-name descname"><span class="pre">get_monitor_set_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">monitor_set_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.streaming_services.monitor_streaming.MonitorsManager.get_monitor_set_plot" title="Permalink to this definition">#</a></dt>
 <dd><p>Get monitor set plot.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>monitor_set_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/dev/library/stdtypes.html#str" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the monitor.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/dev/library/constants.html#None" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <a class="reference external" href="https://docs.python.org/dev/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a>]</dt><dd><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html">DataFrame</a>
 is empty. Otherwise, it returns the plot object, depending on the <code class="docutils literal notranslate"><span class="pre">plotting.backend</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/dev/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/dev/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>]</p>
 </dd>
 </dl>
