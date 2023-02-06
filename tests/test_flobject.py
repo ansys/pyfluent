@@ -408,7 +408,6 @@ def test_primitives():
     assert r.g_1.b_3() is False
     r.g_1.s_4 = "foo"
     assert r.g_1.s_4() == "foo"
-    return True
 
 
 def test_group():
@@ -419,7 +418,6 @@ def test_group():
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
     r.g_1.i_2 = 4
     assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
-    return True
 
 
 def test_settings_input_set_state():
@@ -462,8 +460,6 @@ def test_named_object():
     assert r.n_1.get_object_names() == ["n2", "n4", "n1", "n5"]
     assert r.n_1["n5"]() == {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}
 
-    return True
-
 
 def test_list_object():
     r = flobject.get_root(Proxy())
@@ -483,8 +479,6 @@ def test_list_object():
     ]
     r.l_1 = [{"il_1": [3], "bl_1": [True, False]}]
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
-
-    return True
 
 
 def test_command():
