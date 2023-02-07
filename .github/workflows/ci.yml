@@ -221,7 +221,7 @@ jobs:
         uses: pyansys/actions/doc-deploy-stable@v3
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
         with:
-            doc-artifact-name: 'HTML-Documentation-tag-${{ matrix.image-tag }}'
+            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
             decompress_artifact: true
             cname: ${{ env.DOCUMENTATION_CNAME }}
             token: ${{ secrets.GITHUB_TOKEN }}
