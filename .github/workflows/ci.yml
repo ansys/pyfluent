@@ -227,8 +227,8 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
 
 
-  build:
-    name: Build
+  build-test:
+    name: Build and Unit Testing
     needs: test-import
     runs-on: ubuntu-latest
 
@@ -247,7 +247,6 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/requirements_*.txt') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
-
       - name: Add version information
         run: make version-info
 
@@ -335,7 +334,6 @@ jobs:
         run: |
           rm -rf dist
           make install > /dev/null
-
       - name: 22.2 Unit Testing
         run: make unittest-dev-222
         env:
@@ -361,7 +359,6 @@ jobs:
         run: |
           pip install twine
           twine check dist/*
-
       - name: Upload package
         uses: actions/upload-artifact@v3
         with:
@@ -370,7 +367,7 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
           retention-days: 7
-
+          
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
