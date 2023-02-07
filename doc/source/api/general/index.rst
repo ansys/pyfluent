@@ -70,7 +70,7 @@ General
     scheduler/index
     case_reader
     data_transfer
-    Journaling
+    journaling
     meta
     quantity
     rpvars
