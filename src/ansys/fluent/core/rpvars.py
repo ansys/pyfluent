@@ -4,10 +4,13 @@ The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
 """
-
-from typing import Any
+import difflib
+from functools import partial
+from typing import Any, List
 
 import ansys.fluent.core.filereader.lispy as lispy
+
+_allowed_rpvars_values = []
 
 
 class RPVars:
@@ -48,13 +51,38 @@ class RPVars:
             self._get_var(var) if var else self._get_vars()
         )
 
+    def allowed_values(self) -> List[str]:
+        if not _allowed_rpvars_values:
+            _allowed_rpvars_values.append(lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))")))
+        return _allowed_rpvars_values[0]
+
+    @staticmethod
+    def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
+        f = partial(difflib.get_close_matches, trial_name, allowed_names)
+        return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
+
+    def allowed_name_error_message(
+            self,
+            context: str, trial_name: str, allowed_values: List[str]
+    ) -> str:
+        message = f"{trial_name} is not an allowed {context} name.\n"
+        matches = self.closest_allowed_names(trial_name, allowed_values)
+        if matches:
+            message += f"The most similar names are: {', '.join(matches)}."
+        return message
+
     def _get_var(self, var: str):
+        if not _allowed_rpvars_values:
+            _allowed_rpvars_values.append(self.allowed_values())
+        if var not in _allowed_rpvars_values[0]:
+            raise RuntimeError(self.allowed_name_error_message("", var, _allowed_rpvars_values[0]))
+
         cmd = f"(rpgetvar {RPVars._var(var)})"
         return self._execute(cmd)
 
     def _get_vars(self):
         list_val = self._execute("(cx-send 'rp-variables)")
-        return { val[0]: val[1] for val in list_val }
+        return {val[0]: val[1] for val in list_val}
 
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
