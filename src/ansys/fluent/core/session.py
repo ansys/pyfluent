@@ -69,6 +69,9 @@ class _BaseSession:
     """
 
     def __init__(self, fluent_connection: _FluentConnection):
+        _BaseSession.build_from_fluent_connection(self, fluent_connection)
+
+    def build_from_fluent_connection(self, fluent_connection: _FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)

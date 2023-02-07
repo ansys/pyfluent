@@ -27,14 +27,22 @@ class Solver(_BaseSession):
         fluent_connection,
     ):
         super(Solver, self).__init__(fluent_connection=fluent_connection)
+        self._build_from_fluent_connection(fluent_connection)
+
+    def _build_from_fluent_connection(self, fluent_connection):
+        super(Solver, self).build_from_fluent_connection(fluent_connection)
         self._tui_service = self.fluent_connection.datamodel_service_tui
-        self._se_service = fluent_connection.datamodel_service_se
+        self._se_service = self.fluent_connection.datamodel_service_se
         self._settings_service = self.fluent_connection.settings_service
         self._tui = None
         self._workflow = None
         self._settings_root = None
         self._version = None
         self._solverworkflow = None
+
+    def build_from_fluent_connection(self, fluent_connection):
+        super(Solver, self).build_from_fluent_connection(fluent_connection)
+        self._build_from_fluent_connection(fluent_connection)
 
     @property
     def version(self):
