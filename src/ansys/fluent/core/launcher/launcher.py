@@ -576,6 +576,12 @@ def launch_fluent(
                     session.tui.file.read_case(case_filepath)
                 else:
                     session.file.read(file_type="case", file_name=case_filepath)
+            if journal_filename:
+                if meshing_mode:
+                    session.tui.file.read_journal(journal_filename)
+                else:
+                    session.file.read_journal(journal_filename)
+
             return session
         except Exception as ex:
             raise LaunchFluentError(launch_string) from ex

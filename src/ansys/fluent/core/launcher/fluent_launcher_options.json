@@ -23,10 +23,6 @@
         },
         "fluent_format": "{}"
     },
-    "journal_filename": {
-        "type": "str",
-        "fluent_format": " -i {}"
-    },
     "fluent_icing": {
         "type": "bool",
         "fluent_map": {
