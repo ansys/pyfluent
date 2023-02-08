@@ -59,7 +59,6 @@ class FluentVersion(Enum):
 
 def get_ansys_version() -> str:
     """Get the latest ANSYS version from AWP_ROOT environment variables."""
-
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)

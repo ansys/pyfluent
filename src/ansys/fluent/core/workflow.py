@@ -292,7 +292,6 @@ class WorkflowWrapper:
         the ordered children of the workflow are A, B, E, while B has ordered children
         C and D.
         """
-
         workflow_state, task_list_state = self._workflow_and_task_list_state()
         tasks = []
         for task_id in task_list_state:
