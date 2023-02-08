@@ -27,6 +27,7 @@ extensions = [
     "jupyter_sphinx",
     "notfound.extension",
     "numpydoc",
+    "autodocsumm",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.coverage",
@@ -82,11 +83,12 @@ autodoc_default_options = {
     'exclude-members': '__weakref__, __dict__',
     'special-members': '__init__',
     'undoc-members': True,
-    'noindex': True,
+    'autosummary': True,
 }
 
 autoclass_content = 'both'
 autodoc_class_signature = 'separated'
+autodoc_inherit_docstrings = True
 
 autosummary_generate = True
 autosummary_imported_members = False
@@ -199,7 +201,6 @@ html_theme_options = {
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
-    "collapse_navigation": True,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
