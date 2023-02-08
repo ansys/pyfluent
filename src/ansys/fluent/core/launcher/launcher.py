@@ -568,9 +568,15 @@ def launch_fluent(
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
 
-            return new_session.create_from_server_info_file(
+            session = new_session.create_from_server_info_file(
                 server_info_filepath, cleanup_on_exit, start_transcript
             )
+            if case_filepath:
+                if meshing_mode:
+                    session.tui.file.read_case(case_filepath)
+                else:
+                    session.file.read(file_type="case", file_name=case_filepath)
+            return session
         except Exception as ex:
             raise LaunchFluentError(launch_string) from ex
         finally:

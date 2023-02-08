@@ -199,6 +199,7 @@ html_theme_options = {
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
+    "collapse_navigation": True,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
