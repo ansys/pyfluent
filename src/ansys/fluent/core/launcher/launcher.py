@@ -587,7 +587,7 @@ def launch_fluent(
                     session.file.read_journal(journal_filepath)
             if case_data_filepath:
                 if not meshing_mode:
-                    session.file.read(file_type="case-dats", file_name=case_data_filepath)
+                    session.file.read(file_type="case-data", file_name=case_data_filepath)
                 else:
                     raise RuntimeError("Case and data file cannot be read in meshing mode.")
 
