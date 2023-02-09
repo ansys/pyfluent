@@ -27,6 +27,7 @@ pyansys
 PyFluent
 Pythonic
 pyvista
+rpvars
 sbatch
 Slurm
 UDFs
