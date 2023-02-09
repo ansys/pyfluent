@@ -24,7 +24,6 @@ def test_simple_solve(load_mixing_elbow_param_case_dat):
     - Input parameters
     - Output parameters
     """
-
     # Step 1: Setup logging
     pyfluent.set_log_level("ERROR")
     pyfluent.enable_logging_to_stdout()
@@ -111,7 +110,6 @@ def test_generate_read_mesh(with_launching_container, mixing_elbow_geometry):
     This test queries the following using PyTest:
     - Session health
     """
-
     # Step 1: Setup logging
     pyfluent.set_log_level("ERROR")
     pyfluent.enable_logging_to_stdout()
