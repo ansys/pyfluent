@@ -131,7 +131,6 @@ class DatamodelService:
 
 def _convert_value_to_variant(val: Any, var: Variant):
     """Convert a Python data type to Fluent's variant type."""
-
     if isinstance(val, bool):
         var.bool_state = val
     elif isinstance(val, int):
@@ -154,7 +153,6 @@ def _convert_value_to_variant(val: Any, var: Variant):
 
 def _convert_variant_to_value(var: Variant):
     """Convert Fluent's variant type to a Python data type."""
-
     if var.HasField("bool_state"):
         return var.bool_state
     elif var.HasField("int64_state"):
