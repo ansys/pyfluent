@@ -1,6 +1,6 @@
 .. _ref_rpvars:
 
-Rpvars
+rpvars
 ======
 
 .. currentmodule:: ansys.fluent.core
