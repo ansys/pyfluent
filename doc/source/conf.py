@@ -36,7 +36,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
+    # "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
     "sphinx.ext.autosectionlabel",
 ]
@@ -87,7 +87,7 @@ autodoc_default_options = {
 }
 
 autoclass_content = 'both'
-autodoc_class_signature = 'separated'
+autodoc_class_signature = 'mixed'
 autodoc_inherit_docstrings = True
 
 autosummary_generate = True
