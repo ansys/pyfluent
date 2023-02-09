@@ -417,7 +417,7 @@ def launch_fluent(
     version: str = None,
     precision: str = None,
     processor_count: int = None,
-    journal_filename: str = None,
+    journal_filepath: str = None,
     start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
@@ -428,6 +428,7 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
+    case_data_filepath: str = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
@@ -456,7 +457,7 @@ def launch_fluent(
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
         allocated cores is clamped to this value.
-    journal_filename : str, optional
+    journal_filepath : str, optional
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
@@ -502,6 +503,9 @@ def launch_fluent(
         parameter is set to ``False``, the GUI is hidden.
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
+        in the fluent session
+    case_data_filepath : str, optional
+        If provided, reads a fluent case and data file and sets the required settings
         in the fluent session
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
@@ -575,6 +579,17 @@ def launch_fluent(
                     session.tui.file.read_case(case_filepath)
                 else:
                     session.file.read(file_type="case", file_name=case_filepath)
+            if journal_filepath:
+                if meshing_mode:
+                    session.tui.file.read_journal(journal_filepath)
+                else:
+                    session.file.read_journal(journal_filepath)
+            if case_data_filepath:
+                if not meshing_mode:
+                    session.file.read(file_type="case-data", file_name=case_data_filepath)
+                else:
+                    raise RuntimeError("Case and data file cannot be read in meshing mode.")
+
             return session
         except Exception as ex:
             raise LaunchFluentError(launch_string) from ex
