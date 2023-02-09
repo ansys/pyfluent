@@ -27,6 +27,7 @@ extensions = [
     "jupyter_sphinx",
     "notfound.extension",
     "numpydoc",
+    "sphinx.ext.napoleon",
     "autodocsumm",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
