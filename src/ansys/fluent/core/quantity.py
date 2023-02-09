@@ -95,7 +95,6 @@ class _UnitsTable(object):
             ("Light", "Iv"),
             ("Current", "I"),
             ("SolidAngle", "SAngle"),
-            ("", ""),
         ]
     )
 
@@ -149,7 +148,6 @@ class _UnitsTable(object):
         "C": "K",
         "F": "K",
         "R": "K",
-        "": "",
     }
 
     temperature_conversions = {
@@ -214,7 +212,7 @@ def remove_multiplier(unit_str):
         unit_str, lambda item, unit: len(unit) > 0.0 and unit.startswith(item)
     )
     if has_multiplier:
-        unit_str = unit_str[len(prefix) :]
+        unit_str = unit_str[len(prefix):]
     return unit_str
 
 
@@ -403,7 +401,6 @@ class Dimension(object):
             "Iv": 0.0,
             "Angle": 0.0,
             "SAngle": 0.0,
-            "": 0.0,
         }
         self._parser(unit_str)
 
@@ -487,7 +484,6 @@ class UnitSystem:
             "Iv": "cd",
             "Angle": "radian",
             "SAngle": "sr",
-            "": "",
         },
         "CGS": {
             "M": "g",
@@ -499,7 +495,6 @@ class UnitSystem:
             "Iv": "cd",
             "Angle": "radian",
             "SAngle": "sr",
-            "": "",
         },
         "BT": {
             "M": "slug",
@@ -511,7 +506,6 @@ class UnitSystem:
             "Iv": "cd",
             "Angle": "radian",
             "SAngle": "sr",
-            "": "",
         },
     }
 
@@ -868,12 +862,14 @@ class Quantity(float):
     consistency in all arithmetic operations.
     """
 
-    def __init__(self, real_value, unit_str=None, quantity_map=None):
+    def __init__(self, real_value, unit_str=None, quantity_map=None, dimensions=None):
         self._value = float(real_value)
-        if unit_str and quantity_map:
-            raise ValueError("Either unit or quantity_map is allowed.")
+        if (unit_str and quantity_map) or (unit_str and dimensions) or (quantity_map and dimensions):
+            raise ValueError("unit or quantity_map or dimensions is allowed.")
         if quantity_map:
             unit_str = get_unit_from_map(quantity_map)
+        if dimensions:
+            unit_str = get_si_unit_from_dim(dim_list=dimensions)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
         self._si_value = (
@@ -882,11 +878,13 @@ class Quantity(float):
         self._si_unit = self._unit.si_unit
         self._type = self._unit._quantity_type()
 
-    def __new__(cls, real_value, unit_str=None, quantity_map=None):
+    def __new__(cls, real_value, unit_str=None, quantity_map=None, dimensions=None):
         if unit_str and quantity_map:
             raise ValueError("Either unit or quantity_map is allowed.")
         if quantity_map:
             unit_str = get_unit_from_map(quantity_map)
+        if dimensions:
+            unit_str = get_si_unit_from_dim(dim_list=dimensions)
         _unit = Unit(unit_str)
         return float.__new__(
             cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power
