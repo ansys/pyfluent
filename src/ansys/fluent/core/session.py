@@ -3,7 +3,7 @@ Session."""
 import importlib
 import json
 import os
-from typing import Any
+from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -85,6 +85,7 @@ class _BaseSession:
         server_info_filepath: str,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        launcher_args: Dict[str, Any] = None,
     ):
         """Create a Session instance from server-info file.
 
@@ -115,6 +116,7 @@ class _BaseSession:
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
+                launcher_args=launcher_args
             )
         )
         return session

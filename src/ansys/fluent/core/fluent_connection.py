@@ -3,7 +3,7 @@ import itertools
 import os
 import threading
 import time
-from typing import Callable, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 import warnings
 import weakref
 
@@ -102,7 +102,8 @@ class _FluentConnection:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        remote_instance=None,
+        remote_instance: bool = None,
+        launcher_args: Dict[str, Any] = None
     ):
         """Instantiate a Session.
 
@@ -224,7 +225,7 @@ class _FluentConnection:
             self.transcript.start()
 
         self._remote_instance = remote_instance
-
+        self.launcher_args = launcher_args
         self._finalizer = weakref.finalize(
             self,
             _FluentConnection._exit,
