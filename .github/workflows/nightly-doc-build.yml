@@ -5,6 +5,9 @@ on:
     - cron:  '0 4 * * *'
   workflow_dispatch:
 
+env:
+  DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
+
 jobs:
   nightly_docs_build:
     runs-on: [self-hosted, pyfluent]
@@ -58,18 +61,22 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Build Documentation
-        run: make build-doc DOCS_CNAME=dev.fluent.docs.pyansys.com
+        run: make build-doc
         env:
           ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
           PYFLUENT_START_INSTANCE: 0
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Deploy
-        if: matrix.image-tag == 'v22.2.0'
-        uses: JamesIves/github-pages-deploy-action@v4.4.0
+      - name: Upload HTML documentation
+        if: matrix.image-tag == 'v23.1.0'
+        uses: actions/upload-artifact@v3
         with:
-          repository-name: pyansys/pyfluent-dev-docs
-          token: ${{ secrets.DOC_DEPLOYMENT_PAT }}
-          BRANCH: gh-pages
-          FOLDER: doc/_build/html
-          CLEAN: true
+          name: documentation-html
+          path: doc/_build/html
+          retention-days: 7
+
+      - name: "Deploy development documentation"
+        uses: pyansys/actions/doc-deploy-dev@v3
+        with:
+            cname: ${{ env.DOCUMENTATION_CNAME }}
+            token: ${{ secrets.GITHUB_TOKEN }}

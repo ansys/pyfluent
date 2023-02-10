@@ -1,8 +1,8 @@
-Sphinx==5.1.1
+Sphinx==5.3.0
 jupyter_sphinx==0.4.0
 numpydoc==1.4.0
 matplotlib==3.5.3
-ansys-sphinx-theme==0.5.1
+ansys-sphinx-theme==0.8.0
 pypandoc==1.8.1
 pytest-sphinx==0.4.0
 sphinx-autobuild==2021.3.14
