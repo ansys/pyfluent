@@ -16,7 +16,7 @@ from ansys.api.fluent.v0 import (
     scheme_eval_pb2_grpc,
 )
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import launch_fluent
+from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session import _BaseSession
@@ -301,3 +301,18 @@ def test_solverworkflow_in_solver_session(new_solver_session):
     solver_dir = dir(solver)
     for attr in ("preferences", "solverworkflow", "tui", "workflow"):
         assert attr in solver_dir
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+def test_read_case_using_light_io(new_solver_session):
+    import_filename = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    pyfluent.USE_LIGHT_IO = True
+    new_solver_session.read_case(file_name=import_filename)
+    new_solver_session.setup.models.energy.enabled = False
+    old_fluent_connection_id = id(new_solver_session.fluent_connection)
+    while id(new_solver_session.fluent_connection) == old_fluent_connection_id:
+        time.sleep(1)
+    assert new_solver_session.setup.models.energy.enabled() == False
+    pyfluent.USE_LIGHT_IO = False
