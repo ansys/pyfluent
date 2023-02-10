@@ -24,7 +24,7 @@ env:
   RESET_EXAMPLES_CACHE: 6
   API_CODE_CACHE: 3
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-
+  DOC_DEPLOYMENT_IMAGE_TAG: v22.2.0
 jobs:
   stylecheck:
     name: Style Check
