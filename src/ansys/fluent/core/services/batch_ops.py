@@ -38,7 +38,6 @@ class BatchOps:
 
     The getter rpc methods within the with block are executed right away. Make
     sure that they do not depend on execution of non-getter methods.
-
     """
 
     _proto_files = None
@@ -46,8 +45,7 @@ class BatchOps:
 
     @classmethod
     def instance(cls) -> "BatchOps":
-        """
-        Get the BatchOps instance.
+        """Get the BatchOps instance.
 
         Returns
         -------
@@ -57,9 +55,7 @@ class BatchOps:
         return cls._instance
 
     class Op:
-        """
-        Class to create a single batch operation.
-        """
+        """Class to create a single batch operation."""
         def __init__(self, package: str, service: str, method: str, request_body: bytes):
             self._request = batch_ops_pb2.ExecuteRequest(
                 package=package, service=service, method=method, request_body=request_body
@@ -91,9 +87,7 @@ class BatchOps:
             self.queued = False
 
         def update_result(self, status, data):
-            """
-            Update results after the batch operation is executed.
-            """
+            """Update results after the batch operation is executed."""
             obj = self.response_cls()
             try:
                 obj.ParseFromString(data)
@@ -106,21 +100,18 @@ class BatchOps:
         if cls._instance is None:
             cls._instance = super(BatchOps, cls).__new__(cls)
             cls._instance._service = session._batch_ops_service
-            cls._instance._ops = []
+            cls._instance._ops: List[BatchOps.Op] = []
             cls._instance.batching = False
         return cls._instance
 
     def __enter__(self):
-        """
-        Entering the with block
-        """
+        """Entering the with block."""
+        self.clear_ops()
         self.batching = True
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
-        """
-        Exiting from the with block
-        """
+        """Exiting from the with block."""
         LOG.debug("Executing batch operations")
         self.batching = False
         requests = (x._request for x in self._ops)
@@ -129,9 +120,8 @@ class BatchOps:
             self._ops[i].update_result(response.status, response.response_body)
 
     def add_op(self, package: str, service: str, method: str, request):
-        """
-        Queue a single batch operation. Only the non-getter operations will be
-        queued.
+        """Queue a single batch operation. Only the non-getter operations will
+        be queued.
 
         Parameters
         ----------
@@ -156,3 +146,7 @@ class BatchOps:
             self._ops.append(op)
             op.queued = True
         return op
+
+    def clear_ops(self):
+        """Clear all queued batch operations."""
+        self._ops.clear()
