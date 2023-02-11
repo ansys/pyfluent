@@ -1,3 +1,4 @@
+import pytest
 from util.solver_workflow import new_solver_session  # noqa: F401
 
 from ansys.api.fluent.v0 import batch_ops_pb2
@@ -5,6 +6,8 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
+@pytest.mark.dev
+@pytest.mark.fluent_232
 def test_batch_ops(new_solver_session):
     import_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
