@@ -6,8 +6,8 @@ interfaces: solver settings objects and task-based meshing workflow.
 """
 from typing import Any, List
 
+from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 import ansys.fluent.core.filereader.lispy as lispy
-from ansys.fluent.core.services.allowed_name_error_msg import allowed_name_error_message
 
 
 class RPVars:
@@ -56,9 +56,7 @@ class RPVars:
         return RPVars._allowed_values
 
     def _get_var(self, var: str):
-        if not RPVars._allowed_values:
-            RPVars._allowed_values = self.allowed_values()
-        if var not in RPVars._allowed_values:
+        if var not in self.allowed_values():
             raise RuntimeError(allowed_name_error_message("rp-vars", var, RPVars._allowed_values))
 
         cmd = f"(rpgetvar {RPVars._var(var)})"
