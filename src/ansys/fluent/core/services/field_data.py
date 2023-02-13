@@ -680,7 +680,6 @@ def get_fields_request():
 
 def extract_fields(chunk_iterator):
     """Extracts field data via a server call."""
-
     def _get_tag_for_surface_request(surface_request):
         return (("type", "surface-data"),)
 

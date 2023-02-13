@@ -23,14 +23,6 @@
         },
         "fluent_format": "{}"
     },
-    "journal_filename": {
-        "type": "str",
-        "fluent_format": " -i {}"
-    },
-    "case_filepath": {
-        "type": "str",
-        "fluent_format": " -case {}"
-    },
     "fluent_icing": {
         "type": "bool",
         "fluent_map": {

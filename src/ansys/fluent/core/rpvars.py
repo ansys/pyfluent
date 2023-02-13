@@ -45,7 +45,6 @@ class RPVars:
             unspecified, or the value of the rpvar if only var is specified,
             or None if both arguments are specified.
         """
-
         return self._set_var(var, val) if val else (
             self._get_var(var) if var else self._get_vars()
         )

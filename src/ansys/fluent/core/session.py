@@ -3,7 +3,7 @@ Session."""
 import importlib
 import json
 import os
-from typing import Any
+from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session_shared import (  # noqa: F401
@@ -69,6 +69,9 @@ class _BaseSession:
     """
 
     def __init__(self, fluent_connection: _FluentConnection):
+        _BaseSession.build_from_fluent_connection(self, fluent_connection)
+
+    def build_from_fluent_connection(self, fluent_connection: _FluentConnection):
         self.fluent_connection = fluent_connection
         self.scheme_eval = self.fluent_connection.scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -82,6 +85,7 @@ class _BaseSession:
         server_info_filepath: str,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
+        launcher_args: Dict[str, Any] = None,
     ):
         """Create a Session instance from server-info file.
 
@@ -112,6 +116,7 @@ class _BaseSession:
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
+                launcher_args=launcher_args
             )
         )
         return session

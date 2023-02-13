@@ -4,7 +4,6 @@ from ansys.fluent.core.session_solver import Solver
 
 def setup_for_fluent(*args, **kwargs):
     """Returns global PyConsole objects."""
-
     session = launch_fluent(*args, **kwargs)
     globals = {}
     if kwargs.get("mode", "solver") == "meshing":
