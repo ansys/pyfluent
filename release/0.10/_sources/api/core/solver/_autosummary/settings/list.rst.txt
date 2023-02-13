@@ -1,0 +1,23 @@
+:orphan:
+
+.. _list:
+
+list
+====
+
+.. currentmodule:: ansys.fluent.core.solver.settings.list
+
+.. autoclass:: list
+    :show-inheritance:
+    :undoc-members:
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`display_states <display_states>`       'display_states' child.
+
+======================================   ===========================
+
