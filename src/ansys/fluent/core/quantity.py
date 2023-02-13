@@ -869,7 +869,12 @@ class Quantity(float):
         if quantity_map:
             unit_str = get_unit_from_map(quantity_map)
         if dimensions:
-            unit_str = get_si_unit_from_dim(dim_list=dimensions)
+            if len(dimensions) > 9:
+                raise ValueError("Number of dimensions should be <= 9")
+            dims_to_float = [float(dim) for dim in dimensions]
+            while len(dims_to_float) < 9:
+                dims_to_float.append(0.0)
+            unit_str = get_si_unit_from_dim(dim_list=dims_to_float)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
         self._si_value = (
@@ -884,7 +889,12 @@ class Quantity(float):
         if quantity_map:
             unit_str = get_unit_from_map(quantity_map)
         if dimensions:
-            unit_str = get_si_unit_from_dim(dim_list=dimensions)
+            if len(dimensions) > 9:
+                raise ValueError("Number of dimensions should be <= 9")
+            dims_to_float = [float(dim) for dim in dimensions]
+            while len(dims_to_float) < 9:
+                dims_to_float.append(0.0)
+            unit_str = get_si_unit_from_dim(dim_list=dims_to_float)
         _unit = Unit(unit_str)
         return float.__new__(
             cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power

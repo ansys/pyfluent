@@ -818,6 +818,17 @@ def test_unit_from_dimensions_75():
     x = q.Quantity(10.5, dimensions=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     assert x.unit == ""
 
+def test_unit_from_dimensions_76():
+    test = q.Quantity(10.5, dimensions=[0, 1, -1])
+    assert test.unit == "m s^-1"
+    assert test.get_dimensions_list() == [0.0, 1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+
+def test_unit_from_dimensions_77():
+    test = q.Quantity(10.5, dimensions=[0, 1.0, -2.0])
+    assert test.unit == "m s^-2"
+    assert test.get_dimensions_list() == [0.0, 1.0, -2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
 
 def testing_dimensions():
     print(f"{'*' * 25} {testing_dimensions.__name__} {'*' * 25}")
@@ -966,14 +977,14 @@ def testing_properties():
 
 
 # if __name__ == "__main__":
-#     test_value_unit_1()
-#     testing_dimensions()
-#     testing_multipliers()
-#     testing_to_systems()
-#     testing_arithmetic_operators()
-#     testing_properties()
-#
-#     x = q.Quantity(1, "ft")
-#     print(
-#         f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
-#     )
+    # test_value_unit_1()
+    # testing_dimensions()
+    # testing_multipliers()
+    # testing_to_systems()
+    # testing_arithmetic_operators()
+    # testing_properties()
+    #
+    # x = q.Quantity(1, "ft")
+    # print(
+    #     f"User unit: {x._unit.user_unit}, multiplier: {x._unit.si_factor}, reduced_si_unit: {x._unit.si_unit}, si_value: {x._si_value}"
+    # )
