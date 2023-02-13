@@ -454,6 +454,8 @@ class Dimension(object):
 
 
 def get_si_unit_from_dim(dim_list):
+    dims_to_float = [float(dim) for dim in dim_list]
+    dim_list = dims_to_float + ((9 - len(dims_to_float)) * [0.0])
     si_unit = ""
     dim_to_unit_map = UnitSystem("SI").base_units()
 
@@ -871,10 +873,7 @@ class Quantity(float):
         if dimensions:
             if len(dimensions) > 9:
                 raise ValueError("Number of dimensions should be <= 9")
-            dims_to_float = [float(dim) for dim in dimensions]
-            while len(dims_to_float) < 9:
-                dims_to_float.append(0.0)
-            unit_str = get_si_unit_from_dim(dim_list=dims_to_float)
+            unit_str = get_si_unit_from_dim(dim_list=dimensions)
         self._unit = Unit(unit_str)
         self._dimension = Dimension(unit_str)
         self._si_value = (
@@ -891,10 +890,7 @@ class Quantity(float):
         if dimensions:
             if len(dimensions) > 9:
                 raise ValueError("Number of dimensions should be <= 9")
-            dims_to_float = [float(dim) for dim in dimensions]
-            while len(dims_to_float) < 9:
-                dims_to_float.append(0.0)
-            unit_str = get_si_unit_from_dim(dim_list=dims_to_float)
+            unit_str = get_si_unit_from_dim(dim_list=dimensions)
         _unit = Unit(unit_str)
         return float.__new__(
             cls, (_unit.si_factor * real_value + _unit.si_offset) ** _unit.offset_power
