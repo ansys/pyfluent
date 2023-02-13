@@ -39,6 +39,7 @@ extensions = [
     "sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.napoleon",
 ]
 
 # Intersphinx mapping

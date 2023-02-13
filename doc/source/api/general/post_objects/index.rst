@@ -11,9 +11,4 @@ Post objects
     :recursive:
 
     post_helper
-    post_object_definitions
     post_objects_container
-
-
-
-
