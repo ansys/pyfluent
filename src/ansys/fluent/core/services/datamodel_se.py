@@ -1,8 +1,9 @@
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 from enum import Enum
 import itertools
-from typing import Any, Dict, Iterator, List, Tuple
+from typing import Any, Callable, Dict, Iterator, List, Tuple
 import warnings
+import weakref
 
 import grpc
 
@@ -11,6 +12,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
+from ansys.fluent.core.services.streaming import StreamingService
 
 Path = List[Tuple[str, str]]
 
@@ -50,7 +52,7 @@ class Attribute(Enum):
     DEPRECATED_VERSION = "deprecatedVersion"
 
 
-class DatamodelService:
+class DatamodelService(StreamingService):
     """Wraps the StateEngine-based datamodel gRPC service of Fluent.
 
     Using the methods from the ``PyMenu`` class is recommended.
@@ -60,74 +62,109 @@ class DatamodelService:
         intercept_channel = grpc.intercept_channel(
             channel, TracingInterceptor(), BatchInterceptor()
         )
-        self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
-        self.__metadata = metadata
+        self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
+        self._metadata = metadata
+        super().__init__(
+            stub=self._stub,
+            request=DataModelProtoModule.EventRequest(),
+            metadata=metadata,
+        )
+        self.event_streaming = None
+        self.events = {}
 
     @catch_grpc_error
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        return self.__stub.initDatamodel(request, metadata=self.__metadata)
+        return self._stub.initDatamodel(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        return self.__stub.getAttributeValue(request, metadata=self.__metadata)
+        return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        return self.__stub.getState(request, metadata=self.__metadata)
+        return self._stub.getState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        return self.__stub.setState(request, metadata=self.__metadata)
+        return self._stub.setState(request, metadata=self._metadata)
 
     @catch_grpc_error
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
-        return self.__stub.updateDict(request, metadata=self.__metadata)
+        return self._stub.updateDict(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
-        return self.__stub.deleteObject(request, metadata=self.__metadata)
+        return self._stub.deleteObject(request, metadata=self._metadata)
 
     @catch_grpc_error
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        return self.__stub.executeCommand(request, metadata=self.__metadata)
+        return self._stub.executeCommand(request, metadata=self._metadata)
 
     @catch_grpc_error
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
-        return self.__stub.createCommandArguments(request, metadata=self.__metadata)
+        return self._stub.createCommandArguments(request, metadata=self._metadata)
 
     @catch_grpc_error
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        return self.__stub.deleteCommandArguments(request, metadata=self.__metadata)
+        return self._stub.deleteCommandArguments(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
-        return self.__stub.getSpecs(request, metadata=self.__metadata)
+        return self._stub.getSpecs(request, metadata=self._metadata)
 
     @catch_grpc_error
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
-        return self.__stub.getStaticInfo(request, metadata=self.__metadata)
+        return self._stub.getStaticInfo(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def subscribe_events(
+        self, request: DataModelProtoModule.SubscribeEventsRequest
+    ) -> DataModelProtoModule.SubscribeEventsResponse:
+        return self._stub.subscribeEvents(request, metadata=self._metadata)
+
+    @catch_grpc_error
+    def unsubscribe_events(
+        self, request: DataModelProtoModule.UnsubscribeEventsRequest
+    ) -> DataModelProtoModule.UnsubscribeEventsResponse:
+        return self._stub.unsubscribeEvents(request, metadata=self._metadata)
+
+    def begin_event_streaming(self, started_evt):
+        """Begin datamodel event streaming."""
+        self._streams = self._stub.BeginEventStreaming(self.request, metadata=self._metadata)
+        started_evt.set()
+        while True:
+            try:
+                yield next(self._streams)
+            except Exception:
+                break
+
+    def unsubscribe_all_events(self):
+        """Unsubscribe all subscribed events."""
+        for event in list(self.events.values()):
+            event.unsubscribe()
+        self.events.clear()
 
 
 def _convert_value_to_variant(val: Any, var: Variant):
@@ -182,7 +219,7 @@ def _convert_variant_to_value(var: Variant):
         return val
 
 
-def _convert_path_to_se_path(path: Path) -> str:
+def convert_path_to_se_path(path: Path) -> str:
     """Convert a path structure to a StateEngine path.
 
     Parameters
@@ -254,7 +291,7 @@ class PyStateContainer(PyCallableStateObject):
     def get_state(self) -> Any:
         request = DataModelProtoModule.GetStateRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         response = self.service.get_state(request)
         return _convert_variant_to_value(response.state)
 
@@ -263,7 +300,7 @@ class PyStateContainer(PyCallableStateObject):
     def set_state(self, state: Any = None, **kwargs) -> None:
         request = DataModelProtoModule.SetStateRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         _convert_value_to_variant(
             kwargs, request.state
         ) if kwargs else _convert_value_to_variant(state, request.state)
@@ -286,7 +323,7 @@ class PyStateContainer(PyCallableStateObject):
         """
         request = DataModelProtoModule.GetAttributeValueRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         request.attribute = attrib
         response = self.service.get_attribute_value(request)
         return _convert_variant_to_value(response.result)
@@ -301,7 +338,7 @@ class PyStateContainer(PyCallableStateObject):
         """Print help string."""
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         response = self.service.get_specs(request)
         help_string = getattr(
             response.member, response.member.WhichOneof("as")
@@ -319,6 +356,37 @@ class PyStateContainer(PyCallableStateObject):
     docstring = None
 
 
+class EventSubscription():
+    """EventSubscription class for any datamodel event."""
+    def __init__(self, service: DatamodelService, request: DataModelProtoModule.SubscribeEventsRequest):
+        """Subscribe to a datamodel event."""
+        self._service = service
+        response = service.subscribe_events(request)
+        response = response.response[0]
+        if response.status != DataModelProtoModule.STATUS_SUBSCRIBED:
+            raise RuntimeError(f"Failed to subscribe event: {request}!")
+        self.status = response.status
+        self.tag = response.tag
+        self._service.events[self.tag] = self
+
+    def unsubscribe(self):
+        """Unsubscribe the datamodel event."""
+        if self.status == DataModelProtoModule.STATUS_SUBSCRIBED:
+            self._service.event_streaming.unregister_callback(self.tag)
+            request = DataModelProtoModule.UnsubscribeEventsRequest()
+            request.tag.append(self.tag)
+            response = self._service.unsubscribe_events(request)
+            response = response.response[0]
+            if response.status != DataModelProtoModule.STATUS_UNSUBSCRIBED:
+                raise RuntimeError(f"Failed to unsubscribe event: {request}!")
+            self.status = response.status
+        self._service.events.pop(self.tag, None)
+
+    def __del__(self):
+        """Unsubscribe the datamodel event."""
+        self.unsubscribe()
+
+
 class PyMenu(PyStateContainer):
     """Object class using StateEngine based DatamodelService as backend. Use
     this class instead of directly calling DatamodelService's method.
@@ -333,6 +401,7 @@ class PyMenu(PyStateContainer):
     """
 
     def __init__(self, service: DatamodelService, rules: str, path: Path = None):
+        self.events = weakref.WeakSet()
         super().__init__(service, rules, path)
 
     def __setattr__(self, name: str, value: Any):
@@ -392,10 +461,33 @@ class PyMenu(PyStateContainer):
     def create_command_arguments(self, command):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         request.command = command
         response = self.service.create_command_arguments(request)
         return response.commandid
+
+    def add_on_child_created(self, child_type: str, cb: Callable) -> EventSubscription:
+        """Register a callback for when a child object is created.
+
+        Parameters
+        ----------
+        child_type : str
+            Type of the child object
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        request = DataModelProtoModule.SubscribeEventsRequest()
+        e = request.eventrequest.add(rules=self.rules)
+        e.createdEventRequest.parentpath = convert_path_to_se_path(self.path)
+        e.createdEventRequest.childtype = child_type
+        subscription = EventSubscription(self.service, request)
+        self.service.event_streaming.register_callback(subscription.tag, self, cb)
+        return subscription
 
 
 class PyParameter(PyStateContainer):
@@ -457,7 +549,7 @@ class PyDictionary(PyParameter):
     def update_dict(self, dict_state: Dict[str, Any]) -> None:
         request = DataModelProtoModule.UpdateDictRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         _convert_value_to_variant(dict_state, request.dicttomerge)
         self.service.update_dict(request)
 
@@ -496,7 +588,7 @@ class PyNamedObjectContainer:
         request.rules = self.rules
         parent_path = self.path[0:-1]
         child_type_suffix = self.path[-1][0] + ":"
-        request.path = _convert_path_to_se_path(parent_path)
+        request.path = convert_path_to_se_path(parent_path)
         response = self.service.get_specs(request)
         child_object_names = []
         for struct_type in ("singleton", "namedobject"):
@@ -552,7 +644,7 @@ class PyNamedObjectContainer:
             )
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )
 
     def _del_item(self, key: str):
@@ -561,11 +653,11 @@ class PyNamedObjectContainer:
             child_path.append((self.path[-1][0], key))
             request = DataModelProtoModule.DeleteObjectRequest()
             request.rules = self.rules
-            request.path = _convert_path_to_se_path(child_path)
+            request.path = convert_path_to_se_path(child_path)
             self.service.delete_object(request)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )
 
     def __getitem__(self, key: str) -> PyMenu:
@@ -646,7 +738,7 @@ class PyCommand:
         """
         request = DataModelProtoModule.ExecuteCommandRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         request.command = self.command
         request.wait = True
         _convert_value_to_variant(kwds, request.args)
@@ -657,7 +749,7 @@ class PyCommand:
         """Prints help string."""
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         response = self.service.get_specs(request)
         help_string = getattr(
             response.member, response.member.WhichOneof("as")
@@ -667,7 +759,7 @@ class PyCommand:
     def _create_command_arguments(self):
         request = DataModelProtoModule.CreateCommandArgumentsRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         request.command = self.command
         response = self.service.create_command_arguments(request)
         return response.commandid
@@ -758,7 +850,7 @@ class PyCommandArguments(PyStateContainer):
     def __del__(self):
         request = DataModelProtoModule.DeleteCommandArgumentsRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path[:-1])
+        request.path = convert_path_to_se_path(self.path[:-1])
         request.command = self.path[-1][0]
         request.commandid = self.path[-1][1]
         try:
@@ -893,7 +985,7 @@ class PyMenuGeneric(PyMenu):
     def _get_child_names(self):
         request = DataModelProtoModule.GetSpecsRequest()
         request.rules = self.rules
-        request.path = _convert_path_to_se_path(self.path)
+        request.path = convert_path_to_se_path(self.path)
         response = self.service.get_specs(request)
         singleton_names = []
         creatable_type_names = []
@@ -920,7 +1012,7 @@ class PyMenuGeneric(PyMenu):
             return PyCommand(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
-                f"{name} is not found at path " f"{_convert_path_to_se_path(self.path)}"
+                f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )
 
     def __dir__(self):
@@ -967,5 +1059,5 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
             return PyMenuGeneric(self.service, self.rules, child_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{_convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
             )

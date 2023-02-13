@@ -23,6 +23,9 @@ from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.services.settings import SettingsService
+from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
+    DatamodelEvents,
+)
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
@@ -204,7 +207,11 @@ class _FluentConnection:
 
         self.events_manager.start()
         self.datamodel_service_tui = DatamodelService_TUI(self._channel, self._metadata)
+
         self.datamodel_service_se = DatamodelService_SE(self._channel, self._metadata)
+        self.datamodel_events = DatamodelEvents(self.datamodel_service_se)
+        self.datamodel_events.start()
+
 
         self._scheme_eval_service = SchemeEvalService(self._channel, self._metadata)
         self.scheme_eval = SchemeEval(self._scheme_eval_service)
@@ -237,6 +244,8 @@ class _FluentConnection:
             self._channel,
             self._cleanup_on_exit,
             self.scheme_eval,
+            self.datamodel_service_se,
+            self.datamodel_events,
             self.transcript,
             self.events_manager,
             self.monitors_manager,
@@ -297,12 +306,16 @@ class _FluentConnection:
         channel,
         cleanup_on_exit,
         scheme_eval,
+        datamodel_service_se,
+        datamodel_events,
         transcript,
         events_manager,
         monitors_manager,
         remote_instance,
     ) -> None:
         if channel:
+            datamodel_service_se.unsubscribe_all_events()
+            datamodel_events.stop()
             transcript.stop()
             events_manager.stop()
             monitors_manager.stop()
