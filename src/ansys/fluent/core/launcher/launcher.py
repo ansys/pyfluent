@@ -198,6 +198,7 @@ def launch_remote_fluent(
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
     dimensionality: str = None,
+    launcher_args: Dict[str, Any] = None,
 ):
 
     """Launch Fluent remotely using the PIM (Product Instance Management) API.
@@ -256,6 +257,7 @@ def launch_remote_fluent(
             remote_instance=instance,
             start_timeout=start_timeout,
             start_transcript=start_transcript,
+            launcher_args=launcher_args
         )
     )
 
@@ -542,6 +544,7 @@ def launch_fluent(
         else:
             raise TypeError(f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}")
 
+    del kwargs
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
@@ -572,7 +575,10 @@ def launch_fluent(
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
 
             session = new_session.create_from_server_info_file(
-                server_info_filepath, cleanup_on_exit, start_transcript
+                server_info_filepath=server_info_filepath,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                launcher_args=argvals
             )
             if case_filepath:
                 if meshing_mode:
@@ -610,6 +616,7 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
+                launcher_args=argvals
             )
         import ansys.fluent.core as pyfluent
 
@@ -630,6 +637,7 @@ def launch_fluent(
                     password=password,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
+                    launcher_args=argvals
                 )
             )
         else:
@@ -642,6 +650,7 @@ def launch_fluent(
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
+                launcher_args=argvals
             )
             new_session = _get_running_session_mode(fluent_connection, mode)
             return new_session(fluent_connection=fluent_connection)
