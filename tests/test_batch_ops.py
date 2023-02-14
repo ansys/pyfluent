@@ -15,6 +15,6 @@ def test_batch_ops(new_solver_session):
     with pyfluent.BatchOps(new_solver_session):
         assert len(pyfluent.BatchOps.instance()._ops) == 0
         new_solver_session.tui.file.read_case(import_filename)
-        new_solver_session.solution.initialization.hybrid_initialize()
+        new_solver_session.setup.models.energy.enabled = False
         assert len(pyfluent.BatchOps.instance()._ops) == 2
     assert all(op._status == batch_ops_pb2.STATUS_SUCCESSFUL for op in pyfluent.BatchOps.instance()._ops)
