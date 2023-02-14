@@ -313,6 +313,10 @@ def test_read_case_using_light_io(with_launching_container):
     old_fluent_connection_id = id(solver.fluent_connection)
     while id(solver.fluent_connection) == old_fluent_connection_id:
         time.sleep(1)
-    time.sleep(2)
-    assert solver.setup.models.energy.enabled() == False
+    try:
+        solver.health_check_service.wait_for_server(10)
+    except Exception:
+        assert False
+    else:
+        assert solver.setup.models.energy.enabled() == False
     solver.exit()
