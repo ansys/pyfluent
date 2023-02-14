@@ -6,10 +6,10 @@ PyFluent supports using both :ref:`ref_solver_tui_commands` and
 The examples on this page show how you use :ref:`ref_solver_tui_commands`
 to run solver meshing commands and set up units.
 
-Check the mesh
---------------
+Check mesh
+----------
 This example shows a comparison between the TUI command and the Python code for
-performing mesh consistency checks and displaying a report in the console. This
+performing mesh consistency checks and displaying a report in the console. The
 report lists domain extents, volume statistics, face area statistics, any
 warnings, and information about failures. The level of information shown depends
 on the setting specified for the verbosity (level 0 to 3).
@@ -67,7 +67,7 @@ scaling the mesh in each of the active Cartesian coordinate directions.
 
 Define units
 --------------
-The following example shows a comparison between the TUI command and the Python
+This example shows a comparison between the TUI command and the Python
 code for setting the unit conversion factors.
 
 **TUI command**

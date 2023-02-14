@@ -5,10 +5,10 @@ to define models.
 
 Use solver TUI commands
 -----------------------
-The examples in this section show how to use :ref:`ref_solver_tui_commands` to define models.
+The examples in this section show how you use :ref:`ref_solver_tui_commands` to define models.
 
-Define the energy model
-~~~~~~~~~~~~~~~~~~~~~~~
+Define energy model
+~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the
 Python code for enabling and disabling the energy model.
 
@@ -28,8 +28,8 @@ Python code for enabling and disabling the energy model.
     solver.tui.file.read_case("file.cas.h5")
     solver.tui.define.models.energy("yes", "no", "no", "no", "yes")
 
-Define the viscous model
-~~~~~~~~~~~~~~~~~~~~~~~~
+Define viscous model
+~~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the
 Python code for enabling and disabling various viscous models.
 
@@ -49,8 +49,8 @@ Python code for enabling and disabling various viscous models.
     solver.tui.define.models.viscous.kw_sst("yes")
     solver.tui.define.models.viscous.ke_standard("yes")
 
-Define the radiation model
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Define radiation model
+~~~~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the
 Python code for enabling and disabling various radiation models.
 
@@ -68,8 +68,8 @@ Python code for enabling and disabling various radiation models.
     solver.tui.define.models.radiation.s2s("yes")
     solver.tui.define.models.radiation.p1("yes")
 
-Define the multiphase model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Define multiphase model
+~~~~~~~~~~~~~~~~~~~~~~~
 This example shows a comparison between the TUI command and the
 Python code for defining different multiphase models.
 
@@ -96,8 +96,8 @@ Use settings objects
 The examples in this section show how you use :ref:`ref_settings` to
 define models.
 
-Enable the energy model
-~~~~~~~~~~~~~~~~~~~~~~~
+Enable energy model
+~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 
@@ -105,8 +105,8 @@ Enable the energy model
 
     solver.setup.models.energy.enabled = True
 
-Enable the viscous model
-~~~~~~~~~~~~~~~~~~~~~~~~
+Enable viscous model
+~~~~~~~~~~~~~~~~~~~~
 
 **Python code**
 
