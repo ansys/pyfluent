@@ -43,7 +43,7 @@ Along with basic functionality, the case reader provides many additional feature
     >>> reader = CaseReader(project_filepath="Dir1/Dir2/project.flprj")
 
 - **Reads ``rp_vars`` and ``config_vars`` variables**
-  The case reader can provide the ``rp_vars`` and ``config_vars``variables:
+  The case reader can provide the ``rp_vars`` and ``config_vars`` variables:
   
   .. code-block:: python
 
