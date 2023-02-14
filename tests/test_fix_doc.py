@@ -24,5 +24,5 @@ def test_fix_wildcards_in_settings_doc():
     new_doc = fix_settings_doc(old_doc)
     assert (
         new_doc
-        == """Read boundary profile data (\*.prof, \*.csv). Default is \*.prof."""
+        == r"""Read boundary profile data (\*.prof, \*.csv). Default is \*.prof."""
     )

@@ -486,7 +486,7 @@ def test_meshing_workflow_structure(new_mesh_session):
     |--o Add Local Sizing
     |
     |--o Generate the Surface Mesh --
-                                     \Insert Next Task>
+                                     /Insert Next Task>
                                                         |-- Add Boundary Type
                                                         |-- Update Boundaries
                                                         |-- ...
