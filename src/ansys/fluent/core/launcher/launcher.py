@@ -513,7 +513,7 @@ def launch_fluent(
     use_light_io: bool, optional
         Whether to use light io mode for reading case via ``case_filepath`` parameter.
         This parameter is used only when ``case_filepath`` is provided. The default is
-        ``False ``.
+        ``False``.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
