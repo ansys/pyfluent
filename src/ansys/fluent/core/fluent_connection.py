@@ -18,6 +18,7 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldDataService, FieldInfo
+from ansys.fluent.core.services.svar import SvarService, SvarData,  SvarInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.monitor import MonitorsService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
@@ -208,10 +209,16 @@ class _FluentConnection:
 
         self._field_data_service = FieldDataService(self._channel, self._metadata)
         self.field_info = FieldInfo(self._field_data_service)
-
         self.field_data = FieldData(
             self._field_data_service, self.field_info, _IsDataValid(self.scheme_eval)
         )
+        
+        self._svar_service = SvarService(self._channel, self._metadata)
+        self.svar_info = SvarInfo(self._svar_service)
+        self.svar_data = SvarData(
+            self._svar_service, self.svar_info
+        )        
+        
 
         self.journal = Journal(self.scheme_eval)
 
