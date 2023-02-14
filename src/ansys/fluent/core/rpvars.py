@@ -4,9 +4,9 @@ The primary interaction with Fluent should not be through low-level
 variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
 """
+from typing import Any, List
 
-from typing import Any
-
+from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 import ansys.fluent.core.filereader.lispy as lispy
 
 
@@ -21,10 +21,12 @@ class RPVars:
         Set or get a specific rpvar or get the full rpvar state.
     """
 
+    _allowed_values = None
+
     def __init__(self, eval_fn):
         self._eval_fn = eval_fn
 
-    def __call__(self, var: str = None, val: Any=None) -> Any:
+    def __call__(self, var: str = None, val: Any = None) -> Any:
         """Set or get a specific rpvar, or get the full rpvar state.
 
         Parameters
@@ -47,13 +49,21 @@ class RPVars:
             self._get_var(var) if var else self._get_vars()
         )
 
+    def allowed_values(self) -> List[str]:
+        if not RPVars._allowed_values:
+            RPVars._allowed_values = lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
+        return RPVars._allowed_values
+
     def _get_var(self, var: str):
+        if var not in self.allowed_values():
+            raise RuntimeError(allowed_name_error_message("rp-vars", var, RPVars._allowed_values))
+
         cmd = f"(rpgetvar {RPVars._var(var)})"
         return self._execute(cmd)
 
     def _get_vars(self):
         list_val = self._execute("(cx-send 'rp-variables)")
-        return { val[0]: val[1] for val in list_val }
+        return {val[0]: val[1] for val in list_val}
 
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""

@@ -1,7 +1,6 @@
 """Wrappers over FieldData gRPC service of Fluent."""
-import difflib
 from enum import IntEnum
-from functools import partial, reduce
+from functools import reduce
 import pydoc
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -10,6 +9,7 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
+from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 from ansys.fluent.core.services.error_handler import catch_grpc_error
 from ansys.fluent.core.services.interceptors import TracingInterceptor
 
@@ -158,21 +158,6 @@ class FieldInfo:
             for surface_info in response.surfaceInfo
         }
         return info
-
-
-def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
-    f = partial(difflib.get_close_matches, trial_name, allowed_names)
-    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
-
-
-def allowed_name_error_message(
-    context: str, trial_name: str, allowed_values: List[str]
-) -> str:
-    message = f"{trial_name} is not an allowed {context} name.\n"
-    matches = closest_allowed_names(trial_name, allowed_values)
-    if matches:
-        message += f"The most similar names are: {', '.join(matches)}."
-    return message
 
 
 def unavailable_field_error_message(context: str, field_name: str) -> str:
