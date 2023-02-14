@@ -99,5 +99,3 @@ except Exception:
 BUILDING_GALLERY = False
 
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
-
-USE_LIGHT_IO = False

@@ -163,11 +163,14 @@ class Solver(_BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            state = self._root.get_state()
-            self.build_from_fluent_connection(fut_session.fluent_connection)
-            self._root.set_state(state)
+            try:
+                state = self._root.get_state()
+                self.build_from_fluent_connection(fut_session.fluent_connection)
+                self._root.set_state(state)
+            except Exception:
+                fut_session.exit()
 
-    def read_case(self, file_name: str):
+    def read_case(self, file_name: str, use_light_io: bool = False):
         """Read a case file using light IO mode if ``pyfluent.USE_LIGHT_IO`` is
         set to ``True``.
 
@@ -175,11 +178,14 @@ class Solver(_BaseSession):
         ----------
         file_name : str
             Case file name
+        use_light_io : bool
+            Whether to use light io
         """
         import ansys.fluent.core as pyfluent
-        if pyfluent.USE_LIGHT_IO:
+        if use_light_io:
             self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
             launcher_args = dict(self.fluent_connection.launcher_args)
+            launcher_args.pop("use_light_io", None)
             launcher_args["case_filepath"] = file_name
             fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
             fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
