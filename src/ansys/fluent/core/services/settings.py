@@ -107,6 +107,8 @@ class SettingsService:
 
     @_trace
     def _set_state_from_value(self, state, value):
+        if value is None:
+            return
         if isinstance(value, bool):
             state.boolean = value
         elif isinstance(value, int):
