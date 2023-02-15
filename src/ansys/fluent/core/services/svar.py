@@ -40,14 +40,29 @@ class SvarService:
         
     @catch_grpc_error
     def set_svar_data(self, request):
-        return self.__stub.SetSvarData(request, metadata=self.__metadata)        
+        return self.__stub.SetSvarData(request, metadata=self.__metadata)
+
+    @catch_grpc_error
+    def get_svars_info(self, request):
+        return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)         
 
 class SvarInfo:
     def __init__(self, service: SvarService,):       
         self._service = service
         
-    def get_svars_info(self, provide_only_available=True):
-        return {"SV_T":None, "SV_P":None, "SV_N_NODE_COORDS":None}
+    def get_svars_info(self, zone_id):
+        request = SvarProtoModule.GetSvarsInfoRequest(zoneId=zone_id)
+        response = self._service.get_svars_info(request)
+        return {
+            svar_info.name: {
+                "display_name": svar_info.displayName,
+                "dimension": svar_info.dimension,
+                "dataType": svar_info.dataType,
+                "bitSize": svar_info.bitSize,
+            }
+            for svar_info in response.svarsInfo
+        }
+        
 
     def get_zones_info(self, provide_only_available=True):
         return {"fluid":None}            
