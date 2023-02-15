@@ -301,14 +301,14 @@ class _FluentConnection:
         remote_instance,
     ) -> None:
         if channel:
+            transcript.stop()
+            events_manager.stop()
+            monitors_manager.stop()
             if cleanup_on_exit:
                 try:
                     scheme_eval.exec(("(exit-server)",))
                 except Exception:
                     pass
-            transcript.stop()
-            events_manager.stop()
-            monitors_manager.stop()
             channel.close()
             channel = None
 
