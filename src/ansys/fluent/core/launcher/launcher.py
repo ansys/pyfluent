@@ -59,7 +59,6 @@ class FluentVersion(Enum):
 
 def get_ansys_version() -> str:
     """Get the latest ANSYS version from AWP_ROOT environment variables."""
-
     for v in FluentVersion:
         if "AWP_ROOT" + "".join(str(v).split("."))[:-1] in os.environ:
             return str(v)
@@ -199,6 +198,7 @@ def launch_remote_fluent(
     cleanup_on_exit: bool = True,
     meshing_mode: bool = False,
     dimensionality: str = None,
+    launcher_args: Dict[str, Any] = None,
 ):
 
     """Launch Fluent remotely using the PIM (Product Instance Management) API.
@@ -257,6 +257,7 @@ def launch_remote_fluent(
             remote_instance=instance,
             start_timeout=start_timeout,
             start_transcript=start_transcript,
+            launcher_args=launcher_args
         )
     )
 
@@ -405,13 +406,20 @@ def scm_to_py(topy):
     return launch_string
 
 
+class LaunchFluentError(Exception):
+
+    def __init__(self, launch_string):
+        details = "\n" + "Fluent Launch string: " + launch_string
+        super().__init__(details)
+
+
 #   pylint: disable=unused-argument
 def launch_fluent(
     product_version: str = None,
     version: str = None,
     precision: str = None,
     processor_count: int = None,
-    journal_filename: str = None,
+    journal_filepath: str = None,
     start_timeout: int = 100,
     additional_arguments: str = "",
     env: Dict[str, Any] = None,
@@ -422,6 +430,7 @@ def launch_fluent(
     start_transcript: bool = True,
     show_gui: bool = None,
     case_filepath: str = None,
+    case_data_filepath: str = None,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
@@ -450,7 +459,7 @@ def launch_fluent(
         Number of processors. The default is ``None``, in which case ``1``
         processor is used.  In job scheduler environments the total number of
         allocated cores is clamped to this value.
-    journal_filename : str, optional
+    journal_filepath : str, optional
         Name of the journal file to read. The default is ``None``.
     start_timeout : int, optional
         Maximum allowable time in seconds for connecting to the Fluent
@@ -497,6 +506,9 @@ def launch_fluent(
     case_filepath : str, optional
         If provided, reads a fluent case file and sets the required settings
         in the fluent session
+    case_data_filepath : str, optional
+        If provided, reads a fluent case and data file and sets the required settings
+        in the fluent session
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -532,6 +544,7 @@ def launch_fluent(
         else:
             raise TypeError(f"launch_fluent() got an unexpected keyword argument {next(iter(kwargs))}")
 
+    del kwargs
     argvals = locals()
 
     new_session, meshing_mode, argvals, mode = _get_session_info(
@@ -561,9 +574,31 @@ def launch_fluent(
 
             _await_fluent_launch(server_info_filepath, start_timeout, sifile_last_mtime)
 
-            return new_session.create_from_server_info_file(
-                server_info_filepath, cleanup_on_exit, start_transcript
+            session = new_session.create_from_server_info_file(
+                server_info_filepath=server_info_filepath,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                launcher_args=argvals
             )
+            if case_filepath:
+                if meshing_mode:
+                    session.tui.file.read_case(case_filepath)
+                else:
+                    session.file.read(file_type="case", file_name=case_filepath)
+            if journal_filepath:
+                if meshing_mode:
+                    session.tui.file.read_journal(journal_filepath)
+                else:
+                    session.file.read_journal(journal_filepath)
+            if case_data_filepath:
+                if not meshing_mode:
+                    session.file.read(file_type="case-data", file_name=case_data_filepath)
+                else:
+                    raise RuntimeError("Case and data file cannot be read in meshing mode.")
+
+            return session
+        except Exception as ex:
+            raise LaunchFluentError(launch_string) from ex
         finally:
             server_info_file = Path(server_info_filepath)
             if server_info_file.exists():
@@ -581,6 +616,7 @@ def launch_fluent(
                 cleanup_on_exit=cleanup_on_exit,
                 meshing_mode=meshing_mode,
                 dimensionality=version,
+                launcher_args=argvals
             )
         import ansys.fluent.core as pyfluent
 
@@ -601,6 +637,7 @@ def launch_fluent(
                     password=password,
                     cleanup_on_exit=cleanup_on_exit,
                     start_transcript=start_transcript,
+                    launcher_args=argvals
                 )
             )
         else:
@@ -613,6 +650,7 @@ def launch_fluent(
                 password=password,
                 cleanup_on_exit=cleanup_on_exit,
                 start_transcript=start_transcript,
+                launcher_args=argvals
             )
             new_session = _get_running_session_mode(fluent_connection, mode)
             return new_session(fluent_connection=fluent_connection)

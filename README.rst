@@ -41,7 +41,7 @@ ability to:
 
 Documentation and issues
 ------------------------
-For comprehesive information on PyFluent, see the latest release
+For comprehensive information on PyFluent, see the latest release
 `documentation <https://fluent.docs.pyansys.com>`_.
 
 On the `PyFluent Issues <https://github.com/pyansys/pyfluent/issues>`_ page, you can create
@@ -104,7 +104,7 @@ For example, ``v231`` uses release 2023 R1.
 For information on other ways of specifying the Fluent location for PyFluent,
 see `Frequently asked questions <https://fluent.docs.pyansys.com/release/0.12/getting_started/faqs.html>`_.
 
-Basic Usage
+Basic usage
 ~~~~~~~~~~~
 You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
 

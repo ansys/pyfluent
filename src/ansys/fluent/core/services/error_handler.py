@@ -6,7 +6,6 @@ import grpc
 
 def catch_grpc_error(f: Callable) -> Callable:
     """Decorator to catch gRPC errors."""
-
     @functools.wraps(f)
     def func(*args, **kwargs) -> Callable:
         try:

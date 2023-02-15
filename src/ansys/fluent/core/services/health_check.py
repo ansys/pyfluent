@@ -8,6 +8,7 @@ import grpc
 from ansys.api.fluent.v0 import health_pb2 as HealthCheckModule
 from ansys.api.fluent.v0 import health_pb2_grpc as HealthCheckGrpcModule
 from ansys.fluent.core.services.error_handler import catch_grpc_error
+from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 
 
 class HealthCheckService:
@@ -26,7 +27,8 @@ class HealthCheckService:
         SERVICE_UNKNOWN = 3
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        self._stub = HealthCheckGrpcModule.HealthStub(channel)
+        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        self._stub = HealthCheckGrpcModule.HealthStub(intercept_channel)
         self._metadata = metadata
         self._channel = channel
 
