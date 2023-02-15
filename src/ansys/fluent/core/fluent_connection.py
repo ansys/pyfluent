@@ -10,6 +10,7 @@ import weakref
 import grpc
 
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -184,6 +185,8 @@ class _FluentConnection:
             _FluentConnection._monitor_thread = MonitorThread()
             _FluentConnection._monitor_thread.start()
 
+        self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
+
         self.transcript = Transcript(self._channel, self._metadata)
 
         self._events_service = EventsService(self._channel, self._metadata)
@@ -298,14 +301,14 @@ class _FluentConnection:
         remote_instance,
     ) -> None:
         if channel:
+            transcript.stop()
+            events_manager.stop()
+            monitors_manager.stop()
             if cleanup_on_exit:
                 try:
                     scheme_eval.exec(("(exit-server)",))
                 except Exception:
                     pass
-            transcript.stop()
-            events_manager.stop()
-            monitors_manager.stop()
             channel.close()
             channel = None
 
