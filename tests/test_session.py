@@ -304,20 +304,15 @@ def test_solverworkflow_in_solver_session(new_solver_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-@pytest.mark.skip("Failing in github")
-def test_read_case_using_light_io(with_launching_container):
+def test_read_case_using_lightweight_mode(with_launching_container):
     import_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    solver = pyfluent.launch_fluent(case_filepath=import_filename, use_light_io=True)
+    solver = pyfluent.launch_fluent(case_filepath=import_filename, lightweight_mode=True)
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver.fluent_connection)
     while id(solver.fluent_connection) == old_fluent_connection_id:
         time.sleep(1)
-    try:
-        solver.health_check_service.wait_for_server(10)
-    except Exception:
-        assert False
-    else:
-        assert solver.setup.models.energy.enabled() == False
+    time.sleep(5)
+    assert solver.setup.models.energy.enabled() == False
     solver.exit()
