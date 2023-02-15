@@ -35,7 +35,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_autodoc_typehints",
     "sphinx_copybutton",
-    "sphinx_gallery.gen_gallery",
+    #"sphinx_gallery.gen_gallery",
     "sphinxemoji.sphinxemoji",
 ]
 
@@ -176,6 +176,7 @@ html_theme_options = {
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
+    "collapse_navigation": True,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------

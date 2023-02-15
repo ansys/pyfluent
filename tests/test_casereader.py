@@ -209,7 +209,6 @@ def test_case_reader_get_rp_and_config_vars():
 
 
 def test_case_reader_input_parameter():
-
     number = InputParameter(raw_data=(("name", "n"), ("definition", "12.4")))
 
     assert number.name == "n"

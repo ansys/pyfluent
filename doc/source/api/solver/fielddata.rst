@@ -3,13 +3,14 @@
 Field data
 ==========
 
-You can use field data objects to access Fluent surface, scalar, vector, and pathlines data.
+You can use field data objects to access Fluent surface, scalar, vector, and
+pathlines data.
 
 Accessing field data objects
 ----------------------------
 
-In order to access field data, launch the fluent solver, and make field
-data available (for example, by reading case and data files):
+In order to access field data, launch the fluent solver, and make field data
+available (for example, by reading case and data files):
 
 .. code-block:: python
 
@@ -190,12 +191,13 @@ The surface ID is the same one that is passed in the request.
 
 Field name
 ----------
-A request returns multiple fields. The number of fields depends on the request type.
+A request returns multiple fields. The number of fields depends on the request
+type.
 
 Surface request
 ~~~~~~~~~~~~~~~
-The response to a surface request contains any of the following fields, depending on the
-request arguments:
+The response to a surface request contains any of the following fields,
+depending on the request arguments:
 
 - ``faces``, which contain face connectivity
 - ``vertices``, which contain node coordinates
@@ -205,14 +207,15 @@ request arguments:
 
 Scalar field request
 ~~~~~~~~~~~~~~~~~~~~
-The response to a scalar field request contains a single field with the same name as the
-scalar field name passed in the request.
+The response to a scalar field request contains a single field with the same
+name as the scalar field name passed in the request.
 
 Vector field request
 ~~~~~~~~~~~~~~~~~~~~
 The response to a vector field request contains two fields:
 
-- ``vector field``, with the same name as the vector field name that is passed in the request 
+- ``vector field``, with the same name as the vector field name that is passed
+  in the request 
 - ``vector-scale``, a float value indicating the vector scale.
  
 Pathlines field request
@@ -222,14 +225,18 @@ The response to a pathlines field request contains the following fields:
 - ``pathlines-count``, which contains pathlines count.
 - ``lines``, which contain pathlines connectivity.
 - ``vertices``, which contain node coordinates.
-- ``field name``, which contains pathlines field. field name is the same name as the scalar field name passed in the request.
+- ``field name``, which contains pathlines field. field name is the same name as
+  the scalar field name passed in the request.
 - ``particle-time``, which contains  particle time, if requested. 
-- ``additional field name``, which contains  additional field, if requested. additional field name is the same name as the additional field name passed in the request.
+- ``additional field name``, which contains  additional field, if requested.
+  additional field name is the same name as the additional field name passed in
+  the request.
 
 Allowed values
 --------------
-Additionally there is an allowed_values provided on field name,
-surface name and ids to guide the users.
+Additionally there is an ``allowed_values`` method provided on all of
+``field_name``, ``surface_name`` and ``surface_ids`` which tells you what object
+names are accessible.
 
 Some sample use cases are demonstrated below:
 
