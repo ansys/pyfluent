@@ -431,6 +431,7 @@ def launch_fluent(
     show_gui: bool = None,
     case_filepath: str = None,
     case_data_filepath: str = None,
+    lightweight_mode: bool = False,
     mode: Union[LaunchModes, str, None] = None,
     server_info_filepath: str = None,
     password: str = None,
@@ -509,6 +510,10 @@ def launch_fluent(
     case_data_filepath : str, optional
         If provided, reads a fluent case and data file and sets the required settings
         in the fluent session
+    lightweight_mode: bool, optional
+        Whether to use light io mode for reading case via ``case_filepath`` parameter.
+        This parameter is used only when ``case_filepath`` is provided. The default is
+        ``False``.
     mode : str, optional
         Launch mode of Fluent to point to a specific session type.
         The default value is ``None``. Options are ``"meshing"``,
@@ -584,7 +589,7 @@ def launch_fluent(
                 if meshing_mode:
                     session.tui.file.read_case(case_filepath)
                 else:
-                    session.file.read(file_type="case", file_name=case_filepath)
+                    session.read_case(case_filepath, lightweight_mode)
             if journal_filepath:
                 if meshing_mode:
                     session.tui.file.read_journal(journal_filepath)
