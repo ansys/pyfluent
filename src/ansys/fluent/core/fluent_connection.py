@@ -10,6 +10,7 @@ import weakref
 import grpc
 
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -183,6 +184,8 @@ class _FluentConnection:
         if not _FluentConnection._monitor_thread:
             _FluentConnection._monitor_thread = MonitorThread()
             _FluentConnection._monitor_thread.start()
+
+        self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
 
         self.transcript = Transcript(self._channel, self._metadata)
 
