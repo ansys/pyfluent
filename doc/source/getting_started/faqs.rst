@@ -117,22 +117,29 @@ all PyFluent packages in a Python *virtual environment*:
    .. code:: bash
 
    .. vale off
-   
-    python -m venv venv   # Set up a local virtual environment
-    venv\Scripts\activate   # Activate the virtual environment on Windows
-    source venv/bin/activate.csh   # Activate the virtual environment on Linux (csh)
-    . venv/bin/activate   # Activate the virtual environment on Linux (bash)
+
+      # Set up a local virtual environment
+      python -m venv venv 
+
+      # Activate the virtual environment on Windows
+      venv\Scripts\activate
+
+      # Activate the virtual environment on Linux (csh)
+      source venv/bin/activate.csh
+
+      # Activate the virtual environment on Linux (bash)
+      . venv/bin/activate
 
    .. vale on
-
+   
 #. In the same command window, use ``pip``, the package installer for Python, to
    install the PyFluent packages::
 
    .. code:: bash
 
-    python -m pip install ansys-fluent-core   # Use Fluent’s core capabilities (mesh, solve, postprocess)
-    python -m pip install ansys-fluent-parametric   # Use Fluent’s parametric capabilities (optional)
-    python -m pip install ansys-fluent-visualization   # Use Fluent's postprocessing capabilities with pyvista and matplotlib (optional)
+      python -m pip install ansys-fluent-core   # Use Fluent’s core capabilities (mesh, solve, postprocess)
+      python -m pip install ansys-fluent-parametric   # Use Fluent’s parametric capabilities (optional)
+      python -m pip install ansys-fluent-visualization   # Use Fluent's postprocessing capabilities with pyvista and matplotlib (optional)
 
 
 Which version of Python should you use?

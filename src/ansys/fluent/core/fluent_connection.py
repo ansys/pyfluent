@@ -3,13 +3,14 @@ import itertools
 import os
 import threading
 import time
-from typing import Callable, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 import warnings
 import weakref
 
 import grpc
 
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
 )
@@ -103,7 +104,8 @@ class _FluentConnection:
         channel: grpc.Channel = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        remote_instance=None,
+        remote_instance: bool = None,
+        launcher_args: Dict[str, Any] = None
     ):
         """Instantiate a Session.
 
@@ -184,6 +186,8 @@ class _FluentConnection:
             _FluentConnection._monitor_thread = MonitorThread()
             _FluentConnection._monitor_thread.start()
 
+        self._batch_ops_service = BatchOpsService(self._channel, self._metadata)
+
         self.transcript = Transcript(self._channel, self._metadata)
 
         self._events_service = EventsService(self._channel, self._metadata)
@@ -231,7 +235,7 @@ class _FluentConnection:
             self.transcript.start()
 
         self._remote_instance = remote_instance
-
+        self.launcher_args = launcher_args
         self._finalizer = weakref.finalize(
             self,
             _FluentConnection._exit,
@@ -304,14 +308,14 @@ class _FluentConnection:
         remote_instance,
     ) -> None:
         if channel:
+            transcript.stop()
+            events_manager.stop()
+            monitors_manager.stop()
             if cleanup_on_exit:
                 try:
                     scheme_eval.exec(("(exit-server)",))
                 except Exception:
                     pass
-            transcript.stop()
-            events_manager.stop()
-            monitors_manager.stop()
             channel.close()
             channel = None
 

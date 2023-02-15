@@ -2,8 +2,6 @@ ANSYS
 Ansys
 ansys
 CommandArguments
-config
-csh
 EventsManager
 endblock
 endfor
@@ -29,7 +27,6 @@ pyansys
 PyFluent
 Pythonic
 pyvista
-rp
 sbatch
 Slurm
 UDFs

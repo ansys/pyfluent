@@ -16,7 +16,7 @@ from ansys.api.fluent.v0 import (
     scheme_eval_pb2_grpc,
 )
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import launch_fluent
+from ansys.fluent.core import examples, launch_fluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import _FluentConnection
 from ansys.fluent.core.session import _BaseSession
@@ -273,11 +273,11 @@ def test_get_fluent_mode(new_mesh_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_start_transcript_file_write(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
+def test_start_transcript_file_write(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.txt",
         prefix="pyfluent-",
-        dir=str(tmp_path),
+        dir=str(pyfluent.EXAMPLES_PATH),
     )
     os.close(fd)
 
@@ -301,3 +301,19 @@ def test_solverworkflow_in_solver_session(new_solver_session):
     solver_dir = dir(solver)
     for attr in ("preferences", "solverworkflow", "tui", "workflow"):
         assert attr in solver_dir
+
+@pytest.mark.dev
+@pytest.mark.fluent_232
+@pytest.mark.skip("Failing in github")
+def test_read_case_using_lightweight_mode(with_launching_container):
+    import_filename = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    solver = pyfluent.launch_fluent(case_filepath=import_filename, lightweight_mode=True)
+    solver.setup.models.energy.enabled = False
+    old_fluent_connection_id = id(solver.fluent_connection)
+    while id(solver.fluent_connection) == old_fluent_connection_id:
+        time.sleep(1)
+    time.sleep(5)
+    assert solver.setup.models.energy.enabled() == False
+    solver.exit()
