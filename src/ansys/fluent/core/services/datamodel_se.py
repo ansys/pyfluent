@@ -10,7 +10,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 
 Path = List[Tuple[str, str]]
 
@@ -57,8 +57,7 @@ class DatamodelService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
+        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
         self.__stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self.__metadata = metadata
 

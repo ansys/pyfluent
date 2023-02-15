@@ -12,6 +12,7 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     LaunchModes,
     launch_fluent,
 )
+from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import _BaseSession as Fluent  # noqa: F401
 from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.logging import LOG
