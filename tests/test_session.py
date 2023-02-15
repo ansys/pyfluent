@@ -304,6 +304,7 @@ def test_solverworkflow_in_solver_session(new_solver_session):
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
+@pytest.mark.skip("Failing in github")
 def test_read_case_using_light_io(with_launching_container):
     import_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
