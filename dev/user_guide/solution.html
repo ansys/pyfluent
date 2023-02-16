@@ -306,7 +306,7 @@ function checkPageExistsAndRedirect(event) {
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="tui_commands.html">
-   Using TUI commands
+   Use TUI commands
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,7 +351,7 @@ function checkPageExistsAndRedirect(event) {
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="data_transfer.html">
-   Data transfer
+   Transfer data
   </a>
  </li>
 </ul>
@@ -435,7 +435,7 @@ function checkPageExistsAndRedirect(event) {
 <a class="reference internal" href="../api/solver/settings.html#ref-settings"><span class="std std-ref">Solver settings objects</span></a> to apply solution settings, initialize, and solve.</p>
 <section id="use-solver-tui-commands">
 <h2>Use solver TUI commands<a class="headerlink" href="#use-solver-tui-commands" title="Permalink to this heading">#</a></h2>
-<p>The examples on this page show how to use <a class="reference internal" href="../api/solver/tuicommands.html#ref-solver-tui-commands"><span class="std std-ref">Solver TUI commands</span></a> to
+<p>The examples on this page show how you use <a class="reference internal" href="../api/solver/tuicommands.html#ref-solver-tui-commands"><span class="std std-ref">Solver TUI commands</span></a> to
 apply solution settings.</p>
 <section id="select-solution-method">
 <h3>Select solution method<a class="headerlink" href="#select-solution-method" title="Permalink to this heading">#</a></h3>
@@ -463,7 +463,7 @@ options. Five solution methods (Index-Model) are available: 20-SIMPLE,
 <section id="select-solution-controls">
 <h3>Select solution controls<a class="headerlink" href="#select-solution-controls" title="Permalink to this heading">#</a></h3>
 <p>This example shows a comparison between the TUI command and the Python code for
-selecting the pressure velocity controls.</p>
+selecting pressure velocity controls.</p>
 <p><strong>TUI command</strong></p>
 <div class="highlight-scheme notranslate"><div class="highlight"><pre><span></span><span class="nv">/solve/set/p-v-controls</span><span class="w"> </span><span class="mf">0.3</span><span class="w"> </span><span class="mf">0.4</span>
 </pre></div>
@@ -513,7 +513,7 @@ initializing and performing a specified number of iterations.</p>
 </section>
 <section id="use-settings-objects">
 <h2>Use settings objects<a class="headerlink" href="#use-settings-objects" title="Permalink to this heading">#</a></h2>
-<p>This example shows how to use <a class="reference internal" href="../api/solver/settings.html#ref-settings"><span class="std std-ref">Solver settings objects</span></a> to apply solution settings.</p>
+<p>This example shows how you use <a class="reference internal" href="../api/solver/settings.html#ref-settings"><span class="std std-ref">Solver settings objects</span></a> to apply solution settings.</p>
 <p><strong>Python code</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initialization</span><span class="o">.</span><span class="n">hybrid_initialize</span><span class="p">()</span>
 <span class="n">solver</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">number_of_iterations</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>

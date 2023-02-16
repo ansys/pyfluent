@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Apply general settings" href="general_settings.html" />
-    <link rel="prev" title="Using TUI commands" href="tui_commands.html" />
+    <link rel="prev" title="Use TUI commands" href="tui_commands.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,7 +306,7 @@ function checkPageExistsAndRedirect(event) {
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="tui_commands.html">
-   Using TUI commands
+   Use TUI commands
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -351,7 +351,7 @@ function checkPageExistsAndRedirect(event) {
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="data_transfer.html">
-   Data transfer
+   Transfer data
   </a>
  </li>
 </ul>
@@ -476,27 +476,27 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generating-surface-mesh">
-     Generating surface mesh
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
-     Update boundaries
+     Generate surface mesh
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id2">
-     Add boundary layers
+     Update boundaries
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id3">
-     Generate volume mesh
+     Add boundary layers
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id4">
+     Generate volume mesh
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
      Switch to solution mode
     </a>
    </li>
@@ -1011,20 +1011,20 @@ guided meshing workflows.</p>
 </pre></div>
 </div>
 </section>
-<section id="generating-surface-mesh">
-<h3>Generating surface mesh<a class="headerlink" href="#generating-surface-mesh" title="Permalink to this heading">#</a></h3>
+<section id="id1">
+<h3>Generate surface mesh<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Surface Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="id1">
-<h3>Update boundaries<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<section id="id2">
+<h3>Update boundaries<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Update Boundaries&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="id2">
-<h3>Add boundary layers<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<section id="id3">
+<h3>Add boundary layers<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Add Boundary Layers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">AddChildToTask</span><span class="p">()</span>
 
 <span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Add Boundary Layers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">InsertCompoundChildTask</span><span class="p">()</span>
@@ -1040,8 +1040,8 @@ guided meshing workflows.</p>
 </pre></div>
 </div>
 </section>
-<section id="id3">
-<h3>Generate volume mesh<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<section id="id4">
+<h3>Generate volume mesh<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">meshing</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Volume Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;AllRegionNameList&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -1062,8 +1062,8 @@ guided meshing workflows.</p>
 </pre></div>
 </div>
 </section>
-<section id="id4">
-<h3>Switch to solution mode<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<section id="id5">
+<h3>Switch to solution mode<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">meshing</span><span class="o">.</span><span class="n">switch_to_solver</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1071,9 +1071,12 @@ guided meshing workflows.</p>
 </section>
 <section id="sample-use-of-commandarguments">
 <h2>Sample use of CommandArguments<a class="headerlink" href="#sample-use-of-commandarguments" title="Permalink to this heading">#</a></h2>
-<p>This simple example shows you how to use the CommandArgument attributes and explicit
-attribute access methods in a watertight geometry meshing workflow.
-Note: CommandArgument attributes are read-only.</p>
+<p>This simple example shows you how to use the <code class="docutils literal notranslate"><span class="pre">CommandArgument</span></code> attributes and explicit
+attribute access methods in a watertight geometry meshing workflow.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">CommandArgument</span></code> attributes are read-only.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ansys.fluent.core</span> <span class="k">as</span> <span class="nn">pyfluent</span>
 <span class="kn">from</span> <span class="nn">ansys.fluent.core</span> <span class="kn">import</span> <span class="n">examples</span>
 

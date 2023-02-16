@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Data transfer &#8212; PyFluent</title>
+    <title>Transfer data &#8212; PyFluent</title>
     
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
@@ -278,7 +278,7 @@ function checkPageExistsAndRedirect(event) {
     
 
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User guide</a> » </li>
-        <li class="nav-item nav-item-this"><a href="">Data transfer</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Transfer data</a></li> 
       </ul>
     </div>
         </div>
@@ -306,7 +306,7 @@ function checkPageExistsAndRedirect(event) {
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="tui_commands.html">
-   Using TUI commands
+   Use TUI commands
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,7 +351,7 @@ function checkPageExistsAndRedirect(event) {
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Data transfer
+   Transfer data
   </a>
  </li>
 </ul>
@@ -402,17 +402,18 @@ function checkPageExistsAndRedirect(event) {
               
               <article class="bd-article" role="main">
                 
-  <section id="data-transfer">
-<span id="ref-data-transfer"></span><h1>Data transfer<a class="headerlink" href="#data-transfer" title="Permalink to this heading">#</a></h1>
-<p>Data transfer helps in transferring a case or a mesh file between instances of Fluent.
-You must specify a source instance and one or multiple destination instances.</p>
+  <section id="transfer-data">
+<span id="ref-data-transfer"></span><h1>Transfer data<a class="headerlink" href="#transfer-data" title="Permalink to this heading">#</a></h1>
+<p>You use the <cite>‘transfer_case`</cite> method to transfer a case or mesh file between
+instances of Fluent. You must specify a source instance and one or more
+destination instances.</p>
 <section id="sample-usage">
 <h2>Sample usage<a class="headerlink" href="#sample-usage" title="Permalink to this heading">#</a></h2>
-<p>You can use the <cite>‘transfer_case`</cite> method to transfer either a mesh or a case file by importing it
-and passing the source and destination instances along with the file type. You can either
-generate the files in the parent instance or just read it.</p>
-<p>This example shows how to use the `` use the <code class="docutils literal notranslate"><span class="pre">transfer_case</span></code> by reading a mesh file in a
-pure meshing session and transferring it to a solver session.</p>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">transfer_case</span></code> method to transfer a mesh or a case file, you import the
+file and pass the source, destination instances, and the file type. You can either
+generate the files in the parent instance or just read the file.</p>
+<p>This example shows how you use the <code class="docutils literal notranslate"><span class="pre">transfer_case</span></code> method to read a mesh file in a
+pure meshing session and transfer it to a solver session.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ansys.fluent.core</span> <span class="k">as</span> <span class="nn">pyfluent</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ansys.fluent.core.examples</span> <span class="kn">import</span> <span class="n">download_file</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ansys.fluent.core.utils.data_transfer</span> <span class="kn">import</span> <span class="n">transfer_case</span>
@@ -434,7 +435,7 @@ pure meshing session and transferring it to a solver session.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Similarly, you can also use the <code class="docutils literal notranslate"><span class="pre">transfer_case</span></code> method to transfer a case file from one instance of Fluent
+<p>Similarly, you can use the <code class="docutils literal notranslate"><span class="pre">transfer_case</span></code> method to transfer a case file from one instance of Fluent
 to another.</p>
 </section>
 </section>

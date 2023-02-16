@@ -9,7 +9,7 @@ Sample usage
 ------------
 
 You can use the case reader by importing it and passing a case file path.
-This example shows how to have case reader read a case file (.cas.h5)
+This example shows how to have the case reader read a case file (.cas.h5)
 from the ``examples`` repository:
 
 .. code-block:: python
@@ -30,26 +30,23 @@ from the ``examples`` repository:
 
 Additional features
 -------------------
-Along with the basic functionality, the case reader has many useful features:
+Along with basic functionality, the case reader provides many additional features, including these:
 
-Supports multiple file formats
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The case reader can read fluent case files in .cas, .cas.h5 and .cas.gz in both text and binary formats.
+- **Supports multiple file formats**
+  The case reader can read Fluent case files (CAS, CAS.HF, and CAS.GZ) in both text and binary formats.
+- **Takes a project path as an argument**
+  The case reader has an option for taking a Fluent project path (FLPRJ) as an argument and locating
+  the case file path:
+  
+  .. code-block:: python
 
-Takes project path as argument
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Case reader also has an option to take a fluent project path (.flprj) as argument and locate the
-case file path.
+    >>> reader = CaseReader(project_filepath="Dir1/Dir2/project.flprj")
 
-.. code-block:: python
+- **Reads ``rp_vars`` and ``config_vars`` variables**
+  The case reader can provide the ``rp_vars`` and ``config_vars`` variables:
+  
+  .. code-block:: python
 
-  >>> reader = CaseReader(project_filepath="Dir1/Dir2/project.flprj")
+    >>> reader.rp_vars()
+    >>> reader.config_vars()
 
-Reads ``rp_vars`` and ``config_vars`` variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Case reader can provide the ``rp_vars`` and ``config_vars``:
-
-.. code-block:: python
-
-  >>> reader.rp_vars()
-  >>> reader.config_vars()
