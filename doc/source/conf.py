@@ -175,7 +175,6 @@ sphinx_gallery_conf = {
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
     "reset_modules": (_stop_fluent_container),
-    "collapse_navigation": True,
 }
 
 
@@ -203,6 +202,7 @@ html_theme_options = {
     },
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
+    "collapse_navigation": True,
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
