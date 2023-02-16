@@ -299,7 +299,8 @@ class DataModelGenerator:
             parameters = sorted(info.parameters)
             commands = sorted(info.commands)
 
-            f.write(f".. autoclass:: {module_name}::{class_name}\n")
+            if not (class_name == "Root"):
+                f.write(f".. autoclass:: {module_name}::{class_name}\n")
 
             if any(heading.startswith(x) for x in DataModelStaticInfo._noindices):
                 f.write("   :noindex:\n")
