@@ -7,7 +7,7 @@ on:
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-  DOC_DEPLOYMENT_IMAGE_TAG: v22.2.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v23.1.0
 
 jobs:
   nightly_docs_build:
