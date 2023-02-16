@@ -133,9 +133,9 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f"{istr1}:undoc-members:\n")
 
         if has_children:
-            r.write(f".. rubric:: Children\n\n")
+            r.write(f".. rubric:: Attributes\n\n")
             data_dict = {}
-            data_dict["Child"] = "Summary"
+            data_dict["Attribute"] = "Summary"
             for child in cls.child_names:
                 child_cls = getattr(cls, child)
                 ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"
@@ -143,9 +143,9 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             _generate_table_for_rst(r, data_dict)
 
         if has_commands:
-            r.write(f".. rubric:: Commands\n\n")
+            r.write(f".. rubric:: Methods\n\n")
             data_dict = {}
-            data_dict["Command"] = "Summary"
+            data_dict["Method"] = "Summary"
             for child in cls.command_names:
                 child_cls = getattr(cls, child)
                 ref_string = f":ref:`{child} <{child_cls.__module__.split('.')[-1]}>`"

@@ -293,9 +293,6 @@ class DataModelGenerator:
             f.write(f"{heading_}\n")
             f.write(f"{'=' * len(heading_)}\n")
             f.write("\n")
-            f.write(f".. currentmodule:: {module_name}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n\n")
 
             named_objects = sorted(info.namedobjects)
             singletons = sorted(info.singletons)
@@ -303,8 +300,7 @@ class DataModelGenerator:
             commands = sorted(info.commands)
 
             f.write(f".. autoclass:: {module_name}::{class_name}\n")
-            if parameters or commands:
-                f.write(f"   :members: {', '.join(parameters + commands)}\n")
+
             if any(heading.startswith(x) for x in DataModelStaticInfo._noindices):
                 f.write("   :noindex:\n")
             f.write("\n")

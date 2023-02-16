@@ -262,9 +262,6 @@ class TUIGenerator:
             if desc:
                 f.write(desc)
             f.write("\n")
-            f.write(f".. currentmodule:: {self._tui_module}\n\n")
-            f.write(".. autosummary::\n")
-            f.write("   :toctree: _autosummary\n\n")
 
             command_names = [v.name for _, v in menu.children.items() if v.is_command]
             child_menu_names = [
@@ -272,8 +269,6 @@ class TUIGenerator:
             ]
 
             f.write(f".. autoclass:: {self._tui_module}::{class_name}\n")
-            if command_names:
-                f.write(f"   :members: {', '.join(command_names)}\n\n")
 
             if child_menu_names:
                 f.write(".. toctree::\n")
