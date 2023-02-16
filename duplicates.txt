@@ -1,0 +1,80 @@
+capping:
+For solid model geometries where you want to extract a flow volume, use this task to enclose, or cap, any openings in your geometry in order to later calculate your fluid region(s). Assign a name for the capping surface, and designate the type of opening (inlet, outlet, etc.) and assign one or more zones or labels to the capping surface. Create as many caps as required to cover all openings. Choose any advanced options that you want to take effect upon updating the task.  More...
+For solid model geometries where you want to extract a flow volume, use this task to enclose, or cap, any openings in your geometry in order to later calculate your fluid region(s). Assign a name for the capping surface, and assign one or more zones or labels to the capping surface. Create as many caps as required to cover all openings. Choose any advanced options that you want to take effect upon updating the task. More...
+
+capping_zoneselectionlist:
+Choose one or more face zones from the list below. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Choose one or more face zones from the list below.  If there are no zones available, return to the Import CAD and Part Management task and make sure that the Separate zone per face field is selected for the object.  Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+
+transformvolumemesh_type:
+Indicate the type of transformation: translational or rotational
+Indicate the type of transformation as either translational or rotational
+
+transformvolumemesh_method:
+By default, the Manual method is utilized, however, when periodics are detected, then Automatic - use existing periodics is the default.
+By default, the Manual method is utilized, however, when periodics are detected, then Automatic is the default.
+
+transformvolumemesh_cellzonelist:
+Select one or more objects from the list to which you will apply the transformation. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Select one or more objects from the list to which you will apply the transformation.
+
+addboundarylayers:
+Determine whether or not boundary layers will be added to various portions of the model. Once a boundary layer is defined, global boundary layer settings are determined in the Create Volume Mesh task.
+Determine whether or not boundary layers will be added to various portions of the model.
+
+addboundarylayers_addchild:
+Determine whether (yes) or not (no) you want to specify one or more boundary layers for your simulation. If none are yet defined, you can choose yes, using prism control file and read in a prism control file that holds the boundary layer definition.
+Determine whether or not you want to specify one or more boundary layers for your simulation.
+
+addboundarylayers_regionstype:
+Specify what regions you would like to add the boundary layers: solid regions, fluid regions, or specifically named regions.
+Specify what regions you would like to add the boundary layers: fluid regions, or specifically named regions.
+
+addboundarylayers_growon:
+Specify where you would like to develop the boundary layers: either along only walls, all zones, along solid-fluid interfaces, or specifically selected zones or labels.
+Specify where you would like to develop the boundary layers: either along only walls, along all zones, selected zones, or selected labels.
+
+createlocalrefinementregions:
+Define a more refined region, or body of influence (BOI) when simulating flow within or around your geometry. You can manually create a body of influence using a bounding box or by using an offset surface. This body surrounds the relevant aspects of your geometry, such as the wake region behind a vehicle. More...
+Define a more refined region, or body of influence (BOI) when simulating flow within or around your geometry. You can manually create a body of influence by defining a body through the use of a bounding box, a cylinder, an existing portion of the geometry, or by creating an offset surface. This body surrounds the relevant aspects of your geometry, such as the wake region behind a vehicle. More...
+
+createlocalrefinementregions_creationmethod:
+Choose how you want to create the refinement region: either by creating a bounding box or using an offset surface. You should select a closed body for the offset surface.
+Choose how you want to create the refinement region: either by creating a bounding box, an existing portion of the geometry, or using an offset surface.
+
+createlocalrefinementregions_refinementregionsname:
+Enter a name for the body of influence.
+Enter a name for the local refinement region (body of influence).
+
+createlocalrefinementregions_zoneselectionlist:
+Choose one or more zones from the list below. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Choose one or more objects from the list below. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+
+createlocalrefinementregions_objectselectionlist:
+Choose one or more objects from the list below. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Choose one or more zones from the list below. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+
+managezones:
+Use this task to perform common operations on cell zones or face zones, Prior to generating the volume mesh, you can perform operations such as separating zones, splitting cylindrical regions, or extracting edges. After generating your volume mesh, you can perform operations such as renaming, changing prefixes, and merging zones. Especially useful for complex models with numerous zones.  More...
+Once you generate your volume mesh, use this task to perform common operations on cell zones or face zones, such as renaming, changing prefixes, and merging zones. Especially useful for complex models with numerous zones.  More...
+
+managezones_managecellzonelist:
+Choose from the list of cell zones, or enter a text string to filter out the list of cell zones. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Choose from the list of cell zones. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+
+managezones_managefacezonelist:
+Choose from the list of face zones, or enter a text string to filter out the list of face zones. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Choose from the list of face zones. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+
+managezones_operation:
+Indicate the operation you wish to perform on the zones. When the task is located prior volume meshing: Separate Zones, Split Cylinders, Split normal to X, Split normal to Y, Split normal to Z, or Extract Edges. When the task is located after volume meshing: Change prefix, Rename, or Merge. If your imported CAD geometry contains bodies with multiple body labels, you can also choose Merge cells within each body label
+Indicate the operation you wish to perform on the zones: Change prefix, Rename, or Merge. If your imported CAD geometry contains bodies with multiple body labels, you can also choose Merge cells within each body label
+
+extrudevolumemesh_externalboundaryzonelist:
+Select one or more boundaries. All selected boundaries must share the same plane. Use the Filter Text drop-down to provide text and/or regular expressions in filtering the list (for example, using *, ?, and []). Choose Use Wildcard to provide wildcard expressions in filtering the list. When you use either ? or * in your expression, the matching list item(s) are automatically selected in the list. Use ^, |, and & in your expression to indicate boolean operations for NOT, OR, and AND, respectively.  More...
+Select one or more boundaries. All selected boundaries must share the same plane.
+
+extrudevolumemesh_biasmethod:
+Select from a choice of patterns that you want to apply to your volume mesh extrusion.
+Choose from a selection of patterns that you can apply to the growth of your volume mesh extrusion.
+
