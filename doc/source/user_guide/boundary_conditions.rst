@@ -67,7 +67,7 @@ copying boundary conditions to other zones.
 List zones
 ~~~~~~~~~~
 This example shows a comparison between the TUI command and the Python code for
-printing to the Fluent console the types and IDs of all zones.
+printing the types and IDs of all zones to the Fluent console.
 
 **TUI command**
 

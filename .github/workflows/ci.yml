@@ -172,7 +172,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: doc/source/examples
-          key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('examples/**') }}
+          key: Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('examples/**', 'doc/source/conf.py') }}
           restore-keys: |
             Examples-v${{ env.RESET_EXAMPLES_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
