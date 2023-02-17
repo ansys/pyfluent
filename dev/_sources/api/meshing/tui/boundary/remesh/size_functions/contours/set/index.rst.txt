@@ -3,11 +3,4 @@
 meshing.tui.boundary.remesh.size\_functions.contours.set
 ========================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.boundary.remesh.size_functions.contours.set
-   :members: refine_facets
-

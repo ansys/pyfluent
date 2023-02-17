@@ -3,11 +3,6 @@
 solver.tui.display.set.colors.by\_type.type\_name
 =================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.display.set.colors.by_type.type_name
 .. toctree::
    :hidden:

@@ -308,13 +308,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -717,6 +712,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.results.graphics.expert.set.colors.by_surface.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_color">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -784,14 +788,39 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-expert-set-colors-by-surface">
 <span id="ref-solver-tui-results-graphics-expert-set-colors-by-surface"></span><h1>solver.tui.results.graphics.expert.set.colors.by_surface<a class="headerlink" href="#solver-tui-results-graphics-expert-set-colors-by-surface" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.colors.</span></span><span class="sig-name descname"><span class="pre">by_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the surface(s) color and material assignment menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.colors.</span></span><span class="sig-name descname"><span class="pre">by_surface</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the surface(s) color and material assignment menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_color" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_surfaces_by_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>To list the surfaces by its color.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_material" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_surfaces_by_material</span></code></a>(*args, **kwargs)</p></td>
+<td><p>To list the surfaces by its material.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.reset" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>(*args, **kwargs)</p></td>
+<td><p>To reset colors and/or materials to the defaults.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.surfaces" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surfaces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Select the surface(s) to specify colors and/or materials.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.use_inherent_material_color" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.use_inherent_material_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_inherent_material_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Use inherent material color for surfaces.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_color">
 <span class="sig-name descname"><span class="pre">list_surfaces_by_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.colors.by_surface.list_surfaces_by_color" title="Permalink to this definition">#</a></dt>

@@ -1,0 +1,6 @@
+download
+========
+
+.. currentmodule:: ansys.fluent.core.session_solver
+
+.. automethod:: Solver.download

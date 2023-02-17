@@ -3,11 +3,5 @@
 meshing.datamodel.PartManagement.GlobalSettings
 ===============================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.PartManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.PartManagement::Root.GlobalSettings
-   :members: CurrentContext, CurrentNode, LengthUnit
 

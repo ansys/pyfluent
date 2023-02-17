@@ -1,0 +1,6 @@
+get\_dimensions\_list
+=====================
+
+.. currentmodule:: ansys.fluent.core.quantity
+
+.. automethod:: Quantity.get_dimensions_list

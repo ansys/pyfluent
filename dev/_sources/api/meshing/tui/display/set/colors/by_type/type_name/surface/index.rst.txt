@@ -3,11 +3,4 @@
 meshing.tui.display.set.colors.by\_type.type\_name.surface
 ==========================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.set.colors.by_type.type_name.surface
-   :members: color, material
-

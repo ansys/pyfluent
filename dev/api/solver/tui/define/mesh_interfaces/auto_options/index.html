@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -678,6 +673,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.define.mesh_interfaces.auto_options.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.keep_empty_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -763,14 +767,45 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-mesh-interfaces-auto-options">
 <span id="ref-solver-tui-define-mesh-interfaces-auto-options"></span><h1>solver.tui.define.mesh_interfaces.auto_options<a class="headerlink" href="#solver-tui-define-mesh-interfaces-auto-options" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.mesh_interfaces.</span></span><span class="sig-name descname"><span class="pre">auto_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the auto-options menu. This menu is only available when the define/mesh-interfaces/one-to-one-pairing? text command is enabled.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.mesh_interfaces.</span></span><span class="sig-name descname"><span class="pre">auto_options</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the auto-options menu. This menu is only available when the define/mesh-interfaces/one-to-one-pairing? text command is enabled.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.keep_empty_interface" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.keep_empty_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keep_empty_interface</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Keep empty interfaces during one-to-one mesh interface creation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.naming_option" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.naming_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">naming_option</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies whether the name of each new one-to-one mesh      interface (as well as existing mesh interfaces, if you  so desire) has no additional suffix, or a suffix that   includes the names of the associated boundary zones, the        IDs of the associated boundary zones, or the names of   the adjacent cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.pairing_between_different_cell_zones_only" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.pairing_between_different_cell_zones_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairing_between_different_cell_zones_only</span></code></a>(...)</p></td>
+<td><p>Specifies whether the       one-to-one mesh interfaces are only created between     different cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.pairing_between_interface_zones_only" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.pairing_between_interface_zones_only"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pairing_between_interface_zones_only</span></code></a>(*args, ...)</p></td>
+<td><p>Pairing between interface zones only.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.proximity_tolerance" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.proximity_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">proximity_tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the tolerance used as part     of the automatic grouping of zones to create mesh       interfaces when the define/mesh-interfaces/one-to-one-pairing?  text command is disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.set_default_name_prefix" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.set_default_name_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_default_name_prefix</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the default interface     name prefix used for one-to-one mesh interfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.set_one_to_one_pairing_tolerance" title="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.set_one_to_one_pairing_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_one_to_one_pairing_tolerance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables the use of adjustable tolerances to        determine which of the selected boundary zones can be   paired up to make the mesh interfaces, in order to      account for gaps, thin layers, and/or complex   geometries.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.keep_empty_interface">
 <span class="sig-name descname"><span class="pre">keep_empty_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.mesh_interfaces.auto_options.keep_empty_interface" title="Permalink to this definition">#</a></dt>

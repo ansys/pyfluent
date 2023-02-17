@@ -3,14 +3,7 @@
 solver.tui.setup.models.cht
 ===========================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.cht
-   :members: read_mi_type_wall, write_mi_type_wall, implicit_coupling
-
 .. toctree::
    :hidden:
 

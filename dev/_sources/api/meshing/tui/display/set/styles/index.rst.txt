@@ -3,11 +3,4 @@
 meshing.tui.display.set.styles
 ==============================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.set.styles
-   :members: dummy
-

@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -655,6 +650,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.define.operating_conditions.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -767,14 +771,54 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-operating-conditions">
 <span id="ref-solver-tui-define-operating-conditions"></span><h1>solver.tui.define.operating_conditions<a class="headerlink" href="#solver-tui-define-operating-conditions" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">operating_conditions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the define operating conditions menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.</span></span><span class="sig-name descname"><span class="pre">operating_conditions</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the define operating conditions menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gravity</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets gravitational acceleration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity_mrf_rotation" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity_mrf_rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gravity_mrf_rotation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables rotation of gravity vector in moving reference frame simulations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.operating_density" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.operating_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operating_density</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enters the operating density menu.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.operating_pressure" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.operating_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operating_pressure</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the operating pressure.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.operating_temperature" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.operating_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operating_temperature</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the operating temperature for Boussinesq.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.reference_pressure_location" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.reference_pressure_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference_pressure_location</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets a location that determines the reference pressure cell or cells (depending on the selected reference pressure method).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.reference_pressure_method" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.reference_pressure_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reference_pressure_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the method used for adjusting the gauge pressure field after each iteration to keep it from floating: the method can assume that all of the cell zones are connected by internal boundary zones (such as interior zones), or can account for connected and disconnected cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.set_state" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.set_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_state</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects state for real gas EOS subcritical condition.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.use_inlet_temperature_for_operating_density" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.use_inlet_temperature_for_operating_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_inlet_temperature_for_operating_density</span></code></a>(...)</p></td>
+<td><p>Uses inlet temperature to calculate operating density.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.used_ref_pressure_location" title="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.used_ref_pressure_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">used_ref_pressure_location</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the coordinates of the reference pressure cell or cells (depending on the selected reference pressure method).</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity">
 <span class="sig-name descname"><span class="pre">gravity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.operating_conditions.gravity" title="Permalink to this definition">#</a></dt>

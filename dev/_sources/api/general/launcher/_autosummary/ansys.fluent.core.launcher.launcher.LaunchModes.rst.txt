@@ -1,0 +1,31 @@
+ansys.fluent.core.launcher.launcher.LaunchModes
+===============================================
+
+.. currentmodule:: ansys.fluent.core.launcher.launcher
+
+.. autoclass:: LaunchModes
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      ~LaunchModes.get_mode
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~LaunchModes.MESHING_MODE
+      ~LaunchModes.PURE_MESHING_MODE
+      ~LaunchModes.SOLVER
+      ~LaunchModes.SOLVER_ICING
+   
+   

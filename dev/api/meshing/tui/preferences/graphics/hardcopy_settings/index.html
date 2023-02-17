@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +318,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -585,6 +585,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.preferences.graphics.hardcopy_settings.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -679,14 +688,54 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-graphics-hardcopy-settings">
 <span id="ref-meshing-tui-preferences-graphics-hardcopy-settings"></span><h1>meshing.tui.preferences.graphics.hardcopy_settings<a class="headerlink" href="#meshing-tui-preferences-graphics-hardcopy-settings" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">hardcopy_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the menu for saving picture settings.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">hardcopy_settings</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the menu for saving picture settings.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_edges_for_avz</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.hardcopy_driver" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.hardcopy_driver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hardcopy_driver</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the default format for saving pictures.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.hardcopy_line_width" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.hardcopy_line_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hardcopy_line_width</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the thinkness of lines for saved pictures.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.hardware_image_accel" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.hardware_image_accel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hardware_image_accel</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.post_script_permission_override" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.post_script_permission_override"><code class="xref py py-obj docutils literal notranslate"><span class="pre">post_script_permission_override</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.save_embedded_hardcopies_separately" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.save_embedded_hardcopies_separately"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_embedded_hardcopies_separately</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.save_embedded_windows_in_hardcopy" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.save_embedded_windows_in_hardcopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_embedded_windows_in_hardcopy</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.transparent_embedded_windows" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.transparent_embedded_windows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transparent_embedded_windows</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz">
 <span class="sig-name descname"><span class="pre">export_edges_for_avz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.hardcopy_settings.export_edges_for_avz" title="Permalink to this definition">#</a></dt>

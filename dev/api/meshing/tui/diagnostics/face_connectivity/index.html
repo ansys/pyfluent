@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -472,6 +472,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.diagnostics.face_connectivity.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.add_label_to_small_neighbors">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -611,14 +620,63 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-diagnostics-face-connectivity">
 <span id="ref-meshing-tui-diagnostics-face-connectivity"></span><h1>meshing.tui.diagnostics.face_connectivity<a class="headerlink" href="#meshing-tui-diagnostics-face-connectivity" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.diagnostics.</span></span><span class="sig-name descname"><span class="pre">face_connectivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains options for fixing problems with face connectivity on the specified object face zones or boundary face zones.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.diagnostics.</span></span><span class="sig-name descname"><span class="pre">face_connectivity</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains options for fixing problems with face connectivity on the specified object face zones or boundary face zones.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.add_label_to_small_neighbors" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.add_label_to_small_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_label_to_small_neighbors</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates island object face zones from all connected neighbors and merges them to the connected neighboring face zone label based on minimum face count specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_deviations" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_deviations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_deviations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes deviations in the wrapped surface mesh by imprinting edges on the wrapped face zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_duplicate_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_duplicate_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_duplicate_faces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Removes duplicate faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_free_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_free_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_free_faces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Removes free faces by the method selected.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_invalid_normals" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_invalid_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_invalid_normals</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes invalid normals by smoothing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_islands" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_islands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_islands</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes groups of island faces based on the absolute face count specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_multi_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_multi_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_multi_faces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes multiply connected faces by a combination of deleting face fringes, overlapping faces, and disconnected faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_point_contacts" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_point_contacts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_point_contacts</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes non-manifold configurations by removing point contacts.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_self_intersections" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_self_intersections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_self_intersections</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes self intersecting or folded faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_slivers" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_slivers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_slivers</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes faces based on skewness and height criteria.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_spikes" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_spikes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_spikes</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes spiked faces based on the spike angle specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_steps" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.fix_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_steps</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Fixes step configurations by smoothing or collapsing faces based on the angle and step width specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.remove_label_from_small_islands" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.remove_label_from_small_islands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_label_from_small_islands</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Change small disconnected island labels to their connected neighbors.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.add_label_to_small_neighbors">
 <span class="sig-name descname"><span class="pre">add_label_to_small_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.face_connectivity.add_label_to_small_neighbors" title="Permalink to this definition">#</a></dt>

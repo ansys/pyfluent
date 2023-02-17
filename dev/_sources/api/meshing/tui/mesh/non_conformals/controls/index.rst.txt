@@ -3,11 +3,4 @@
 meshing.tui.mesh.non\_conformals.controls
 =========================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.non_conformals.controls
-   :members: enable, retri_method
-

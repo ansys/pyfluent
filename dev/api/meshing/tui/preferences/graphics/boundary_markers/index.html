@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +318,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -585,6 +585,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.preferences.graphics.boundary_markers.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.color_option">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -706,14 +715,60 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-graphics-boundary-markers">
 <span id="ref-meshing-tui-preferences-graphics-boundary-markers"></span><h1>meshing.tui.preferences.graphics.boundary_markers<a class="headerlink" href="#meshing-tui-preferences-graphics-boundary-markers" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">boundary_markers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the boundary markers menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">boundary_markers</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the boundary markers menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.color_option" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.color_option"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color_option</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether boundary markers are a fixed color or if they match the color of the surface they are identifying.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.enabled" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.enabled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enabled</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable boundary marker display.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.exclude_from_bounding" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.exclude_from_bounding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exclude_from_bounding</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.inlet_color" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.inlet_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the color of the inlet boundary markers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.marker_fraction" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.marker_fraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marker_fraction</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify marker density factor (0.1-1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.marker_size_limiting_scale_multiplier" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.marker_size_limiting_scale_multiplier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marker_size_limiting_scale_multiplier</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.markers_limit" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.markers_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">markers_limit</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.outlet_color" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.outlet_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the color of the outlet boundary markers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.scale_marker" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.scale_marker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_marker</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the scale factor for the boundary markers (0.1-10), which controls the overall size of the markers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.show_inlet_markers" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.show_inlet_markers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_inlet_markers</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the display of boundary markers for inlets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.show_outlet_markers" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.show_outlet_markers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_outlet_markers</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the display of boundary markers for outlets.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.color_option">
 <span class="sig-name descname"><span class="pre">color_option</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.boundary_markers.color_option" title="Permalink to this definition">#</a></dt>

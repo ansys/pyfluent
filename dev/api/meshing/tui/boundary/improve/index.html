@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -507,6 +507,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.boundary.improve.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -574,14 +583,39 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-improve">
 <span id="ref-meshing-tui-boundary-improve"></span><h1>meshing.tui.boundary.improve<a class="headerlink" href="#meshing-tui-boundary-improve" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables you to improve boundary surfaces.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">improve</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enables you to improve boundary surfaces.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse_bad_faces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to collapse the short edge of faces having a high aspect ratio or skewness in the specified face zone(s).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree_swap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to improve the boundary mesh by swapping edges based on a node degree value other than 6.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to improve the boundary surface quality using skewness, size change, aspect ratio, or area as the quality measure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to improve the boundary surface using smoothing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to improve the boundary surface using edge swapping.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces">
 <span class="sig-name descname"><span class="pre">collapse_bad_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces" title="Permalink to this definition">#</a></dt>

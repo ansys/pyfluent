@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -673,6 +668,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.file.import_.fmu_file.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.define_fmu">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -731,14 +735,36 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-file-import-fmu-file">
 <span id="ref-solver-tui-file-import-fmu-file"></span><h1>solver.tui.file.import_.fmu_file<a class="headerlink" href="#solver-tui-file-import-fmu-file" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.import_.</span></span><span class="sig-name descname"><span class="pre">fmu_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the import FMU file menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.file.import_.</span></span><span class="sig-name descname"><span class="pre">fmu_file</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the import FMU file menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.define_fmu" title="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.define_fmu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define_fmu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Links the FMU variables with the Fluent output parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.import_fmu" title="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.import_fmu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_fmu</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Imports an FMU file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.select_fmu_local" title="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.select_fmu_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_fmu_local</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to select FMU local variables to be monitored during the calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.set_fmu_parameter" title="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.set_fmu_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fmu_parameter</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows you to select FMU parameter variables and change their values.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.define_fmu">
 <span class="sig-name descname"><span class="pre">define_fmu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.file.import_.fmu_file.define_fmu" title="Permalink to this definition">#</a></dt>

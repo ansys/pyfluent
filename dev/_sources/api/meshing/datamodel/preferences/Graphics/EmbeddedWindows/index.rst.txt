@@ -3,11 +3,5 @@
 meshing.datamodel.preferences.Graphics.EmbeddedWindows
 ======================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.EmbeddedWindows
-   :members: DefaultEmbeddedMeshWindowsView, DefaultEmbeddedWindowsView, SaveEmbeddedWindowLayout, ShowBorderForEmbeddedWindow
 

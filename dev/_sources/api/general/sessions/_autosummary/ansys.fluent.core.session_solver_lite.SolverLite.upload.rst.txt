@@ -1,0 +1,6 @@
+upload
+======
+
+.. currentmodule:: ansys.fluent.core.session_solver_lite
+
+.. automethod:: SolverLite.upload

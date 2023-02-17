@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -635,6 +630,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.solution.calculation_activities.solution_strategy.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.add_edit_modification">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -642,6 +646,53 @@ function checkPageExistsAndRedirect(event) {
       </span>
      </code>
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.before_init_modification">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.before_init_modification()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.modifications">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.modifications()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.original_settings">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.original_settings()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_initialization">
@@ -756,18 +807,116 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-calculation-activities-solution-strategy">
 <span id="ref-solver-tui-solution-calculation-activities-solution-strategy"></span><h1>solver.tui.solution.calculation_activities.solution_strategy<a class="headerlink" href="#solver-tui-solution-calculation-activities-solution-strategy" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.calculation_activities.</span></span><span class="sig-name descname"><span class="pre">solution_strategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the automatic initialization and case modification strategy menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.calculation_activities.</span></span><span class="sig-name descname"><span class="pre">solution_strategy</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the automatic initialization and case modification strategy menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.add_edit_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.add_edit_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edit_modification</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Define a single case modification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_initialization" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_initialization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_initialization</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Define how the case is to be initialized automatically.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.continue_strategy_execution" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.continue_strategy_execution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">continue_strategy_execution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Continue execution of the automatic initialization and case modification strategy defined at present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.copy_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.copy_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_modification</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Copy a single case modification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.delete_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.delete_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_modification</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Delete a single case modification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.disable_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.disable_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_modification</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Disable a single defined case modification.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.enable_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.enable_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_modification</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable a single defined case modification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.enable_strategy" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.enable_strategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_strategy</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether automatic initialization and case modification should be enabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.execute_strategy" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.execute_strategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">execute_strategy</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Execute the automatic initialization and case modification strategy defined at present.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.export_modifications" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.export_modifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_modifications</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Export all case modifications to a tsv file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.import_modifications" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.import_modifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_modifications</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Import a list of case modifications from a tsv file.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_case_modification</span></code></a></p></td>
+<td><p>Define how the case is to be modified as the solution progresses.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.add_edit_modification">
 <span class="sig-name descname"><span class="pre">add_edit_modification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.add_edit_modification" title="Permalink to this definition">#</a></dt>
 <dd><p>Define a single case modification.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">automatic_case_modification</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Define how the case is to be modified as the solution progresses.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.before_init_modification" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.before_init_modification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">before_init_modification</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify modification to be performed before initialization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.modifications" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.modifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modifications</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify modifications to be performed during solution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.original_settings" title="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.original_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">original_settings</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify modification to be performed after initialization to restore to original settings.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.before_init_modification">
+<span class="sig-name descname"><span class="pre">before_init_modification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.before_init_modification" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify modification to be performed before initialization.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.modifications">
+<span class="sig-name descname"><span class="pre">modifications</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.modifications" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify modifications to be performed during solution.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.original_settings">
+<span class="sig-name descname"><span class="pre">original_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.calculation_activities.solution_strategy.automatic_case_modification.original_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify modification to be performed after initialization to restore to original settings.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">

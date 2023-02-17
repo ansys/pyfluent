@@ -3,11 +3,4 @@
 meshing.tui.preferences.mat\_pro\_app
 =====================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.mat_pro_app
-   :members: beta_features, focus, warning
-

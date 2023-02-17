@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +319,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../index.html">
      meshing.tui
@@ -628,6 +628,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.prism.controls.normal.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -722,14 +731,48 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-prism-controls-normal">
 <span id="ref-meshing-tui-mesh-prism-controls-normal"></span><h1>meshing.tui.mesh.prism.controls.normal<a class="headerlink" href="#meshing-tui-mesh-prism-controls-normal" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.prism.controls.</span></span><span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the prism normal controls menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.prism.controls.</span></span><span class="sig-name descname"><span class="pre">normal</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the prism normal controls menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bisect_angle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Is required for growing prisms out of sharp interior corners.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.compute_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_normal</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Computes the normal for the specified face zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction_method</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies whether the prism layers should be grown normal to surfaces or along a specified direction vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.direction_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction_vector</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the direction vector for prism extrusion when the uniform method is selected for direction-method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.ignore_invalid_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ignore_invalid_normals</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to ignore nodes that have poor normals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.max_angle_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_angle_change</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the maximum angle by which the normal direction at a node can change during smoothing.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orient_mesh_object_face_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_mesh_object_face_normals</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to orient the face normals for mesh object boundary zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.orthogonal_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthogonal_layers</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the number of layers to preserve orthogonality.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle">
 <span class="sig-name descname"><span class="pre">bisect_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.normal.bisect_angle" title="Permalink to this definition">#</a></dt>

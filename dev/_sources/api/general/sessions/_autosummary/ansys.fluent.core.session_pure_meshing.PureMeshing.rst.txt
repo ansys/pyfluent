@@ -1,0 +1,39 @@
+ansys.fluent.core.session\_pure\_meshing.PureMeshing
+====================================================
+
+.. currentmodule:: ansys.fluent.core.session_pure_meshing
+
+.. autoclass:: PureMeshing
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :toctree:
+   
+      ~PureMeshing.__init__
+      ~PureMeshing.build_from_fluent_connection
+      ~PureMeshing.create_from_server_info_file
+      ~PureMeshing.download
+      ~PureMeshing.execute_tui
+      ~PureMeshing.transfer_mesh_to_solvers
+      ~PureMeshing.upload
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PureMeshing.PMFileManagement
+      ~PureMeshing.PartManagement
+      ~PureMeshing.meshing
+      ~PureMeshing.preferences
+      ~PureMeshing.tui
+      ~PureMeshing.workflow
+   
+   

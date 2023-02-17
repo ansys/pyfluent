@@ -3,11 +3,4 @@
 solver.tui.preferences.graphics.transparency
 ============================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.graphics.transparency
-   :members: algorithm_for_modern_drivers, depth_peeling_layers, depth_peeling_preference, quick_moves, zsort_options
-

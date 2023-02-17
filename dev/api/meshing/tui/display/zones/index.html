@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -507,6 +507,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.display.zones.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_neighborhood">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -610,14 +619,51 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-zones">
 <span id="ref-meshing-tui-display-zones"></span><h1>meshing.tui.display.zones<a class="headerlink" href="#meshing-tui-display-zones" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.zones">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains commands for displaying zones.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.</span></span><span class="sig-name descname"><span class="pre">zones</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains commands for displaying zones.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_neighborhood" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_neighborhood</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays the zones that are in the neighborhood of the selected zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_similar_area" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_similar_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_similar_area</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays the zones with similar area to the selected zone area.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.hide_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.hide_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Hides the selected zones in the display.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.isolate_zones" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.isolate_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isolate_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Displays only the selected zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.make_transparent" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.make_transparent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_transparent</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Makes the geometry transparent so that internal zones are visible.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.select_all_visible" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.select_all_visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_all_visible</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Selects all the visible zones in the graphics window.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.show_all" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.show_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_all</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Unhides all the zones in the geometry and displays them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.toggle_color_mode" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.toggle_color_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toggle_color_mode</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Toggles the colors of the geometry.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.toggle_color_palette" title="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.toggle_color_palette"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toggle_color_palette</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Toggles the color palette of the geometry.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_neighborhood">
 <span class="sig-name descname"><span class="pre">display_neighborhood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.zones.display_neighborhood" title="Permalink to this definition">#</a></dt>

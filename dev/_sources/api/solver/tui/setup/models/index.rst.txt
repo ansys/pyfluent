@@ -3,14 +3,7 @@
 solver.tui.setup.models
 =======================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models
-   :members: addon_module, axisymmetric, solidification_melting, crevice_model, crevice_model_controls, energy, noniterative_time_advance, nox, soot, steady, swirl, unsteady_1st_order, frozen_flux, unsteady_2nd_order, unsteady_2nd_order_bounded, unsteady_global_time, unsteady_structure_newmark, unsteady_structure_euler, battery_model, ablation, potential_and_li_ion_battery
-
 .. toctree::
    :hidden:
 

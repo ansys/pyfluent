@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -324,6 +319,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../index.html">
      meshing.tui
@@ -628,6 +628,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.prism.controls.morph.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -677,14 +686,33 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-prism-controls-morph">
 <span id="ref-meshing-tui-mesh-prism-controls-morph"></span><h1>meshing.tui.mesh.prism.controls.morph<a class="headerlink" href="#meshing-tui-mesh-prism-controls-morph" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.prism.controls.</span></span><span class="sig-name descname"><span class="pre">morph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the prism morphing controls menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.prism.controls.</span></span><span class="sig-name descname"><span class="pre">morph</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the prism morphing controls menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve_threshold</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the quality threshold used for improving the quality during the morphing operation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_convergence_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">morphing_convergence_limit</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the convergence limit for the morphing operation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.morphing_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">morphing_frequency</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies the frequency of the morphing operation.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold">
 <span class="sig-name descname"><span class="pre">improve_threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.prism.controls.morph.improve_threshold" title="Permalink to this definition">#</a></dt>

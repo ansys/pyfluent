@@ -3,14 +3,7 @@
 solver.tui.solve.set.multiphase\_numerics.heat\_mass\_transfer
 ==============================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.multiphase_numerics.heat_mass_transfer
-   :members: alternative_energy_treatment
-
 .. toctree::
    :hidden:
 

@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -472,6 +472,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.diagnostics.quality.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.collapse">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -530,14 +539,36 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-diagnostics-quality">
 <span id="ref-meshing-tui-diagnostics-quality"></span><h1>meshing.tui.diagnostics.quality<a class="headerlink" href="#meshing-tui-diagnostics-quality" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.diagnostics.</span></span><span class="sig-name descname"><span class="pre">quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality" title="Permalink to this definition">#</a></dt>
-<dd><p>Contains options for fixing problems related to surface mesh quality on the specified object face zones or boundary face zones.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.diagnostics.</span></span><span class="sig-name descname"><span class="pre">quality</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Contains options for fixing problems related to surface mesh quality on the specified object face zones or boundary face zones.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.collapse" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.collapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Collapses bad quality faces based on area or skewness.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.delaunay_swap" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.delaunay_swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delaunay_swap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Improves the surface mesh by swapping based on the minimum skewness value and feature angle specified.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.general_improve" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.general_improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">general_improve</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Improves the surface mesh based on aspect ratio, size change, or skewness.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.smooth" title="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Improves the surface mesh by smoothing.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.collapse">
 <span class="sig-name descname"><span class="pre">collapse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.diagnostics.quality.collapse" title="Permalink to this definition">#</a></dt>

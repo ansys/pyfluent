@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -323,6 +318,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -584,6 +584,15 @@ function checkPageExistsAndRedirect(event) {
    </code>
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.preferences.graphics.colormap_settings.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.alignment">
      <code class="docutils literal notranslate">
@@ -913,14 +922,144 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-preferences-graphics-colormap-settings">
 <span id="ref-meshing-tui-preferences-graphics-colormap-settings"></span><h1>meshing.tui.preferences.graphics.colormap_settings<a class="headerlink" href="#meshing-tui-preferences-graphics-colormap-settings" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">colormap_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the colormap settings menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.preferences.graphics.</span></span><span class="sig-name descname"><span class="pre">colormap_settings</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the colormap settings menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.alignment" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.alignment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alignment</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the default colormap location.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_horizontal" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_horizontal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aspect_ratio_when_horizontal</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_vertical" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.aspect_ratio_when_vertical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aspect_ratio_when_vertical</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the length vs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.auto_refit_on_resize" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.auto_refit_on_resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_refit_on_resize</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.automatic_resize" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.automatic_resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic_resize</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.border_style" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.border_style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">border_style</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify how/when the colormap border appears.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.colormap" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Choose the default colormap.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.isolines_position_offset" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.isolines_position_offset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isolines_position_offset</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.labels" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether there is a label for every colormap value or if some are skipped.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.levels" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">levels</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the default colormap size.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.log_scale" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.log_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the use of a logarithmic scale for the colormap.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_horizontal" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_horizontal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">major_length_to_screen_ratio_when_horizontal</span></code></a>(...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_vertical" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.major_length_to_screen_ratio_when_vertical"><code class="xref py py-obj docutils literal notranslate"><span class="pre">major_length_to_screen_ratio_when_vertical</span></code></a>(...)</p></td>
+<td><p>Choose the length of the colormap as a fraction of graphics window height, when the colormap is vertical.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.margin_from_edge_to_screen_ratio" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.margin_from_edge_to_screen_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">margin_from_edge_to_screen_ratio</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.max_size_scale_factor" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.max_size_scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_size_scale_factor</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.min_size_scale_factor" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.min_size_scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_size_scale_factor</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.number_format_precision" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.number_format_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_format_precision</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify the colormap number label precision.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.number_format_type" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.number_format_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_format_type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify how colormap numbers are displayed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.show_colormap" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.show_colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_colormap</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the display of colormaps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.skip_value" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.skip_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_value</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify how many number labels are skipped in the colormap.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_behavior" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_behavior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_behavior</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether colormap label text automatically scales with the colormap size.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_horizontal_size" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_horizontal_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_horizontal_size</span></code></a>(*args, ...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_size" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_units" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_units</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_vertical_size" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_automatic_vertical_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_automatic_vertical_size</span></code></a>(*args, ...)</p></td>
+<td><p>Specify the initial font size as a ratio of the colormap overall size, for vertically aligned colormaps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_horizontal_size" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_horizontal_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_horizontal_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_size" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the font size for colormap labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_units" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_units</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_vertical_size" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_fixed_vertical_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_fixed_vertical_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_name" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_font_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_font_name</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_horizontal_colormaps" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_horizontal_colormaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_truncation_limit_for_horizontal_colormaps</span></code></a>(...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_vertical_colormaps" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.text_truncation_limit_for_vertical_colormaps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_truncation_limit_for_vertical_colormaps</span></code></a>(...)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.type" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specify whether the colormap appearance is smooth or banded.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.use_no_sub_windows" title="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.use_no_sub_windows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_no_sub_windows</span></code></a>(*args, **kwargs)</p></td>
+<td><p><p>.</p>
+</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.alignment">
 <span class="sig-name descname"><span class="pre">alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.preferences.graphics.colormap_settings.alignment" title="Permalink to this definition">#</a></dt>

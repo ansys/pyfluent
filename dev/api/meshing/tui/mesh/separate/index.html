@@ -303,13 +303,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -322,6 +317,11 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
+     meshing
+    </a>
+   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -564,6 +564,71 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.separate.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.separate.local_regions
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.separate.local_regions.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.define">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.separate.local_regions.define()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.delete">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.separate.local_regions.delete()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.init">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.separate.local_regions.init()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.list_all_regions">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.mesh.separate.local_regions.list_all_regions()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_face">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -649,14 +714,109 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-separate">
 <span id="ref-meshing-tui-mesh-separate"></span><h1>meshing.tui.mesh.separate<a class="headerlink" href="#meshing-tui-mesh-separate" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">separate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate" title="Permalink to this definition">#</a></dt>
-<dd><p>Separates cells by various user-defined methods.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">separate</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Separates cells by various user-defined methods.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_face" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_cell_by_face</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates cells that are connected to a specified face zone into another cell zone.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_mark" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_mark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_cell_by_mark</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates cells within a specified local region into another cell zone.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_region" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_cell_by_region</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates contiguous regions within a cell zone into separate cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_shape" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_cell_by_shape</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates cells with different shapes (pyramids, tetrahedra, etc.) into separate cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_size" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_cell_by_size</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates cells based on the specified minimum and maximum cell sizes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_cell_by_skew</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates cells based on the specified cell skewness.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_prisms_from_poly" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_prisms_from_poly"><code class="xref py py-obj docutils literal notranslate"><span class="pre">separate_prisms_from_poly</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Separates the poly-prism cells from the poly cells within your mesh.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="local_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_regions</span></code></a></p></td>
+<td><p>Enters the local refinement menu.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_regions</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the local refinement menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="local_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="local_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.define" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.define"><code class="xref py py-obj docutils literal notranslate"><span class="pre">define</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to define the parameters for the refinement region.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="local_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.delete" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables you to delete a refinement region.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="local_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.init" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Deletes all current regions and adds the default refinement region.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="local_regions/index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.list_all_regions" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.list_all_regions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_all_regions</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Lists all the refinement regions.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.define" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to define the parameters for the refinement region.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to delete a refinement region.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.init" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes all current regions and adds the default refinement region.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.list_all_regions">
+<span class="sig-name descname"><span class="pre">list_all_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.local_regions.list_all_regions" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all the refinement regions.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_face">
 <span class="sig-name descname"><span class="pre">separate_cell_by_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.separate.separate_cell_by_face" title="Permalink to this definition">#</a></dt>

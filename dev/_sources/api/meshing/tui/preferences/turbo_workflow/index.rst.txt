@@ -3,14 +3,7 @@
 meshing.tui.preferences.turbo\_workflow
 =======================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.turbo_workflow
-   :members: checkpointing_option, save_checkpoint_files
-
 .. toctree::
    :hidden:
 

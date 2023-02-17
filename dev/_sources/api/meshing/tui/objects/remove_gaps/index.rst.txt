@@ -3,11 +3,4 @@
 meshing.tui.objects.remove\_gaps
 ================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects.remove_gaps
-   :members: remove_gaps, show_gaps, ignore_orientation
-

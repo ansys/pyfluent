@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -600,6 +595,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.report.surface_integrals.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -802,14 +806,84 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-report-surface-integrals">
 <span id="ref-solver-tui-report-surface-integrals"></span><h1>solver.tui.report.surface_integrals<a class="headerlink" href="#solver-tui-report-surface-integrals" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.report.</span></span><span class="sig-name descname"><span class="pre">surface_integrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the surface integral menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.report.</span></span><span class="sig-name descname"><span class="pre">surface_integrals</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the surface integral menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the area of the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area_weighted_avg" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area_weighted_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area_weighted_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print area-weighted average of scalar on surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.facet_avg" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.facet_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">facet_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the facet average of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.facet_max" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.facet_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">facet_max</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the maximum of the specified quantity over facet centroids of the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.facet_min" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.facet_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">facet_min</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the minimum of the specified quantity over facet centroids of the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.flow_rate" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.flow_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_rate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the flow rate of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.integral" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.integral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integral</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the integral of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.mass_flow_rate" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.mass_flow_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_flow_rate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the mass flow rate through the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.mass_weighted_avg" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.mass_weighted_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_weighted_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the mass-averaged quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.standard_deviation" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.standard_deviation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standard_deviation</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the standard deviation of the scalar at the facet centroids of the surface.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.sum" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints sum of scalar at facet centroids of the surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.uniformity_index_area_weighted" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.uniformity_index_area_weighted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uniformity_index_area_weighted</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the area-weighted uniformity index of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.uniformity_index_mass_weighted" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.uniformity_index_mass_weighted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uniformity_index_mass_weighted</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the mass-weighted uniformity index of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vector_based_flux" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vector_based_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_based_flux</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the vector-based flux of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vector_flux" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vector_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_flux</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the vector flux over the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vector_weighted_average" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vector_weighted_average"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_weighted_average</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the vector-averaged quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vertex_avg" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vertex_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the vertex average of the specified quantity over the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vertex_max" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vertex_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the maximum of the specified quantity over vertices of the selected surfaces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vertex_min" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.vertex_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the minimum of the specified quantity over vertices of the selected surfaces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.volume_flow_rate" title="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.volume_flow_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume_flow_rate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Prints the volume flow rate through the selected surfaces.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area">
 <span class="sig-name descname"><span class="pre">area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.surface_integrals.area" title="Permalink to this definition">#</a></dt>

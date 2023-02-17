@@ -3,11 +3,4 @@
 meshing.tui.objects.volumetric\_regions.tet.set.improve\_mesh
 =============================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects.volumetric_regions.tet.set.improve_mesh
-   :members: improve, swap, skewness_smooth, laplace_smooth
-

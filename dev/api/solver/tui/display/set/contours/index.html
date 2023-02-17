@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -668,6 +663,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.display.set.contours.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.auto_range">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -789,14 +793,57 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-set-contours">
 <span id="ref-solver-tui-display-set-contours"></span><h1>solver.tui.display.set.contours<a class="headerlink" href="#solver-tui-display-set-contours" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">contours</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the contour options menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">contours</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the contour options menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.auto_range" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.auto_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_range</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables/disables auto-computation of the contour range.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.clip_to_range" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.clip_to_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip_to_range</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Turns the clip to range option for filled contours on/off.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.coloring" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.coloring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coloring</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies whether contours are displayed in bands or with smooth transitions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.filled_contours" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.filled_contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filled_contours</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Turns the filled contours option on/off (deselects line-contours?).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.global_range" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.global_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">global_range</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Turns the global range for contours on/off.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.line_contours" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.line_contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_contours</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Turns the line contours option on/off (deselects filled-contours?).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.log_scale" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.log_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_scale</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Specifies a decimal or logarithmic color scale for contours.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.n_contour" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.n_contour"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_contour</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of contour levels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.node_values" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.node_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_values</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the option to use scalar field at nodes when computing the contours.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.render_mesh" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.render_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render_mesh</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Determines whether or not to render the mesh on top of contours, vectors, and so on.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.surfaces" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surfaces</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the surfaces on which contours are drawn.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.auto_range">
 <span class="sig-name descname"><span class="pre">auto_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.contours.auto_range" title="Permalink to this definition">#</a></dt>

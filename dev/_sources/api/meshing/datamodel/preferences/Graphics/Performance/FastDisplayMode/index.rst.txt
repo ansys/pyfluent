@@ -3,11 +3,5 @@
 meshing.datamodel.preferences.Graphics.Performance.FastDisplayMode
 ==================================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.Performance.FastDisplayMode
-   :members: Culling, FacesShown, MarkersDecimation, NodesShown, PerimeterEdgesShown, SilhouetteShown, Status, Transparency
 

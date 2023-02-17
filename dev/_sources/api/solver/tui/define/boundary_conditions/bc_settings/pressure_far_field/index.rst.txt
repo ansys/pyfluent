@@ -3,11 +3,4 @@
 solver.tui.define.boundary\_conditions.bc\_settings.pressure\_far\_field
 ========================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.boundary_conditions.bc_settings.pressure_far_field
-   :members: riemann_invariants_tangency_correction, type
-

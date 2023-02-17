@@ -3,11 +3,4 @@
 meshing.tui.mesh.prism.controls.morph
 =====================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.prism.controls.morph
-   :members: improve_threshold, morphing_frequency, morphing_convergence_limit
-

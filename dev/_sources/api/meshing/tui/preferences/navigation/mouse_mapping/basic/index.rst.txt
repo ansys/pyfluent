@@ -3,11 +3,4 @@
 meshing.tui.preferences.navigation.mouse\_mapping.basic
 =======================================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.navigation.mouse_mapping.basic
-   :members: lmb, lmbclick, mmb, mmbclick, rmb, rmbclick
-

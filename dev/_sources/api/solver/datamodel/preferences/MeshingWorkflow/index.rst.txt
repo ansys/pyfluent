@@ -3,13 +3,7 @@
 solver.datamodel.preferences.MeshingWorkflow
 ============================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.MeshingWorkflow
-   :members: CheckpointingOption, SaveCheckpointFiles, TempFolder, TemplatesFolder, Verbosity
    :noindex:
 
 .. toctree::

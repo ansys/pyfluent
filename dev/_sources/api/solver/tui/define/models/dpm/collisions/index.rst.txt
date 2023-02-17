@@ -3,14 +3,7 @@
 solver.tui.define.models.dpm.collisions
 =======================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.dpm.collisions
-   :members: collision_pair_settings, list_all_pair_settings, dem_collisions, collision_mesh, max_particle_velocity
-
 .. toctree::
    :hidden:
 

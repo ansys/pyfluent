@@ -3,12 +3,6 @@
 solver.datamodel.preferences.Appearance.AnsysLogo
 =================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Appearance.AnsysLogo
-   :members: Color, Visible
    :noindex:
 

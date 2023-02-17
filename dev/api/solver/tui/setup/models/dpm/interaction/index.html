@@ -306,13 +306,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -761,6 +756,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.setup.models.dpm.interaction.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.choice_of_eulerian_phase_for_interaction">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -990,14 +994,93 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-dpm-interaction">
 <span id="ref-solver-tui-setup-models-dpm-interaction"></span><h1>solver.tui.setup.models.dpm.interaction<a class="headerlink" href="#solver-tui-setup-models-dpm-interaction" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the interaction menu to set parameters for coupled discrete phase calculations.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">interaction</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the interaction menu to set parameters for coupled discrete phase calculations.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.choice_of_eulerian_phase_for_interaction" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.choice_of_eulerian_phase_for_interaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choice_of_eulerian_phase_for_interaction</span></code></a>(...)</p></td>
+<td><p>Enable/disable the option to choose for every injection the Eulerian phase for the DPM continuous phase interaction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.coupled_calculations" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.coupled_calculations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coupled_calculations</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable coupling of continuous and discrete phase calculations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.ddpm_energy_coupling_via_source_term" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.ddpm_energy_coupling_via_source_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddpm_energy_coupling_via_source_term</span></code></a>(*args, ...)</p></td>
+<td><p>Energy coupling in DDPM established via source term.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.ddpm_enhanced_inter_phase_exchange" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.ddpm_enhanced_inter_phase_exchange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddpm_enhanced_inter_phase_exchange</span></code></a>(*args, ...)</p></td>
+<td><p>Enhanced Eulerian inter-phase exchange.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.ddpm_iad_particle" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.ddpm_iad_particle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ddpm_iad_particle</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the non-default interfacial area method IA-particle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.dpm_iteration_interval" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.dpm_iteration_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dpm_iteration_interval</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the number of continuous phase iterations per DPM iteration.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.enable_drag_scaling_due_to_flow_blocking" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.enable_drag_scaling_due_to_flow_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_drag_scaling_due_to_flow_blocking</span></code></a>(...)</p></td>
+<td><p>Enable/disable scaling of DPM drag coefficient due to inclusion of DPM volume fraction in continuous flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.enable_flow_blocking_by_particles" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.enable_flow_blocking_by_particles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_flow_blocking_by_particles</span></code></a>(*args, ...)</p></td>
+<td><p>Enable/disable inclusion of DPM volume fraction in continuous flow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.enable_source_scaling_due_to_flow_blocking" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.enable_source_scaling_due_to_flow_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_source_scaling_due_to_flow_blocking</span></code></a>(...)</p></td>
+<td><p>Enable/disable scaling of DPM source terms due to inclusion of DPM volume fraction in continuous flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.implicit_momentum_coupling" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.implicit_momentum_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_momentum_coupling</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable implicit treatment for the DPM momentum source terms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.implicit_source_term_coupling" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.implicit_source_term_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">implicit_source_term_coupling</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable implicit treatment for all DPM source terms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.keep_linearized_dpm_source_terms_constant" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.keep_linearized_dpm_source_terms_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keep_linearized_dpm_source_terms_constant</span></code></a>(...)</p></td>
+<td><p>Keep linearized DPM source terms constant until the next DPM Update.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linear_growth_of_dpm_source_term" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linear_growth_of_dpm_source_term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_growth_of_dpm_source_term</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable the linear growth of DPM source terms every DPM iteration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_mixture_fraction_source_terms" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_mixture_fraction_source_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_mixture_fraction_source_terms</span></code></a>(...)</p></td>
+<td><p>Perform a linearization of mixture fraction source terms.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_source_terms" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_source_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_source_terms</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Perform a linearization of all DPM source terms to increase numerical robustness.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_source_terms_limiter" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_source_terms_limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_source_terms_limiter</span></code></a>(*args, ...)</p></td>
+<td><p>Relative limit for DPM source linear coefficient with respect to fluid linear Ap coefficient.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_species_source_terms" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.linearized_dpm_species_source_terms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linearized_dpm_species_source_terms</span></code></a>(*args, ...)</p></td>
+<td><p>Perform linearization of species source terms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.max_vf_allowed_for_blocking" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.max_vf_allowed_for_blocking"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_vf_allowed_for_blocking</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Maximum DPM volume fraction used in continuous flow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.min_vf_threshold_for_dpm_src_scaling" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.min_vf_threshold_for_dpm_src_scaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_vf_threshold_for_dpm_src_scaling</span></code></a>(*args, ...)</p></td>
+<td><p>Minimum DPM volume fraction below which no DPM source scaling is applied.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.replace_dpm_mass_source_by_mixture_fraction" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.replace_dpm_mass_source_by_mixture_fraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_dpm_mass_source_by_mixture_fraction</span></code></a>(...)</p></td>
+<td><p>Recalculate the mixture fraction source terms as function of the primary mixture fraction?.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.reset_sources_at_timestep" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.reset_sources_at_timestep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_sources_at_timestep</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enable/disable flush of DPM source terms at beginning of every time step.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.underrelaxation_factor" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.underrelaxation_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">underrelaxation_factor</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the under-relaxation factor.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.update_dpm_sources_every_flow_iteration" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.update_dpm_sources_every_flow_iteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dpm_sources_every_flow_iteration</span></code></a>(...)</p></td>
+<td><p>Enable/disable the update of DPM source terms every flow iteration.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.choice_of_eulerian_phase_for_interaction">
 <span class="sig-name descname"><span class="pre">choice_of_eulerian_phase_for_interaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.interaction.choice_of_eulerian_phase_for_interaction" title="Permalink to this definition">#</a></dt>

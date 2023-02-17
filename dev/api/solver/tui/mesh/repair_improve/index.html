@@ -304,13 +304,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -575,6 +570,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.repair_improve.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.allow_repair_at_boundaries">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -678,14 +682,51 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-repair-improve">
 <span id="ref-solver-tui-mesh-repair-improve"></span><h1>solver.tui.mesh.repair_improve<a class="headerlink" href="#solver-tui-mesh-repair-improve" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">repair_improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the repair and improve quality menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">repair_improve</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the repair and improve quality menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.allow_repair_at_boundaries" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.allow_repair_at_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_repair_at_boundaries</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows the adjustment of the positions of nodes on boundaries as part of the mesh repairs performed by the mesh/repair-improve/repair text command.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.improve_quality" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.improve_quality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve_quality</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Improves poor quality cells in the mesh, if possible.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.include_local_polyhedra_conversion_in_repair" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.include_local_polyhedra_conversion_in_repair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">include_local_polyhedra_conversion_in_repair</span></code></a>(...)</p></td>
+<td><p>Enables/disables the local conversion of degenerate cells into polyhedra based on skewness criteria as part of the mesh repairs performed by the  mesh/repair-improve/repair text command.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repair</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Repairs mesh problems identified by the mesh check, if possible.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_face_handedness" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_face_handedness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repair_face_handedness</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Modifies cell centroids to repair meshes that contain left-handed faces without face node order problems.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_face_node_order" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_face_node_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repair_face_node_order</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Modifies face nodes to repair faces with improper face node order and, therefore, eliminates any resulting left-handed faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_periodic" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repair_periodic</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Modifies the mesh to enforce a rotational angle or translational distance for periodic boundaries.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_wall_distance" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.repair_wall_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repair_wall_distance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Corrects wall distance at very high aspect ratio hexahedral/polyhedral cells.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.report_poor_elements" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.report_poor_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report_poor_elements</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Reports invalid and poor quality elements.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.allow_repair_at_boundaries">
 <span class="sig-name descname"><span class="pre">allow_repair_at_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.repair_improve.allow_repair_at_boundaries" title="Permalink to this definition">#</a></dt>

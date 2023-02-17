@@ -3,14 +3,7 @@
 solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.hybrid\_nita
 ====================================================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.hybrid_nita
-   :members: outer_iterations, initial_outer_iterations
-
 .. toctree::
    :hidden:
 

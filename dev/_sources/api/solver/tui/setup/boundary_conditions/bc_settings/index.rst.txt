@@ -3,14 +3,7 @@
 solver.tui.setup.boundary\_conditions.bc\_settings
 ==================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.boundary_conditions.bc_settings
-   :members: mass_flow, pressure_outlet
-
 .. toctree::
    :hidden:
 

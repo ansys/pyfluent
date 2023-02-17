@@ -3,11 +3,5 @@
 meshing.datamodel.preferences.MeshingWorkflow.DrawSettings
 ==========================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.MeshingWorkflow.DrawSettings
-   :members: AutoDraw, FaceZoneLimit, FacetLimit
 

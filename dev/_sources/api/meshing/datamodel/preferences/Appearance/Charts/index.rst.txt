@@ -3,13 +3,7 @@
 meshing.datamodel.preferences.Appearance.Charts
 ===============================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.preferences
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Appearance.Charts
-   :members: CurveColors, EnableOpenGLForModernPlots, LegendAlignment, LegendVisibility, ModernPlotsEnabled, ModernPlotsPointsThreshold, PlotsBehavior, PrintPlotData, PrintResidualsData, Threshold
 
 .. toctree::
    :hidden:

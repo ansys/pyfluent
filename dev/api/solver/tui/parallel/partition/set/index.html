@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -598,6 +593,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.parallel.partition.set.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.across_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -818,14 +822,90 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-parallel-partition-set">
 <span id="ref-solver-tui-parallel-partition-set"></span><h1>solver.tui.parallel.partition.set<a class="headerlink" href="#solver-tui-parallel-partition-set" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parallel.partition.</span></span><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Enters the set partition parameters menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.parallel.partition.</span></span><span class="sig-name descname"><span class="pre">set</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enters the set partition parameters menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.across_zones" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.across_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">across_zones</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Allows partitions to cross zone boundaries (the default).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.all_off" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.all_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_off</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Disables all optimizations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.all_on" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.all_on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_on</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables all optimizations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.cell_function" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.cell_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cell_function</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets cell function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.dpm_load_balancing" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.dpm_load_balancing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dpm_load_balancing</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables / disables dynamic load balancing for discrete phase model cases that use a second domain for DPM particle tracking (that is, cases for which you have enabled the define/models/dpm/parallel/hybrid-2domain? text command).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.face_area_as_weights" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.face_area_as_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_area_as_weights</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Uses face area as connection weights.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.fluid_solid_rebalance_after_read_case" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.fluid_solid_rebalance_after_read_case"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluid_solid_rebalance_after_read_case</span></code></a>(*args, ...)</p></td>
+<td><p>Use optimal repartitioning after reading case file with significant solid and fluid zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.isat_weight" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.isat_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isat_weight</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets ISAT weight.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.laplace_smoothing" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.laplace_smoothing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">laplace_smoothing</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Laplace smoothing for mesh with stretched cells.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.layering" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.layering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layering</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Use layering for partitioning.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.load_distribution" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.load_distribution"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_distribution</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the number of cells desired for each partition.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.merge" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.merge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Toggles the optimizer that attempts to decrease the number of interfaces by eliminating orphan cell clusters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.model_weighted_partition" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.model_weighted_partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_weighted_partition</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables / disables model-weighted partitioning.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.nfaces_as_weights" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.nfaces_as_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nfaces_as_weights</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Uses number of faces as weights.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.origin" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets the , , and  coordinate of the origin used by those partitioning functions that require a radial distance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.particle_weight" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.particle_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">particle_weight</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets DPM particle weight.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.pre_test" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.pre_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pre_test</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enables the operation that determines the best coordinate-splitting direction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.smooth" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Toggles the optimizer that attempts to minimize the number of interfaces by modifying the partition boundaries to reduce surface area.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.solid_thread_weight" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.solid_thread_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solid_thread_weight</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Uses solid thread weights.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.stretched_mesh_enhancement" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.stretched_mesh_enhancement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stretched_mesh_enhancement</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Enhancement for mesh with stretched cells.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.verbosity" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Controls the amount of information that is printed out during partitioning.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.vof_free_surface_weight" title="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.vof_free_surface_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_free_surface_weight</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Sets VOF free surface weight.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.across_zones">
 <span class="sig-name descname"><span class="pre">across_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.parallel.partition.set.across_zones" title="Permalink to this definition">#</a></dt>

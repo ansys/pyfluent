@@ -3,11 +3,4 @@
 meshing.tui.display.set.windows.video
 =====================================
 
-.. currentmodule:: ansys.fluent.core.meshing.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.set.windows.video
-   :members: background, color_filter, foreground, on, pixel_size
-

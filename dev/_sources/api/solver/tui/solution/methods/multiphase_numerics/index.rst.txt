@@ -3,11 +3,6 @@
 solver.tui.solution.methods.multiphase\_numerics
 ================================================
 
-.. currentmodule:: ansys.fluent.core.solver.tui_222
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.methods.multiphase_numerics
 .. toctree::
    :hidden:

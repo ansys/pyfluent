@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -638,6 +633,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.results.report.volume_integrals.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -750,14 +754,54 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-report-volume-integrals">
 <span id="ref-solver-tui-results-report-volume-integrals"></span><h1>solver.tui.results.report.volume_integrals<a class="headerlink" href="#solver-tui-results-report-volume-integrals" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">volume_integrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals" title="Permalink to this definition">#</a></dt>
-<dd><p>Volume Integral menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.report.</span></span><span class="sig-name descname"><span class="pre">volume_integrals</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Volume Integral menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print total mass of specified cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass_avg" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print mass-average of scalar over cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass_integral" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass_integral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass_integral</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print mass-weighted integral of scalar over cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.maximum" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.maximum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print maximum of scalar over all cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.minimum" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.minimum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print minimum of scalar over all cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.sum" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print sum of scalar over all cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.twopisum" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.twopisum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">twopisum</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print sum of scalar over all cell zones multiplied by 2*Pi.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.volume" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print total volume of specified cell zones.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.volume_avg" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.volume_avg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume_avg</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print volume-weighted average of scalar over cell zones.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.volume_integral" title="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.volume_integral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume_integral</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Print integral of scalar over cell zones.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass">
 <span class="sig-name descname"><span class="pre">mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.report.volume_integrals.mass" title="Permalink to this definition">#</a></dt>

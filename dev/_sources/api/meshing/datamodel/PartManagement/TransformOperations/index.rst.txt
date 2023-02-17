@@ -3,11 +3,5 @@
 meshing.datamodel.PartManagement.TransformOperations
 ====================================================
 
-.. currentmodule:: ansys.fluent.core.datamodel_222.PartManagement
-
-.. autosummary::
-   :toctree: _autosummary
-
 .. autoclass:: ansys.fluent.core.datamodel_222.PartManagement::Root.TransformOperations
-   :members: Children, Name, CreateTransform, DeleteAllTransforms, DeleteTransform, UpdateAllTransforms
 

@@ -305,13 +305,8 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../launcher.html">
-   Launching Fluent
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../utils.html">
-   PyFluent utility functions
+  <a class="reference internal" href="../../../../../general/index.html">
+   General
   </a>
  </li>
  <li class="toctree-l1">
@@ -680,6 +675,15 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.__init__">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.display.set.lights.__init__()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.headlight_on">
      <code class="docutils literal notranslate">
       <span class="pre">
@@ -687,6 +691,62 @@ function checkPageExistsAndRedirect(event) {
       </span>
      </code>
     </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.display.set.lights.lighting_interpolation
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.__init__">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.display.set.lights.lighting_interpolation.__init__()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.automatic">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.display.set.lights.lighting_interpolation.automatic()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.flat">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.display.set.lights.lighting_interpolation.flat()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.gouraud">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.display.set.lights.lighting_interpolation.gouraud()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.phong">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         main_menu.display.set.lights.lighting_interpolation.phong()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lights_on">
@@ -738,18 +798,104 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-display-set-lights">
 <span id="ref-solver-tui-display-set-lights"></span><h1>solver.tui.display.set.lights<a class="headerlink" href="#solver-tui-display-set-lights" title="Permalink to this heading">#</a></h1>
-<table class="autosummary longtable table autosummary">
-<tbody>
-</tbody>
-</table>
 <dl class="py class">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">lights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the lights menu.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.</span></span><span class="sig-name descname"><span class="pre">lights</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Enter the lights menu.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.headlight_on" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.headlight_on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">headlight_on</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Turn the light that moves with the camera on or off.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lights_on" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lights_on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lights_on</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Turn all active lighting on/off.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.set_ambient_color" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.set_ambient_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_ambient_color</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Set the ambient light color for the scene.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.set_light" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.set_light"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_light</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Add or modify a directional, colored light.</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classes:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lighting_interpolation</span></code></a></p></td>
+<td><p>Set lighting interpolation method.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.headlight_on">
 <span class="sig-name descname"><span class="pre">headlight_on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.headlight_on" title="Permalink to this definition">#</a></dt>
 <dd><p>Turn the light that moves with the camera on or off.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lighting_interpolation</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
+<p>Set lighting interpolation method.</p>
+<p><strong>Methods:</strong></p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.automatic" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.automatic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">automatic</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Choose Automatic to automatically select the best lighting method for a given graphics object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.flat" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.flat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flat</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Use flat shading for meshes and polygons.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.gouraud" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.gouraud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gouraud</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Use Gouraud shading to calculate the color at each vertex of a polygon and interpolate it in the interior.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.phong" title="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.phong"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phong</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Use Phong shading to interpolate the normals for each pixel of a polygon and compute a color at every pixel.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.__init__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.automatic">
+<span class="sig-name descname"><span class="pre">automatic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.automatic" title="Permalink to this definition">#</a></dt>
+<dd><p>Choose Automatic to automatically select the best lighting method for a given graphics object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.flat">
+<span class="sig-name descname"><span class="pre">flat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.flat" title="Permalink to this definition">#</a></dt>
+<dd><p>Use flat shading for meshes and polygons.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.gouraud">
+<span class="sig-name descname"><span class="pre">gouraud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.gouraud" title="Permalink to this definition">#</a></dt>
+<dd><p>Use Gouraud shading to calculate the color at each vertex of a polygon and interpolate it in the interior.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.phong">
+<span class="sig-name descname"><span class="pre">phong</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.display.set.lights.lighting_interpolation.phong" title="Permalink to this definition">#</a></dt>
+<dd><p>Use Phong shading to interpolate the normals for each pixel of a polygon and compute a color at every pixel.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py method">
