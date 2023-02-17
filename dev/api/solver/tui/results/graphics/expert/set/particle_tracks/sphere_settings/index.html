@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics.expert.set.particle_tracks.vector_settings" href="../vector_settings/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics.expert.set.particle_tracks" href="../index.html" />
+    <link rel="next" title="solver.tui.results.graphics.expert.set.particle_tracks.filter_settings" href="../filter_settings/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics.expert.set.particle_tracks.vector_settings" href="../vector_settings/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -308,8 +308,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -353,38 +358,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -393,8 +373,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -403,8 +428,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -417,6 +447,11 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../report/index.html">
+           solver.tui.results.report
+          </a>
+         </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../../animate/index.html">
            solver.tui.results.animate
@@ -432,6 +467,26 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../objects/index.html">
+             solver.tui.results.graphics.objects
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../update_scene/index.html">
+             solver.tui.results.graphics.update_scene
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../rendering_options/index.html">
+             solver.tui.results.graphics.rendering_options
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../../lights/index.html">
+             solver.tui.results.graphics.lights
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../../../index.html">
              solver.tui.results.graphics.expert
@@ -442,11 +497,6 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../../flamelet_data/index.html">
-               solver.tui.results.graphics.expert.flamelet_data
-              </a>
-             </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../../particle_tracks/index.html">
                solver.tui.results.graphics.expert.particle_tracks
@@ -462,6 +512,11 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.results.graphics.expert.pdf_data
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../../flamelet_data/index.html">
+               solver.tui.results.graphics.expert.flamelet_data
+              </a>
+             </li>
              <li class="toctree-l7 current active has-children">
               <a class="reference internal" href="../../index.html">
                solver.tui.results.graphics.expert.set
@@ -473,23 +528,28 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul class="current">
                <li class="toctree-l8">
-                <a class="reference internal" href="../../colors/index.html">
-                 solver.tui.results.graphics.expert.set.colors
+                <a class="reference internal" href="../../titles/index.html">
+                 solver.tui.results.graphics.expert.set.titles
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../contours/index.html">
-                 solver.tui.results.graphics.expert.set.contours
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../picture/index.html">
-                 solver.tui.results.graphics.expert.set.picture
+                <a class="reference internal" href="../../windows/index.html">
+                 solver.tui.results.graphics.expert.set.windows
                 </a>
                </li>
                <li class="toctree-l8">
                 <a class="reference internal" href="../../lights/index.html">
                  solver.tui.results.graphics.expert.set.lights
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../velocity_vectors/index.html">
+                 solver.tui.results.graphics.expert.set.velocity_vectors
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../contours/index.html">
+                 solver.tui.results.graphics.expert.set.contours
                 </a>
                </li>
                <li class="toctree-l8 current active has-children">
@@ -502,14 +562,14 @@ function checkPageExistsAndRedirect(event) {
                  </i>
                 </label>
                 <ul class="current">
-                 <li class="toctree-l9 current active">
-                  <a class="current reference internal" href="#">
-                   solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings
-                  </a>
-                 </li>
                  <li class="toctree-l9">
                   <a class="reference internal" href="../vector_settings/index.html">
                    solver.tui.results.graphics.expert.set.particle_tracks.vector_settings
+                  </a>
+                 </li>
+                 <li class="toctree-l9 current active">
+                  <a class="current reference internal" href="#">
+                   solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings
                   </a>
                  </li>
                  <li class="toctree-l9">
@@ -520,8 +580,13 @@ function checkPageExistsAndRedirect(event) {
                 </ul>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../path_lines/index.html">
-                 solver.tui.results.graphics.expert.set.path_lines
+                <a class="reference internal" href="../../picture/index.html">
+                 solver.tui.results.graphics.expert.set.picture
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../../colors/index.html">
+                 solver.tui.results.graphics.expert.set.colors
                 </a>
                </li>
                <li class="toctree-l8">
@@ -530,55 +595,15 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../../titles/index.html">
-                 solver.tui.results.graphics.expert.set.titles
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../velocity_vectors/index.html">
-                 solver.tui.results.graphics.expert.set.velocity_vectors
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../../windows/index.html">
-                 solver.tui.results.graphics.expert.set.windows
+                <a class="reference internal" href="../../path_lines/index.html">
+                 solver.tui.results.graphics.expert.set.path_lines
                 </a>
                </li>
               </ul>
              </li>
             </ul>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../lights/index.html">
-             solver.tui.results.graphics.lights
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../objects/index.html">
-             solver.tui.results.graphics.objects
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../rendering_options/index.html">
-             solver.tui.results.graphics.rendering_options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../../update_scene/index.html">
-             solver.tui.results.graphics.update_scene
-            </a>
-           </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../plot/index.html">
-           solver.tui.results.plot
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../../report/index.html">
-           solver.tui.results.report
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../../surface/index.html">
@@ -590,16 +615,21 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.results.graphics_window
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../../plot/index.html">
+           solver.tui.results.plot
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -608,38 +638,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
       </ul>
@@ -708,7 +713,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.results.graphics.expert.set.particle_tracks.sphere_settings
@@ -717,16 +722,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range()
@@ -735,7 +731,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter()
@@ -744,7 +740,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum()
@@ -753,7 +749,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum()
@@ -762,7 +758,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor()
@@ -771,7 +767,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable()
@@ -780,7 +776,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter()
@@ -789,7 +785,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter()
@@ -820,93 +816,59 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-expert-set-particle-tracks-sphere-settings">
 <span id="ref-solver-tui-results-graphics-expert-set-particle-tracks-sphere-settings"></span><h1>solver.tui.results.graphics.expert.set.particle_tracks.sphere_settings<a class="headerlink" href="#solver-tui-results-graphics-expert-set-particle-tracks-sphere-settings" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.particle_tracks.</span></span><span class="sig-name descname"><span class="pre">sphere_settings</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Provide sphere specific input.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_range</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify whether displayed spheres should include auto range of variable to size spheres.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diameter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Diameter of the spheres when vary-diameter? is disabled.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum value of the sphere to be displayed.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the minimum value of the sphere to be displayed.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify a scale factor to enlarge/reduce the size of spheres.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size_variable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select a particle variable to size the spheres.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_parameter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify number of slices to be used in drawing spheres.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vary_diameter</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify whether the spheres can vary with another variable.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.particle_tracks.</span></span><span class="sig-name descname"><span class="pre">sphere_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Provide sphere specific input.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range">
-<span class="sig-name descname"><span class="pre">auto_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range">
+<span class="sig-name descname"><span class="pre">auto_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.auto_range" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify whether displayed spheres should include auto range of variable to size spheres.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter">
-<span class="sig-name descname"><span class="pre">diameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter">
+<span class="sig-name descname"><span class="pre">diameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.diameter" title="Permalink to this definition">#</a></dt>
 <dd><p>Diameter of the spheres when vary-diameter? is disabled.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum">
-<span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum">
+<span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.maximum" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the maximum value of the sphere to be displayed.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum">
-<span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum">
+<span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.minimum" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the minimum value of the sphere to be displayed.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor">
-<span class="sig-name descname"><span class="pre">scale_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor">
+<span class="sig-name descname"><span class="pre">scale_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.scale_factor" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify a scale factor to enlarge/reduce the size of spheres.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable">
-<span class="sig-name descname"><span class="pre">size_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable">
+<span class="sig-name descname"><span class="pre">size_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.size_variable" title="Permalink to this definition">#</a></dt>
 <dd><p>Select a particle variable to size the spheres.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter">
-<span class="sig-name descname"><span class="pre">smooth_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter">
+<span class="sig-name descname"><span class="pre">smooth_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.smooth_parameter" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify number of slices to be used in drawing spheres.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter">
-<span class="sig-name descname"><span class="pre">vary_diameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter">
+<span class="sig-name descname"><span class="pre">vary_diameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.particle_tracks.sphere_settings.vary_diameter" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify whether the spheres can vary with another variable.</p>
 </dd></dl>
 

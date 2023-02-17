@@ -3,16 +3,23 @@
 meshing.tui.boundary
 ====================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.boundary
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary
+   :members: count_free_nodes, merge_small_face_zones, set_periodicity, auto_slit_faces, unmark_selected_faces, orient_faces_by_point, merge_nodes, delete_unconnected_faces, improve_surface_mesh, count_unused_bound_node, count_unused_faces, compute_bounding_box, delete_unused_nodes, create_plane_surface, check_boundary_mesh, wrapper, unmark_faces_in_zones, create_bounding_box, mark_faces_in_region, expand_marked_faces_by_rings, print_info, create_revolved_surface, fix_mconnected_edges, delete_island_faces, face_skewness, edge_limits, delete_free_edge_faces, face_distribution, resolve_face_intersection, create_swept_surface, count_marked_faces, recover_periodic_surfaces, delete_unused_faces, slit_boundary_face, mark_bad_quality_faces, jiggle_boundary_nodes, project_face_zone, count_unused_nodes, clear_marked_nodes, check_duplicate_geom, delete_duplicate_faces, scale_nodes, delete_all_dup_faces, make_periodic, mark_face_proximity, reset_element_type, mark_duplicate_nodes, mark_face_intersection, clear_marked_faces, smooth_marked_faces, coarsen_boundary_faces, create_cylinder
+
 .. toctree::
    :hidden:
 
-   feature/index
-   modify/index
-   refine/index
-   remesh/index
-   improve/index
-   separate/index
    manage/index
+   refine/index
+   separate/index
+   improve/index
    shell_boundary_layer/index
    boundary_conditions/index
+   remesh/index
+   feature/index
+   modify/index

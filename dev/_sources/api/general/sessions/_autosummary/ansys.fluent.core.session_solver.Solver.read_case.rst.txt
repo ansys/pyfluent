@@ -1,6 +1,0 @@
-read\_case
-==========
-
-.. currentmodule:: ansys.fluent.core.session_solver
-
-.. automethod:: Solver.read_case

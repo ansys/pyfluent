@@ -3,4 +3,11 @@
 solver.tui.setup.reference\_values.compute
 ==========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.reference_values.compute
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.reference_values.compute
+   :members: interface, network_end, mass_flow_inlet, rans_les_interface, porous_jump, radiator, fluid, inlet_vent, pressure_outlet, recirculation_outlet, interior, outlet_vent, shadow, mass_flow_outlet, intake_fan, exhaust_fan, velocity_inlet, degassing, pressure_inlet, network, wall, dummy_entry, recirculation_inlet, fan, geometry, axis, overset, symmetry, periodic, pressure_far_field, solid, outflow
+

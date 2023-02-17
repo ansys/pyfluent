@@ -3,9 +3,16 @@
 solver.tui.solve.animate.pulse.hardcopy
 =======================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.animate.pulse.hardcopy
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.hardcopy
+   :members: x_resolution, y_resolution, jpeg_hardcopy_quality, preview, set_standard_resolution, landscape, dpi, invert_background, use_window_resolution
+
 .. toctree::
    :hidden:
 
-   color_mode/index
    driver/index
+   color_mode/index

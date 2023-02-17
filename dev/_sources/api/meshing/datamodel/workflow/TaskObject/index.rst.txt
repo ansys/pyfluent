@@ -3,5 +3,11 @@
 meshing.datamodel.workflow.TaskObject
 =====================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.workflow::Root.TaskObject._TaskObject
+.. currentmodule:: ansys.fluent.core.datamodel_231.workflow
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.workflow::Root.TaskObject._TaskObject
+   :members: Arguments, CommandName, Errors, InactiveTaskList, ObjectPath, State, TaskList, TaskType, Warnings, _name_, AddChildAndUpdate, AddChildToTask, Execute, ExecuteUpstreamNonExecutedAndThisTask, ForceUptoDate, GetNextPossibleTasks, InsertCompositeChildTask, InsertCompoundChildTask, InsertNextTask, Rename, Revert, SetAsCurrent, UpdateChildTasks
 

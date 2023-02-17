@@ -3,4 +3,11 @@
 solver.tui.results.graphics.expert.set.windows.scale
 ====================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.windows.scale
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.windows.scale
+   :members: font_size, visible, bottom, margin, clear, format, top, right, border, left
+

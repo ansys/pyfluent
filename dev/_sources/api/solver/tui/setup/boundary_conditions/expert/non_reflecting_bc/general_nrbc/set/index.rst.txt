@@ -3,4 +3,11 @@
 solver.tui.setup.boundary\_conditions.expert.non\_reflecting\_bc.general\_nrbc.set
 ==================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert.non_reflecting_bc.general_nrbc.set
+   :members: verbosity, sigma2, relax, sigma, tangential_source
+

@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.define.models.dpm.parallel" href="../parallel/index.html" />
-    <link rel="prev" title="solver.tui.define.models.dpm.numerics.high_resolution_tracking.particle_relocation" href="../numerics/high_resolution_tracking/particle_relocation/index.html" />
+    <link rel="next" title="solver.tui.define.models.dpm.numerics" href="../numerics/index.html" />
+    <link rel="prev" title="solver.tui.define.models.dpm.collisions.collision_partners" href="../collisions/collision_partners/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,16 +355,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../../../index.html">
          solver.tui.define
@@ -371,43 +366,13 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.define.boundary_conditions
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.define.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../spectral/index.html">
            solver.tui.define.spectral
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../custom_field_functions/index.html">
-           solver.tui.define.custom_field_functions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.define.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.define.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.define.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.define.materials
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.define.mixing_planes
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -421,8 +386,23 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.define.models.shell_conduction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../heat_exchanger/index.html">
+             solver.tui.define.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../../acoustics/index.html">
              solver.tui.define.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../viscous/index.html">
+             solver.tui.define.models.viscous
             </a>
            </li>
            <li class="toctree-l6">
@@ -431,8 +411,33 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.define.models.eulerian_wallfilm
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.define.models.species
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../soot_parameters/index.html">
+             solver.tui.define.models.soot_parameters
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.define.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../structure/index.html">
+             solver.tui.define.models.structure
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.define.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../radiation/index.html">
+             solver.tui.define.models.radiation
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -446,8 +451,8 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../collisions/index.html">
-               solver.tui.define.models.dpm.collisions
+              <a class="reference internal" href="../parallel/index.html">
+               solver.tui.define.models.dpm.parallel
               </a>
              </li>
              <li class="toctree-l7">
@@ -456,13 +461,13 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../interaction/index.html">
-               solver.tui.define.models.dpm.interaction
+              <a class="reference internal" href="../stripping_options/index.html">
+               solver.tui.define.models.dpm.stripping_options
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../numerics/index.html">
-               solver.tui.define.models.dpm.numerics
+              <a class="reference internal" href="../collisions/index.html">
+               solver.tui.define.models.dpm.collisions
               </a>
              </li>
              <li class="toctree-l7 current active">
@@ -471,8 +476,13 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../parallel/index.html">
-               solver.tui.define.models.dpm.parallel
+              <a class="reference internal" href="../numerics/index.html">
+               solver.tui.define.models.dpm.numerics
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../interaction/index.html">
+               solver.tui.define.models.dpm.interaction
               </a>
              </li>
              <li class="toctree-l7">
@@ -480,21 +490,11 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.define.models.dpm.splash_options
               </a>
              </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../stripping_options/index.html">
-               solver.tui.define.models.dpm.stripping_options
-              </a>
-             </li>
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.define.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.define.models.system_coupling_settings
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.define.models.two_temperature
             </a>
            </li>
            <li class="toctree-l6">
@@ -503,28 +503,8 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.define.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.define.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.define.models.nox_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../soot_parameters/index.html">
-             solver.tui.define.models.soot_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../radiation/index.html">
-             solver.tui.define.models.radiation
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.define.models.eulerian_wallfilm
             </a>
            </li>
            <li class="toctree-l6">
@@ -533,28 +513,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.define.models.species
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.define.models.nox_parameters
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../viscous/index.html">
-             solver.tui.define.models.viscous
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../structure/index.html">
-             solver.tui.define.models.structure
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../heat_exchanger/index.html">
-             solver.tui.define.models.heat_exchanger
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis_setup/index.html">
-             solver.tui.define.models.electrolysis_setup
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.define.models.system_coupling_settings
             </a>
            </li>
           </ul>
@@ -565,18 +530,58 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.define.operating_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../parameters/index.html">
            solver.tui.define.parameters
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../periodic_conditions/index.html">
-           solver.tui.define.periodic_conditions
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.define.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.define.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.define.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../user_defined/index.html">
+           solver.tui.define.user_defined
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../virtual_boundary/index.html">
+           solver.tui.define.virtual_boundary
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.define.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.define.operating_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../phases/index.html">
+           solver.tui.define.phases
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.define.gap_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.define.boundary_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -585,8 +590,18 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../phases/index.html">
-           solver.tui.define.phases
+          <a class="reference internal" href="../../../curvilinear_coordinate_system/index.html">
+           solver.tui.define.curvilinear_coordinate_system
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../custom_field_functions/index.html">
+           solver.tui.define.custom_field_functions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../periodic_conditions/index.html">
+           solver.tui.define.periodic_conditions
           </a>
          </li>
          <li class="toctree-l5">
@@ -600,31 +615,51 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.define.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../user_defined/index.html">
-           solver.tui.define.user_defined
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.define.named_expressions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../virtual_boundary/index.html">
-           solver.tui.define.virtual_boundary
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../curvilinear_coordinate_system/index.html">
-           solver.tui.define.curvilinear_coordinate_system
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.define.mesh_interfaces
           </a>
          </li>
         </ul>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../file/index.html">
@@ -632,8 +667,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../icing/index.html">
          solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4">
@@ -644,81 +724,6 @@ function checkPageExistsAndRedirect(event) {
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -787,7 +792,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.define.models.dpm.options
@@ -796,16 +801,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.define.models.dpm.options.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization()
@@ -814,7 +810,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.brownian_motion">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.brownian_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.brownian_motion()
@@ -823,7 +819,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.convective_film_heat_transfer">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.convective_film_heat_transfer">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.convective_film_heat_transfer()
@@ -832,7 +828,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.current_positions_in_sample_file_format">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.current_positions_in_sample_file_format">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.current_positions_in_sample_file_format()
@@ -841,7 +837,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.enable_contour_plots">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.enable_contour_plots">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.enable_contour_plots()
@@ -850,7 +846,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.ensemble_average">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.ensemble_average">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.ensemble_average()
@@ -859,7 +855,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.erosion_accretion">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.erosion_accretion">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.erosion_accretion()
@@ -868,7 +864,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration()
@@ -877,7 +873,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.init_erosion_accretion_rate">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.init_erosion_accretion_rate">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.init_erosion_accretion_rate()
@@ -886,7 +882,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction()
@@ -895,7 +891,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.maximum_udf_species">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.maximum_udf_species">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.maximum_udf_species()
@@ -904,7 +900,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.particle_radiation">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.particle_radiation">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.particle_radiation()
@@ -913,7 +909,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.pressure_gradient_force">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.pressure_gradient_force">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.pressure_gradient_force()
@@ -922,7 +918,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter()
@@ -931,7 +927,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.saffman_lift_force">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.saffman_lift_force">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.saffman_lift_force()
@@ -940,7 +936,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis()
@@ -949,7 +945,16 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.set_thermolysis_limit">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.set_minimum_particle_diameter">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.define.models.dpm.options.set_minimum_particle_diameter()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.set_thermolysis_limit">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.set_thermolysis_limit()
@@ -958,7 +963,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_radius">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_radius">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.stagger_radius()
@@ -967,7 +972,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections()
@@ -976,7 +981,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_standard_injections">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_spatially_standard_injections">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.stagger_spatially_standard_injections()
@@ -985,7 +990,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_temporally">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_temporally">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.stagger_temporally()
@@ -994,7 +999,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.staggering_factor">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.staggering_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.staggering_factor()
@@ -1003,7 +1008,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.step_report_sig_figures">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.step_report_sig_figures">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.step_report_sig_figures()
@@ -1012,7 +1017,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.thermophoretic_force">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.thermophoretic_force">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.thermophoretic_force()
@@ -1021,7 +1026,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.track_in_absolute_frame">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.track_in_absolute_frame">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.track_in_absolute_frame()
@@ -1030,7 +1035,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure()
@@ -1039,7 +1044,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.two_way_coupling">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.two_way_coupling">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.two_way_coupling()
@@ -1048,7 +1053,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections()
@@ -1057,7 +1062,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization()
@@ -1066,7 +1071,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging()
@@ -1075,7 +1080,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_options">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.vaporization_options">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.vaporization_options()
@@ -1084,7 +1089,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.virtual_mass_force">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.virtual_mass_force">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.define.models.dpm.options.virtual_mass_force()
@@ -1115,314 +1120,211 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-define-models-dpm-options">
 <span id="ref-solver-tui-define-models-dpm-options"></span><h1>solver.tui.define.models.dpm.options<a class="headerlink" href="#solver-tui-define-models-dpm-options" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.dpm.</span></span><span class="sig-name descname"><span class="pre">options</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the options menu to set optional models.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">allow_supercritical_pressure_vaporization</span></code></a>(...)</p></td>
-<td><p>Enforces the switching from vaporization to boiling even if the boiling point is not calculated from the vapor pressure data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.brownian_motion" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.brownian_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brownian_motion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables Brownian motion of particles.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.convective_film_heat_transfer" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.convective_film_heat_transfer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convective_film_heat_transfer</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable convection/conduction film to wall heat transfer model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.current_positions_in_sample_file_format" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.current_positions_in_sample_file_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_positions_in_sample_file_format</span></code></a>(...)</p></td>
-<td><p>When enabled, generates a file containing particle current positions (step-by-step history report for unsteady tracking) in the sampling file format.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.enable_contour_plots" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.enable_contour_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_contour_plots</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables computation of mean and/or RMS values of additional discrete phase variables for postprocessing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.ensemble_average" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.ensemble_average"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensemble_average</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ensembles average cloud properties.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.erosion_accretion" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.erosion_accretion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">erosion_accretion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables erosion/accretion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">include_lwf_particles_in_dpm_concentration</span></code></a>(...)</p></td>
-<td><p>Include LWF particle mass in DPM Concentration.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.init_erosion_accretion_rate" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.init_erosion_accretion_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_erosion_accretion_rate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Initializes the erosion/accretion rates with zero.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowest_volatiles_mass_fraction</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the lowest volatiles mass fraction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.maximum_udf_species" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.maximum_udf_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_udf_species</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum number of species that will be accessible from discrete phase model UDFs.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.particle_radiation" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.particle_radiation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">particle_radiation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables particle radiation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.pressure_gradient_force" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.pressure_gradient_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_gradient_force</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables inclusion of pressure gradient effects in the particle force balance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_wall_film_temperature_limiter</span></code></a>(*args, ...)</p></td>
-<td><p>Remove the wall film temperature limiter.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.saffman_lift_force" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.saffman_lift_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">saffman_lift_force</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables Saffman lift force.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scr_urea_deposition_risk_analysis</span></code></a>(*args, ...)</p></td>
-<td><p>Enters the menu for setting up the risk for solids deposit formation for the Selective Catalytic Reduction (SCR) process.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.set_thermolysis_limit" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.set_thermolysis_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_thermolysis_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the limit for the thermolysis model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_radius" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stagger_radius</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the region over which to spatially stagger particles when particle-staggering is enabled for non-atomizer injections.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stagger_spatially_atomizer_injections</span></code></a>(*args, ...)</p></td>
-<td><p>Enables/disables spatial staggering for atomizer and solid-cone injections.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_standard_injections" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_standard_injections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stagger_spatially_standard_injections</span></code></a>(*args, ...)</p></td>
-<td><p>Enables/disables spatial staggering for standard (non-atomizer and non-solid-cone) injections.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_temporally" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_temporally"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stagger_temporally</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables temporal staggering.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.staggering_factor" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.staggering_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">staggering_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p><ol class="upperalpha simple" start="19">
-<li></li>
-</ol>
-</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.step_report_sig_figures" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.step_report_sig_figures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_report_sig_figures</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets significant figures in the step-by-step report.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.thermophoretic_force" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.thermophoretic_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">thermophoretic_force</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables thermophoretic force.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.track_in_absolute_frame" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.track_in_absolute_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">track_in_absolute_frame</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables tracking in absolute frame.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">treat_multicomponent_saturation_temperature_failure</span></code></a>(...)</p></td>
-<td><p>Enables/disables dumping multicomponent particle mass into the continuous phase if the saturation temperature calculation fails.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.two_way_coupling" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.two_way_coupling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">two_way_coupling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables calculation of DPM sources in TKE equation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uniform_mass_distribution_for_injections</span></code></a>(...)</p></td>
-<td><p>Specifies a uniform distribution of mass over the cross-section of solid cone and atomizer injections.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_absolute_pressure_for_vaporization</span></code></a>(...)</p></td>
-<td><p>Determines whether the absolute pressure or constant operating pressure (specified in define/operating-conditions/operating-pressure) will be used in vaporization rates calculations.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vaporization_heat_transfer_averaging</span></code></a>(*args, ...)</p></td>
-<td><p>Enables averaging of the Spalding heat transfer term for the convection/diffusion-controlled model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_options" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vaporization_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets Vaporization options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.virtual_mass_force" title="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.virtual_mass_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">virtual_mass_force</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables inclusion of the virtual mass force in the particle force balance.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.define.models.dpm.</span></span><span class="sig-name descname"><span class="pre">options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the options menu to set optional models.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization">
-<span class="sig-name descname"><span class="pre">allow_supercritical_pressure_vaporization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization">
+<span class="sig-name descname"><span class="pre">allow_supercritical_pressure_vaporization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.allow_supercritical_pressure_vaporization" title="Permalink to this definition">#</a></dt>
 <dd><p>Enforces the switching from vaporization to boiling even if the boiling point is not calculated from the vapor pressure data. If the pressure in your model is above critical you must retain the default setting (yes). This options is available only if whenPressure Dependent Boiling is enabled in the Physical Models tab of the Discrete Phase Models dialog box. For more details, see .</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.brownian_motion">
-<span class="sig-name descname"><span class="pre">brownian_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.brownian_motion" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.brownian_motion">
+<span class="sig-name descname"><span class="pre">brownian_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.brownian_motion" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables Brownian motion of particles.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.convective_film_heat_transfer">
-<span class="sig-name descname"><span class="pre">convective_film_heat_transfer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.convective_film_heat_transfer" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.convective_film_heat_transfer">
+<span class="sig-name descname"><span class="pre">convective_film_heat_transfer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.convective_film_heat_transfer" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable/disable convection/conduction film to wall heat transfer model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.current_positions_in_sample_file_format">
-<span class="sig-name descname"><span class="pre">current_positions_in_sample_file_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.current_positions_in_sample_file_format" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.current_positions_in_sample_file_format">
+<span class="sig-name descname"><span class="pre">current_positions_in_sample_file_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.current_positions_in_sample_file_format" title="Permalink to this definition">#</a></dt>
 <dd><p>When enabled, generates a file containing particle current positions (step-by-step history report for unsteady tracking) in the sampling file format.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.enable_contour_plots">
-<span class="sig-name descname"><span class="pre">enable_contour_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.enable_contour_plots" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.enable_contour_plots">
+<span class="sig-name descname"><span class="pre">enable_contour_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.enable_contour_plots" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables computation of mean and/or RMS values of additional discrete phase variables for postprocessing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.ensemble_average">
-<span class="sig-name descname"><span class="pre">ensemble_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.ensemble_average" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.ensemble_average">
+<span class="sig-name descname"><span class="pre">ensemble_average</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.ensemble_average" title="Permalink to this definition">#</a></dt>
 <dd><p>Ensembles average cloud properties.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.erosion_accretion">
-<span class="sig-name descname"><span class="pre">erosion_accretion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.erosion_accretion" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.erosion_accretion">
+<span class="sig-name descname"><span class="pre">erosion_accretion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.erosion_accretion" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables erosion/accretion.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration">
-<span class="sig-name descname"><span class="pre">include_lwf_particles_in_dpm_concentration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration">
+<span class="sig-name descname"><span class="pre">include_lwf_particles_in_dpm_concentration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.include_lwf_particles_in_dpm_concentration" title="Permalink to this definition">#</a></dt>
 <dd><p>Include LWF particle mass in DPM Concentration.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.init_erosion_accretion_rate">
-<span class="sig-name descname"><span class="pre">init_erosion_accretion_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.init_erosion_accretion_rate" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.init_erosion_accretion_rate">
+<span class="sig-name descname"><span class="pre">init_erosion_accretion_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.init_erosion_accretion_rate" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes the erosion/accretion rates with zero.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction">
-<span class="sig-name descname"><span class="pre">lowest_volatiles_mass_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction">
+<span class="sig-name descname"><span class="pre">lowest_volatiles_mass_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.lowest_volatiles_mass_fraction" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the lowest volatiles mass fraction.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.maximum_udf_species">
-<span class="sig-name descname"><span class="pre">maximum_udf_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.maximum_udf_species" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.maximum_udf_species">
+<span class="sig-name descname"><span class="pre">maximum_udf_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.maximum_udf_species" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the maximum number of species that will be accessible from discrete phase model UDFs. Only species with indices up to this value are accessible in discrete phase model UDFs.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.particle_radiation">
-<span class="sig-name descname"><span class="pre">particle_radiation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.particle_radiation" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.particle_radiation">
+<span class="sig-name descname"><span class="pre">particle_radiation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.particle_radiation" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables particle radiation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.pressure_gradient_force">
-<span class="sig-name descname"><span class="pre">pressure_gradient_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.pressure_gradient_force" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.pressure_gradient_force">
+<span class="sig-name descname"><span class="pre">pressure_gradient_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.pressure_gradient_force" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables inclusion of pressure gradient effects in the particle force balance.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter">
-<span class="sig-name descname"><span class="pre">remove_wall_film_temperature_limiter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter" title="Permalink to this definition">#</a></dt>
-<dd><p>Remove the wall film temperature limiter.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter">
+<span class="sig-name descname"><span class="pre">remove_wall_film_temperature_limiter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.remove_wall_film_temperature_limiter" title="Permalink to this definition">#</a></dt>
+<dd><p>Answering yes at the prompt removes the wall temperature limiter for Lagrangian wall-film walls. If you enter no (default), two additional prompts will appear in the console allowing you to define the temperature difference above the boiling point and to enable/disable the reporting of the Leidenfrost temperature on the wall faces.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.saffman_lift_force">
-<span class="sig-name descname"><span class="pre">saffman_lift_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.saffman_lift_force" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.saffman_lift_force">
+<span class="sig-name descname"><span class="pre">saffman_lift_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.saffman_lift_force" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables Saffman lift force.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis">
-<span class="sig-name descname"><span class="pre">scr_urea_deposition_risk_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis">
+<span class="sig-name descname"><span class="pre">scr_urea_deposition_risk_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.scr_urea_deposition_risk_analysis" title="Permalink to this definition">#</a></dt>
 <dd><p>Enters the menu for setting up the risk for solids deposit formation for the Selective Catalytic Reduction (SCR) process. For more information, see .</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.set_thermolysis_limit">
-<span class="sig-name descname"><span class="pre">set_thermolysis_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.set_thermolysis_limit" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.set_minimum_particle_diameter">
+<span class="sig-name descname"><span class="pre">set_minimum_particle_diameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.set_minimum_particle_diameter" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the minimum particle diameter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.set_thermolysis_limit">
+<span class="sig-name descname"><span class="pre">set_thermolysis_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.set_thermolysis_limit" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the limit for the thermolysis model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_radius">
-<span class="sig-name descname"><span class="pre">stagger_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_radius" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_radius">
+<span class="sig-name descname"><span class="pre">stagger_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_radius" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the region over which to spatially stagger particles when particle-staggering is enabled for non-atomizer injections.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections">
-<span class="sig-name descname"><span class="pre">stagger_spatially_atomizer_injections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections">
+<span class="sig-name descname"><span class="pre">stagger_spatially_atomizer_injections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_spatially_atomizer_injections" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables spatial staggering for atomizer and solid-cone injections.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_standard_injections">
-<span class="sig-name descname"><span class="pre">stagger_spatially_standard_injections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_spatially_standard_injections" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_spatially_standard_injections">
+<span class="sig-name descname"><span class="pre">stagger_spatially_standard_injections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_spatially_standard_injections" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables spatial staggering for standard (non-atomizer and non-solid-cone) injections.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_temporally">
-<span class="sig-name descname"><span class="pre">stagger_temporally</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.stagger_temporally" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_temporally">
+<span class="sig-name descname"><span class="pre">stagger_temporally</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.stagger_temporally" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables temporal staggering.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.staggering_factor">
-<span class="sig-name descname"><span class="pre">staggering_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.staggering_factor" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.staggering_factor">
+<span class="sig-name descname"><span class="pre">staggering_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.staggering_factor" title="Permalink to this definition">#</a></dt>
 <dd><ol class="upperalpha simple" start="19">
 <li></li>
 </ol>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.step_report_sig_figures">
-<span class="sig-name descname"><span class="pre">step_report_sig_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.step_report_sig_figures" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.step_report_sig_figures">
+<span class="sig-name descname"><span class="pre">step_report_sig_figures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.step_report_sig_figures" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets significant figures in the step-by-step report.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.thermophoretic_force">
-<span class="sig-name descname"><span class="pre">thermophoretic_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.thermophoretic_force" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.thermophoretic_force">
+<span class="sig-name descname"><span class="pre">thermophoretic_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.thermophoretic_force" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables thermophoretic force.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.track_in_absolute_frame">
-<span class="sig-name descname"><span class="pre">track_in_absolute_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.track_in_absolute_frame" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.track_in_absolute_frame">
+<span class="sig-name descname"><span class="pre">track_in_absolute_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.track_in_absolute_frame" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables tracking in absolute frame.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure">
-<span class="sig-name descname"><span class="pre">treat_multicomponent_saturation_temperature_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure">
+<span class="sig-name descname"><span class="pre">treat_multicomponent_saturation_temperature_failure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.treat_multicomponent_saturation_temperature_failure" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables dumping multicomponent particle mass into the continuous phase if the saturation temperature calculation fails.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.two_way_coupling">
-<span class="sig-name descname"><span class="pre">two_way_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.two_way_coupling" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.two_way_coupling">
+<span class="sig-name descname"><span class="pre">two_way_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.two_way_coupling" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables calculation of DPM sources in TKE equation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections">
-<span class="sig-name descname"><span class="pre">uniform_mass_distribution_for_injections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections">
+<span class="sig-name descname"><span class="pre">uniform_mass_distribution_for_injections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.uniform_mass_distribution_for_injections" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies a uniform distribution of mass over the cross-section of solid cone and atomizer injections. This can become important when the mesh is smaller than the diameter (or another characteristic size) of the injection.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization">
-<span class="sig-name descname"><span class="pre">use_absolute_pressure_for_vaporization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization">
+<span class="sig-name descname"><span class="pre">use_absolute_pressure_for_vaporization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.use_absolute_pressure_for_vaporization" title="Permalink to this definition">#</a></dt>
 <dd><p>Determines whether the absolute pressure or constant operating pressure (specified in define/operating-conditions/operating-pressure) will be used in vaporization rates calculations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging">
-<span class="sig-name descname"><span class="pre">vaporization_heat_transfer_averaging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging">
+<span class="sig-name descname"><span class="pre">vaporization_heat_transfer_averaging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.vaporization_heat_transfer_averaging" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables averaging of the Spalding heat transfer term for the convection/diffusion-controlled model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_options">
-<span class="sig-name descname"><span class="pre">vaporization_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.vaporization_options" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.vaporization_options">
+<span class="sig-name descname"><span class="pre">vaporization_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.vaporization_options" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets Vaporization options.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.virtual_mass_force">
-<span class="sig-name descname"><span class="pre">virtual_mass_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.define.models.dpm.options.virtual_mass_force" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.virtual_mass_force">
+<span class="sig-name descname"><span class="pre">virtual_mass_force</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.define.models.dpm.options.virtual_mass_force" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables/disables inclusion of the virtual mass force in the particle force balance.</p>
 </dd></dl>
 

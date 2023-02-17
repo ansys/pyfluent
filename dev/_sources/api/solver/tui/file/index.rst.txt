@@ -3,19 +3,26 @@
 solver.tui.file
 ===============
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.file
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file
+   :members: write_pdf, data_file_options, write_injections, show_configuration, set_err_on_inval_cmd, cff_files, write_cleanup_script, start_journal, set_idle_timeout, read_case, write_isat_table, async_optimize, write_selected_defined_profiles, write_boundary_mesh, read_case_info, write_merge_profiles, read_rays, sync_workbench, write_profile, write_fan_profile, read_settings, define_macro, write_flamelet, read_surface_clusters, write_field_functions, binary_legacy_files, execute_macro, stop_macro, set_batch_options, export_to_cfd_post, read_profile, replace_mesh, write_data, read_journal, confirm_overwrite, set_target_reference_frame_for_write_profiles, load_act_tool, stop_transcript, read_isat_table, close_without_save, write_currently_defined_profiles, write_settings, write_case, read_viewfactors, read_macros, read_transient_table, read_pdf, write_circumferential_averaged_profile, read_case_settings, read_case_data, read_data, write_case_data, stop_journal, write_macros, reload_setup, write_pdat, set_tui_version, read_injections, single_precision_coordinates, read_field_functions, start_transcript
+
 .. toctree::
    :hidden:
 
-   auto_save/index
-   cffio_options/index
-   export/index
-   transient_export/index
-   em_mapping/index
-   import_/index
-   interpolate/index
-   fsi/index
-   parametric_project/index
-   project/index
-   table_manager/index
    solution_files/index
+   import_/index
+   fsi/index
+   project/index
+   parametric_project/index
+   cffio_options/index
+   transient_export/index
+   auto_save/index
+   table_manager/index
+   export/index
+   interpolate/index
+   em_mapping/index

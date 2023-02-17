@@ -3,4 +3,11 @@
 meshing.tui.preferences.graphics.graphics\_effects
 ==================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.graphics.graphics_effects
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.graphics_effects
+   :members: simple_shadows_enabled, bloom_enabled, bloom_strength, plane_direction, grid_plane_count, ambient_occlusion_enabled, ambient_occlusion_quality, grid_color, ambient_occlusion_strength, grid_plane_enabled, grid_plane_offset, show_edge_reflections, grid_plane_size_factor, update_after_mouse_release, anti_aliasing, bloom_blur, reflections_enabled, show_marker_reflections, shadow_map_enabled
+

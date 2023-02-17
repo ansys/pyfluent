@@ -3,4 +3,11 @@
 solver.tui.define.dynamic\_mesh.controls.remeshing\_parameters.sizing\_controls
 ===============================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.dynamic_mesh.controls.remeshing_parameters.sizing_controls
+   :members: delete, list_properties, list, add, edit
+

@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.results.graphics.expert.set.rendering_options" href="../rendering_options/index.html" />
-    <link rel="prev" title="solver.tui.results.graphics.expert.set.particle_tracks.filter_settings" href="../particle_tracks/filter_settings/index.html" />
+    <link rel="next" title="solver.tui.results.surface" href="../../../../surface/index.html" />
+    <link rel="prev" title="solver.tui.results.graphics.expert.set.rendering_options" href="../rendering_options/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -307,8 +307,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -352,38 +357,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -392,8 +372,53 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../report/index.html">
+         solver.tui.report
         </a>
        </li>
        <li class="toctree-l4">
@@ -402,8 +427,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../report/index.html">
-         solver.tui.report
+        <a class="reference internal" href="../../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../../views/index.html">
+         solver.tui.views
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -416,6 +446,11 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../report/index.html">
+           solver.tui.results.report
+          </a>
+         </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../animate/index.html">
            solver.tui.results.animate
@@ -431,6 +466,26 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../objects/index.html">
+             solver.tui.results.graphics.objects
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../update_scene/index.html">
+             solver.tui.results.graphics.update_scene
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../rendering_options/index.html">
+             solver.tui.results.graphics.rendering_options
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../../lights/index.html">
+             solver.tui.results.graphics.lights
+            </a>
+           </li>
            <li class="toctree-l6 current active has-children">
             <a class="reference internal" href="../../index.html">
              solver.tui.results.graphics.expert
@@ -441,11 +496,6 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
-             <li class="toctree-l7">
-              <a class="reference internal" href="../../flamelet_data/index.html">
-               solver.tui.results.graphics.expert.flamelet_data
-              </a>
-             </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../../particle_tracks/index.html">
                solver.tui.results.graphics.expert.particle_tracks
@@ -461,6 +511,11 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.results.graphics.expert.pdf_data
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../../flamelet_data/index.html">
+               solver.tui.results.graphics.expert.flamelet_data
+              </a>
+             </li>
              <li class="toctree-l7 current active has-children">
               <a class="reference internal" href="../index.html">
                solver.tui.results.graphics.expert.set
@@ -472,18 +527,13 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul class="current">
                <li class="toctree-l8">
-                <a class="reference internal" href="../colors/index.html">
-                 solver.tui.results.graphics.expert.set.colors
+                <a class="reference internal" href="../titles/index.html">
+                 solver.tui.results.graphics.expert.set.titles
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="../contours/index.html">
-                 solver.tui.results.graphics.expert.set.contours
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../picture/index.html">
-                 solver.tui.results.graphics.expert.set.picture
+                <a class="reference internal" href="../windows/index.html">
+                 solver.tui.results.graphics.expert.set.windows
                 </a>
                </li>
                <li class="toctree-l8">
@@ -492,13 +542,28 @@ function checkPageExistsAndRedirect(event) {
                 </a>
                </li>
                <li class="toctree-l8">
+                <a class="reference internal" href="../velocity_vectors/index.html">
+                 solver.tui.results.graphics.expert.set.velocity_vectors
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../contours/index.html">
+                 solver.tui.results.graphics.expert.set.contours
+                </a>
+               </li>
+               <li class="toctree-l8">
                 <a class="reference internal" href="../particle_tracks/index.html">
                  solver.tui.results.graphics.expert.set.particle_tracks
                 </a>
                </li>
-               <li class="toctree-l8 current active">
-                <a class="current reference internal" href="#">
-                 solver.tui.results.graphics.expert.set.path_lines
+               <li class="toctree-l8">
+                <a class="reference internal" href="../picture/index.html">
+                 solver.tui.results.graphics.expert.set.picture
+                </a>
+               </li>
+               <li class="toctree-l8">
+                <a class="reference internal" href="../colors/index.html">
+                 solver.tui.results.graphics.expert.set.colors
                 </a>
                </li>
                <li class="toctree-l8">
@@ -506,56 +571,16 @@ function checkPageExistsAndRedirect(event) {
                  solver.tui.results.graphics.expert.set.rendering_options
                 </a>
                </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../titles/index.html">
-                 solver.tui.results.graphics.expert.set.titles
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../velocity_vectors/index.html">
-                 solver.tui.results.graphics.expert.set.velocity_vectors
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="../windows/index.html">
-                 solver.tui.results.graphics.expert.set.windows
+               <li class="toctree-l8 current active">
+                <a class="current reference internal" href="#">
+                 solver.tui.results.graphics.expert.set.path_lines
                 </a>
                </li>
               </ul>
              </li>
             </ul>
            </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../lights/index.html">
-             solver.tui.results.graphics.lights
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../objects/index.html">
-             solver.tui.results.graphics.objects
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../rendering_options/index.html">
-             solver.tui.results.graphics.rendering_options
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../../update_scene/index.html">
-             solver.tui.results.graphics.update_scene
-            </a>
-           </li>
           </ul>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../plot/index.html">
-           solver.tui.results.plot
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../../report/index.html">
-           solver.tui.results.report
-          </a>
          </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../../../../surface/index.html">
@@ -567,16 +592,21 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.results.graphics_window
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../../plot/index.html">
+           solver.tui.results.plot
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -585,38 +615,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
       </ul>
@@ -685,7 +690,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.results.graphics.expert.set.path_lines
@@ -694,16 +699,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.results.graphics.expert.set.path_lines.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_scale">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.arrow_scale">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.arrow_scale()
@@ -712,7 +708,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_space">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.arrow_space">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.arrow_space()
@@ -721,7 +717,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.display_steps">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.display_steps">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.display_steps()
@@ -730,7 +726,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.error_control">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.error_control">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.error_control()
@@ -739,7 +735,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.line_width">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.line_width">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.line_width()
@@ -748,7 +744,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.marker_size">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.marker_size">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.marker_size()
@@ -757,7 +753,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_error">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.maximum_error">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.maximum_error()
@@ -766,7 +762,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_steps">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.maximum_steps">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.maximum_steps()
@@ -775,7 +771,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.radius">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.radius">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.radius()
@@ -784,7 +780,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.relative_pathlines">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.relative_pathlines">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.relative_pathlines()
@@ -793,7 +789,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.reverse">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.reverse">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.reverse()
@@ -802,7 +798,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.sphere_attrib">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.sphere_attrib">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.sphere_attrib()
@@ -811,7 +807,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.step_size">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.step_size">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.step_size()
@@ -820,7 +816,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.style">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.style">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.style()
@@ -829,7 +825,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.track_in_phase">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.track_in_phase">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.track_in_phase()
@@ -838,7 +834,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.twist_factor">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.twist_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.results.graphics.expert.set.path_lines.twist_factor()
@@ -869,165 +865,107 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-results-graphics-expert-set-path-lines">
 <span id="ref-solver-tui-results-graphics-expert-set-path-lines"></span><h1>solver.tui.results.graphics.expert.set.path_lines<a class="headerlink" href="#solver-tui-results-graphics-expert-set-path-lines" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.</span></span><span class="sig-name descname"><span class="pre">path_lines</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter the path-lines menu to set parameters for the display of pathlines.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_scale" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrow_scale</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the scale factor for arrows drawn on pathlines.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_space" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_space"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrow_space</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the spacing factor for arrows drawn on pathlines.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.display_steps" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.display_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_steps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the display stepping for pathlines.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.error_control" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.error_control"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error_control</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set error control during pathline computation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.line_width" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.line_width"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_width</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the width for pathlines.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.marker_size" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.marker_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marker_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the marker size for particle drawing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_error" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_error</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum error allowed while computing the pathlines.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_steps" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum_steps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum number of steps to take for pathlines.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.radius" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the radius for pathline (ribbons/cylinder only) cross-section.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.relative_pathlines" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.relative_pathlines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">relative_pathlines</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the tracking of pathlines in a relative coordinate system.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.reverse" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.reverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the direction of path tracking.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.sphere_attrib" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.sphere_attrib"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sphere_attrib</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify size and no.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.step_size" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">step_size</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the step length between particle positions for path-lines.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.style" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">style</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set display style for pathlines (line/ribbon/cylinder).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.track_in_phase" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.track_in_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">track_in_phase</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Assign phase to display pathlines in.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.twist_factor" title="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.twist_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">twist_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the scale factor for twisting (ribbons only).</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.results.graphics.expert.set.</span></span><span class="sig-name descname"><span class="pre">path_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the path-lines menu to set parameters for the display of pathlines.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_scale">
-<span class="sig-name descname"><span class="pre">arrow_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_scale" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.arrow_scale">
+<span class="sig-name descname"><span class="pre">arrow_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.arrow_scale" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the scale factor for arrows drawn on pathlines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_space">
-<span class="sig-name descname"><span class="pre">arrow_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.arrow_space" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.arrow_space">
+<span class="sig-name descname"><span class="pre">arrow_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.arrow_space" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the spacing factor for arrows drawn on pathlines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.display_steps">
-<span class="sig-name descname"><span class="pre">display_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.display_steps" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.display_steps">
+<span class="sig-name descname"><span class="pre">display_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.display_steps" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the display stepping for pathlines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.error_control">
-<span class="sig-name descname"><span class="pre">error_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.error_control" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.error_control">
+<span class="sig-name descname"><span class="pre">error_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.error_control" title="Permalink to this definition">#</a></dt>
 <dd><p>Set error control during pathline computation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.line_width">
-<span class="sig-name descname"><span class="pre">line_width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.line_width" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.line_width">
+<span class="sig-name descname"><span class="pre">line_width</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.line_width" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the width for pathlines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.marker_size">
-<span class="sig-name descname"><span class="pre">marker_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.marker_size" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.marker_size">
+<span class="sig-name descname"><span class="pre">marker_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.marker_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the marker size for particle drawing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_error">
-<span class="sig-name descname"><span class="pre">maximum_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_error" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.maximum_error">
+<span class="sig-name descname"><span class="pre">maximum_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.maximum_error" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the maximum error allowed while computing the pathlines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_steps">
-<span class="sig-name descname"><span class="pre">maximum_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.maximum_steps" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.maximum_steps">
+<span class="sig-name descname"><span class="pre">maximum_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.maximum_steps" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the maximum number of steps to take for pathlines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.radius">
-<span class="sig-name descname"><span class="pre">radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.radius" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.radius">
+<span class="sig-name descname"><span class="pre">radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.radius" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the radius for pathline (ribbons/cylinder only) cross-section.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.relative_pathlines">
-<span class="sig-name descname"><span class="pre">relative_pathlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.relative_pathlines" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.relative_pathlines">
+<span class="sig-name descname"><span class="pre">relative_pathlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.relative_pathlines" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable/disable the tracking of pathlines in a relative coordinate system.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.reverse">
-<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.reverse" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.reverse" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable/disable the direction of path tracking.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.sphere_attrib">
-<span class="sig-name descname"><span class="pre">sphere_attrib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.sphere_attrib" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.sphere_attrib">
+<span class="sig-name descname"><span class="pre">sphere_attrib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.sphere_attrib" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify size and no. of slices to be used in drawing sphere for sphere-style.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.step_size">
-<span class="sig-name descname"><span class="pre">step_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.step_size" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.step_size">
+<span class="sig-name descname"><span class="pre">step_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.step_size" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the step length between particle positions for path-lines.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.style">
-<span class="sig-name descname"><span class="pre">style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.style" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.style">
+<span class="sig-name descname"><span class="pre">style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.style" title="Permalink to this definition">#</a></dt>
 <dd><p>Set display style for pathlines (line/ribbon/cylinder).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.track_in_phase">
-<span class="sig-name descname"><span class="pre">track_in_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.track_in_phase" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.track_in_phase">
+<span class="sig-name descname"><span class="pre">track_in_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.track_in_phase" title="Permalink to this definition">#</a></dt>
 <dd><p>Assign phase to display pathlines in.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.twist_factor">
-<span class="sig-name descname"><span class="pre">twist_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.results.graphics.expert.set.path_lines.twist_factor" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.twist_factor">
+<span class="sig-name descname"><span class="pre">twist_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.results.graphics.expert.set.path_lines.twist_factor" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the scale factor for twisting (ribbons only).</p>
 </dd></dl>
 

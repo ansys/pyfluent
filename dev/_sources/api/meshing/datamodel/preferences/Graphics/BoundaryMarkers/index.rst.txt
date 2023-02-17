@@ -3,5 +3,11 @@
 meshing.datamodel.preferences.Graphics.BoundaryMarkers
 ======================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.BoundaryMarkers
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.BoundaryMarkers
+   :members: ColorOption, Enabled, ExcludeFromBounding, InletColor, MarkerFraction, MarkerSizeLimitingScaleMultiplier, MarkersLimit, OutletColor, ScaleMarker, ShowInletMarkers, ShowOutletMarkers
 

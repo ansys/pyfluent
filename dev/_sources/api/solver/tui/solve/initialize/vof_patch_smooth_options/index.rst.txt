@@ -3,4 +3,11 @@
 solver.tui.solve.initialize.vof\_patch\_smooth\_options
 =======================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.initialize.vof_patch_smooth_options
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.initialize.vof_patch_smooth_options
+   :members: set_options, execute_smoothing
+

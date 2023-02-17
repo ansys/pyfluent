@@ -3,4 +3,11 @@
 solver.tui.define.boundary\_conditions.set
 ==========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.boundary_conditions.set
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.boundary_conditions.set
+   :members: shadow, recirculation_inlet, mass_flow_inlet, radiator, fluid, degassing, rans_les_interface, intake_fan, mass_flow_outlet, overset, velocity_inlet, fan, pressure_inlet, wall, outlet_vent, pressure_outlet, axis, periodic, recirculation_outlet, pressure_far_field, interior, exhaust_fan, symmetry, network, network_end, outflow, solid, interface, geometry, porous_jump, inlet_vent
+

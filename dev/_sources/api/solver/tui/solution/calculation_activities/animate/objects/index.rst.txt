@@ -3,4 +3,11 @@
 solver.tui.solution.calculation\_activities.animate.objects
 ===========================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.calculation_activities.animate.objects
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.calculation_activities.animate.objects
+   :members: create, edit, delete, clear_history, copy
+

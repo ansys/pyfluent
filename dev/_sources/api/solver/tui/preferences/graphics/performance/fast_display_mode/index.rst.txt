@@ -3,4 +3,11 @@
 solver.tui.preferences.graphics.performance.fast\_display\_mode
 ===============================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.graphics.performance.fast_display_mode
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.performance.fast_display_mode
+   :members: status, transparency, perimeter_edges_shown, markers_decimation, silhouette_shown, faces_shown, culling, nodes_shown
+

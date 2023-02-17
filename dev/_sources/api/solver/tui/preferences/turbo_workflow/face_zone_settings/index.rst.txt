@@ -3,4 +3,11 @@
 solver.tui.preferences.turbo\_workflow.face\_zone\_settings
 ===========================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.turbo_workflow.face_zone_settings
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.turbo_workflow.face_zone_settings
+   :members: symmetry_region, interior_region, tip2_region, periodic2_region, tip1_region, inlet_region, fzsearch_order, blade_region, shroud_region, outlet_region, periodic1_region, hub_region
+

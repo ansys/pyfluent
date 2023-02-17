@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.display.set.colors.by_type.type_name.axis" href="axis/index.html" />
+    <link rel="next" title="meshing.tui.display.set.colors.by_surface" href="../../by_surface/index.html" />
     <link rel="prev" title="meshing.tui.display.set.colors.by_type" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -320,11 +325,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../../../index.html">
      meshing.tui
@@ -336,28 +336,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../../../preferences/index.html">
        meshing.tui.preferences
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
@@ -366,13 +351,18 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../../../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
@@ -381,8 +371,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../../../../mesh/index.html">
        meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../../../reference_frames/index.html">
+       meshing.tui.reference_frames
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -395,6 +405,26 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../objects/index.html">
+         meshing.tui.display.objects
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../advanced_rendering/index.html">
+         meshing.tui.display.advanced_rendering
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../set_grid/index.html">
+         meshing.tui.display.set_grid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../update_scene/index.html">
+         meshing.tui.display.update_scene
+        </a>
+       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../../../index.html">
          meshing.tui.display.set
@@ -405,6 +435,16 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../lights/index.html">
+           meshing.tui.display.set.lights
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../rendering_options/index.html">
+           meshing.tui.display.set.rendering_options
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            meshing.tui.display.set.colors
@@ -425,92 +465,10 @@ function checkPageExistsAndRedirect(event) {
              </i>
             </label>
             <ul class="current">
-             <li class="toctree-l7 current active has-children">
+             <li class="toctree-l7 current active">
               <a class="current reference internal" href="#">
                meshing.tui.display.set.colors.by_type.type_name
               </a>
-              <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-              <label for="toctree-checkbox-7">
-               <i class="fas fa-chevron-down">
-               </i>
-              </label>
-              <ul>
-               <li class="toctree-l8">
-                <a class="reference internal" href="axis/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.axis
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="far_field/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.far_field
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="free_surface/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.free_surface
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="inlet/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.inlet
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="interface/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.interface
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="interior/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.interior
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="internal/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.internal
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="outlet/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.outlet
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="overset/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.overset
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="periodic/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.periodic
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="rans_les_interface/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.rans_les_interface
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="surface/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.surface
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="symmetry/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.symmetry
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="traction/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.traction
-                </a>
-               </li>
-               <li class="toctree-l8">
-                <a class="reference internal" href="wall/index.html">
-                 meshing.tui.display.set.colors.by_type.type_name.wall
-                </a>
-               </li>
-              </ul>
              </li>
             </ul>
            </li>
@@ -527,35 +485,15 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../lights/index.html">
-           meshing.tui.display.set.lights
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../rendering_options/index.html">
-           meshing.tui.display.set.rendering_options
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../styles/index.html">
            meshing.tui.display.set.styles
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../windows/index.html">
-           meshing.tui.display.set.windows
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../set_grid/index.html">
-         meshing.tui.display.set_grid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         meshing.tui.display.views
+        <a class="reference internal" href="../../../../xy_plot/index.html">
+         meshing.tui.display.xy_plot
         </a>
        </li>
        <li class="toctree-l4">
@@ -564,50 +502,20 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../xy_plot/index.html">
-         meshing.tui.display.xy_plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../update_scene/index.html">
-         meshing.tui.display.update_scene
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../objects/index.html">
-         meshing.tui.display.objects
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../zones/index.html">
          meshing.tui.display.zones
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../advanced_rendering/index.html">
-         meshing.tui.display.advanced_rendering
         </a>
        </li>
       </ul>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../../../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
     </ul>
@@ -649,7 +557,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.display.set.colors.by_type.type_name
@@ -658,583 +566,139 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.__init__">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.__init__()
+       main_menu.display.set.colors.by_type.type_name.axis()
       </span>
      </code>
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.far_field">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.axis
+       main_menu.display.set.colors.by_type.type_name.far_field()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.axis.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.axis.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.axis.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.far_field
+       main_menu.display.set.colors.by_type.type_name.free_surface()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.far_field.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.far_field.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.far_field.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.inlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.free_surface
+       main_menu.display.set.colors.by_type.type_name.inlet()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.free_surface.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.free_surface.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.free_surface.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.inlet
+       main_menu.display.set.colors.by_type.type_name.interface()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.inlet.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.inlet.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.inlet.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interior">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.interface
+       main_menu.display.set.colors.by_type.type_name.interior()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.interface.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.interface.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.interface.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.internal">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.interior
+       main_menu.display.set.colors.by_type.type_name.internal()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.interior.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.interior.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.interior.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.outlet">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.internal
+       main_menu.display.set.colors.by_type.type_name.outlet()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.internal.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.internal.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.internal.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.overset">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.outlet
+       main_menu.display.set.colors.by_type.type_name.overset()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.outlet.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.outlet.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.outlet.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.overset
+       main_menu.display.set.colors.by_type.type_name.periodic()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.overset.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.overset.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.overset.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.periodic
+       main_menu.display.set.colors.by_type.type_name.rans_les_interface()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.periodic.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.periodic.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.periodic.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.surface">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.rans_les_interface
+       main_menu.display.set.colors.by_type.type_name.surface()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.rans_les_interface.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.rans_les_interface.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.rans_les_interface.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.surface
+       main_menu.display.set.colors.by_type.type_name.symmetry()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.surface.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.surface.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.surface.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.traction">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.symmetry
+       main_menu.display.set.colors.by_type.type_name.traction()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.symmetry.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.symmetry.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.symmetry.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.wall">
      <code class="docutils literal notranslate">
       <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.traction
+       main_menu.display.set.colors.by_type.type_name.wall()
       </span>
      </code>
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.traction.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.traction.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.traction.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.display.set.colors.by_type.type_name.wall
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.wall.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.color">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.wall.color()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.material">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.display.set.colors.by_type.type_name.wall.material()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -1259,648 +723,106 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-display-set-colors-by-type-type-name">
 <span id="ref-meshing-tui-display-set-colors-by-type-type-name"></span><h1>meshing.tui.display.set.colors.by_type.type_name<a class="headerlink" href="#meshing-tui-display-set-colors-by-type-type-name" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.colors.by_type.</span></span><span class="sig-name descname"><span class="pre">type_name</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Select the boundary type to specify colors and/or materials.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">axis</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">far_field</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">free_surface</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inlet</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interface</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interior</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outlet</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overset</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">periodic</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rans_les_interface</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">surface</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">symmetry</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traction</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wall</span></code></a></p></td>
-<td><p>Set the material and/or color for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.display.set.colors.by_type.</span></span><span class="sig-name descname"><span class="pre">type_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Select the boundary type to specify colors and/or materials.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis">
+<span class="sig-name descname"><span class="pre">axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.axis" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.axis.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.far_field">
+<span class="sig-name descname"><span class="pre">far_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.far_field" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface">
+<span class="sig-name descname"><span class="pre">free_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.free_surface" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.inlet">
+<span class="sig-name descname"><span class="pre">inlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.inlet" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interface">
+<span class="sig-name descname"><span class="pre">interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interface" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interior">
+<span class="sig-name descname"><span class="pre">interior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.interior" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.internal">
+<span class="sig-name descname"><span class="pre">internal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.internal" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.outlet">
+<span class="sig-name descname"><span class="pre">outlet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.outlet" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.overset">
+<span class="sig-name descname"><span class="pre">overset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.overset" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.periodic">
+<span class="sig-name descname"><span class="pre">periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.periodic" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
+<span class="sig-name descname"><span class="pre">rans_les_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.rans_les_interface" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.surface">
+<span class="sig-name descname"><span class="pre">surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.surface" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry">
+<span class="sig-name descname"><span class="pre">symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.symmetry" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.traction">
+<span class="sig-name descname"><span class="pre">traction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.traction" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.wall">
+<span class="sig-name descname"><span class="pre">wall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.display.set.colors.by_type.type_name.wall" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the material and/or color for the selected boundary type.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">far_field</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.far_field.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free_surface</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.free_surface.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inlet</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.inlet.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interface</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interface.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interior</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.interior.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">internal</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.internal.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outlet</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.outlet.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">overset</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.overset.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">periodic</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.periodic.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rans_les_interface</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.rans_les_interface.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">surface</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.surface.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symmetry</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.symmetry.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">traction</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.traction.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wall</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set the material and/or color for the selected boundary type.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.color" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a color for the selected boundary type.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../../index.html#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.material" title="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">material</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a material for the selected boundary type.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.color">
-<span class="sig-name descname"><span class="pre">color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.color" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a color for the selected boundary type.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.material">
-<span class="sig-name descname"><span class="pre">material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.display.set.colors.by_type.type_name.wall.material" title="Permalink to this definition">#</a></dt>
-<dd><p>Set a material for the selected boundary type.</p>
-</dd></dl>
-
-</dd></dl>
-
-</dd></dl>
-
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
 

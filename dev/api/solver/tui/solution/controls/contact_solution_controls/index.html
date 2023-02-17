@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
     <link rel="next" title="solver.tui.solution.controls.contact_solution_controls.parameters" href="parameters/index.html" />
-    <link rel="prev" title="solver.tui.solution.controls.advanced.fast_transient_settings" href="../advanced/fast_transient_settings/index.html" />
+    <link rel="prev" title="solver.tui.solution.controls" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -305,8 +305,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -350,63 +355,18 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../parallel/index.html">
          solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../results/index.html">
-         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -420,13 +380,13 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../calculation_activities/index.html">
-           solver.tui.solution.calculation_activities
+          <a class="reference internal" href="../../run_calculation/index.html">
+           solver.tui.solution.run_calculation
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../cell_registers/index.html">
-           solver.tui.solution.cell_registers
+          <a class="reference internal" href="../../calculation_activities/index.html">
+           solver.tui.solution.calculation_activities
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -439,16 +399,6 @@ function checkPageExistsAndRedirect(event) {
            </i>
           </label>
           <ul class="current">
-           <li class="toctree-l6">
-            <a class="reference internal" href="../acoustics_wave_equation_controls/index.html">
-             solver.tui.solution.controls.acoustics_wave_equation_controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../advanced/index.html">
-             solver.tui.solution.controls.advanced
-            </a>
-           </li>
            <li class="toctree-l6 current active has-children">
             <a class="current reference internal" href="#">
              solver.tui.solution.controls.contact_solution_controls
@@ -465,13 +415,18 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
+              <a class="reference internal" href="transient/index.html">
+               solver.tui.solution.controls.contact_solution_controls.transient
+              </a>
+             </li>
+             <li class="toctree-l7">
               <a class="reference internal" href="spatial/index.html">
                solver.tui.solution.controls.contact_solution_controls.spatial
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="transient/index.html">
-               solver.tui.solution.controls.contact_solution_controls.transient
+              <a class="reference internal" href="methods/index.html">
+               solver.tui.solution.controls.contact_solution_controls.methods
               </a>
              </li>
              <li class="toctree-l7">
@@ -485,11 +440,6 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="methods/index.html">
-               solver.tui.solution.controls.contact_solution_controls.methods
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="miscellaneous/index.html">
                solver.tui.solution.controls.contact_solution_controls.miscellaneous
               </a>
@@ -497,20 +447,25 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
+            <a class="reference internal" href="../advanced/index.html">
+             solver.tui.solution.controls.advanced
+            </a>
+           </li>
+           <li class="toctree-l6">
             <a class="reference internal" href="../query/index.html">
              solver.tui.solution.controls.query
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../acoustics_wave_equation_controls/index.html">
+             solver.tui.solution.controls.acoustics_wave_equation_controls
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../expert/index.html">
-           solver.tui.solution.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../initialize/index.html">
-           solver.tui.solution.initialize
+          <a class="reference internal" href="../../cell_registers/index.html">
+           solver.tui.solution.cell_registers
           </a>
          </li>
          <li class="toctree-l5">
@@ -519,8 +474,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../monitors/index.html">
-           solver.tui.solution.monitors
+          <a class="reference internal" href="../../expert/index.html">
+           solver.tui.solution.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -529,20 +484,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../run_calculation/index.html">
-           solver.tui.solution.run_calculation
+          <a class="reference internal" href="../../monitors/index.html">
+           solver.tui.solution.monitors
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../initialize/index.html">
+           solver.tui.solution.initialize
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../parametric_study/index.html">
+         solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../setup/index.html">
-         solver.tui.setup
+        <a class="reference internal" href="../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -551,18 +511,43 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../turbo_post/index.html">
          solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
@@ -571,13 +556,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
       </ul>
@@ -646,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.solution.controls.contact_solution_controls
@@ -655,296 +660,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.amg
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.amg.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.coarsen_rate">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.amg.coarsen_rate()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.enforce_laplace_coarsening">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.amg.enforce_laplace_coarsening()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.increase_pre_sweeps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.amg.increase_pre_sweeps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.pre_sweeps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.amg.pre_sweeps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.specify_coarsening_rate">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.amg.specify_coarsening_rate()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.methods
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.methods.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.gradient_controls">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.methods.gradient_controls()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_controls">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_controls()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_method">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_method()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.specify_gradient_method">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.methods.specify_gradient_method()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.miscellaneous
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.miscellaneous.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.compute_statistics">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.miscellaneous.compute_statistics()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.statistics_level">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.miscellaneous.statistics_level()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.models
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.models.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.model_ramping">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.models.model_ramping()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_flow">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.models.ramp_flow()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_scalars">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.models.ramp_scalars()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_turbulence">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.models.ramp_turbulence()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.parameters
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.parameters.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.extrapolation_method">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.parameters.extrapolation_method()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.iterations">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.parameters.iterations()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_duration">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_duration()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_time_steps">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_time_steps()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.solution_stabilization_persistence">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.parameters.solution_stabilization_persistence()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.set_settings_to_default">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.set_settings_to_default">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.solution.controls.contact_solution_controls.set_settings_to_default()
@@ -953,7 +669,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.solution_stabilization">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.solution_stabilization">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.solution.controls.contact_solution_controls.solution_stabilization()
@@ -962,146 +678,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.spatial
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending_list">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending_list()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.flow_skew_diffusion_exclude">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.flow_skew_diffusion_exclude()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_flux_specify">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_flux_specify()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_method">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_method()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scalars_skew_diffusion_exclude">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.scalars_skew_diffusion_exclude()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scheme">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.spatial.scheme()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.controls.contact_solution_controls.transient
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.transient.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_factor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_factor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_method">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_method()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_parameters_specify">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.transient.transient_parameters_specify()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_scheme">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.controls.contact_solution_controls.transient.transient_scheme()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.verbosity">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.verbosity">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.solution.controls.contact_solution_controls.verbosity()
@@ -1132,493 +709,29 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-controls-contact-solution-controls">
 <span id="ref-solver-tui-solution-controls-contact-solution-controls"></span><h1>solver.tui.solution.controls.contact_solution_controls<a class="headerlink" href="#solver-tui-solution-controls-contact-solution-controls" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.controls.</span></span><span class="sig-name descname"><span class="pre">contact_solution_controls</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Solver controls for contact marks method.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.set_settings_to_default" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.set_settings_to_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_settings_to_default</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set contact solution stabilization to default.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.solution_stabilization" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.solution_stabilization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solution_stabilization</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Automatic solver settings adjustment for solution stabilization during contact process.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.verbosity" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.verbosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verbosity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify verbosity level for contact solution controls.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amg</span></code></a></p></td>
-<td><p>AMG control options.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods"><code class="xref py py-obj docutils literal notranslate"><span class="pre">methods</span></code></a></p></td>
-<td><p>Methods control options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous"><code class="xref py py-obj docutils literal notranslate"><span class="pre">miscellaneous</span></code></a></p></td>
-<td><p>Miscellaneous.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models"><code class="xref py py-obj docutils literal notranslate"><span class="pre">models</span></code></a></p></td>
-<td><p>Model control options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a></p></td>
-<td><p>Parameters used in stabilization strategy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spatial</span></code></a></p></td>
-<td><p>Spatial discretization control options.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transient</span></code></a></p></td>
-<td><p>Transient discretization control options .</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.controls.</span></span><span class="sig-name descname"><span class="pre">contact_solution_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Solver controls for contact marks method.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">amg</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>AMG control options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.coarsen_rate" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.coarsen_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coarsen_rate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify AMG coarsening rate.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.enforce_laplace_coarsening" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.enforce_laplace_coarsening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enforce_laplace_coarsening</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enforce the use of laplace coarsening in AMG.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.increase_pre_sweeps" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.increase_pre_sweeps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">increase_pre_sweeps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allow increase in AMG pre-sweep.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.pre_sweeps" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.pre_sweeps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pre_sweeps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify the number of AMG pre-sweeps.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.specify_coarsening_rate" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.specify_coarsening_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_coarsening_rate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Modify AMG coarsening rate.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.coarsen_rate">
-<span class="sig-name descname"><span class="pre">coarsen_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.coarsen_rate" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify AMG coarsening rate.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.enforce_laplace_coarsening">
-<span class="sig-name descname"><span class="pre">enforce_laplace_coarsening</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.enforce_laplace_coarsening" title="Permalink to this definition">#</a></dt>
-<dd><p>Enforce the use of laplace coarsening in AMG.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.increase_pre_sweeps">
-<span class="sig-name descname"><span class="pre">increase_pre_sweeps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.increase_pre_sweeps" title="Permalink to this definition">#</a></dt>
-<dd><p>Allow increase in AMG pre-sweep.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.pre_sweeps">
-<span class="sig-name descname"><span class="pre">pre_sweeps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.pre_sweeps" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify the number of AMG pre-sweeps.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.specify_coarsening_rate">
-<span class="sig-name descname"><span class="pre">specify_coarsening_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.amg.specify_coarsening_rate" title="Permalink to this definition">#</a></dt>
-<dd><p>Modify AMG coarsening rate.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">methods</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Methods control options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.gradient_controls" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.gradient_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient_controls</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Modify gradient method for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_controls" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_controls"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_velocity_coupling_controls</span></code></a>(*args, ...)</p></td>
-<td><p>Enable pressure-velocity coupling method change for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_method" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pressure_velocity_coupling_method</span></code></a>(*args, ...)</p></td>
-<td><p>Specify pressure-velocity coupling method change for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.specify_gradient_method" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.specify_gradient_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specify_gradient_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify gradient method for solver stability and accuracy.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.gradient_controls">
-<span class="sig-name descname"><span class="pre">gradient_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.gradient_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Modify gradient method for solver stability and accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_controls">
-<span class="sig-name descname"><span class="pre">pressure_velocity_coupling_controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable pressure-velocity coupling method change for solver stability and accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_method">
-<span class="sig-name descname"><span class="pre">pressure_velocity_coupling_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.pressure_velocity_coupling_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify pressure-velocity coupling method change for solver stability and accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.specify_gradient_method">
-<span class="sig-name descname"><span class="pre">specify_gradient_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.methods.specify_gradient_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify gradient method for solver stability and accuracy.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">miscellaneous</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Miscellaneous.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.compute_statistics" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.compute_statistics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_statistics</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute solution statistics for contact updates.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.statistics_level" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.statistics_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">statistics_level</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Solution statistics level for contact updates.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.compute_statistics">
-<span class="sig-name descname"><span class="pre">compute_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.compute_statistics" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute solution statistics for contact updates.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.statistics_level">
-<span class="sig-name descname"><span class="pre">statistics_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.miscellaneous.statistics_level" title="Permalink to this definition">#</a></dt>
-<dd><p>Solution statistics level for contact updates.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">models</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Model control options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.model_ramping" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.model_ramping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model_ramping</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate model ramping for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_flow" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_flow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ramp_flow</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ramp flow for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_scalars" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_scalars"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ramp_scalars</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ramp all scalar transport equations for solver stability and accuracy.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_turbulence" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_turbulence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ramp_turbulence</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Ramp turbulence for solver stability and accuracy.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.model_ramping">
-<span class="sig-name descname"><span class="pre">model_ramping</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.model_ramping" title="Permalink to this definition">#</a></dt>
-<dd><p>Activate model ramping for solver stability and accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_flow">
-<span class="sig-name descname"><span class="pre">ramp_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_flow" title="Permalink to this definition">#</a></dt>
-<dd><p>Ramp flow for solver stability and accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_scalars">
-<span class="sig-name descname"><span class="pre">ramp_scalars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_scalars" title="Permalink to this definition">#</a></dt>
-<dd><p>Ramp all scalar transport equations for solver stability and accuracy.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_turbulence">
-<span class="sig-name descname"><span class="pre">ramp_turbulence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.models.ramp_turbulence" title="Permalink to this definition">#</a></dt>
-<dd><p>Ramp turbulence for solver stability and accuracy.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Parameters used in stabilization strategy.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.extrapolation_method" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.extrapolation_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrapolation_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Solution extrapolation method for cells changing status from contact to non-contact [0-none, 1-local extrapolation].</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.iterations" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterations</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify additional iterations to accomodate contact solution stabilization.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_duration" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">persistence_fixed_duration</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify fixed time for solution stabilization persistence after trigger.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_time_steps" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_time_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">persistence_fixed_time_steps</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify fixed time-steps for solution stabilization persistence after trigger.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.solution_stabilization_persistence" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.solution_stabilization_persistence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solution_stabilization_persistence</span></code></a>(*args, ...)</p></td>
-<td><p>Persistence of the solution stabilization based on events [0-contact based, 1-always on].</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.extrapolation_method">
-<span class="sig-name descname"><span class="pre">extrapolation_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.extrapolation_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Solution extrapolation method for cells changing status from contact to non-contact [0-none, 1-local extrapolation].</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.iterations">
-<span class="sig-name descname"><span class="pre">iterations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.iterations" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify additional iterations to accomodate contact solution stabilization.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_duration">
-<span class="sig-name descname"><span class="pre">persistence_fixed_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_duration" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify fixed time for solution stabilization persistence after trigger.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_time_steps">
-<span class="sig-name descname"><span class="pre">persistence_fixed_time_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.persistence_fixed_time_steps" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify fixed time-steps for solution stabilization persistence after trigger.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.solution_stabilization_persistence">
-<span class="sig-name descname"><span class="pre">solution_stabilization_persistence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.parameters.solution_stabilization_persistence" title="Permalink to this definition">#</a></dt>
-<dd><p>Persistence of the solution stabilization based on events [0-contact based, 1-always on].</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.set_settings_to_default">
-<span class="sig-name descname"><span class="pre">set_settings_to_default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.set_settings_to_default" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.set_settings_to_default">
+<span class="sig-name descname"><span class="pre">set_settings_to_default</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.set_settings_to_default" title="Permalink to this definition">#</a></dt>
 <dd><p>Set contact solution stabilization to default.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.solution_stabilization">
-<span class="sig-name descname"><span class="pre">solution_stabilization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.solution_stabilization" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.solution_stabilization">
+<span class="sig-name descname"><span class="pre">solution_stabilization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.solution_stabilization" title="Permalink to this definition">#</a></dt>
 <dd><p>Automatic solver settings adjustment for solution stabilization during contact process.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spatial</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Spatial discretization control options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_to_second_order_blending</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set factor to control first order to second order blending.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending_list" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_to_second_order_blending_list</span></code></a>(*args, ...)</p></td>
-<td><p>List set factor to control first order to second order blending.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.flow_skew_diffusion_exclude" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.flow_skew_diffusion_exclude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flow_skew_diffusion_exclude</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Exclude skew diffusion discretization contribution for momentum.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_flux_specify" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_flux_specify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rhie_chow_flux_specify</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allow specification of the the rhie-chow flux method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_method" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rhie_chow_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter the rhie-chow flux method.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scalars_skew_diffusion_exclude" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scalars_skew_diffusion_exclude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scalars_skew_diffusion_exclude</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Exclude skew diffusion discretization contribution for scalars.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scheme" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scheme</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set advection scheme for contact event stability.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending">
-<span class="sig-name descname"><span class="pre">first_to_second_order_blending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending" title="Permalink to this definition">#</a></dt>
-<dd><p>Set factor to control first order to second order blending.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending_list">
-<span class="sig-name descname"><span class="pre">first_to_second_order_blending_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.first_to_second_order_blending_list" title="Permalink to this definition">#</a></dt>
-<dd><p>List set factor to control first order to second order blending.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.flow_skew_diffusion_exclude">
-<span class="sig-name descname"><span class="pre">flow_skew_diffusion_exclude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.flow_skew_diffusion_exclude" title="Permalink to this definition">#</a></dt>
-<dd><p>Exclude skew diffusion discretization contribution for momentum.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_flux_specify">
-<span class="sig-name descname"><span class="pre">rhie_chow_flux_specify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_flux_specify" title="Permalink to this definition">#</a></dt>
-<dd><p>Allow specification of the the rhie-chow flux method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_method">
-<span class="sig-name descname"><span class="pre">rhie_chow_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.rhie_chow_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter the rhie-chow flux method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scalars_skew_diffusion_exclude">
-<span class="sig-name descname"><span class="pre">scalars_skew_diffusion_exclude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scalars_skew_diffusion_exclude" title="Permalink to this definition">#</a></dt>
-<dd><p>Exclude skew diffusion discretization contribution for scalars.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scheme">
-<span class="sig-name descname"><span class="pre">scheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.spatial.scheme" title="Permalink to this definition">#</a></dt>
-<dd><p>Set advection scheme for contact event stability.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transient</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Transient discretization control options .</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_factor" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_scale_modification_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify time-scale modification factor.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_method" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time_scale_modification_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enter time scale modification method.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_parameters_specify" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_parameters_specify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transient_parameters_specify</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allow transient parameter specification.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_scheme" title="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_scheme"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transient_scheme</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify temporal scheme to be used.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_factor">
-<span class="sig-name descname"><span class="pre">time_scale_modification_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify time-scale modification factor.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_method">
-<span class="sig-name descname"><span class="pre">time_scale_modification_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.time_scale_modification_method" title="Permalink to this definition">#</a></dt>
-<dd><p>Enter time scale modification method.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_parameters_specify">
-<span class="sig-name descname"><span class="pre">transient_parameters_specify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_parameters_specify" title="Permalink to this definition">#</a></dt>
-<dd><p>Allow transient parameter specification.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_scheme">
-<span class="sig-name descname"><span class="pre">transient_scheme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.transient.transient_scheme" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify temporal scheme to be used.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.verbosity">
-<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.controls.contact_solution_controls.verbosity" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.verbosity">
+<span class="sig-name descname"><span class="pre">verbosity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.controls.contact_solution_controls.verbosity" title="Permalink to this definition">#</a></dt>
 <dd><p>Specify verbosity level for contact solution controls.</p>
 </dd></dl>
 

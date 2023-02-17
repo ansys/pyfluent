@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
     <link rel="next" title="solver.tui.setup.models.dpm.parallel.expert" href="expert/index.html" />
-    <link rel="prev" title="solver.tui.setup.models.dpm.options" href="../options/index.html" />
+    <link rel="prev" title="solver.tui.setup.models.dpm.collisions.collision_partners" href="../collisions/collision_partners/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,38 +356,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -391,13 +371,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4">
@@ -406,18 +421,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../../../results/index.html">
          solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solution/index.html">
-         solver.tui.solution
+        <a class="reference internal" href="../../../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -430,41 +460,6 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../boundary_conditions/index.html">
-           solver.tui.setup.boundary_conditions
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../dynamic_mesh/index.html">
-           solver.tui.setup.dynamic_mesh
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.setup.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../gap_model/index.html">
-           solver.tui.setup.gap_model
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../materials/index.html">
-           solver.tui.setup.materials
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mesh_interfaces/index.html">
-           solver.tui.setup.mesh_interfaces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../mixing_planes/index.html">
-           solver.tui.setup.mixing_planes
-          </a>
-         </li>
          <li class="toctree-l5 current active has-children">
           <a class="reference internal" href="../../index.html">
            solver.tui.setup.models
@@ -476,8 +471,8 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../acoustics/index.html">
-             solver.tui.setup.models.acoustics
+            <a class="reference internal" href="../../radiation/index.html">
+             solver.tui.setup.models.radiation
             </a>
            </li>
            <li class="toctree-l6">
@@ -486,8 +481,33 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
-             solver.tui.setup.models.eulerian_wallfilm
+            <a class="reference internal" href="../../heat_exchanger/index.html">
+             solver.tui.setup.models.heat_exchanger
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../viscous/index.html">
+             solver.tui.setup.models.viscous
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../two_temperature/index.html">
+             solver.tui.setup.models.two_temperature
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../electrolysis/index.html">
+             solver.tui.setup.models.electrolysis
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../acoustics/index.html">
+             solver.tui.setup.models.acoustics
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nox_parameters/index.html">
+             solver.tui.setup.models.nox_parameters
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -501,8 +521,8 @@ function checkPageExistsAndRedirect(event) {
             </label>
             <ul class="current">
              <li class="toctree-l7">
-              <a class="reference internal" href="../collisions/index.html">
-               solver.tui.setup.models.dpm.collisions
+              <a class="reference internal" href="../splash_options/index.html">
+               solver.tui.setup.models.dpm.splash_options
               </a>
              </li>
              <li class="toctree-l7">
@@ -511,18 +531,13 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../interaction/index.html">
-               solver.tui.setup.models.dpm.interaction
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../numerics/index.html">
-               solver.tui.setup.models.dpm.numerics
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../options/index.html">
                solver.tui.setup.models.dpm.options
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../collisions/index.html">
+               solver.tui.setup.models.dpm.collisions
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -543,8 +558,13 @@ function checkPageExistsAndRedirect(event) {
               </ul>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../splash_options/index.html">
-               solver.tui.setup.models.dpm.splash_options
+              <a class="reference internal" href="../interaction/index.html">
+               solver.tui.setup.models.dpm.interaction
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../numerics/index.html">
+               solver.tui.setup.models.dpm.numerics
               </a>
              </li>
              <li class="toctree-l7">
@@ -555,43 +575,13 @@ function checkPageExistsAndRedirect(event) {
             </ul>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../shell_conduction/index.html">
-             solver.tui.setup.models.shell_conduction
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../system_coupling_settings/index.html">
-             solver.tui.setup.models.system_coupling_settings
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../cht/index.html">
-             solver.tui.setup.models.cht
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../two_temperature/index.html">
-             solver.tui.setup.models.two_temperature
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../multiphase/index.html">
-             solver.tui.setup.models.multiphase
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../nox_parameters/index.html">
-             solver.tui.setup.models.nox_parameters
-            </a>
-           </li>
-           <li class="toctree-l6">
             <a class="reference internal" href="../../soot_parameters/index.html">
              solver.tui.setup.models.soot_parameters
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../radiation/index.html">
-             solver.tui.setup.models.radiation
+            <a class="reference internal" href="../../eulerian_wallfilm/index.html">
+             solver.tui.setup.models.eulerian_wallfilm
             </a>
            </li>
            <li class="toctree-l6">
@@ -600,13 +590,13 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../species/index.html">
-             solver.tui.setup.models.species
+            <a class="reference internal" href="../../system_coupling_settings/index.html">
+             solver.tui.setup.models.system_coupling_settings
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../viscous/index.html">
-             solver.tui.setup.models.viscous
+            <a class="reference internal" href="../../shell_conduction/index.html">
+             solver.tui.setup.models.shell_conduction
             </a>
            </li>
            <li class="toctree-l6">
@@ -615,25 +605,40 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../heat_exchanger/index.html">
-             solver.tui.setup.models.heat_exchanger
+            <a class="reference internal" href="../../species/index.html">
+             solver.tui.setup.models.species
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../electrolysis_setup/index.html">
-             solver.tui.setup.models.electrolysis_setup
+            <a class="reference internal" href="../../multiphase/index.html">
+             solver.tui.setup.models.multiphase
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../cht/index.html">
+             solver.tui.setup.models.cht
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../named_expressions/index.html">
-           solver.tui.setup.named_expressions
+          <a class="reference internal" href="../../../reference_frames/index.html">
+           solver.tui.setup.reference_frames
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../operating_conditions/index.html">
-           solver.tui.setup.operating_conditions
+          <a class="reference internal" href="../../../turbo_model/index.html">
+           solver.tui.setup.turbo_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../gap_model/index.html">
+           solver.tui.setup.gap_model
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mesh_interfaces/index.html">
+           solver.tui.setup.mesh_interfaces
           </a>
          </li>
          <li class="toctree-l5">
@@ -642,55 +647,55 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../reference_frames/index.html">
-           solver.tui.setup.reference_frames
-          </a>
-         </li>
-         <li class="toctree-l5">
           <a class="reference internal" href="../../../reference_values/index.html">
            solver.tui.setup.reference_values
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../turbo_model/index.html">
-           solver.tui.setup.turbo_model
+          <a class="reference internal" href="../../../materials/index.html">
+           solver.tui.setup.materials
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../named_expressions/index.html">
+           solver.tui.setup.named_expressions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../boundary_conditions/index.html">
+           solver.tui.setup.boundary_conditions
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../mixing_planes/index.html">
+           solver.tui.setup.mixing_planes
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.setup.expert
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../dynamic_mesh/index.html">
+           solver.tui.setup.dynamic_mesh
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../operating_conditions/index.html">
+           solver.tui.setup.operating_conditions
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
       </ul>
@@ -759,7 +764,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.setup.models.dpm.parallel
@@ -768,16 +773,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.setup.models.dpm.parallel.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.enable_workpile">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.enable_workpile">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.enable_workpile()
@@ -786,36 +782,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.setup.models.dpm.parallel.expert
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.setup.models.dpm.parallel.expert.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.partition_method_hybrid_2domain">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.setup.models.dpm.parallel.expert.partition_method_hybrid_2domain()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order()
@@ -824,7 +791,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_2domain">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_2domain">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.hybrid_2domain()
@@ -833,7 +800,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_model">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_model">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.hybrid_collision_model()
@@ -842,7 +809,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional()
@@ -851,7 +818,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_variant">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_variant">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.hybrid_collision_variant()
@@ -860,7 +827,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_workpile">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_workpile">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.hybrid_workpile()
@@ -869,7 +836,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.n_threads">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.n_threads">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.n_threads()
@@ -878,7 +845,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.report">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.report">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.report()
@@ -887,7 +854,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_hybrid">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_hybrid">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.use_hybrid()
@@ -896,7 +863,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_message_passing">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_message_passing">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.use_message_passing()
@@ -905,7 +872,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_shared_memory">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_shared_memory">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.setup.models.dpm.parallel.use_shared_memory()
@@ -936,168 +903,85 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-setup-models-dpm-parallel">
 <span id="ref-solver-tui-setup-models-dpm-parallel"></span><h1>solver.tui.setup.models.dpm.parallel<a class="headerlink" href="#solver-tui-setup-models-dpm-parallel" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">parallel</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter the parallel menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.enable_workpile" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.enable_workpile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enable_workpile</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable the particle workpile algorithm.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fix_source_term_accumulation_order</span></code></a>(*args, ...)</p></td>
-<td><p>Enforce deterministic order of source term accumulation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_2domain" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_2domain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hybrid_2domain</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use DPM domain to simulate particles.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_model" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hybrid_collision_model</span></code></a>(*args, **kwargs)</p></td>
-<td><p>An EXPERIMENTAL feature to allow 'hybrid' DPM parallel tracking with the collision / coalescence model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hybrid_collision_unidirectional</span></code></a>(*args, **kwargs)</p></td>
-<td><p>A faster, yet potentially somewhat less accurate, modification to the beta feature that allows 'hybrid' DPM parallel tracking with the collision / coalescence model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_variant" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_variant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hybrid_collision_variant</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Further reduce the residual risk of dead-locks in the experimental feature that allows 'hybrid' DPM parallel tracking with the collision / coalescence model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_workpile" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_workpile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hybrid_workpile</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Optimize multi-thread load balancing within each partition in hybrid-parallel DPM tracking.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.n_threads" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.n_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_threads</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of processors to use for DPM.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.report" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Print particle workpile statistics.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_hybrid" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_hybrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_hybrid</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set DPM parallel-mode to hybrid.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_message_passing" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_message_passing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_message_passing</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set DPM parallel-mode to message passing.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_shared_memory" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_shared_memory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_shared_memory</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set DPM parallel-mode to shared memory.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expert</span></code></a></p></td>
-<td><p>Enter the menu to set expert DPM parallel options.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.setup.models.dpm.</span></span><span class="sig-name descname"><span class="pre">parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel" title="Permalink to this definition">#</a></dt>
+<dd><p>Enter the parallel menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.enable_workpile">
-<span class="sig-name descname"><span class="pre">enable_workpile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.enable_workpile" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.enable_workpile">
+<span class="sig-name descname"><span class="pre">enable_workpile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.enable_workpile" title="Permalink to this definition">#</a></dt>
 <dd><p>Enable/disable the particle workpile algorithm.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">expert</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enter the menu to set expert DPM parallel options.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../../index.html#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.partition_method_hybrid_2domain" title="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.partition_method_hybrid_2domain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition_method_hybrid_2domain</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set DPM Domain partition method.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.partition_method_hybrid_2domain">
-<span class="sig-name descname"><span class="pre">partition_method_hybrid_2domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.expert.partition_method_hybrid_2domain" title="Permalink to this definition">#</a></dt>
-<dd><p>Set DPM Domain partition method.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order">
-<span class="sig-name descname"><span class="pre">fix_source_term_accumulation_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order">
+<span class="sig-name descname"><span class="pre">fix_source_term_accumulation_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.fix_source_term_accumulation_order" title="Permalink to this definition">#</a></dt>
 <dd><p>Enforce deterministic order of source term accumulation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_2domain">
-<span class="sig-name descname"><span class="pre">hybrid_2domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_2domain" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_2domain">
+<span class="sig-name descname"><span class="pre">hybrid_2domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_2domain" title="Permalink to this definition">#</a></dt>
 <dd><p>Use DPM domain to simulate particles.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_model">
-<span class="sig-name descname"><span class="pre">hybrid_collision_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_model" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_model">
+<span class="sig-name descname"><span class="pre">hybrid_collision_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_model" title="Permalink to this definition">#</a></dt>
 <dd><p>An EXPERIMENTAL feature to allow ‘hybrid’ DPM parallel tracking with the collision / coalescence model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional">
-<span class="sig-name descname"><span class="pre">hybrid_collision_unidirectional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional">
+<span class="sig-name descname"><span class="pre">hybrid_collision_unidirectional</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_unidirectional" title="Permalink to this definition">#</a></dt>
 <dd><p>A faster, yet potentially somewhat less accurate, modification to the beta feature
 that allows ‘hybrid’ DPM parallel tracking with the collision / coalescence model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_variant">
-<span class="sig-name descname"><span class="pre">hybrid_collision_variant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_collision_variant" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_variant">
+<span class="sig-name descname"><span class="pre">hybrid_collision_variant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_collision_variant" title="Permalink to this definition">#</a></dt>
 <dd><p>Further reduce the residual risk of dead-locks in the experimental feature that
 allows ‘hybrid’ DPM parallel tracking with the collision / coalescence model.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_workpile">
-<span class="sig-name descname"><span class="pre">hybrid_workpile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.hybrid_workpile" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_workpile">
+<span class="sig-name descname"><span class="pre">hybrid_workpile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.hybrid_workpile" title="Permalink to this definition">#</a></dt>
 <dd><p>Optimize multi-thread load balancing within each partition in hybrid-parallel DPM tracking.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.n_threads">
-<span class="sig-name descname"><span class="pre">n_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.n_threads" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.n_threads">
+<span class="sig-name descname"><span class="pre">n_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.n_threads" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the number of processors to use for DPM.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.report">
-<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.report" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.report" title="Permalink to this definition">#</a></dt>
 <dd><p>Print particle workpile statistics.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_hybrid">
-<span class="sig-name descname"><span class="pre">use_hybrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_hybrid" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_hybrid">
+<span class="sig-name descname"><span class="pre">use_hybrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_hybrid" title="Permalink to this definition">#</a></dt>
 <dd><p>Set DPM parallel-mode to hybrid.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_message_passing">
-<span class="sig-name descname"><span class="pre">use_message_passing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_message_passing" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_message_passing">
+<span class="sig-name descname"><span class="pre">use_message_passing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_message_passing" title="Permalink to this definition">#</a></dt>
 <dd><p>Set DPM parallel-mode to message passing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_shared_memory">
-<span class="sig-name descname"><span class="pre">use_shared_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.setup.models.dpm.parallel.use_shared_memory" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_shared_memory">
+<span class="sig-name descname"><span class="pre">use_shared_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.setup.models.dpm.parallel.use_shared_memory" title="Permalink to this definition">#</a></dt>
 <dd><p>Set DPM parallel-mode to shared memory.</p>
 </dd></dl>
 

@@ -3,7 +3,14 @@
 solver.tui.solve.animate.pulse.hardcopy.driver
 ==============================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.animate.pulse.hardcopy.driver
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.hardcopy.driver
+   :members: hsf, post_script, dump_window, png, options, eps, vrml, avz, list, ppm, glb, jpeg, tiff
+
 .. toctree::
    :hidden:
 

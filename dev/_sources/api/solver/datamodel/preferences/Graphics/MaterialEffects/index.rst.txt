@@ -3,6 +3,12 @@
 solver.datamodel.preferences.Graphics.MaterialEffects
 =====================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.MaterialEffects
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.MaterialEffects
+   :members: DecimationFilter, ParameterizationSource, TilingStyle
    :noindex:
 

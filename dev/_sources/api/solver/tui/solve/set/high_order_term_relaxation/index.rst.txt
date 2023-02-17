@@ -3,7 +3,14 @@
 solver.tui.solve.set.high\_order\_term\_relaxation
 ==================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.high_order_term_relaxation
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.high_order_term_relaxation
+   :members: enable
+
 .. toctree::
    :hidden:
 

@@ -3,4 +3,11 @@
 solver.tui.preferences.graphics.graphics\_effects
 =================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.preferences.graphics.graphics_effects
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.graphics_effects
+   :members: simple_shadows_enabled, update_after_mouse_release, grid_plane_size_factor, grid_plane_count, show_marker_reflections, ambient_occlusion_quality, grid_plane_offset, ambient_occlusion_strength, grid_plane_enabled, plane_direction, ambient_occlusion_enabled, show_edge_reflections, bloom_blur, shadow_map_enabled, bloom_enabled, grid_color, reflections_enabled, bloom_strength, anti_aliasing
+

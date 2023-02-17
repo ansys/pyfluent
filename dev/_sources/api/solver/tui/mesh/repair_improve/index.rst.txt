@@ -3,4 +3,11 @@
 solver.tui.mesh.repair\_improve
 ===============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.mesh.repair_improve
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.repair_improve
+   :members: repair_wall_distance, repair_face_handedness, allow_repair_at_boundaries, report_poor_elements, include_local_polyhedra_conversion_in_repair, repair, improve_quality, repair_face_node_order, repair_periodic
+

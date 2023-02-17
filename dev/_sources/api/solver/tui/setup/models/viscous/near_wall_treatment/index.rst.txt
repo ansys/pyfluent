@@ -3,4 +3,11 @@
 solver.tui.setup.models.viscous.near\_wall\_treatment
 =====================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.viscous.near_wall_treatment
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.viscous.near_wall_treatment
+   :members: non_equilibrium_wall_fn, wf_thermal_effects, user_defined_wall_functions, enhanced_wall_treatment, scalable_wall_functions, menter_lechner, wf_pressure_gradient_effects, wall_omega_treatment, werner_wengle_wall_fn
+

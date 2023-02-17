@@ -1,6 +1,0 @@
-.. _ref_solver_tui_parametric_study_update_concurrent_settings:
-
-solver.tui.parametric\_study.update.concurrent\_settings
-========================================================
-
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.parametric_study.update.concurrent_settings

@@ -3,4 +3,11 @@
 meshing.tui.objects.volumetric\_regions.tet.set.tet\_improve
 ============================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects.volumetric_regions.tet.set.tet_improve
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.tet.set.tet_improve
+   :members: angle, iterations, skew, attempts
+

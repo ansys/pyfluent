@@ -1,6 +1,0 @@
-transfer\_mesh\_to\_solvers
-===========================
-
-.. currentmodule:: ansys.fluent.core.session_pure_meshing
-
-.. automethod:: PureMeshing.transfer_mesh_to_solvers

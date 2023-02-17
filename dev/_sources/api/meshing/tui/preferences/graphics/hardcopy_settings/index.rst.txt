@@ -3,4 +3,11 @@
 meshing.tui.preferences.graphics.hardcopy\_settings
 ===================================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.preferences.graphics.hardcopy_settings
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.hardcopy_settings
+   :members: hardcopy_line_width, transparent_embedded_windows, save_embedded_windows_in_hardcopy, hardcopy_driver, save_embedded_hardcopies_separately, post_script_permission_override, export_edges_for_avz, hardware_image_accel
+

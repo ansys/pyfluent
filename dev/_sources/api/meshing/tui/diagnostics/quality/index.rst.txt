@@ -3,4 +3,11 @@
 meshing.tui.diagnostics.quality
 ===============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.diagnostics.quality
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.diagnostics.quality
+   :members: general_improve, smooth, delaunay_swap, collapse
+

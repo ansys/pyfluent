@@ -3,4 +3,11 @@
 solver.tui.define.models.soot\_parameters
 =========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.soot_parameters
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.soot_parameters
+   :members: soot_model_parameters, soot_model_udfs, inlet_diffusion, modify_schmidt_number, soot_turbulence_interaction, soot_radiation_interaction, soot_process_parameters
+

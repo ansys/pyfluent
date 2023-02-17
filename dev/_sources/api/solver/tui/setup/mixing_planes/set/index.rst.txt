@@ -3,9 +3,16 @@
 solver.tui.setup.mixing\_planes.set
 ===================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.mixing_planes.set
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.mixing_planes.set
+   :members: under_relaxation, fix_pressure_level, averaging_method
+
 .. toctree::
    :hidden:
 
-   conserve_swirl/index
    conserve_total_enthalpy/index
+   conserve_swirl/index

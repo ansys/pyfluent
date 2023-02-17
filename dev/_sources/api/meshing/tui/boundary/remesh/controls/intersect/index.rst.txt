@@ -3,4 +3,11 @@
 meshing.tui.boundary.remesh.controls.intersect
 ==============================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.boundary.remesh.controls.intersect
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.boundary.remesh.controls.intersect
+   :members: feature_angle, refine_region, join_project_angle, tolerance, within_tolerance, join_match_angle, separate, remesh_post_intersection, ignore_parallel_faces, absolute_tolerance, retri_improve, delete_overlap, stitch_preserve
+

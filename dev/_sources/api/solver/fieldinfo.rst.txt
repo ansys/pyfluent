@@ -89,8 +89,9 @@ calling the ``get_surfaces_info`` method.
 .. currentmodule:: ansys.fluent.core.services
 
 .. autosummary::
-    :toctree: _autosummary
-    :template: flobject-class-template.rst
-    :recursive:
+   :toctree: _autosummary
 
-    field_data.FieldInfo
+.. automethod:: ansys.fluent.core.services.field_data.FieldInfo.get_range
+.. automethod:: ansys.fluent.core.services.field_data.FieldInfo.get_fields_info
+.. automethod:: ansys.fluent.core.services.field_data.FieldInfo.get_vector_fields_info
+.. automethod:: ansys.fluent.core.services.field_data.FieldInfo.get_surfaces_info

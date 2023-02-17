@@ -3,5 +3,11 @@
 meshing.datamodel.preferences.Navigation.MouseMapping.Basic
 ===========================================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Navigation.MouseMapping.Basic
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Navigation.MouseMapping.Basic
+   :members: LMB, LMBCLICK, MMB, MMBCLICK, RMB, RMBCLICK
 

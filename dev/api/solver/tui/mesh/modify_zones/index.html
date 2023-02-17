@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.mesh.polyhedra" href="../polyhedra/index.html" />
-    <link rel="prev" title="solver.tui.mesh.adapt.geometry" href="../adapt/geometry/index.html" />
+    <link rel="next" title="solver.tui.mesh.repair_improve" href="../repair_improve/index.html" />
+    <link rel="prev" title="solver.tui.mesh.reorder" href="../reorder/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,8 +354,43 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
+        <a class="reference internal" href="../../define/index.html">
+         solver.tui.define
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parallel/index.html">
+         solver.tui.parallel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
         </a>
        </li>
        <li class="toctree-l4">
@@ -359,18 +399,58 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../define/index.html">
-         solver.tui.define
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../file/index.html">
          solver.tui.file
         </a>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../icing/index.html">
          solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../simulation_reports/index.html">
+         solver.tui.simulation_reports
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../views/index.html">
+         solver.tui.views
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_workflow/index.html">
+         solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -388,11 +468,6 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.mesh.adapt
           </a>
          </li>
-         <li class="toctree-l5 current active">
-          <a class="current reference internal" href="#">
-           solver.tui.mesh.modify_zones
-          </a>
-         </li>
          <li class="toctree-l5">
           <a class="reference internal" href="../polyhedra/index.html">
            solver.tui.mesh.polyhedra
@@ -401,6 +476,11 @@ function checkPageExistsAndRedirect(event) {
          <li class="toctree-l5">
           <a class="reference internal" href="../reorder/index.html">
            solver.tui.mesh.reorder
+          </a>
+         </li>
+         <li class="toctree-l5 current active">
+          <a class="current reference internal" href="#">
+           solver.tui.mesh.modify_zones
           </a>
          </li>
          <li class="toctree-l5">
@@ -413,86 +493,16 @@ function checkPageExistsAndRedirect(event) {
            solver.tui.mesh.surface_mesh
           </a>
          </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../geometry/index.html">
+           solver.tui.mesh.geometry
+          </a>
+         </li>
         </ul>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../parameters__and__customization/index.html">
          solver.tui.parameters__and__customization
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parallel/index.html">
-         solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../views/index.html">
-         solver.tui.views
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_workflow/index.html">
-         solver.tui.turbo_workflow
         </a>
        </li>
       </ul>
@@ -561,7 +571,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.modify_zones
@@ -570,16 +580,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.modify_zones.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.activate_cell_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.activate_cell_zone()
@@ -588,7 +589,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.append_mesh()
@@ -597,7 +598,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh_data">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh_data">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.append_mesh_data()
@@ -606,7 +607,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_phase">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_phase">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.change_zone_phase()
@@ -615,7 +616,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_state">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_state">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.change_zone_state()
@@ -624,7 +625,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion()
@@ -633,7 +634,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion()
@@ -642,7 +643,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_move_cell_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_move_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.copy_move_cell_zone()
@@ -651,7 +652,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion()
@@ -660,7 +661,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_all_shell_threads">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_all_shell_threads">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.create_all_shell_threads()
@@ -669,7 +670,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_periodic_interface">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_periodic_interface">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.create_periodic_interface()
@@ -678,7 +679,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.deactivate_cell_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.deactivate_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.deactivate_cell_zone()
@@ -687,7 +688,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_all_shells">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_all_shells">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.delete_all_shells()
@@ -696,7 +697,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_cell_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_cell_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.delete_cell_zone()
@@ -705,7 +706,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_delta">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_delta">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.extrude_face_zone_delta()
@@ -714,7 +715,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_para">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_para">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.extrude_face_zone_para()
@@ -723,7 +724,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.fuse_face_zones">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.fuse_face_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.fuse_face_zones()
@@ -732,7 +733,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.list_zones">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.list_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.list_zones()
@@ -741,7 +742,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.make_periodic">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.make_periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.make_periodic()
@@ -750,7 +751,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.matching_tolerance">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.matching_tolerance">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.matching_tolerance()
@@ -759,7 +760,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.merge_zones">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.merge_zones">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.merge_zones()
@@ -768,7 +769,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.mrf_to_sliding_mesh">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.mrf_to_sliding_mesh">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.mrf_to_sliding_mesh()
@@ -777,7 +778,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.orient_face_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.orient_face_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.orient_face_zone()
@@ -786,7 +787,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.recreate_all_shells">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.recreate_all_shells">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.recreate_all_shells()
@@ -795,7 +796,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.replace_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.replace_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.replace_zone()
@@ -804,7 +805,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.rotate_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.rotate_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.rotate_zone()
@@ -813,7 +814,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.scale_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.scale_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.scale_zone()
@@ -822,7 +823,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_mark">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_mark">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.sep_cell_zone_mark()
@@ -831,7 +832,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_region">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_region">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.sep_cell_zone_region()
@@ -840,7 +841,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_angle">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.sep_face_zone_angle()
@@ -849,7 +850,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_face">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_face">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.sep_face_zone_face()
@@ -858,7 +859,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_mark">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_mark">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.sep_face_zone_mark()
@@ -867,7 +868,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_region">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_region">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.sep_face_zone_region()
@@ -876,7 +877,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_face_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_face_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.slit_face_zone()
@@ -885,7 +886,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_interior_between_diff_solids">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_interior_between_diff_solids">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.slit_interior_between_diff_solids()
@@ -894,7 +895,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_periodic">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_periodic">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.slit_periodic()
@@ -903,7 +904,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.translate_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.translate_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.translate_zone()
@@ -912,7 +913,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_name">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_name">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.zone_name()
@@ -921,7 +922,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_type">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_type">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify_zones.zone_type()
@@ -952,372 +953,245 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-mesh-modify-zones">
 <span id="ref-solver-tui-mesh-modify-zones"></span><h1>solver.tui.mesh.modify_zones<a class="headerlink" href="#solver-tui-mesh-modify-zones" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">modify_zones</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the zone modification menu. For a description of the items in this menu, see define/boundary-conditions/modify-zones.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.activate_cell_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.activate_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activate a cell thread.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Append new mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh_data" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append_mesh_data</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Append new mesh with data.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_phase" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_zone_phase</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change the realgas phase for a zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_state" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_zone_state</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change the realgas material state for a zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_all_solid_mrf_to_solid_motion</span></code></a>(*args, ...)</p></td>
-<td><p>Change all solid zones motion specification from MRF to solid motion.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_mesh_to_mrf_motion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy motion variable values for origin, axis and velocities from Mesh Motion to Frame Motion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_move_cell_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_move_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_move_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy and translate or rotate a cell zone.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_mrf_to_mesh_motion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Copy motion variable values for origin, axis and velocities from Frame Motion to Mesh Motion.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_all_shell_threads" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_all_shell_threads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_all_shell_threads</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Mark all finite thickness wall for shell creation.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_periodic_interface" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_periodic_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_periodic_interface</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create a conformal or non-conformal periodic interface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.deactivate_cell_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.deactivate_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deactivate_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deactivate cell thread.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_all_shells" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_all_shells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_all_shells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete all shell zones and switch off shell conduction on all the walls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_cell_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_cell_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_cell_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Delete a cell thread.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_delta" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_delta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrude_face_zone_delta</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extrude a face thread a specified distance based on a list of deltas.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_para" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_para"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extrude_face_zone_para</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Extrude a face thread a specified distance based on a distance and a list of parametric locations between 0 and 1 (eg.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.fuse_face_zones" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.fuse_face_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fuse_face_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempt to fuse zones by removing duplicate faces and nodes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.list_zones" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.list_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List zone IDs, types, kinds, and names.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.make_periodic" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.make_periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempt to establish periodic/shadow face zone connectivity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.matching_tolerance" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.matching_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matching_tolerance</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the normalized tolerance used for finding coincident nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.merge_zones" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.merge_zones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_zones</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Merge zones of the same type and condition into one.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.mrf_to_sliding_mesh" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.mrf_to_sliding_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mrf_to_sliding_mesh</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Change motion specification from MRF to moving mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.orient_face_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.orient_face_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orient_face_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Orient the face zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.recreate_all_shells" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.recreate_all_shells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">recreate_all_shells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Create shell on all the walls where which were deleted using the command delete-all-shells.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.replace_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.replace_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">replace_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Replace a cell zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.rotate_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.rotate_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Rotate nodal coordinates of input cell zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.scale_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.scale_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Scale nodal coordinates of input cell zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_mark" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_mark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_cell_zone_mark</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a cell zone based on cell marking.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_region" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_cell_zone_region</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a cell zone based on contiguous regions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_angle" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a face zone based on significant angle.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_face" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_face</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate each face in a zone into unique zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_mark" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_mark"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_mark</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a face zone based on cell marking.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_region" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_face_zone_region</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Separate a face zone based on contiguous regions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_face_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_face_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slit_face_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Slit a two-sided wall into two connected wall zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_interior_between_diff_solids" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_interior_between_diff_solids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slit_interior_between_diff_solids</span></code></a>(*args, ...)</p></td>
-<td><p>Slit interior created between different solids into coupled walls.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_periodic" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_periodic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slit_periodic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Slit a periodic zone into two symmetry zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.translate_zone" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.translate_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Translate nodal coordinates of input cell zones.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_name" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_name</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Give a zone a new name.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_type" title="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zone_type</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set a zone's type.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">modify_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the zone modification menu. For a description of the items in this menu, see define/boundary-conditions/modify-zones.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.activate_cell_zone">
-<span class="sig-name descname"><span class="pre">activate_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.activate_cell_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone">
+<span class="sig-name descname"><span class="pre">activate_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.activate_cell_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Activate a cell thread.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh">
-<span class="sig-name descname"><span class="pre">append_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh">
+<span class="sig-name descname"><span class="pre">append_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh" title="Permalink to this definition">#</a></dt>
 <dd><p>Append new mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh_data">
-<span class="sig-name descname"><span class="pre">append_mesh_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.append_mesh_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh_data">
+<span class="sig-name descname"><span class="pre">append_mesh_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.append_mesh_data" title="Permalink to this definition">#</a></dt>
 <dd><p>Append new mesh with data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_phase">
-<span class="sig-name descname"><span class="pre">change_zone_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_phase" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_phase">
+<span class="sig-name descname"><span class="pre">change_zone_phase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_phase" title="Permalink to this definition">#</a></dt>
 <dd><p>Change the realgas phase for a zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_state">
-<span class="sig-name descname"><span class="pre">change_zone_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.change_zone_state" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_state">
+<span class="sig-name descname"><span class="pre">change_zone_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.change_zone_state" title="Permalink to this definition">#</a></dt>
 <dd><p>Change the realgas material state for a zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion">
-<span class="sig-name descname"><span class="pre">convert_all_solid_mrf_to_solid_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion">
+<span class="sig-name descname"><span class="pre">convert_all_solid_mrf_to_solid_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.convert_all_solid_mrf_to_solid_motion" title="Permalink to this definition">#</a></dt>
 <dd><p>Change all solid zones motion specification from MRF to solid motion.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion">
-<span class="sig-name descname"><span class="pre">copy_mesh_to_mrf_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion">
+<span class="sig-name descname"><span class="pre">copy_mesh_to_mrf_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mesh_to_mrf_motion" title="Permalink to this definition">#</a></dt>
 <dd><p>Copy motion variable values for origin, axis and velocities from Mesh Motion to Frame Motion.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_move_cell_zone">
-<span class="sig-name descname"><span class="pre">copy_move_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_move_cell_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_move_cell_zone">
+<span class="sig-name descname"><span class="pre">copy_move_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_move_cell_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Copy and translate or rotate a cell zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion">
-<span class="sig-name descname"><span class="pre">copy_mrf_to_mesh_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion">
+<span class="sig-name descname"><span class="pre">copy_mrf_to_mesh_motion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.copy_mrf_to_mesh_motion" title="Permalink to this definition">#</a></dt>
 <dd><p>Copy motion variable values for origin, axis and velocities from Frame Motion to Mesh Motion.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_all_shell_threads">
-<span class="sig-name descname"><span class="pre">create_all_shell_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_all_shell_threads" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_all_shell_threads">
+<span class="sig-name descname"><span class="pre">create_all_shell_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_all_shell_threads" title="Permalink to this definition">#</a></dt>
 <dd><p>Mark all finite thickness wall for shell creation. Shell zones will be created at the start of iterations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_periodic_interface">
-<span class="sig-name descname"><span class="pre">create_periodic_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.create_periodic_interface" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_periodic_interface">
+<span class="sig-name descname"><span class="pre">create_periodic_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.create_periodic_interface" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a conformal or non-conformal periodic interface.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.deactivate_cell_zone">
-<span class="sig-name descname"><span class="pre">deactivate_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.deactivate_cell_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.deactivate_cell_zone">
+<span class="sig-name descname"><span class="pre">deactivate_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.deactivate_cell_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Deactivate cell thread.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_all_shells">
-<span class="sig-name descname"><span class="pre">delete_all_shells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_all_shells" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_all_shells">
+<span class="sig-name descname"><span class="pre">delete_all_shells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_all_shells" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete all shell zones and switch off shell conduction on all the walls. These zones can be recreated using the command recreate-all-shells.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_cell_zone">
-<span class="sig-name descname"><span class="pre">delete_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.delete_cell_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_cell_zone">
+<span class="sig-name descname"><span class="pre">delete_cell_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.delete_cell_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete a cell thread.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_delta">
-<span class="sig-name descname"><span class="pre">extrude_face_zone_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_delta" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_delta">
+<span class="sig-name descname"><span class="pre">extrude_face_zone_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_delta" title="Permalink to this definition">#</a></dt>
 <dd><p>Extrude a face thread a specified distance based on a list of deltas.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_para">
-<span class="sig-name descname"><span class="pre">extrude_face_zone_para</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.extrude_face_zone_para" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_para">
+<span class="sig-name descname"><span class="pre">extrude_face_zone_para</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.extrude_face_zone_para" title="Permalink to this definition">#</a></dt>
 <dd><p>Extrude a face thread a specified distance based on a distance and a list of parametric locations between 0 and 1 (eg. 0 0.2 0.4 0.8 1.0).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.fuse_face_zones">
-<span class="sig-name descname"><span class="pre">fuse_face_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.fuse_face_zones" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.fuse_face_zones">
+<span class="sig-name descname"><span class="pre">fuse_face_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.fuse_face_zones" title="Permalink to this definition">#</a></dt>
 <dd><p>Attempt to fuse zones by removing duplicate faces and nodes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.list_zones">
-<span class="sig-name descname"><span class="pre">list_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.list_zones" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.list_zones">
+<span class="sig-name descname"><span class="pre">list_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.list_zones" title="Permalink to this definition">#</a></dt>
 <dd><p>List zone IDs, types, kinds, and names.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.make_periodic">
-<span class="sig-name descname"><span class="pre">make_periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.make_periodic" title="Permalink to this definition">#</a></dt>
-<dd><p>Attempt to establish periodic/shadow face zone connectivity.</p>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.make_periodic">
+<span class="sig-name descname"><span class="pre">make_periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.make_periodic" title="Permalink to this definition">#</a></dt>
+<dd><p>Attempt to establish conformal periodic face zone connectivity.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.matching_tolerance">
-<span class="sig-name descname"><span class="pre">matching_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.matching_tolerance" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.matching_tolerance">
+<span class="sig-name descname"><span class="pre">matching_tolerance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.matching_tolerance" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the normalized tolerance used for finding coincident nodes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.merge_zones">
-<span class="sig-name descname"><span class="pre">merge_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.merge_zones" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.merge_zones">
+<span class="sig-name descname"><span class="pre">merge_zones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.merge_zones" title="Permalink to this definition">#</a></dt>
 <dd><p>Merge zones of the same type and condition into one.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.mrf_to_sliding_mesh">
-<span class="sig-name descname"><span class="pre">mrf_to_sliding_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.mrf_to_sliding_mesh" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.mrf_to_sliding_mesh">
+<span class="sig-name descname"><span class="pre">mrf_to_sliding_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.mrf_to_sliding_mesh" title="Permalink to this definition">#</a></dt>
 <dd><p>Change motion specification from MRF to moving mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.orient_face_zone">
-<span class="sig-name descname"><span class="pre">orient_face_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.orient_face_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.orient_face_zone">
+<span class="sig-name descname"><span class="pre">orient_face_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.orient_face_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Orient the face zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.recreate_all_shells">
-<span class="sig-name descname"><span class="pre">recreate_all_shells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.recreate_all_shells" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.recreate_all_shells">
+<span class="sig-name descname"><span class="pre">recreate_all_shells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.recreate_all_shells" title="Permalink to this definition">#</a></dt>
 <dd><p>Create shell on all the walls where which were deleted using the command delete-all-shells.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.replace_zone">
-<span class="sig-name descname"><span class="pre">replace_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.replace_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.replace_zone">
+<span class="sig-name descname"><span class="pre">replace_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.replace_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Replace a cell zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.rotate_zone">
-<span class="sig-name descname"><span class="pre">rotate_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.rotate_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.rotate_zone">
+<span class="sig-name descname"><span class="pre">rotate_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.rotate_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Rotate nodal coordinates of input cell zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.scale_zone">
-<span class="sig-name descname"><span class="pre">scale_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.scale_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.scale_zone">
+<span class="sig-name descname"><span class="pre">scale_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.scale_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Scale nodal coordinates of input cell zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_mark">
-<span class="sig-name descname"><span class="pre">sep_cell_zone_mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_mark" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_mark">
+<span class="sig-name descname"><span class="pre">sep_cell_zone_mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_mark" title="Permalink to this definition">#</a></dt>
 <dd><p>Separate a cell zone based on cell marking.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_region">
-<span class="sig-name descname"><span class="pre">sep_cell_zone_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_cell_zone_region" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_region">
+<span class="sig-name descname"><span class="pre">sep_cell_zone_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_cell_zone_region" title="Permalink to this definition">#</a></dt>
 <dd><p>Separate a cell zone based on contiguous regions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_angle">
-<span class="sig-name descname"><span class="pre">sep_face_zone_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_angle" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_angle">
+<span class="sig-name descname"><span class="pre">sep_face_zone_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_angle" title="Permalink to this definition">#</a></dt>
 <dd><p>Separate a face zone based on significant angle.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_face">
-<span class="sig-name descname"><span class="pre">sep_face_zone_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_face" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_face">
+<span class="sig-name descname"><span class="pre">sep_face_zone_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_face" title="Permalink to this definition">#</a></dt>
 <dd><p>Separate each face in a zone into unique zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_mark">
-<span class="sig-name descname"><span class="pre">sep_face_zone_mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_mark" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_mark">
+<span class="sig-name descname"><span class="pre">sep_face_zone_mark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_mark" title="Permalink to this definition">#</a></dt>
 <dd><p>Separate a face zone based on cell marking.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_region">
-<span class="sig-name descname"><span class="pre">sep_face_zone_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.sep_face_zone_region" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_region">
+<span class="sig-name descname"><span class="pre">sep_face_zone_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.sep_face_zone_region" title="Permalink to this definition">#</a></dt>
 <dd><p>Separate a face zone based on contiguous regions.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_face_zone">
-<span class="sig-name descname"><span class="pre">slit_face_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_face_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_face_zone">
+<span class="sig-name descname"><span class="pre">slit_face_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_face_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Slit a two-sided wall into two connected wall zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_interior_between_diff_solids">
-<span class="sig-name descname"><span class="pre">slit_interior_between_diff_solids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_interior_between_diff_solids" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_interior_between_diff_solids">
+<span class="sig-name descname"><span class="pre">slit_interior_between_diff_solids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_interior_between_diff_solids" title="Permalink to this definition">#</a></dt>
 <dd><p>Slit interior created between different solids into coupled walls.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_periodic">
-<span class="sig-name descname"><span class="pre">slit_periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.slit_periodic" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_periodic">
+<span class="sig-name descname"><span class="pre">slit_periodic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.slit_periodic" title="Permalink to this definition">#</a></dt>
 <dd><p>Slit a periodic zone into two symmetry zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.translate_zone">
-<span class="sig-name descname"><span class="pre">translate_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.translate_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.translate_zone">
+<span class="sig-name descname"><span class="pre">translate_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.translate_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Translate nodal coordinates of input cell zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_name">
-<span class="sig-name descname"><span class="pre">zone_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_name" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_name">
+<span class="sig-name descname"><span class="pre">zone_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Give a zone a new name.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_type">
-<span class="sig-name descname"><span class="pre">zone_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.mesh.modify_zones.zone_type" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_type">
+<span class="sig-name descname"><span class="pre">zone_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.mesh.modify_zones.zone_type" title="Permalink to this definition">#</a></dt>
 <dd><p>Set a zone’s type.</p>
 </dd></dl>
 

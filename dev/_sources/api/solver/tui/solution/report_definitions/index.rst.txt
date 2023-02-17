@@ -3,4 +3,11 @@
 solver.tui.solution.report\_definitions
 =======================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.report_definitions
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.report_definitions
+   :members: list, delete_all, delete, add, list_properties, edit, compute, copy, rename
+

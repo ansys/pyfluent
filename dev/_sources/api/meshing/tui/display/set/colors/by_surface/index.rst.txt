@@ -3,4 +3,11 @@
 meshing.tui.display.set.colors.by\_surface
 ==========================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.set.colors.by_surface
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set.colors.by_surface
+   :members: reset, list_surfaces_by_material, surfaces, list_surfaces_by_color
+

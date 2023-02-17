@@ -3,4 +3,11 @@
 solver.tui.solve.report\_plots
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.report_plots
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.report_plots
+   :members: axes, curves, list_properties, plot, edit, add, list, clear_data, delete, delete_all
+

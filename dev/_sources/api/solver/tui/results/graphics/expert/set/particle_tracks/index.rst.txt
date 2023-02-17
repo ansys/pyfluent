@@ -3,10 +3,17 @@
 solver.tui.results.graphics.expert.set.particle\_tracks
 =======================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.particle_tracks
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.particle_tracks
+   :members: report_to, report_type, particle_skip, report_default_variables, arrow_space, history_filename, twist_factor, report_variables, track_single_particle_stream, radius, marker_size, line_width, style, display, arrow_scale, coarsen_factor, sphere_attrib
+
 .. toctree::
    :hidden:
 
-   sphere_settings/index
    vector_settings/index
+   sphere_settings/index
    filter_settings/index

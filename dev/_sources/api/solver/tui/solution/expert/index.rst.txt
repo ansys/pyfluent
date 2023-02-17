@@ -3,14 +3,21 @@
 solver.tui.solution.expert
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.expert
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.expert
+   :members: singhal_et_al_cavitation_model, disable_reconstruction, vof_explicit_controls, bcd_boundedness, surface_tension_expert, correction_form, mp_mfluid_aniso_drag, bc_pressure_extrapolations, lock_solid_temperature, explicit_under_relaxation_value, set_all_species_together, retain_temporary_solver_mem, limiter_warnings, mp_reference_density, surface_tension, linearized_mass_transfer_udf, bcd_weights_freeze, material_property_warnings, alternate_wall_temp_formulation, energy_numerical_noise_filter, flow_warnings, equation_ordering, open_channel_controls, retain_cell_residuals, show_all_discretization_schemes, numerical_beach_controls
+
 .. toctree::
    :hidden:
 
-   divergence_prevention/index
-   high_speed_numerics/index
-   poor_mesh_numerics/index
-   previous_defaults/index
    non_reflecting_boundary_treatment/index
-   open_channel_wave_options/index
+   previous_defaults/index
+   high_speed_numerics/index
+   divergence_prevention/index
+   poor_mesh_numerics/index
    secondary_gradient_limiting/index
+   open_channel_wave_options/index

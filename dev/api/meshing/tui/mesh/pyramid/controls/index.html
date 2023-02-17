@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.thin_volume_mesh" href="../../thin_volume_mesh/index.html" />
+    <link rel="next" title="meshing.tui.mesh.poly_hexcore" href="../../poly_hexcore/index.html" />
     <link rel="prev" title="meshing.tui.mesh.pyramid" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -318,11 +323,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,28 +334,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../../preferences/index.html">
        meshing.tui.preferences
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
@@ -364,18 +349,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../material_point/index.html">
        meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -389,28 +384,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../../rapid_octree/index.html">
+         meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../cartesian/index.html">
          meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../hexcore/index.html">
-         meshing.tui.mesh.hexcore
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../modify/index.html">
-         meshing.tui.mesh.modify
         </a>
        </li>
        <li class="toctree-l4">
@@ -419,13 +399,63 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../rapid_octree/index.html">
-         meshing.tui.mesh.rapid_octree
+        <a class="reference internal" href="../../separate/index.html">
+         meshing.tui.mesh.separate
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../prism/index.html">
-         meshing.tui.mesh.prism
+        <a class="reference internal" href="../../manage/index.html">
+         meshing.tui.mesh.manage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../hexcore/index.html">
+         meshing.tui.mesh.hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../tet/index.html">
+         meshing.tui.mesh.tet
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../poly/index.html">
+         meshing.tui.mesh.poly
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../modify/index.html">
+         meshing.tui.mesh.modify
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../domains/index.html">
+         meshing.tui.mesh.domains
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../auto_mesh_controls/index.html">
+         meshing.tui.mesh.auto_mesh_controls
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -446,51 +476,31 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../separate/index.html">
-         meshing.tui.mesh.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../tet/index.html">
-         meshing.tui.mesh.tet
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../manage/index.html">
-         meshing.tui.mesh.manage
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../poly/index.html">
-         meshing.tui.mesh.poly
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../poly_hexcore/index.html">
          meshing.tui.mesh.poly_hexcore
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../auto_mesh_controls/index.html">
-         meshing.tui.mesh.auto_mesh_controls
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
+        <a class="reference internal" href="../../prism/index.html">
+         meshing.tui.mesh.prism
         </a>
        </li>
       </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../../display/index.html">
@@ -498,23 +508,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
     </ul>
@@ -556,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.pyramid.controls
@@ -565,16 +565,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.pyramid.controls.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.neighbor_angle">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.neighbor_angle">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.pyramid.controls.neighbor_angle()
@@ -583,7 +574,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_factor">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.offset_factor">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.pyramid.controls.offset_factor()
@@ -592,7 +583,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_scaling">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.offset_scaling">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.pyramid.controls.offset_scaling()
@@ -601,7 +592,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.vertex_method">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.vertex_method">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.pyramid.controls.vertex_method()
@@ -632,57 +623,35 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-pyramid-controls">
 <span id="ref-meshing-tui-mesh-pyramid-controls"></span><h1>meshing.tui.mesh.pyramid.controls<a class="headerlink" href="#meshing-tui-mesh-pyramid-controls" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.pyramid.</span></span><span class="sig-name descname"><span class="pre">controls</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the pyramid controls menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.neighbor_angle" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.neighbor_angle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbor_angle</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Sets the threshold dihedral angle used to limit the neighboring faces considered for pyramid creation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_factor" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the fraction of the computed pyramid height (offset) by which the pyramid heights will be randomly adjusted.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_scaling" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_scaling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">offset_scaling</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the scaling, to be used to determine the height of the pyramid.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.vertex_method" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.vertex_method"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_method</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the method by which the location of the new vertex of the pyramid will be determined.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.pyramid.</span></span><span class="sig-name descname"><span class="pre">controls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the pyramid controls menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.neighbor_angle">
-<span class="sig-name descname"><span class="pre">neighbor_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.neighbor_angle" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.neighbor_angle">
+<span class="sig-name descname"><span class="pre">neighbor_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.neighbor_angle" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the threshold dihedral angle used to limit the neighboring faces considered for pyramid creation. For example, if the value is set to 110° and the angle between a given quadrilateral face and a neighboring triangular face is greater than 110°, the resulting pyramid will not include the triangular face.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_factor">
-<span class="sig-name descname"><span class="pre">offset_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_factor" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.offset_factor">
+<span class="sig-name descname"><span class="pre">offset_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.offset_factor" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the fraction of the computed pyramid height (offset) by which the pyramid heights will be randomly adjusted. The default value is 0, indicating that all pyramids will have the exact height computed. A value of 0.1, for example, will limit each adjustment to ±10percentage of the computed height.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_scaling">
-<span class="sig-name descname"><span class="pre">offset_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.offset_scaling" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.offset_scaling">
+<span class="sig-name descname"><span class="pre">offset_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.offset_scaling" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the scaling, to be used to determine the height of the pyramid.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.vertex_method">
-<span class="sig-name descname"><span class="pre">vertex_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.pyramid.controls.vertex_method" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.vertex_method">
+<span class="sig-name descname"><span class="pre">vertex_method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.pyramid.controls.vertex_method" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies the method by which the location of the new vertex of the pyramid will be determined. The skewness method is used by default.</p>
 </dd></dl>
 

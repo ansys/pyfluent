@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="solver.tui.report.dpm_histogram.set" href="set/index.html" />
-    <link rel="prev" title="solver.tui.report" href="../index.html" />
+    <link rel="next" title="solver.tui.report.dpm_histogram.setup_reduction" href="setup_reduction/index.html" />
+    <link rel="prev" title="solver.tui.report.reference_values.compute" href="../reference_values/compute/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -349,38 +354,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
@@ -389,13 +369,48 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../plot/index.html">
-         solver.tui.plot
+        <a class="reference internal" href="../../solution/index.html">
+         solver.tui.solution
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../preferences/index.html">
-         solver.tui.preferences
+        <a class="reference internal" href="../../parametric_study/index.html">
+         solver.tui.parametric_study
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../solve/index.html">
+         solver.tui.solve
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../surface/index.html">
+         solver.tui.surface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../turbo_post/index.html">
+         solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../icing/index.html">
+         solver.tui.icing
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -408,6 +423,11 @@ function checkPageExistsAndRedirect(event) {
          </i>
         </label>
         <ul class="current">
+         <li class="toctree-l5">
+          <a class="reference internal" href="../reference_values/index.html">
+           solver.tui.report.reference_values
+          </a>
+         </li>
          <li class="toctree-l5 current active has-children">
           <a class="current reference internal" href="#">
            solver.tui.report.dpm_histogram
@@ -419,13 +439,13 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul>
            <li class="toctree-l6">
-            <a class="reference internal" href="set/index.html">
-             solver.tui.report.dpm_histogram.set
+            <a class="reference internal" href="setup_reduction/index.html">
+             solver.tui.report.dpm_histogram.setup_reduction
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="setup_reduction/index.html">
-             solver.tui.report.dpm_histogram.setup_reduction
+            <a class="reference internal" href="set/index.html">
+             solver.tui.report.dpm_histogram.set
             </a>
            </li>
           </ul>
@@ -436,28 +456,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../forces/index.html">
-           solver.tui.report.forces
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../reference_values/index.html">
-           solver.tui.report.reference_values
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../surface_integrals/index.html">
-           solver.tui.report.surface_integrals
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../volume_integrals/index.html">
-           solver.tui.report.volume_integrals
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../modified_setting/index.html">
-           solver.tui.report.modified_setting
+          <a class="reference internal" href="../icing/index.html">
+           solver.tui.report.icing
           </a>
          </li>
          <li class="toctree-l5">
@@ -466,8 +466,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../heat_exchanger/index.html">
-           solver.tui.report.heat_exchanger
+          <a class="reference internal" href="../simulation_reports/index.html">
+           solver.tui.report.simulation_reports
           </a>
          </li>
          <li class="toctree-l5">
@@ -476,35 +476,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../simulation_reports/index.html">
-           solver.tui.report.simulation_reports
+          <a class="reference internal" href="../heat_exchanger/index.html">
+           solver.tui.report.heat_exchanger
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../forces/index.html">
+           solver.tui.report.forces
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../modified_setting/index.html">
+           solver.tui.report.modified_setting
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../results/index.html">
-         solver.tui.results
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solution/index.html">
-         solver.tui.solution
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../solve/index.html">
-         solver.tui.solve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../setup/index.html">
-         solver.tui.setup
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../surface/index.html">
-         solver.tui.surface
+        <a class="reference internal" href="../../preferences/index.html">
+         solver.tui.preferences
         </a>
        </li>
        <li class="toctree-l4">
@@ -513,28 +503,38 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../turbo_post/index.html">
-         solver.tui.turbo_post
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../views/index.html">
          solver.tui.views
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
       </ul>
@@ -603,7 +603,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.report.dpm_histogram
@@ -612,16 +612,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.report.dpm_histogram.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.compute_sample">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.compute_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.compute_sample()
@@ -630,7 +621,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.delete_sample">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.delete_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.delete_sample()
@@ -639,7 +630,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.list_samples">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.list_samples">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.list_samples()
@@ -648,7 +639,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.pick_sample_to_reduce">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.pick_sample_to_reduce">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.pick_sample_to_reduce()
@@ -657,7 +648,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.plot_sample">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.plot_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.plot_sample()
@@ -666,7 +657,16 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.read_sample">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.prep_dpm_sample_cont_plot_exprs">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.report.dpm_histogram.prep_dpm_sample_cont_plot_exprs()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.read_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.read_sample()
@@ -675,7 +675,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.reduce_picked_sample">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.reduce_picked_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.reduce_picked_sample()
@@ -684,245 +684,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.report.dpm_histogram.set
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.auto_range">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.auto_range()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.correlation">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.correlation()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.cumulation_curve">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.cumulation_curve()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.diameter_statistics">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.diameter_statistics()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.histogram_mode">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.histogram_mode()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.logarithmic">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.logarithmic()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.maximum">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.maximum()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.minimum">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.minimum()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.number_of_bins">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.number_of_bins()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.percentage">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.percentage()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.variable_power_3">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.variable_power_3()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.weighting">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.set.weighting()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.report.dpm_histogram.setup_reduction
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.all_variables_number_of_bins">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.all_variables_number_of_bins()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.list_settings">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.list_settings()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.logarithmic">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.logarithmic()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.make_steady_from_unsteady_file">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.make_steady_from_unsteady_file()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.maximum">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.maximum()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.minimum">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.minimum()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.number_of_bins">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.number_of_bins()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.reset_min_and_max">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.reset_min_and_max()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.use_weighting">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.use_weighting()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.weighting_variable">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.report.dpm_histogram.setup_reduction.weighting_variable()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.write_sample">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.write_sample">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.report.dpm_histogram.write_sample()
@@ -953,343 +715,65 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-report-dpm-histogram">
 <span id="ref-solver-tui-report-dpm-histogram"></span><h1>solver.tui.report.dpm_histogram<a class="headerlink" href="#solver-tui-report-dpm-histogram" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.report.</span></span><span class="sig-name descname"><span class="pre">dpm_histogram</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the DPM histogram menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.compute_sample" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.compute_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_sample</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Computes the minimum/maximum of a sample variable.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.delete_sample" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.delete_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_sample</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes a sample from the loaded sample list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.list_samples" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.list_samples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_samples</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Shows all samples in a loaded sample list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.pick_sample_to_reduce" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.pick_sample_to_reduce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_sample_to_reduce</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Select a sample to be reduced.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.plot_sample" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.plot_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_sample</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Plots a histogram of a loaded sample.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.read_sample" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.read_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_sample</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reads a sample file and adds it to the sample list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.reduce_picked_sample" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.reduce_picked_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_picked_sample</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reduce a sample as specified by the data reduction parameters.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.write_sample" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.write_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_sample</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Write a histogram of a loaded sample into a file.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a></p></td>
-<td><p>Enters the settings menu for the histogram.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_reduction</span></code></a></p></td>
-<td><p>Set up the sample data reduction by specifying all relevant options and setting parameters as desired.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.report.</span></span><span class="sig-name descname"><span class="pre">dpm_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the DPM histogram menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.compute_sample">
-<span class="sig-name descname"><span class="pre">compute_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.compute_sample" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.compute_sample">
+<span class="sig-name descname"><span class="pre">compute_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.compute_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Computes the minimum/maximum of a sample variable.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.delete_sample">
-<span class="sig-name descname"><span class="pre">delete_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.delete_sample" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.delete_sample">
+<span class="sig-name descname"><span class="pre">delete_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.delete_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a sample from the loaded sample list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.list_samples">
-<span class="sig-name descname"><span class="pre">list_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.list_samples" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.list_samples">
+<span class="sig-name descname"><span class="pre">list_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.list_samples" title="Permalink to this definition">#</a></dt>
 <dd><p>Shows all samples in a loaded sample list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.pick_sample_to_reduce">
-<span class="sig-name descname"><span class="pre">pick_sample_to_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.pick_sample_to_reduce" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.pick_sample_to_reduce">
+<span class="sig-name descname"><span class="pre">pick_sample_to_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.pick_sample_to_reduce" title="Permalink to this definition">#</a></dt>
 <dd><p>Select a sample to be reduced.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.plot_sample">
-<span class="sig-name descname"><span class="pre">plot_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.plot_sample" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.plot_sample">
+<span class="sig-name descname"><span class="pre">plot_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.plot_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Plots a histogram of a loaded sample.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.read_sample">
-<span class="sig-name descname"><span class="pre">read_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.read_sample" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.prep_dpm_sample_cont_plot_exprs">
+<span class="sig-name descname"><span class="pre">prep_dpm_sample_cont_plot_exprs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.prep_dpm_sample_cont_plot_exprs" title="Permalink to this definition">#</a></dt>
+<dd><p>Prepare named expressions from data in a DPM sample file (collected at a cut plane surface) for contour plotting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.read_sample">
+<span class="sig-name descname"><span class="pre">read_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.read_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a sample file and adds it to the sample list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.reduce_picked_sample">
-<span class="sig-name descname"><span class="pre">reduce_picked_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.reduce_picked_sample" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.reduce_picked_sample">
+<span class="sig-name descname"><span class="pre">reduce_picked_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.reduce_picked_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Reduce a sample as specified by the data reduction parameters. This command is available only after you selected the sample using the pick-sample-to-reduce text command.</p>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the settings menu for the histogram.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.auto_range" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.auto_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_range</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Automatically computes the range of the sampling variable for histogram plots.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.correlation" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.correlation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correlation</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Computes the correlation of the sampling variable with another variable.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.cumulation_curve" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.cumulation_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumulation_curve</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Computes a cumulative curve for the sampling variable or correlation variable when correlation? is specified.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.diameter_statistics" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.diameter_statistics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diameter_statistics</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Computes the Rosin Rammler parameters, Sauter, and other mean diameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.histogram_mode" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.histogram_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">histogram_mode</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Uses bars for the histogram plot or xy-style.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.logarithmic" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.logarithmic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logarithmic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables/disables the use of logarithmic scaling on the abscissa of the histogram.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.maximum" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.maximum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the maximum value of the x-axis variable for histogram plots.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.minimum" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.minimum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the minimum value of the x-axis variable for histogram plots.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.number_of_bins" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.number_of_bins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_bins</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specifies the number of bins.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.percentage" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.percentage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">percentage</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Uses percentages of bins to be computed.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.variable_power_3" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.variable_power_3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variable_power_3</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Use the cubic of the cumulation variable during computation of the cumulative curve.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.weighting" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.weighting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weighting</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Uses weighting with additional variables when sorting data into samples.</p></td>
-</tr>
-</tbody>
-</table>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.auto_range">
-<span class="sig-name descname"><span class="pre">auto_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.auto_range" title="Permalink to this definition">#</a></dt>
-<dd><p>Automatically computes the range of the sampling variable for histogram plots.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.correlation">
-<span class="sig-name descname"><span class="pre">correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.correlation" title="Permalink to this definition">#</a></dt>
-<dd><p>Computes the correlation of the sampling variable with another variable.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.cumulation_curve">
-<span class="sig-name descname"><span class="pre">cumulation_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.cumulation_curve" title="Permalink to this definition">#</a></dt>
-<dd><p>Computes a cumulative curve for the sampling variable or correlation variable when correlation? is specified.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.diameter_statistics">
-<span class="sig-name descname"><span class="pre">diameter_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.diameter_statistics" title="Permalink to this definition">#</a></dt>
-<dd><p>Computes the Rosin Rammler parameters, Sauter, and other mean diameters.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.histogram_mode">
-<span class="sig-name descname"><span class="pre">histogram_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.histogram_mode" title="Permalink to this definition">#</a></dt>
-<dd><p>Uses bars for the histogram plot or xy-style.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.logarithmic">
-<span class="sig-name descname"><span class="pre">logarithmic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.logarithmic" title="Permalink to this definition">#</a></dt>
-<dd><p>Enables/disables the use of logarithmic scaling on the abscissa of the histogram.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.maximum">
-<span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.maximum" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the maximum value of the x-axis variable for histogram plots.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.minimum">
-<span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.minimum" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the minimum value of the x-axis variable for histogram plots.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.number_of_bins">
-<span class="sig-name descname"><span class="pre">number_of_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.number_of_bins" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the number of bins.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.percentage">
-<span class="sig-name descname"><span class="pre">percentage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.percentage" title="Permalink to this definition">#</a></dt>
-<dd><p>Uses percentages of bins to be computed.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.variable_power_3">
-<span class="sig-name descname"><span class="pre">variable_power_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.variable_power_3" title="Permalink to this definition">#</a></dt>
-<dd><p>Use the cubic of the cumulation variable during computation of the cumulative curve.
-When the particle mass was not sampled, the diameter can be used instead.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.weighting">
-<span class="sig-name descname"><span class="pre">weighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.set.weighting" title="Permalink to this definition">#</a></dt>
-<dd><p>Uses weighting with additional variables when sorting data into samples.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup_reduction</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Set up the sample data reduction by specifying all relevant options and setting parameters as desired.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.all_variables_number_of_bins" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.all_variables_number_of_bins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_variables_number_of_bins</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of bins to be used for ALL variables in the data reduction.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.list_settings" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.list_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_settings</span></code></a>(*args, **kwargs)</p></td>
-<td><p>List all user inputs for the sample picked for data reduction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.logarithmic" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.logarithmic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logarithmic</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Switch on or off logarithmic scaling to be used for a specific variable in the data reduction.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.make_steady_from_unsteady_file" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.make_steady_from_unsteady_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_steady_from_unsteady_file</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify whether the unsteady sample is to be reduced into a steady-state injection file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.maximum" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.maximum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maximum</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the maximum value of the range to be considered for a specific variable in the data reduction.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.minimum" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.minimum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the minimum value of the range to be considered for a specific variable in the data reduction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.number_of_bins" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.number_of_bins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_bins</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Set the number of bins to be used for a specific variable in the data reduction.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.reset_min_and_max" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.reset_min_and_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_min_and_max</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reset the min and max values of the range to be considered for a specific variable in the data reduction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.use_weighting" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.use_weighting"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_weighting</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Specify whether to use any weighting in the averaging that is done in each bin in the data reduction.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.weighting_variable" title="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.weighting_variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weighting_variable</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Choose the weighting variable for the averaging in each bin in the data reduction.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.all_variables_number_of_bins">
-<span class="sig-name descname"><span class="pre">all_variables_number_of_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.all_variables_number_of_bins" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the number of bins to be used for ALL variables in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.list_settings">
-<span class="sig-name descname"><span class="pre">list_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.list_settings" title="Permalink to this definition">#</a></dt>
-<dd><p>List all user inputs for the sample picked for data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.logarithmic">
-<span class="sig-name descname"><span class="pre">logarithmic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.logarithmic" title="Permalink to this definition">#</a></dt>
-<dd><p>Switch on or off logarithmic scaling to be used for a specific variable in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.make_steady_from_unsteady_file">
-<span class="sig-name descname"><span class="pre">make_steady_from_unsteady_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.make_steady_from_unsteady_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify whether the unsteady sample is to be reduced into a steady-state injection file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.maximum">
-<span class="sig-name descname"><span class="pre">maximum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.maximum" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the maximum value of the range to be considered for a specific variable in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.minimum">
-<span class="sig-name descname"><span class="pre">minimum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.minimum" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the minimum value of the range to be considered for a specific variable in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.number_of_bins">
-<span class="sig-name descname"><span class="pre">number_of_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.number_of_bins" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the number of bins to be used for a specific variable in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.reset_min_and_max">
-<span class="sig-name descname"><span class="pre">reset_min_and_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.reset_min_and_max" title="Permalink to this definition">#</a></dt>
-<dd><p>Reset the min and max values of the range to be considered for a specific variable in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.use_weighting">
-<span class="sig-name descname"><span class="pre">use_weighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.use_weighting" title="Permalink to this definition">#</a></dt>
-<dd><p>Specify whether to use any weighting in the averaging that is done in each bin in the data reduction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.weighting_variable">
-<span class="sig-name descname"><span class="pre">weighting_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.setup_reduction.weighting_variable" title="Permalink to this definition">#</a></dt>
-<dd><p>Choose the weighting variable for the averaging in each bin in the data reduction.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.write_sample">
-<span class="sig-name descname"><span class="pre">write_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.report.dpm_histogram.write_sample" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.write_sample">
+<span class="sig-name descname"><span class="pre">write_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.report.dpm_histogram.write_sample" title="Permalink to this definition">#</a></dt>
 <dd><p>Write a histogram of a loaded sample into a file.</p>
 </dd></dl>
 

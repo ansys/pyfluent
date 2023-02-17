@@ -3,4 +3,11 @@
 solver.tui.setup.models.eulerian\_wallfilm.implicit\_options
 ============================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.eulerian_wallfilm.implicit_options
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.eulerian_wallfilm.implicit_options
+   :members: relative_error_residual, new_implicit_scheme
+

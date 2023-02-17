@@ -3,4 +3,11 @@
 meshing.tui.display.zones
 =========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.display.zones
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.zones
+   :members: toggle_color_mode, isolate_zones, display_neighborhood, display_similar_area, make_transparent, show_all, select_all_visible, toggle_color_palette, hide_zones
+

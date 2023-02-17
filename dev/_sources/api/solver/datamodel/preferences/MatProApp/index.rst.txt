@@ -3,6 +3,12 @@
 solver.datamodel.preferences.MatProApp
 ======================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.MatProApp
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.MatProApp
+   :members: BetaFeatures, Focus, Warning
    :noindex:
 

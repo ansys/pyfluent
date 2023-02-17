@@ -3,4 +3,11 @@
 solver.tui.define.models.multiphase.population\_balance.phenomena
 =================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.multiphase.population_balance.phenomena
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.population_balance.phenomena
+   :members: breakage, aggregation_factor, breakage_factor, nucleation, breakage_aggregation_vof_cutoff, aggregation, growth
+

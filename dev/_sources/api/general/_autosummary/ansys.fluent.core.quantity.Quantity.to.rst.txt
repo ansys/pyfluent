@@ -1,6 +1,0 @@
-to
-==
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: Quantity.to

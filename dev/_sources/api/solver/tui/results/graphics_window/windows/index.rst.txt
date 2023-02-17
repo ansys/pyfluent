@@ -3,13 +3,20 @@
 solver.tui.results.graphics\_window.windows
 ===========================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics_window.windows
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.windows
+   :members: ruler, logo_color, logo, aspect_ratio
+
 .. toctree::
    :hidden:
 
+   xy/index
    axes/index
+   video/index
    main/index
    scale/index
    text/index
-   video/index
-   xy/index

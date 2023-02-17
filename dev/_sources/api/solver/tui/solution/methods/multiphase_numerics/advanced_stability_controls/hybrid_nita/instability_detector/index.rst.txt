@@ -3,4 +3,11 @@
 solver.tui.solution.methods.multiphase\_numerics.advanced\_stability\_controls.hybrid\_nita.instability\_detector
 =================================================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.hybrid_nita.instability_detector
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.methods.multiphase_numerics.advanced_stability_controls.hybrid_nita.instability_detector
+   :members: set_velocity_limit, enable_instability_detector, unstable_event_outer_iterations, set_cfl_limit, set_cfl_type
+

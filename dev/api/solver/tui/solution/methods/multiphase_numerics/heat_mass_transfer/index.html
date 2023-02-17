@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../../search.html" />
-    <link rel="next" title="solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation" href="cavitation/index.html" />
-    <link rel="prev" title="solver.tui.solution.methods.multiphase_numerics.viscous_flow" href="../viscous_flow/index.html" />
+    <link rel="next" title="solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation" href="evaporation_condensation/index.html" />
+    <link rel="prev" title="solver.tui.solution.methods.multiphase_numerics.boiling_parameters" href="../boiling_parameters/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -306,8 +306,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1">
@@ -351,63 +356,18 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../adjoint/index.html">
-         solver.tui.adjoint
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../display/index.html">
-         solver.tui.display
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../define/index.html">
          solver.tui.define
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../file/index.html">
-         solver.tui.file
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../icing/index.html">
-         solver.tui.icing
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../mesh/index.html">
-         solver.tui.mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
-         solver.tui.parameters__and__customization
+        <a class="reference internal" href="../../../../server/index.html">
+         solver.tui.server
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../parallel/index.html">
          solver.tui.parallel
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../plot/index.html">
-         solver.tui.plot
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../preferences/index.html">
-         solver.tui.preferences
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../report/index.html">
-         solver.tui.report
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../results/index.html">
-         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4 current active has-children">
@@ -421,13 +381,13 @@ function checkPageExistsAndRedirect(event) {
         </label>
         <ul class="current">
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../calculation_activities/index.html">
-           solver.tui.solution.calculation_activities
+          <a class="reference internal" href="../../../run_calculation/index.html">
+           solver.tui.solution.run_calculation
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../cell_registers/index.html">
-           solver.tui.solution.cell_registers
+          <a class="reference internal" href="../../../calculation_activities/index.html">
+           solver.tui.solution.calculation_activities
           </a>
          </li>
          <li class="toctree-l5">
@@ -436,13 +396,8 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../expert/index.html">
-           solver.tui.solution.expert
-          </a>
-         </li>
-         <li class="toctree-l5">
-          <a class="reference internal" href="../../../initialize/index.html">
-           solver.tui.solution.initialize
+          <a class="reference internal" href="../../../cell_registers/index.html">
+           solver.tui.solution.cell_registers
           </a>
          </li>
          <li class="toctree-l5 current active has-children">
@@ -456,13 +411,23 @@ function checkPageExistsAndRedirect(event) {
           </label>
           <ul class="current">
            <li class="toctree-l6">
-            <a class="reference internal" href="../../expert/index.html">
-             solver.tui.solution.methods.expert
+            <a class="reference internal" href="../../query/index.html">
+             solver.tui.solution.methods.query
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../high_order_term_relaxation/index.html">
-             solver.tui.solution.methods.high_order_term_relaxation
+            <a class="reference internal" href="../../warped_face_gradient_correction/index.html">
+             solver.tui.solution.methods.warped_face_gradient_correction
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../overset/index.html">
+             solver.tui.solution.methods.overset
+            </a>
+           </li>
+           <li class="toctree-l6">
+            <a class="reference internal" href="../../nita_expert_controls/index.html">
+             solver.tui.solution.methods.nita_expert_controls
             </a>
            </li>
            <li class="toctree-l6 current active has-children">
@@ -481,18 +446,13 @@ function checkPageExistsAndRedirect(event) {
               </a>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../compressible_flow/index.html">
-               solver.tui.solution.methods.multiphase_numerics.compressible_flow
+              <a class="reference internal" href="../default_controls/index.html">
+               solver.tui.solution.methods.multiphase_numerics.default_controls
               </a>
              </li>
              <li class="toctree-l7">
               <a class="reference internal" href="../boiling_parameters/index.html">
                solver.tui.solution.methods.multiphase_numerics.boiling_parameters
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../viscous_flow/index.html">
-               solver.tui.solution.methods.multiphase_numerics.viscous_flow
               </a>
              </li>
              <li class="toctree-l7 current active has-children">
@@ -506,13 +466,13 @@ function checkPageExistsAndRedirect(event) {
               </label>
               <ul>
                <li class="toctree-l8">
-                <a class="reference internal" href="cavitation/index.html">
-                 solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation
+                <a class="reference internal" href="evaporation_condensation/index.html">
+                 solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation
                 </a>
                </li>
                <li class="toctree-l8">
-                <a class="reference internal" href="evaporation_condensation/index.html">
-                 solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation
+                <a class="reference internal" href="cavitation/index.html">
+                 solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation
                 </a>
                </li>
                <li class="toctree-l8">
@@ -528,18 +488,18 @@ function checkPageExistsAndRedirect(event) {
               </ul>
              </li>
              <li class="toctree-l7">
-              <a class="reference internal" href="../advanced_stability_controls/index.html">
-               solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls
-              </a>
-             </li>
-             <li class="toctree-l7">
-              <a class="reference internal" href="../default_controls/index.html">
-               solver.tui.solution.methods.multiphase_numerics.default_controls
-              </a>
-             </li>
-             <li class="toctree-l7">
               <a class="reference internal" href="../face_pressure_controls/index.html">
                solver.tui.solution.methods.multiphase_numerics.face_pressure_controls
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../viscous_flow/index.html">
+               solver.tui.solution.methods.multiphase_numerics.viscous_flow
+              </a>
+             </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../compressible_flow/index.html">
+               solver.tui.solution.methods.multiphase_numerics.compressible_flow
               </a>
              </li>
              <li class="toctree-l7">
@@ -547,17 +507,12 @@ function checkPageExistsAndRedirect(event) {
                solver.tui.solution.methods.multiphase_numerics.solution_stabilization
               </a>
              </li>
+             <li class="toctree-l7">
+              <a class="reference internal" href="../advanced_stability_controls/index.html">
+               solver.tui.solution.methods.multiphase_numerics.advanced_stability_controls
+              </a>
+             </li>
             </ul>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../nita_expert_controls/index.html">
-             solver.tui.solution.methods.nita_expert_controls
-            </a>
-           </li>
-           <li class="toctree-l6">
-            <a class="reference internal" href="../../overset/index.html">
-             solver.tui.solution.methods.overset
-            </a>
            </li>
            <li class="toctree-l6">
             <a class="reference internal" href="../../pseudo_time_method/index.html">
@@ -565,20 +520,20 @@ function checkPageExistsAndRedirect(event) {
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../query/index.html">
-             solver.tui.solution.methods.query
+            <a class="reference internal" href="../../expert/index.html">
+             solver.tui.solution.methods.expert
             </a>
            </li>
            <li class="toctree-l6">
-            <a class="reference internal" href="../../warped_face_gradient_correction/index.html">
-             solver.tui.solution.methods.warped_face_gradient_correction
+            <a class="reference internal" href="../../high_order_term_relaxation/index.html">
+             solver.tui.solution.methods.high_order_term_relaxation
             </a>
            </li>
           </ul>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../monitors/index.html">
-           solver.tui.solution.monitors
+          <a class="reference internal" href="../../../expert/index.html">
+           solver.tui.solution.expert
           </a>
          </li>
          <li class="toctree-l5">
@@ -587,20 +542,25 @@ function checkPageExistsAndRedirect(event) {
           </a>
          </li>
          <li class="toctree-l5">
-          <a class="reference internal" href="../../../run_calculation/index.html">
-           solver.tui.solution.run_calculation
+          <a class="reference internal" href="../../../monitors/index.html">
+           solver.tui.solution.monitors
+          </a>
+         </li>
+         <li class="toctree-l5">
+          <a class="reference internal" href="../../../initialize/index.html">
+           solver.tui.solution.initialize
           </a>
          </li>
         </ul>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../solve/index.html">
-         solver.tui.solve
+        <a class="reference internal" href="../../../../parametric_study/index.html">
+         solver.tui.parametric_study
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../setup/index.html">
-         solver.tui.setup
+        <a class="reference internal" href="../../../../solve/index.html">
+         solver.tui.solve
         </a>
        </li>
        <li class="toctree-l4">
@@ -609,18 +569,43 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../simulation_reports/index.html">
-         solver.tui.simulation_reports
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../../../server/index.html">
-         solver.tui.server
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../../../../turbo_post/index.html">
          solver.tui.turbo_post
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../display/index.html">
+         solver.tui.display
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../file/index.html">
+         solver.tui.file
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../adjoint/index.html">
+         solver.tui.adjoint
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../icing/index.html">
+         solver.tui.icing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../report/index.html">
+         solver.tui.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../preferences/index.html">
+         solver.tui.preferences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../simulation_reports/index.html">
+         solver.tui.simulation_reports
         </a>
        </li>
        <li class="toctree-l4">
@@ -629,13 +614,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../../../../parametric_study/index.html">
-         solver.tui.parametric_study
+        <a class="reference internal" href="../../../../results/index.html">
+         solver.tui.results
         </a>
        </li>
        <li class="toctree-l4">
         <a class="reference internal" href="../../../../turbo_workflow/index.html">
          solver.tui.turbo_workflow
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../plot/index.html">
+         solver.tui.plot
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../setup/index.html">
+         solver.tui.setup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../mesh/index.html">
+         solver.tui.mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../../../parameters__and__customization/index.html">
+         solver.tui.parameters__and__customization
         </a>
        </li>
       </ul>
@@ -704,7 +709,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.solution.methods.multiphase_numerics.heat_mass_transfer
@@ -713,255 +718,13 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment()
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation
-      </span>
-     </code>
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.__init__">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.__init__()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.ia_norm_min_limit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.ia_norm_min_limit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.max_rel_humidity">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.max_rel_humidity()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_max_limit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_max_limit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_min_limit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_min_limit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_max_limit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_max_limit()
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_min_limit">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_min_limit()
-        </span>
-       </code>
-      </a>
-     </li>
-    </ul>
    </li>
   </ul>
  </li>
@@ -986,283 +749,18 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="solver-tui-solution-methods-multiphase-numerics-heat-mass-transfer">
 <span id="ref-solver-tui-solution-methods-multiphase-numerics-heat-mass-transfer"></span><h1>solver.tui.solution.methods.multiphase_numerics.heat_mass_transfer<a class="headerlink" href="#solver-tui-solution-methods-multiphase-numerics-heat-mass-transfer" title="Permalink to this heading">#</a></h1>
+<table class="autosummary longtable table autosummary">
+<tbody>
+</tbody>
+</table>
 <dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">heat_mass_transfer</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Multiphase interphase heat and mass transfer numerics options menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alternative_energy_treatment</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Alternative treatment of latent heat source due to mass transfer.</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classes:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area_density</span></code></a></p></td>
-<td><p>Interfacial area density menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boiling</span></code></a></p></td>
-<td><p>Boiling advanced options menu.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cavitation</span></code></a></p></td>
-<td><p>Cavitation numerics options menu.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaporation_condensation</span></code></a></p></td>
-<td><p>Evaporation-condensation advanced options menu.</p></td>
-</tr>
-</tbody>
-</table>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.solution.methods.multiphase_numerics.</span></span><span class="sig-name descname"><span class="pre">heat_mass_transfer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer" title="Permalink to this definition">#</a></dt>
+<dd><p>Multiphase interphase heat and mass transfer numerics options menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment">
-<span class="sig-name descname"><span class="pre">alternative_energy_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment">
+<span class="sig-name descname"><span class="pre">alternative_energy_treatment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_231.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.alternative_energy_treatment" title="Permalink to this definition">#</a></dt>
 <dd><p>Alternative treatment of latent heat source due to mass transfer.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">area_density</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Interfacial area density menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ia_grad_sym</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Interfacial area density gradient-symmetric mechanism.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_min_seeding</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Minimum vof seeding for non-zero area density in heat and mass transfer.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym">
-<span class="sig-name descname"><span class="pre">ia_grad_sym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.ia_grad_sym" title="Permalink to this definition">#</a></dt>
-<dd><p>Interfacial area density gradient-symmetric mechanism.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding">
-<span class="sig-name descname"><span class="pre">vof_min_seeding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.area_density.vof_min_seeding" title="Permalink to this definition">#</a></dt>
-<dd><p>Minimum vof seeding for non-zero area density in heat and mass transfer.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">boiling</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Boiling advanced options menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heat_flux_relaxation_factor</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Under-relaxation factor for boiling heat flux.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_expert_options</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Exposes expert options of min/max superheat along with wetting fraction controls.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework"><code class="xref py py-obj docutils literal notranslate"><span class="pre">two_resistance_boiling_framework</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Allow generalized two-resistance framework for boiling model.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor">
-<span class="sig-name descname"><span class="pre">heat_flux_relaxation_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.heat_flux_relaxation_factor" title="Permalink to this definition">#</a></dt>
-<dd><p>Under-relaxation factor for boiling heat flux.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options">
-<span class="sig-name descname"><span class="pre">show_expert_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.show_expert_options" title="Permalink to this definition">#</a></dt>
-<dd><p>Exposes expert options of min/max superheat along with wetting fraction controls.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework">
-<span class="sig-name descname"><span class="pre">two_resistance_boiling_framework</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.boiling.two_resistance_boiling_framework" title="Permalink to this definition">#</a></dt>
-<dd><p>Allow generalized two-resistance framework for boiling model.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cavitation</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Cavitation numerics options menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_clipped_pressure</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clipped pressure is just used for the properties evaluation.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_vapor_pressure_ratio</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Maximum limit on vapor pressure after turbulence and thermal correction.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_vapor_pressure</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Minimum vapor pressure limit for cavitation model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schnerr_cond_coeff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Condensation coefficient for Schnerr-Sauer model.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schnerr_evap_coeff</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Evaporation coefficient for Schnerr-Sauer model.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">turbulent_diffusion</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enable/disable turbulent diffusion treatment between phases participating in cavitation.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure">
-<span class="sig-name descname"><span class="pre">display_clipped_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.display_clipped_pressure" title="Permalink to this definition">#</a></dt>
-<dd><p>Clipped pressure is just used for the properties evaluation. Mass Transfer Rate uses unclipped pressure.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio">
-<span class="sig-name descname"><span class="pre">max_vapor_pressure_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.max_vapor_pressure_ratio" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum limit on vapor pressure after turbulence and thermal correction.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure">
-<span class="sig-name descname"><span class="pre">min_vapor_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.min_vapor_pressure" title="Permalink to this definition">#</a></dt>
-<dd><p>Minimum vapor pressure limit for cavitation model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff">
-<span class="sig-name descname"><span class="pre">schnerr_cond_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_cond_coeff" title="Permalink to this definition">#</a></dt>
-<dd><p>Condensation coefficient for Schnerr-Sauer model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff">
-<span class="sig-name descname"><span class="pre">schnerr_evap_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.schnerr_evap_coeff" title="Permalink to this definition">#</a></dt>
-<dd><p>Evaporation coefficient for Schnerr-Sauer model.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion">
-<span class="sig-name descname"><span class="pre">turbulent_diffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.cavitation.turbulent_diffusion" title="Permalink to this definition">#</a></dt>
-<dd><p>Enable/disable turbulent diffusion treatment between phases participating in cavitation.
-This treatment is generally recommended for better solution stability.
-However, in case of numerical difficulties, it can be disabled.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaporation_condensation</span></span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Evaporation-condensation advanced options menu.</p>
-<p><strong>Methods:</strong></p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.__init__" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.ia_norm_min_limit" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.ia_norm_min_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ia_norm_min_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Minimum normalized area density below which mass transfer rate is set to zero.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.max_rel_humidity" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.max_rel_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_rel_humidity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Maximum value of relative humidity to limit condensation rate.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_max_limit" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_max_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_from_max_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Maximum volume fraction above which mass transfer rate is set to zero.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_min_limit" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_min_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_from_min_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Minimum volume fraction below which mass transfer rate is set to zero.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_max_limit" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_max_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_to_max_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Maximum volume fraction above which mass transfer rate is set to zero.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_min_limit" title="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_min_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vof_to_min_limit</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Minimum volume fraction below which mass transfer rate is set to zero.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.ia_norm_min_limit">
-<span class="sig-name descname"><span class="pre">ia_norm_min_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.ia_norm_min_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Minimum normalized area density below which mass transfer rate is set to zero.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.max_rel_humidity">
-<span class="sig-name descname"><span class="pre">max_rel_humidity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.max_rel_humidity" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum value of relative humidity to limit condensation rate.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_max_limit">
-<span class="sig-name descname"><span class="pre">vof_from_max_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_max_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum volume fraction above which mass transfer rate is set to zero.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_min_limit">
-<span class="sig-name descname"><span class="pre">vof_from_min_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_from_min_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Minimum volume fraction below which mass transfer rate is set to zero.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_max_limit">
-<span class="sig-name descname"><span class="pre">vof_to_max_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_max_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Maximum volume fraction above which mass transfer rate is set to zero.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_min_limit">
-<span class="sig-name descname"><span class="pre">vof_to_min_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.solver.tui_222.main_menu.solution.methods.multiphase_numerics.heat_mass_transfer.evaporation_condensation.vof_to_min_limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Minimum volume fraction below which mass transfer rate is set to zero.</p>
-</dd></dl>
-
 </dd></dl>
 
 </dd></dl>

@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.mesh.non_conformals" href="../non_conformals/index.html" />
-    <link rel="prev" title="meshing.tui.mesh.hexcore.local_regions" href="../hexcore/local_regions/index.html" />
+    <link rel="next" title="meshing.tui.mesh.scoped_prisms" href="../scoped_prisms/index.html" />
+    <link rel="prev" title="meshing.tui.mesh.cavity" href="../cavity/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,28 +333,13 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
-      <a class="reference internal" href="../../file/index.html">
-       meshing.tui.file
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../boundary/index.html">
-       meshing.tui.boundary
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
       <a class="reference internal" href="../../preferences/index.html">
        meshing.tui.preferences
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
       </a>
      </li>
      <li class="toctree-l3">
@@ -363,18 +348,28 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../file/index.html">
+       meshing.tui.file
       </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../material_point/index.html">
        meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -388,28 +383,13 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
+        <a class="reference internal" href="../rapid_octree/index.html">
+         meshing.tui.mesh.rapid_octree
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../cartesian/index.html">
          meshing.tui.mesh.cartesian
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../cavity/index.html">
-         meshing.tui.mesh.cavity
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../domains/index.html">
-         meshing.tui.mesh.domains
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../hexcore/index.html">
-         meshing.tui.mesh.hexcore
-        </a>
-       </li>
-       <li class="toctree-l4 current active">
-        <a class="current reference internal" href="#">
-         meshing.tui.mesh.modify
         </a>
        </li>
        <li class="toctree-l4">
@@ -418,33 +398,8 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../rapid_octree/index.html">
-         meshing.tui.mesh.rapid_octree
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../prism/index.html">
-         meshing.tui.mesh.prism
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../pyramid/index.html">
-         meshing.tui.mesh.pyramid
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../thin_volume_mesh/index.html">
-         meshing.tui.mesh.thin_volume_mesh
-        </a>
-       </li>
-       <li class="toctree-l4">
         <a class="reference internal" href="../separate/index.html">
          meshing.tui.mesh.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../tet/index.html">
-         meshing.tui.mesh.tet
         </a>
        </li>
        <li class="toctree-l4">
@@ -453,8 +408,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../cell_zone_conditions/index.html">
-         meshing.tui.mesh.cell_zone_conditions
+        <a class="reference internal" href="../hexcore/index.html">
+         meshing.tui.mesh.hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../tet/index.html">
+         meshing.tui.mesh.tet
         </a>
        </li>
        <li class="toctree-l4">
@@ -463,8 +423,33 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../poly_hexcore/index.html">
-         meshing.tui.mesh.poly_hexcore
+        <a class="reference internal" href="../cell_zone_conditions/index.html">
+         meshing.tui.mesh.cell_zone_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../cavity/index.html">
+         meshing.tui.mesh.cavity
+        </a>
+       </li>
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         meshing.tui.mesh.modify
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../scoped_prisms/index.html">
+         meshing.tui.mesh.scoped_prisms
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../thin_volume_mesh/index.html">
+         meshing.tui.mesh.thin_volume_mesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../domains/index.html">
+         meshing.tui.mesh.domains
         </a>
        </li>
        <li class="toctree-l4">
@@ -473,11 +458,36 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../scoped_prisms/index.html">
-         meshing.tui.mesh.scoped_prisms
+        <a class="reference internal" href="../pyramid/index.html">
+         meshing.tui.mesh.pyramid
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../poly_hexcore/index.html">
+         meshing.tui.mesh.poly_hexcore
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../prism/index.html">
+         meshing.tui.mesh.prism
         </a>
        </li>
       </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
      </li>
      <li class="toctree-l3">
       <a class="reference internal" href="../../display/index.html">
@@ -485,23 +495,13 @@ function checkPageExistsAndRedirect(event) {
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
+      <a class="reference internal" href="../../boundary/index.html">
+       meshing.tui.boundary
       </a>
      </li>
     </ul>
@@ -543,7 +543,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.mesh.modify
@@ -552,16 +552,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.mesh.modify.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_improve_warp">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.auto_improve_warp">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.auto_improve_warp()
@@ -570,7 +561,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_node_move">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.auto_node_move">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.auto_node_move()
@@ -579,7 +570,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.clear_selections">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.clear_selections">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.clear_selections()
@@ -588,7 +579,16 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.deselect_last">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.delete_isolated_cells">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       main_menu.mesh.modify.delete_isolated_cells()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.deselect_last">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.deselect_last()
@@ -597,7 +597,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.extract_unused_nodes">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.extract_unused_nodes">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.extract_unused_nodes()
@@ -606,7 +606,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_selections">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.list_selections">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.list_selections()
@@ -615,7 +615,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_skewed_cells">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.list_skewed_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.list_skewed_cells()
@@ -624,7 +624,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_node">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.mesh_node">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.mesh_node()
@@ -633,7 +633,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_nodes_on_zone">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.mesh_nodes_on_zone">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.mesh_nodes_on_zone()
@@ -642,7 +642,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.neighborhood_skew">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.neighborhood_skew">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.neighborhood_skew()
@@ -651,7 +651,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.refine_cell">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.refine_cell">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.refine_cell()
@@ -660,7 +660,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.repair_negative_volume_cells">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.repair_negative_volume_cells">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.repair_negative_volume_cells()
@@ -669,7 +669,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.select_entity">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.select_entity">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.select_entity()
@@ -678,7 +678,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.smooth_node">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.smooth_node">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.mesh.modify.smooth_node()
@@ -709,147 +709,101 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-mesh-modify">
 <span id="ref-meshing-tui-mesh-modify"></span><h1>meshing.tui.mesh.modify<a class="headerlink" href="#meshing-tui-mesh-modify" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">modify</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enters the mesh modify menu.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_improve_warp" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_improve_warp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_improve_warp</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to improve face warp by node movement.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_node_move" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_node_move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">auto_node_move</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to improve the mesh quality by node movement.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.clear_selections" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.clear_selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_selections</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Clears all items from the selection list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.deselect_last" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.deselect_last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deselect_last</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deselects the last item you selected using the select-entity command.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.extract_unused_nodes" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.extract_unused_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_unused_nodes</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Places all unused nodes in a separate interior node zone.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_selections" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_selections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_selections</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists all items in the selection list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_skewed_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_skewed_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_skewed_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists cells with skewness in a specified range.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_node" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_node</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempts to introduce a new node into the existing mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_nodes_on_zone" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_nodes_on_zone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_nodes_on_zone</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Inserts nodes associated with node or face zone into the volume mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.neighborhood_skew" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.neighborhood_skew"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighborhood_skew</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Reports the maximum skewness of cells using the specified node.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.refine_cell" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.refine_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refine_cell</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Attempts to refine the cells in the probe list by introducing a node nears its centroid.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.repair_negative_volume_cells" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.repair_negative_volume_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repair_negative_volume_cells</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Repairs negative volume cells by moving nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.select_entity" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.select_entity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_entity</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Adds an entity (face, node, cell, etc.) to the selection list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.smooth_node" title="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.smooth_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_node</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Applies Laplace smoothing to the nodes in the selection list.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.mesh.</span></span><span class="sig-name descname"><span class="pre">modify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify" title="Permalink to this definition">#</a></dt>
+<dd><p>Enters the mesh modify menu.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_improve_warp">
-<span class="sig-name descname"><span class="pre">auto_improve_warp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_improve_warp" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.auto_improve_warp">
+<span class="sig-name descname"><span class="pre">auto_improve_warp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.auto_improve_warp" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to improve face warp by node movement. Specify the appropriate cell zones and boundary zones, the maximum warp, the number of iterations per face to be improved, and the number of iterations of the automatic node movement procedure (default, 4).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_node_move">
-<span class="sig-name descname"><span class="pre">auto_node_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.auto_node_move" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.auto_node_move">
+<span class="sig-name descname"><span class="pre">auto_node_move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.auto_node_move" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to improve the mesh quality by node movement. Specify the appropriate cell zones and boundary zones, the quality limit based on the quality measure selected, dihedral angle, the number of iterations per node to be moved and the number of iterations of the automatic node movement procedure (default, 1). You can also choose to restrict the movement of boundary nodes along the surface.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.clear_selections">
-<span class="sig-name descname"><span class="pre">clear_selections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.clear_selections" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.clear_selections">
+<span class="sig-name descname"><span class="pre">clear_selections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.clear_selections" title="Permalink to this definition">#</a></dt>
 <dd><p>Clears all items from the selection list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.deselect_last">
-<span class="sig-name descname"><span class="pre">deselect_last</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.deselect_last" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.delete_isolated_cells">
+<span class="sig-name descname"><span class="pre">delete_isolated_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.delete_isolated_cells" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete isolated cells.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.deselect_last">
+<span class="sig-name descname"><span class="pre">deselect_last</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.deselect_last" title="Permalink to this definition">#</a></dt>
 <dd><p>Deselects the last item you selected using the select-entity command.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.extract_unused_nodes">
-<span class="sig-name descname"><span class="pre">extract_unused_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.extract_unused_nodes" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.extract_unused_nodes">
+<span class="sig-name descname"><span class="pre">extract_unused_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.extract_unused_nodes" title="Permalink to this definition">#</a></dt>
 <dd><p>Places all unused nodes in a separate interior node zone.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_selections">
-<span class="sig-name descname"><span class="pre">list_selections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_selections" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.list_selections">
+<span class="sig-name descname"><span class="pre">list_selections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.list_selections" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists all items in the selection list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_skewed_cells">
-<span class="sig-name descname"><span class="pre">list_skewed_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.list_skewed_cells" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.list_skewed_cells">
+<span class="sig-name descname"><span class="pre">list_skewed_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.list_skewed_cells" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists cells with skewness in a specified range.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_node">
-<span class="sig-name descname"><span class="pre">mesh_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_node" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.mesh_node">
+<span class="sig-name descname"><span class="pre">mesh_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.mesh_node" title="Permalink to this definition">#</a></dt>
 <dd><p>Attempts to introduce a new node into the existing mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_nodes_on_zone">
-<span class="sig-name descname"><span class="pre">mesh_nodes_on_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.mesh_nodes_on_zone" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.mesh_nodes_on_zone">
+<span class="sig-name descname"><span class="pre">mesh_nodes_on_zone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.mesh_nodes_on_zone" title="Permalink to this definition">#</a></dt>
 <dd><p>Inserts nodes associated with node or face zone into the volume mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.neighborhood_skew">
-<span class="sig-name descname"><span class="pre">neighborhood_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.neighborhood_skew" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.neighborhood_skew">
+<span class="sig-name descname"><span class="pre">neighborhood_skew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.neighborhood_skew" title="Permalink to this definition">#</a></dt>
 <dd><p>Reports the maximum skewness of cells using the specified node.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.refine_cell">
-<span class="sig-name descname"><span class="pre">refine_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.refine_cell" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.refine_cell">
+<span class="sig-name descname"><span class="pre">refine_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.refine_cell" title="Permalink to this definition">#</a></dt>
 <dd><p>Attempts to refine the cells in the probe list by introducing a node nears its centroid. This technique is useful for removing very flat cells near the boundary when boundary sliver removal is not possible. After refining the cell, you should smooth the mesh.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.repair_negative_volume_cells">
-<span class="sig-name descname"><span class="pre">repair_negative_volume_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.repair_negative_volume_cells" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.repair_negative_volume_cells">
+<span class="sig-name descname"><span class="pre">repair_negative_volume_cells</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.repair_negative_volume_cells" title="Permalink to this definition">#</a></dt>
 <dd><p>Repairs negative volume cells by moving nodes. Specify the appropriate boundary zones, the number of iterations per node to be moved, dihedral angle, whether to restrict the movement of boundary nodes along the surface, and the number of iterations of the automatic node movement procedure (default, 1).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.select_entity">
-<span class="sig-name descname"><span class="pre">select_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.select_entity" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.select_entity">
+<span class="sig-name descname"><span class="pre">select_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.select_entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds an entity (face, node, cell, etc.) to the selection list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.smooth_node">
-<span class="sig-name descname"><span class="pre">smooth_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.mesh.modify.smooth_node" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.smooth_node">
+<span class="sig-name descname"><span class="pre">smooth_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.mesh.modify.smooth_node" title="Permalink to this definition">#</a></dt>
 <dd><p>Applies Laplace smoothing to the nodes in the selection list.</p>
 </dd></dl>
 

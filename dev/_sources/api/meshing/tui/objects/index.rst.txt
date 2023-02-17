@@ -3,17 +3,24 @@
 meshing.tui.objects
 ===================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects
+   :members: create_and_activate_domain, separate_faces_by_seed, merge_edges, separate_faces_by_angle, create, list, check_mesh, delete_all_geom, rename_object, merge_nodes, create_groups, rename_cell_zone_boundaries_using_labels, rotate, merge_voids, delete_all, summary, update, restore_faces, merge_walls, improve_feature_capture, sew, change_prefix, extract_edges, clear_backup, change_object_type, delete, create_intersection_loops, translate, scale, improve_object_quality, rename_object_zones, delete_unreferenced_faces_and_edges, merge, create_multiple, change_suffix
+
 .. toctree::
    :hidden:
 
-   cad_association/index
-   set/index
-   deprecated/index
-   wrap/index
-   remove_gaps/index
-   join_intersect/index
-   fix_holes/index
    create_new_mesh_object/index
-   labels/index
+   deprecated/index
+   remove_gaps/index
+   fix_holes/index
+   cad_association/index
+   join_intersect/index
+   wrap/index
    volumetric_regions/index
+   set/index
+   labels/index

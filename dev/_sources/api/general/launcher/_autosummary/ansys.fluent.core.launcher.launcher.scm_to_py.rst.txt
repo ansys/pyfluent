@@ -1,6 +1,0 @@
-scm\_to\_py
-===========
-
-.. currentmodule:: ansys.fluent.core.launcher.launcher
-
-.. autofunction:: scm_to_py

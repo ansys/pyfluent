@@ -1,6 +1,0 @@
-mass\_flow
-==========
-
-.. currentmodule:: ansys.fluent.core.solver.function.reduction
-
-.. autofunction:: mass_flow

@@ -3,4 +3,11 @@
 solver.tui.setup.models.radiation.solar\_parameters
 ===================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.models.radiation.solar_parameters
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.radiation.solar_parameters
+   :members: use_direction_from_sol_calc, sol_camera_pos, iteration_parameters, illumination_parameters, solar_thread_control, scattering_fraction, autoread_solar_data, sol_on_demand, autosave_solar_data, sun_direction_vector, sol_adjacent_fluidcells, ground_reflectivity, quad_tree_parameters
+

@@ -3,12 +3,19 @@
 solver.tui.setup.dynamic\_mesh
 ==============================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.setup.dynamic_mesh
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh
+   :members: dynamic_mesh
+
 .. toctree::
    :hidden:
 
-   controls/index
-   events/index
    zones/index
-   actions/index
    transient_settings/index
+   controls/index
+   actions/index
+   events/index

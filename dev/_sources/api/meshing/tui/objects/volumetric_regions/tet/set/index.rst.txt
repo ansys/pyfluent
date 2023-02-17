@@ -3,11 +3,18 @@
 meshing.tui.objects.volumetric\_regions.tet.set
 ===============================================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.objects.volumetric_regions.tet.set
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.tet.set
+   :members: max_cell_length, clear_zone_growth_rate, print_region_based_sizing, delete_dead_zones, cell_sizing, non_fluid_type, refine_method, max_cell_volume, use_max_cell_size, set_zone_growth_rate, set_region_based_sizing, skewness_method, compute_max_cell_volume
+
 .. toctree::
    :hidden:
 
-   improve_mesh/index
-   adv_front_method/index
    remove_slivers/index
    tet_improve/index
+   improve_mesh/index
+   adv_front_method/index

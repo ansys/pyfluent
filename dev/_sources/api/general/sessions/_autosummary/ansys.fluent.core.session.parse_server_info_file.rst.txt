@@ -1,6 +1,0 @@
-parse\_server\_info\_file
-=========================
-
-.. currentmodule:: ansys.fluent.core.session
-
-.. autofunction:: parse_server_info_file

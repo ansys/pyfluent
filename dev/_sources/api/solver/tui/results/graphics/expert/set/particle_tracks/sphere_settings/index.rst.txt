@@ -3,4 +3,11 @@
 solver.tui.results.graphics.expert.set.particle\_tracks.sphere\_settings
 ========================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics.expert.set.particle_tracks.sphere_settings
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics.expert.set.particle_tracks.sphere_settings
+   :members: auto_range, vary_diameter, diameter, smooth_parameter, scale_factor, maximum, minimum, size_variable
+

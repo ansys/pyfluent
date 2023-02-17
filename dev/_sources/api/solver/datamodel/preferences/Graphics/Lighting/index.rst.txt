@@ -3,6 +3,12 @@
 solver.datamodel.preferences.Graphics.Lighting
 ==============================================
 
-.. autoclass:: ansys.fluent.core.datamodel_222.preferences::Root.Graphics.Lighting
+.. currentmodule:: ansys.fluent.core.datamodel_231.preferences
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.datamodel_231.preferences::Root.Graphics.Lighting
+   :members: AmbientLightIntensity, Headlight, HeadlightIntensity, LightingMethod
    :noindex:
 

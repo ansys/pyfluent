@@ -3,4 +3,11 @@
 solver.tui.define.models.dpm.options
 ====================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.dpm.options
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.options
+   :members: convective_film_heat_transfer, enable_contour_plots, treat_multicomponent_saturation_temperature_failure, remove_wall_film_temperature_limiter, virtual_mass_force, ensemble_average, step_report_sig_figures, stagger_radius, maximum_udf_species, stagger_spatially_standard_injections, stagger_temporally, two_way_coupling, set_thermolysis_limit, set_minimum_particle_diameter, pressure_gradient_force, stagger_spatially_atomizer_injections, include_lwf_particles_in_dpm_concentration, erosion_accretion, init_erosion_accretion_rate, particle_radiation, thermophoretic_force, current_positions_in_sample_file_format, use_absolute_pressure_for_vaporization, vaporization_options, lowest_volatiles_mass_fraction, vaporization_heat_transfer_averaging, scr_urea_deposition_risk_analysis, allow_supercritical_pressure_vaporization, staggering_factor, track_in_absolute_frame, brownian_motion, uniform_mass_distribution_for_injections, saffman_lift_force
+

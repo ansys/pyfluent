@@ -55,8 +55,8 @@
     <link rel="shortcut icon" href="../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
-    <link rel="next" title="meshing.tui.boundary.separate" href="../separate/index.html" />
-    <link rel="prev" title="meshing.tui.boundary.remesh.size_functions.controls" href="../remesh/size_functions/controls/index.html" />
+    <link rel="next" title="meshing.tui.boundary.shell_boundary_layer" href="../shell_boundary_layer/index.html" />
+    <link rel="prev" title="meshing.tui.boundary.separate.local_regions" href="../separate/local_regions/index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -303,8 +303,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -317,11 +322,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../index.html">
      meshing.tui
@@ -333,8 +333,73 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
+      <a class="reference internal" href="../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../file/index.html">
        meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -348,13 +413,8 @@ function checkPageExistsAndRedirect(event) {
       </label>
       <ul class="current">
        <li class="toctree-l4">
-        <a class="reference internal" href="../feature/index.html">
-         meshing.tui.boundary.feature
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../modify/index.html">
-         meshing.tui.boundary.modify
+        <a class="reference internal" href="../manage/index.html">
+         meshing.tui.boundary.manage
         </a>
        </li>
        <li class="toctree-l4">
@@ -363,23 +423,13 @@ function checkPageExistsAndRedirect(event) {
         </a>
        </li>
        <li class="toctree-l4">
-        <a class="reference internal" href="../remesh/index.html">
-         meshing.tui.boundary.remesh
+        <a class="reference internal" href="../separate/index.html">
+         meshing.tui.boundary.separate
         </a>
        </li>
        <li class="toctree-l4 current active">
         <a class="current reference internal" href="#">
          meshing.tui.boundary.improve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../separate/index.html">
-         meshing.tui.boundary.separate
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../manage/index.html">
-         meshing.tui.boundary.manage
         </a>
        </li>
        <li class="toctree-l4">
@@ -392,72 +442,22 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.boundary.boundary_conditions
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../remesh/index.html">
+         meshing.tui.boundary.remesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../feature/index.html">
+         meshing.tui.boundary.feature
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../modify/index.html">
+         meshing.tui.boundary.modify
+        </a>
+       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
      </li>
     </ul>
    </li>
@@ -498,7 +498,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.boundary.improve
@@ -507,16 +507,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.boundary.improve.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.collapse_bad_faces">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.improve.collapse_bad_faces()
@@ -525,7 +516,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.degree_swap">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.improve.degree_swap()
@@ -534,7 +525,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.improve">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.improve.improve()
@@ -543,7 +534,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.smooth">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.improve.smooth()
@@ -552,7 +543,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.swap">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.improve.swap()
@@ -583,66 +574,41 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-improve">
 <span id="ref-meshing-tui-boundary-improve"></span><h1>meshing.tui.boundary.improve<a class="headerlink" href="#meshing-tui-boundary-improve" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">improve</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enables you to improve boundary surfaces.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse_bad_faces</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to collapse the short edge of faces having a high aspect ratio or skewness in the specified face zone(s).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree_swap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to improve the boundary mesh by swapping edges based on a node degree value other than 6.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">improve</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to improve the boundary surface quality using skewness, size change, aspect ratio, or area as the quality measure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to improve the boundary surface using smoothing.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../index.html#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to improve the boundary surface using edge swapping.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.</span></span><span class="sig-name descname"><span class="pre">improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to improve boundary surfaces.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces">
-<span class="sig-name descname"><span class="pre">collapse_bad_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.collapse_bad_faces" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.collapse_bad_faces">
+<span class="sig-name descname"><span class="pre">collapse_bad_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.collapse_bad_faces" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to collapse the short edge of faces having a high aspect ratio or skewness in the specified face zone(s).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap">
-<span class="sig-name descname"><span class="pre">degree_swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.degree_swap" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.degree_swap">
+<span class="sig-name descname"><span class="pre">degree_swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.degree_swap" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to improve the boundary mesh by swapping edges based on a node degree value other than 6. The node degree is defined as the number of edges connected to the node.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve">
-<span class="sig-name descname"><span class="pre">improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.improve" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.improve">
+<span class="sig-name descname"><span class="pre">improve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.improve" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to improve the boundary surface quality using skewness, size change, aspect ratio, or area as the quality measure.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth">
-<span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.smooth" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.smooth">
+<span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.smooth" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to improve the boundary surface using smoothing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap">
-<span class="sig-name descname"><span class="pre">swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.improve.swap" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.swap">
+<span class="sig-name descname"><span class="pre">swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.improve.swap" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to improve the boundary surface using edge swapping.</p>
 </dd></dl>
 

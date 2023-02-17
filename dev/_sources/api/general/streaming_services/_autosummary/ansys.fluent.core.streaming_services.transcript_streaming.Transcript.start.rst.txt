@@ -1,6 +1,0 @@
-start
-=====
-
-.. currentmodule:: ansys.fluent.core.streaming_services.transcript_streaming
-
-.. automethod:: Transcript.start

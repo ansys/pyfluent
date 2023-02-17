@@ -1,6 +1,0 @@
-is\_integer
-===========
-
-.. currentmodule:: ansys.fluent.core.quantity
-
-.. automethod:: Quantity.is_integer

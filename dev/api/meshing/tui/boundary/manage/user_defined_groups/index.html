@@ -55,7 +55,7 @@
     <link rel="shortcut icon" href="../../../../../../_static/ansys-favicon.png"/>
     <link rel="index" title="Index" href="../../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../../search.html" />
-    <link rel="next" title="meshing.tui.boundary.shell_boundary_layer" href="../../shell_boundary_layer/index.html" />
+    <link rel="next" title="meshing.tui.boundary.refine" href="../../refine/index.html" />
     <link rel="prev" title="meshing.tui.boundary.manage" href="../index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -304,8 +304,13 @@ function checkPageExistsAndRedirect(event) {
   <div class="bd-toc-item active">
     <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../../../../../general/index.html">
-   General
+  <a class="reference internal" href="../../../../../launcher.html">
+   Launching Fluent
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../../../utils.html">
+   PyFluent utility functions
   </a>
  </li>
  <li class="toctree-l1 current active has-children">
@@ -318,11 +323,6 @@ function checkPageExistsAndRedirect(event) {
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../../../_autosummary/ansys.fluent.core.meshing.meshing.html">
-     meshing
-    </a>
-   </li>
    <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="../../../index.html">
      meshing.tui
@@ -334,8 +334,73 @@ function checkPageExistsAndRedirect(event) {
     </label>
     <ul class="current">
      <li class="toctree-l3">
+      <a class="reference internal" href="../../../preferences/index.html">
+       meshing.tui.preferences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../parallel/index.html">
+       meshing.tui.parallel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../scoped_sizing/index.html">
+       meshing.tui.scoped_sizing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../size_functions/index.html">
+       meshing.tui.size_functions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../report/index.html">
+       meshing.tui.report
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="../../../file/index.html">
        meshing.tui.file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../material_point/index.html">
+       meshing.tui.material_point
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../openmp_controls/index.html">
+       meshing.tui.openmp_controls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../mesh/index.html">
+       meshing.tui.mesh
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../objects/index.html">
+       meshing.tui.objects
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../cad_assemblies/index.html">
+       meshing.tui.cad_assemblies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../reference_frames/index.html">
+       meshing.tui.reference_frames
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../display/index.html">
+       meshing.tui.display
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../../diagnostics/index.html">
+       meshing.tui.diagnostics
       </a>
      </li>
      <li class="toctree-l3 current active has-children">
@@ -348,36 +413,6 @@ function checkPageExistsAndRedirect(event) {
        </i>
       </label>
       <ul class="current">
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../feature/index.html">
-         meshing.tui.boundary.feature
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../modify/index.html">
-         meshing.tui.boundary.modify
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../refine/index.html">
-         meshing.tui.boundary.refine
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../remesh/index.html">
-         meshing.tui.boundary.remesh
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../improve/index.html">
-         meshing.tui.boundary.improve
-        </a>
-       </li>
-       <li class="toctree-l4">
-        <a class="reference internal" href="../../separate/index.html">
-         meshing.tui.boundary.separate
-        </a>
-       </li>
        <li class="toctree-l4 current active has-children">
         <a class="reference internal" href="../index.html">
          meshing.tui.boundary.manage
@@ -396,6 +431,21 @@ function checkPageExistsAndRedirect(event) {
         </ul>
        </li>
        <li class="toctree-l4">
+        <a class="reference internal" href="../../refine/index.html">
+         meshing.tui.boundary.refine
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../separate/index.html">
+         meshing.tui.boundary.separate
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../improve/index.html">
+         meshing.tui.boundary.improve
+        </a>
+       </li>
+       <li class="toctree-l4">
         <a class="reference internal" href="../../shell_boundary_layer/index.html">
          meshing.tui.boundary.shell_boundary_layer
         </a>
@@ -405,72 +455,22 @@ function checkPageExistsAndRedirect(event) {
          meshing.tui.boundary.boundary_conditions
         </a>
        </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../remesh/index.html">
+         meshing.tui.boundary.remesh
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../feature/index.html">
+         meshing.tui.boundary.feature
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../modify/index.html">
+         meshing.tui.boundary.modify
+        </a>
+       </li>
       </ul>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../cad_assemblies/index.html">
-       meshing.tui.cad_assemblies
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../preferences/index.html">
-       meshing.tui.preferences
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../size_functions/index.html">
-       meshing.tui.size_functions
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../scoped_sizing/index.html">
-       meshing.tui.scoped_sizing
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../objects/index.html">
-       meshing.tui.objects
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../diagnostics/index.html">
-       meshing.tui.diagnostics
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../material_point/index.html">
-       meshing.tui.material_point
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../mesh/index.html">
-       meshing.tui.mesh
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../display/index.html">
-       meshing.tui.display
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../report/index.html">
-       meshing.tui.report
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../parallel/index.html">
-       meshing.tui.parallel
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../openmp_controls/index.html">
-       meshing.tui.openmp_controls
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../reference_frames/index.html">
-       meshing.tui.reference_frames
-      </a>
      </li>
     </ul>
    </li>
@@ -511,7 +511,7 @@ function checkPageExistsAndRedirect(event) {
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups">
+  <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups">
    <code class="docutils literal notranslate">
     <span class="pre">
      main_menu.boundary.manage.user_defined_groups
@@ -520,16 +520,7 @@ function checkPageExistsAndRedirect(event) {
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.__init__">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       main_menu.boundary.manage.user_defined_groups.__init__()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.activate">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.activate">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.manage.user_defined_groups.activate()
@@ -538,7 +529,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.create">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.create">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.manage.user_defined_groups.create()
@@ -547,7 +538,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.delete">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.delete">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.manage.user_defined_groups.delete()
@@ -556,7 +547,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.list">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.list">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.manage.user_defined_groups.list()
@@ -565,7 +556,7 @@ function checkPageExistsAndRedirect(event) {
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.update">
+    <a class="reference internal nav-link" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.update">
      <code class="docutils literal notranslate">
       <span class="pre">
        main_menu.boundary.manage.user_defined_groups.update()
@@ -596,66 +587,41 @@ function checkPageExistsAndRedirect(event) {
                 
   <section id="meshing-tui-boundary-manage-user-defined-groups">
 <span id="ref-meshing-tui-boundary-manage-user-defined-groups"></span><h1>meshing.tui.boundary.manage.user_defined_groups<a class="headerlink" href="#meshing-tui-boundary-manage-user-defined-groups" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.manage.</span></span><span class="sig-name descname"><span class="pre">user_defined_groups</span></span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../../../../general/sessions/_autosummary/ansys.fluent.core.session_solver.html#ansys.fluent.core.session_solver.TUIMenu" title="ansys.fluent.core.services.datamodel_tui.TUIMenu"><code class="xref py py-class docutils literal notranslate"><span class="pre">ansys.fluent.core.services.datamodel_tui.TUIMenu</span></code></a></p>
-<p>Enables you to manipulate user-defined groups.</p>
-<p><strong>Methods:</strong></p>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.__init__" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(path, service)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.activate" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.activate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">activate</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Activates the specified user-defined groups.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.create" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Creates the user-defined group comprising the specified zones.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.delete" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Deletes the specified user-defined group.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.list" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Lists the groups in the console.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.update" title="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Enables you to modify an existing group.</p></td>
-</tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main_menu.boundary.manage.</span></span><span class="sig-name descname"><span class="pre">user_defined_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Enables you to manipulate user-defined groups.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.__init__" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.activate">
-<span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.activate" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.activate">
+<span class="sig-name descname"><span class="pre">activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.activate" title="Permalink to this definition">#</a></dt>
 <dd><p>Activates the specified user-defined groups.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.create" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates the user-defined group comprising the specified zones.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.delete" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes the specified user-defined group.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.list">
-<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.list" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.list">
+<span class="sig-name descname"><span class="pre">list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.list" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists the groups in the console.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_222.main_menu.boundary.manage.user_defined_groups.update" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.meshing.tui_231.main_menu.boundary.manage.user_defined_groups.update" title="Permalink to this definition">#</a></dt>
 <dd><p>Enables you to modify an existing group.</p>
 </dd></dl>
 

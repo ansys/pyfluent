@@ -3,7 +3,14 @@
 meshing.tui.mesh.pyramid
 ========================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.mesh.pyramid
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.pyramid
+   :members: create
+
 .. toctree::
    :hidden:
 

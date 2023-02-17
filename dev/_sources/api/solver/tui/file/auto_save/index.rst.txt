@@ -3,4 +3,11 @@
 solver.tui.file.auto\_save
 ==========================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.file.auto_save
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.auto_save
+   :members: retain_most_recent_files, save_data_file_every, data_frequency, append_file_name_with, max_files, root_name, case_frequency
+

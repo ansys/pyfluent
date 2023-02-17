@@ -3,4 +3,11 @@
 solver.tui.results.graphics\_window.windows.text
 ================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.results.graphics_window.windows.text
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.windows.text
+   :members: application, right, border, visible, clear, bottom, alignment, left, company, date, top
+

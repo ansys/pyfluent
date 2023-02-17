@@ -3,4 +3,11 @@
 meshing.tui.openmp\_controls
 ============================
 
-.. autoclass:: ansys.fluent.core.meshing.tui_222::main_menu.openmp_controls
+.. currentmodule:: ansys.fluent.core.meshing.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.openmp_controls
+   :members: set_num_cores, get_active_cores, get_max_cores
+

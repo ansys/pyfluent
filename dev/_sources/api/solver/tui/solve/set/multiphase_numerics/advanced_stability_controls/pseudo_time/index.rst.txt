@@ -3,7 +3,14 @@
 solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.pseudo\_time
 ====================================================================================
 
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.pseudo_time
+.. currentmodule:: ansys.fluent.core.solver.tui_231
+
+.. autosummary::
+   :toctree: _autosummary
+
+.. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.pseudo_time
+   :members: false_time_step_linearization, smoothed_density_stabilization_method
+
 .. toctree::
    :hidden:
 

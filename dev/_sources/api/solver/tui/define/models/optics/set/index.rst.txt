@@ -1,6 +1,0 @@
-.. _ref_solver_tui_define_models_optics_set:
-
-solver.tui.define.models.optics.set
-===================================
-
-.. autoclass:: ansys.fluent.core.solver.tui_222::main_menu.define.models.optics.set
