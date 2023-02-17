@@ -5,7 +5,7 @@ from pathlib import Path
 import datamodelgen
 import print_fluent_version
 import settingsgen
-import tuigen
+import tuigen  # noqa: F401
 
 from ansys.fluent.core.launcher.launcher import FluentVersion, get_ansys_version
 
@@ -33,6 +33,6 @@ if __name__ == "__main__":
             os.environ["PYFLUENT_FLUENT_ROOT"] = args.fluent_path
 
     print_fluent_version.generate()
-    tuigen.generate()
+    # tuigen.generate()
     datamodelgen.generate()
     settingsgen.generate()
