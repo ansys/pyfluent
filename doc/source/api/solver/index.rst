@@ -25,3 +25,4 @@ events, monitoring, and field data (surface, scalar, and vector).
    events
    monitors
    reduction
+   allsettingsscripts

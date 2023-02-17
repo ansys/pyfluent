@@ -27,6 +27,7 @@ python <path to settingsgen.py>
 import hashlib
 import io
 import os
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"D:\Installations\Ansys\v231_04012023\ANSYS Inc\v231\fluent"
 import pickle
 import pprint
 import shutil
@@ -368,6 +369,14 @@ def generate():
     _populate_classes(parent_dir)
     _populate_init(parent_dir, sinfo)
 
+    settingsScripts = os.listdir(parent_dir)
+
+    with open(f"{parent_dir}/allsettings.py", "w") as combineSettings:
+        for script in settingsScripts:
+            with open(f"{parent_dir}/{script}") as file:
+                for line in file:
+                    combineSettings.write(line)
+                combineSettings.write('\n')
 
 if __name__ == "__main__":
     generate()
