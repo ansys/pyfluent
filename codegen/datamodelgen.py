@@ -301,6 +301,7 @@ class DataModelGenerator:
 
             if not (class_name == "Root"):
                 f.write(f".. autoclass:: {module_name}::{class_name}\n")
+                f.write("     :autosummary:\n")
 
             if any(heading.startswith(x) for x in DataModelStaticInfo._noindices):
                 f.write("   :noindex:\n")

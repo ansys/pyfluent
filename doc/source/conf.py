@@ -84,7 +84,6 @@ autodoc_default_options = {
     'exclude-members': '__weakref__, __dict__',
     'special-members': '__init__',
     'undoc-members': True,
-    'autosummary': True,
 }
 
 autoclass_content = 'both'
