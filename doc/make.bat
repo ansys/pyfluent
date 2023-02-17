@@ -11,7 +11,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=_build
-set SPHINXOPTS=-j auto -W --keep-going -w build_errors.txt -N -q
+set SPHINXOPTS=-j auto --keep-going -w build_errors.txt -N -q
 
 if "%1" == "" goto help
 if "%1" == "clean" goto clean
@@ -29,7 +29,7 @@ if errorlevel 9009 (
 	exit /b 1
 )
 
-python settings_rstgen.py
+REM python settings_rstgen.py
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 

@@ -9,12 +9,13 @@ scheme code can be executed.
 .. currentmodule:: ansys.fluent.core.services.scheme_eval
 
 .. autosummary::
-   :toctree: _autosummary
+    :toctree: _autosummary
+    :template: flobject-class-template.rst
+    :recursive:
 
-.. autoclass:: ansys.fluent.core.services.scheme_eval.Symbol
-   :members:
-.. autoclass:: ansys.fluent.core.services.scheme_eval.SchemeEval
-   :members:
+    Symbol
+    SchemeEval
+
 
 Examples
 --------
