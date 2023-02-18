@@ -112,6 +112,14 @@ def load_machines(
 def _parse_host_info(host_info):
     """Parse the host machine information from command-line arguments.
 
+    Parameters
+    ----------
+    host_info : str
+        Host file name or list of machines and cores as a string separated by
+        commas and colons as follows:
+        Example 1:  'M0:3,M1:2'
+        Example 2:  'M0,M0,M0,M1,M1'
+
     Returns
     -------
     list[dict] :
