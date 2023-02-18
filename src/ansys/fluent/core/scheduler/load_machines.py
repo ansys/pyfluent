@@ -193,7 +193,19 @@ def _parse_machine_data(machine_data):
 
 def _get_local_machine(ncores):
     """Provide private module function to convert a core count into a machine
-    list for a local job."""
+    list for a local job.
+
+    Parameters
+    ----------
+    ncores : int
+        Total core count.
+
+    Returns
+    -------
+    MachineList
+       MachineList with number of requested cores.
+
+    """
 
     import socket
 
@@ -261,7 +273,18 @@ def _restrict_machines_to_core_count(old_machine_list, ncores):
 
 
 def _construct_machine_list_uge(host_filename):
-    """Provide private module function to parse the UGE host file."""
+    """Provide private module function to parse the UGE host file.
+    
+    Parameters
+    ----------
+    host_filename : str
+        UGE host filename as provided by the PE_HOSTFILE environment variable.
+        
+    Returns
+    -------
+    MachineList
+       A MachineList with the requested machines and core counts.
+    """
     csv.register_dialect("pemachines", delimiter=" ", skipinitialspace=True)
     machineList = MachineList()
     with open(host_filename, "r") as peFile:
@@ -275,7 +298,18 @@ def _construct_machine_list_uge(host_filename):
 
 
 def _construct_machine_list_lsf(host_list):
-    """Provide private module function to parse the LSF host list."""
+    """Provide private module function to parse the LSF host list.
+    
+    Parameters
+    ----------
+    host_list : str
+        LSF host list as provided by the LSB_MCPU_HOSTS environment variable.
+        
+    Returns
+    -------
+    MachineList
+       A MachineList with the requested machines and core counts.
+    """
     machineList = MachineList()
     splitHostList = host_list.split()
     im = 0
@@ -286,10 +320,25 @@ def _construct_machine_list_lsf(host_list):
 
 
 def _construct_machine_list_pbs(host_filename):
-    """Provide private module function to parse the PBS host file."""
-    # PBS_NODE file has one machine name per line per core allocated on the machine.
-    # It's identical to a Fluent host file format.  This code accumulates the total
-    # core count on each machine.
+    """Provide private module function to parse the PBS host file.
+    
+    Parameters
+    ----------
+    host_filename : str
+        PBS host file name as provided by the PBS_NODEFILE environment variable.
+        
+    Returns
+    -------
+    MachineList
+       A MachineList with the requested machines and core counts.    
+    
+    Notes
+    -----
+    The PBS_NODE file has one machine name per line per core allocated on the machine
+    and is identical to a Fluent host file format.  This code accumulates the total
+    core count on each machine.    
+    """
+
     machineDict = {}
     with open(host_filename, "r") as pbsFile:
         for hostname in pbsFile:
@@ -310,6 +359,18 @@ def _construct_machine_list_slurm(host_list):
     """Provide a private module function to parse the SLURM host and task
     lists.
 
+    Parameters
+    ----------
+    host_list : str
+        SLURM host list string provided by SLURM_JOB_NODELIST
+        
+    Returns
+    -------
+    MachineList
+       A MachineList with the requested machines and core counts.
+ 
+    Notes
+    -----
     The SLURM system provides a comma separated list of host names.  The host
     names may be listed individually or consecutive host names may have IDs that
     are provided by a set within brackets:
@@ -459,6 +520,11 @@ def _construct_machine_list_ccs(host_list):
         A single string with the following format:
 
         "#hosts host1 #cores1 host2 #cores2 host3 #cores3 ... hostN #coresN"
+
+    Returns
+    -------
+    MachineList
+       A MachineList with the requested machines and core counts.
     """
     machineList = MachineList()
     splitHostList = host_list.split()
