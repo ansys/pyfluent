@@ -2,8 +2,7 @@
 interfaces.
 
 This module provides two objects that help with interfacing python
-scripts with
-the job scheduler environments:
+scripts with the job scheduler environments:
 
 Machine
 This is used to represent a single machine allocated by the queue system
