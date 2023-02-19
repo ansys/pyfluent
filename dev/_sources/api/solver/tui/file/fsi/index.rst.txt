@@ -9,5 +9,5 @@ solver.tui.file.fsi
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.fsi
-   :members: display_fsi_mesh, write_fsi_mesh, read_fsi_mesh, conserve_force
+   :members: read_fsi_mesh, conserve_force, display_fsi_mesh, write_fsi_mesh
 

@@ -9,5 +9,5 @@ solver.tui.define.models.dpm.erosion\_dynamic\_mesh.run\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.dpm.erosion_dynamic_mesh.run_parameters
-   :members: mesh_motion_time_step, flow_simulation_control, autosave_graphics, simulation_termination, autosave_files
+   :members: flow_simulation_control, autosave_files, mesh_motion_time_step, simulation_termination, autosave_graphics
 

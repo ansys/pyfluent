@@ -9,7 +9,7 @@ solver.tui.parallel
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parallel
-   :members: multidomain, network, latency, check, partition, check_verbosity, set, load_balance, bandwidth, timer, show_connectivity, thread_number_control
+   :members: partition, network, latency, thread_number_control, show_connectivity, set, check, multidomain, load_balance, bandwidth, check_verbosity, timer
 
 .. toctree::
    :hidden:

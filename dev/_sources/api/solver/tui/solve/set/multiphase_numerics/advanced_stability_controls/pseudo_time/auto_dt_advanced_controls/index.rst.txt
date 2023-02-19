@@ -9,5 +9,5 @@ solver.tui.solve.set.multiphase\_numerics.advanced\_stability\_controls.pseudo\_
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.multiphase_numerics.advanced_stability_controls.pseudo_time.auto_dt_advanced_controls
-   :members: dt_init_limit, enable, dt_factor_max, dt_factor_min, max_velocity_ratio, dt_max
+   :members: max_velocity_ratio, dt_factor_max, dt_max, dt_factor_min, dt_init_limit, enable
 

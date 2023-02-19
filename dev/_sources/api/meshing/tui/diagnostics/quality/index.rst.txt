@@ -9,5 +9,5 @@ meshing.tui.diagnostics.quality
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.diagnostics.quality
-   :members: general_improve, smooth, delaunay_swap, collapse
+   :members: smooth, collapse, delaunay_swap, general_improve
 

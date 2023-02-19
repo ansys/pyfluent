@@ -9,5 +9,5 @@ solver.tui.preferences.graphics.performance.minimum\_frame\_rate
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.performance.minimum_frame_rate
-   :members: maximum_culling_threshold, dynamic_adjustment, fixed_culling_value, target_fps, minimum_culling_threshold, enabled
+   :members: enabled, maximum_culling_threshold, target_fps, dynamic_adjustment, minimum_culling_threshold, fixed_culling_value
 

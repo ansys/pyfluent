@@ -9,5 +9,5 @@ solver.tui.setup.models.radiation.dtrm\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.radiation.dtrm_parameters
-   :members: make_globs, ray_trace, controls, check_ray_file
+   :members: ray_trace, controls, make_globs, check_ray_file
 

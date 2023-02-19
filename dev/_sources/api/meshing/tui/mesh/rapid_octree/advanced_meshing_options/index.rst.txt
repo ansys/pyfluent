@@ -9,5 +9,5 @@ meshing.tui.mesh.rapid\_octree.advanced\_meshing\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.rapid_octree.advanced_meshing_options
-   :members: target_cell_orthoskew, projection_priority_zones, mesh_optimization_scheme, target_int_face_warp, pseudo_normal_mode, rename_bounding_box_zones, aspect_ratio_skewness_limit, distance_erosion_factor, target_bnd_face_warp
+   :members: mesh_optimization_scheme, projection_priority_zones, target_int_face_warp, pseudo_normal_mode, rename_bounding_box_zones, aspect_ratio_skewness_limit, distance_erosion_factor, target_bnd_face_warp, target_cell_orthoskew
 

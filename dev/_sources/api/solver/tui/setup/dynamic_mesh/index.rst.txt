@@ -16,6 +16,6 @@ solver.tui.setup.dynamic\_mesh
 
    zones/index
    transient_settings/index
+   events/index
    controls/index
    actions/index
-   events/index

@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.controls.layering\_parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.controls.layering_parameters
-   :members: collapse_factor, split_factor, constant_height
+   :members: split_factor, constant_height, collapse_factor
 

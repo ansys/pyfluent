@@ -9,5 +9,5 @@ solver.tui.mesh.adapt.profile
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.mesh.adapt.profile
-   :members: clear, enable, print, disable
+   :members: enable, disable, clear, print
 

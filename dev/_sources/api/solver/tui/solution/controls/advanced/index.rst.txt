@@ -9,7 +9,7 @@ solver.tui.solution.controls.advanced
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.advanced
-   :members: multi_grid_controls, slope_limiter_set, multi_grid_amg, multi_stage, relaxation_method, correction_tolerance, multi_grid_fas
+   :members: correction_tolerance, relaxation_method, multi_stage, multi_grid_controls, slope_limiter_set, multi_grid_fas, multi_grid_amg
 
 .. toctree::
    :hidden:

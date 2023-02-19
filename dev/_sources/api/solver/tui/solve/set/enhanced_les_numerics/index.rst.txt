@@ -9,5 +9,5 @@ solver.tui.solve.set.enhanced\_les\_numerics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.enhanced_les_numerics
-   :members: optimized_algorithm, optimized_advection, optimized_cd
+   :members: optimized_cd, optimized_algorithm, optimized_advection
 

@@ -9,5 +9,5 @@ solver.tui.setup.models.structure.controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.structure.controls
-   :members: unsteady_damping_rayleigh, max_iter, enhanced_strain, amg_stabilization, numerical_damping_factor
+   :members: numerical_damping_factor, max_iter, amg_stabilization, enhanced_strain, unsteady_damping_rayleigh
 

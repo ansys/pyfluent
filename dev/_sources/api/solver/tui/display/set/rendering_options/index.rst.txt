@@ -9,5 +9,5 @@ solver.tui.display.set.rendering\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.set.rendering_options
-   :members: double_buffering, surface_edge_visibility, auto_spin, set_rendering_options, device_info, help_text_color, driver, hidden_surface_method, animation_option, hidden_surfaces, outer_face_cull, color_map_alignment, face_displacement, show_colormap
+   :members: double_buffering, outer_face_cull, animation_option, hidden_surface_method, color_map_alignment, help_text_color, face_displacement, surface_edge_visibility, driver, show_colormap, set_rendering_options, hidden_surfaces, device_info, auto_spin
 

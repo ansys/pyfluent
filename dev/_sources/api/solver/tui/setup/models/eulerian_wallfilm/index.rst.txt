@@ -9,10 +9,10 @@ solver.tui.setup.models.eulerian\_wallfilm
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.eulerian_wallfilm
-   :members: film_material, enable_film_vof_transition_message, model_options, initialize_wallfilm_model, solution_options, enable_wallfilm_model, solve_wallfilm_equation, list_film_walls
+   :members: enable_film_vof_transition_message, enable_wallfilm_model, film_material, initialize_wallfilm_model, model_options, list_film_walls, solve_wallfilm_equation, solution_options
 
 .. toctree::
    :hidden:
 
-   implicit_options/index
    coupled_solution/index
+   implicit_options/index

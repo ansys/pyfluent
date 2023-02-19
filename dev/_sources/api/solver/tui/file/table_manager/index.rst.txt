@@ -9,5 +9,5 @@ solver.tui.file.table\_manager
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.table_manager
-   :members: store_in_case_file, list_properties, read_matrix_data_file, list_matrix_data, list_tables, read_rgp_file, rename, delete
+   :members: delete, list_tables, store_in_case_file, list_matrix_data, list_properties, rename, read_rgp_file, read_matrix_data_file
 

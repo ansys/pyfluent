@@ -9,7 +9,7 @@ meshing.tui.mesh.hexcore.controls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.hexcore.controls
-   :members: maximum_cell_length, delete_dead_zones, maximum_initial_cells, buffer_layers, print_region_based_sizing, avoid_1_by_8_cell_jump_in_hexcore, peel_layers, define_hexcore_extents, set_region_based_sizing, octree_hexcore, skip_tet_refinement, compute_max_cell_length, merge_tets_to_pyramids, non_fluid_type
+   :members: delete_dead_zones, compute_max_cell_length, buffer_layers, octree_hexcore, maximum_cell_length, merge_tets_to_pyramids, print_region_based_sizing, maximum_initial_cells, non_fluid_type, set_region_based_sizing, skip_tet_refinement, peel_layers, avoid_1_by_8_cell_jump_in_hexcore, define_hexcore_extents
 
 .. toctree::
    :hidden:

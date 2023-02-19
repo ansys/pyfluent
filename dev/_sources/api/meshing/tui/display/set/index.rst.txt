@@ -9,13 +9,13 @@ meshing.tui.display.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.set
-   :members: highlight_tree_selection, windows, filled_grid, native_display_defaults, quick_moves_algorithm, shrink_factor, title, line_weight, re_render, edges, reset_graphics, overlays, remote_display_defaults
+   :members: edges, title, filled_grid, overlays, native_display_defaults, line_weight, remote_display_defaults, reset_graphics, quick_moves_algorithm, re_render, highlight_tree_selection, shrink_factor, windows
 
 .. toctree::
    :hidden:
 
-   lights/index
-   rendering_options/index
    colors/index
-   picture/index
+   lights/index
    styles/index
+   picture/index
+   rendering_options/index

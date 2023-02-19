@@ -9,22 +9,22 @@ solver.tui.display
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display
-   :members: profile, velocity_vector, switch_to_post_processing_volume, set_window_by_name, re_render, set_list_tree_separator, re_scale, mesh, clear_annotations, contour, reacting_channel_curves, zone_mesh, open_window, surface_mesh, mesh_outline, mesh_partition_boundary, close_window, update_layout, annotate, surface_cells, save_picture, close_window_by_name, display_custom_vector, multigrid_coarsening, graphics_window_layout, switch_to_primary_volume, vector, add_custom_vector, set_window, hsf_file
+   :members: set_window, re_render, surface_cells, clear_annotations, add_custom_vector, open_window, mesh_partition_boundary, update_layout, hsf_file, mesh, save_picture, close_window, velocity_vector, annotate, switch_to_post_processing_volume, set_window_by_name, close_window_by_name, surface_mesh, contour, mesh_outline, vector, re_scale, switch_to_primary_volume, zone_mesh, display_custom_vector, multigrid_coarsening, reacting_channel_curves, set_list_tree_separator, profile, graphics_window_layout
 
 .. toctree::
    :hidden:
 
-   flamelet_data/index
-   update_scene/index
-   view_sync/index
-   set/index
-   particle_tracks/index
    objects/index
    views/index
-   pdf_data/index
-   display_states/index
-   inverse_dft/index
    define/index
-   embedded_windows/index
-   path_lines/index
    surface/index
+   path_lines/index
+   set/index
+   pdf_data/index
+   inverse_dft/index
+   flamelet_data/index
+   update_scene/index
+   display_states/index
+   particle_tracks/index
+   embedded_windows/index
+   view_sync/index

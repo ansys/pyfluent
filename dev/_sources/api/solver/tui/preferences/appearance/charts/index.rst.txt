@@ -9,7 +9,7 @@ solver.tui.preferences.appearance.charts
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.appearance.charts
-   :members: modern_plots_enabled, print_plot_data, tooltip_interpolation, modern_plots_points_threshold, legend_visibility, legend_alignment, threshold, plots_behavior, enable_open_glfor_modern_plots, print_residuals_data, curve_colors
+   :members: legend_visibility, modern_plots_enabled, print_plot_data, curve_colors, modern_plots_points_threshold, enable_open_glfor_modern_plots, print_residuals_data, plots_behavior, legend_alignment, threshold, tooltip_interpolation
 
 .. toctree::
    :hidden:

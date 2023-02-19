@@ -9,7 +9,7 @@ solver.tui.parameters\_\_and\_\_customization.user\_defined
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parameters__and__customization.user_defined
-   :members: enable_udf_on_gpu, one_D_coupling, auto_compile_compiled_udfs, use_contributed_cpp, fan_model, user_defined_memory, compiled_functions, user_defined_scalars, function_hooks, execute_on_demand, compile_customized_addon_module, user_defined_node_memory, use_built_in_compiler, interpreted_functions
+   :members: enable_udf_on_gpu, user_defined_node_memory, compile_customized_addon_module, function_hooks, auto_compile_compiled_udfs, use_built_in_compiler, fan_model, user_defined_memory, execute_on_demand, use_contributed_cpp, interpreted_functions, one_D_coupling, compiled_functions, user_defined_scalars
 
 .. toctree::
    :hidden:

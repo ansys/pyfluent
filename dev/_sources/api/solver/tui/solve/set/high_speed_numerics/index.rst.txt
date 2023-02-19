@@ -9,5 +9,5 @@ solver.tui.solve.set.high\_speed\_numerics
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.high_speed_numerics
-   :members: enable, expert, visualize_pressure_discontinuity_sensor
+   :members: visualize_pressure_discontinuity_sensor, enable, expert
 

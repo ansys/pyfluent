@@ -9,5 +9,5 @@ meshing.tui.mesh.prism.controls.morph
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.prism.controls.morph
-   :members: morphing_convergence_limit, improve_threshold, morphing_frequency
+   :members: improve_threshold, morphing_frequency, morphing_convergence_limit
 

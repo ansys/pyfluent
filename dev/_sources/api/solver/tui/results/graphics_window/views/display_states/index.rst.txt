@@ -9,5 +9,5 @@ solver.tui.results.graphics\_window.views.display\_states
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.graphics_window.views.display_states
-   :members: rename, read, use_active, list, restore_state, write, new, copy, delete, edit
+   :members: list, new, write, delete, use_active, rename, copy, restore_state, read, edit
 

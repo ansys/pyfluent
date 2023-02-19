@@ -9,7 +9,7 @@ solver.tui.define.models.multiphase.wet\_steam
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.wet_steam
-   :members: compile_user_defined_wetsteam_functions, enable, load_unload_user_defined_wetsteam_library
+   :members: compile_user_defined_wetsteam_functions, load_unload_user_defined_wetsteam_library, enable
 
 .. toctree::
    :hidden:

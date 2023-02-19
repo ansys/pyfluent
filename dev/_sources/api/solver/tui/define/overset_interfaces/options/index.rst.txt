@@ -9,5 +9,5 @@ solver.tui.define.overset\_interfaces.options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.overset_interfaces.options
-   :members: modified_donor_search, render_receptor_cells, donor_priority_method, transient_caching, dead_cell_update, overlap_boundaries, partial_cut_faces, solve_island_removal, minimize_overlap, verbosity, expert, auto_create, modified_hole_cutting, node_connected_donors, mesh_interfaces, update_before_case_write, parallel
+   :members: donor_priority_method, modified_hole_cutting, minimize_overlap, dead_cell_update, render_receptor_cells, parallel, transient_caching, partial_cut_faces, solve_island_removal, modified_donor_search, overlap_boundaries, auto_create, update_before_case_write, verbosity, mesh_interfaces, node_connected_donors, expert
 

@@ -9,5 +9,5 @@ solver.tui.setup.turbo\_model.turbo\_topology
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.turbo_model.turbo_topology
-   :members: projection_method, define_topology, mesh_method, search_method, delete
+   :members: search_method, mesh_method, delete, projection_method, define_topology
 

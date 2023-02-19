@@ -9,5 +9,5 @@ solver.tui.solve.set.advanced.non\_reflecting\_boundary\_treatment
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.set.advanced.non_reflecting_boundary_treatment
-   :members: velocity_inlet, pressure_outlet, pressure_inlet
+   :members: pressure_inlet, pressure_outlet, velocity_inlet
 

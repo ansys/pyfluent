@@ -9,5 +9,5 @@ solver.tui.results.report.forces
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.results.report.forces
-   :members: pressure_center, wall_moments, wall_forces
+   :members: pressure_center, wall_forces, wall_moments
 

@@ -9,5 +9,5 @@ meshing.tui.preferences.parametric\_study.update\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.parametric_study.update_options
-   :members: capture_sim_report_data, save_project_after_dpupdate, enable_auto_refresh, auto_refresh_time, write_data
+   :members: capture_sim_report_data, save_project_after_dpupdate, auto_refresh_time, write_data, enable_auto_refresh
 

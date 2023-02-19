@@ -9,11 +9,11 @@ solver.tui.setup.models.radiation
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.radiation
-   :members: wsggm_cell_based, discrete_ordinates, solar_calculator, p1, do_acceleration, mc_under_relaxation, beta_radiation_features, solar_irradiation, method_partially_specular_wall, blending_factor, solar, s2s, radiation_iteration_parameters, do_coupling, target_cells_per_volume_cluster, discrete_transfer, fast_second_order_discrete_ordinate, radiation_model_parameters, apply_full_solar_irradiation, rosseland, montecarlo, mc_model_parameters, non_gray_model_parameters, solution_method_for_do_coupling
+   :members: beta_radiation_features, radiation_model_parameters, p1, wsggm_cell_based, blending_factor, solar, discrete_ordinates, method_partially_specular_wall, montecarlo, do_coupling, discrete_transfer, solar_calculator, mc_model_parameters, non_gray_model_parameters, apply_full_solar_irradiation, s2s, do_acceleration, fast_second_order_discrete_ordinate, mc_under_relaxation, rosseland, radiation_iteration_parameters, solution_method_for_do_coupling, target_cells_per_volume_cluster, solar_irradiation
 
 .. toctree::
    :hidden:
 
-   solar_parameters/index
    s2s_parameters/index
    dtrm_parameters/index
+   solar_parameters/index

@@ -9,5 +9,5 @@ solver.tui.solve.animate.pulse.hardcopy.color\_mode
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solve.animate.pulse.hardcopy.color_mode
-   :members: mono_chrome, gray_scale, color, list
+   :members: gray_scale, list, color, mono_chrome
 

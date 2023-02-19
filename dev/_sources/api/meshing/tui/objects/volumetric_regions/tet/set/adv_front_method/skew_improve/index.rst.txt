@@ -9,5 +9,5 @@ meshing.tui.objects.volumetric\_regions.tet.set.adv\_front\_method.skew\_improve
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.objects.volumetric_regions.tet.set.adv_front_method.skew_improve
-   :members: target_skew, sliver_skew, target_low_skew, attempts, iterations, boundary_sliver_skew, target
+   :members: target, sliver_skew, boundary_sliver_skew, target_skew, attempts, iterations, target_low_skew
 

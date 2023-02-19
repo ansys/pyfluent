@@ -9,11 +9,11 @@ meshing.tui.mesh.tet
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.mesh.tet
-   :members: refine, un_preserve_cell_zone, mesh_object, trace_path_between_cells, delete_virtual_cells, init_refine, init, preserve_cell_zone
+   :members: un_preserve_cell_zone, init_refine, refine, delete_virtual_cells, trace_path_between_cells, init, preserve_cell_zone, mesh_object
 
 .. toctree::
    :hidden:
 
-   controls/index
-   local_regions/index
    improve/index
+   local_regions/index
+   controls/index

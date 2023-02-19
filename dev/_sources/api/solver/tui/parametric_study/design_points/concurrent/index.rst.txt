@@ -9,5 +9,5 @@ solver.tui.parametric\_study.design\_points.concurrent
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.parametric_study.design_points.concurrent
-   :members: abort_design_point, refresh_status, abort_all_design_points
+   :members: abort_design_point, abort_all_design_points, refresh_status
 
