@@ -444,7 +444,7 @@ jobs:
         if: matrix.image-tag == 'v23.1.0'
         uses: actions/upload-artifact@v3
         with:
-          name: htmlcov
+          name: coverage_report
           path: ./htmlcov
 
   release:
