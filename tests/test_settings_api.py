@@ -32,6 +32,8 @@ def test_results_graphics_mesh_settings(new_solver_session) -> None:
     assert "mesh-a" not in session.solver.results.graphics.mesh.get_object_names()
 
 
+@pytest.mark.dev
+@pytest.mark.fluent_232
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")

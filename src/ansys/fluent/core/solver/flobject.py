@@ -466,6 +466,7 @@ class WildcardPath(Group):
     """Class wrapping a wildcard path to perform get_var and set_var on
     flproxy."""
     def __init__(self, flproxy, path: str, state_cls, settings_cls):
+        """__init__ of WildcardPath class."""
         self._setattr("_flproxy", flproxy)
         self._setattr("_path", path)
         # _state_cls is the settings class at which the state is constructed.
@@ -479,10 +480,12 @@ class WildcardPath(Group):
 
     @property
     def flproxy(self):
+        """Proxy object."""
         return self._flproxy
 
     @property
     def path(self):
+        """Path with wildcards."""
         return self._path
 
     def __getattr__(self, name: str):
@@ -494,9 +497,11 @@ class WildcardPath(Group):
         raise AttributeError(name)
 
     def to_scheme_keys(self, value):
+        """Convert value to have keys with scheme names."""
         return self._state_cls.to_scheme_keys(value)
 
     def to_python_keys(self, value):
+        """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
 
 
