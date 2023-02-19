@@ -25,6 +25,7 @@ from typing import List
 import h5py
 
 from . import lispy
+from ..allowed_name_error_msg import allowed_name_error_message
 
 
 class InputParameter:
@@ -99,7 +100,11 @@ class _CaseVariable:
         if not name:
             error_name = self._path[:-1] if self._path else self._path
             raise RuntimeError(f"Invalid variable {error_name}")
-        return self._variables[name]
+        try:
+            return self._variables[name]
+        except KeyError:
+            raise RuntimeError(allowed_name_error_message(
+                "config-vars", name, list(self._variables.keys())))
 
     def __getattr__(self, name: str):
         for orig, sub in (
