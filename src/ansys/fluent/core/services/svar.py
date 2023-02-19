@@ -44,28 +44,105 @@ class SvarService:
 
     @catch_grpc_error
     def get_svars_info(self, request):
-        return self.__stub.GetSvarsInfo(request, metadata=self.__metadata)         
+        return self.__stub.GetSvarsInfo(request, metadata=self.__metadata) 
+
+    @catch_grpc_error
+    def get_zones_info(self, request):
+        return self.__stub.GetZonesInfo(request, metadata=self.__metadata)         
 
 class SvarInfo:
+    
+    class _SvarsInfo:
+        class _SvarInfo:
+            def __init__(self, svar_info):
+                self.name = svar_info.name
+                self.dimension = svar_info.dimension
+                self.data_type = self._get_data_type(svar_info.dataType,svar_info.bitSize)
+                
+            def _get_data_type(self, data_type, bit_size):
+                if data_type==SvarProtoModule.DataType.INT: 
+                    return np.int32 if bit_size==4 else np.int64 
+                if data_type==SvarProtoModule.DataType.REAL: 
+                    return np.float32 if bit_size==4 else np.float64
+                    
+            def __repr__(self):
+              return f"name:{self.name} dimension:{self.dimension} data_type:{self.data_type}"                      
+                    
+        def __init__(self, svars_info):
+            self._svars_info = {}
+            for svar_info in svars_info:
+                self._svars_info[svar_info.name] = SvarInfo._SvarsInfo._SvarInfo(svar_info) 
+
+        def _filter(self, svars_info):
+             self._svars_info = {k:v for k,v in self._svars_info.items() if k in [ svar_info.name for svar_info in svars_info]}
+        
+        def __getitem__(self, name):
+            return self._svars_info.get(name, None)
+            
+        @property    
+        def svars(self):
+           return list(self._svars_info.keys())
+             
+                    
+    class _ZonesInfo:
+        class _ZoneInfo:
+            def __init__(self, zone_info):
+                self.name = zone_info.name
+                self.zone_id = zone_info.zoneId
+                self.zone_type = zone_info.zoneType
+                self.threadType = zone_info.threadType
+                self.partitionsInfo = zone_info.partitionsInfo
+                
+            def __repr__(self):
+              partitionStr = ""
+              for pinfo in self.partitionsInfo:
+                  partitionStr += f"{pinfo.count}[{pinfo.startIndex}:{pinfo.endIndex}] "
+              return f"name:{self.name} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.threadType==SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}\n\t{partitionStr}"            
+                   
+                    
+        def __init__(self, zones_info, domains_info):
+            self._zones_info = {}
+            self._domains_info = {}
+            for zone_info in zones_info:
+                self._zones_info[zone_info.name] = SvarInfo._ZonesInfo._ZoneInfo(zone_info)
+            for domain_info in domains_info:
+                self._domains_info[domain_info.name] = domain_info.domainId            
+
+        def __getitem__(self, name):
+            return self._zones_info.get(name, None)
+        
+        @property         
+        def zones(self):
+           return list(self._zones_info.keys())
+           
+        @property         
+        def domains(self):
+           return list(self._domains_info.keys()) 
+
+        def domain_id(self, domain_name):
+            return  self._domains_info.get(domain_name,None)       
+
     def __init__(self, service: SvarService,):       
         self._service = service
         
-    def get_svars_info(self, zone_id):
-        request = SvarProtoModule.GetSvarsInfoRequest(zoneId=zone_id)
-        response = self._service.get_svars_info(request)
-        return {
-            svar_info.name: {
-                "display_name": svar_info.displayName,
-                "dimension": svar_info.dimension,
-                "dataType": svar_info.dataType,
-                "bitSize": svar_info.bitSize,
-            }
-            for svar_info in response.svarsInfo
-        }
+    def get_svars_info(self, domain_name, zone_names):
+        allowed_zone_names = _AllowedZoneNames(self)
+        allowed_domain_names = _AllowedDomainNames(self)
+        svars_info = None 
+        for zone_name in zone_names:
+            request = SvarProtoModule.GetSvarsInfoRequest(domainId=allowed_domain_names.valid_name(domain_name), zoneId=allowed_zone_names.valid_name(zone_name))
+            response = self._service.get_svars_info(request)
+            if svars_info is None:
+                svars_info = SvarInfo._SvarsInfo(response.svarsInfo)
+            else:
+                svars_info._filter(response.svarsInfo)               
+        return svars_info        
         
 
-    def get_zones_info(self, provide_only_available=True):
-        return {"fluid":None}            
+    def get_zones_info(self):
+        request = SvarProtoModule.GetZonesInfoRequest()
+        response = self._service.get_zones_info(request)
+        return SvarInfo._ZonesInfo(response.zonesInfo, response.domainsInfo)         
 
 
 
@@ -117,12 +194,9 @@ class ZoneUnavailable(RuntimeError):
 
 
 class _AllowedNames:
-    def __init__(self, svar_info: SvarInfo):
-        self._svar_info = svar_info
 
-    def is_valid(self, name):
-        return True 
-        return name in self(provide_only_available=False)
+    def is_valid(self, name): 
+        return name in self()
         
     def is_available(self, name):
         return True
@@ -131,14 +205,15 @@ class _AllowedNames:
 
 class _AllowedSvarNames(_AllowedNames):
     def __init__(self, svar_info: SvarInfo):
-        super().__init__(svar_info=svar_info)
-
+        #self._svars_info = svar_info.get_svars_info()
+        pass 
         
     def __call__(self, provide_only_available: bool = True) -> List[str]:
-        return  self._svar_info.get_svars_info(provide_only_available)
+        return  self._svars_info.svars 
         
 
     def valid_name(self, svar_name):
+        return svar_name
         if validate_inputs:
             if not self.is_valid(svar_name):
                 raise SvarError(
@@ -151,8 +226,11 @@ class _AllowedSvarNames(_AllowedNames):
 
 
 class _AllowedZoneNames(_AllowedNames):
-    def __call__(self, provide_only_available: bool = True) -> List[str]:
-        return self._svar_info.get_zones_info(provide_only_available)
+    def __init__(self, svar_info: SvarInfo):
+        self._zones_info = svar_info.get_zones_info()
+
+    def __call__(self) -> List[str]:
+        return self._zones_info.zones               
         
     def valid_name(self, zone_name):
         if validate_inputs:
@@ -161,22 +239,26 @@ class _AllowedZoneNames(_AllowedNames):
                     zone_name=zone_name,
                     allowed_values=self(),
                 )
-            if not self.is_available(zone_name):
-                raise ZoneUnavailable(zone_name)
-        return zone_name        
+        return self._zones_info[zone_name].zone_id        
 
 
+class _AllowedDomainNames(_AllowedNames):
 
-class _AllowedZoneIDs(_AllowedNames):
-     pass 
-#    def __call__(self, provide_only_available: bool = True) -> List[int]:
-#        try:
-#            return [
-#                info["zone_id"][0]
-#                for _, info in self._svar_info.get_zones_info().items()
-#            ]
-#        except (KeyError, IndexError):
-#            pass
+    def __init__(self, svar_info: SvarInfo):
+        self._zones_info = svar_info.get_zones_info()
+
+    def __call__(self) -> List[str]:
+        return self._zones_info.domains               
+        
+    def valid_name(self, domain_name):
+        if validate_inputs:
+            if not self.is_valid(domain_name):
+                raise ZoneError(
+                    domain_name=domain_name,
+                    allowed_values=self(),
+                )
+        return self._zones_info.domain_id(domain_name)
+
 
 
 class _SvarMethod:
@@ -319,6 +401,29 @@ def extract_svars(svars_data):
 
 class SvarData:
     """Provides access to Fluent field data on surfaces."""
+    
+    class _SvarData:
+    
+        def __init__(self, domain_name, zone_id_name_map, svar_data):
+            self._domain_name = domain_name
+            self._data = {zone_id_name_map[zone_id]:zone_data   for zone_id, zone_data in svar_data.items()}
+            
+        @property
+        def domain(self):
+            return self._domain_name 
+            
+        @property
+        def zones(self):
+            return list(self._data.keys())
+            
+        @property
+        def data(self):
+            return  self._data       
+            
+        def __getitem__(self, name):
+            return self._data.get(name, None)            
+
+                   
 
     def __init__(
         self,
@@ -330,13 +435,12 @@ class SvarData:
 
         self._allowed_zone_names = _AllowedZoneNames(svar_info)
 
-        self._allowed_zone_ids = _AllowedZoneIDs(svar_info)
+        self._allowed_domain_names = _AllowedDomainNames(svar_info)
 
         self._allowed_svar_names = _AllowedSvarNames(
             svar_info
         )
         svar_args = dict(
-            zone_ids=self._allowed_zone_ids,
             zone_names=self._allowed_zone_names,
             svar_name = self._allowed_svar_names
         )
@@ -349,9 +453,9 @@ class SvarData:
 
     def get_svar_data(
         self,
-        svar_name: str,        
-        zone_names: Optional[List[int]] = None,
-        zone_ids: Optional[List[int]] = None,
+        svar_name: str,               
+        zone_names: List[str],
+        domain_name: Optional[str] = "mixture", 
     ) -> Dict[int, np.array]:
         """Get scalar field data on a surface.
 
@@ -375,27 +479,27 @@ class SvarData:
         Dict[int, np.array]
             Dictionary containing a map of surface IDs to the scalar field.
         """
-
         svars_request = SvarProtoModule.GetSvarDataRequest(
             provideBytesStream=_FieldDataConstants.bytes_stream,
-            chunkSize=_FieldDataConstants.chunk_size,
+            chunkSize=_FieldDataConstants.chunk_size
         )  
+        svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name=self._allowed_svar_names.valid_name(
             svar_name
         )    
-        for zone_id in zone_ids:
-            svars_request.zones.append(zone_id) 
-            
-        #for zone_name in zone_names:
-        #    svars_request.zones.extend(self._allowed_zone_names.valid_name(zone_name))    
+        zone_id_name_map = {}    
+        for zone_name in zone_names:
+            zone_id = self._allowed_zone_names.valid_name(zone_name)
+            zone_id_name_map[zone_id] = zone_name
+            svars_request.zones.append(zone_id)    
        
-
-        return extract_svars(self._service.get_svar_data(svars_request))
+        return SvarData._SvarData(domain_name,  zone_id_name_map, extract_svars(self._service.get_svar_data(svars_request)))
         
     def set_svar_data(
         self,
         svar_name: str,        
-        zones_id_to_svar_data
+        zones_name_to_svar_data,
+        domain_id : str = "mixture"
     ) -> Dict[int, np.array]:
         
         def generate_set_svar_data_requests():
