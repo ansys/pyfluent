@@ -1,3 +1,4 @@
+#from inspect import Arguments
 from typing import Any, Tuple
 
 from ansys.fluent.core.services.datamodel_se import PyCallableStateObject
@@ -46,7 +47,27 @@ class TaskContainer(PyCallableStateObject):
         )
 
 
-class Task(PyCallableStateObject):
+class ArgumentsWrapper(PyCallableStateObject):
+    def __init__(self, task):
+        self._task = task
+
+    def set_state(self, args):
+        self._task.Arguments.set_state(args)
+
+    def get_state(self, explicit_only=False):
+        return (
+            self._task.Arguments()
+            if explicit_only else self._task.CommandArguments()
+        )
+
+    def __getattr__(self, attr):
+        return getattr(self._task.CommandArguments, attr)
+
+    def __setitem__(self, key, value):
+        self._task.CommandArguments.__setitem__(key, value)
+
+
+class Task:
     """ Wrap a Workflow TaskObject instance, adding methods to discover
         more about the relationships between TaskObjects.
 
@@ -182,6 +203,10 @@ class Task(PyCallableStateObject):
     def CommandArguments(self):
         return self._refreshed_command()
 
+    @property
+    def arguments(self):
+        return ArgumentsWrapper(self)
+
     def __getattr__(self, attr):
         return getattr(self._task, attr)
 
@@ -197,9 +222,9 @@ class Task(PyCallableStateObject):
         )
 
     def __call__(self, **kwds) -> Any:
-        self._task.Arguments.set_state(**kwds)
+        if (kwds):
+            self._task.Arguments.set_state(**kwds)
         return self._task.Execute()
-
 
     def _tasks_with_matching_attributes(
         self,
@@ -264,7 +289,6 @@ class CompoundTask(Task):
         children = self.ordered_children()
         if children:
             return children[-1]
-
 
 
 def makeTask(command_source, name: str) -> Task:

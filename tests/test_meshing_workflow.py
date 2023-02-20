@@ -578,4 +578,5 @@ def test_extended_wrapper(
         AppendMesh=False
     )
     assert workflow.import_geometry.State() == "Up-to-date"
-
+    import_geometry_state = workflow.import_geometry.arguments()
+    assert len(import_geometry_state) > 2
