@@ -372,7 +372,7 @@ jobs:
 # Don't upload anything to artifacts/cache/release-package from here
   build_test_232:
     name: Build and Test with 23.2 Fluent
-    needs: test-import
+    needs: build
     runs-on: [self-hosted, pyfluent]
 
     steps:
