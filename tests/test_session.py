@@ -231,28 +231,26 @@ def test_create_session_from_launch_fluent_by_setting_ip_and_port_env_var(
 
 @pytest.mark.dev
 @pytest.mark.fluent_232
-def test_journal_creation(new_mesh_session, tmp_path=pyfluent.EXAMPLES_PATH):
-    session = new_mesh_session
-
+def test_journal_creation(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
-        suffix=f"-{os.getpid()}.txt",
-        prefix="sample_py_journal-",
-        dir=str(tmp_path),
+        suffix=f"-{os.getpid()}.jou",
+        prefix="pyfluent-",
+        dir=str(pyfluent.EXAMPLES_PATH),
     )
     os.close(fd)
 
+    prev_stat = Path(file_path).stat()
+    prev_mtime = prev_stat.st_mtime
+    prev_size = prev_stat.st_size
+
+    session = new_mesh_session
     session.journal.start(file_path)
-
     session = session.switch_to_solver()
-
     session.journal.stop()
 
-    with open(file_path) as f:
-        returned = f.readlines()
-
-    time.sleep(1)
-
-    assert returned
+    new_stat = Path(file_path).stat()
+    assert new_stat.st_mtime > prev_mtime
+    assert new_stat.st_size > prev_size
 
 
 @pytest.mark.skip("Failing in GitHub CI")
@@ -275,7 +273,7 @@ def test_get_fluent_mode(new_mesh_session):
 @pytest.mark.fluent_232
 def test_start_transcript_file_write(new_mesh_session):
     fd, file_path = tempfile.mkstemp(
-        suffix=f"-{os.getpid()}.txt",
+        suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
         dir=str(pyfluent.EXAMPLES_PATH),
     )
