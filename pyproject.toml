@@ -25,7 +25,7 @@ markers = [
 
 
 [tool.black]
-force-exclude = ["src/ansys/fluent/core/meshing/tui", "src/ansys/fluent/core/solver/tui", "src/ansys/fluent/core/solver/settings", "src/ansys/fluent/core/datamodel"]
+extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
 
 
 [tool.isort]

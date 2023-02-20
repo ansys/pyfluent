@@ -26,7 +26,9 @@ validate_inputs = True
 
 class FieldDataService:
     def __init__(self, channel: grpc.Channel, metadata):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
@@ -343,25 +345,37 @@ class FieldTransaction:
             **dict(field_name=self._allowed_scalar_field_names),
             **surface_args,
         }
-        self.add_scalar_fields_request = override_help_text(_FieldMethod(
-            field_data_accessor=self.add_scalar_fields_request,
-            args_allowed_values_accessors=scalar_field_args,
-        ), self.add_scalar_fields_request)
-        self.add_vector_fields_request = override_help_text(_FieldMethod(
-            field_data_accessor=self.add_vector_fields_request,
-            args_allowed_values_accessors={
-                **dict(field_name=self._allowed_vector_field_names),
-                **surface_args,
-            },
-        ), self.add_vector_fields_request)
-        self.add_surfaces_request = override_help_text(_FieldMethod(
-            field_data_accessor=self.add_surfaces_request,
-            args_allowed_values_accessors=surface_args,
-        ), self.add_surfaces_request)
-        self.add_pathlines_fields_request = override_help_text(_FieldMethod(
-            field_data_accessor=self.add_pathlines_fields_request,
-            args_allowed_values_accessors=scalar_field_args,
-        ), self.add_pathlines_fields_request)
+        self.add_scalar_fields_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_scalar_fields_request,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.add_scalar_fields_request,
+        )
+        self.add_vector_fields_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_vector_fields_request,
+                args_allowed_values_accessors={
+                    **dict(field_name=self._allowed_vector_field_names),
+                    **surface_args,
+                },
+            ),
+            self.add_vector_fields_request,
+        )
+        self.add_surfaces_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_surfaces_request,
+                args_allowed_values_accessors=surface_args,
+            ),
+            self.add_surfaces_request,
+        )
+        self.add_pathlines_fields_request = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.add_pathlines_fields_request,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.add_pathlines_fields_request,
+        )
 
     def add_surfaces_request(
         self,
@@ -676,8 +690,10 @@ def get_fields_request():
         chunkSize=_FieldDataConstants.chunk_size,
     )
 
+
 def extract_fields(chunk_iterator):
     """Extracts field data via a server call."""
+
     def _get_tag_for_surface_request(surface_request):
         return (("type", "surface-data"),)
 
@@ -731,7 +747,6 @@ def extract_fields(chunk_iterator):
 
     fields_data = {}
     for chunk in chunk_iterator:
-
         payload_info = chunk.payloadInfo
         field = _extract_field(
             _FieldDataConstants.proto_field_type_to_np_data_type[
@@ -778,7 +793,13 @@ def extract_fields(chunk_iterator):
         surface_data = payload_data.get(surface_id)
         if surface_data:
             if payload_info.fieldName in surface_data:
-                surface_data.update({payload_info.fieldName: np.concatenate((surface_data[payload_info.fieldName], field))})
+                surface_data.update(
+                    {
+                        payload_info.fieldName: np.concatenate(
+                            (surface_data[payload_info.fieldName], field)
+                        )
+                    }
+                )
             else:
                 surface_data.update({payload_info.fieldName: field})
         else:
@@ -819,25 +840,37 @@ class FieldData:
             **dict(field_name=self._allowed_scalar_field_names),
             **surface_args,
         }
-        self.get_scalar_field_data = override_help_text(_FieldMethod(
-            field_data_accessor=self.get_scalar_field_data,
-            args_allowed_values_accessors=scalar_field_args,
-        ), self.get_scalar_field_data)
-        self.get_vector_field_data = override_help_text(_FieldMethod(
-            field_data_accessor=self.get_vector_field_data,
-            args_allowed_values_accessors={
-                **dict(field_name=self._allowed_vector_field_names),
-                **surface_args,
-            },
-        ), self.get_vector_field_data)
-        self.get_surface_data = override_help_text(_FieldMethod(
-            field_data_accessor=self.get_surface_data,
-            args_allowed_values_accessors=surface_args,
-        ), self.get_surface_data)
-        self.get_pathlines_field_data = override_help_text(_FieldMethod(
-            field_data_accessor=self.get_pathlines_field_data,
-            args_allowed_values_accessors=scalar_field_args,
-        ), self.get_pathlines_field_data)
+        self.get_scalar_field_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_scalar_field_data,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.get_scalar_field_data,
+        )
+        self.get_vector_field_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_vector_field_data,
+                args_allowed_values_accessors={
+                    **dict(field_name=self._allowed_vector_field_names),
+                    **surface_args,
+                },
+            ),
+            self.get_vector_field_data,
+        )
+        self.get_surface_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_surface_data,
+                args_allowed_values_accessors=surface_args,
+            ),
+            self.get_surface_data,
+        )
+        self.get_pathlines_field_data = override_help_text(
+            _FieldMethod(
+                field_data_accessor=self.get_pathlines_field_data,
+                args_allowed_values_accessors=scalar_field_args,
+            ),
+            self.get_pathlines_field_data,
+        )
 
     def new_transaction(self):
         return FieldTransaction(

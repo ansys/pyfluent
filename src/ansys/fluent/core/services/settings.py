@@ -12,7 +12,9 @@ from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInt
 
 class _SettingsServiceImpl:
     def __init__(self, channel: grpc.Channel, metadata):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self.__stub = SettingsGrpcModule.SettingsStub(intercept_channel)
         self.__metadata = metadata
 
@@ -320,8 +322,7 @@ class SettingsService:
             }
         if response.queries:
             ret["queries"] = {
-                child.name: self._parse_attrs(child.value)
-                for child in response.queries
+                child.name: self._parse_attrs(child.value) for child in response.queries
             }
         if response.arguments:
             ret["arguments"] = {
