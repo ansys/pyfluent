@@ -103,7 +103,7 @@ class _CaseVariable:
         try:
             return self._variables[name]
         except KeyError:
-            raise RuntimeError(allowed_name_error_message(
+            raise ValueError(allowed_name_error_message(
                 "config-vars", name, list(self._variables.keys())))
 
     def __getattr__(self, name: str):
