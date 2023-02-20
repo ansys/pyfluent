@@ -412,7 +412,7 @@ jobs:
 # Don't upload anything to artifacts/cache/release-package from here
   build_test_232:
     name: Build and Test with 23.2 Fluent
-    needs: build
+    needs: test-import
     runs-on: [self-hosted, pyfluent]
 
     steps:
@@ -431,14 +431,11 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
-      - name: Download package
-        uses: actions/download-artifact@v3
-        with:
-          name: PyFluent-packages
-          path: dist
+      - name: Add version information
+        run: make version-info
 
       - name: Install pyfluent
-        run: pip install -q --force-reinstall dist/*.whl > /dev/null
+        run: make install
 
       - name: Retrieve PyFluent version
         run: |
