@@ -36,9 +36,7 @@ def dump_session_data(
         "vector_fields_info": session.field_info.get_vector_fields_info(),
     }
     if not fields:
-        fields = [
-            v["solver_name"] for k, v in session_data["scalar_fields_info"].items()
-        ]
+        fields = list(session_data["scalar_fields_info"].keys())
     surfaces_id = [v["surface_id"][0] for k, v in session_data["surfaces_info"].items()]
     session_data["range"] = {}
     for field in fields:
