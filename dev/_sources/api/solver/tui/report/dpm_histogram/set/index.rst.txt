@@ -9,5 +9,5 @@ solver.tui.report.dpm\_histogram.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.report.dpm_histogram.set
-   :members: logarithmic, number_of_bins, auto_range, correlation, cumulation_curve, percentage, minimum, histogram_mode, maximum, weighting, variable_power_3, diameter_statistics
+   :members: percentage, auto_range, number_of_bins, maximum, minimum, cumulation_curve, weighting, diameter_statistics, histogram_mode, correlation, variable_power_3, logarithmic
 

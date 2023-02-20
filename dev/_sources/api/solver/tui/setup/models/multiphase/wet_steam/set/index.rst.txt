@@ -9,5 +9,5 @@ solver.tui.setup.models.multiphase.wet\_steam.set
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.models.multiphase.wet_steam.set
-   :members: droplet_growth_rate, max_liquid_mass_fraction, rgp_tables, zonal_phase_change, stagnation_conditions, virial_equation
+   :members: max_liquid_mass_fraction, virial_equation, rgp_tables, zonal_phase_change, droplet_growth_rate, stagnation_conditions
 

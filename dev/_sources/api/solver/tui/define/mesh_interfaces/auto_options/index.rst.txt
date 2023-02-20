@@ -9,5 +9,5 @@ solver.tui.define.mesh\_interfaces.auto\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.mesh_interfaces.auto_options
-   :members: keep_empty_interface, proximity_tolerance, set_default_name_prefix, naming_option, pairing_between_interface_zones_only, pairing_between_different_cell_zones_only, set_one_to_one_pairing_tolerance
+   :members: pairing_between_interface_zones_only, proximity_tolerance, set_default_name_prefix, naming_option, keep_empty_interface, pairing_between_different_cell_zones_only, set_one_to_one_pairing_tolerance
 

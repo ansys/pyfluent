@@ -9,5 +9,5 @@ solver.tui.solution.calculation\_activities.animate.objects
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.calculation_activities.animate.objects
-   :members: copy, clear_history, create, edit, delete
+   :members: create, edit, copy, delete, clear_history
 

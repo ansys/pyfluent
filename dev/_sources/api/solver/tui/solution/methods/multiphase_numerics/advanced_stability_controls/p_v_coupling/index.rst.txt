@@ -13,5 +13,5 @@ solver.tui.solution.methods.multiphase\_numerics.advanced\_stability\_controls.p
    :hidden:
 
    skewness_correction/index
-   coupled_vof/index
    rhie_chow_flux/index
+   coupled_vof/index

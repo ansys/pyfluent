@@ -12,8 +12,8 @@ solver.tui.solution.calculation\_activities
 .. toctree::
    :hidden:
 
-   solution_strategy/index
    animate/index
    cell_register_operations/index
    execute_commands/index
+   solution_strategy/index
    auto_save/index

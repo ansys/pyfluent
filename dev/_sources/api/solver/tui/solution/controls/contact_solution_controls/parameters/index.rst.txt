@@ -9,5 +9,5 @@ solver.tui.solution.controls.contact\_solution\_controls.parameters
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.solution.controls.contact_solution_controls.parameters
-   :members: iterations, solution_stabilization_persistence, extrapolation_method, persistence_fixed_duration, persistence_fixed_time_steps
+   :members: persistence_fixed_time_steps, persistence_fixed_duration, extrapolation_method, iterations, solution_stabilization_persistence
 

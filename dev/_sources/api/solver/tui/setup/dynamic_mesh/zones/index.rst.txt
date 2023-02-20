@@ -9,5 +9,5 @@ solver.tui.setup.dynamic\_mesh.zones
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.dynamic_mesh.zones
-   :members: create, list, remove_boundary_layer, delete, remove_interior_layer, insert_boundary_layer, insert_interior_layer
+   :members: remove_boundary_layer, list, insert_boundary_layer, create, delete, insert_interior_layer, remove_interior_layer
 

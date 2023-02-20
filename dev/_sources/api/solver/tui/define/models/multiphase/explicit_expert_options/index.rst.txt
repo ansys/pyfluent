@@ -9,7 +9,7 @@ solver.tui.define.models.multiphase.explicit\_expert\_options
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.multiphase.explicit_expert_options
-   :members: sub_time_step_method, solve_vof_every_iter
+   :members: solve_vof_every_iter, sub_time_step_method
 
 .. toctree::
    :hidden:

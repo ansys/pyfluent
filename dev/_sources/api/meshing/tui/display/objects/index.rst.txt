@@ -9,5 +9,5 @@ meshing.tui.display.objects
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.display.objects
-   :members: explode, hide_objects, make_transparent, isolate_objects, toggle_color_mode, display_similar_area, implode, display_neighborhood, show_all, toggle_color_palette, select_all_visible
+   :members: isolate_objects, toggle_color_palette, implode, toggle_color_mode, hide_objects, select_all_visible, show_all, explode, display_neighborhood, make_transparent, display_similar_area
 

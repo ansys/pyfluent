@@ -13,12 +13,12 @@ solver.tui.preferences
    :hidden:
 
    gpuapp/index
-   mat_pro_app/index
-   parametric_study/index
    navigation/index
-   general/index
-   appearance/index
    simulation/index
+   parametric_study/index
+   mat_pro_app/index
    graphics/index
+   appearance/index
+   general/index
    turbo_workflow/index
    meshing_workflow/index

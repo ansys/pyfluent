@@ -9,5 +9,5 @@ solver.tui.define.models.structure.expert
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.define.models.structure.expert
-   :members: steady_2way_fsi, include_viscous_fsi_force, include_pop_in_fsi_force, starting_t_re_initialization, explicit_fsi_force
+   :members: steady_2way_fsi, starting_t_re_initialization, explicit_fsi_force, include_pop_in_fsi_force, include_viscous_fsi_force
 

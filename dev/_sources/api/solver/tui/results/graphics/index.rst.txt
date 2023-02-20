@@ -15,7 +15,7 @@ solver.tui.results.graphics
    :hidden:
 
    rendering_options/index
-   objects/index
    update_scene/index
-   expert/index
    lights/index
+   objects/index
+   expert/index

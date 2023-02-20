@@ -9,7 +9,7 @@ solver.tui.file.export
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.file.export
-   :members: fieldview_unstruct_data, dx, fast_solution, patran_neutral, gambit, system_coupling_definition_file_settings, ensight_dvs_volume, fieldview_unstruct_surfaces, mechanical_apdl, ideas, mechanical_apdl_input, ascii, ensight, avs, fieldview, common_fluids_format_post, custom_heat_flux, icemcfd_for_icepak, fast_mesh, fast_scalar, fieldview_xdb, fast_velocity, fieldview_unstruct, ensight_gold_parallel_volume, patran_nodal, particle_history_data, ensight_gold, ensight_gold_parallel_surfaces, tecplot, fieldview_unstruct_mesh, taitherm, nastran, cgns, ensight_dvs_surfaces, abaqus, cdat_for_cfd_post__and__ensight, fieldview_data
+   :members: fieldview_xdb, abaqus, fieldview_unstruct_surfaces, nastran, ensight_gold, common_fluids_format_post, fieldview_unstruct_data, fast_velocity, ensight_gold_parallel_volume, patran_nodal, taitherm, mechanical_apdl, avs, fieldview_unstruct_mesh, cgns, fast_mesh, fast_scalar, ascii, fast_solution, fieldview_unstruct, ensight_dvs_volume, icemcfd_for_icepak, patran_neutral, cdat_for_cfd_post__and__ensight, tecplot, mechanical_apdl_input, ensight_gold_parallel_surfaces, fieldview_data, system_coupling_definition_file_settings, gambit, particle_history_data, ensight_dvs_surfaces, custom_heat_flux, dx, ensight, ideas, fieldview
 
 .. toctree::
    :hidden:

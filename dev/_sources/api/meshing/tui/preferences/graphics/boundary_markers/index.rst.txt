@@ -9,5 +9,5 @@ meshing.tui.preferences.graphics.boundary\_markers
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.meshing.tui_231::main_menu.preferences.graphics.boundary_markers
-   :members: exclude_from_bounding, scale_marker, outlet_color, marker_size_limiting_scale_multiplier, enabled, show_outlet_markers, color_option, show_inlet_markers, marker_fraction, markers_limit, inlet_color
+   :members: marker_fraction, show_outlet_markers, scale_marker, exclude_from_bounding, enabled, inlet_color, show_inlet_markers, color_option, outlet_color, marker_size_limiting_scale_multiplier, markers_limit
 

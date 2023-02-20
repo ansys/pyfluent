@@ -9,5 +9,5 @@ solver.tui.setup.named\_expressions
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.named_expressions
-   :members: add, compute, list_properties, list, edit, delete, export_to_tsv, import_from_tsv, copy
+   :members: import_from_tsv, list, copy, edit, list_properties, add, delete, export_to_tsv, compute
 

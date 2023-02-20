@@ -9,5 +9,5 @@ solver.tui.setup.boundary\_conditions.expert.perforated\_walls
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.setup.boundary_conditions.expert.perforated_walls
-   :members: model_setup, read_input_file
+   :members: read_input_file, model_setup
 

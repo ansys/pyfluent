@@ -12,5 +12,5 @@ solver.tui.parametric\_study.update.concurrent.licensing
 .. toctree::
    :hidden:
 
-   set/index
    print_to_console/index
+   set/index

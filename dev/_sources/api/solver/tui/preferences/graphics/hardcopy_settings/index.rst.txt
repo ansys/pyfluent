@@ -9,5 +9,5 @@ solver.tui.preferences.graphics.hardcopy\_settings
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.preferences.graphics.hardcopy_settings
-   :members: transparent_embedded_windows, save_embedded_windows_in_hardcopy, hardcopy_driver, post_script_permission_override, export_edges_for_avz, save_embedded_hardcopies_separately, hardware_image_accel, hardcopy_line_width
+   :members: hardcopy_driver, export_edges_for_avz, hardware_image_accel, hardcopy_line_width, save_embedded_windows_in_hardcopy, post_script_permission_override, save_embedded_hardcopies_separately, transparent_embedded_windows
 

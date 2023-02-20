@@ -9,5 +9,5 @@ solver.tui.display.define.material
    :toctree: _autosummary
 
 .. autoclass:: ansys.fluent.core.solver.tui_231::main_menu.display.define.material
-   :members: new, edit, delete, copy
+   :members: delete, new, edit, copy
 
