@@ -9,7 +9,6 @@ import ansys.fluent.core as pyfluent
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_single_jou(with_launching_container):
-
     file_path = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
 
     with open(file_path, "w") as journal:
@@ -44,7 +43,6 @@ def test_single_jou(with_launching_container):
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_single_scm(with_launching_container):
-
     file_path = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
 
     with open(file_path, "w") as journal:
@@ -79,7 +77,6 @@ def test_single_scm(with_launching_container):
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_2_jou(with_launching_container):
-
     file_path_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.jou")
     file_path_2 = os.path.join(pyfluent.EXAMPLES_PATH, "jou2.jou")
 
@@ -127,7 +124,6 @@ def test_2_jou(with_launching_container):
 
 @pytest.mark.skip(reason="Unable to read generated python journal from fluent.")
 def test_2_scm(with_launching_container):
-
     file_path_1 = os.path.join(pyfluent.EXAMPLES_PATH, "jou1.scm")
     file_path_2 = os.path.join(pyfluent.EXAMPLES_PATH, "jou2.scm")
 

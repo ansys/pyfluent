@@ -153,10 +153,12 @@ class Base:
             val = attrs[attr]
 
         if attr_type_or_types:
-            if not type(attr_type_or_types) == tuple:
+            if not isinstance(attr_type_or_types, tuple):
                 attr_type_or_types = (attr_type_or_types,)
-            if type(val) in attr_type_or_types:
+            if isinstance(val, attr_type_or_types):
                 return val
+            if val is not None and any(issubclass(x, bool) for x in attr_type_or_types):  # cast to bool for boolean attributes
+                return bool(val)
             return None
         return val
 
@@ -777,7 +779,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
     The following can be used:
     for name, boundary in setup.boundary_conditions.items():
-        print (name, boundary())
+    print (name, boundary())
 
     even though actual boundary conditions are stored one level lower to
     boundary_conditions.

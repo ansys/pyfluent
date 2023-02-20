@@ -32,7 +32,6 @@ class Attribute:
 
 
 class Command:
-
     def __init__(self, method):
         self.arguments_attrs = {}
         cmd_args = inspect.signature(method).parameters

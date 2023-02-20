@@ -1,7 +1,6 @@
 """Wrappers over FieldData gRPC service of Fluent."""
-import difflib
 from enum import IntEnum
-from functools import partial, reduce
+from functools import reduce
 import pydoc
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
@@ -10,8 +9,9 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
+from ansys.fluent.core.allowed_name_error_msg import allowed_name_error_message
 from ansys.fluent.core.services.error_handler import catch_grpc_error
-from ansys.fluent.core.services.interceptors import TracingInterceptor
+from ansys.fluent.core.services.interceptors import BatchInterceptor, TracingInterceptor
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -27,8 +27,7 @@ validate_inputs = True
 
 class FieldDataService:
     def __init__(self, channel: grpc.Channel, metadata):
-        tracing_interceptor = TracingInterceptor()
-        intercept_channel = grpc.intercept_channel(channel, tracing_interceptor)
+        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
         self.__stub = FieldGrpcModule.FieldDataStub(intercept_channel)
         self.__metadata = metadata
 
@@ -104,8 +103,7 @@ class FieldInfo:
         return [response.minimum, response.maximum]
 
     def get_fields_info(self) -> dict:
-        """
-        Get fields information (field name, domain, and section).
+        """Get fields information (field name, domain, and section).
 
         Returns
         -------
@@ -123,8 +121,7 @@ class FieldInfo:
         }
 
     def get_vector_fields_info(self) -> dict:
-        """
-        Get vector fields information (vector components).
+        """Get vector fields information (vector components).
 
         Returns
         -------
@@ -142,8 +139,7 @@ class FieldInfo:
         }
 
     def get_surfaces_info(self) -> dict:
-        """
-        Get surfaces information (surface name, ID, and type).
+        """Get surfaces information (surface name, ID, and type).
 
         Returns
         -------
@@ -161,21 +157,6 @@ class FieldInfo:
             for surface_info in response.surfaceInfo
         }
         return info
-
-
-def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
-    f = partial(difflib.get_close_matches, trial_name, allowed_names)
-    return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
-
-
-def allowed_name_error_message(
-    context: str, trial_name: str, allowed_values: List[str]
-) -> str:
-    message = f"{trial_name} is not an allowed {context} name.\n"
-    matches = closest_allowed_names(trial_name, allowed_values)
-    if matches:
-        message += f"The most similar names are: {', '.join(matches)}."
-    return message
 
 
 def unavailable_field_error_message(context: str, field_name: str) -> str:
@@ -698,7 +679,6 @@ def get_fields_request():
 
 def extract_fields(chunk_iterator):
     """Extracts field data via a server call."""
-
     def _get_tag_for_surface_request(surface_request):
         return (("type", "surface-data"),)
 

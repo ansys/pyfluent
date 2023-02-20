@@ -122,8 +122,8 @@ jobs:
       - name: Upload 23.1 Coverage Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: cov_xml.xml
-          path: ./cov_xml.xml
+          name: coverage_report
+          path: ./htmlcov
 
       - name: 23.2 Unit Testing
         run: make unittest-all-232

@@ -19,13 +19,13 @@ def _new_command_for_task(task, session):
 
 
 class TaskContainer(PyCallableStateObject):
-    """ Wrap a workflow TaskObject container
+    """Wrap a workflow TaskObject container.
 
-        Methods
-        -------
-        __getitem__(attr)
-        __getattr__(attr)
-        __dir__()
+    Methods
+    -------
+    __getitem__(attr)
+    __getattr__(attr)
+    __dir__()
     """
     def __init__(self, command_source):
         self._container = command_source
@@ -83,7 +83,7 @@ class Task:
         __setattr__(attr, value)
         __dir__()
         __call__()
-     """
+    """
     def __init__(self, command_source, task) -> None:
         self.__dict__.update(
             dict(
@@ -96,7 +96,8 @@ class Task:
         )
 
     def get_direct_upstream_tasks(self) -> list:
-        """ Get the list of tasks upstream of this one and directly connected by a data dependency.
+        """Get the list of tasks upstream of this one and directly connected by
+        a data dependency.
 
         Returns
         -------
@@ -122,7 +123,8 @@ class Task:
             )
 
     def get_direct_downstream_tasks(self) -> list:
-        """ Get the list of tasks downstream of this one and directly connected by a data dependency.
+        """Get the list of tasks downstream of this one and directly connected
+        by a data dependency.
 
         Returns
         -------
@@ -162,7 +164,7 @@ class Task:
         return [self._command_source._task_by_id(task_id) for task_id in self._task.TaskList()]
 
     def inactive_ordered_children(self) -> list:
-        """ Get the inactive ordered task list held by this task.
+        """Get the inactive ordered task list held by this task.
 
         Returns
         -------
@@ -172,8 +174,8 @@ class Task:
         return [self._command_source._task_by_id(task_id) for task_id in self._task.InactiveTaskList()]
 
     def get_id(self) -> str:
-        """ Get the unique string identifier of this task, as it is in
-        the meshing application.
+        """Get the unique string identifier of this task, as it is in the
+        meshing application.
 
         Returns
         -------
@@ -189,8 +191,8 @@ class Task:
                         return id_
 
     def get_idx(self) -> int:
-        """ Get the unique integer index of this task, as it is in
-        the meshing application.
+        """Get the unique integer index of this task, as it is in the meshing
+        application.
 
         Returns
         -------
@@ -303,25 +305,25 @@ def makeTask(command_source, name: str) -> Task:
 
 
 class WorkflowWrapper:
-    """ Wrap a Workflow object, adding methods to discover
-        more about the relationships between TaskObjects.
+    """Wrap a Workflow object, adding methods to discover more about the
+    relationships between TaskObjects.
 
-        Methods
-        -------
-        task(name)
-        ordered_children()
-        __getattr__(attr)
-        __dir__()
-        __call__()
-     """
+    Methods
+    -------
+    task(name)
+    ordered_children()
+    __getattr__(attr)
+    __dir__()
+    __call__()
+    """
 
     def __init__(self, workflow, command_source):
         self._workflow = workflow
         self._command_source = command_source
 
     def task(self, name: str) -> Task:
-        """ Get a TaskObject by name, in a Task wrapper.
-        The wrapper adds extra functionality.
+        """Get a TaskObject by name, in a Task wrapper. The wrapper adds extra
+        functionality.
 
         Parameters
         ----------
@@ -338,8 +340,10 @@ class WorkflowWrapper:
     @property
     def TaskObject(self) -> TaskContainer:
         # missing from dir
-        """ Get a TaskObject container wrapper that 'holds' the
-        underlying TaskObjects. The wrapper adds extra functionality.
+        """Get a TaskObject container wrapper that 'holds' the underlying
+        TaskObjects.
+
+        The wrapper adds extra functionality.
         """
         return TaskContainer(self)
 
@@ -364,7 +368,6 @@ class WorkflowWrapper:
         the ordered children of the workflow are A, B, E, while B has ordered children
         C and D.
         """
-
         workflow_state, task_list_state = self._workflow_and_task_list_state()
         tasks = []
         for task_id in task_list_state:
@@ -381,15 +384,14 @@ class WorkflowWrapper:
         return getattr(self._workflow, attr)
 
     def __dir__(self):
-        """ Override the behaviour of dir to include attributes in WorkflowWrapper and the underlying workflow.
-        """
+        """Override the behaviour of dir to include attributes in
+        WorkflowWrapper and the underlying workflow."""
         return sorted(
             set(list(self.__dict__.keys()) + dir(type(self)) + dir(self._workflow))
         )
 
     def __call__(self):
-        """ Delegate calls to the underlying workflow.
-        """
+        """Delegate calls to the underlying workflow."""
         return self._workflow()
 
     def _workflow_state(self):

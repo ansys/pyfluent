@@ -1,6 +1,4 @@
-"""
-Unit tests for flobject module
-"""
+"""Unit tests for flobject module."""
 # import codegen.settingsgen
 from collections.abc import MutableMapping
 import io
@@ -12,7 +10,7 @@ from ansys.fluent.core.solver import flobject
 
 
 class Setting:
-    """Base class for setting objects"""
+    """Base class for setting objects."""
 
     def __init__(self, parent):
         self.parent = None if parent is None else weakref.proxy(parent)
@@ -37,7 +35,7 @@ class Setting:
 
 
 class PrimitiveSetting(Setting):
-    """Primitive setting objects"""
+    """Primitive setting objects."""
 
     value = None
 
@@ -88,7 +86,7 @@ class StringList(PrimitiveSetting):
 
 
 class Group(Setting):
-    """Group objects"""
+    """Group objects."""
 
     objtype = "group"
     children = {}
@@ -131,7 +129,7 @@ class Group(Setting):
 
 
 class NamedObject(Setting, MutableMapping):
-    """NamedObject class"""
+    """NamedObject class."""
 
     objtype = "named-object"
     commands = {}
@@ -195,7 +193,7 @@ class NamedObject(Setting, MutableMapping):
 
 
 class ListObject(Setting):
-    """ListObject class"""
+    """ListObject class."""
 
     objtype = "list-object"
     commands = {}
@@ -255,7 +253,7 @@ class ListObject(Setting):
 
 
 class Command(Setting):
-    """Command class"""
+    """Command class."""
 
     objtype = "command"
     # To be overridden by child classes
@@ -282,7 +280,7 @@ class Command(Setting):
 
 
 class Root(Group):
-    """Root class"""
+    """Root class."""
 
     class G1(Group):
         class S1(String):
@@ -317,7 +315,7 @@ class Root(Group):
         child_object_type = LC
 
     class Command1(Command):
-        """Command1 class"""
+        """Command1 class."""
 
         class A1(Real):
             value = 2.3
@@ -348,7 +346,7 @@ class Root(Group):
 
 
 class Proxy:
-    """Proxy class"""
+    """Proxy class."""
 
     root = Root
 
@@ -410,7 +408,6 @@ def test_primitives():
     assert r.g_1.b_3() is False
     r.g_1.s_4 = "foo"
     assert r.g_1.s_4() == "foo"
-    return True
 
 
 def test_group():
@@ -421,7 +418,6 @@ def test_group():
     assert r.g_1() == {"r_1": 3.2, "i_2": -3, "b_3": False, "s_4": "bar"}
     r.g_1.i_2 = 4
     assert r.g_1() == {"r_1": 3.2, "i_2": 4, "b_3": False, "s_4": "bar"}
-    return True
 
 
 def test_settings_input_set_state():
@@ -464,8 +460,6 @@ def test_named_object():
     assert r.n_1.get_object_names() == ["n2", "n4", "n1", "n5"]
     assert r.n_1["n5"]() == {"rl_1": [4.3, 2.1], "sl_1": ["oof", "rab"]}
 
-    return True
-
 
 def test_list_object():
     r = flobject.get_root(Proxy())
@@ -485,8 +479,6 @@ def test_list_object():
     ]
     r.l_1 = [{"il_1": [3], "bl_1": [True, False]}]
     assert r.l_1() == [{"il_1": [3], "bl_1": [True, False]}]
-
-    return True
 
 
 def test_command():
@@ -662,12 +654,12 @@ def test_accessor_methods_on_settings_object(load_static_mixer_case):
     modified = solver.file.read.file_type.allowed_values()
     assert existing == modified
 
-    existing = solver.file.read.file_type.get_attr("read-only?")
+    existing = solver.file.read.file_type.get_attr("read-only?", bool)
     modified = solver.file.read.file_type.is_read_only()
     assert existing == modified
 
     existing = solver.setup.boundary_conditions.velocity_inlet.get_attr(
-        "user-creatable?"
+        "user-creatable?", bool
     )
     modified = solver.setup.boundary_conditions.velocity_inlet.user_creatable()
     assert existing == modified

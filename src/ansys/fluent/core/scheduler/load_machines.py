@@ -118,7 +118,6 @@ def _parse_host_info(host_info):
         A list of dictionaries formatted as:
         {'machine-name' : ###, 'core-count' : ###}
     """
-
     if (
         (":" in host_info or "," in host_info)
         and not "\\" in host_info
@@ -156,7 +155,6 @@ def _parse_machine_data(machine_data):
         The return value is a list of dictionaries formatted as:
         {'machine-name' : ###, 'core-count' : ###}
     """
-
     machineList = MachineList()
 
     for datum in machine_data:
@@ -223,7 +221,6 @@ def _restrict_machines_to_core_count(old_machine_list, ncores):
     total of x cores are available on the machines and x <= ncores, then the
     returned machine list will be identical to the input.
     """
-
     if ncores >= old_machine_list.number_of_cores:
         return old_machine_list
 

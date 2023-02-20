@@ -31,17 +31,18 @@ separately. For more information, see :ref:`faqs_install`, which appears later o
 PyFluent has no GUI (graphical user interface). You interact with PyFluent through the Python
 environment of your choice.
 
-How does PyFluent compare to UDFs?
-----------------------------------
-PyFluent is conceptually aligned with Fluent TUI console commands (and journaling) rather than with
-UDFs (user-defined functions). In other words, PyFluent is used for automation rather than
-modifying the solver behavior.
+How does PyFluent compare to Fluent user defined functions?
+-----------------------------------------------------------
+PyFluent is conceptually aligned with Fluent TUI console commands and
+journaling rather than with user defined functions (UDFs). In other words,
+PyFluent is primarily used for automation rather than modifying the solver
+behavior.
 
-UDFs continue to be written in C and remain important elements of
-Fluent simulations.
+UDFs continue to be written in C and remain important elements of Fluent
+simulations.
 
-While you cannot write UDFs in Python, you can execute PyFluent commands to compile and load UDFs,
-similar to how you use TUI commands.
+While you cannot write UDFs in Python, you can execute PyFluent commands to
+compile and load UDFs, similar to how you use TUI commands.
 
 Who should use PyFluent?
 ------------------------
@@ -78,23 +79,23 @@ What can you do with PyFluent?
 You can use PyFluent to do tasks such as these:
 
 - Integrate Fluent as a solver seamlessly in your in-house design tools.
-- Customize postprocessing, perhaps by using Python's vast external
-  library to extend postprocessing capabilities or by automatically generating
-  a PowerPoint presentation to show simulation results.
+- Customize postprocessing, perhaps by using Python's vast external library to
+  extend postprocessing capabilities or by automatically generating a PowerPoint
+  presentation to show simulation results.
 - Use a web app to access jobs running on a cluster, monitor convergence, and
   generate graphs.
-- Leverage ML and AI, especially for models that are solved quickly but can be
-  improved as additional knowledge is acquired and applied.
-- Use Python APIs to couple different Ansys products.
+- Leverage Python machine learning and artificial intelligence modules,
+  especially for models that are solved quickly but can be improved as
+  additional knowledge is acquired and applied.
+- Use Python to couple different Ansys products together.
 
 .. _faqs_install:
 
 How do you install PyFluent?
 ----------------------------
-While :ref:`installation` provides basic information for quickly
-installing and launching the ``ansys-fluent-core`` package, these
-steps explain how to install all PyFluent packages in a Python *virtual
-environment*:
+While :ref:`installation` provides basic information for quickly installing and
+launching the ``ansys-fluent-core`` package, these steps explain how to install
+all PyFluent packages in a Python *virtual environment*:
 
 #. Install Python if it is not already installed.
 
@@ -112,46 +113,63 @@ environment*:
 
 #. In a command window, use this code to set up and activate a local Python
    virtual environment::
-      
-    python -m venv pyenv   # Set up a local virtual environment
-    pyenv\Scripts\activate   # Activate the virtual environment on Windows
-    source pyenv/bin/activate.csh   # Activate the virtual environment on Linux (csh)
-    . pyenv/bin/activate   # Activate the virtual environment on Linux (bash)
 
+   .. code:: bash
 
+   .. vale off
+
+      # Set up a local virtual environment
+      python -m venv venv 
+
+      # Activate the virtual environment on Windows
+      venv\Scripts\activate
+
+      # Activate the virtual environment on Linux (csh)
+      source venv/bin/activate.csh
+
+      # Activate the virtual environment on Linux (bash)
+      . venv/bin/activate
+
+   .. vale on
+   
 #. In the same command window, use ``pip``, the package installer for Python, to
    install the PyFluent packages::
 
-    python -m pip install ansys-fluent-core   # Access Fluent’s core capabilities (mesh, solve, postprocess)
-    python -m pip install ansys-fluent-parametric   # Access Fluent’s parametric capabilities (optional)
-    python -m pip install ansys-fluent-visualization   # Access Fluents postprocessing capabilities, which work with PyVista and Matplotlib (optional)
+   .. code:: bash
+
+      python -m pip install ansys-fluent-core   # Use Fluent’s core capabilities (mesh, solve, postprocess)
+      python -m pip install ansys-fluent-parametric   # Use Fluent’s parametric capabilities (optional)
+      python -m pip install ansys-fluent-visualization   # Use Fluent's postprocessing capabilities with pyvista and matplotlib (optional)
 
 
 Which version of Python should you use?
 ---------------------------------------
-PyFluent supports Python 3.7 through Python 3.10 on Windows and Linux. Python 3.7 is shipped
-with Ansys 2022 R2 and later. For example, in a 2022 R2 installation, the executable file for
-installing Python 3.7 is likely in
+PyFluent supports Python 3.7 through Python 3.10 on Windows and Linux. Python
+3.7 is shipped with Ansys 2022 R2 and later. For example, in a 2022 R2 Windows
+installation, the executable file Python 3.7 is typically located at:
 ``C:\Program Files\ANSYS Inc\v222\commonfiles\CPython\3_7\winx64\Release\python.exe``.
 
-Alternatively, you can download any compatible version of Python directly from the
-`Downloads page <https://www.python.org/downloads/>`_ of the Python web site.
+Alternatively, you can download any compatible version of Python directly from
+the `Downloads page <https://www.python.org/downloads/>`_ of the Python web
+site.
 
-In either case, run the Python executable file as an administrator, selecting the
-**Add Python 3.9 to PATH** checkbox on the first wizard page before proceeding with
-the installation. On the last wizard page, which indicates that Python is installed
-successfully, follow the instructions for disabling the path length limit if you have
-long file paths.
+In either case, run the Python executable file as an administrator, selecting
+the **Add Python 3.9 to PATH** checkbox on the first wizard page before
+proceeding with the installation. On the last wizard page, which indicates that
+Python is installed successfully, follow the instructions for disabling the path
+length limit if you have long file paths.
 
 Where do you find source code and documentation?
 ------------------------------------------------
-All PyAnsys public libraries are available from the `PyAnsys GitHub account <https://github.com/pyansys>`_.
-The **Repositories** page displays the number of repositories, which are searchable by name.
-For example, to find all PyFluent libraries, type ``pyfluent`` in the search option. 
+All PyAnsys public libraries are available from the `PyAnsys GitHub account
+<https://github.com/pyansys>`_. The **Repositories** page displays the number of
+repositories, which are searchable by name. For example, to find all PyFluent
+libraries, type ``pyfluent`` in the search option. 
 
-The ``README.md`` file for the PyAnsys Github account lists the public PyAnsys libraries.
-The links in this list are to the documentation for the respective libraries. In addition to 
-general usage information, the documentation for a library includes many practical examples.
+The ``README.md`` file for the PyAnsys GitHub account lists the public PyAnsys
+libraries. The links in this list are to the documentation for the respective
+libraries. In addition to general usage information, the documentation for a
+library includes many practical examples.
 
 How do you launch Fluent using PyFluent?
 ----------------------------------------
@@ -163,47 +181,52 @@ To launch Fluent with PyFluent commands, use this code:
    session=pyfluent.launch_fluent()
 
 
-This example shows you how to launch a double precision Fluent session with two
-processars and the Fluent GUI:
+This example shows you how to launch a double precision Fluent session using two
+processors and activate the Fluent user interface:
 
 .. code:: python
 
    session=pyfluent.launch_fluent(precision="double", processor_count=2, show_gui=True)
 
 
-For additional launch examples, see :ref:`ref_user_guide_launch`. For descriptions of all parameters,
-see the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` method.
+For additional launch examples, see :ref:`ref_user_guide_launch`. For
+descriptions of all parameters, see the :func:`launch_fluent()
+<ansys.fluent.core.launcher.launcher.launch_fluent>` method.
 
 .. _faqs_fluentloc:
 
 How does PyFluent infer the location to launch Fluent?
 ------------------------------------------------------
-PyFluent infers the Fluent location based on the following information, in increasing order of precedence:
+PyFluent infers the Fluent location based on the following information, in
+increasing order of precedence:
 
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
-   when Fluent is installed, where ``<ver>`` is the Fluent release number such as
-   ``231`` for release 2023 R1.  PyFluent automatically uses this environment
+   when Fluent is installed, where ``<ver>`` is the Fluent release number such
+   as ``231`` for release 2023 R1.  PyFluent automatically uses this environment
    variable to locate the latest Fluent installation. On Linux systems configure
-   ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such as
-   ``/apps/ansys_inc/v231``.
+   ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such
+   as ``/apps/ansys_inc/v231``.
 
-#. Value of ``product_version`` parameter passed to :func:`launch_fluent() <ansys.fluent.core.launch_fluent>`.
+#. Value of ``product_version`` parameter passed to :func:`launch_fluent()
+   <ansys.fluent.core.launch_fluent>`.
 
-#. ``PYFLUENT_FLUENT_ROOT`` environment variable, set this to ``<install location>/<ver>/fluent`` directory.
+#. ``PYFLUENT_FLUENT_ROOT`` environment variable, set this to ``<install
+   location>/<ver>/fluent`` directory.
 
 
 How do you learn how to use PyFluent?
 -------------------------------------
-Depending on how you prefer to learn, you can use any or all of these methods
-to learn how to use PyFluent:
+Depending on how you prefer to learn, you can use any or all of these methods to
+learn how to use PyFluent:
 
-- Review the examples in the documentation, working first through those provided in
-  the :ref:_ref_example_gallery in this guide and then through those provided in the
-  **Examples** sections in the `PyFluent-Parametric <https://fluentparametric.docs.pyansys.com/>`_ and
-  `Pyfluent-Visusalization <https://fluentvisualization.docs.pyansys.com/>`_
-  guides.
-- Record a journal of your actions in Fluent and review the corresponding Python script.
+- Review the examples in the documentation, working first through those provided
+  in the :ref:_ref_example_gallery in this guide and then through those provided
+  in the **Examples** sections in the `PyFluent-Parametric
+  <https://parametric.fluent.docs.pyansys.com/>`_ and `PyFluent-Visusalization
+  <https://visualization.fluent.docs.pyansys.com/>`_ guides.
+- Record a journal of your actions in Fluent and review the corresponding Python
+  script.
   
   .. note::
      In Fluent 2022 R2, you can record a journal of your actions in Fluent
@@ -236,15 +259,17 @@ to learn how to use PyFluent:
 
 How do you get help for PyFluent?
 ---------------------------------
-Because PyFluent libraries are open source, support for issues, bugs, and feature
-requests are available in their respective GitHub repositories.
+Because PyFluent libraries are open source, support for issues, bugs, and
+feature requests are available in their respective GitHub repositories.
 
 - To log an issue for PyFluent, use the `PyFluent Issues page <https://github.com/pyansys/pyfluent/issues>`_.
 - To start a discussion, use the `PyFluent Discussions page <https://github.com/pyansys/pyfluent/discussions>`_.
 
-For discussions about developer tools, engineering simulation, and physics for Ansys software,
-visit the `Ansys Developer portal <https://developer.ansys.com/>`_. The
-`Ansys Discuss <https://discuss.ansys.com/>`_ page is where users, partners, students, and
-Ansys subject matter experts connect, share ideas, discuss the latest technologies, and ask
-questions to quickly obtain help and guidance. On this page, you can filter discussions by
-category or apply the **Fluent** tag to view only Fluent-related discussions.
+For discussions about developer tools, engineering simulation, and physics for
+Ansys software, visit the `Ansys Developer portal
+<https://developer.ansys.com/>`_. The `Ansys Discuss
+<https://discuss.ansys.com/>`_ page is where users, partners, students, and
+Ansys subject matter experts connect, share ideas, discuss the latest
+technologies, and ask questions to quickly obtain help and guidance. On this
+page, you can filter discussions by category or apply the **Fluent** tag to view
+only Fluent-related discussions.
