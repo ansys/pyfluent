@@ -174,7 +174,9 @@ def test_create_session_from_server_info_file_with_wrong_password(
         session.exit()
 
 
-def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> None:
+def test_create_session_from_launch_fluent_by_passing_ip_and_port_and_password() -> (
+    None
+):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ip = "127.0.0.1"
     port = 50051
@@ -300,6 +302,7 @@ def test_solverworkflow_in_solver_session(new_solver_session):
     for attr in ("preferences", "solverworkflow", "tui", "workflow"):
         assert attr in solver_dir
 
+
 @pytest.mark.dev
 @pytest.mark.fluent_232
 @pytest.mark.skip("Failing in github")
@@ -307,7 +310,9 @@ def test_read_case_using_lightweight_mode(with_launching_container):
     import_filename = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    solver = pyfluent.launch_fluent(case_filepath=import_filename, lightweight_mode=True)
+    solver = pyfluent.launch_fluent(
+        case_filepath=import_filename, lightweight_mode=True
+    )
     solver.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver.fluent_connection)
     while id(solver.fluent_connection) == old_fluent_connection_id:
