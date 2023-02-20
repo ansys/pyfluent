@@ -63,6 +63,9 @@ exclude = [
     "src/ansys/fluent/core/solver/settings_231/",
     "src/ansys/fluent/core/datamodel_231/"
 ]
+pre-summary-space = true
+wrap-descriptions = 88
+wrap-summaries = 88
 
 
 [tool.coverage.run]

@@ -407,7 +407,6 @@ def test_meshing_workflow_structure(new_mesh_session):
     |
     |--o Generate the Volume Mesh
     """
-
     w = new_mesh_session.workflow
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
