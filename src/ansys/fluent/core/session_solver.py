@@ -182,8 +182,11 @@ class Solver(_BaseSession):
             Whether to use light io
         """
         import ansys.fluent.core as pyfluent
+
         if lightweight_mode:
-            self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+            self.file.read(
+                file_type="case", file_name=file_name, lightweight_setup=True
+            )
             launcher_args = dict(self.fluent_connection.launcher_args)
             launcher_args.pop("lightweight_mode", None)
             launcher_args["case_filepath"] = file_name

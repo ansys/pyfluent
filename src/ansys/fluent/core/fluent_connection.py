@@ -104,7 +104,7 @@ class _FluentConnection:
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         remote_instance: bool = None,
-        launcher_args: Dict[str, Any] = None
+        launcher_args: Dict[str, Any] = None,
     ):
         """Instantiate a Session.
 

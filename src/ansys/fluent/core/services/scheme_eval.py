@@ -36,7 +36,9 @@ class SchemeEvalService:
     """
 
     def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
-        intercept_channel = grpc.intercept_channel(channel, TracingInterceptor(), BatchInterceptor())
+        intercept_channel = grpc.intercept_channel(
+            channel, TracingInterceptor(), BatchInterceptor()
+        )
         self.__stub = SchemeEvalGrpcModule.SchemeEvalStub(intercept_channel)
         self.__metadata = metadata
 
