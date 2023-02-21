@@ -27,6 +27,7 @@ class AbstractSingletonMeta(ABCMeta, SingletonMeta):
 
 def execute_in_event_loop_threadsafe(f):
     """Decorator to execute function in an event loop from another thread."""
+
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
         loop.call_soon_threadsafe(par)
@@ -36,6 +37,7 @@ def execute_in_event_loop_threadsafe(f):
 
 def execute_in_event_loop(f):
     """Decorator to execute function in an event loop."""
+
     def cb(*args, **kwargs):
         par = partial(f, *args, **kwargs)
         loop.call_soon(par)
@@ -57,6 +59,7 @@ def in_notebook():
 
 def timing(func):
     """Timing function decorator."""
+
     def wrapper(*args, **kwargs):
         t1 = time.time()
         res = func(*args, **kwargs)

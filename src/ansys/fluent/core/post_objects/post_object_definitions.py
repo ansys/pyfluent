@@ -137,6 +137,7 @@ class XYPlotDefn(PlotDefn):
                 self._api_helper.field_info().get_surfaces_info().keys()
             ) + list(self._get_top_most_parent()._local_surfaces_provider())
 
+
 class MeshDefn(GraphicsDefn):
     """Mesh graphics definition."""
 
